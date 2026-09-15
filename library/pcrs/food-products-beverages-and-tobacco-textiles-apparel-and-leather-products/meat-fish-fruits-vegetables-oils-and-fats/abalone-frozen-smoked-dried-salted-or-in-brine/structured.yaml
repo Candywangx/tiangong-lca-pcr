@@ -1,10 +1,1208 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21261"
-  title: "Abalone, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.abalone-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21261, Abalone, frozen, smoked, dried, salted or in brine"
+  covered_products: "Food-grade *Haliotis* spp., whether in shell or not, frozen, dried, salted, or in brine; smoked abalone whether or not cooked before or during smoking; edible abalone flour, meal, and pellets produced by a covered route"
+  excluded_products: "Live, fresh, or chilled abalone without covered preservation; otherwise prepared or preserved abalone; inedible flour, meal, or pellets; products unfit for human consumption; complete dishes or meals"
+  representative_product: "Packaged whole or shucked *Haliotis* spp. preserved by one declared freezing, smoking, drying, salting, or brining route"
+  production_route: "Raw-material receipt and preparation; one or more declared preservation operations; packaging; controlled finished-product storage"
+  market_state: "Saleable plant-gate product with declared species/source, shell state, preservation route, net-mass basis, packaging atmosphere, and required storage condition"
+functional_unit:
+  what: "Provision of saleable food-grade abalone in the declared frozen, smoked, dried, salted, or brined state at the processing-plant gate"
+  how_much: "1 kg net saleable product, excluding packaging material; declare whether the mass includes shell or covering brine and report drained abalone mass when brine is present"
+  how_well: "Conforming to the declared species/source, shell state, preservation route, moisture or water-activity specification where applicable, packaging system, and storage condition"
+  how_long_or_cycle: "One production batch normalized to the plant-gate reference output; storage duration through the plant gate shall be declared"
+  reference_flow_link: "Abalone, frozen, smoked, dried, salted or in brine 61e83c4f-6657-4762-9a2b-9423a54b7bd5"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include receipt, inspection, washing and preparation, the declared preservation operation, packaging, and controlled finished-product storage through the plant gate."
+      source_ids:
+        - codex-cac-rcp-52-2003
+        - iso-14044-2006
+    - rule_id: boundary_route_specificity
+      applies_to: "preservation_route"
+      rule: "Instantiate and disclose the actual freezing, smoking, drying, salting, or brining operations; do not model mutually exclusive routes as if all occurred."
+      source_ids:
+        - codex-cac-rcp-52-2003
+        - codex-cxs-311-2013
+    - rule_id: boundary_cold_chain
+      applies_to: "chilled_and_frozen_storage"
+      rule: "Include refrigeration or freezing energy and refrigerant losses under operational control from receipt through the plant gate; frozen storage shall record time and temperature."
+      source_ids:
+        - codex-cac-rcp-52-2003
+        - fda-seafood-hazards-controls-2022
+    - rule_id: boundary_sanitation
+      applies_to: "sanitation_and_wastewater"
+      rule: "Include process and sanitation water, approved cleaning agents when material, wastewater or brine discharge, and on-site treatment; use potable or otherwise legally suitable water for product-contact operations."
+      source_ids:
+        - codex-cac-rcp-52-2003
+    - rule_id: boundary_capital_goods
+      applies_to: "infrastructure"
+      rule: "Exclude buildings and capital equipment from the default gate-to-gate dataset unless the governing study, PCR programme, or materiality review explicitly requires them; disclose any inclusion."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Abalone received at the processing facility with species/source, shell state, temperature, mass, and supplier dataset reference declared"
+  starting_condition_role: "Upstream product input to the foreground receiving and preparation process"
+  product_classification_scope: "Food-grade *Haliotis* spp. entering a route that produces CPC 3.0 class 21261 product"
+  recursive_input_rule: "When an input is already a frozen, smoked, dried, salted, or brined abalone product in this same category, record it as a same-category intermediate with its supplier dataset and begin the current foreground boundary at receipt; do not recreate or double count its prior preservation burdens."
+  upstream_dataset_requirement: "Link wild-harvest or aquaculture production, landing, prior preservation, ingredients, packaging materials, energy supply, water supply, and waste treatment to geographically and technologically appropriate upstream datasets."
+  disclosure: "Declare raw-material source, input state, included processes, preservation route, cooking status, packaging atmosphere, storage conditions, temporal coverage, excluded operations, and any same-category intermediate."
+reference_flow_definition:
+  reference_amount: "1 kg net saleable abalone product at the plant gate"
+  product_flow_ref:
+    name: "Abalone, frozen, smoked, dried, salted or in brine"
+    uuid: "61e83c4f-6657-4762-9a2b-9423a54b7bd5"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "scientific or commercial species identification"
+    - "wild or farmed source and supplier geography"
+    - in-shell
+    - shucked
+    - sliced
+    - flour
+    - meal
+    - "or pellet form"
+    - freezing
+    - hot-smoking
+    - cold-smoking
+    - smoke-drying
+    - drying
+    - dry-salting
+    - wet-salting
+    - "or brining route"
+    - "cooked-before-or-during-smoking status"
+    - "net-mass convention"
+    - "shell inclusion"
+    - "drained-mass and covering-liquid mass for brined product"
+    - "moisture and water activity where controlled"
+    - "packaging material and aerobic"
+    - vacuum
+    - "or modified-atmosphere condition"
+    - "finished-product storage temperature and duration"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all mass-normalized inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net product mass excluding packaging. Record shell and covering-liquid inclusion separately and report drained abalone mass for brined product."
+  - id: energy_conversion
+    applies_to: "Electricity and thermal-energy inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered unit and conversion factor; use 3.6 MJ per kWh only as the exact unit conversion, not as an energy-use estimate."
+  - id: water_and_brine_mass
+    applies_to: "Process water, brine, and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer measured mass; when volume is measured, record density, temperature, and the conversion used. Keep salt mass, added water, retained brine, and discharged brine separate."
+  - id: moisture_and_aw
+    applies_to: "Dried and smoke-dried product"
+    required_property_ref:
+      name: "Product-specific moisture or water-activity measurement"
+      uuid: ""
+    required_unit: "mass fraction or dimensionless aw"
+    rule: "Record analytical method, sample location, batch, result, and applicable limit; do not convert moisture content to water activity without a validated product-specific relationship."
+process_map:
+  - id: receipt_and_preparation
+    name: "Raw-material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always required"
+    role: "Foreground receipt, inspection, washing, de-shelling or trimming as declared"
+    quantitative_reference: "kg prepared abalone leaving preparation"
+  - id: preservation_route
+    name: "Route-specific preservation"
+    inclusion: "required"
+    inclusion_condition: "Instantiate only the actual freezing, smoking, drying, salting, or brining operations; multiple operations may be linked in their real sequence"
+    role: "Foreground preservation"
+    quantitative_reference: "kg preserved abalone intermediate"
+  - id: packaging_and_storage
+    name: "Final packaging and plant-gate storage"
+    inclusion: "required"
+    inclusion_condition: "Always required; storage condition follows the declared product specification"
+    role: "Foreground packaging and controlled storage"
+    quantitative_reference: "1 kg net saleable reference product"
+process_inventory:
+  - id: receipt_and_preparation
+    label: "Raw-material receipt and preparation"
+    inputs:
+      product:
+        - row_id: wild_raw_abalone
+          role: "Wild raw abalone received"
+          name: "Wild abalone, live, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "477d146c-cb2f-457d-a1a6-5d065dcbdca5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wild *Haliotis* spp. received from a landing or supplier dataset when the raw-material source is wild. Do not use this row for farmed abalone."
+          amount:
+            expression: "measured accepted wild raw-material mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "accepted raw abalone mass per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: farmed_raw_abalone
+          role: "Farmed raw abalone received"
+          name: "Farmed abalone, live, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record farmed *Haliotis* spp. received from an aquaculture supplier dataset. Select a verified supplier-specific Tiangong flow; do not substitute an aquaculture-seedling flow."
+          amount:
+            expression: "measured accepted farmed raw-material mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "accepted raw abalone mass per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Product-contact water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water used for washing, thawing when applicable, de-shelling support, and product-contact preparation."
+          amount:
+            expression: "metered or batch-estimated product-contact water use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_utilities
+              source_ids:
+                - codex-cac-rcp-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "100"
+                unit: "kg/kg reference product"
+                basis: "water supplied to receipt and preparation per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for pumps, conveyors, washing, de-shelling, cutting, ice handling, and other preparation equipment."
+          amount:
+            expression: "metered electricity allocated to receipt and preparation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "20"
+                unit: "MJ/kg reference product"
+                basis: "electricity allocated to receipt and preparation per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_abalone
+          role: "Prepared abalone intermediate"
+          name: "Prepared abalone intermediate, facility-specific"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass and state of abalone transferred to preservation, retaining traceability to the received batch."
+          amount:
+            expression: "measured prepared-abalone mass transferred to preservation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_yield
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "1.2"
+                unit: "kg/kg accepted raw abalone"
+                basis: "prepared abalone mass per kg accepted raw abalone"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: shells_and_residues
+          role: "Shells and preparation residues"
+          name: "Abalone shells"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "8caae24b-92f0-4ece-b1de-730bfbe4d9da"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record shells, viscera, damaged product, and other preparation residues separately when their treatment or co-product status differs."
+          amount:
+            expression: "measured residue mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted raw abalone and reported per reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_yield
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.95"
+                unit: "kg/kg accepted raw abalone"
+                basis: "shells and residues per kg accepted raw abalone"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Untreated municipal wastewater influent"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "41eb8873-6852-40fe-8b5d-b792fe4d4754"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record product-contact and cleaning water leaving preparation, including destination and on-site treatment."
+          amount:
+            expression: "measured or mass-balance-calculated wastewater sent to treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg reference product"
+                basis: "wastewater leaving preparation per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: preservation_route
+    label: "Route-specific preservation"
+    inputs:
+      product:
+        - row_id: preservation_abalone_input
+          role: "Prepared or same-category abalone input"
+          name: "Prepared or same-category abalone intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record prepared abalone from the preceding process or a disclosed same-category intermediate from a supplier. Preserve route sequence and do not double count prior preservation."
+          amount:
+            expression: "measured mass entering each preservation operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "abalone entering preservation per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_salt
+          role: "Food-grade salt"
+          name: "Salt, food-grade, for brine preparation"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a5fa711-4648-4d58-b94d-67b79e7476c7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record salt only for dry-salting, wet-salting, brining, osmotic pretreatment, or a declared smoking/drying formulation."
+          amount:
+            expression: "weighed salt charged to the batch, net of documented recovered and reused salt"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_materials
+              source_ids:
+                - codex-cac-rcp-52-2003
+                - codex-cxs-311-2013
+                - lemus-mondaca-2018-abalone-drying
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg reference product"
+                basis: "food-grade salt charged per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_water
+          role: "Preservation water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water used for brine preparation, wet salting, thawing, cooking associated with smoking, or route-specific washing."
+          amount:
+            expression: "metered water charged to the preservation batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_materials
+              source_ids:
+                - codex-cac-rcp-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg reference product"
+                basis: "preservation water per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_electricity
+          role: "Preservation electricity"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for freezing, refrigeration, fans, pumps, dryers, smoke generators, controls, and route-specific handling."
+          amount:
+            expression: "metered electricity allocated to the declared preservation operation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "MJ/kg reference product"
+                basis: "preservation electricity per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_fuel_or_smoke_medium
+          role: "Thermal fuel or smoke medium"
+          name: "Declared thermal fuel or smoke medium, facility-specific"
+          flow_type: "product"
+          property_unit: "Mass or net calorific value / kg or MJ as applicable"
+          description: "Record the actual fuel, steam, smoke wood, smoke condensate, or other thermal/smoking medium only when used. Select a verified facility-specific Tiangong flow and retain its composition or fuel-quality record."
+          amount:
+            expression: "measured purchase, batch charge, or metered thermal energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_energy
+              source_ids:
+                - codex-cac-rcp-52-2003
+                - codex-cxs-311-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "MJ/kg reference product"
+                basis: "delivered thermal energy or fuel energy per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_abalone_intermediate
+          role: "Preserved abalone intermediate"
+          name: "Abalone, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "61e83c4f-6657-4762-9a2b-9423a54b7bd5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product after the actual preservation route, including mass, shell state, salt or covering-liquid state, moisture, water activity where controlled, and temperature."
+          amount:
+            expression: "measured preserved-product mass transferred to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preservation batch and reported per reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cac-rcp-52-2003
+                - codex-cxs-311-2013
+                - lemus-mondaca-2018-abalone-drying
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "1.2"
+                unit: "kg/kg abalone entering preservation"
+                basis: "preserved product per kg abalone entering preservation"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: spent_brine_and_wastewater
+          role: "Spent brine and preservation wastewater"
+          name: "High-concentration saline wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "76ab69b6-6fa7-461c-be07-bc54e581a699"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record spent brine, thawing water, condensate, and cleaning wastewater by destination; distinguish reuse from discharge."
+          amount:
+            expression: "measured discharge or mass-balance calculation from water, salt, retained brine, and reuse records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_waste
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg reference product"
+                basis: "spent brine and preservation wastewater per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: water_to_air
+          role: "Water removed to air"
+          name: "Water, emitted to air, facility-specific elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For drying, smoke-drying, and other moisture-removal routes, calculate water removed from measured input and output masses and moisture results. Do not apply this row to routes without material moisture removal."
+          amount:
+            expression: "calculated water loss from route-specific mass and moisture balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_quality
+              source_ids:
+                - lemus-mondaca-2018-abalone-drying
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg reference product"
+                basis: "water removed during preservation per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_air_emissions
+          role: "Direct preservation emissions to air"
+          name: "Substance-specific elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record route-specific direct combustion, refrigerant, and smoking emissions when they cross the foreground environmental boundary. Calculate only from measured fuel/refrigerant activity and a cited factor or direct measurement."
+          amount:
+            expression: "measured release or calculated emission by substance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_energy
+              source_ids:
+                - codex-cxs-311-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "each declared direct emission substance per 1 kg net saleable reference product"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: packaging_and_storage
+    label: "Final packaging and plant-gate storage"
+    inputs:
+      product:
+        - row_id: packout_abalone
+          role: "Preserved abalone for pack-out"
+          name: "Abalone, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "61e83c4f-6657-4762-9a2b-9423a54b7bd5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record preserved abalone transferred from the declared route to final packaging, preserving batch and route identity."
+          amount:
+            expression: "measured product mass entering final pack-out"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.2"
+                unit: "kg/kg reference product"
+                basis: "preserved product entering pack-out per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: primary_packaging
+          role: "Primary plastic packaging"
+          name: "Plastic film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b01e4bd9-5ada-4676-8a90-be5f167c00fc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the actual food-contact packaging resin, laminate, tray, pouch, or film by material; the selected generic film is used only when it matches the purchased packaging."
+          amount:
+            expression: "purchased packaging issued to conforming packs minus documented returned unused material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg/kg reference product"
+                basis: "primary packaging per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: secondary_packaging
+          role: "Secondary corrugated packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated board or an alternative secondary material using the actual purchased specification and verified flow."
+          amount:
+            expression: "purchased secondary packaging allocated to conforming product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "secondary packaging per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_storage_electricity
+          role: "Packaging and storage electricity"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record sealing, vacuum or modified-atmosphere equipment, conveyors, final freezing or cooling, and finished-product cold-store electricity through the plant gate."
+          amount:
+            expression: "metered electricity allocated by documented equipment, batch, storage-volume, and storage-time drivers"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_energy
+              source_ids:
+                - codex-cac-rcp-52-2003
+                - fda-seafood-hazards-controls-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "100"
+                unit: "MJ/kg reference product"
+                basis: "packaging and plant-gate storage electricity per 1 kg net saleable reference product"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Packaged saleable abalone reference product"
+          name: "Abalone, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "61e83c4f-6657-4762-9a2b-9423a54b7bd5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record net product, packaging, shell, covering-liquid, and drained-mass fields separately so that the 1 kg normalization can be reproduced."
+          amount:
+            expression: "exactly 1 kg after normalization from measured conforming product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_product_mass
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "normalized reference output"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-2006
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging rejects and scrap"
+          name: "Packaging waste, material-specific"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected packs, trim, film, board, and damaged packaging by material and treatment destination."
+          amount:
+            expression: "measured packaging waste by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg reference product"
+                basis: "packaging rejects and scrap per 1 kg net saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_emissions
+          role: "Refrigerant emissions to air"
+          name: "Refrigerant-specific elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant losses under processor control from freezing and cold-storage equipment by substance."
+          amount:
+            expression: "annual top-up or leak-test loss allocated to product by documented refrigeration load and storage driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg reference product"
+                basis: "each declared refrigerant emitted per 1 kg net saleable reference product"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "route_and_batch_operations"
+    rule: "Avoid allocation by separately metering or subdividing wild and farmed sources, preservation routes, product forms, and materially different packaging or storage conditions."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared_water_energy_and_storage"
+    rule: "Allocate shared utilities using a documented physical driver that reflects causality, such as metered equipment use, operating time, refrigeration load times storage duration, or product mass when no better driver exists."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_shells_and_residues
+    applies_to: "shells_offal_and_other_outputs"
+    rule: "First document whether each output is a waste or a co-product. For a co-product, prefer subdivision; if subdivision is not possible, use a relevant physical relationship and disclose it. Use economic allocation only when a physical relationship cannot be established, and report a sensitivity result."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_reuse_and_recycling
+    applies_to: "reused_brine_packaging_and_residues"
+    rule: "Credit no avoided burden inside the gate-to-gate dataset unless an explicit system-expansion or recycling method is required by the governing study. Record recovered material and the receiving treatment or product system separately."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_mass_balance
+    applies_to: "foreground_mass_reconciliation"
+    rule: "Reconcile raw abalone, water, salt, packaging, product, residues, wastewater, covering liquid, and moisture removal on consistent wet- or dry-mass bases; report unexplained imbalance rather than forcing it into a co-product."
+    source_ids:
+      - codex-cac-rcp-52-2003
+      - lemus-mondaca-2018-abalone-drying
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_batch
+      process_id: "receipt_and_preparation"
+      flow_role: "wild and farmed raw abalone"
+      record_type: "receiving lot record"
+      raw_fields: "lot_id; species; wild_or_farmed; supplier; harvest_or_farm_geography; shell_state; receipt_time; receipt_temperature; gross_mass; rejected_mass; accepted_mass; supplier_dataset_ref"
+      collection_method: "calibrated scale, receiving inspection, and supplier traceability record"
+      unit: "kg; degrees C"
+      frequency: "every lot"
+      temporal_coverage: "all lots in reporting period"
+      site_scope: "every included facility"
+      aggregation_rule: "sum accepted mass by source and product route; retain rejected mass separately"
+      quality_evidence: "scale calibration; lot tickets; supplier certificate; species and source verification"
+    - protocol_id: cp_preparation_utilities
+      process_id: "receipt_and_preparation"
+      flow_role: "preparation water, electricity, and wastewater"
+      record_type: "meter and production log"
+      raw_fields: "meter_start; meter_end; submeter_id; batch_id; water_source; wastewater_destination; operating_time; allocation_driver"
+      collection_method: "direct submeter preferred; otherwise reconciled main meter with documented physical allocation"
+      unit: "kg water; kWh or MJ electricity; kg wastewater"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "each included preparation line"
+      aggregation_rule: "subtract documented non-process use; allocate only residual shared use with declared driver"
+      quality_evidence: "meter calibration; invoices; shift logs; water suitability record"
+    - protocol_id: cp_preparation_yield
+      process_id: "receipt_and_preparation"
+      flow_role: "prepared product, shells, and residues"
+      record_type: "batch mass balance"
+      raw_fields: "accepted_raw_mass; prepared_mass; shell_mass; viscera_mass; other_residue_mass; retained_product_mass; destinations"
+      collection_method: "calibrated scales at transfer and waste collection points"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "each included line"
+      aggregation_rule: "sum each mass by batch and route; report unresolved imbalance"
+      quality_evidence: "scale calibration; batch sheet; waste transfer record"
+    - protocol_id: cp_preservation_batch
+      process_id: "preservation_route"
+      flow_role: "preservation input and output"
+      record_type: "route batch record"
+      raw_fields: "batch_id; route_sequence; input_mass; output_mass; species; shell_state; cook_status; time; temperature; pressure_if_any; storage_transition"
+      collection_method: "calibrated scales plus validated route control log"
+      unit: "kg; minutes or hours; degrees C"
+      frequency: "every batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every route and equipment train"
+      aggregation_rule: "aggregate only batches with equivalent route and product qualifiers"
+      quality_evidence: "calibration; HACCP or process-control record; batch release result"
+    - protocol_id: cp_preservation_materials
+      process_id: "preservation_route"
+      flow_role: "salt, water, brine, and route ingredients"
+      record_type: "batch formulation record"
+      raw_fields: "batch_id; salt_mass; water_mass; reused_brine_mass; discharged_brine_mass; ingredient_identity; food_grade_status; concentration_measurement"
+      collection_method: "weigh tickets, flow meter, and formulation log"
+      unit: "kg; mass fraction"
+      frequency: "every batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "each route and facility"
+      aggregation_rule: "report virgin, reused, retained, and discharged quantities separately"
+      quality_evidence: "scale or meter calibration; ingredient specification; formulation approval"
+    - protocol_id: cp_preservation_energy
+      process_id: "preservation_route"
+      flow_role: "electricity, thermal fuel, smoke medium, and direct emissions"
+      record_type: "meter, fuel, and maintenance record"
+      raw_fields: "batch_id; electricity_kWh; fuel_quantity; fuel_LHV; steam_quantity; equipment_time; smoke_medium; refrigerant_top_up; emission_factor_id; direct_measurement"
+      collection_method: "submeter and purchase records; direct emissions measurement or cited factor when calculated"
+      unit: "kWh; MJ; kg"
+      frequency: "batch, shift, or monthly with batch allocation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "each preservation equipment train"
+      aggregation_rule: "convert energy units explicitly; allocate shared energy by causal driver; calculate each emission by substance"
+      quality_evidence: "meter calibration; invoices; fuel certificate; factor citation; leak and stack records"
+    - protocol_id: cp_preservation_quality
+      process_id: "preservation_route"
+      flow_role: "moisture, water activity, salt, temperature, and product state"
+      record_type: "laboratory and process-control record"
+      raw_fields: "batch_id; sample_id; sampling_location; moisture_result; moisture_method; aw_result; aw_method; salt_result; core_temperature; storage_requirement; specification_limit"
+      collection_method: "validated laboratory or calibrated in-line method"
+      unit: "mass fraction; aw; degrees C"
+      frequency: "each batch or validated sampling plan"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every declared product specification"
+      aggregation_rule: "retain batch result and report production-weighted summary without replacing specification limits"
+      quality_evidence: "method identifier; calibration; laboratory result; release decision"
+    - protocol_id: cp_preservation_waste
+      process_id: "preservation_route"
+      flow_role: "spent brine, wastewater, condensate, and route residues"
+      record_type: "discharge and waste record"
+      raw_fields: "batch_id; stream_identity; mass_or_volume; density; salt_concentration; destination; treatment; reuse_quantity"
+      collection_method: "flow meter, tank level, weigh ticket, or documented mass balance"
+      unit: "kg; m3; mass fraction"
+      frequency: "each discharge or batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "each discharge point"
+      aggregation_rule: "convert volume with recorded density; separate reuse, on-site treatment, and off-site treatment"
+      quality_evidence: "meter calibration; manifest; treatment receipt; mass-balance review"
+    - protocol_id: cp_packaging_materials
+      process_id: "packaging_and_storage"
+      flow_role: "primary and secondary packaging and scrap"
+      record_type: "packaging issue and waste record"
+      raw_fields: "material_id; supplier; mass_per_item; items_issued; conforming_packs; unused_returns; reject_mass; destination"
+      collection_method: "bill of materials verified by weigh check and inventory reconciliation"
+      unit: "kg; item"
+      frequency: "each packaging run"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every included pack format"
+      aggregation_rule: "calculate used mass from verified item mass and reconcile issues, returns, and scrap"
+      quality_evidence: "supplier specification; scale check; inventory and waste records"
+    - protocol_id: cp_packaging_storage_energy
+      process_id: "packaging_and_storage"
+      flow_role: "packaging electricity, cold storage, and refrigerant"
+      record_type: "meter and refrigeration log"
+      raw_fields: "equipment_id; electricity_kWh; storage_temperature; entry_time; exit_time; storage_mass; refrigerant_type; top_up_mass; leak_event"
+      collection_method: "equipment submeter or main-meter allocation; temperature logger; maintenance record"
+      unit: "kWh; degrees C; kg*h; kg refrigerant"
+      frequency: "continuous or shift meter; each storage lot"
+      temporal_coverage: "complete reporting period including plant-gate storage"
+      site_scope: "each packaging line and cold room"
+      aggregation_rule: "allocate cold-room electricity by refrigeration-load proxy and mass-time; report refrigerant by substance"
+      quality_evidence: "meter calibration; continuous temperature record; maintenance invoice; allocation workbook"
+    - protocol_id: cp_final_product_mass
+      process_id: "packaging_and_storage"
+      flow_role: "reference product and net-mass convention"
+      record_type: "pack-out and batch release record"
+      raw_fields: "batch_id; gross_pack_mass; packaging_mass; covering_liquid_mass; drained_abalone_mass; shell_included; conforming_product_mass; route; expiry_or_storage_instruction"
+      collection_method: "calibrated scale and declared net/drained-mass procedure"
+      unit: "kg"
+      frequency: "every lot or statistically controlled pack check"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every included product and pack format"
+      aggregation_rule: "normalize inventory to measured conforming mass using the declared net-mass convention"
+      quality_evidence: "scale calibration; legal-metrology check; label; batch release certificate"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period amount / reporting-period conforming reference-product mass"
+      inputs:
+        - "flow amount"
+        - "conforming reference-product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_net_product_mass
+      applies_to: "brined and packaged product"
+      rule: "net reference mass = gross filled-pack mass - packaging mass; report covering-liquid mass and drained abalone mass separately and declare which is the saleable-product basis"
+      inputs:
+        - "gross pack mass"
+        - "packaging mass"
+        - "covering-liquid mass"
+        - "drained mass"
+      output: "net product mass and drained-mass qualifier"
+      source_ids:
+        - codex-cxs-311-2013
+    - id: calc_energy_conversion
+      applies_to: "electricity"
+      rule: "MJ = kWh x 3.6; retain the original kWh record and do not treat the conversion as an energy estimate"
+      inputs:
+        - "metered kWh"
+      output: "MJ"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_route_yield
+      applies_to: "preparation and preservation"
+      rule: "yield = measured conforming output mass / measured input abalone mass, using consistent shell, covering-liquid, and moisture bases"
+      inputs:
+        - "input mass"
+        - "output mass"
+        - "shell state"
+        - "moisture basis"
+      output: "route-specific mass yield"
+      source_ids:
+        - lemus-mondaca-2018-abalone-drying
+    - id: calc_brine_composition
+      applies_to: "salting and brining"
+      rule: "initial brine salt fraction = salt mass / (salt mass + water mass); report reused brine and final measured concentration separately"
+      inputs:
+        - "salt mass"
+        - "water mass"
+        - "reused-brine record"
+        - "measured concentration"
+      output: "prepared brine fraction and final concentration"
+      source_ids:
+        - codex-cac-rcp-52-2003
+        - codex-cxs-311-2013
+    - id: calc_removed_water
+      applies_to: "drying and smoke-drying"
+      rule: "removed water = input water mass + added water - output product water mass - liquid waste water mass, with every term based on measured mass and moisture"
+      inputs:
+        - "input/output masses"
+        - "moisture results"
+        - "added water"
+        - "liquid wastes"
+      output: "water removed to air and balance residual"
+      source_ids:
+        - lemus-mondaca-2018-abalone-drying
+    - id: calc_shared_utilities
+      applies_to: "shared meters"
+      rule: "allocate shared amount using the documented causal driver; sum allocated amounts back to the measured total and report unallocated residual"
+      inputs:
+        - "meter total"
+        - "excluded use"
+        - "equipment time"
+        - "refrigeration load"
+        - mass-time
+      output: "allocated utility amount and residual"
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+    - id: calc_mass_balance
+      applies_to: "each process and reporting period"
+      rule: "mass-balance residual = total measured mass inputs - total measured mass outputs; investigate and disclose moisture change, evaporation, sampling, stock change, and measurement uncertainty"
+      inputs:
+        - "all mass inputs"
+        - "all mass outputs"
+        - "inventory change"
+      output: "residual mass and explanation"
+      source_ids:
+        - iso-14044-2006
+        - codex-cac-rcp-52-2003
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and raw material"
+      requirement: "Identify *Haliotis* species or justified mix, wild or farmed source, supplier geography, shell state, preservation route, cooking status, pack format, and storage condition."
+      evidence: "lot traceability; supplier declaration; product specification; label"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Cover a complete representative reporting period including seasonal and storage-load variation; if shorter, disclose the period, campaign context, and representativeness limitation."
+      evidence: "dated batch, meter, purchase, and production records; eu-pef-method-2021"
+    - id: dq_technological
+      applies_to: "preservation and packaging"
+      requirement: "Match collected data to the actual equipment train, preservation sequence, packaging atmosphere, and cold-store operation represented."
+      evidence: "equipment list; process flow; batch controls; eu-pef-method-2021"
+    - id: dq_geographical
+      applies_to: "utilities and upstream links"
+      requirement: "Use site-specific utilities and geographically appropriate upstream datasets or explain proxy selection."
+      evidence: "site address; utility supplier; dataset metadata; eu-pef-method-2021"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Include every required process and all measured raw material, water, salt, energy, packaging, product, waste, wastewater, and direct-emission streams; document zero, not-applicable, and unavailable records separately."
+      evidence: "reconciled ledger; meter coverage map; mass and energy checks"
+    - id: dq_measurement
+      applies_to: "mass, energy, temperature, moisture, and aw"
+      requirement: "Use calibrated instruments or verified invoices and retain method, calibration, sampling, and conversion evidence."
+      evidence: "calibration certificate; laboratory method; invoice; logger record"
+    - id: dq_route_separation
+      applies_to: "multi-product facilities"
+      requirement: "Separate routes and materially different product forms by direct records or a documented causal allocation driver."
+      evidence: "submeter; batch schedule; allocation workbook; iso-14044-2006"
+    - id: dq_estimate_status
+      applies_to: "provisional ranges"
+      requirement: "Treat every reasoned_estimate range as a QA screen only; replace it with collected values and source-backed factors before a dataset is released for normal use."
+      evidence: "dataset review record; completed collection protocols"
+validation_rules:
+  - rule_id: validate_identity_and_scope
+    applies_to: "product_identity"
+    rule: "Confirm *Haliotis* identity, one declared raw-material source, covered preservation route, shell/form state, packaging, and storage condition; reject otherwise prepared products and undeclared route mixtures."
+    source_ids:
+      - environdec-fish-and-fish-products-pcr-v1
+      - codex-cac-rcp-52-2003
+  - rule_id: validate_reference_flow
+    applies_to: "reference_flow"
+    rule: "Confirm product flow 61e83c4f-6657-4762-9a2b-9423a54b7bd5, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass group 93a60a57-a4c8-11da-a746-0800200c9a66, kg unit, and a reproducible net-mass convention."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_process_completeness
+    applies_to: "process_inventory"
+    rule: "Confirm receipt and preparation, the actual preservation operation, packaging, and plant-gate storage are present, while non-occurring preservation routes are absent or explicitly not applicable."
+    source_ids:
+      - codex-cac-rcp-52-2003
+  - rule_id: validate_mass_balance
+    applies_to: "mass_inventory"
+    rule: "Reconcile measured input, product, residue, wastewater, covering-liquid, moisture-removal, and inventory-change masses for each process and disclose unresolved residuals."
+    source_ids:
+      - iso-14044-2006
+      - codex-cac-rcp-52-2003
+  - rule_id: validate_frozen_route
+    applies_to: "frozen_product"
+    rule: "For frozen product, retain freezing and storage time-temperature records; use at or colder than -18 degrees C as the Codex benchmark unless a governing product or jurisdictional specification requires a different validated limit."
+    source_ids:
+      - codex-cac-rcp-52-2003
+  - rule_id: validate_smoked_dried_route
+    applies_to: "smoked_dried_product"
+    rule: "Record smoking, drying, salt, packaging, storage, moisture, and water-activity controls. If shelf stability is claimed using the CXS 311 smoke-dried benchmark, demonstrate aw at or below 0.75 or moisture at or below 10 percent; otherwise retain the validated product-specific limit and storage requirement."
+    source_ids:
+      - codex-cxs-311-2013
+      - fda-seafood-hazards-controls-2022
+  - rule_id: validate_brine_and_salt
+    applies_to: "salted_or_brined_product"
+    rule: "Reconcile food-grade salt, water, reused brine, retained covering liquid, and spent brine; record measured formulation or final concentration rather than assuming salt uptake."
+    source_ids:
+      - codex-cac-rcp-52-2003
+      - codex-cxs-311-2013
+  - rule_id: validate_packaging_and_label
+    applies_to: "packaged_product"
+    rule: "Confirm packaging material and atmosphere, net or drained-mass convention, lot identity, and storage/handling instructions match the represented product."
+    source_ids:
+      - codex-cxs-311-2013
+      - fda-seafood-hazards-controls-2022
+  - rule_id: validate_data_quality
+    applies_to: "dataset_release"
+    rule: "Confirm temporal, technological, geographical, completeness, and precision evidence and disclose proxy datasets, allocation, exclusions, and uncertainty."
+    source_ids:
+      - eu-pef-method-2021
+      - iso-14044-2006
+  - rule_id: validate_no_estimate_as_observation
+    applies_to: "quantitative_inventory"
+    rule: "Fail release when a provisional reasoned_estimate has been copied into the foreground inventory as if observed; only collected or transparently calculated values may populate the released foreground amounts."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset; may be used as background_dataset only after methodology review, aggregation, and uncertainty disclosure"
+  downstream_use: "Foreground process datasets and downstream lifecyclemodel projections for processed abalone supply at the plant gate"
+  allowed_use: "Gate-to-gate product modelling with explicit upstream wild-harvest or aquaculture links; route-specific supply-chain studies; inventory development and reviewed aggregation"
+  excluded_use: "Direct comparison across shell, drained-mass, route, or storage conventions without conversion; attribution of aquaculture or harvest burdens to this gate-to-gate dataset; legal food-safety certification; use of provisional ranges as measured data"
+  required_metadata: "PCR id and version state; species/source; supplier geography; shell and product form; route sequence; cooking status; net/drained/covering-liquid mass basis; moisture and aw where applicable; packaging and atmosphere; storage temperature and duration; reporting period; site geography; allocation; upstream dataset references"
+  required_quality_disclosure: "Meter and batch coverage; calibration and laboratory methods; data gaps and proxies; reasoned estimates remaining as QA screens; mass-balance residuals; shared-utility allocation; co-product decisions; uncertainty and representativeness limitations"
+  update_trigger: "Change in raw-material source, species mix, preservation equipment or sequence, formulation, shelf-stability specification, packaging atmosphere or material, refrigeration system, storage duration, allocation method, or evidence that materially changes a rule or QA range"
+data_sources:
+  - id: "codex-cac-rcp-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CAC/RCP 52-2003, Code of Practice for Fish and Fishery Products, second edition, https://www.fao.org/4/i2382e/i2382e.pdf, retrieved 2026-08-07"
+    used_for: "Process decomposition; raw-material receipt; potable water; freezing and frozen storage; salting, drying, smoking, packaging, storage, and hygiene controls"
+  - id: "codex-cxs-311-2013"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 311-2013, Standard for Smoked Fish, Smoke-Flavoured Fish and Smoke-Dried Fish, https://www.fao.org/input/download/standards/13292/CXS_311e.pdf, retrieved 2026-08-07"
+    used_for: "Conditional smoking and smoke-drying route definitions; salt, moisture, water activity, packaging, storage, net-weight, and labelling benchmarks"
+  - id: "fda-seafood-hazards-controls-2022"
+    type: "official_guidance"
+    reference: "U.S. Food and Drug Administration, Fish and Fishery Products Hazards and Controls Guidance, June 2022 edition, https://www.fda.gov/media/80637/download, retrieved 2026-08-07"
+    used_for: "Batch records and controls for freezing, refrigeration, drying, salt, reduced-oxygen packaging, labels, and seafood process hazards"
+  - id: "environdec-fish-and-fish-products-pcr-v1"
+    type: "standard"
+    reference: "EPD International, Fish and fish products PCR 1.0, https://environdec.com/pcr-library/pcr_7313bb4a-e17b-48f9-85ad-72347b9de578, retrieved 2026-08-07"
+    used_for: "External PCR category context for frozen, dried, salted, brined, and smoked aquatic products"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006 with Amendments 1:2017 and 2:2020, Environmental management - Life cycle assessment - Requirements and guidelines, https://www.iso.org/standard/38498.html, retrieved 2026-08-07"
+    used_for: "Functional-unit consistency; inventory calculation; allocation hierarchy; reporting, interpretation, and review"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation C(2021) 9332, Annex I, Product Environmental Footprint Method, https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf, retrieved 2026-08-07"
+    used_for: "Data-quality dimensions; representativeness, completeness, precision, multifunctionality, and transparent dataset documentation"
+  - id: "lemus-mondaca-2018-abalone-drying"
+    type: "literature"
+    reference: "Lemus-Mondaca et al., Convective Drying of Osmo-Treated Abalone (*Haliotis rufescens*) Slices: Diffusion, Modeling, and Quality Features, Journal of Food Quality, 2018, DOI: 10.1155/2018/6317943"
+    used_for: "Abalone-specific evidence that drying records need pretreatment salt, time, temperature, moisture-transfer, and product-quality variables; not used as a universal operating range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6820267d675321294b36393c7a649d38acc14fcafe8e91315f693487c91acda5"
+  generated_content_sha256: "sha256:f19651792a8bef481b4262653497386aede4adad766f55206a6f08f641689949"

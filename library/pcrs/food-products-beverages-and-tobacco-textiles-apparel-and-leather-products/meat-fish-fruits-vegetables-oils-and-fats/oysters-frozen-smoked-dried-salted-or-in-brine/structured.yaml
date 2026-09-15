@@ -1,10 +1,773 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21262"
-  title: "Oysters, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.oysters-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21262 (exact classification context)"
+  covered_products: "Food-grade oysters, whether in shell or not, frozen, smoked, dried, salted, or in brine; food-grade oyster flour, meal, or pellets only under the dried route"
+  excluded_products: "Live, fresh, or chilled oysters; oysters otherwise prepared or preserved; inedible flour, meal, or pellets; dead or otherwise unfit product; multi-terminal-route products pending separate review"
+  representative_product: "Qualified saleable oyster product at the processing-facility gate, with route and presentation declared"
+  production_route: "Exactly one of frozen, smoked, dried, salted, or brine; route-specific processing is conditional and mutually exclusive"
+  market_state: "Packaged or bulk food-grade product at processing-facility gate; packaging mass and free packing medium are not part of the 1 kg reference product"
+functional_unit:
+  what: "Qualified saleable preserved oyster product providing the declared commercial food product"
+  how_much: "1 kg net product on the declared presentation and route measurement basis"
+  how_well: "Meets the applicable product specification and food-safety release criteria, with route, presentation, moisture/salt/glaze/drained-mass conditions declared as applicable"
+  how_long_or_cycle: "One production lot at the processing-facility gate; no storage-duration service is included"
+  reference_flow_link: "One kilogram of the Tiangong generic CPC 21262 product flow defined below"
+system_boundary:
+  rules:
+    - rule_id: boundary_processing_gate
+      applies_to: "foreground processing dataset"
+      rule: "Include receipt, grading/cleaning or shucking as applicable, exactly one terminal preservation route, route-associated storage, packaging, rejects, wastewater, and direct emissions through the processing-facility gate. Represent cultivation/harvest and purchased inputs with upstream datasets; exclude downstream distribution, use, and end-of-life."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "route selection"
+      rule: "Include only one of frozen, smoked, dried, salted, or brine. A combined terminal treatment is outside this candidate rule until separately reviewed."
+      source_ids:
+        - unsd-cpc-3-0-21262
+        - codex-cxs-311-2013
+    - rule_id: boundary_food_safety_records
+      applies_to: "receipt, processing, storage, and release"
+      rule: "Retain lot traceability, time-temperature, water-quality, sanitation, hazard-control, and product-release evidence appropriate to processed bivalve molluscs."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Oysters received at the preservation facility, with origin, harvest/cultivation route, presentation, temperature, and acceptance status declared"
+  starting_condition_role: "Upstream product input to the foreground preparation and preservation system"
+  product_classification_scope: "CPC 3.0 21262 terminal product; upstream live/fresh/chilled oysters are separate product inputs"
+  recursive_input_rule: "If an incoming ingredient is already a CPC 21262 preserved oyster product, record it as an upstream product flow and do not recreate its prior preservation inventory; disclose the recursion and supplier dataset"
+  upstream_dataset_requirement: "Use geographically, technologically, and temporally representative datasets for oyster production/harvest and all other purchased inputs"
+  disclosure: "Declare selected route, starting product state, species, presentation, source production system, net-mass basis, yield, storage conditions, packaging, wastes, wastewater destination, and any excluded operation"
+reference_flow_definition:
+  reference_amount: "1 kg qualified saleable product, excluding packaging and free packing medium"
+  product_flow_ref:
+    name: "Oysters, frozen, smoked, dried, salted or in brine"
+    uuid: "73760e72-9a22-4226-a17f-a591a61d5170"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "preservation route"
+    - "species or commercial designation"
+    - in-shell
+    - half-shell
+    - shucked
+    - "or dried particle presentation"
+    - "whole-product or edible-meat mass basis"
+    - "packaging excluded"
+    - "frozen glaze included/excluded and deglazing method when applicable"
+    - "drained-mass method and free-brine exclusion for brined product"
+    - "moisture content for smoked or dried product"
+    - "salt content for salted or brined product"
+    - "edible-meat fraction for in-shell or half-shell product"
+    - "lot and release specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net qualified saleable product. Exclude packaging and free packing liquid. For brined product use declared drained mass; for frozen product declare glaze treatment; for in-shell product retain the whole-shell basis and disclose edible-meat fraction."
+  - id: route_condition
+    applies_to: "all product and inventory amounts"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize only the selected mutually exclusive preservation route. Do not add inventories of non-selected routes."
+  - id: moisture_salt_condition
+    applies_to: "smoked, dried, salted, or brined product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record moisture content on a stated wet- or dry-basis for smoked/dried product and salt content on a stated basis for salted/brined product whenever mass yield or cross-lot comparison is used."
+process_map:
+  - id: prepare_oysters
+    name: "Receive, grade, clean, and prepare oysters"
+    inclusion: "required"
+    inclusion_condition: "Always; shucking or shell handling only as declared by presentation"
+    role: "Foreground preparation"
+    quantitative_reference: "Prepared oyster mass transferred to the selected preservation route"
+  - id: freeze_and_pack
+    name: "Freeze and pack"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route is frozen"
+    role: "Foreground preservation and packaging"
+    quantitative_reference: "1 kg frozen qualified saleable product"
+  - id: smoke_or_dry_and_pack
+    name: "Smoke or dry and pack"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route is smoked or dried; select exactly one subroute"
+    role: "Foreground preservation and packaging"
+    quantitative_reference: "1 kg smoked or dried qualified saleable product"
+  - id: salt_or_brine_and_pack
+    name: "Salt or brine and pack"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route is salted or brine; select exactly one subroute"
+    role: "Foreground preservation and packaging"
+    quantitative_reference: "1 kg salted or drained brined qualified saleable product"
+process_inventory:
+  - id: prepare_oysters
+    label: "Receive, grade, clean, and prepare oysters"
+    inputs:
+      product:
+        - row_id: received_oysters
+          role: "Received oysters"
+          name: "Oysters received at preservation facility"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted and rejected incoming oyster mass on the declared shell/presentation basis."
+          amount:
+            expression: "measured lot input mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared oyster transferred to preservation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "kg received oysters/kg prepared oysters"
+                basis: "includes broad variation from shucked to in-shell receipt and rejects"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable or otherwise suitable water crossing the process boundary for washing, cleaning, or shucking support."
+          amount:
+            expression: "metered use or batch volume converted to mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared oyster"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water/kg prepared oysters"
+                basis: "facility water crossing the preparation boundary"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_oysters
+          role: "Prepared oysters"
+          name: "Prepared oysters for preservation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured intermediate mass transferred to the one selected preservation route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: preparation_residues
+          role: "Shells, rejected tissue, and other preparation residues"
+          name: "Oyster preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record residues separately by destination when they have different treatment or co-product status."
+          amount:
+            expression: "measured or mass-balance-calculated residue mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared oyster"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "7"
+                unit: "kg residues/kg prepared oysters"
+                basis: "broad screen spanning shucked and in-shell presentations"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: freeze_and_pack
+    label: "Freeze and pack"
+    inputs:
+      product:
+        - row_id: freezing_oyster_input
+          role: "Prepared oysters for freezing"
+          name: "Prepared oysters for freezing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared oyster mass entering the freezing route."
+          amount:
+            expression: "measured input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg frozen saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "2"
+                unit: "kg prepared oysters/kg frozen product"
+                basis: "excludes declared glaze from reference product mass"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: freezing_electricity
+          role: "Freezing and frozen-storage electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered freezing plus on-site frozen storage electricity assigned to the lot."
+          amount:
+            expression: "meter difference or equipment power multiplied by operating time and allocation share"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg frozen saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "5"
+                unit: "kWh/kg frozen product"
+                basis: "freezing and on-site frozen storage through facility gate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: frozen_packaging
+          role: "Frozen-product packaging"
+          name: "Packaging materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and route-specific protective packaging by material; packaging is inventory, not reference product mass."
+          amount:
+            expression: "purchased or issued packaging mass assigned to conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg frozen saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_batch
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.5"
+                unit: "kg packaging/kg frozen product"
+                basis: "total packaging placed with product at facility gate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_product
+          role: "Frozen saleable oysters"
+          name: "Oysters, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "73760e72-9a22-4226-a17f-a591a61d5170"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is the reference product only when the frozen route is selected."
+          amount:
+            expression: "1 kg qualified product excluding packaging and on the declared glaze basis"
+            value_mode: "fixed_value"
+            specificity: "route_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-21262
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: smoke_or_dry_and_pack
+    label: "Smoke or dry and pack"
+    inputs:
+      product:
+        - row_id: smoke_dry_oyster_input
+          role: "Prepared oysters for smoking or drying"
+          name: "Prepared oysters for smoking or drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared oyster mass entering exactly one of the smoking or drying subroutes."
+          amount:
+            expression: "measured input mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg smoked or dried saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_batch
+              source_ids:
+                - codex-cxc-52-2003
+                - codex-cxs-311-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "kg prepared oysters/kg smoked or dried product"
+                basis: "route and target moisture must be declared"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoke_dry_energy
+          role: "Smoking or drying energy"
+          name: "Route-specific fuel and electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ and kWh as recorded"
+          description: "Record fuel and electricity separately in the data package; this card defines their common energy-normalization rule."
+          amount:
+            expression: "metered fuel/electricity or equipment duty calculated from operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked or dried saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoke_dry_batch
+              source_ids:
+                - codex-cxs-311-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "50"
+                unit: "MJ/kg smoked or dried product"
+                basis: "total thermal energy; electricity remains separately reported in kWh"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoke_dry_packaging
+          role: "Smoked or dried product packaging"
+          name: "Packaging materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging by material and exclude it from reference product mass."
+          amount:
+            expression: "purchased or issued packaging mass assigned to conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg smoked or dried saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_batch
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.5"
+                unit: "kg packaging/kg smoked or dried product"
+                basis: "total packaging placed with product at facility gate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: smoke_dry_product
+          role: "Smoked or dried saleable oysters"
+          name: "Oysters, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "73760e72-9a22-4226-a17f-a591a61d5170"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is the reference product only for the selected smoked or dried subroute; moisture basis is mandatory."
+          amount:
+            expression: "1 kg qualified product excluding packaging at declared moisture content"
+            value_mode: "fixed_value"
+            specificity: "route_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-21262
+                - codex-cxs-311-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: salt_or_brine_and_pack
+    label: "Salt or brine and pack"
+    inputs:
+      product:
+        - row_id: salt_brine_oyster_input
+          role: "Prepared oysters for salting or brining"
+          name: "Prepared oysters for salting or brining"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared oyster mass entering exactly one of the salting or brining subroutes."
+          amount:
+            expression: "measured input mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg salted or drained brined saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "4"
+                unit: "kg prepared oysters/kg salted or drained brined product"
+                basis: "route, salt uptake, and drained-mass method must be declared"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: salt_brine_inputs
+          role: "Salt and brine-making water"
+          name: "Food-grade salt and process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record salt and water as separate input flows in the data package and retain brine recipe and reuse records."
+          amount:
+            expression: "measured salt issue plus measured brine-making water; do not treat free packing brine as reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg salted or drained brined saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "10"
+                unit: "kg inputs/kg salted or drained brined product"
+                basis: "gross salt plus brine-making water before any documented reuse credit"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: salt_brine_packaging
+          role: "Salted or brined product packaging"
+          name: "Packaging materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record containers and other packaging by material and exclude them from reference product mass."
+          amount:
+            expression: "purchased or issued packaging mass assigned to conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg salted or drained brined saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_batch
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "1"
+                unit: "kg packaging/kg salted or drained brined product"
+                basis: "includes liquid-retaining containers where used"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: salt_brine_product
+          role: "Salted or brined saleable oysters"
+          name: "Oysters, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "73760e72-9a22-4226-a17f-a591a61d5170"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is the reference product only for the selected salted or brine subroute; the brined reference uses drained mass."
+          amount:
+            expression: "1 kg qualified product excluding packaging and free brine, with salt content and drained-mass method declared"
+            value_mode: "fixed_value"
+            specificity: "route_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-21262
+            ranges: []
+      waste:
+        - row_id: spent_brine
+          role: "Spent brine and salting residues"
+          name: "Spent brine and salting residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discharged or treated spent brine and solids; do not subtract reused brine unless reuse is measured within the batch balance."
+          amount:
+            expression: "measured discharge or input-output mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg salted or drained brined saleable product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_salt_brine_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg waste/kg salted or drained brined product"
+                basis: "net spent brine and salting residues leaving foreground treatment"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_route_subdivision
+    applies_to: "all route inventories"
+    rule: "Subdivide preparation and each preservation route using batch, meter, and material-issue records wherever possible. Do not average non-selected preservation routes into one foreground inventory."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_outputs
+    applies_to: "shells, edible offcuts, recovered salt/brine, or other valuable outputs"
+    rule: "First apply subdivision or a directly measured physical relationship. If allocation remains necessary, document the chosen physical or economic driver, allocation factors, data period, and sensitivity; wastes without economic product status receive no product allocation."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_preparation_batch
+      process_id: "prepare_oysters"
+      flow_role: "receipt, water, prepared mass, residues"
+      record_type: "batch production and utility records"
+      raw_fields: "received mass; presentation; accepted mass; prepared transfer mass; water meter/volume; shell and reject mass; lot time-temperature"
+      collection_method: "calibrated scales, water meter or documented batch volume, and residue weighing or closed mass balance"
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "representative production period, with season disclosed"
+      site_scope: "each facility and preparation line"
+      aggregation_rule: "sum lot inputs/outputs; normalize to measured prepared transfer mass; keep shell/presentation strata separate"
+      quality_evidence: "calibration, lot traceability, water suitability, acceptance and sanitation records"
+    - protocol_id: cp_freezing_batch
+      process_id: "freeze_and_pack"
+      flow_role: "material, energy, packaging, output"
+      record_type: "batch, meter, equipment, and packaging issue records"
+      raw_fields: "prepared mass; conforming frozen output; glaze mass/method; electricity; storage duration; packaging by material; rejects"
+      collection_method: "calibrated scales, submeter or power-time records, inventory issue records, and documented deglazing test"
+      unit: "kg; kWh; h"
+      frequency: "each lot, with continuous or batch time-temperature records"
+      temporal_coverage: "representative cold-season and warm-season operation where relevant"
+      site_scope: "each freezer, cold store, and facility"
+      aggregation_rule: "allocate shared electricity by measured duty or justified operating driver; normalize to qualified net frozen mass"
+      quality_evidence: "calibration, meter coverage, time-temperature log, glaze method, packaging specification"
+    - protocol_id: cp_smoke_dry_batch
+      process_id: "smoke_or_dry_and_pack"
+      flow_role: "material, fuel/electricity, moisture, packaging, output"
+      record_type: "batch, fuel, meter, laboratory, and packaging records"
+      raw_fields: "selected subroute; prepared mass; output mass; fuel; electricity; process time/temperature; moisture basis/value; packaging; rejects"
+      collection_method: "calibrated scales/meters, fuel purchase and issue reconciliation, process log, and representative moisture test"
+      unit: "kg; MJ; kWh; %"
+      frequency: "each lot; moisture sampling per declared plan"
+      temporal_coverage: "representative operating period and technologies"
+      site_scope: "each kiln, smoker, dryer, and facility"
+      aggregation_rule: "keep smoked and dried lots separate; convert fuel to energy transparently; normalize to qualified output at measured moisture"
+      quality_evidence: "calibration, fuel conversion record, process log, moisture test, release record"
+    - protocol_id: cp_salt_brine_batch
+      process_id: "salt_or_brine_and_pack"
+      flow_role: "material, salt/water, brine reuse/discharge, packaging, output"
+      record_type: "batch recipe, scale, laboratory, packaging, and waste records"
+      raw_fields: "selected subroute; prepared mass; salt; water; reused brine; output mass; salt content; drained mass/method; packaging; spent brine/residue"
+      collection_method: "calibrated scales, recipe/issue records, brine volume-density conversion where used, salt test, and documented draining procedure"
+      unit: "kg; %"
+      frequency: "each lot"
+      temporal_coverage: "representative operating period and recipes"
+      site_scope: "each tank, line, and facility"
+      aggregation_rule: "keep salted and brined lots separate; subtract only measured internal reuse; normalize to salted net mass or brined drained mass"
+      quality_evidence: "calibration, recipe, salt test, draining method, reuse/discharge log, release record"
+  calculation_rules:
+    - id: calc_reference_mass
+      applies_to: "route output"
+      rule: "Net reference product mass = gross filled unit mass minus packaging mass minus free packing medium; brined product uses the declared drained-mass result and frozen product follows the declared glaze treatment"
+      inputs:
+        - "gross mass"
+        - "packaging mass"
+        - "free medium mass"
+        - "drained mass or deglazed mass as applicable"
+      output: "kg qualified reference product"
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - id: calc_route_yield
+      applies_to: "each selected route"
+      rule: "Route yield = qualified saleable output mass divided by prepared oyster input mass; do not pool different presentation, moisture, salt, glaze, or drained-mass bases"
+      inputs:
+        - "qualified output mass"
+        - "prepared oyster input mass"
+        - qualifiers
+      output: "kg/kg and reciprocal input requirement"
+      source_ids: []
+    - id: calc_normalized_inventory
+      applies_to: "each inventory flow"
+      rule: "Normalized amount = lot flow amount divided by qualified reference product mass; shared utilities require a disclosed measured-duty or operating-time allocation driver"
+      inputs:
+        - "lot flow amount"
+        - "reference product mass"
+        - "allocation driver if shared"
+      output: "flow unit per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_route
+      applies_to: "product and process identity"
+      requirement: "Species/commercial designation, preservation route, presentation, origin production system, facility, technology, lot, and product specification shall be traceable; route shall match exactly one process-map alternative."
+      evidence: "supplier and receiving records; batch and release records"
+    - id: dq_mass_condition
+      applies_to: "reference flow and yields"
+      requirement: "Packaging/free medium exclusions, shell or edible-meat basis, glaze method, drained-mass method, moisture basis/value, and salt basis/value shall be recorded as applicable; incompatible bases shall not be pooled."
+      evidence: "scale records; method records; laboratory results; product specification"
+    - id: dq_temporal_coverage
+      applies_to: "foreground activity data"
+      requirement: "Cover a representative operating period and disclose seasonality, storage duration, downtime, abnormal lots, and any proxy period."
+      evidence: "production calendar; meter coverage; lot register"
+    - id: dq_completeness
+      applies_to: "mass, energy, packaging, waste, and direct emissions"
+      requirement: "Reconcile major mass inputs and outputs and account for water, fuels/electricity, packaging, rejects, wastewater/brine, and treatment destination; disclose exclusions and data gaps."
+      evidence: "mass balance; invoices/meters; packaging issues; waste manifests; wastewater records"
+    - id: dq_provisional_ranges
+      applies_to: "all reasoned-estimate ranges"
+      requirement: "Use ranges only for screening. Retain actual foreground values and replace provisional bounds when reviewed route-specific evidence or at least three representative lots are available."
+      evidence: "review record and replacement evidence"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1 kg qualified saleable product, packaging and free medium excluded, UUIDs and Mass/kg identity present, and all route-specific mass qualifiers complete."
+    source_ids:
+      - unsd-cpc-3-0-21262
+      - eu-pef-2021-2279
+  - rule_id: validate_route_exclusivity
+    applies_to: "process map and inventory"
+    rule: "Confirm exactly one terminal preservation route is selected and only its conditional inventory is instantiated; smoked and dried, and salted and brine, remain separate subroutes."
+    source_ids:
+      - unsd-cpc-3-0-21262
+      - codex-cxs-311-2013
+  - rule_id: validate_mass_balance
+    applies_to: "each preparation and preservation lot"
+    rule: "Reconcile measured input, qualified output, residues, wastewater or brine, moisture/glaze/free-medium changes, and stock change on compatible mass bases; document unexplained differences."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_data_quality
+    applies_to: "published dataset candidate"
+    rule: "Confirm collection protocol links, calibration and traceability evidence, representative temporal coverage, packaging and utility completeness, waste destinations, allocation disclosure, and explicit provisional-range status."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate preserved-oyster processing dataset with upstream product links"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Route-specific product systems and lifecycle models when geography, technology, production system, presentation, mass basis, and time are representative"
+  excluded_use: "Direct comparative claims across preservation routes or shell/edible, moisture, salt, glaze, or drained-mass bases without harmonization; combined terminal-route products; substitution for missing cultivation/harvest data"
+  required_metadata: "PCR id; CPC context; product-flow UUID; route; species/commercial designation; presentation; origin production system; geography; facility/technology; time period; shell/edible basis; glaze/drained-mass/moisture/salt conditions; packaging; yield; allocation; upstream datasets"
+  required_quality_disclosure: "Foreground coverage; meter and scale quality; mass-balance result; time-temperature and release controls; proxies; exclusions; waste/wastewater destinations; uncertainty; reasoned-estimate ranges not yet replaced"
+  update_trigger: "New reviewed route-specific evidence; three or more representative lots supporting range replacement; changed technology, recipe, packaging, source production system, product specification, or measurement method; unresolved mass-basis or food-safety control issue"
+data_sources:
+  - id: "unsd-cpc-3-0-21262"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, code 21262, official structure file: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Product-category identity, covered preservation-route labels, and exact CPC context"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products: https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (retrieved 2026-08-11)"
+    used_for: "Bivalve receiving, water, hygiene, processing, storage, traceability, time-temperature, and quality-control records"
+  - id: "codex-cxs-311-2013"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 311-2013, Standard for Smoked Fish, Smoke-Flavoured Fish and Smoke-Dried Fish: https://www.fao.org/fao-who-codexalimentarius/codex-texts/list-standards/en/ (retrieved 2026-08-11)"
+    used_for: "Terminology and separation of smoked and smoke-dried processing routes only; the standard is fish-specific and supplies no oyster quantitative limit here"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow, system boundary, inventory completeness, packaging, allocation hierarchy, primary data, and data-quality disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:77899a10616f0ac302fda1d3c63442a6abb0a5c9f66d45c28cbcb072e7d066df"
+  generated_content_sha256: "sha256:3b8fab1bc90164ebd2ae09f8d67e03415c90f3719f51d68666ffe57c3734cf06"

@@ -1,10 +1,1797 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21116"
-  title: "Meat of goat, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-goat-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21116 (exact)"
+  covered_products: "Goat carcasses, sides, quarters and cuts intended as meat and dispatched fresh or under chilled conditions without freezing"
+  excluded_products: "Frozen goat meat; edible offal sold separately; prepared or preserved goat meat; rendered fat; hides; blood; bones; livestock; retail or cooked products"
+  representative_product: "Net accepted chilled goat meat cuts at slaughterhouse dispatch"
+  production_route: "Live-goat reception and slaughter; carcass dressing and specific by-product separation; cutting and deboning; chilling and cold storage; cleaning and sanitation; conditional on-site wastewater treatment; packaging and dispatch"
+  market_state: "Fresh or chilled, food-grade, accepted for dispatch, excluding packaging mass"
+functional_unit:
+  what: "Edible goat meat supplied fresh or chilled at the slaughterhouse dispatch gate"
+  how_much: "1 kg net accepted product mass"
+  how_well: "Food-grade goat meat meeting the declared cut, temperature, hygiene, composition and acceptance specification, with no frozen state"
+  how_long_or_cycle: "One completed production lot through dispatch; no use-phase duration is assigned"
+  reference_flow_link: "Net accepted fresh-or-chilled goat meat output from packaging_dispatch"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "foreground operations"
+      rule: "Begin at live-goat acceptance at the slaughterhouse and end with accepted fresh-or-chilled goat meat packaged for dispatch; include all in-house and subcontracted slaughter, dressing, cutting, chilling, sanitation, relevant wastewater management and packaging operations."
+      source_ids:
+        - jrc-sa-bref-2024
+        - ec-pef-method-2021
+    - rule_id: boundary_upstream_live_goat
+      applies_to: "live-goat input"
+      rule: "Keep goat rearing and incoming transport outside the foreground process inventory, but link the live-goat input to transparent upstream production and transport datasets consistent with the declared animals and geography."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream life cycle"
+      rule: "Exclude distribution, retail, cooking, consumption and end-of-life unless a study explicitly adds those stages outside this factory-gate PCR."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_actual_route
+      applies_to: "conditional operations"
+      rule: "Include on-site refrigeration, direct combustion and wastewater treatment only when present, and disclose absent or externally supplied operations without netting their exchanges into another process."
+      source_ids:
+        - jrc-sa-bref-2024
+boundary_abstraction:
+  declared_starting_condition: "Live goats accepted at the slaughterhouse reception point, with accepted head count, measured live mass, origin, arrival time and fitness status recorded"
+  starting_condition_role: "Upstream livestock production and transport terminate at a product input to the foreground slaughterhouse system"
+  product_classification_scope: "CPC 21116 fresh-or-chilled goat meat only; frozen meat and offal are excluded from the reference product"
+  recursive_input_rule: "Any purchased fresh-or-chilled goat meat used in an in-scope lot is recorded as a separate same-category input with its own upstream dataset and is not recursively decomposed inside this PCR"
+  upstream_dataset_requirement: "Live-goat production, incoming transport, purchased utilities, chemicals, packaging and external treatment services require geographically, temporally and technologically representative upstream datasets"
+  disclosure: "Declare animal origin and live mass, slaughter route, product form, bone state, chilling regime, facility and subcontractor boundaries, wastewater route, packaging and all exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat of goat, fresh or chilled"
+    uuid: "20b4b0eb-d827-48d9-b744-d54842ba57ef"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Goat species"
+    - "carcass or cut description"
+    - "bone-in or boneless state"
+    - "fresh or chilled state"
+    - "dispatch temperature"
+    - "net product mass"
+    - "lot and facility"
+    - "slaughter and cutting route"
+    - "packaging configuration"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_meat_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to exactly 1 kg of accepted fresh-or-chilled goat meat excluding primary, secondary and transport packaging and excluding separately recovered by-products."
+  - id: live_mass_and_output_mass
+    applies_to: "live goat and slaughter outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain measured live mass, dressed-carcass mass, meat-output mass and each separated output mass for the same production population and period; do not substitute head count for mass."
+  - id: temperature_state
+    applies_to: "meat outputs"
+    required_property_ref:
+      name: "Temperature and time"
+      uuid: ""
+    required_unit: "°C; h"
+    rule: "Record measured product temperature and relevant residence time at chilling and dispatch so that fresh-or-chilled status is demonstrable and frozen production is excluded."
+  - id: energy_carrier_separation
+    applies_to: "electricity and thermal inputs"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh; MJ; kg as purchased"
+    rule: "Preserve electricity, purchased steam, purchased hot water, natural gas, diesel and LPG as separate records and disclose every conversion factor."
+  - id: chemical_formulation_mass
+    applies_to: "cleaning and disinfection agents"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record the supplied formulation mass and active content separately; do not report an unspecified chemicals total."
+  - id: packaging_net_mass
+    applies_to: "packaging inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Derive each packaging component mass from measured empty mass and count, and exclude all packaging from reference-product mass."
+process_map:
+  - id: animal_reception_slaughter
+    name: "Animal reception and slaughter"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground reception, lairage and slaughter"
+    quantitative_reference: "kg bled goat carcass output"
+  - id: carcass_dressing_byproduct_recovery
+    name: "Carcass dressing and by-product recovery"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground dressing and separation"
+    quantitative_reference: "kg dressed goat carcass output"
+  - id: cutting_deboning
+    name: "Cutting and deboning"
+    inclusion: "required"
+    inclusion_condition: "Include the actual cut and bone-removal route; retain as a process even when only carcass subdivision occurs"
+    role: "Foreground meat preparation"
+    quantitative_reference: "kg unchilled accepted goat meat output"
+  - id: chilling_cold_storage
+    name: "Chilling and cold storage"
+    inclusion: "required"
+    inclusion_condition: "Always included for chilled product; record measured holding conditions for product sold fresh without active chilling"
+    role: "Foreground temperature control"
+    quantitative_reference: "kg accepted fresh-or-chilled goat meat output"
+  - id: cleaning_sanitation
+    name: "Cleaning and sanitation"
+    inclusion: "required"
+    inclusion_condition: "Always included; individual heat, fuel and chemical cards apply only when used"
+    role: "Foreground hygiene support"
+    quantitative_reference: "kg reference-product-equivalent production served"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when slaughterhouse wastewater is treated on site before discharge or transfer"
+    role: "Foreground pollution control"
+    quantitative_reference: "kg equalized slaughterhouse wastewater treated"
+  - id: packaging_dispatch
+    name: "Packaging and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always included; unused packaging cards are declared not applicable"
+    role: "Foreground final product preparation"
+    quantitative_reference: "1 kg net accepted reference product"
+process_inventory:
+  - id: animal_reception_slaughter
+    label: "Animal reception and slaughter"
+    inputs:
+      product:
+        - row_id: live_goat_input
+          role: "Accepted live goats"
+          name: "Live goat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted live goats cross the slaughterhouse boundary as one livestock product input; weigh the accepted population and preserve origin and head-count records."
+          amount:
+            expression: "measured accepted live-goat mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: reception_slaughter_water_input
+          role: "Reception and slaughter process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Meter water supplied to reception, lairage and slaughter as one stage-specific water input, excluding water assigned to later sanitation."
+          amount:
+            expression: "measured reception-and-slaughter water volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: reception_slaughter_electricity_input
+          role: "Reception and slaughter electricity"
+          name: "Electricity, low voltage, at slaughterhouse"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity metered or causally assigned to live-animal handling and slaughter equipment separately from later stages."
+          amount:
+            expression: "measured or causally allocated reception-and-slaughter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bled_goat_carcass_output
+          role: "Bled goat carcass"
+          name: "Bled goat carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The carcass after slaughter and bleeding crosses to dressing; obtain its mass from calibrated rail or batch weighing."
+          amount:
+            expression: "measured bled goat carcass mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: goat_blood_byproduct_output
+          role: "Goat blood for technical processing"
+          name: "Goat blood for technical processing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separately collected goat blood leaving for a declared technical processing route is weighed as one specific co-product."
+          amount:
+            expression: "measured separately collected goat-blood mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: goat_manure_waste_output
+          role: "Goat manure from reception"
+          name: "Goat manure"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Goat manure removed from reception and lairage is weighed separately and linked to its actual receiving treatment."
+          amount:
+            expression: "measured manure mass removed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: condemned_whole_goat_waste_output
+          role: "Condemned whole goat carcass"
+          name: "Condemned whole goat carcass"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A whole goat condemned before dressing is recorded as a specific animal-tissue waste and is not netted against accepted live input."
+          amount:
+            expression: "measured condemned whole-carcass mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: slaughter_wastewater_output
+          role: "Goat slaughter-hall wastewater"
+          name: "Wastewater from goat slaughter hall"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater physically collected from the goat slaughter hall is measured as one specific waste flow before mixing or treatment; lairage wash water is reported separately when generated."
+          amount:
+            expression: "measured goat slaughter-hall wastewater volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bled goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_slaughter
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: carcass_dressing_byproduct_recovery
+    label: "Carcass dressing and by-product recovery"
+    inputs:
+      product:
+        - row_id: bled_goat_carcass_input
+          role: "Bled goat carcass input"
+          name: "Bled goat carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The weighed bled carcass enters dressing without combining its mass with blood or condemned animals."
+          amount:
+            expression: "measured bled goat carcass mass entering dressing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: dressing_water_input
+          role: "Dressing process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Meter water supplied to carcass dressing separately from slaughter, cutting and sanitation water."
+          amount:
+            expression: "measured dressing-water volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: dressing_electricity_input
+          role: "Dressing electricity"
+          name: "Electricity, low voltage, at slaughterhouse"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity metered or causally assigned to dressing equipment as its own stage exchange."
+          amount:
+            expression: "measured or causally allocated dressing electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_goat_carcass_output
+          role: "Dressed goat carcass"
+          name: "Dressed goat carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted dressed carcass leaves after evisceration and hide removal; use calibrated rail or batch mass."
+          amount:
+            expression: "measured accepted dressed-carcass mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: edible_goat_liver_output
+          role: "Edible goat liver"
+          name: "Goat liver, edible"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted goat liver sold for food is weighed separately from meat and every other edible organ."
+          amount:
+            expression: "measured accepted edible goat-liver mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: edible_goat_heart_output
+          role: "Edible goat heart"
+          name: "Goat heart, edible"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted goat heart sold for food is weighed as its own edible co-product rather than an offal collection."
+          amount:
+            expression: "measured accepted edible goat-heart mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: goat_hide_byproduct_output
+          role: "Goat hide"
+          name: "Goat hide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The removed goat hide is weighed separately and assigned its declared sale or treatment route."
+          amount:
+            expression: "measured goat-hide mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: goat_stomach_contents_waste_output
+          role: "Goat stomach contents"
+          name: "Goat stomach contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Goat stomach contents removed during evisceration are weighed separately from intestinal contents before treatment."
+          amount:
+            expression: "measured goat-stomach-content waste mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: goat_intestinal_contents_waste_output
+          role: "Goat intestinal contents"
+          name: "Goat intestinal contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Goat intestinal contents removed during evisceration are weighed as their own waste exchange before treatment."
+          amount:
+            expression: "measured goat-intestinal-content waste mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: condemned_goat_viscera_waste_output
+          role: "Condemned goat viscera"
+          name: "Condemned goat viscera"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Viscera rejected from food and co-product routes are weighed as a specific condemned tissue waste."
+          amount:
+            expression: "measured condemned goat-viscera mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: dressing_wastewater_output
+          role: "Carcass-dressing wastewater"
+          name: "Wastewater from goat carcass dressing"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater collected from dressing is measured before mixing with sanitation or cutting wastewater."
+          amount:
+            expression: "measured dressing-wastewater volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed goat carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carcass_dressing
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: cutting_deboning
+    label: "Cutting and deboning"
+    inputs:
+      product:
+        - row_id: dressed_goat_carcass_input
+          role: "Dressed goat carcass input"
+          name: "Dressed goat carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dressed carcass enters the declared cutting or deboning route at its measured accepted mass."
+          amount:
+            expression: "measured dressed-carcass mass entering cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: cutting_water_input
+          role: "Cutting-room process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used directly during cutting or deboning is metered separately from scheduled sanitation water."
+          amount:
+            expression: "measured cutting-room process-water volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: cutting_electricity_input
+          role: "Cutting and deboning electricity"
+          name: "Electricity, low voltage, at slaughterhouse"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for cutting, sawing and deboning equipment separately from refrigeration and packaging."
+          amount:
+            expression: "measured or causally allocated cutting-and-deboning electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unchilled_goat_meat_output
+          role: "Unchilled accepted goat meat"
+          name: "Goat meat cuts, unchilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted meat leaving cutting is weighed before chilling and before packaging, with its cut and bone state declared."
+          amount:
+            expression: "measured accepted unchilled goat-meat mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: goat_bones_byproduct_output
+          role: "Goat bones for further processing"
+          name: "Goat bones for further processing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bones separated during cutting or deboning are weighed as one specific co-product and assigned their declared route."
+          amount:
+            expression: "measured separated goat-bone mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: goat_fat_byproduct_output
+          role: "Goat fat for rendering"
+          name: "Goat fat for rendering"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Clean goat fat trimmings sent to rendering are weighed separately from meat, bones and condemned tissue."
+          amount:
+            expression: "measured goat-fat trimming mass sent to rendering"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: condemned_meat_waste_output
+          role: "Condemned goat meat trimmings"
+          name: "Condemned goat meat trimmings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Goat meat trimmings rejected from edible and co-product routes are weighed as a separate condemned waste."
+          amount:
+            expression: "measured condemned goat-meat trimming mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: cutting_wastewater_output
+          role: "Cutting-room wastewater"
+          name: "Wastewater from goat-meat cutting"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater arising directly from cutting operations is measured as its own stage flow before common treatment."
+          amount:
+            expression: "measured cutting-room wastewater volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unchilled accepted goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_deboning
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: chilling_cold_storage
+    label: "Chilling and cold storage"
+    inputs:
+      product:
+        - row_id: unchilled_goat_meat_input
+          role: "Unchilled goat meat input"
+          name: "Goat meat cuts, unchilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted unchilled meat enters the declared chilling or fresh-product holding regime at measured mass and temperature."
+          amount:
+            expression: "measured unchilled goat-meat mass entering temperature control"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: chilling_electricity_input
+          role: "Chilling electricity"
+          name: "Electricity, low voltage, at slaughterhouse"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter electricity supplied to refrigeration compressors, fans and cold-room equipment separately from other stages."
+          amount:
+            expression: "measured or causally allocated chilling and cold-storage electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: chilling_defrost_water_input
+          role: "Chilling defrost water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water supplied for defrosting or cooling equipment is metered as a separate stage-specific input when used."
+          amount:
+            expression: "measured refrigeration-defrost water volume when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: ammonia_refrigerant_input
+          role: "Ammonia refrigerant make-up"
+          name: "Ammonia, anhydrous, refrigerant grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anhydrous ammonia added to an R717 refrigeration circuit is recorded from maintenance or inventory records when that specific refrigerant is used."
+          amount:
+            expression: "measured ammonia refrigerant make-up mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_goat_meat_output
+          role: "Accepted fresh-or-chilled goat meat"
+          name: "Goat meat before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meat leaving temperature control is weighed and accepted against the declared non-frozen temperature and quality specification."
+          amount:
+            expression: "measured accepted fresh-or-chilled goat-meat mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - un-cpc-3-0-21116
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: chilling_defrost_wastewater_output
+          role: "Refrigeration defrost wastewater"
+          name: "Wastewater from refrigeration defrosting"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Defrost water leaving the refrigeration system is measured separately before it enters treatment or sewer collection."
+          amount:
+            expression: "measured refrigeration-defrost wastewater volume"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: ammonia_refrigerant_air_output
+          role: "Ammonia refrigerant released to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia lost from the R717 circuit is calculated from reconciled refrigerant inventory or measured release records as one air emission."
+          amount:
+            expression: "calculated ammonia refrigerant loss to air"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted fresh-or-chilled goat meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: cleaning_sanitation
+    label: "Cleaning and sanitation"
+    inputs:
+      product:
+        - row_id: sanitation_water_input
+          role: "Sanitation process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for scheduled cleaning and sanitation is metered separately from water used directly in meat operations."
+          amount:
+            expression: "measured sanitation-water volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sanitation_electricity_input
+          role: "Sanitation electricity"
+          name: "Electricity, low voltage, at slaughterhouse"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, pressure washers and sanitation support equipment as a separate stage exchange."
+          amount:
+            expression: "measured or causally allocated sanitation electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: purchased_steam_input
+          role: "Purchased steam for sanitation"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam crossing the facility boundary for sanitation is metered independently from hot water and on-site fuels."
+          amount:
+            expression: "measured purchased steam supplied to sanitation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: purchased_hot_water_input
+          role: "Purchased hot water for sanitation"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot water crossing the facility boundary is recorded separately from steam and cold process water."
+          amount:
+            expression: "measured purchased hot-water energy supplied to sanitation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas for sanitation heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas burned on site to generate sanitation heat is recorded from a dedicated meter or causal allocation when used."
+          amount:
+            expression: "measured natural-gas energy supplied to sanitation heat generation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: diesel_input
+          role: "Diesel for sanitation heat"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Diesel burned on site for sanitation heat is recorded as its own fuel exchange when that equipment is used."
+          amount:
+            expression: "measured diesel energy supplied to sanitation heat generation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: lpg_input
+          role: "LPG for sanitation heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Liquefied petroleum gas burned on site for sanitation heat is recorded independently from natural gas and diesel."
+          amount:
+            expression: "measured LPG energy supplied to sanitation heat generation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner_input
+          role: "Sodium hydroxide cleaning formulation"
+          name: "Sodium hydroxide cleaning formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The supplied sodium-hydroxide cleaning formulation is weighed separately and its active concentration is retained."
+          amount:
+            expression: "measured supplied sodium-hydroxide formulation mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: peracetic_acid_disinfectant_input
+          role: "Peracetic acid disinfectant formulation"
+          name: "Peracetic acid disinfectant formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The supplied peracetic-acid disinfectant is weighed as one formulation and documented with its active concentration."
+          amount:
+            expression: "measured supplied peracetic-acid formulation mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater_output
+          role: "Sanitation wastewater"
+          name: "Wastewater from slaughterhouse sanitation"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Spent cleaning water from sanitation is measured as a specific wastewater flow before equalization or external transfer."
+          amount:
+            expression: "measured sanitation-wastewater volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: natural_gas_co2_air_output
+          role: "Fossil carbon dioxide from natural-gas combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from the recorded natural-gas input is calculated with a disclosed applicable factor or measured directly."
+          amount:
+            expression: "calculated or measured fossil carbon dioxide from natural-gas combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: natural_gas_nox_air_output
+          role: "Nitrogen oxides from natural-gas combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from natural-gas combustion are measured or calculated separately from the same recorded fuel inventory."
+          amount:
+            expression: "calculated or measured nitrogen oxides from natural-gas combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: diesel_co2_air_output
+          role: "Fossil carbon dioxide from diesel combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from the recorded diesel input is calculated with a disclosed applicable factor or measured directly."
+          amount:
+            expression: "calculated or measured fossil carbon dioxide from diesel combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: diesel_nox_air_output
+          role: "Nitrogen oxides from diesel combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from diesel combustion are measured or calculated as one distinct elementary exchange."
+          amount:
+            expression: "calculated or measured nitrogen oxides from diesel combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: diesel_pm25_air_output
+          role: "Fine particulate matter from diesel combustion"
+          name: "Particulate matter, less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Primary fine particulate matter from diesel combustion is measured or calculated separately from gaseous emissions."
+          amount:
+            expression: "calculated or measured primary PM2.5 from diesel combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: lpg_co2_air_output
+          role: "Fossil carbon dioxide from LPG combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from the recorded LPG input is calculated with a disclosed applicable factor or measured directly."
+          amount:
+            expression: "calculated or measured fossil carbon dioxide from LPG combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: lpg_nox_air_output
+          role: "Nitrogen oxides from LPG combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from LPG combustion are measured or calculated as their own air emission."
+          amount:
+            expression: "calculated or measured nitrogen oxides from LPG combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference-product-equivalent production served"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_sanitation
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        []
+      waste:
+        - row_id: equalized_wastewater_input
+          role: "Equalized slaughterhouse wastewater"
+          name: "Equalized goat-slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "The physically mixed and equalized slaughterhouse wastewater entering on-site treatment is measured at the treatment inlet as one waste exchange."
+          amount:
+            expression: "measured wastewater volume entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 equalized wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_sludge_output
+          role: "Sludge from slaughterhouse wastewater treatment"
+          name: "Sludge from slaughterhouse wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge removed from the on-site treatment system is weighed as one specific waste and linked to its receiving treatment."
+          amount:
+            expression: "measured dewatered wastewater-sludge mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 equalized wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: cod_water_output
+          role: "Chemical oxygen demand discharged to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chemical oxygen demand in final effluent is calculated from measured concentration and discharge volume as one water emission."
+          amount:
+            expression: "calculated COD mass in discharged treated effluent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 equalized wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: total_nitrogen_water_output
+          role: "Total nitrogen discharged to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total nitrogen in final effluent is calculated separately from its measured concentration and discharge volume."
+          amount:
+            expression: "calculated total-nitrogen mass in discharged treated effluent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 equalized wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: total_phosphorus_water_output
+          role: "Total phosphorus discharged to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus in final effluent is calculated as a distinct water emission from measured concentration and volume."
+          amount:
+            expression: "calculated total-phosphorus mass in discharged treated effluent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 equalized wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: wastewater_methane_air_output
+          role: "Biogenic methane from wastewater treatment"
+          name: "Methane, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Biogenic methane released from on-site wastewater treatment is measured or calculated as one air emission when anaerobic conditions occur."
+          amount:
+            expression: "measured or calculated biogenic methane released from wastewater treatment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 equalized wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: packaging_dispatch
+    label: "Packaging and dispatch"
+    inputs:
+      product:
+        - row_id: chilled_goat_meat_packaging_input
+          role: "Fresh-or-chilled goat meat before packaging"
+          name: "Goat meat before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted fresh-or-chilled goat meat enters final packaging at measured net mass and documented product temperature."
+          amount:
+            expression: "measured accepted meat mass entering packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - un-cpc-3-0-21116
+            ranges: []
+        - row_id: polyethylene_film_input
+          role: "Polyethylene primary packaging film"
+          name: "Polyethylene primary packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyethylene film placed around the product is weighed separately from cartons and labels for the actual configuration."
+          amount:
+            expression: "calculated used polyethylene-film mass from count and measured empty unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: corrugated_carton_input
+          role: "Corrugated shipping carton"
+          name: "Corrugated paperboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated cartons used for dispatch are measured as their own packaging component and allocated by contained net meat mass."
+          amount:
+            expression: "calculated corrugated-carton mass assigned to the reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: paper_label_input
+          role: "Paper product label"
+          name: "Paper product label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The paper label attached to the packaged product or carton is recorded separately from every other packaging component."
+          amount:
+            expression: "calculated used paper-label mass from count and measured unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: packaging_electricity_input
+          role: "Packaging electricity"
+          name: "Electricity, low voltage, at slaughterhouse"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for sealing, labelling and dispatch preparation is metered or causally assigned separately from refrigeration."
+          amount:
+            expression: "measured or causally allocated packaging electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_goat_meat_output
+          role: "Reference fresh-or-chilled goat meat output"
+          name: "Meat of goat, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "20b4b0eb-d827-48d9-b744-d54842ba57ef"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg (93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "The verified CPC 21116 product leaves the foreground system at exactly 1 kg net accepted fresh-or-chilled goat-meat mass, excluding packaging."
+          amount:
+            expression: "accepted net fresh-or-chilled goat-meat mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - un-cpc-3-0-21116
+            ranges: []
+      waste:
+        - row_id: polyethylene_film_waste_output
+          role: "Waste polyethylene packaging film"
+          name: "Waste polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged or unused polyethylene film is weighed separately and linked to its actual receiving treatment."
+          amount:
+            expression: "measured waste polyethylene-film mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: corrugated_carton_waste_output
+          role: "Waste corrugated paperboard"
+          name: "Waste corrugated paperboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged or unused corrugated carton material is weighed as one paperboard waste exchange and linked to its treatment."
+          amount:
+            expression: "measured waste corrugated-paperboard mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: paper_label_waste_output
+          role: "Waste paper label stock"
+          name: "Waste paper label stock"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected or unused paper labels are weighed independently from corrugated board and plastic film waste."
+          amount:
+            expression: "measured waste paper-label mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "all foreground operations"
+    rule: "First subdivide reception/slaughter, dressing, cutting, chilling, sanitation, wastewater treatment and packaging and directly measure product-specific exchanges before allocation."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_saleable_outputs
+    applies_to: "meat and saleable blood, liver, heart, hide, fat or bones"
+    rule: "Apply a documented physical causal relationship where it represents how burdens arise; when no physical relationship is defensible, apply the PEF allocation hierarchy and disclose any economic allocation period, prices, currency and sensitivity."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_waste_outputs
+    applies_to: "condemned tissue, gut contents, manure, wastewater, sludge and packaging waste"
+    rule: "Assign production burdens to the operation that generated the waste and model the actual receiving treatment; do not create an avoided-product credit without an explicitly justified downstream method."
+    source_ids:
+      - ec-pef-method-2021
+      - jrc-sa-bref-2024
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared electricity, water and heat meters"
+    rule: "Allocate each measured utility separately using a causal driver such as operating time multiplied by measured power, water demand or heat demand; retain meter total, numerator, denominator and reconciliation."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_packaging
+    applies_to: "grouped cartons"
+    rule: "Assign a measured empty carton mass to products using contained net product mass for the same packing configuration and period."
+    source_ids:
+      - ec-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reception_slaughter
+      process_id: "animal_reception_slaughter"
+      flow_role: "live goat, water, electricity, carcass, blood, manure, condemnation and wastewater"
+      record_type: "livestock reception; calibrated scales; meters; slaughter and waste logs"
+      raw_fields: "lot; origin; head count; live mass; accepted mass; meter readings; carcass mass; blood mass; manure mass; condemned mass; wastewater volume; destinations"
+      collection_method: "Link all readings and outputs to the same accepted slaughter lot"
+      unit: "kg; m3; kWh"
+      frequency: "Per lot or shift, aggregated monthly"
+      temporal_coverage: "Representative production period, normally 12 months or complete campaign"
+      site_scope: "All reception, lairage and slaughter operations and subcontractors"
+      aggregation_rule: "Sum homogeneous lots, reconcile mass and normalize by bled-carcass output"
+      quality_evidence: "Scale and meter calibration; veterinary acceptance; lot reconciliation; transfer receipts"
+    - protocol_id: cp_carcass_dressing
+      process_id: "carcass_dressing_byproduct_recovery"
+      flow_role: "carcass, water, electricity, dressed carcass, liver, heart, hide, gut contents, condemned viscera and wastewater"
+      record_type: "rail scales; organ and hide scales; meters; inspection and transfer logs"
+      raw_fields: "lot; input carcass mass; water; electricity; dressed mass; each output mass; wastewater; acceptance status; destination"
+      collection_method: "Weigh each separated output and rejected stream for the same dressing lot"
+      unit: "kg; m3; kWh"
+      frequency: "Per lot or shift, aggregated monthly"
+      temporal_coverage: "Representative production period"
+      site_scope: "All dressing and inspection lines"
+      aggregation_rule: "Sum by product specification and divide by dressed-carcass output"
+      quality_evidence: "Calibration; inspection record; output destination; process mass balance"
+    - protocol_id: cp_cutting_deboning
+      process_id: "cutting_deboning"
+      flow_role: "carcass, water, electricity, meat, bones, fat, condemned trimmings and wastewater"
+      record_type: "batch scale; cutting records; meters; waste and co-product logs"
+      raw_fields: "product code; bone state; input mass; water; electricity; meat mass; bone mass; fat mass; condemned mass; wastewater"
+      collection_method: "Reconcile every cutting lot from dressed carcass through accepted meat and each separated output"
+      unit: "kg; m3; kWh"
+      frequency: "Per batch, aggregated monthly"
+      temporal_coverage: "Representative production period"
+      site_scope: "All cutting and deboning lines and subcontractors"
+      aggregation_rule: "Aggregate only identical cut and bone specifications and normalize to accepted meat"
+      quality_evidence: "Calibration; cut specification; yield reconciliation; destination receipts"
+    - protocol_id: cp_chilling_storage
+      process_id: "chilling_cold_storage"
+      flow_role: "meat, electricity, defrost water, ammonia make-up, chilled meat, wastewater and ammonia release"
+      record_type: "scales; temperature logger; refrigeration meter; water meter; refrigerant inventory and maintenance log"
+      raw_fields: "lot; input/output mass; entry/exit temperature; time; electricity; water; ammonia opening stock, additions, recovery and closing stock; wastewater"
+      collection_method: "Link mass, temperature, residence time and utility records to each chilling campaign"
+      unit: "kg; °C; h; kWh; m3"
+      frequency: "Continuous temperature, per batch mass, monthly utilities"
+      temporal_coverage: "Representative production period covering seasonal operation"
+      site_scope: "All chillers, cold rooms and refrigeration circuits"
+      aggregation_rule: "Allocate refrigeration by measured load or documented causal driver and normalize to accepted meat"
+      quality_evidence: "Calibrated logger and meters; refrigerant reconciliation; maintenance reports"
+    - protocol_id: cp_cleaning_sanitation
+      process_id: "cleaning_sanitation"
+      flow_role: "water, electricity, steam, hot water, each fuel, each formulation, wastewater and combustion emissions"
+      record_type: "sanitation schedule; utility meters; fuel invoices; chemical issue; effluent and stack records"
+      raw_fields: "area/equipment; time; water; electricity; steam; hot water; natural gas; diesel; LPG; formulation mass and active content; wastewater; factor or measurement"
+      collection_method: "Record every supplied carrier, fuel and formulation independently for the sanitation event"
+      unit: "m3; kWh; MJ; kg"
+      frequency: "Per sanitation event or shift, aggregated monthly"
+      temporal_coverage: "Representative production period"
+      site_scope: "All in-scope cleaning systems and heat equipment"
+      aggregation_rule: "Allocate shared records with documented causal drivers and calculate each emission from its own fuel"
+      quality_evidence: "Meter calibration; invoices; SDS; concentration; factor citation; stack result; reconciliation"
+    - protocol_id: cp_onsite_wastewater
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "equalized wastewater, sludge, COD, nitrogen, phosphorus and methane"
+      record_type: "inlet/outlet flow meters; laboratory results; sludge scales; gas monitoring"
+      raw_fields: "date; inlet and discharge volume; sample time; COD; total nitrogen; total phosphorus concentrations; sludge mass and moisture; methane measurement or model fields"
+      collection_method: "Match representative samples to measured flows and calculate each discharge separately"
+      unit: "m3; mg/L; kg"
+      frequency: "Flow continuous or daily; sampling per permit and operating plan"
+      temporal_coverage: "Representative production period"
+      site_scope: "Complete on-site treatment boundary"
+      aggregation_rule: "Sum mass loads by period and assign them to production using measured wastewater volumes"
+      quality_evidence: "Laboratory accreditation; sampling plan; flow-meter calibration; sludge receipts; calculation file"
+    - protocol_id: cp_packaging_dispatch
+      process_id: "packaging_dispatch"
+      flow_role: "meat, each package component, electricity, reference output and each package waste"
+      record_type: "product scale; packaging specification; component counts and tare weights; meter; waste logs"
+      raw_fields: "lot; cut; bone state; temperature; net meat mass; package counts; empty unit masses; carton contents; electricity; each waste mass"
+      collection_method: "Reconcile meat and each package component for every packing configuration"
+      unit: "kg; item; kWh; °C"
+      frequency: "Per packing lot, aggregated monthly"
+      temporal_coverage: "Representative production period"
+      site_scope: "All packing and dispatch lines"
+      aggregation_rule: "Convert component counts to mass, allocate cartons by contained net meat mass and normalize to 1 kg net meat"
+      quality_evidence: "Scale calibration; package specification; packing list; meter identity; waste receipts"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period exchange amount / accepted net fresh-or-chilled goat-meat mass"
+      inputs:
+        - "period exchange amount"
+        - "accepted reference-product mass"
+      output: "exchange amount per 1 kg reference product"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_stage_mass_balance
+      applies_to: "reception/slaughter, dressing and cutting"
+      rule: "residual = measured mass inputs - accepted main output - each measured co-product - each measured waste - documented evaporation or retained water"
+      inputs:
+        - "all stage-specific mass records"
+      output: "disclosed residual for each stage"
+      source_ids:
+        - jrc-sa-bref-2024
+    - id: calc_refrigerant_loss
+      applies_to: "ammonia refrigeration circuit"
+      rule: "ammonia loss = opening inventory + additions - recovered quantity - closing inventory - documented transfer"
+      inputs:
+        - "refrigerant inventory and maintenance records"
+      output: "kg ammonia released, subject to reconciliation and release-route evidence"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_effluent_load
+      applies_to: "each wastewater emission"
+      rule: "discharged mass = matched concentration × discharged effluent volume with documented unit conversion"
+      inputs:
+        - concentration
+        - volume
+        - "sampling representativeness"
+      output: "kg of one specified water emission"
+      source_ids:
+        - jrc-sa-bref-2024
+    - id: calc_combustion_emission
+      applies_to: "each direct fuel emission"
+      rule: "emission mass = recorded quantity of one fuel × one disclosed applicable factor, unless direct measurement is used"
+      inputs:
+        - "fuel quantity and properties"
+        - "factor or measurement"
+      output: "kg of one specified air emission"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_packaging_mass
+      applies_to: "each packaging component"
+      rule: "used mass = issued count × measured empty unit mass - returned unused mass; grouped carton mass is assigned by contained net product mass"
+      inputs:
+        - "issue/return counts"
+        - "tare mass"
+        - "contained net meat mass"
+      output: "kg of one packaging component per kg product"
+      source_ids:
+        - ec-pef-method-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate goat species, CPC 21116 fresh-or-chilled state, cut/carcass description, bone state, acceptance specification and dispatch temperature."
+      evidence: "Product specification; lot record; temperature log; classification review"
+    - id: dq_lot_traceability
+      applies_to: "slaughter and meat outputs"
+      requirement: "Preserve traceability from accepted live-goat population through carcass, cuts and dispatched product for the declared period."
+      evidence: "Reception, veterinary, slaughter, cutting and dispatch records"
+    - id: dq_mass_completeness
+      applies_to: "mass balance"
+      requirement: "Measure the main product and every actual blood, organ, hide, fat, bone, condemned tissue, gut-content, manure and sludge output separately; disclose unresolved residuals."
+      evidence: "Calibrated weights; stage reconciliations; destination records"
+    - id: dq_temporal
+      applies_to: "foreground data"
+      requirement: "Use a representative period, normally 12 consecutive months or the complete production campaign, and explain seasonal or abnormal operation."
+      evidence: "Dated production, meter, purchase, maintenance and waste records"
+    - id: dq_measurement
+      applies_to: "foreground exchanges"
+      requirement: "Identify instrument, calibration, frequency, meter boundary and allocation calculation for every material, water, utility, output, waste and emission record."
+      evidence: "Calibration certificates; meter register; calculation workpapers"
+    - id: dq_temperature
+      applies_to: "fresh-or-chilled state"
+      requirement: "Retain continuous or lot-representative temperature and time records demonstrating that the declared output was not frozen."
+      evidence: "Calibrated temperature logger; cold-room and dispatch records"
+    - id: dq_chemical_identity
+      applies_to: "cleaning and disinfection"
+      requirement: "Retain formulation name, supplier, SDS, active concentration and issued mass for every actual cleaning or disinfecting formulation."
+      evidence: "SDS; supplier specification; chemical issue records"
+    - id: dq_waste_destination
+      applies_to: "each waste output"
+      requirement: "Retain mass, classification and receiving-treatment evidence for each waste; do not infer recycling or recovery from sale alone."
+      evidence: "Transfer note; invoice; treatment declaration"
+    - id: dq_representativeness
+      applies_to: "upstream datasets"
+      requirement: "Document geographic, temporal and technological match for live goats, incoming transport, utilities, refrigerant, chemicals, packaging and external treatment."
+      evidence: "Dataset metadata and PEF data-quality assessment"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference UUID must equal 20b4b0eb-d827-48d9-b744-d54842ba57ef, resolve as a public state-100 Product flow classified to CPC 21116, and use Mass 93a60a56-a3c8-11da-a746-0800200b9a66 with kg from Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66."
+    source_ids:
+      - un-cpc-3-0-21116
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Output must normalize to exactly 1 kg net accepted goat meat, exclude packaging and separated outputs, and retain the measured unnormalized mass."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_scope_state
+    applies_to: "product identity"
+    rule: "Product must be goat meat dispatched fresh or chilled; frozen meat, edible offal, prepared meat and separately recovered outputs cannot be included in the reference mass."
+    source_ids:
+      - un-cpc-3-0-21116
+  - rule_id: validate_actual_route
+    applies_to: "process inventory"
+    rule: "Reception/slaughter, dressing, cutting, temperature control, sanitation and packaging must be represented; on-site fuel combustion, refrigeration and wastewater treatment must be included whenever present."
+    source_ids:
+      - jrc-sa-bref-2024
+  - rule_id: validate_atomic_rows
+    applies_to: "process inventory"
+    rule: "Every card must represent one concrete exchange; each utility, fuel, refrigerant, formulation, packaging component, by-product, waste and elementary emission must remain separate."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_uuid_evidence
+    applies_to: "UUID-bearing rows"
+    rule: "Store a Tiangong UUID only when both required lookup cores agree on identity, Product type, CPC where applicable and Mass support; otherwise leave it absent and retain a manifest review item."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "foreground processes"
+    rule: "Reconcile live mass through carcass, meat, every separated co-product and every waste for each stage; unexplained netting or hidden yield factors are nonconformant."
+    source_ids:
+      - jrc-sa-bref-2024
+  - rule_id: validate_temperature
+    applies_to: "product state"
+    rule: "Retain calibrated time-temperature evidence demonstrating fresh-or-chilled, not frozen, status at dispatch."
+    source_ids:
+      - un-cpc-3-0-21116
+      - jrc-sa-bref-2024
+  - rule_id: validate_utility_separation
+    applies_to: "utilities and fuels"
+    rule: "Electricity, steam, hot water, natural gas, diesel and LPG must not be pooled; shared records require meter boundary, period, driver, numerator and denominator."
+    source_ids:
+      - ec-pef-method-2021
+      - jrc-sa-bref-2024
+  - rule_id: validate_byproduct_separation
+    applies_to: "separated outputs"
+    rule: "Every actual edible or non-edible output must have its own measured row, declared destination and disclosed allocation treatment."
+    source_ids:
+      - jrc-sa-bref-2024
+      - ec-pef-method-2021
+  - rule_id: validate_wastewater_emissions
+    applies_to: "on-site wastewater treatment"
+    rule: "Report wastewater volume, sludge and each monitored emission separately; do not use an aggregate wastewater-pollutants exchange."
+    source_ids:
+      - jrc-sa-bref-2024
+published_dataset_profile:
+  dataset_role: "secondary_dataset; eligible for background_dataset use after methodology and data review"
+  downstream_use: "Foreground process and lifecyclemodel construction for slaughterhouse-gate production of CPC 21116 goat meat"
+  allowed_use: "Product-specific fresh-or-chilled goat-meat studies matching species, cut/carcass form, bone state, slaughter and cutting route, temperature regime, facility geography, period, wastewater route and packaging"
+  excluded_use: "Frozen meat; edible offal; prepared meat; live-goat production; mismatched species or route; retail, cooking or consumption claims not separately modelled; comparative assertions without an applicable reviewed method"
+  required_metadata: "canonical PCR id; reference UUID; CPC reference; species; origin; product form; bone state; lot; net meat mass; temperature and time; facility and period; animal count and live mass; process route; subcontractors; allocation; packaging; wastewater route; co-product and waste destinations; source ids"
+  required_quality_disclosure: "primary-data coverage; scale and meter calibration; lot traceability; stage mass-balance residuals; temperature evidence; utility allocation; refrigerant reconciliation; chemical identity; wastewater sampling; emission calculation; upstream dataset representativeness; uncertainty and verification status"
+  update_trigger: "Change in CPC scope, reference UUID, product state, species, cut or bone state, slaughter or cutting technology, refrigeration, sanitation chemistry, facility or supplier geography, wastewater treatment, allocation, packaging or applicable PEF/BREF guidance"
+data_sources:
+  - id: "un-cpc-3-0-21116"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure, code 21116 “Meat of goat, fresh or chilled”, official 30 June 2025 structure file and repository-retained raw CSV, https://unstats.un.org/unsd/classifications/Econ/cpc, accessed 2026-08-13"
+    used_for: "Exact product identity and fresh-or-chilled boundary; exclusion of frozen meat and offal from the reference category"
+  - id: "jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and/or Edible Co-products Industries, JRC135916, doi:10.2760/18199, https://publications.jrc.ec.europa.eu/repository/handle/JRC135916"
+    used_for: "Process decomposition from animal reception through slaughter, dressing, cutting and chilling; sanitation, utilities, refrigeration, wastewater, emissions and individually separated animal outputs"
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, consolidated text, https://eur-lex.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "Product-specific inventory, company-specific foreground data, allocation hierarchy, completeness, transparency, data quality and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b61f9c7decdd642ad97cbf5d9e704aefffa1ef1cca14de56a5830248d9c33564"
+  generated_content_sha256: "sha256:5dda216b114338de08e2b0b123ea91aa9322b0d5dc27fdd85760e2e7e39ad771"

@@ -1,10 +1,995 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23520"
-  title: "Refined sugar"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.refined-sugar"
+  classification_refs: "CPC 3.0:23520 (exact; Refined sugar)"
+  covered_products: "Unflavoured and uncoloured refined sucrose from cane or beet, including white granulated, soft white, refined brown, powdered, lump, cube, and equivalent bulk or packaged refined grades"
+  excluded_products: "Raw cane or beet sugar without further refining; molasses as principal product; glucose, fructose, lactose, syrups, maple products, confectionery; refined sugar with added flavouring or colouring"
+  representative_product: "Soft white sugar as the UUID-backed representative refined sugar flow; each data package shall declare the actual refined sugar subtype and specification"
+  production_route: "Cane raw-sugar refinery route or integrated beet-sugar route, with the declared starting feedstock and all included refining stages identified"
+  market_state: "Dry or conditioned refined sucrose at the refinery/factory gate, bulk or packaged as declared"
+functional_unit:
+  what: "Refined sucrose providing a declared food-ingredient sweetening product at the refinery or factory gate"
+  how_much: "1,000 kg net refined sugar, excluding packaging"
+  how_well: "Conforming to the declared refined sugar subtype and applicable product specification; for the UUID-backed soft white representative, declare sucrose plus invert sugar content, moisture or loss on drying, colour, and additives"
+  how_long_or_cycle: "One production campaign represented by the reporting period; no use-duration function is assigned to this intermediate food product"
+  reference_flow_link: "crystallization_finishing.refined_sugar_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_01
+      applies_to: "foreground manufacturing"
+      rule: "Include all refining operations between the declared starting condition and the declared plant gate, including utilities, process aids, co-products, wastes, wastewater, and direct emissions."
+      source_ids:
+        - eu-fdm-bat-2019-2031
+        - eu-pef-2021-2279
+    - rule_id: boundary_02
+      applies_to: "process completeness"
+      rule: "Maintain a process flow sheet and inventories of raw materials, water, energy, wastewater, and waste-gas streams so their origins and receiving treatment steps are traceable."
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - rule_id: boundary_03
+      applies_to: "upstream and downstream links"
+      rule: "Use separate compatible datasets for excluded feedstock production, transport, distribution, use, and end-of-life stages; do not imply that their burdens are zero."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_04
+      applies_to: "packaging"
+      rule: "Include primary, secondary, and tertiary packaging only when it is supplied with the reference product at the declared gate; otherwise state the exclusion."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_05
+      applies_to: "cut-offs"
+      rule: "Report any excluded material or energy flow and justify it; known environmentally relevant inputs, co-products, emissions, and wastes shall not be omitted merely because they are difficult to measure."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Sugar beet at factory receipt, raw cane/beet sugar at refinery receipt, or a traceable intermediate sugar liquor entering the first included foreground operation"
+  starting_condition_role: "Upstream hand-off into the foreground refined-sugar manufacturing system"
+  product_classification_scope: "Refined sucrose products within the reviewed semantic scope of this PCR, independent of any one classification code"
+  recursive_input_rule: "A same-category refined sugar input shall be recorded as an upstream product input with its own dataset and shall not be expanded recursively inside the current foreground process."
+  upstream_dataset_requirement: "Every excluded upstream stage shall be represented by a compatible dataset for the declared feedstock, origin, technology, geography, and hand-off condition."
+  disclosure: "Declare starting feedstock, included and excluded stages, cut-offs, internal recycling loops, utility boundary, packaging boundary, wastewater destination, geography, and reporting period."
+reference_flow_definition:
+  reference_amount: "1,000 kg net refined sugar at the declared gate"
+  product_flow_ref:
+    name: "Soft white sugar"
+    uuid: "d3dfedfb-7d93-4553-aba3-02940edaf6aa"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "refined sugar subtype"
+    - cane
+    - beet
+    - "or mixed origin"
+    - "production route"
+    - "starting feedstock state"
+    - "sucrose or polarisation specification"
+    - "moisture or loss on drying"
+    - "colour grade"
+    - "additive status"
+    - "packaging inclusion"
+    - "plant gate"
+    - geography
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference refined sugar"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1,000 kg net sugar product; exclude packaging mass and separately report packaging inputs."
+  - id: product_quality_basis
+    applies_to: "reference refined sugar quality"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Declare whether composition is as-received or dry basis and retain the test method, sampling date, and lot or campaign represented."
+  - id: utility_conversion
+    applies_to: "electricity and thermal-energy inputs"
+    required_property_ref:
+      name: "Energy property of the selected utility flow"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuels, heat, and steam"
+    rule: "Preserve metered units and conversion factors; do not convert steam, fuel, and electricity into a single undifferentiated energy flow."
+  - id: water_accounting
+    applies_to: "water inputs, reused water, condensate, and wastewater"
+    required_property_ref:
+      name: "Volume or mass property of the selected flow"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Report withdrawals, purchased water, internal reuse, condensate recovery, and discharge separately; internal recirculation shall not be counted as a new technosphere input."
+  - id: co_product_mass
+    applies_to: "molasses, beet pulp, filter cake, and other co-products or residues"
+    required_property_ref:
+      name: "Mass property of the selected flow"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure each output on a consistent wet or dry basis and declare moisture content when it affects mass balance or allocation."
+process_map:
+  - id: feedstock_preparation
+    name: "Feedstock preparation and extraction or melting"
+    inclusion: "conditional"
+    inclusion_condition: "Required when beet or raw sugar receipt occurs inside the foreground boundary"
+    role: "Prepare a traceable sugar liquor for purification"
+    quantitative_reference: "kg prepared sugar liquor"
+  - id: purification_concentration
+    name: "Purification, decolourisation, filtration, and concentration"
+    inclusion: "required"
+    inclusion_condition: "Always required; route-specific operations may be absent only when demonstrated by the declared incoming intermediate"
+    role: "Remove non-sugar material and concentrate sugar liquor"
+    quantitative_reference: "kg concentrated sugar liquor"
+  - id: crystallization_finishing
+    name: "Crystallisation, separation, drying, conditioning, and handling"
+    inclusion: "required"
+    inclusion_condition: "Always required"
+    role: "Produce refined sugar and separate co-products"
+    quantitative_reference: "1,000 kg net refined sugar"
+  - id: packaging
+    name: "Packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Required when packaging is supplied at the declared product gate"
+    role: "Package the finished sugar and record packaging losses"
+    quantitative_reference: "1,000 kg net refined sugar packaged"
+  - id: wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Required when wastewater is treated on site; otherwise record transfer to external treatment"
+    role: "Treat effluent and report residual emissions and sludge"
+    quantitative_reference: "m3 wastewater treated"
+process_inventory:
+  - id: feedstock_preparation
+    label: "Feedstock preparation and extraction or melting"
+    inputs:
+      product:
+        - row_id: sugar_feedstock
+          role: "Route-specific sugar feedstock"
+          name: "Route-specific sugar feedstock; select a Tiangong product flow matching the declared state and origin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sugar beets, raw cane or beet sugar, or another declared intermediate entering the first foreground operation. The input identity and amount shall be supported by receipt and inventory records."
+          amount:
+            expression: "measured net feedstock received and consumed"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water matching the actual supply source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record externally supplied water used for beet washing and extraction or raw-sugar melting, net of internal recirculation."
+          amount:
+            expression: "metered or balance-derived external water supplied"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "m3"
+                basis: "per 1,000 kg net refined sugar output; route-dependent and not a conformance limit"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Electricity for preparation"
+          name: "Electricity supply matching plant voltage and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by receiving, conveying, washing, slicing, extraction, melting, and associated pumps within this process."
+          amount:
+            expression: "sub-metered consumption or allocated plant meter balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "kWh"
+                basis: "per 1,000 kg net refined sugar output; route-dependent and not a default value"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_sugar_liquor
+          role: "Prepared sugar liquor"
+          name: "Prepared sugar liquor matching the actual intermediate state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the route-specific liquor passed to purification, together with solids or sucrose concentration and measurement basis."
+          amount:
+            expression: "measured transfer or calculated tank mass from volume and density"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_liquor
+              source_ids: []
+            ranges: []
+        - row_id: preparation_coproduct
+          role: "Beet pulp or recoverable preparation residue"
+          name: "Route-specific pulp or recoverable residue"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a separately used beet pulp or other marketed residue as a co-product; classify material without a product use as waste instead."
+          amount:
+            expression: "measured wet mass with dry-matter or moisture disclosure"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Preparation rejects and wash solids"
+          name: "Route-specific preparation waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record stones, soil, screenings, off-specification feedstock, and other wastes leaving preparation."
+          amount:
+            expression: "measured waste shipment or container mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: purification_concentration
+    label: "Purification, decolourisation, filtration, and concentration"
+    inputs:
+      product:
+        - row_id: prepared_liquor_input
+          role: "Prepared sugar liquor input"
+          name: "Prepared sugar liquor matching prepared_sugar_liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared liquor transferred from the route-specific preparation process without double counting internal transfers as external inputs."
+          amount:
+            expression: "measured transfer or calculated tank mass"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_liquor
+              source_ids: []
+            ranges: []
+        - row_id: purification_aids
+          role: "Purification and decolourisation aids"
+          name: "Chemical-specific product flow matching the purchased material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lime, carbon dioxide, acids, alkalis, adsorbents, filter aids, ion-exchange regenerants, and other aids actually consumed, each as a separate exchange in the produced dataset."
+          amount:
+            expression: "stock change plus receipts minus closing stock, corrected for transfers"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: purification_energy
+          role: "Purification and evaporation energy"
+          name: "Utility-specific product flows matching geography and technology"
+          flow_type: "product"
+          property_unit: "Energy / kWh for electricity and MJ for fuels, heat, or steam"
+          description: "Record electricity, fuels, heat, and steam as separate flows. Preserve the metered form and account for any on-site combined heat and power system consistently."
+          amount:
+            expression: "metered consumption or documented energy balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "8"
+                unit: "GJ"
+                basis: "per 1,000 kg net refined sugar output; technology-dependent and not a conformance limit"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: concentrated_liquor
+          role: "Concentrated purified sugar liquor"
+          name: "Concentrated purified sugar liquor matching the route"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the concentrated liquor sent to crystallisation, including mass, dry matter or soluble solids, sucrose concentration, and transfer period."
+          amount:
+            expression: "measured transfer or calculated tank mass from volume, density, and concentration records"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_liquor
+              source_ids: []
+            ranges: []
+        - row_id: recovered_condensate
+          role: "Recovered condensate"
+          name: "Recovered process condensate"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record condensate exported as a useful product; internal reuse remains an internal loop documented in the water balance."
+          amount:
+            expression: "metered condensate exported from the foreground system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        - row_id: purification_residue
+          role: "Filter cake, spent adsorbent, and purification residue"
+          name: "Residue-specific waste or product flow according to actual destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each residue separately and distinguish marketed co-products from waste sent to recovery, treatment, or disposal."
+          amount:
+            expression: "measured wet mass with moisture or dry-matter disclosure"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: crystallization_finishing
+    label: "Crystallisation, separation, drying, conditioning, and handling"
+    inputs:
+      product:
+        - row_id: concentrated_liquor_input
+          role: "Concentrated sugar liquor input"
+          name: "Concentrated purified sugar liquor matching concentrated_liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the concentrated liquor transferred into crystallisation and reconcile it with the output from purification and concentration."
+          amount:
+            expression: "measured transfer or calculated tank mass"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_liquor
+              source_ids: []
+            ranges: []
+        - row_id: finishing_energy
+          role: "Crystallisation and finishing energy"
+          name: "Utility-specific product flows matching geography and technology"
+          flow_type: "product"
+          property_unit: "Energy / kWh for electricity and MJ for fuels, heat, or steam"
+          description: "Record electricity, fuels, heat, and steam for crystallisation, centrifugation, drying, cooling, conditioning, and bulk handling as separate utility flows."
+          amount:
+            expression: "metered consumption or documented energy balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refined_sugar_output
+          role: "Refined sugar output"
+          name: "Soft white sugar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3dfedfb-7d93-4553-aba3-02940edaf6aa"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record conforming refined sugar at the declared gate. The actual product subtype shall be declared even when the representative Tiangong flow is used."
+          amount:
+            expression: "fixed reference amount of 1,000 kg net refined sugar"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net refined sugar at the declared gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-212-1999
+            ranges: []
+        - row_id: molasses_coproduct
+          role: "Molasses co-product"
+          name: "Molasses product flow matching cane or beet origin and state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record final molasses or other mother-liquor co-product when it leaves the foreground system for a beneficial use."
+          amount:
+            expression: "measured dispatched mass with dry-matter or moisture disclosure"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "800"
+                unit: "kg"
+                basis: "per 1,000 kg net refined sugar output; route-dependent and not an allocation factor"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: offspec_sugar_waste
+          role: "Off-specification sugar and captured dust"
+          name: "Sugar-containing production waste matching the actual destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record material that leaves the product system as waste; internally reworked sugar remains an internal loop and shall not be double counted."
+          amount:
+            expression: "measured waste shipment or container mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: sugar_particulate_air
+          role: "Channelled particulate emissions"
+          name: "Particulate-matter elementary flow matching the reported size fraction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated particulate matter released after abatement from drying, cooling, conveying, and handling; do not report captured dust as an elementary emission."
+          amount:
+            expression: "measured concentration multiplied by dry-gas flow and operating time, or a documented site emission inventory"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+  - id: packaging
+    label: "Packaging"
+    inputs:
+      product:
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Material-specific packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg or item count with measured mass conversion"
+          description: "Record each primary, secondary, and tertiary packaging material supplied with the product, including reusable packaging and pallet accounting where applicable."
+          amount:
+            expression: "packaging bill of materials minus documented reusable returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: packaging_losses
+          role: "Packaging losses"
+          name: "Material-specific packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged bags, films, cartons, pallets, and other packaging wastes generated before the plant gate."
+          amount:
+            expression: "measured waste shipment or stock reconciliation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_inputs
+          role: "Wastewater-treatment utilities and chemicals"
+          name: "Utility- and chemical-specific product flows"
+          flow_type: "product"
+          property_unit: "Energy or mass property / flow-specific unit"
+          description: "Record electricity, aeration energy, chemicals, and externally supplied treatment materials used by the on-site system as separate product flows."
+          amount:
+            expression: "metered consumption and stock records attributable to refinery wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        - row_id: wastewater_received
+          role: "Refinery wastewater received for treatment"
+          name: "Sugar-refinery wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the wastewater volume and relevant pollutant loads entering on-site or external treatment."
+          amount:
+            expression: "metered discharge to treatment, reconciled with the site water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "m3"
+                basis: "per 1,000 kg net refined sugar output; route-dependent and not a discharge limit"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treatment_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater-treatment sludge matching actual classification"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge and separated solids sent to recovery, treatment, or disposal, with dry-matter content and destination."
+          amount:
+            expression: "measured wet mass with dry-matter disclosure"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: treated_effluent
+          role: "Treated effluent emissions to water"
+          name: "Substance-specific elementary flows to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg pollutant; water volume / m3 reported separately"
+          description: "Record discharged water and relevant pollutant loads, including COD or TOC, total nitrogen, total phosphorus, and suspended solids when applicable to the permit and site inventory."
+          amount:
+            expression: "measured concentration multiplied by discharge volume over the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net refined sugar output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_01
+    applies_to: "multi-output operations"
+    rule: "Avoid allocation first by subdivision or by separately metering independently operated preparation, purification, crystallisation, energy, and treatment processes."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_02
+    applies_to: "physically coupled co-products"
+    rule: "When subdivision is not possible, use a demonstrated underlying physical relationship only if it represents how changes in the process drive the co-product outputs; document the relationship and factors."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_03
+    applies_to: "remaining multi-functionality"
+    rule: "If no defensible physical relationship exists, apply an explicitly documented other relationship, normally economic allocation based on representative prices, and report a sensitivity case for material co-products."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_04
+    applies_to: "molasses, beet pulp, filter cake, and recoverable residues"
+    rule: "Classify an output as a co-product only when it has a documented beneficial use and leaves the product system; otherwise model it as waste with its treatment burden."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_05
+    applies_to: "internal loops"
+    rule: "Do not allocate burdens to internally recirculated liquor, sugar, water, condensate, or steam; close the internal balance and count only external inputs and outputs."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "feedstock_preparation_purification_concentration"
+      flow_role: "feedstock and process-aid inputs"
+      record_type: "weighbridge, invoice, stock ledger, batch sheet"
+      raw_fields: "date; material id; supplier; gross mass; tare; net mass; opening stock; receipts; closing stock; moisture if relevant"
+      collection_method: "calibrated scale plus stock reconciliation"
+      unit: "kg"
+      frequency: "each receipt and monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included lines and warehouses"
+      aggregation_rule: "sum net consumed mass, then normalize by conforming refined sugar output"
+      quality_evidence: "scale calibration; invoice and stock reconciliation; missing-record log"
+    - protocol_id: cp_water_balance
+      process_id: "all_included_processes"
+      flow_role: "water withdrawal, purchase, reuse, condensate, wastewater, discharge"
+      record_type: "water-meter and water-balance record"
+      raw_fields: "meter id; timestamp; source or destination; volume; meter status; estimated downtime"
+      collection_method: "calibrated meters plus documented balance for unmetered branches"
+      unit: "m3"
+      frequency: "daily or campaign total, monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included water nodes"
+      aggregation_rule: "external input and discharge totals minus documented internal recirculation"
+      quality_evidence: "meter calibration; closure residual; downtime estimate record"
+    - protocol_id: cp_energy_records
+      process_id: "all_included_processes"
+      flow_role: "electricity, fuels, heat, and steam"
+      record_type: "meter, invoice, and energy-balance record"
+      raw_fields: "meter id; timestamp; energy carrier; quantity; unit; supplier; lower or higher heating value basis; CHP export"
+      collection_method: "sub-meter, invoice, or documented plant energy balance"
+      unit: "kWh; MJ; kg or m3 fuel with conversion factor"
+      frequency: "continuous or invoice period; monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included production and utility systems"
+      aggregation_rule: "preserve carriers separately and normalize each to refined sugar output"
+      quality_evidence: "meter calibration; invoices; conversion-factor source; energy-balance closure"
+    - protocol_id: cp_intermediate_liquor
+      process_id: "feedstock_preparation_purification_concentration_crystallization_finishing"
+      flow_role: "prepared and concentrated liquor transfers"
+      record_type: "inter-process transfer and laboratory record"
+      raw_fields: "tank id; batch; mass or volume; density; temperature; dry matter or soluble solids; sucrose concentration"
+      collection_method: "calibrated tank or flow measurement plus laboratory test"
+      unit: "kg; m3; %"
+      frequency: "each batch or continuous total"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every transfer between included stages"
+      aggregation_rule: "convert volume to mass with matched density and reconcile stage transfers"
+      quality_evidence: "instrument calibration; laboratory method; batch linkage; balance residual"
+    - protocol_id: cp_output_mass
+      process_id: "all_included_processes"
+      flow_role: "refined sugar, co-products, residues, and wastes"
+      record_type: "dispatch, scale, and waste record"
+      raw_fields: "product or waste id; destination; gross mass; tare; net mass; moisture or dry matter; disposition"
+      collection_method: "calibrated scale, dispatch record, and waste manifest"
+      unit: "kg"
+      frequency: "each batch or shipment"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included output points"
+      aggregation_rule: "sum by product identity and destination; normalize to refined sugar output"
+      quality_evidence: "scale calibration; dispatch or waste documentation; moisture test"
+    - protocol_id: cp_direct_emissions
+      process_id: "crystallization_finishing_wastewater_treatment"
+      flow_role: "air and water emissions"
+      record_type: "monitoring and emissions-calculation record"
+      raw_fields: "source id; sample time; concentration; gas or water flow; operating hours; method; detection limit; abatement status"
+      collection_method: "direct monitoring or permit-compliant calculation"
+      unit: "kg pollutant; mg/Nm3; mg/L; m3"
+      frequency: "permit frequency and campaign coverage"
+      temporal_coverage: "representative operating conditions across the reporting period"
+      site_scope: "every relevant discharge point"
+      aggregation_rule: "concentration times measured flow and time, with non-detect handling disclosed"
+      quality_evidence: "accredited test report; flow-meter calibration; permit record; calculation sheet"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "packaging materials and losses"
+      record_type: "packaging bill-of-materials and reconciliation record"
+      raw_fields: "packaging code; material; item count; unit mass; purchased mass; returned units; waste mass"
+      collection_method: "bill of materials, purchase records, item weighing, and waste reconciliation"
+      unit: "kg; item"
+      frequency: "each packaging specification and monthly total"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all packaging supplied with the declared product"
+      aggregation_rule: "item count times verified unit mass, adjusted for returns and losses"
+      quality_evidence: "specification; sample-weigh record; purchase and waste reconciliation"
+    - protocol_id: cp_treatment_records
+      process_id: "wastewater_treatment"
+      flow_role: "treatment inputs, sludge, and operating data"
+      record_type: "treatment operations and waste record"
+      raw_fields: "treatment train; utility or chemical id; quantity; sludge mass; moisture; uptime; bypass"
+      collection_method: "meters, dosing logs, laboratory records, and waste manifests"
+      unit: "flow-specific"
+      frequency: "daily or batch, monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "on-site treatment serving included operations"
+      aggregation_rule: "sum attributable inputs and outputs; disclose shared-treatment allocation"
+      quality_evidence: "meter and dosing calibration; laboratory QA; bypass and maintenance log"
+    - protocol_id: cp_product_quality
+      process_id: "crystallization_finishing"
+      flow_role: "refined sugar specification"
+      record_type: "laboratory and product-release record"
+      raw_fields: "lot; subtype; polarisation or sucrose result; invert sugar; moisture or loss on drying; colour; ash; additives; test method"
+      collection_method: "representative laboratory sampling and product release records"
+      unit: "test-specific"
+      frequency: "each lot or statistically justified composite"
+      temporal_coverage: "all product represented by the dataset"
+      site_scope: "all finished-product sampling and release points"
+      aggregation_rule: "production-weighted result and pass/fail by declared specification"
+      quality_evidence: "laboratory method; calibration; sample plan; release certificate"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "reference product"
+      rule: "Net refined sugar mass = gross dispatch mass - tare and packaging mass; exclude non-conforming or reworked stock not leaving the declared gate."
+      inputs:
+        - "gross mass"
+        - tare
+        - "packaging mass"
+        - "product disposition"
+      output: "kg conforming refined sugar"
+      source_ids:
+        - codex-cxs-212-1999
+    - id: calc_specific_inventory
+      applies_to: "every external inventory flow"
+      rule: "Specific amount = reporting-period flow amount / reporting-period net conforming refined sugar mass x 1,000 kg."
+      inputs:
+        - "collected flow amount"
+        - "net refined sugar output"
+      output: "flow amount per 1,000 kg refined sugar"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_liquor_mass
+      applies_to: "intermediate liquor"
+      rule: "Liquor mass = measured volume x density at the matched temperature; retain measured concentration and sampling basis."
+      inputs:
+        - volume
+        - density
+        - temperature
+        - concentration
+      output: "kg intermediate liquor and composition fields"
+      source_ids: []
+    - id: calc_emission_load
+      applies_to: "direct emissions"
+      rule: "Emission load = measured concentration x measured dry-gas or wastewater volume, with unit conversion and operating coverage documented."
+      inputs:
+        - concentration
+        - flow
+        - "time or total volume"
+        - "non-detect rule"
+      output: "kg pollutant per reporting period"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_mass_balance
+      applies_to: "each process and full foreground system"
+      rule: "Reconcile external and inter-process mass inputs with products, co-products, wastes, emissions, inventory change, and explained water removal or addition; investigate material residuals."
+      inputs:
+        - "all mass-bearing inputs and outputs"
+        - stocks
+        - "moisture and solids data"
+      output: "mass-balance residual and explanation"
+      source_ids: []
+    - id: calc_allocation_factor
+      applies_to: "multi-output process"
+      rule: "Derive allocation factors only after applying the hierarchy in Section 7; factors across all co-products shall sum to 1 within rounding tolerance and the data period shall match the inventory."
+      inputs:
+        - "subdivided records or physical/economic allocation driver"
+      output: "documented allocation factor by output"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all material inputs/outputs"
+      requirement: "Preserve product subtype, origin, route, starting condition, specification, Tiangong UUID where selected, and gate identity."
+      evidence: "product specification; supplier and dispatch records; UUID lookup record outside PCR content"
+    - id: dq_temporal
+      applies_to: "foreground inventory"
+      requirement: "Use one complete and representative reporting period; cover seasonal campaigns, start-up, shutdown, and abnormal periods or disclose exclusions."
+      evidence: "production calendar; meter and batch coverage; exclusion log"
+    - id: dq_technology
+      applies_to: "foreground inventory"
+      requirement: "Describe extraction or melting, purification, decolourisation, evaporation, crystallisation, drying, energy system, dust control, and wastewater treatment technologies actually used."
+      evidence: "process flow sheet; equipment list; operating records"
+    - id: dq_geography
+      applies_to: "utilities and upstream links"
+      requirement: "Use datasets representative of the plant, feedstock origin, electricity grid, fuels, water source, treatment destination, and transport geography."
+      evidence: "supplier origin; plant location; utility contracts; dataset metadata"
+    - id: dq_completeness
+      applies_to: "all known inputs and outputs"
+      requirement: "Include all known raw materials, water, energy, products, co-products, emissions, and wastes; disclose and justify any cut-off."
+      evidence: "material, water, and energy balances; emission inventory; cut-off log"
+    - id: dq_precision
+      applies_to: "measured and calculated values"
+      requirement: "Retain calibration, sampling, laboratory, density, moisture, conversion, and uncertainty evidence sufficient to reproduce each normalized value."
+      evidence: "calibration certificates; laboratory QA; calculation sheets; uncertainty record"
+    - id: dq_consistency
+      applies_to: "bilingual and multi-process dataset"
+      requirement: "Apply consistent wet/dry basis, net/gross mass, reporting period, allocation method, and internal-transfer treatment across processes."
+      evidence: "cross-process reconciliation; reviewer checklist; bilingual rule-id check"
+validation_rules:
+  - rule_id: validation_01
+    applies_to: "PCR identity"
+    rule: "The canonical PCR id, CPC reference, covered products, exclusions, and declared product subtype shall be present and mutually consistent."
+    source_ids: []
+  - rule_id: validation_02
+    applies_to: "reference flow"
+    rule: "The reference output shall equal 1,000 kg net refined sugar, use the selected product-flow, Mass, and Units-of-mass UUIDs without dataset versions, and declare all required qualifiers."
+    source_ids:
+      - codex-cxs-212-1999
+  - rule_id: validation_03
+    applies_to: "product quality"
+    rule: "Product release evidence shall demonstrate conformance with the declared subtype specification; values and test basis for purity or polarisation, moisture, colour, and additives shall be disclosed as applicable."
+    source_ids:
+      - codex-cxs-212-1999
+  - rule_id: validation_04
+    applies_to: "boundary completeness"
+    rule: "Every included process in the process map shall have matching inventory records, and excluded upstream or downstream stages shall have explicit dataset links or scope disclosures."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-fdm-bat-2019-2031
+  - rule_id: validation_05
+    applies_to: "material, water, and energy balance"
+    rule: "Process and site balances shall reconcile internal transfers and external flows; unexplained residuals, unmetered estimates, and internal recirculation shall be reported and reviewed."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+  - rule_id: validation_06
+    applies_to: "multi-functionality"
+    rule: "Co-product classification and allocation shall follow the Section 7 hierarchy, factors shall sum to 1 within rounding tolerance, and material alternative methods shall be tested."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_07
+    applies_to: "emissions and waste"
+    rule: "Wastewater, channelled air emissions, captured residues, sludge, off-specification sugar, and their destinations shall not be omitted or double counted."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+  - rule_id: validation_08
+    applies_to: "provisional ranges"
+    rule: "Every reasoned_estimate range shall remain labelled replaceable and shall not override collected site data or be presented as a regulatory, BAT, or conformance limit."
+    source_ids: []
+  - rule_id: validation_09
+    applies_to: "data quality"
+    rule: "Temporal, technological, geographical, completeness, and precision evidence shall be retained for company-specific activity data and direct elementary flows."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground refined-sugar production data package at the declared factory or refinery gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon footprint and LCA models requiring route-, geography-, specification-, and gate-matched refined-sugar manufacturing data"
+  excluded_use: "Unqualified substitution for raw sugar, syrups, glucose or fructose, flavoured or coloured sugar, confectionery, another route or geography, or a cradle-to-grave result without linked stages"
+  required_metadata: "PCR id; product subtype and specification; cane/beet origin; starting condition; route; included stages; plant gate; geography; reporting period; technology; utility mix; packaging scope; co-product treatment; allocation method; cut-offs; UUIDs"
+  required_quality_disclosure: "Data coverage; measured versus calculated shares; calibration and sampling evidence; material, water, and energy balance residuals; missing data; provisional ranges used; allocation sensitivity; source and dataset representativeness"
+  update_trigger: "Material change in feedstock origin or state, product specification, process route, energy or water system, abatement or treatment, packaging, allocation basis, plant geography, or reporting period representativeness"
+data_sources:
+  - id: "codex-cxs-212-1999"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 212-1999, Standard for Sugars, amended through 2022, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+212-1999%2FCXS_212e.pdf (retrieved 2026-08-10)"
+    used_for: "Product boundary, refined sugar subtype descriptions, composition and quality qualifiers, and analysis context"
+  - id: "eu-fdm-bat-2019-2031"
+    type: "official_guidance"
+    reference: "European Commission, Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32019D2031 (retrieved 2026-08-10)"
+    used_for: "Sugar-manufacturing process and environmental-inventory scope; water, energy, wastewater, waste-gas, monitoring, and treatment records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-10)"
+    used_for: "Functional unit and reference flow, system boundary, company-specific inventory completeness, data quality, cut-offs, packaging, and multi-functionality hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5adc87ecedc08994a0039f911286704454f6f0d2e581ee113f84ecd6fab42b64"
+  generated_content_sha256: "sha256:24ea533f2fd2393f65f018e07f4cb140b55de205a41f5ac2884c8aca14590f7b"

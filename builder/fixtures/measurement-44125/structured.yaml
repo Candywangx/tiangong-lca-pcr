@@ -1,0 +1,954 @@
+schema_version: 1
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.straw-or-fodder-balers-including-pickup-balers"
+  classification_refs: "CPC 3.0 44125, Straw or fodder balers, including pickup balers"
+  covered_products: "Complete straw balers, fodder balers, and pickup balers manufactured as one finished machine"
+  excluded_products: "Baling service; baled straw or fodder; separate wrappers or loaders; spare parts; unfinished subassemblies"
+  representative_product: "One complete configured baler, including its pickup mechanism when fitted"
+  production_route: "Fabricated metal components, purchased components, welding, conditional coating, final assembly, and factory-gate acceptance"
+  market_state: "New, accepted finished machine at the facility gate; configuration, net mass, pickup fitment, and delivery state declared"
+functional_unit:
+  what: "Manufacture and acceptance of one complete straw or fodder baler, including pickup equipment when fitted"
+  how_much: "One finished baler"
+  how_well: "The declared configuration passes documented manufacturer acceptance checks; net mass and pickup status are declared"
+  how_long_or_cycle: "One manufacturing cycle ending at factory-gate acceptance; operating life and field use are outside this PCR"
+  reference_flow_link: "finished_baler"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "foreground manufacturing boundary"
+      rule: "Include facility-gate inputs, final product, manufacturing waste, and measured direct emissions; identify upstream datasets rather than silently absorbing their burdens."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_conditional_coating
+      applies_to: "surface preparation and coating"
+      rule: "Include pretreatment, application, flash-off, curing, and direct emissions only when the declared route uses them; retain coating chemistry and emission-control boundary."
+      source_ids:
+        - epa-metal-parts-surface-coating-tsd-2001
+    - rule_id: boundary_welding_emissions
+      applies_to: "electric arc welding"
+      rule: "When electric arc welding occurs, collect consumables and direct particulate or gaseous emissions at the declared exhaust boundary; do not apply a generic factor without route qualifiers."
+      source_ids:
+        - epa-ap42-electric-arc-welding-1995
+    - rule_id: boundary_representative_bom
+      applies_to: "complete-baler configuration"
+      rule: "Use one manufacturer-controlled model, serial-number range, and tying/braking/precutter configuration as the reporting configuration. The John Deere 568/578 manual establishes pickup, bale-chamber roll and bearing, power-train, hydraulic, wheel-hub, tying, lubrication, and electrical-control systems as a bounded representative component architecture; replace its illustrative architecture with the reporting manufacturer's controlled BOM and do not combine alternatives."
+      source_ids:
+        - john-deere-tm3300-2010
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, energy, gases, water, and coating products cross the facility boundary."
+  starting_condition_role: "Foreground manufacturing begins at receipt or generation; upstream extraction and production are linked datasets."
+  product_classification_scope: "Complete new machines within CPC 3.0 44125 only; a subassembly is not a reference-product substitute."
+  recursive_input_rule: "Record an actual same-category supplied input with its configuration and require a distinct upstream dataset; do not recursively substitute this PCR reference flow."
+  upstream_dataset_requirement: "Link upstream data for each purchased product, electricity, natural gas, carbon dioxide, water, and waste route; disclose geography, technology, and supplier state."
+  disclosure: "Declare exclusions, conditional routes, subcontracted operations, allocation choices, direct-emission control boundary, and omitted records."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Finished straw or fodder baler (UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer and facility"
+    - "model/configuration"
+    - "baler type"
+    - "pickup fitted or not"
+    - "net accepted mass"
+    - "bill of materials"
+    - "coating route"
+    - "acceptance-test boundary"
+    - geography
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record accepted net mass of the complete baler and normalize foreground exchanges to that exact accepted unit."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity's original energy unit and document conversion to MJ before normalization."
+  - id: gas_volume_condition
+    applies_to: "natural gas for curing"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Declare meter basis or reference conditions; do not convert gas volume without a documented factor."
+process_map:
+  - id: component_fabrication
+    name: "Component fabrication and welding"
+    inclusion: "required"
+    inclusion_condition: "—"
+    role: "Fabricate and join structural components and combine purchased machine components"
+    quantitative_reference: "per accepted finished baler"
+  - id: surface_finish
+    name: "Surface preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared configuration is coated at the reporting facility."
+    role: "Prepare, coat, cure, and manage coating emissions"
+    quantitative_reference: "per coated accepted finished baler"
+  - id: final_assembly_acceptance
+    name: "Final assembly and acceptance"
+    inclusion: "required"
+    inclusion_condition: "—"
+    role: "Assemble the complete machine and establish the accepted factory-gate output"
+    quantitative_reference: "one finished baler"
+process_inventory:
+  - id: component_fabrication
+    label: "Component fabrication and welding"
+    inputs:
+      product:
+        - row_id: steel_plate
+          role: "Carbon steel plate used in baler components"
+          name: "Carbon steel plate (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record received steel plate that is cut or formed into components; record grade, thickness, coating state, and supplier route separately from sections."
+          amount:
+            expression: "Weigh accepted plate issued to the manufacturing order less documented returns."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_issue
+              source_ids: []
+            ranges: []
+        - row_id: steel_structural_sections
+          role: "Carbon steel structural sections used in the baler frame"
+          name: "Carbon steel structural sections (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record received structural sections used in the frame; do not aggregate with plate because geometry and supply state may differ."
+          amount:
+            expression: "Weigh or obtain traceable material-issue records for installed sections."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_issue
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_cylinder
+          role: "Purchased hydraulic cylinder installed in the baler"
+          name: "Hydraulic cylinder (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record each received hydraulic cylinder installed in the declared configuration, retaining supplier and component specification."
+          amount:
+            expression: "Count cylinders installed in the accepted unit and retain supplier component records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Purchased electrical energy for fabrication and welding"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity attributed to fabrication and welding separately from coating electricity where meters or the documented allocation permit."
+          amount:
+            expression: "Metered fabrication and welding electricity allocated to the manufacturing order."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: welding_wire
+          role: "Steel welding wire"
+          name: "Steel welding wire (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record consumable welding wire issued to the declared welding operations, retaining alloy and flux state."
+          amount:
+            expression: "Weigh wire issued less documented returns by manufacturing order and welding route."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_records
+              source_ids:
+                - epa-ap42-electric-arc-welding-1995
+            ranges: []
+        - row_id: welding_carbon_dioxide
+          role: "Carbon dioxide used as welding shielding gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when the declared gas-metal-arc welding route uses supplied carbon dioxide shielding gas; retain gas composition and cylinder or bulk-meter basis."
+          amount:
+            expression: "Metered or cylinder-accounted shielding gas used for the manufacturing order."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_records
+              source_ids:
+                - epa-ap42-electric-arc-welding-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Segregated steel fabrication scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record metal offcuts and rejected components sent out of the foreground process, retaining alloy, contamination state, and receiving route."
+          amount:
+            expression: "Weigh scrap dispatched from the manufacturing order by receiving route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: welding_pm10
+          role: "Particulate matter, PM10, from electric arc welding"
+          name: "Particulate matter, PM10, from electric arc welding (UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only when electric arc welding occurs and the declared exhaust boundary releases a measured direct particulate emission."
+          amount:
+            expression: "Measured or mass-balanced direct particulate release after declared welding-exhaust controls."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - epa-ap42-electric-arc-welding-1995
+            ranges: []
+  - id: surface_finish
+    label: "Surface preparation and coating"
+    inputs:
+      product:
+        - row_id: coating_process_water
+          role: "Process water for surface preparation"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when process water crosses the facility boundary for the declared surface-preparation route; declare water quality, source, and metering basis."
+          amount:
+            expression: "Metered water used in the declared surface-preparation operation."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+        - row_id: powder_coating
+          role: "Powder coating formulation"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c581697-0eed-4b86-a070-b94966eb7344"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the specific powder coating applied to the baler, retaining chemistry, solids content, application efficiency, and recovered-powder disposition."
+          amount:
+            expression: "Weigh virgin coating issued less recovered coating returned to the documented reuse or waste route."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+        - row_id: coating_electricity
+          role: "Purchased electrical energy for coating"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record coating-equipment electricity separately where metering permits; otherwise retain the documented allocation to coated manufacturing orders."
+          amount:
+            expression: "Metered coating electricity allocated to coated manufacturing orders."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: coating_natural_gas
+          role: "Natural gas for coating curing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record only when the declared coating route uses gaseous natural gas for curing; declare meter reference conditions and curing equipment."
+          amount:
+            expression: "Metered gaseous natural gas used by declared coating-curing equipment."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: coating_wastewater
+          role: "Aqueous surface-preparation wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when the declared aqueous pretreatment route discharges or dispatches a physically distinct wastewater stream; retain the treatment destination and measured mass."
+          amount:
+            expression: "Measure wastewater leaving the foreground pretreatment operation, net of documented internal recirculation, by route and reporting period."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_outputs
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+        - row_id: powder_overspray_waste
+          role: "Waste powder-coating overspray"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when powder overspray is not returned to the same coating batch and instead leaves as a separately managed waste."
+          amount:
+            expression: "Weigh unrecovered powder dispatched to the declared receiving route; exclude recovered powder returned to use."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_outputs
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+      elementary:
+        - row_id: coating_fossil_co2
+          role: "Fossil carbon dioxide from on-site natural-gas curing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when natural gas is combusted at the reporting facility for coating cure. This is the direct combustion release and excludes upstream gas-supply and electricity emissions."
+          amount:
+            expression: "Measure the controlled-stack release or calculate it from metered gas at declared reference conditions, supplier gas composition or measured fossil-carbon content, documented oxidation, and the carbon-to-carbon-dioxide molecular-mass ratio; do not use an undocumented default factor."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+        - row_id: coating_nmvoc
+          role: "Non-methane volatile organic compounds from coating"
+          name: "non-methane volatile organic compounds"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only where the declared pretreatment or coating route uses organic solvents and releases measured non-methane volatile organic compounds after controls."
+          amount:
+            expression: "Measure stack or fugitive release at the declared emission-control boundary and retain solvent composition."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one coated accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - epa-metal-parts-surface-coating-tsd-2001
+            ranges: []
+  - id: final_assembly_acceptance
+    label: "Final assembly and acceptance"
+    inputs:
+      product:
+        - row_id: pickup_assembly
+          role: "Purchased pickup mechanism"
+          name: "Pickup mechanism for a baler (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record the complete purchased pickup mechanism only when the selected BOM treats it as one received component."
+          amount:
+            expression: "Count complete purchased pickup mechanisms installed in accepted units; if the pickup is fabricated on site, record its atomic material and component inputs instead and set this row not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: bale_chamber_roll
+          role: "Purchased bale-chamber roll"
+          name: "Bale-chamber roll (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record each purchased roll that forms or supports the bale chamber in the selected configuration."
+          amount:
+            expression: "Count purchased bale-chamber rolls installed in the controlled configuration; on-site-fabricated rolls are represented by their atomic fabrication inputs instead."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: pto_driveline
+          role: "Purchased power-take-off driveline"
+          name: "Power-take-off driveline for a baler (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record the purchased tractor power-take-off driveline installed between the hitch interface and baler power train."
+          amount:
+            expression: "Count the purchased driveline installed in the accepted configuration and retain part number, clutch type, and supplier."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: gear_case
+          role: "Purchased gear case"
+          name: "Baler gear case (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record each purchased gear case installed in the selected drive and precutter configuration."
+          amount:
+            expression: "Count purchased gear cases installed in the selected configuration; distinguish the configured precutter state and supplier part number."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: drive_chain
+          role: "Purchased drive chain"
+          name: "Steel drive chain (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased steel drive chain installed as a distinct transmission component."
+          amount:
+            expression: "Record the net received mass of installed purchased drive chains by part number and chain specification."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: rolling_element_bearing
+          role: "Purchased rolling-element bearing"
+          name: "Rolling-element bearing for bale-chamber rolls (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record purchased rolling-element bearings installed on bale-chamber rolls and other declared shafts."
+          amount:
+            expression: "Count installed purchased bearings from the configuration-controlled BOM and retain bearing type, size, and supplier part number."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: wheel_tire_assembly
+          role: "Purchased wheel and tire assembly"
+          name: "Baler wheel and tire assembly (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record each purchased wheel-and-tire assembly supporting the accepted baler."
+          amount:
+            expression: "Count installed purchased wheel-and-tire assemblies and retain wheel, tire, hub, and brake configuration identifiers."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: electronic_controller
+          role: "Purchased electronic tying controller"
+          name: "Electronic controller for baler tying functions (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record the purchased electronic control unit that performs tying-control functions in the selected configuration."
+          amount:
+            expression: "Count installed purchased controllers for the selected manual or electronic tying-control configuration; do not aggregate monitors, wiring, sensors, or actuators into this row."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: net_tying_mechanism
+          role: "Purchased net-tying mechanism"
+          name: "Net-tying mechanism for a baler (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number / item"
+          description: "Record the purchased net-tying mechanism in the bounded representative configuration. A reporting configuration that instead uses twine tying must replace this row with its atomic twine-mechanism BOM exchanges and must not retain both alternatives."
+          amount:
+            expression: "Count the installed net-tying mechanism from the selected controlled configuration and retain its supplier part number."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+        - row_id: factory_fill_lubricant
+          role: "Factory-fill drive-chain lubricant"
+          name: "Drive-chain lubricating oil (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record drive-chain lubricant added at the factory and remaining within the accepted product or foreground equipment boundary."
+          amount:
+            expression: "Weigh lubricant added before factory-gate acceptance less documented recovery; include only factory fill and exclude field-use maintenance lubricant."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - john-deere-tm3300-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_baler
+          role: "Complete accepted straw or fodder baler"
+          name: "Finished straw or fodder baler (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the complete machine at factory-gate acceptance. Do not substitute an assembled or coated subassembly for this reference-product state."
+          amount:
+            expression: "One accepted finished baler with declared net mass and configuration."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared manufacturing operations"
+    rule: "Avoid allocation by subdividing meters, material issues, and waste records to the manufacturing order whenever feasible."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_causal_basis
+    applies_to: "residual shared operations"
+    rule: "When subdivision is not feasible, allocate a shared record using a documented causal physical driver consistent across the reporting period; disclose the driver and calculation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_scrap_route
+    applies_to: "steel scrap"
+    rule: "Record segregated steel scrap to its declared receiving treatment route; do not credit recovery unless downstream modelling and receiving route are disclosed."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_issue
+      process_id: "component_fabrication"
+      flow_role: "steel plate and structural sections"
+      record_type: "material issue and return records"
+      raw_fields: "order id; material grade; specification; mass issued; mass returned; supplier route"
+      collection_method: "calibrated scale and traceable inventory record"
+      unit: "kg"
+      frequency: "each order"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "net issued mass / accepted balers of the declared configuration"
+      quality_evidence: "reconciled issue, return, and stock records"
+    - protocol_id: cp_component_installation
+      process_id: "component_fabrication_and_final_assembly_acceptance"
+      flow_role: "declared purchased components and factory-fill lubricant"
+      record_type: "controlled BOM, receipt, installation, and fill records"
+      raw_fields: "manufacturer; model; serial range; configuration option; order id; component number; supplier; quantity or mass installed; rejected or returned quantity"
+      collection_method: "configuration-controlled BOM reconciled to traceable assembly and issue records"
+      unit: "item or kg"
+      frequency: "each order"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "installed quantity or net fill / accepted balers of the exact configuration"
+      quality_evidence: "signed BOM revision, part traceability, issue/return record, and acceptance record"
+    - protocol_id: cp_energy_records
+      process_id: "component_fabrication"
+      flow_role: "electricity and natural gas"
+      record_type: "meter record and allocation worksheet"
+      raw_fields: "meter id; reading; energy unit; gas conditions; operating time; order allocation driver"
+      collection_method: "calibrated meter and allocation worksheet"
+      unit: "MJ or m3"
+      frequency: "each interval"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "attributable meter total / accepted balers"
+      quality_evidence: "meter calibration and utility reconciliation"
+    - protocol_id: cp_welding_records
+      process_id: "component_fabrication"
+      flow_role: "welding wire and shielding gas"
+      record_type: "consumable issue record"
+      raw_fields: "welding route; wire specification; gas composition; issued; returned; order id"
+      collection_method: "traceable consumable record"
+      unit: "kg"
+      frequency: "each order"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "net consumable / accepted balers"
+      quality_evidence: "lot and work-order reconciliation"
+    - protocol_id: cp_coating_records
+      process_id: "surface_finish"
+      flow_role: "water and powder coating"
+      record_type: "coating-batch and meter record"
+      raw_fields: "route; water quality; coating chemistry; issued mass; recovered mass; meter reading; order id"
+      collection_method: "batch record, scale, and meter"
+      unit: "kg"
+      frequency: "each coating batch"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "net input / coated accepted balers"
+      quality_evidence: "batch reconciliation and coating-process record"
+    - protocol_id: cp_coating_outputs
+      process_id: "surface_finish"
+      flow_role: "pretreatment wastewater and waste powder overspray"
+      record_type: "flow-meter, scale, mass-balance, and dispatch records"
+      raw_fields: "coating route; water input; recirculated water; discharged or dispatched wastewater; powder issued; powder recovered to use; waste powder; receiving route; order allocation"
+      collection_method: "calibrated meter and scale reconciled to batch and dispatch records"
+      unit: "kg"
+      frequency: "each batch or dispatch"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "measured output / coated accepted balers with documented allocation"
+      quality_evidence: "batch balance, internal-recirculation record, and receiving record"
+    - protocol_id: cp_combustion_emissions
+      process_id: "surface_finish"
+      flow_role: "fossil carbon dioxide from curing-gas combustion"
+      record_type: "stack measurement or metered-gas carbon calculation"
+      raw_fields: "gas meter reading and reference conditions; supplier composition or measured fossil-carbon content; oxidation basis; control boundary; accepted coated units"
+      collection_method: "documented stack measurement or carbon mass balance"
+      unit: "kg"
+      frequency: "each campaign or reporting interval"
+      temporal_coverage: "reported production period"
+      site_scope: "reporting facility"
+      aggregation_rule: "direct fossil CO2 / coated accepted balers with matching gas-use allocation"
+      quality_evidence: "measurement report or calculation worksheet reconciled to the gas meter"
+    - protocol_id: cp_waste_and_emissions
+      process_id: "component_fabrication_and_surface_finish"
+      flow_role: "steel scrap, welding PM10, and coating NMVOC"
+      record_type: "dispatch record or emission measurement"
+      raw_fields: "stream identity; mass; control device; sampling method; receiving route; allocation"
+      collection_method: "scale, dispatch record, or documented emission test"
+      unit: "kg"
+      frequency: "dispatch or campaign"
+      temporal_coverage: "reported period and test date"
+      site_scope: "reporting facility"
+      aggregation_rule: "recorded quantity / accepted balers with documented allocation"
+      quality_evidence: "receiving record, control log, and test report"
+  calculation_rules:
+    - id: calc_net_material_issue
+      applies_to: "steel, welding wire, and powder coating"
+      rule: "Net issue = issued mass − documented returned or recovered mass; divide by accepted balers of the declared configuration."
+      inputs:
+        - issue
+        - return
+        - recovery
+        - "acceptance records"
+      output: "normalized material input"
+      source_ids: []
+    - id: calc_metered_energy
+      applies_to: "electricity and natural gas"
+      rule: "Attribute metered consumption with a documented causal driver when no dedicated meter exists; divide by accepted balers."
+      inputs:
+        - "meter readings"
+        - "gas conditions"
+        - "operating time"
+        - "allocation driver"
+        - "acceptance records"
+      output: "normalized energy or gas input"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_direct_release
+      applies_to: "direct particulate and NMVOC"
+      rule: "Normalize measured or mass-balanced release after the declared control boundary to accepted balers for the matching period and route."
+      inputs:
+        - "emission measurement or mass balance"
+        - "control boundary"
+        - "acceptance records"
+      output: "normalized elementary emission"
+      source_ids:
+        - epa-ap42-electric-arc-welding-1995
+        - epa-metal-parts-surface-coating-tsd-2001
+    - id: calc_controlled_bom
+      applies_to: "purchased components and factory-fill lubricant"
+      rule: "Select exactly one model, serial-number range, and route configuration; include each applicable atomic BOM line once, replace on-site-fabricated component rows with their material exchanges, subtract documented returns, and divide by accepted units of the same configuration."
+      inputs:
+        - "signed BOM revision"
+        - "part receipts"
+        - "installation or fill records"
+        - returns
+        - "accepted units"
+      output: "normalized configured component or consumable input"
+      source_ids:
+        - john-deere-tm3300-2010
+    - id: calc_coating_residuals
+      applies_to: "wastewater and powder overspray"
+      rule: "For each declared coating batch, report measured wastewater leaving the foreground boundary net of internal recirculation and measured powder waste dispatched net of powder returned to the same process; do not infer either output as an unverified difference."
+      inputs:
+        - "water and powder batch inputs"
+        - "recirculation/recovery records"
+        - "output measurements"
+        - "dispatch records"
+        - "accepted coated units"
+      output: "normalized wastewater and powder-waste outputs"
+      source_ids:
+        - epa-metal-parts-surface-coating-tsd-2001
+    - id: calc_natural_gas_co2
+      applies_to: "direct fossil CO2 from curing"
+      rule: "Use a direct measurement or calculate fossil CO2 = metered gas volume at stated conditions × documented fossil-carbon mass per gas volume × documented oxidation fraction × 44/12; normalize to coated accepted units sharing the gas allocation. No undocumented default composition or oxidation factor is permitted."
+      inputs:
+        - "gas volume and conditions"
+        - "supplier composition or measured fossil-carbon content"
+        - "oxidation evidence"
+        - "accepted coated units"
+      output: "normalized direct fossil CO2 emission"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "reference product and components"
+      requirement: "Retain configuration, baler type, pickup fitment, net mass, and component specifications; do not combine different configurations without disclosure."
+      evidence: "acceptance record and controlled bill of materials"
+    - id: dq_bom_instantiation
+      applies_to: "complete-baler component inputs"
+      requirement: "Reconcile the accepted unit to one signed BOM revision and one serial/configuration record. Explain each difference from the representative 568/578 architecture and demonstrate that pickup, bale chamber, transmission, hydraulic, bearings, wheels/brakes, tying, controls, and factory-fill consumables are included, manufactured on site through other rows, or explicitly not applicable."
+      evidence: "BOM reconciliation and configuration deviation log"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one declared reporting period and retain dates for records and emission measurements."
+      evidence: "dated primary records"
+    - id: dq_boundary
+      applies_to: "conditional welding and coating"
+      requirement: "State whether welding, pretreatment, coating, flash-off, curing, and controls occur at the reporting facility."
+      evidence: "process map, work instructions, and control log"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Disclose missing flows, UUID gaps, omitted routes, allocation drivers, and upstream datasets."
+      evidence: "data-package completeness statement"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference product"
+    rule: "Confirm that the output is one complete accepted baler, not an agricultural straw flow or unfinished baler subassembly."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_mass_and_configuration
+    applies_to: "reference flow"
+    rule: "Check net accepted mass, baler type, pickup status, facility, and production period before normalization."
+    source_ids: []
+  - rule_id: validation_route_conditions
+    applies_to: "conditional rows"
+    rule: "Include coating and welding rows only when their route applies; verify associated meter, material, waste, and emission records."
+    source_ids:
+      - epa-ap42-electric-arc-welding-1995
+      - epa-metal-parts-surface-coating-tsd-2001
+  - rule_id: validation_bom_closure
+    applies_to: "final assembly inputs"
+    rule: "Verify one controlled model/serial/configuration and reconcile every installed purchased component and factory-fill consumable to the accepted unit; fail if an alternative configuration is mixed into the same inventory."
+    source_ids:
+      - john-deere-tm3300-2010
+  - rule_id: validation_coating_output_closure
+    applies_to: "surface preparation and coating"
+    rule: "When aqueous pretreatment, powder coating, or natural-gas curing applies, require the corresponding measured wastewater, measured waste-powder, and direct fossil-CO2 row or a documented zero/not-applicable determination supported by the actual route."
+    source_ids:
+      - epa-metal-parts-surface-coating-tsd-2001
+  - rule_id: validation_uuid_resolution
+    applies_to: "unresolved flow rows"
+    rule: "Do not use proxies for unresolved UUIDs; resolve only after exact flow identity, product state, property, and unit are confirmed."
+    source_ids: []
+  - rule_id: validation_balance
+    applies_to: "material and waste records"
+    rule: "Reconcile material issues, returns, finished output, and scrap dispatch; investigate unexplained differences."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground data package projected as a secondary_dataset or background_dataset"
+  downstream_use: "Manufacturing-stage process and lifecyclemodel projections for the declared baler configuration"
+  allowed_use: "Cradle-to-gate or manufacturing-stage studies retaining configuration, facility, period, upstream datasets, and exclusions"
+  excluded_use: "Baling service, crop production, field-use performance, or comparison of different configurations without additional foreground data"
+  required_metadata: "manufacturer; facility; geography; period; baler type; pickup status; net mass; component specifications; coating and welding route; energy basis; upstream datasets; allocation; emission-control boundary"
+  required_quality_disclosure: "record coverage, missing UUIDs, unresolved range evidence, allocation drivers, measurement basis, conditional-route applicability, and quality exceptions"
+  update_trigger: "Change in configuration, material specification, pickup design, supplier route, welding or coating technology, energy source, emission control, facility, or measurement method"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure CSV, row 44125, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Product classification identity and scope"
+  - id: "epa-ap42-electric-arc-welding-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Chapter 12.19, Electric Arc Welding, January 1995, https://www.epa.gov/sites/production/files/2020-11/documents/c12s19.pdf"
+    used_for: "Welding process, consumable, emission, and qualifier collection rules"
+  - id: "epa-metal-parts-surface-coating-tsd-2001"
+    type: "official_guidance"
+    reference: "U.S. EPA, National Emission Standards for Hazardous Air Pollutants for Miscellaneous Metal Parts and Products Surface Coating Operations: Technical Support Document, https://nepis.epa.gov/Exe/ZyPDF.cgi?Dockey=P1006FDO.PDF"
+    used_for: "Conditional agricultural-machinery coating boundary and potential emission points"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006 Environmental management — Life cycle assessment — Requirements and guidelines, confirmed 2022, https://committee.iso.org/standard/38498.html"
+    used_for: "LCA scope, inventory, reporting, and allocation-rule basis"
+  - id: "john-deere-tm3300-2010"
+    type: "official_guidance"
+    reference: "Deere & Company, 568 and 578 Round Balers Technical Manual, TM3300 (31MAR10), official preview, https://techpubs.deere.com/api/preview/get/TM3300"
+    used_for: "Bounded representative pickup-baler component architecture, configuration alternatives, and controlled-BOM instantiation requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b99e02cc31fb077655002a7ce90a6adc306bc18b2b8faf30eb9db8d6cfda407a"
+  generated_content_sha256: "sha256:e67def03ff06cb3cd83cfd72aeb6665d27ba3fa8ceb380dca9ee91459d77638b"

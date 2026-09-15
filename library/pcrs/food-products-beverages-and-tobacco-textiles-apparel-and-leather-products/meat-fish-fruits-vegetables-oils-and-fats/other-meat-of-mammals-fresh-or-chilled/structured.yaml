@@ -1,10 +1,2111 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21119"
-  title: "Other meat of mammals, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-meat-of-mammals-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21119, Other meat of mammals, fresh or chilled"
+  covered_products: "Fresh or chilled skeletal muscle meat and cuts from mammals within CPC 21119, with one species and cut declared per dataset"
+  excluded_products: "Meat of mammals classified in CPC 21111-21118; frozen meat; edible offal; minced meat; meat preparations; preserved or cooked meat; undeclared multi-species aggregate meat"
+  representative_product: "Boneless red deer (Cervus elaphus) primal or retail cut, fresh or chilled"
+  production_route: "Transfer of inspected deer carcass or primal cut; receiving and grading; trimming/cutting; conditional washing; chilling/cold holding; packaging; sanitation; factory-gate dispatch"
+  market_state: "Packaged fresh or chilled meat, never frozen, with dispatch temperature and packaging atmosphere declared"
+functional_unit:
+  what: "Boneless red deer meat supplied at the factory gate for sale or further food preparation"
+  how_much: "1 kg net meat mass, excluding packaging"
+  how_well: "Inspected and accepted, species and anatomical cut declared, fresh or chilled and never frozen, meeting the applicable hygiene and dispatch-temperature specification"
+  how_long_or_cycle: "One production and dispatch lot through the post-slaughter cutting and packing facility"
+  reference_flow_link: "Net packaged meat output in delivered_deer_meat"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_handover
+      applies_to: "foreground boundary"
+      rule: "Begin at physical transfer of a post-mortem-inspected carcass or primal cut; exclude husbandry/hunting and slaughter while requiring those burdens in the incoming meat dataset."
+      source_ids:
+        - unsd-cpc-3-21119
+        - codex-cxc-58-2005
+    - rule_id: boundary_required_operations
+      applies_to: "foreground process coverage"
+      rule: "Include receiving, inspection/grading, trimming/cutting, chilling/cold holding, packaging, sanitation, and factory-gate dispatch; include meat washing only when it is actually performed."
+      source_ids:
+        - codex-cxc-58-2005
+        - fao-meat-cutting-guidelines
+        - rotz-et-al-2019
+    - rule_id: boundary_cold_chain
+      applies_to: "meat temperature control"
+      rule: "Maintain and record the declared fresh/chilled state through cutting, packaging, cold holding, and dispatch. For the representative EU large-wild-game deer route, apply the 7 degrees C product limit where Regulation (EC) No 853/2004 governs; otherwise record and apply the competent jurisdiction's limit."
+      source_ids:
+        - eu-853-2004-consolidated
+        - codex-cxc-58-2005
+    - rule_id: boundary_complete_inventory
+      applies_to: "foreground exchanges"
+      rule: "Inventory all known material and energy inputs, products, co-products, wastes, direct emissions, and refrigerant losses; do not hide an actual flow in an aggregate energy, material, packaging, or waste row."
+      source_ids:
+        - eu-pef-2021-2279
+        - eu-bat-2023-2749
+boundary_abstraction:
+  declared_starting_condition: "Post-mortem-inspected red deer carcass or red deer primal cut, fresh or chilled, identified by species and cut, handed over at the cutting/packing facility"
+  starting_condition_role: "Upstream product input; it carries all husbandry or wild-harvest, live-animal transport, killing, dressing, evisceration, hide removal, and inspection burdens"
+  product_classification_scope: "CPC 3.0 subclass 21119 only; one declared mammal species and cut per data package"
+  recursive_input_rule: "Record a same-category purchased fresh/chilled meat input once at its physical handover condition and link one upstream dataset; do not reopen the excluded husbandry, hunting, or slaughter stages in this foreground package."
+  upstream_dataset_requirement: "The accepted carcass or primal-cut input requires a geographically, temporally, technologically, species-, origin-, and cut-representative upstream dataset through post-mortem inspection and handover."
+  disclosure: "Declare species, scientific name, farmed/wild origin, cut, bone status, input route, incoming temperature, inspection/acceptance status, packaging route, chilling regime, facility, period, and any excluded or shared operation."
+reference_flow_definition:
+  reference_amount: "1 kg net meat mass"
+  product_flow_ref:
+    name: "Boneless deer meat, fresh or chilled"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "mammal common and scientific name"
+    - "farmed or wild origin"
+    - "carcass/primal input route"
+    - "anatomical cut"
+    - "bone status"
+    - "fresh or chilled state"
+    - "confirmation never frozen"
+    - "receiving and dispatch temperatures"
+    - "jurisdictional temperature limit"
+    - "packaging format and component materials"
+    - "vacuum or modified-atmosphere status"
+    - "modified-atmosphere gas composition when used"
+    - "net meat mass"
+    - "facility and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net edible meat at factory gate; packaging mass is inventoried separately and shall not be included in reference mass."
+  - id: wet_mass_basis
+    applies_to: "meat, bone, fat, trimmings, rejects, and sludge"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use as-weighed wet mass and retain weighing date, scale identity, tare procedure, and moisture condition where it affects interpretation."
+  - id: utility_basis
+    applies_to: "electricity, steam, fuels, water, ice, gases, and refrigerants"
+    required_property_ref:
+      name: "Energy, mass, or volume appropriate to the atomic flow"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Preserve the metered or invoiced unit, record conversion factors and calorific-value basis, then normalize to 1 kg net reference product."
+  - id: temperature_basis
+    applies_to: "receiving, cutting, chilling, storage, and dispatch"
+    required_property_ref:
+      name: "Temperature and elapsed time"
+      uuid: ""
+    required_unit: "degrees C and h"
+    rule: "Retain product temperature, measurement location, timestamp, instrument, and applicable legal or customer limit; do not substitute room temperature for product temperature unless the governing rule expressly allows it."
+  - id: no_empirical_range_without_two_sources
+    applies_to: "all inventory amount ranges"
+    required_property_ref:
+      name: "Same as the underlying flow"
+      uuid: ""
+    required_unit: "Same as the underlying flow"
+    rule: "Do not publish an empirical range from a single case or single point. Omit the range until at least two independent, verified, boundary-, unit-, and basis-compatible original sources support a synthesis."
+process_map:
+  - id: p01_receiving
+    name: "Receiving, identity inspection, and grading"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground production"
+    quantitative_reference: "kg accepted incoming deer carcass or primal cut"
+  - id: p02_cutting
+    name: "Trimming, deboning, and cutting"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground production"
+    quantitative_reference: "kg cut deer meat output"
+  - id: p03_washing
+    name: "Product washing and ice contact"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared product route actually washes meat or applies ice directly to it"
+    role: "foreground conditioning"
+    quantitative_reference: "kg washed deer meat output"
+  - id: p04_chilling
+    name: "Chilling and refrigerated holding"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground conditioning and storage"
+    quantitative_reference: "kg chilled deer meat output and storage hours"
+  - id: p05_packaging
+    name: "Vacuum or modified-atmosphere packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; instantiate the actual packaging route"
+    role: "foreground production"
+    quantitative_reference: "kg packaged deer meat output"
+  - id: p06_sanitation
+    name: "Facility and equipment sanitation"
+    inclusion: "required"
+    inclusion_condition: "Always; record only chemicals and fuels actually used"
+    role: "shared foreground support"
+    quantitative_reference: "kg net reference product supported"
+  - id: p07_dispatch
+    name: "Finished-goods cold staging and factory-gate dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground delivery"
+    quantitative_reference: "kg net reference product delivered"
+process_inventory:
+  - id: p01_receiving
+    label: "Receiving, identity inspection, and grading"
+    inputs:
+      product:
+        - row_id: incoming_deer_carcass
+          role: "Incoming red deer carcass, fresh or chilled"
+          name: "Red deer carcass, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this route-specific input only when an inspected red deer carcass crosses the foreground boundary."
+          amount:
+            expression: "Weighed accepted and rejected incoming carcass mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_mass_identity
+              source_ids:
+                - unsd-cpc-3-21119
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: incoming_deer_primal_cut
+          role: "Incoming red deer primal cut, fresh or chilled"
+          name: "Red deer primal cut, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this route-specific input only when an inspected red deer primal cut, rather than a carcass, crosses the foreground boundary."
+          amount:
+            expression: "Weighed accepted and rejected incoming primal-cut mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_mass_identity
+              source_ids:
+                - unsd-cpc-3-21119
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Electricity for receiving and grading"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used for receiving conveyors, scales, inspection lighting, and grading equipment."
+          amount:
+            expression: "Submetered electricity, or documented allocation from a facility meter when no submeter exists"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_deer_carcass
+          role: "Accepted red deer carcass"
+          name: "Accepted red deer carcass, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted carcass mass transferred to cutting when the carcass-input route applies."
+          amount:
+            expression: "Weighed accepted carcass mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_mass_identity
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: accepted_deer_primal_cut
+          role: "Accepted red deer primal cut"
+          name: "Accepted red deer primal cut, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted primal-cut mass transferred to cutting when the primal-input route applies."
+          amount:
+            expression: "Weighed accepted primal-cut mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_mass_identity
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: receiving_reject
+          role: "Rejected deer meat at receiving"
+          name: "Rejected red deer meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record meat rejected for identity, condition, hygiene, temperature, or specification failure."
+          amount:
+            expression: "Weighed rejected mass by reason and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: p02_cutting
+    label: "Trimming, deboning, and cutting"
+    inputs:
+      product:
+        - row_id: cutting_carcass_input
+          role: "Accepted red deer carcass for cutting"
+          name: "Accepted red deer carcass, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal transfer applies to the carcass-input route."
+          amount:
+            expression: "Mass transferred from accepted_deer_carcass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: cutting_primal_input
+          role: "Accepted red deer primal cut for cutting"
+          name: "Accepted red deer primal cut, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal transfer applies to the primal-input route."
+          amount:
+            expression: "Mass transferred from accepted_deer_primal_cut"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: cutting_electricity
+          role: "Electricity for trimming, deboning, and cutting"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for saws, knives, conveyors, portioning, and local extraction attributable to this process."
+          amount:
+            expression: "Submetered electricity or documented allocation from equipment power and operating hours"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - fao-meat-cutting-guidelines
+                - rotz-et-al-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cut_deer_meat
+          role: "Cut red deer meat"
+          name: "Cut red deer meat, fresh"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh cut meat transferred to washing or directly to chilling."
+          amount:
+            expression: "Weighed cut meat mass by declared anatomical cut and lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: deer_bone_recovery
+          role: "Red deer bone sent for recovery"
+          name: "Red deer bone for recovery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record clean bone as a co-product only when it leaves to a documented recovery use."
+          amount:
+            expression: "Weighed bone mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: deer_fat_recovery
+          role: "Red deer fat sent for recovery"
+          name: "Red deer fat for recovery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separated fat as a co-product only when it leaves to a documented recovery use."
+          amount:
+            expression: "Weighed fat mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: deer_trimming_recovery
+          role: "Red deer trimmings sent for recovery"
+          name: "Red deer meat trimmings for recovery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record edible or recoverable trimmings as a co-product only when a documented use exists."
+          amount:
+            expression: "Weighed trimming mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+      waste:
+        - row_id: discarded_deer_bone
+          role: "Discarded red deer bone"
+          name: "Waste red deer bone"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record bone sent to waste treatment rather than recovery."
+          amount:
+            expression: "Weighed discarded bone mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: discarded_deer_fat
+          role: "Discarded red deer fat"
+          name: "Waste red deer fat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fat sent to waste treatment rather than recovery."
+          amount:
+            expression: "Weighed discarded fat mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: discarded_deer_trimmings
+          role: "Discarded red deer trimmings"
+          name: "Waste red deer meat trimmings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trimmings sent to waste treatment rather than recovery."
+          amount:
+            expression: "Weighed discarded trimming mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: blood_contaminated_drainage
+          role: "Blood-contaminated drainage from cutting"
+          name: "Blood-contaminated meat-cutting drainage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected blood-bearing drip and drainage; do not combine it with product-washing wastewater."
+          amount:
+            expression: "Measured volume converted with recorded density, or direct mass measurement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_streams
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: cutting_reject
+          role: "Rejected red deer cuts"
+          name: "Rejected red deer cuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record meat rejected during trimming, deboning, or cutting separately from recoverable trimmings."
+          amount:
+            expression: "Weighed rejected mass by reason and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: p03_washing
+    label: "Product washing and ice contact"
+    inputs:
+      product:
+        - row_id: washing_meat_input
+          role: "Cut red deer meat for washing"
+          name: "Cut red deer meat, fresh"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this transfer only when product washing is actually performed."
+          amount:
+            expression: "Mass transferred from cut_deer_meat to the washing route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_washing
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: washing_water
+          role: "Potable water for product washing"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water that contacts meat only when this washing step occurs."
+          amount:
+            expression: "Metered water delivered to product-washing equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_washing
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: washing_ice
+          role: "Potable ice contacting meat"
+          name: "Ice from potable water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ice only when it directly contacts meat or washing water."
+          amount:
+            expression: "Weighed ice supplied to the washing route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_washing
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: washing_electricity
+          role: "Electricity for product washing"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for wash pumps, conveyors, and ice handling."
+          amount:
+            expression: "Submetered electricity or equipment power multiplied by recorded operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - eu-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: washed_deer_meat
+          role: "Washed red deer meat"
+          name: "Washed red deer meat, fresh"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record washed meat mass transferred to chilling."
+          amount:
+            expression: "Weighed washed meat mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_washing
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: meat_washing_wastewater
+          role: "Meat-washing wastewater"
+          name: "Meat-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record product-washing effluent separately from sanitation wastewater and blood-contaminated drainage."
+          amount:
+            expression: "Metered segregated wastewater volume at the washing process outlet"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_streams
+              source_ids:
+                - eu-bat-2023-2749
+                - codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: p04_chilling
+    label: "Chilling and refrigerated holding"
+    inputs:
+      product:
+        - row_id: chilling_unwashed_meat_input
+          role: "Unwashed cut red deer meat for chilling"
+          name: "Cut red deer meat, fresh"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this internal transfer when product washing does not occur."
+          amount:
+            expression: "Mass transferred from cut_deer_meat directly to chilling"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: chilling_washed_meat_input
+          role: "Washed red deer meat for chilling"
+          name: "Washed red deer meat, fresh"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this internal transfer when product washing occurs."
+          amount:
+            expression: "Mass transferred from washed_deer_meat"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: chilling_electricity
+          role: "Electricity for chilling and cold holding"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record compressor, condenser, evaporator fan, defrost, cold-room lighting, and control electricity."
+          amount:
+            expression: "Refrigeration submeter reading allocated by measured product mass-time when equipment is shared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+                - fao-cold-store-1991
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: refrigerant_r717_makeup
+          role: "Ammonia R717 refrigerant make-up"
+          name: "Ammonia, refrigerant R717"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when the refrigeration system contains R717."
+          amount:
+            expression: "Purchased and charged make-up mass reconciled with stock, recovery, and service records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: refrigerant_r744_makeup
+          role: "Carbon dioxide R744 refrigerant make-up"
+          name: "Carbon dioxide, refrigerant R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when the refrigeration system contains R744."
+          amount:
+            expression: "Purchased and charged make-up mass reconciled with stock, recovery, and service records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: refrigerant_r134a_makeup
+          role: "HFC-134a refrigerant make-up"
+          name: "1,1,1,2-tetrafluoroethane, refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when the refrigeration system contains R134a."
+          amount:
+            expression: "Purchased and charged make-up mass reconciled with stock, recovery, and service records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: refrigerant_r404a_makeup
+          role: "Refrigerant R404A make-up"
+          name: "Refrigerant blend R404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when the refrigeration system contains R404A; preserve the mixture identity rather than recording a generic refrigerant."
+          amount:
+            expression: "Purchased and charged make-up mass reconciled with stock, recovery, and service records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_deer_meat
+          role: "Chilled red deer meat"
+          name: "Chilled red deer meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record chilled meat transferred to packaging together with product temperature and holding time."
+          amount:
+            expression: "Weighed chilled meat mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-853-2004-consolidated
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: refrigerant_r717_emission
+          role: "Ammonia R717 emitted to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate leakage only when R717 is used."
+          amount:
+            expression: "R717 make-up plus documented inventory decrease minus recovered or transferred R717"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: refrigerant_r744_emission
+          role: "Carbon dioxide R744 emitted to air"
+          name: "Carbon dioxide to air, refrigerant origin"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate leakage only when R744 is used."
+          amount:
+            expression: "R744 make-up plus documented inventory decrease minus recovered or transferred R744"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: refrigerant_r134a_emission
+          role: "HFC-134a emitted to air"
+          name: "1,1,1,2-tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate leakage only when R134a is used."
+          amount:
+            expression: "R134a make-up plus documented inventory decrease minus recovered or transferred R134a"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: refrigerant_r404a_emission
+          role: "Refrigerant R404A emitted to air"
+          name: "Refrigerant blend R404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate leakage only when R404A is used and preserve the mixture identity required by the background method."
+          amount:
+            expression: "R404A make-up plus documented inventory decrease minus recovered or transferred R404A"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigeration
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+  - id: p05_packaging
+    label: "Vacuum or modified-atmosphere packaging"
+    inputs:
+      product:
+        - row_id: packaging_meat_input
+          role: "Chilled red deer meat for packaging"
+          name: "Chilled red deer meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the chilled meat mass entering the declared packaging route."
+          amount:
+            expression: "Mass transferred from chilled_deer_meat"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity for packaging"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for sealers, vacuum pumps, gas mixers, labelers, and packaging conveyors."
+          amount:
+            expression: "Submetered electricity or equipment power multiplied by recorded operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: vacuum_bag_pa_pe
+          role: "Polyamide/polyethylene vacuum bag"
+          name: "Polyamide/polyethylene multilayer vacuum bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only for the vacuum-pack route."
+          amount:
+            expression: "Issued bag mass minus returned usable stock, reconciled with packaged units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: pet_tray
+          role: "PET tray"
+          name: "Polyethylene terephthalate tray"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when a PET tray is used."
+          amount:
+            expression: "Issued tray mass minus returned usable stock, reconciled with packaged units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: polyethylene_lidding_film
+          role: "Polyethylene lidding film"
+          name: "Polyethylene lidding film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when polyethylene lidding film is used."
+          amount:
+            expression: "Issued film mass minus returned usable stock, reconciled with packaged units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: cellulose_absorbent_pad
+          role: "Cellulose absorbent pad"
+          name: "Cellulose absorbent meat pad"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when an absorbent pad is placed in the package."
+          amount:
+            expression: "Issued pad mass minus returned usable stock, reconciled with packaged units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: corrugated_cardboard_case
+          role: "Corrugated cardboard case"
+          name: "Corrugated cardboard case"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each corrugated distribution case used for dispatch."
+          amount:
+            expression: "Issued case mass minus returned usable stock, reconciled with dispatched cases"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: paper_label
+          role: "Paper package label"
+          name: "Paper package label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the paper label separately from film and tray."
+          amount:
+            expression: "Issued label mass minus returned usable stock, reconciled with packaged units"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: map_carbon_dioxide
+          role: "Carbon dioxide for modified-atmosphere packaging"
+          name: "Carbon dioxide, food grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when carbon dioxide is supplied to the package atmosphere."
+          amount:
+            expression: "Gas-cylinder or bulk-meter withdrawal allocated to conforming MAP units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_gases
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: map_nitrogen
+          role: "Nitrogen for modified-atmosphere packaging"
+          name: "Nitrogen gas, food grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when nitrogen is supplied to the package atmosphere."
+          amount:
+            expression: "Gas-cylinder or bulk-meter withdrawal allocated to conforming MAP units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_gases
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: map_oxygen
+          role: "Oxygen for modified-atmosphere packaging"
+          name: "Oxygen gas, food grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only when oxygen is supplied to the package atmosphere."
+          amount:
+            expression: "Gas-cylinder or bulk-meter withdrawal allocated to conforming MAP units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_gases
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_deer_meat
+          role: "Packaged chilled red deer meat"
+          name: "Packaged boneless red deer meat, chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net meat mass transferred to finished-goods cold staging."
+          amount:
+            expression: "Net scale mass excluding all packaging components"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - codex-cxc-58-2005
+                - rotz-et-al-2019
+            ranges: []
+      waste:
+        - row_id: packaging_reject
+          role: "Rejected packaged red deer meat"
+          name: "Rejected packaged red deer meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record nonconforming meat rejected at packaging separately from packaging scrap."
+          amount:
+            expression: "Net rejected meat mass by reason and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: waste_vacuum_bag_pa_pe
+          role: "Waste polyamide/polyethylene vacuum bags"
+          name: "Waste polyamide/polyethylene multilayer film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record unused, damaged, and process-scrap vacuum bags."
+          amount:
+            expression: "Weighed waste vacuum-bag material by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: waste_pet_tray
+          role: "Waste PET trays"
+          name: "Waste polyethylene terephthalate tray"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged or unused PET trays."
+          amount:
+            expression: "Weighed waste PET tray material by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: waste_polyethylene_lidding_film
+          role: "Waste polyethylene lidding film"
+          name: "Waste polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record lidding-film trim and rejected film."
+          amount:
+            expression: "Weighed waste polyethylene film by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: waste_cellulose_absorbent_pad
+          role: "Waste cellulose absorbent pads"
+          name: "Waste cellulose absorbent meat pad"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record unused or rejected absorbent pads; meat-soiled pads remain this distinct waste material."
+          amount:
+            expression: "Weighed waste absorbent-pad material by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: waste_corrugated_cardboard
+          role: "Waste corrugated cardboard"
+          name: "Waste corrugated cardboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-case waste separately from paper labels."
+          amount:
+            expression: "Weighed waste corrugated cardboard by recycling or treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: waste_paper_label
+          role: "Waste paper labels"
+          name: "Waste paper label"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or unused paper labels separately."
+          amount:
+            expression: "Weighed waste paper-label material by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - eu-pef-2021-2279
+                - rotz-et-al-2019
+            ranges: []
+      elementary:
+        []
+  - id: p06_sanitation
+    label: "Facility and equipment sanitation"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Potable sanitation water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water for equipment, surface, room, crate, and hygiene cleaning within the foreground facility."
+          amount:
+            expression: "Metered sanitation water, segregated from product-washing water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - codex-cxc-58-2005
+                - fao-cold-store-1991
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Electricity for sanitation"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, pressure washers, chemical dosing, and sanitation equipment."
+          amount:
+            expression: "Submetered electricity or documented equipment-time calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: sanitation_steam
+          role: "Purchased steam for sanitation"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam only when it crosses the site boundary; onsite-boiler fuels are recorded separately."
+          amount:
+            expression: "Metered purchased steam energy using recorded pressure, temperature, and condensate return basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - fao-meat-cutting-guidelines
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: sanitation_natural_gas
+          role: "Natural gas for onsite sanitation heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ net calorific value"
+          description: "Record natural gas only when burned onsite for hot water, steam, or sanitation heat."
+          amount:
+            expression: "Metered fuel volume converted with supplier composition and net calorific value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_combustion
+              source_ids:
+                - eu-bat-2023-2749
+                - ipcc-2006-stationary-combustion
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: sanitation_lpg
+          role: "Liquefied petroleum gas for onsite sanitation heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record LPG only when it is burned onsite."
+          amount:
+            expression: "Metered or invoiced LPG mass adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_combustion
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: sanitation_diesel
+          role: "Diesel for onsite sanitation heat"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record diesel only when it is burned in a stationary onsite heater or boiler; vehicle fuel is outside this row."
+          amount:
+            expression: "Metered or invoiced diesel mass adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_combustion
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: sanitation_sodium_hydroxide
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record formulated-product mass and active sodium hydroxide concentration when this alkaline cleaner is used."
+          amount:
+            expression: "Chemical issue mass multiplied by verified active concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: sanitation_nitric_acid
+          role: "Nitric acid cleaner"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record formulated-product mass and active nitric acid concentration when this acid cleaner is used."
+          amount:
+            expression: "Chemical issue mass multiplied by verified active concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-bat-2023-2749
+            ranges: []
+        - row_id: sanitation_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record formulated-product mass and active sodium hypochlorite concentration when this disinfectant is used."
+          amount:
+            expression: "Chemical issue mass multiplied by verified active concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - fao-cold-store-1991
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: sanitation_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record formulated-product mass and active peracetic acid concentration when this disinfectant is used."
+          amount:
+            expression: "Chemical issue mass multiplied by verified active concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "Meat-facility sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record sanitation wastewater separately from product-washing effluent and blood-contaminated cutting drainage."
+          amount:
+            expression: "Metered segregated sanitation wastewater volume by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_streams
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Meat-processing wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet sludge"
+          description: "Record sludge only when generated by onsite treatment serving the foreground operations."
+          amount:
+            expression: "Weighed wet sludge with dry-solids fraction and destination recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs_outputs
+              source_ids:
+                - eu-bat-2023-2749
+                - rotz-et-al-2019
+            ranges: []
+      elementary:
+        - row_id: combustion_carbon_dioxide
+          role: "Fossil carbon dioxide from onsite fuel combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct fossil carbon dioxide for each recorded onsite fuel and sum only after retaining fuel-level calculations."
+          amount:
+            expression: "Sum of each fuel activity multiplied by its verified jurisdiction-, fuel-, and technology-specific CO2 factor; use IPCC default only when a better factor is unavailable"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_combustion
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: combustion_methane
+          role: "Methane from onsite fuel combustion"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct methane for each recorded onsite fuel and combustion technology."
+          amount:
+            expression: "Sum of each fuel activity multiplied by its verified jurisdiction-, fuel-, and technology-specific CH4 factor; use IPCC default only when a better factor is unavailable"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_combustion
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: combustion_nitrous_oxide
+          role: "Nitrous oxide from onsite fuel combustion"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct nitrous oxide for each recorded onsite fuel and combustion technology."
+          amount:
+            expression: "Sum of each fuel activity multiplied by its verified jurisdiction-, fuel-, and technology-specific N2O factor; use IPCC default only when a better factor is unavailable"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_combustion
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+  - id: p07_dispatch
+    label: "Finished-goods cold staging and factory-gate dispatch"
+    inputs:
+      product:
+        - row_id: dispatch_meat_input
+          role: "Packaged chilled red deer meat for dispatch"
+          name: "Packaged boneless red deer meat, chilled"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net meat mass entering finished-goods cold staging."
+          amount:
+            expression: "Mass transferred from packaged_deer_meat"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: dispatch_electricity
+          role: "Electricity for finished-goods staging and loading"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for dispatch cold holding, dock equipment, and loading attributable to the reference product before gate transfer."
+          amount:
+            expression: "Submetered electricity allocated by net meat mass-time in finished-goods staging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - fao-cold-store-1991
+                - eu-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_deer_meat
+          role: "Boneless deer meat delivered at factory gate"
+          name: "Boneless deer meat, fresh or chilled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product output. It is one declared deer species and cut, packaged, fresh or chilled, and never frozen."
+          amount:
+            expression: "Net delivered meat mass excluding packaging; normalize the dataset to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dispatch
+              source_ids:
+                - unsd-cpc-3-21119
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: dispatch_reject
+          role: "Rejected meat at dispatch"
+          name: "Rejected chilled red deer meat at dispatch"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaged meat rejected during final temperature, label, seal, or condition checks."
+          amount:
+            expression: "Net rejected meat mass by reason and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rejects
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-853-2004-consolidated
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_preserve_upstream
+    applies_to: "incoming carcass or primal cut"
+    rule: "Do not reallocate upstream husbandry, hunting, or slaughter burdens inside this gate-to-gate PCR; use the burden already carried by the accepted incoming product dataset and disclose its allocation method."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared foreground equipment and utilities"
+    rule: "Prefer submetering, batch records, equipment time, mass-time, or another causal subdivision before allocation."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-bat-2023-2749
+  - rule_id: allocation_joint_cutting
+    applies_to: "meat, recoverable bone, fat, and trimmings"
+    rule: "If cutting cannot be subdivided, partition residual shared burdens by measured wet output mass because mass is the directly observed physical relationship; disclose all mass fractions and test economic allocation as a sensitivity when co-product value could change conclusions."
+    source_ids:
+      - eu-pef-2021-2279
+      - rotz-et-al-2019
+  - rule_id: allocation_waste
+    applies_to: "discarded material, wastewater, sludge, and packaging waste"
+    rule: "Do not assign a co-product credit to waste. Assign segregation and onsite treatment burdens to the process that generates the waste; model downstream treatment with the declared waste destination."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_no_double_count
+    applies_to: "internal product transfers"
+    rule: "Internal transfers between required processes carry no new upstream burden; reconcile them once in the process mass balance and count only exchanges crossing the foreground system boundary in the published inventory."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_mass_identity
+      process_id: "p01_receiving"
+      flow_role: "incoming and accepted deer meat"
+      record_type: "lot receipt, inspection, and scale record"
+      raw_fields: "species; scientific name; origin; carcass/primal route; cut; bone status; fresh/chilled state; incoming temperature; gross; tare; net; accepted; rejected"
+      collection_method: "calibrated scale joined to traceability and inspection record"
+      unit: "kg; degrees C"
+      frequency: "every lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all receiving points"
+      aggregation_rule: "sum accepted and rejected net mass by declared route; retain lot links"
+      quality_evidence: "scale calibration; supplier document; inspection disposition; temperature record"
+    - protocol_id: cp_process_electricity
+      process_id: "p01_receiving_p07_dispatch"
+      flow_role: "process electricity"
+      record_type: "meter and operating-time record"
+      raw_fields: "meter start/end; equipment; rated power; operating hours; shared-load driver; product mass"
+      collection_method: "direct submeter preferred; documented equipment-time or causal allocation otherwise"
+      unit: "kWh"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included processes"
+      aggregation_rule: "sum by process; allocate shared load with disclosed causal driver"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_cutting_yield
+      process_id: "p02_cutting"
+      flow_role: "cut meat, bone, fat, and trimmings"
+      record_type: "lot mass-balance record"
+      raw_fields: "input route; input mass; cut identity; meat; recoverable bone; recoverable fat; recoverable trimmings; discarded fractions; rejects; drip"
+      collection_method: "calibrated scales at input and each output destination"
+      unit: "kg wet mass"
+      frequency: "every lot or representative campaign with coverage proof"
+      temporal_coverage: "representative operating period within reporting year"
+      site_scope: "all cutting lines"
+      aggregation_rule: "sum each atomic output; calculate unexplained mass difference"
+      quality_evidence: "scale calibration; destination tickets; lot reconciliation"
+    - protocol_id: cp_product_washing
+      process_id: "p03_washing"
+      flow_role: "conditional meat washing"
+      record_type: "route flag, water meter, ice issue, product scale, and electricity record"
+      raw_fields: "washing performed; meat in/out; water in; ice in; electricity; start/end; wastewater"
+      collection_method: "dedicated meters and lot records"
+      unit: "kg; m3; kWh"
+      frequency: "every washing batch"
+      temporal_coverage: "all washing events in reporting period"
+      site_scope: "all washing equipment"
+      aggregation_rule: "sum only applicable batches; zero is allowed only with route evidence"
+      quality_evidence: "meter checks; sanitation SOP; batch record"
+    - protocol_id: cp_refrigeration
+      process_id: "p04_chilling"
+      flow_role: "chilling, storage, refrigerant make-up, and leakage"
+      record_type: "temperature logger, electricity meter, refrigerant stock/service record"
+      raw_fields: "meat in/out; product temperatures and times; storage hours; electricity; refrigerant identity; opening/closing stock; purchases; charges; recovery; transfer"
+      collection_method: "continuous temperature and electricity records plus refrigerant mass reconciliation"
+      unit: "kg; kWh; degrees C; h"
+      frequency: "continuous for temperature; each service event for refrigerant"
+      temporal_coverage: "full reporting period"
+      site_scope: "all systems serving included meat"
+      aggregation_rule: "allocate energy by product mass-time; calculate each refrigerant separately"
+      quality_evidence: "calibrated logger; submeter; service invoice; cylinder weights; leak-alarm record"
+    - protocol_id: cp_packaging_components
+      process_id: "p05_packaging"
+      flow_role: "meat and each packaging component"
+      record_type: "bill of materials, stock issue, count, and scale record"
+      raw_fields: "meat in/out; package route; component material; unit count; unit mass; opening/closing stock; purchases; returns"
+      collection_method: "verified BOM reconciled to stock and packaged units"
+      unit: "kg; item"
+      frequency: "each packaging lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all packaging lines"
+      aggregation_rule: "calculate each component mass separately; no combined packaging total substitutes for components"
+      quality_evidence: "supplier specification; scale check; stock reconciliation"
+    - protocol_id: cp_packaging_gases
+      process_id: "p05_packaging"
+      flow_role: "each MAP gas"
+      record_type: "gas meter or cylinder reconciliation"
+      raw_fields: "gas identity; purity; opening/closing stock; purchases; pressure/temperature conversion; conforming MAP units"
+      collection_method: "mass meter preferred; cylinder stock reconciliation otherwise"
+      unit: "kg"
+      frequency: "each lot or cylinder change"
+      temporal_coverage: "all MAP production in reporting period"
+      site_scope: "all MAP packaging lines"
+      aggregation_rule: "allocate each gas separately to conforming MAP product"
+      quality_evidence: "meter calibration; cylinder invoice; gas-composition check"
+    - protocol_id: cp_packaging_waste
+      process_id: "p05_packaging"
+      flow_role: "each packaging waste"
+      record_type: "waste scale and destination record"
+      raw_fields: "material identity; mass; contamination status; destination; date"
+      collection_method: "segregated weighing by material"
+      unit: "kg"
+      frequency: "each collection"
+      temporal_coverage: "full reporting period"
+      site_scope: "all packaging lines"
+      aggregation_rule: "sum each material and destination separately"
+      quality_evidence: "weigh ticket; recycler or treatment receipt"
+    - protocol_id: cp_sanitation_inputs_outputs
+      process_id: "p06_sanitation"
+      flow_role: "water, steam, chemicals, wastewater, and sludge"
+      record_type: "meter, stock, formulation, and waste record"
+      raw_fields: "water; steam; chemical product; active concentration; issue mass; electricity; wastewater; sludge wet mass; dry solids; destination"
+      collection_method: "dedicated meters and stock reconciliation; active mass calculation"
+      unit: "m3; MJ; kWh; kg"
+      frequency: "each sanitation cycle or meter interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included rooms and equipment"
+      aggregation_rule: "sum each atomic chemical and output; allocate shared sanitation by cleaned area-time or production mass with disclosure"
+      quality_evidence: "meter calibration; SDS/product specification; stock record; treatment ticket"
+    - protocol_id: cp_fuel_and_combustion
+      process_id: "p06_sanitation"
+      flow_role: "each onsite fuel and CO2, CH4, N2O"
+      record_type: "fuel meter/invoice, stock, calorific value, and emission-factor record"
+      raw_fields: "fuel identity; quantity; opening/closing stock; net calorific value; combustion technology; factor source; CO2; CH4; N2O"
+      collection_method: "reconcile each fuel, then apply verified fuel- and technology-specific factors"
+      unit: "kg; MJ; kg emission"
+      frequency: "each meter interval; annual reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "all stationary combustion serving foreground operations"
+      aggregation_rule: "calculate each gas per fuel before summing the same elementary flow"
+      quality_evidence: "invoice; meter check; supplier calorific value; factor version; calculation sheet"
+    - protocol_id: cp_wastewater_streams
+      process_id: "p02_cutting_p03_washing_p06_sanitation"
+      flow_role: "blood-contaminated drainage, washing wastewater, and sanitation wastewater"
+      record_type: "segregated flow meter and sampling record"
+      raw_fields: "stream identity; flow; density if mass conversion; COD; total N; total P; treatment destination"
+      collection_method: "separate meters or validated water balance; representative sampling"
+      unit: "m3; kg"
+      frequency: "continuous or each discharge batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "each segregated drain and treatment route"
+      aggregation_rule: "sum by stream; never merge streams before retaining origin data"
+      quality_evidence: "meter calibration; sampling chain of custody; treatment invoice"
+    - protocol_id: cp_waste_and_rejects
+      process_id: "p01_receiving_p02_cutting_p05_packaging_p07_dispatch"
+      flow_role: "rejects and animal material wastes"
+      record_type: "scale and disposition record"
+      raw_fields: "row identity; mass; reason; edible/co-product/waste status; destination; date"
+      collection_method: "segregated weighing and disposition log"
+      unit: "kg"
+      frequency: "each event"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included processes"
+      aggregation_rule: "sum each atomic row and destination"
+      quality_evidence: "scale check; rejection record; destination receipt"
+    - protocol_id: cp_dispatch
+      process_id: "p07_dispatch"
+      flow_role: "reference product delivery"
+      record_type: "final scale, temperature, label, seal, and shipment record"
+      raw_fields: "species; scientific name; cut; bone status; net meat mass; package; atmosphere; product temperature; time; lot; customer/jurisdiction limit"
+      collection_method: "calibrated final scale and product-temperature measurement"
+      unit: "kg; degrees C"
+      frequency: "every dispatch lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all factory-gate dispatches"
+      aggregation_rule: "sum conforming net meat mass; normalize all exchanges to 1 kg"
+      quality_evidence: "scale calibration; temperature calibration; release record; label review"
+  calculation_rules:
+    - id: calc_normalization
+      applies_to: "every foreground exchange"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period conforming net meat mass at factory gate"
+      inputs:
+        - "atomic exchange total"
+        - "delivered_deer_meat total"
+      output: "amount per 1 kg net reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_process_mass_balance
+      applies_to: "receiving, cutting, washing, packaging, and dispatch"
+      rule: "input wet mass = product outputs + co-product outputs + waste outputs + measured liquid transfer + recorded stock change + unexplained difference; report the difference rather than forcing balance"
+      inputs:
+        - "calibrated input/output masses"
+        - stock
+        - "liquid records"
+      output: "process balance and unexplained mass difference"
+      source_ids:
+        - eu-bat-2023-2749
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_leakage
+      applies_to: "each refrigerant"
+      rule: "emitted mass = make-up charged + opening system inventory - closing system inventory - recovered mass - transferred mass; calculate R717, R744, R134a, R404A, and any other actual refrigerant as separate substances"
+      inputs:
+        - stock
+        - purchase
+        - charge
+        - recovery
+        - transfer
+        - "service records"
+      output: "kg of each refrigerant emitted to air"
+      source_ids:
+        - eu-bat-2023-2749
+    - id: calc_combustion_emissions
+      applies_to: "natural gas, LPG, and stationary diesel"
+      rule: "emission by gas = fuel activity on the factor's calorific basis x verified factor; retain fuel-level CO2, CH4, and N2O calculations before aggregation"
+      inputs:
+        - "each fuel amount"
+        - "net calorific value"
+        - "combustion technology"
+        - factor
+      output: "kg fossil CO2, kg CH4, and kg N2O"
+      source_ids:
+        - ipcc-2006-stationary-combustion
+    - id: calc_active_chemical
+      applies_to: "sodium hydroxide, nitric acid, sodium hypochlorite, and peracetic acid"
+      rule: "active substance mass = formulated product mass x verified active mass fraction"
+      inputs:
+        - "issued product mass"
+        - "supplier concentration"
+      output: "kg active chemical"
+      source_ids:
+        - eu-bat-2023-2749
+    - id: calc_packaging_component
+      applies_to: "each package component"
+      rule: "component mass = verified unit mass x used units, reconciled to opening stock + purchases - closing stock - returned usable stock - measured waste"
+      inputs:
+        - BOM
+        - counts
+        - stock
+        - waste
+      output: "kg of each component in product and kg of each component wasted"
+      source_ids:
+        - eu-pef-2021-2279
+        - rotz-et-al-2019
+    - id: calc_allocation
+      applies_to: "inseparable shared cutting or support process"
+      rule: "apply measured causal subdivision first; if impossible for joint cutting, allocate residual shared burden by measured wet output mass and disclose an economic sensitivity when material"
+      inputs:
+        - "submeter or causal driver"
+        - "output masses"
+        - "value evidence if sensitivity is needed"
+      output: "allocated foreground burden by output"
+      source_ids:
+        - eu-pef-2021-2279
+        - rotz-et-al-2019
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "meat inputs and reference product"
+      requirement: "Preserve traceability to one declared mammal species, scientific name, origin, anatomical cut, bone status, and fresh/chilled state for every lot; reject undeclared aggregate meat."
+      evidence: "supplier record; inspection record; lot link; product label"
+    - id: dq_temperature
+      applies_to: "receipt through dispatch"
+      requirement: "Use calibrated product-temperature measurements and time records sufficient to demonstrate the applicable chilled-meat limit and continuous cold control."
+      evidence: "calibration certificate; logger export; release record; applicable regulation or specification"
+    - id: dq_completeness
+      applies_to: "all processes and flows"
+      requirement: "Include every required process and every actual atomic material, energy, refrigerant, package component, waste, wastewater, and direct emission. Add a separate row for any actual refrigerant, fuel, chemical, package component, waste, or emission not enumerated here."
+      evidence: "signed completeness checklist; purchase-to-inventory reconciliation; process flow diagram"
+    - id: dq_representativeness
+      applies_to: "foreground activity data"
+      requirement: "Cover a full year where practical, or document season, operating modes, species/cut mix, production volume, and why a shorter representative campaign is adequate."
+      evidence: "reporting-period record; production schedule; campaign justification"
+    - id: dq_metering
+      applies_to: "mass, utility, temperature, gas, and wastewater records"
+      requirement: "Retain calibration or verification status and reconcile submeter totals to site invoices or master meters where applicable."
+      evidence: "calibration record; invoice; reconciliation worksheet"
+    - id: dq_waste_destination
+      applies_to: "animal material, packaging waste, wastewater, and sludge"
+      requirement: "Record co-product or waste status, treatment or recovery destination, and mass for each atomic stream; do not infer destination from a generic waste contract."
+      evidence: "weigh ticket; transfer note; treatment or recycler receipt"
+    - id: dq_range_evidence
+      applies_to: "amount ranges"
+      requirement: "Do not use a single paper, single facility value, or duplicated endpoint as an empirical range. Keep the foreground record requirement and manifest unresolved-range entry until two compatible original sources support synthesis."
+      evidence: "source review record or explicit unresolved entry"
+    - id: dq_uuid_resolution
+      applies_to: "reference and inventory flows"
+      requirement: "UUID cells may remain blank for this authored candidate, but each named atomic flow must be resolved and directly verified before active review or publication."
+      evidence: "manifest unresolved list; future Tiangong direct-read evidence"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "dataset identity"
+    rule: "Fail if mammal species, scientific name, anatomical cut, bone status, or fresh/chilled state is missing, or if an undeclared multi-species \"other mammal meat\" aggregate is used."
+    source_ids:
+      - unsd-cpc-3-21119
+  - rule_id: validation_boundary
+    applies_to: "system boundary"
+    rule: "Fail if husbandry, hunting, or slaughter burdens are omitted from the incoming product dataset, or if they are also added inside the foreground boundary and double counted."
+    source_ids:
+      - codex-cxc-58-2005
+      - eu-pef-2021-2279
+  - rule_id: validation_process_coverage
+    applies_to: "process map"
+    rule: "Fail if any required process lacks a detailed inventory; require evidence of non-applicability for product washing and every conditional packaging gas, refrigerant, fuel, chemical, or package component."
+    source_ids:
+      - codex-cxc-58-2005
+      - eu-bat-2023-2749
+  - rule_id: validation_temperature
+    applies_to: "cold chain"
+    rule: "Fail when product-temperature/time evidence does not demonstrate the declared applicable limit at receipt, cutting as applicable, chilling, cold holding, and dispatch."
+    source_ids:
+      - eu-853-2004-consolidated
+      - codex-cxc-58-2005
+  - rule_id: validation_atomic_flows
+    applies_to: "inventory"
+    rule: "Fail when electricity, steam, fuels, refrigerants, chemicals, gases, packaging components, animal residues, wastewater streams, wastes, or emissions are combined into a selector or collection row."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-bat-2023-2749
+  - rule_id: validation_mass_balance
+    applies_to: "process quantities"
+    rule: "Flag any unexplained mass difference and fail if input, product, co-product, waste, liquid transfer, and stock-change records are insufficient to reproduce the process balance."
+    source_ids:
+      - eu-bat-2023-2749
+      - eu-pef-2021-2279
+  - rule_id: validation_refrigerant
+    applies_to: "refrigeration"
+    rule: "Fail if an actual refrigerant lacks separate make-up and leakage calculations or if stock, service, recovery, and transfer records are not reconciled."
+    source_ids:
+      - eu-bat-2023-2749
+  - rule_id: validation_combustion
+    applies_to: "onsite fuels"
+    rule: "Fail if natural gas, LPG, or stationary diesel is used without separate activity records and direct fossil CO2, CH4, and N2O calculations using a documented factor basis."
+    source_ids:
+      - ipcc-2006-stationary-combustion
+  - rule_id: validation_reference_mass
+    applies_to: "reference flow"
+    rule: "Fail unless the output is normalized to exactly 1 kg net boneless meat excluding packaging and the delivered_deer_meat output is linked to the reference flow."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_ranges
+    applies_to: "ranges"
+    rule: "Fail any empirical range supported only by one case, one point, duplicated endpoints, an abstract, or incompatible boundaries. Absence of a range remains an unresolved candidate evidence gap, not permission to invent an estimate."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Gate-to-gate secondary_dataset or background_dataset for post-slaughter cutting, chilling, packaging, and dispatch of one declared CPC 21119 mammal meat product"
+  downstream_use: "Link after a species- and route-compatible upstream carcass or primal-cut dataset in a process or lifecyclemodel; use for factory-gate fresh/chilled meat studies"
+  allowed_use: "Product systems matching the declared species, origin, cut, input route, packaging route, chilling technology, jurisdiction, facility scale, and reporting period"
+  excluded_use: "Undeclared aggregate other-mammal meat; cattle/buffalo/pig/rabbit/hare/sheep/goat/camelid/equine categories; frozen/offal/minced/prepared/preserved meat; standalone slaughter; retail or consumer stage; comparative claims without equivalent upstream allocation and quality"
+  required_metadata: "PCR id and version; species common/scientific name; farmed/wild origin; cut; bone status; fresh/chilled and never-frozen declaration; input route; upstream dataset; facility geography and scale; reporting period; temperature limits and records; package components and atmosphere; refrigerant and fuel identities; allocation; cut-offs; data quality; unresolved UUIDs"
+  required_quality_disclosure: "primary-data share; meter and scale coverage; temporal, geographic, and technological representativeness; mass-balance difference; shared-operation allocation; refrigerant reconciliation; waste destinations; source and factor versions; deviations; missing range evidence"
+  update_trigger: "Change in species/cut scope, input route, packaging system or gas mix, refrigerant, fuel or heat supply, sanitation chemistry, cold-chain limit, allocation method, waste destination, facility technology, reporting-period representativeness, source rule, or resolved Tiangong identity"
+data_sources:
+  - id: "unsd-cpc-3-21119"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 classification detail, subclass 21119, Other meat of mammals, fresh or chilled. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/1073/21119 (retrieved 2026-08-24)"
+    used_for: "official category inclusion/exclusion and product identity"
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, Code of Hygienic Practice for Meat, CXC 58-2005. https://workspace.fao.org/sites/codex/Standards/CXC%2058-2005/CXC_058e.pdf (retrieved 2026-08-24)"
+    used_for: "post-mortem boundary, cutting, chilling, packaging separation, sanitation, inspection, rejected material, and temperature monitoring"
+  - id: "eu-853-2004-consolidated"
+    type: "standard"
+    reference: "Regulation (EC) No 853/2004, consolidated text of 8 December 2022, Annex III provisions for cutting/boning and large wild game. https://eur-lex.europa.eu/eli/reg/2004/853/2022-12-08 (retrieved 2026-08-24)"
+    used_for: "representative deer-route cutting hygiene, product temperature, chilling, and dispatch conformance"
+  - id: "fao-meat-cutting-guidelines"
+    type: "official_guidance"
+    reference: "FAO, Guidelines for slaughtering, meat cutting and further processing, facility hygiene and refrigeration chapters. https://www.fao.org/4/t0279e/T0279E02.htm (retrieved 2026-08-24)"
+    used_for: "process decomposition, cutting-room refrigeration, hot water/steam, cleaning, and sanitation"
+  - id: "fao-cold-store-1991"
+    type: "official_guidance"
+    reference: "Cano-Munoz, G., Manual on Meat Cold Store Operation and Management, FAO Animal Production and Health Paper 92, 1991, ISBN 92-5-102788-9. https://www.fao.org/4/t0098e/t0098e00.htm (retrieved 2026-08-24)"
+    used_for: "chilling/cold storage, refrigeration equipment, storage hygiene, cleaning water and disinfectant, dispatch handling"
+  - id: "eu-bat-2023-2749"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2023/2749 establishing BAT conclusions for slaughterhouses and animal by-products/edible co-products industries. https://eur-lex.europa.eu/eli/dec_impl/2023/2749/oj (retrieved 2026-08-24)"
+    used_for: "input/output inventories, energy and water management, wastewater segregation, chemical management, refrigeration energy, refrigerant identity and loss monitoring"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-24)"
+    used_for: "functional/reference flow, complete company-specific inventory, cut-off disclosure, allocation hierarchy, mass-balance and data-quality rules"
+  - id: "ipcc-2006-stationary-combustion"
+    type: "method_factor"
+    reference: "IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2 Energy, Chapter 2 Stationary Combustion. https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf (retrieved 2026-08-24)"
+    used_for: "fuel-specific activity and CO2, CH4, and N2O calculation method; default factors only when better verified factors are unavailable"
+  - id: "rotz-et-al-2019"
+    type: "literature"
+    reference: "Rotz, C.A. et al., A life cycle assessment of the environmental impacts of a beef system in the USA, International Journal of Life Cycle Assessment 24, 441-455 (2019). https://doi.org/10.1007/s11367-018-1464-6 (retrieved 2026-08-24)"
+    used_for: "directly opened peer-reviewed full text supporting case-ready cutting, packaging components, energy, water, cleaning chemicals, wastes, wastewater, allocation, and refrigerant inventory; not used as numerical range evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ee231de61f3d3a018d20a5517b6e98f9cdfaba43f30869503ea189f57ce53919"
+  generated_content_sha256: "sha256:b898b8f086aa0b9b7975a701e72de90b26fd5f5a5c201952c5714f52f1808587"

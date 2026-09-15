@@ -1,10 +1,710 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "27170"
-  title: "Parachutes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.parachutes"
+  classification_refs: "CPC 3.0 27170 Parachutes"
+  covered_products: "Finished parachutes and factory-complete parachute assemblies, including personnel, emergency, reserve, cargo, extraction, deceleration, and drogue configurations when declared"
+  excluded_products: "Paragliders; kites; sails; tents; services; and fabric, cord, webbing, harness, container, or hardware components sold as separate products"
+  representative_product: "A factory-gate personnel ram-air parachute assembly with a declared canopy, suspension-line, harness/container, and deployment-system configuration"
+  production_route: "Receipt and inspection of qualified materials and components; layout and cutting; sewing; line, webbing, and hardware integration as applicable; final inspection and functional release; packing"
+  market_state: "Finished, inspected, and released parachute at the factory gate, with included accessories and packaging declared"
+functional_unit:
+  what: "A finished parachute conforming to the declared type, design configuration, operating limitations, and release requirements"
+  how_much: "1 kg net unpackaged product mass"
+  how_well: "Released against the declared specification, inspection plan, functional tests, and applicable certification or standard"
+  how_long_or_cycle: "One released production lot normalized to 1 kg; declared service-life or removal limitations are metadata and do not change the reference amount"
+  reference_flow_link: "reference_output in parachute_manufacturing"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include receipt inspection, layout and cutting, sewing, suspension-line and webbing operations, connector-hardware and deployment-component integration when performed on site, final inspection, functional release, packing, direct electricity, and separately measured material losses and rejects."
+      source_ids:
+        - faa-parachute-rigger-handbook-2015
+    - rule_id: boundary_upstream_textiles
+      applies_to: "foreground_system_boundary"
+      rule: "Treat purchased fibre, fabric, thread, webbing, cord, dyeing, coating, and finishing as upstream background links unless the operation occurs at the reporting site; preserve the actual textile material and wet-processing route in supplier metadata."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_configuration_separation
+      applies_to: "foreground_system_boundary"
+      rule: "Keep personnel, cargo, extraction, deceleration, drogue, canopy-shape, fibre-system, coating/finish, and included-assembly configurations separate unless production-weighted foreground records support aggregation."
+      source_ids:
+        - faa-parachute-rigger-handbook-2015
+        - eu-environmental-footprint-2021
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude transport after the factory gate, installation, packing for use, deployment, repacking, inspection during service, repair, and end-of-life from this manufacturing foreground; retain operating and service-life limitations as product metadata."
+      source_ids:
+        - faa-parachute-rigger-handbook-2015
+    - rule_id: boundary_same_category_input
+      applies_to: "foreground_system_boundary"
+      rule: "Record a purchased finished parachute or complete same-category assembly as a single technosphere input and disclose its included mass; do not count its internal materials again."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Qualified purchased fabrics, thread, webbing, suspension cord, connector hardware, deployment components, utilities, and packaging received at the parachute manufacturing site"
+  starting_condition_role: "Starting condition for the dry manufacturing foreground; upstream fibre, fabric, coating, finishing, metal-part, electricity-generation, and packaging production remain linked background processes unless performed at the reporting site"
+  product_classification_scope: "Finished parachutes and complete parachute assemblies under CPC 3.0 27170, separated by declared use class, canopy type, material system, and included component configuration"
+  recursive_input_rule: "A purchased finished parachute or same-category complete assembly remains one technosphere product input with its supplier dataset; do not recursively rebuild it inside this foreground process"
+  upstream_dataset_requirement: "Link supplier- or geography-representative datasets for every purchased material, component, utility, and packaging exchange; disclose textile pretreatment, dyeing, coating, and finishing routes where relevant"
+  disclosure: "Declare which operations are on site, which components are purchased complete, all omitted configuration elements, site and period, textile finish/coating route, release basis, packaging basis, and allocation method"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Parachutes"
+    uuid: "887e7332-42b2-496b-aea3-0e9308ff8f17"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "parachute use class and type"
+    - "canopy geometry and nominal size"
+    - "canopy fibre"
+    - construction
+    - coating
+    - "and finish"
+    - "suspension-line material and type"
+    - "line trim or declared line configuration"
+    - "webbing material"
+    - "included harness"
+    - container
+    - deployment-device
+    - "and connector-hardware configuration"
+    - "minimum and maximum operating mass where applicable"
+    - "maximum pack-opening speed where applicable"
+    - "applicable certification or standard"
+    - "release inspections and functional tests"
+    - "service-life or removal limits"
+    - "included accessories"
+    - "packaging inclusion and tare"
+    - "manufacturing site"
+    - geography
+    - "production period"
+    - "allocation basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Accepted finished-parachute output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh net unpackaged accepted output or derive it from a controlled bill of materials verified by weighing; exclude rejected product, reusable transport items, and packaging tare."
+  - id: bom_mass
+    applies_to: "Material, component, packaging, and solid-waste exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record actual lot quantities from receiving, issue/return, controlled BOM, or calibrated weighing records; do not infer amounts from a generic parachute design."
+  - id: energy_measurement
+    applies_to: "Site electricity used by included operations"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use interval or submeter records for the same production period; document conversion and allocation when a meter covers more than the declared product."
+  - id: configuration_traceability
+    applies_to: "Product and material records"
+    required_property_ref:
+      name: "Mass and configuration record"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve product part number, lot, material specification, and configuration linkage so that recorded masses can be reconciled to the released product."
+  - id: measurement_period_alignment
+    applies_to: "All foreground exchanges"
+    required_property_ref:
+      name: "Recorded property of the exchange"
+      uuid: ""
+    required_unit: "Recorded unit of the exchange"
+    rule: "Use the same lot or a documented common production period for output, material, energy, packaging, and waste records; disclose any temporal mismatch."
+process_map:
+  - id: parachute_manufacturing
+    name: "Parachute manufacture, release, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always required for a factory-gate parachute dataset"
+    role: "Consolidated foreground manufacturing process"
+    quantitative_reference: "reference_output"
+process_inventory:
+  - id: parachute_manufacturing
+    label: "Parachute manufacture, release, and packing"
+    inputs:
+      product:
+        - row_id: nylon66_canopy_fabric_input
+          role: "Polyamide 6.6 canopy fabric"
+          name: "Woven polyamide 6.6 parachute-canopy fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Woven polyamide 6.6 parachute-canopy fabric crosses the boundary when issued to cutting for the declared product. Its quantity is the actual issued mass less controlled returns for the production lot."
+          amount:
+            expression: "Record issued mass minus returned unused fabric for the accepted production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: polyester_canopy_fabric_input
+          role: "Polyester canopy fabric"
+          name: "Woven polyester parachute-canopy fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Woven polyester parachute-canopy fabric crosses the boundary when it is the declared canopy material. Record it independently from polyamide fabric and only for the applicable configuration."
+          amount:
+            expression: "Record issued mass minus returned unused fabric for the accepted production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: polyester_sewing_thread_input
+          role: "Polyester sewing thread"
+          name: "Polyester sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyester sewing thread crosses the boundary when issued to seam, reinforcement, and attachment operations. Its mass is obtained from controlled issue/return or verified spool-weight records."
+          amount:
+            expression: "Record issued thread mass minus unused returns for the accepted production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: nylon66_webbing_input
+          role: "Polyamide 6.6 parachute webbing"
+          name: "Polyamide 6.6 parachute webbing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyamide 6.6 parachute webbing crosses the boundary when cut and assembled into the declared load-bearing configuration. Use actual issued and returned mass, not a generic harness estimate."
+          amount:
+            expression: "Record issued webbing mass minus unused returns for the accepted production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: polyester_suspension_cord_input
+          role: "Polyester suspension cord"
+          name: "Braided polyester parachute suspension cord"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Braided polyester parachute suspension cord crosses the boundary when cut, trimmed, and attached for the declared line configuration. Keep this exchange separate from UHMWPE cord."
+          amount:
+            expression: "Record issued cord mass minus unused returns for the accepted production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: uhmwpe_suspension_cord_input
+          role: "UHMWPE suspension cord"
+          name: "Braided ultra-high-molecular-weight polyethylene parachute suspension cord"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Braided ultra-high-molecular-weight polyethylene parachute suspension cord crosses the boundary when it is used in the declared line configuration. Record it separately because its material identity differs from polyester cord."
+          amount:
+            expression: "Record issued cord mass minus unused returns for the accepted production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: stainless_steel_hardware_input
+          role: "Stainless-steel connector hardware"
+          name: "Finished stainless-steel parachute connector hardware"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished stainless-steel parachute connector hardware crosses the boundary when installed in the declared configuration. Record the actual accepted hardware mass and part identity."
+          amount:
+            expression: "Record installed mass plus separately recorded rejected units from controlled issue and inspection records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: aluminium_hardware_input
+          role: "Aluminium-alloy connector hardware"
+          name: "Finished aluminium-alloy parachute connector hardware"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished aluminium-alloy parachute connector hardware crosses the boundary when installed in the declared configuration. Record it independently from stainless-steel hardware."
+          amount:
+            expression: "Record installed mass plus separately recorded rejected units from controlled issue and inspection records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - faa-parachute-rigger-handbook-2015
+            ranges: []
+        - row_id: low_voltage_electricity_input
+          role: "Low-voltage alternating-current electricity"
+          name: "Alternating-current electricity, below 1 kV, site consumption mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Alternating-current electricity below 1 kV crosses the boundary through site meters for cutting, sewing, assembly, inspection, and packing. The data package must identify the actual supply mix and geography."
+          amount:
+            expression: "Record metered electricity for included operations and allocate shared meters using calc_shared_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box_input
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Corrugated board boxes cross the boundary when consumed as sales packaging for the declared product. Record the actual packaging mass and exclude reusable transport packaging unless ownership transfers."
+          amount:
+            expression: "Record consumed box mass for the released production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_film_input
+          role: "Polyethylene packaging film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Polyethylene film crosses the boundary when consumed as an individual sales-packaging component for the declared product. Record film separately from the corrugated box."
+          amount:
+            expression: "Record consumed film mass for the released production lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_output
+          role: "Reference parachute output"
+          name: "Parachutes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "887e7332-42b2-496b-aea3-0e9308ff8f17"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The accepted finished parachute is the quantitative reference output after final inspection and functional release. Its fixed amount is the normalization denominator for all other exchanges."
+          amount:
+            expression: "Fixed at 1 kg net unpackaged accepted parachute output."
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: nylon66_fabric_offcuts_output
+          role: "Polyamide 6.6 canopy-fabric offcuts"
+          name: "Polyamide 6.6 woven parachute-fabric offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyamide 6.6 woven canopy-fabric offcuts leave the process when cutting losses are not internally reused in the same production period. Record their measured mass and actual destination."
+          amount:
+            expression: "Record segregated offcut mass leaving the process after subtracting documented internal reuse."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: polyester_fabric_offcuts_output
+          role: "Polyester canopy-fabric offcuts"
+          name: "Polyester woven parachute-fabric offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyester woven canopy-fabric offcuts leave the process when cutting losses are not internally reused in the same production period. Keep this waste separate from polyamide offcuts."
+          amount:
+            expression: "Record segregated offcut mass leaving the process after subtracting documented internal reuse."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: polyester_thread_offcuts_output
+          role: "Polyester sewing-thread offcuts"
+          name: "Polyester sewing-thread offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyester sewing-thread ends and unusable remnants leave the process as a separate waste exchange. Their mass is determined by segregated weighing or a documented issue-return balance."
+          amount:
+            expression: "Record segregated thread-waste mass leaving the process after subtracting documented internal reuse."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: polyester_cord_offcuts_output
+          role: "Polyester suspension-cord offcuts"
+          name: "Polyester suspension-cord offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyester suspension-cord cut ends and rejected trimmed lengths leave the process as a material-specific waste exchange. Do not combine them with fabric or thread waste."
+          amount:
+            expression: "Record segregated cord-waste mass leaving the process after subtracting documented internal reuse."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: rejected_stainless_hardware_output
+          role: "Rejected stainless-steel connector hardware"
+          name: "Rejected stainless-steel parachute connector hardware"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected stainless-steel parachute connector hardware leaves the process when inspection rejects cannot be returned to stock or supplier. Record its mass independently from aluminium hardware."
+          amount:
+            expression: "Record weighed rejected hardware mass leaving the process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: rejected_aluminium_hardware_output
+          role: "Rejected aluminium-alloy connector hardware"
+          name: "Rejected aluminium-alloy parachute connector hardware"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected aluminium-alloy parachute connector hardware leaves the process when inspection rejects cannot be returned to stock or supplier. Record it as its own atomic waste exchange."
+          amount:
+            expression: "Record weighed rejected hardware mass leaving the process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net unpackaged accepted parachute output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "foreground_burden_allocation"
+    rule: "Prefer process subdivision, dedicated meters, and configuration-specific material records so that allocation is avoided."
+    source_ids:
+      - iso-14044-2006
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_shared_electricity
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate a shared electricity meter by measured machine time, submetered load, or another documented causal driver; use output mass only when causality is demonstrated and report a sensitivity check for material shared loads."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_configuration_families
+    applies_to: "foreground_burden_allocation"
+    rule: "Allocate shared operations among configuration families using production records that preserve the declared product type and configuration; do not use an unweighted average across unlike parachutes."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_rework_and_scrap
+    applies_to: "foreground_burden_allocation"
+    rule: "Internal rework returned to the same lot is not a second product. Record saleable co-products separately and allocate by a documented physical relationship where feasible; do not apply an avoided-burden credit inside the foreground inventory."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output_release
+      process_id: "parachute_manufacturing"
+      flow_role: "reference_output"
+      record_type: "Release and weighing record"
+      raw_fields: "product type; part number; lot; configuration; accepted units; net mass; packaging tare; operating limits; inspection status; functional-test status"
+      collection_method: "Calibrated weighing linked to the controlled release record"
+      unit: "kg"
+      frequency: "Each released lot"
+      temporal_coverage: "Same lot or declared production period as inventory inputs"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum accepted net product mass only"
+      quality_evidence: "Calibration record; release certificate; inspection and test record"
+    - protocol_id: cp_material_bom
+      process_id: "parachute_manufacturing"
+      flow_role: "Material and component inputs"
+      record_type: "BOM, receipt, issue, return, and inspection records"
+      raw_fields: "row_id; material or component name; specification; supplier; part number; lot; issued quantity and mass; return quantity and mass; rejected quantity and mass"
+      collection_method: "Reconcile controlled BOM with warehouse issue/return and calibrated mass records"
+      unit: "kg"
+      frequency: "Each production lot"
+      temporal_coverage: "Same lot or declared production period as output"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Issued minus unused return, retaining material-specific rows"
+      quality_evidence: "Approved BOM; purchase/receipt record; scale calibration; lot traceability"
+    - protocol_id: cp_energy_records
+      process_id: "parachute_manufacturing"
+      flow_role: "low_voltage_electricity_input"
+      record_type: "Meter and operating record"
+      raw_fields: "meter id; opening and closing readings; interval; machine or area; machine time; allocation driver; supply mix; geography"
+      collection_method: "Read dedicated or shared meters and document the causal allocation driver"
+      unit: "kWh"
+      frequency: "Meter interval and each reporting period"
+      temporal_coverage: "Covers the same declared production period"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum included consumption, subtract documented non-production loads, then allocate by calc_shared_electricity"
+      quality_evidence: "Meter calibration or utility statement; operating log; allocation worksheet"
+    - protocol_id: cp_waste_records
+      process_id: "parachute_manufacturing"
+      flow_role: "Waste outputs"
+      record_type: "Segregated weighing and disposition record"
+      raw_fields: "row_id; material identity; container tare; gross and net mass; lot; internal reuse; return to supplier; destination"
+      collection_method: "Weigh each material-specific waste stream and reconcile internal reuse or returns"
+      unit: "kg"
+      frequency: "Each waste collection event"
+      temporal_coverage: "Same lot or declared production period as output"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum net mass by row_id; exclude documented same-period internal reuse"
+      quality_evidence: "Scale calibration; waste log; transfer or return record"
+    - protocol_id: cp_packaging_records
+      process_id: "parachute_manufacturing"
+      flow_role: "Packaging inputs"
+      record_type: "Packing and material issue record"
+      raw_fields: "row_id; packaging specification; quantity; unit mass; total mass; reusable status; ownership transfer; lot"
+      collection_method: "Weigh representative components and reconcile consumed counts to released units"
+      unit: "kg"
+      frequency: "Each released lot"
+      temporal_coverage: "Same lot or declared production period as output"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum packaging mass that transfers with the product; report reusable transport items separately"
+      quality_evidence: "Packaging specification; scale calibration; packing record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every non-reference exchange"
+      rule: "normalized amount = recorded amount attributed to the declared product divided by accepted net unpackaged output mass"
+      inputs:
+        - "Attributed exchange amount"
+        - "accepted output mass from cp_output_release"
+      output: "Exchange amount per 1 kg reference output"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_shared_electricity
+      applies_to: "low_voltage_electricity_input"
+      rule: "attributed electricity = total included meter consumption multiplied by the declared causal-driver share; document excluded loads and the driver denominator"
+      inputs:
+        - "Meter readings"
+        - "operating logs"
+        - "causal-driver totals"
+      output: "Attributed kWh before reference normalization"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_material_balance
+      applies_to: "Material and solid-waste exchanges"
+      rule: "For each material family, reconcile issued mass with unused returns, accepted-product incorporation, internal reuse, and outgoing waste; investigate and disclose the residual"
+      inputs:
+        - cp_material_bom
+        - cp_output_release
+        - cp_waste_records
+      output: "Material-family balance and residual"
+      source_ids:
+        - eu-environmental-footprint-2021
+    - id: calc_packaging_normalization
+      applies_to: "corrugated_board_box_input; polyethylene_film_input"
+      rule: "packaging amount = transferred packaging mass divided by accepted net unpackaged output mass"
+      inputs:
+        - cp_packaging_records
+        - cp_output_release
+      output: "kg packaging per kg reference output"
+      source_ids:
+        - eu-environmental-footprint-2021
+  data_quality_requirements:
+    - id: dq_identity_and_configuration
+      applies_to: "Reference output and all material rows"
+      requirement: "Preserve the released product identity, type, part number, material specifications, and included configuration; do not substitute a generic parachute profile."
+      evidence: "Controlled specification; BOM; release record; product marking or equivalent traceability record"
+    - id: dq_uuid_identity
+      applies_to: "UUID-bearing rows"
+      requirement: "Use only UUIDs confirmed by hybrid search and state-100 direct read for the same semantic flow, flow type, reference property, and unit; leave all other UUIDs absent."
+      evidence: "UUID enrichment audit in manifest review metadata"
+    - id: dq_primary_data
+      applies_to: "Foreground amounts"
+      requirement: "Use site records for the declared production period; disclose coverage, calibration, allocation, and any temporal mismatch."
+      evidence: "Protocol records and quality evidence listed above"
+    - id: dq_completeness
+      applies_to: "Full process inventory"
+      requirement: "Include every material, component, utility, packaging component, waste, and direct site emission that crosses the declared boundary; explain genuinely absent route-specific exchanges."
+      evidence: "Signed inventory completeness review; material and energy reconciliations"
+    - id: dq_mass_balance
+      applies_to: "Mass-bearing exchanges"
+      requirement: "Reconcile material-family inputs, accepted output, returns, internal reuse, and outgoing waste; investigate and disclose residuals without inventing balancing flows."
+      evidence: "calc_material_balance worksheet"
+    - id: dq_supplier_links
+      applies_to: "Upstream textiles and components"
+      requirement: "Use supplier- or geography-representative upstream datasets and disclose fibre, textile construction, coating/finish, metal, and component production route where material."
+      evidence: "Supplier declarations; dataset metadata; purchasing specification"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "The reference output must be Product flow 887e7332-42b2-496b-aea3-0e9308ff8f17, classified as CPC 27170, with Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids: []
+  - rule_id: validate_reference_amount
+    applies_to: "foreground_dataset_conformance"
+    rule: "The quantitative reference must equal exactly 1 kg net unpackaged accepted parachute output."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every required qualifier in section 3 must be present or explicitly marked not applicable with a product-specific justification."
+    source_ids: []
+  - rule_id: validate_scope_and_configuration
+    applies_to: "foreground_dataset_conformance"
+    rule: "Product classification, use class, type, configuration, included components, and production route must match the declared data package; unlike configurations must not be silently averaged."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "foreground_dataset_conformance"
+    rule: "Each inventory card must represent one concrete atomic exchange; collection labels, flow selectors, and combined alternatives are invalid."
+    source_ids: []
+  - rule_id: validate_foreground_records
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every non-reference amount must be supported by the linked foreground collection protocol; no AI-authored range or generic default may replace a missing record."
+    source_ids: []
+  - rule_id: validate_boundary_links
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every purchased material, component, utility, and packaging exchange must link to a suitable upstream dataset or carry an explicit unresolved dataset gap; on-site and off-site operations must not be double counted."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Material-family balances must include issued mass, returns, accepted-product incorporation, internal reuse, and outgoing waste, with residuals investigated and disclosed."
+    source_ids: []
+  - rule_id: validate_energy_reconciliation
+    applies_to: "foreground_dataset_conformance"
+    rule: "Electricity must reconcile to meter records and any shared-meter allocation must state the causal driver and denominator."
+    source_ids: []
+  - rule_id: validate_release_evidence
+    applies_to: "foreground_dataset_conformance"
+    rule: "Accepted output must link to release, inspection, functional-test, mass, lot, and configuration evidence for the declared product."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package for one declared parachute configuration, manufacturing site, geography, and production period"
+  downstream_use: "Input to reviewed process and lifecyclemodel projections and to product LCI/LCA studies"
+  allowed_use: "Product-specific or configuration-family studies when scope, material system, operating limitations, geography, period, and allocation basis match the declared dataset"
+  excluded_use: "Unqualified category-wide averages; substitution across unlike parachute types or material systems; service, maintenance, use, or end-of-life claims outside the declared boundary"
+  required_metadata: "PCR id; CPC code; reference UUID; product type and configuration; material specifications; included components; operating and service-life limitations; certification or standard; inspection and test basis; site; geography; period; boundary; allocation; packaging basis"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; supplier dataset representativeness; UUID gaps; temporal mismatches; allocation shares; mass-balance residuals; excluded operations; route-specific absent exchanges"
+  update_trigger: "Change in product type, canopy geometry, material or coating system, suspension-line or hardware configuration, included assembly, manufacturing route, site, supply mix, certification basis, or production-period representativeness"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0—Explanatory Notes*, CPC 27170, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Official category identity and separation from adjacent textile articles"
+  - id: "faa-parachute-rigger-handbook-2015"
+    type: "handbook"
+    reference: "U.S. Federal Aviation Administration, *Parachute Rigger Handbook*, FAA-H-8083-17, Change 1, 2015. https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/aviation/prh_change1_changes.pdf"
+    used_for: "Parachute construction, materials, component compatibility, operating-limit marking, inspection, testing, quality control, and release evidence"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques Reference Document for the Textiles Industry*, 2023. https://bureau-industrial-transformation.jrc.ec.europa.eu/index.php/reference/textiles-industry"
+    used_for: "Upstream textile pretreatment, dyeing, printing, coating, and finishing boundary disclosure"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, *Environmental management—Life cycle assessment—Requirements and guidelines*; reviewed and confirmed in 2022. https://www.iso.org/standard/38498.html"
+    used_for: "System boundary, allocation hierarchy, inventory calculation, and data-quality rules"
+  - id: "eu-environmental-footprint-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279"
+    used_for: "Life-cycle data quality, supply-chain representativeness, category specificity, reconciliation, and reporting rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d026114baaa0117e2c6d270538c7fd12931f7560b679be93da1316b528d68448"
+  generated_content_sha256: "sha256:400deee964705414980935bb4fe17fe67c1f1e519a566bb006eba71bc07b80e2"

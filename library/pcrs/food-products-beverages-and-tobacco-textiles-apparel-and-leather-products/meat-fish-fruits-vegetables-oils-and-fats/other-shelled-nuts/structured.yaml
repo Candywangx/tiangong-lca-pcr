@@ -1,10 +1,857 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21429"
-  title: "Other shelled nuts"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-shelled-nuts"
+  classification_refs: "CPC 3.0: 21429, Other shelled nuts"
+  covered_products: "Product-specific shelled nuts, fresh or dried, within CPC 3.0 subclass 21429; UNSD examples include coconuts, Brazil nuts, cashew nuts, chestnuts, pistachios, macadamia nuts, betel nuts, ginkgo nuts, pecan nuts, water chestnuts, kola nuts, and pine nuts (Pinus pinea)."
+  excluded_products: "Nuts in shell; groundnuts and separately classified products unless CPC 21429 applicability is explicitly confirmed; mixtures; products roasted, salted, sugared, flavoured, or otherwise prepared outside the fresh-or-dried shelled state; nut ingredients in composite foods; unverified use of the Almond flow for another nut."
+  representative_product: "Narrow database representative: Almond 05bb565f-a834-4543-8d65-dd4029d5deea. This reference does not expand the product category to all almonds and does not represent non-almond products."
+  production_route: "Declared receipt state followed by applicable shelling or separation, cleaning or conditioning, defect removal and grading, optional product-specific food-safety treatment, packing, and controlled on-site storage."
+  market_state: "Net shelled nut product at facility dispatch, fresh or dried as declared, with species, form, moisture basis, grade or specification, treatment state, origin, and lot identity disclosed."
+functional_unit:
+  what: "A declared, product-specific shelled nut meeting the stated market specification at facility dispatch."
+  how_much: "1 kg net mass of shelled product, excluding packaging and non-product foreign matter."
+  how_well: "Species, form, moisture basis, quality or grade, treatment state, origin, and lot are declared; product-specific legal or commercial requirements are met."
+  how_long_or_cycle: "One declared production lot at dispatch; no consumer use duration is represented."
+  reference_flow_link: "reference_shelled_nut_product"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_gate
+      applies_to: "foreground production"
+      rule: "Include lot receipt and identity control, applicable shelling and separation, cleaning or conditioning, sorting and grading, optional product-specific safety treatment, packing, and controlled on-site storage through dispatch. An omitted listed operation must be marked not applicable with the product and route reason."
+      source_ids:
+        - codex-cxc-6-1972-tree-nuts
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_upstream_links
+      applies_to: "cradle-to-gate projection"
+      rule: "Keep agricultural production, supplier processing, purchased energy and materials, and inbound transport outside the foreground gate only when their product-specific upstream datasets are linked and the exclusion from direct foreground collection is disclosed."
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_downstream_limit
+      applies_to: "dataset use"
+      rule: "Distribution beyond facility dispatch, retail, consumer preparation or consumption, and end-of-life are outside this foreground dataset. A full life-cycle study must add and justify the applicable downstream stages and may not present this gate-to-gate dataset alone as a complete PEF study."
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_standard_scope
+      applies_to: "product-specific standard use"
+      rule: "Use CXC 6-1972 process and hygiene provisions only for tree nuts covered by its scope. Use DDP-06 only for qualifying sweet whole almond kernels. For non-tree nuts and other product forms, apply verified product-specific legal or technical rules or require manual review."
+      source_ids:
+        - codex-cxc-6-1972-tree-nuts
+        - unece-ddp-06-almond-kernels-2024
+        - unsd-cpc-3-0-explanatory-notes-2025
+boundary_abstraction:
+  declared_starting_condition: "Nut material received at the first foreground-controlled operation, identified by species, origin, crop year or lot, in-shell or shelled state, moisture basis, prior treatment, and supplier."
+  starting_condition_role: "Foreground gate input. Include shelling when in-shell material is received; treat already-shelled material as a same-category recursive input rather than recreating its upstream production."
+  product_classification_scope: "Output product must be confirmed within CPC 3.0 subclass 21429. The Almond UUID is an almond-only representative and is not a scope-equivalent identity for the subclass."
+  recursive_input_rule: "Record purchased or transferred shelled nuts of the same category as a technosphere input with an upstream dataset. Do not re-run the generic shelling route or silently substitute the Almond UUID."
+  upstream_dataset_requirement: "Link product-specific upstream datasets for received nut material, electricity, fuels, water supply, packaging materials, transport, and treatment services needed by the study boundary. Unresolved product identity requires manual review."
+  disclosure: "Declare species, product-flow decision, origin, lot or crop year, receipt state, processing and treatment route, mass and moisture bases, yield, reject and co-product disposition, packaging, storage conditions, geography, technology, time period, and all foreground exclusions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Almond"
+    uuid: "05bb565f-a834-4543-8d65-dd4029d5deea"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "common and scientific product name"
+    - "confirmation that the Almond UUID is applicable or replacement product-flow UUID and review decision"
+    - "whole kernel or pieces"
+    - "fresh or dried state"
+    - raw
+    - blanched
+    - pasteurized
+    - "or other declared treatment"
+    - "moisture content and wet or dry measurement basis"
+    - "quality grade or buyer specification"
+    - "country and region of origin"
+    - "crop year or lot"
+    - "facility and route"
+    - "packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference shelled nut product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net product mass after subtracting tare and packaging. State whether the mass is as-received or adjusted to a declared moisture basis; do not apply an undeclared dry-matter conversion."
+  - id: lot_mass_consistency
+    applies_to: "each foreground process"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record input, product, co-product, reject, and waste masses on the same lot and moisture basis, or document each conversion used to align the bases."
+  - id: resource_normalization
+    applies_to: "water, energy, and packaging records"
+    required_property_ref:
+      name: "recorded physical property"
+      uuid: ""
+    required_unit: "recorded native unit and normalized unit"
+    rule: "Preserve native meter, invoice, or issue-record units and document conversion factors before normalizing resource use to 1 kg reference product."
+  - id: almond_ddp06_applicability
+    applies_to: "product claiming UNECE DDP-06 conformity"
+    required_property_ref:
+      name: "Mass and measured moisture fraction"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and percent by mass"
+    rule: "Apply the DDP-06 moisture and commercial-quality rules only to sweet whole almond kernels within the standard's stated scope. Do not apply its 6.5% moisture ceiling to non-almond nuts or excluded almond forms and treatments. unece-ddp-06-almond-kernels-2024"
+process_map:
+  - id: lot_receipt
+    name: "Lot receipt and identity control"
+    inclusion: "required"
+    inclusion_condition: "Always; the starting state and product identity must be declared."
+    role: "Establish the foreground gate, accepted input, and rejected material."
+    quantitative_reference: "mass of accepted nut material"
+  - id: shelling_separation
+    name: "Shelling and kernel separation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the received material is in shell or requires hull or shell removal at the reporting facility."
+    role: "Separate edible kernels from shells, hulls, fines, and rejects."
+    quantitative_reference: "mass of shelled kernel intermediate"
+  - id: kernel_conditioning_grading
+    name: "Kernel cleaning, conditioning, and grading"
+    inclusion: "required"
+    inclusion_condition: "Always include inspection and grading; include washing, drying, blanching, pasteurization, or other operations only when performed and still within the declared product category."
+    role: "Produce the declared shelled-nut specification."
+    quantitative_reference: "mass of graded shelled nuts"
+  - id: packing_storage
+    name: "Packing and controlled on-site storage"
+    inclusion: "required"
+    inclusion_condition: "Always include packing; include storage loads for the actual period under foreground control."
+    role: "Deliver the reference product at facility dispatch."
+    quantitative_reference: "1 kg net reference product"
+process_inventory:
+  - id: lot_receipt
+    label: "Lot receipt and identity control"
+    inputs:
+      product:
+        - row_id: received_nut_material
+          role: "Received nut material"
+          name: "Product-specific received nut material; UUID required when a verified Tiangong flow exists"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the lot entering foreground control. The selected flow must describe the actual species and in-shell or shelled state; the Almond UUID is not used for non-almond inputs."
+          amount:
+            expression: "measured net mass accepted at receipt, with moisture basis recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per lot and per 1 kg reference product after calculation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_identity_mass
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_nut_material
+          role: "Accepted nut material"
+          name: "Product-specific accepted nut material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass released to processing after identity and acceptance checks."
+          amount:
+            expression: "measured accepted mass from the same receipt lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per lot and per 1 kg reference product after calculation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_identity_mass
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      waste:
+        - row_id: receipt_rejects
+          role: "Receipt rejects"
+          name: "Product-specific rejected nut material"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected, contaminated, infested, mould-affected, foreign, or otherwise unfit material and its actual destination."
+          amount:
+            expression: "measured reject mass by disposition category"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per lot and per 1 kg reference product after calculation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_outputs_disposition
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      elementary:
+        []
+  - id: shelling_separation
+    label: "Shelling and kernel separation"
+    inputs:
+      product:
+        - row_id: accepted_inshell_nuts
+          role: "Accepted in-shell nuts"
+          name: "Product-specific accepted in-shell nut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when shelling is performed in the foreground facility."
+          amount:
+            expression: "measured mass charged to shelling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per shelling batch and per 1 kg reference product after calculation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_identity_mass
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+        - row_id: shelling_energy
+          role: "Shelling energy"
+          name: "Product-specific purchased electricity and fuel flows"
+          flow_type: "product"
+          property_unit: "Energy / native meter or invoice unit and kWh or MJ after documented conversion"
+          description: "Record metered or allocated electricity and fuel used by shelling, separation, aspiration, and conveying equipment."
+          amount:
+            expression: "measured use or documented equipment-level allocation for the shelling batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg shelled kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: shelling_water
+          role: "Shelling water"
+          name: "Product-specific water supply flow"
+          flow_type: "product"
+          property_unit: "recorded mass or volume / kg or m3"
+          description: "Record water only when washing, wet shelling, or cleaning crosses the process boundary."
+          amount:
+            expression: "measured water supplied to the shelling batch; mark not applicable for dry routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg shelled kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: shelled_kernel_intermediate
+          role: "Shelled kernel intermediate"
+          name: "Product-specific shelled kernel intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the edible kernel mass leaving shelling before final grading."
+          amount:
+            expression: "measured kernel mass on the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per shelling batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_outputs_disposition
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+        - row_id: shell_hull_coproduct
+          role: "Marketed shells, hulls, or downgraded material"
+          name: "Product-specific shell, hull, or downgraded-material co-product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this row only when the material has a documented customer or internal productive use and is treated as a co-product rather than waste."
+          amount:
+            expression: "measured mass transferred as co-product by documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per shelling batch and per 1 kg reference product after allocation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_outputs_disposition
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: shell_hull_waste
+          role: "Shells, hulls, fines, and rejects sent to treatment"
+          name: "Product-specific shell, hull, fines, and reject waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only material managed as waste; do not duplicate mass already reported as a co-product."
+          amount:
+            expression: "measured waste mass by treatment or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per shelling batch and per 1 kg reference product after calculation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_outputs_disposition
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: shelling_wastewater
+          role: "Shelling wastewater"
+          name: "Product-specific wastewater to treatment"
+          flow_type: "waste"
+          property_unit: "recorded mass or volume / kg or m3"
+          description: "Record wastewater when wet operations are used, including the destination and treatment route."
+          amount:
+            expression: "measured discharge or calculated water balance for the shelling batch"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg shelled kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      elementary:
+        []
+  - id: kernel_conditioning_grading
+    label: "Kernel cleaning, conditioning, and grading"
+    inputs:
+      product:
+        - row_id: kernel_input
+          role: "Kernel material for conditioning and grading"
+          name: "Product-specific shelled kernel intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product-specific lot entering cleaning, inspection, conditioning, and grading."
+          amount:
+            expression: "measured kernel mass entering the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per conditioning and grading batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_identity_mass
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+        - row_id: conditioning_grading_energy
+          role: "Conditioning and grading energy"
+          name: "Product-specific purchased electricity and fuel flows"
+          flow_type: "product"
+          property_unit: "Energy / native meter or invoice unit and kWh or MJ after documented conversion"
+          description: "Record electricity and fuel for cleaning, conveying, drying, aspiration, optical or manual sorting, grading, and any declared food-safety treatment."
+          amount:
+            expression: "measured use or documented equipment-level allocation for the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg graded shelled nuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: conditioning_water_aids
+          role: "Conditioning water and process aids"
+          name: "Product-specific water and process-aid flows"
+          flow_type: "product"
+          property_unit: "applicable recorded property / native purchase or meter unit"
+          description: "Record water and process aids when used for washing, blanching, sanitation, or another declared operation; identify each material separately in the produced dataset."
+          amount:
+            expression: "measured issued or metered quantity by material and batch; mark not applicable for dry routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg graded shelled nuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: graded_shelled_nuts
+          role: "Graded shelled nuts"
+          name: "Product-specific graded shelled nut; use Almond only for the confirmed almond representative"
+          flow_type: "product"
+          flow_ref:
+            uuid: "05bb565f-a834-4543-8d65-dd4029d5deea"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product mass meeting the declared species-specific and buyer or regulatory specification."
+          amount:
+            expression: "measured compliant product mass at the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per conditioning and grading batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_and_product_release
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+                - unece-ddp-06-almond-kernels-2024
+            ranges: []
+      waste:
+        - row_id: conditioning_grading_rejects
+          role: "Conditioning and grading rejects"
+          name: "Product-specific conditioning and grading reject"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record foreign matter, defective kernels, dust collections, and other removed material separately by destination; reclassify saleable downgraded product as a co-product and apply section 7."
+          amount:
+            expression: "measured mass by reject type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per conditioning and grading batch and per 1 kg reference product after calculation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_outputs_disposition
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+        - row_id: conditioning_wastewater
+          role: "Conditioning wastewater"
+          name: "Product-specific wastewater to treatment"
+          flow_type: "waste"
+          property_unit: "recorded mass or volume / kg or m3"
+          description: "Record wastewater from washing, blanching, or sanitation when it crosses the foreground boundary."
+          amount:
+            expression: "measured discharge or calculated water balance by batch"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg graded shelled nuts"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+            ranges: []
+      elementary:
+        - row_id: conditioning_direct_emissions
+          role: "Direct dust, combustion, or refrigerant emissions"
+          name: "Product- and technology-specific direct elementary flows; UUID required before publication of the dataset"
+          flow_type: "elementary"
+          property_unit: "applicable flow property / measured or calculated unit"
+          description: "Record direct elementary flows only when emitted from foreground equipment; select verified elementary-flow UUIDs during dataset construction."
+          amount:
+            expression: "measured emissions or calculation from collected fuel, refrigerant, or abatement records using a cited factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg graded shelled nuts"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resources_operations
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: packing_storage
+    label: "Packing and controlled on-site storage"
+    inputs:
+      product:
+        - row_id: product_for_packing
+          role: "Graded shelled nuts for packing"
+          name: "Product-specific graded shelled nut; use Almond only for the confirmed almond representative"
+          flow_type: "product"
+          flow_ref:
+            uuid: "05bb565f-a834-4543-8d65-dd4029d5deea"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the released product lot transferred to packing."
+          amount:
+            expression: "measured product mass entering packing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packing lot"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_and_product_release
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Product-specific packaging material flows"
+          flow_type: "product"
+          property_unit: "applicable mass or item property / kg or count with measured item mass"
+          description: "Record each packaging material, component, and reusable transport item separately with actual issue or purchase quantities."
+          amount:
+            expression: "measured material issued to the lot minus documented reusable or returned quantities"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_storage
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packing_storage_energy
+          role: "Packing and storage energy"
+          name: "Product-specific purchased electricity and fuel flows"
+          flow_type: "product"
+          property_unit: "Energy / native meter or invoice unit and kWh or MJ after documented conversion"
+          description: "Record packing-line energy and energy for the actual controlled storage period, including documented allocation of shared meters."
+          amount:
+            expression: "measured use or documented allocation over the lot's packing and storage period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_storage
+              source_ids:
+                - codex-cxc-6-1972-tree-nuts
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_shelled_nut_product
+          role: "Reference shelled nut product"
+          name: "Almond for the almond representative only; otherwise verified product-specific flow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "05bb565f-a834-4543-8d65-dd4029d5deea"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference. The Almond UUID is valid only for the confirmed almond representative; every non-almond product requires a verified product-specific flow or manual review."
+          amount:
+            expression: "1 kg net dispatched product after tare subtraction, normalized from foreground release records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_storage
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+            ranges: []
+      waste:
+        - row_id: packing_losses
+          role: "Packaging losses and damaged product"
+          name: "Product-specific packaging and product waste flows"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record packaging offcuts, damaged containers, spilled product, and product downgraded or discarded during packing and storage by material and destination."
+          amount:
+            expression: "measured loss mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_storage
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: storage_refrigerant_leakage
+          role: "Direct storage refrigerant leakage"
+          name: "Refrigerant-specific elementary flow; UUID required before publication of the dataset"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only when refrigerated storage equipment under foreground control leaks refrigerant during the reporting period."
+          amount:
+            expression: "calculated lot share from measured recharge and recovery records, excluding documented transfers"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product and actual storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_storage
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_avoid
+    applies_to: "all multifunctional foreground processes"
+    rule: "First avoid allocation by collecting subdivided process data or, when consistent with the study goal, by system expansion. Keep directly attributable inputs and emissions with the product or function that causes them."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_physical
+    applies_to: "unavoidable allocation among kernels, shells, hulls, downgraded products, or services"
+    rule: "When subdivision or system expansion is not possible, use a documented, quantifiable physical relationship relevant to the functions delivered. Mass allocation is not automatic; justify why mass reflects the underlying relationship and use aligned moisture bases."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_economic
+    applies_to: "multifunctionality with no defensible physical relationship"
+    rule: "If economic allocation is used, document product status, market, price source, averaging period, currency, and calculation; apply the method consistently and disclose a sensitivity check. Do not assign zero burden solely because an output has low value."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_disposition
+    applies_to: "shells, hulls, rejects, fines, and downgraded product"
+    rule: "Classify each output once as reference product, co-product, or waste from documented disposition. Do not duplicate it between product and waste rows. Waste treatment burdens remain linked to the process unless the chosen reviewed method states otherwise."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_identity_mass
+      process_id: "lot_receipt_shelling_separation_kernel_conditioning_grading"
+      flow_role: "received, accepted, and transferred nut material"
+      record_type: "receiving ticket, scale record, lot genealogy record"
+      raw_fields: "lot_id; supplier; common_name; scientific_name; origin; crop_year; receipt_state; treatment_state; gross_mass; tare_mass; net_mass; moisture_value; moisture_method; product_flow_uuid_decision"
+      collection_method: "calibrated scales plus identity and traceability review"
+      unit: "kg; percent moisture"
+      frequency: "every lot and transfer"
+      temporal_coverage: "declared reporting period"
+      site_scope: "each reporting facility and line"
+      aggregation_rule: "retain lot-level records; aggregate only after reconciling transfers and moisture bases"
+      quality_evidence: "calibration record; signed receiving record; supplier specification; flow-identity review decision"
+    - protocol_id: cp_mass_outputs_disposition
+      process_id: "lot_receipt_shelling_separation_kernel_conditioning_grading"
+      flow_role: "products, co-products, rejects, shells, hulls, fines, and wastewater"
+      record_type: "scale ticket, bin count with item mass, waste manifest, transfer record"
+      raw_fields: "lot_id; output_type; mass_or_volume; moisture_basis; destination; product_or_waste_status; customer_or_treatment"
+      collection_method: "weigh each stream or use documented container count conversion; meter wastewater when applicable"
+      unit: "kg; m3"
+      frequency: "every batch or removal event"
+      temporal_coverage: "same period as product output"
+      site_scope: "each reporting facility and process"
+      aggregation_rule: "sum by process, output status, and destination; prevent duplicate product/waste classification"
+      quality_evidence: "scale calibration; destination receipt; waste manifest; conversion record"
+    - protocol_id: cp_resources_operations
+      process_id: "shelling_separation_kernel_conditioning_grading"
+      flow_role: "electricity, fuel, water, process aids, wastewater, and direct emissions"
+      record_type: "meter, invoice, fuel issue, chemical issue, maintenance and abatement log"
+      raw_fields: "timestamp; meter_id; opening_reading; closing_reading; fuel_or_material; quantity; unit; process; allocation_driver; production_lot; emission_factor_source"
+      collection_method: "direct submetering preferred; otherwise documented allocation from shared records"
+      unit: "native unit; kWh; MJ; kg; m3"
+      frequency: "each batch or at the shortest available meter interval"
+      temporal_coverage: "same period as covered production"
+      site_scope: "each reporting facility and relevant equipment"
+      aggregation_rule: "subtract documented non-production use; allocate shared records using the declared driver; normalize after lot mass reconciliation"
+      quality_evidence: "meter calibration; invoices; issue logs; factor reference; allocation worksheet"
+    - protocol_id: cp_quality_and_product_release
+      process_id: "kernel_conditioning_grading_packing_storage"
+      flow_role: "graded and released shelled product"
+      record_type: "laboratory result, inspection sheet, release certificate"
+      raw_fields: "lot_id; common_name; scientific_name; form; treatment_state; moisture_value; moisture_method; defects; grade_or_specification; origin; crop_year; release_mass; standard_claim"
+      collection_method: "product-specific sampling and recognized test or inspection method"
+      unit: "kg; percent; declared defect unit"
+      frequency: "every released lot"
+      temporal_coverage: "same period as production"
+      site_scope: "each product and facility"
+      aggregation_rule: "no cross-species averaging; retain result with the released lot"
+      quality_evidence: "laboratory accreditation or method; inspector record; applicable standard and scope decision"
+    - protocol_id: cp_packing_storage
+      process_id: "packing_storage"
+      flow_role: "packaging, packed product, storage energy, losses, and refrigerant"
+      record_type: "packaging issue, packing line record, warehouse log, meter, refrigerant service record"
+      raw_fields: "lot_id; package_component; material; issued_quantity; returned_quantity; packed_gross_mass; tare_mass; storage_start; storage_end; storage_condition; energy; refrigerant_recharge; refrigerant_recovery; loss_destination"
+      collection_method: "measured issue and mass records linked to warehouse and maintenance logs"
+      unit: "kg; count; kWh; MJ; day"
+      frequency: "every packing lot and storage period"
+      temporal_coverage: "same period as dispatch output"
+      site_scope: "each reporting facility and storage system"
+      aggregation_rule: "calculate net dispatched mass; aggregate storage loads over actual lot residence time; reconcile refrigerant recharge and recovery"
+      quality_evidence: "package specification; scale and meter calibration; warehouse log; service invoice"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "packed dispatch product"
+      rule: "net product mass = packed gross mass - tare and excluded packaging mass; normalize all inventory quantities by net dispatched mass"
+      inputs:
+        - "packed gross mass"
+        - "tare mass"
+        - "packaging mass"
+        - "released lot identity"
+      output: "kg net reference product and normalized inventory per kg"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - id: calc_process_yield
+      applies_to: "receipt, shelling, conditioning, and grading"
+      rule: "yield = aligned-basis product output mass / aligned-basis accepted input mass; report species, route, and moisture basis with the result"
+      inputs:
+        - "accepted input mass"
+        - "product output mass"
+        - "moisture values and conversions"
+      output: "product-specific process yield"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "each foreground process and full foreground route"
+      rule: "mass-balance difference = aligned-basis input mass - sum of product, co-product, waste, measured emission, and documented inventory-change masses; investigate and disclose the difference without applying an invented tolerance"
+      inputs:
+        - "all input and output masses"
+        - "inventory change"
+        - "moisture conversions"
+      output: "reconciled mass balance and disclosed residual"
+      source_ids: []
+    - id: calc_resource_intensity
+      applies_to: "energy, water, process aids, and packaging"
+      rule: "resource intensity = reconciled resource quantity / applicable process output or net reference product mass, using documented unit conversion"
+      inputs:
+        - meter
+        - invoice
+        - issue
+        - "and output records"
+      output: "resource use per declared basis"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - id: calc_allocation_factors
+      applies_to: "multifunctional process"
+      rule: "apply alloc_avoid, then alloc_physical, then alloc_economic; factors for included co-products must sum to the complete allocated share and be retained with source data"
+      inputs:
+        - "subdivision evidence"
+        - "physical driver"
+        - "or price and market records"
+      output: "documented allocation factors and allocated inventory"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "every foreground data package"
+      requirement: "Resolve the actual product identity and CPC 21429 applicability. Retain the Almond UUID only for the confirmed almond representative; otherwise store a verified product-specific UUID or a manual-review decision before publication."
+      evidence: "lot identity; product description; Tiangong flow decision; unsd-cpc-3-0-explanatory-notes-2025"
+    - id: dq_traceability
+      applies_to: "all product and material flows"
+      requirement: "Maintain lot genealogy from receipt through dispatch, including origin, crop year or lot, receipt state, treatment state, moisture basis, specification, and disposition of removed material."
+      evidence: "receiving, transfer, inspection, and dispatch records"
+    - id: dq_completeness
+      applies_to: "all foreground processes"
+      requirement: "Cover all listed applicable processes and reconcile major material, water, energy, packaging, waste, co-product, wastewater, and direct-emission records. Mark non-applicable rows with a route-specific reason."
+      evidence: "process map; meter and mass-balance reconciliation; exclusion log"
+    - id: dq_representativeness
+      applies_to: "activity data and linked datasets"
+      requirement: "Assess and disclose technological, geographical, time representativeness, and precision for the actual species, facility, technology, and reporting period; do not average different nut products without a documented representativeness and weighting decision."
+      evidence: "foreground records and DQR disclosure; eu-recommendation-2021-2279-pef"
+    - id: dq_standard_scope
+      applies_to: "standard or specification claims"
+      requirement: "Verify botanical species, product form, treatment, and market claim before applying a commodity standard. DDP-06 data may constrain only qualifying sweet whole almond kernels; CXC 6-1972 process rules may support only tree nuts within its scope."
+      evidence: "applicability checklist; laboratory or inspection record; unece-ddp-06-almond-kernels-2024; codex-cxc-6-1972-tree-nuts"
+    - id: dq_range_evidence
+      applies_to: "important inventory flows"
+      requirement: "Foreground values are mandatory. No category-wide numerical default or QA range is supplied because reviewed cross-product evidence is unavailable; replace this evidence gap with product- and route-specific reviewed ranges before moving the PCR to active methodology."
+      evidence: "source review record and product-specific evidence added during methodology review"
+validation_rules:
+  - rule_id: val_identity_scope
+    applies_to: "product identity"
+    rule: "Fail automated validation if CPC 21429 applicability, species, and product state are missing, or if the Almond UUID is used for a non-almond product. A missing verified product-specific flow for another nut requires manual review."
+    source_ids:
+      - unsd-cpc-3-0-explanatory-notes-2025
+  - rule_id: val_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1 kg net product on the declared moisture basis, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg; packaging mass must be excluded."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_process_coverage
+    applies_to: "foreground boundary"
+    rule: "Confirm all four process-map entries are addressed, shelling_separation is included for in-shell receipt, and every omitted conditional operation has a documented product- and route-specific reason."
+    source_ids:
+      - codex-cxc-6-1972-tree-nuts
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_mass_balance
+    applies_to: "each process and full route"
+    rule: "Confirm aligned moisture and unit bases, reconcile product, co-product, waste, wastewater, emissions, and inventory change, and report every unexplained residual; this PCR supplies no invented acceptance tolerance."
+    source_ids: []
+  - rule_id: val_allocation
+    applies_to: "multifunctional processes"
+    rule: "Confirm allocation was avoided where possible; otherwise verify the selected physical or economic relationship, input records, factor calculation, completeness, consistent application, and disclosure."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_almond_ddp06
+    applies_to: "claimed DDP-06 almond product"
+    rule: "When and only when DDP-06 conformity is claimed, confirm the product is a qualifying sweet whole almond kernel, excluded forms and treatments are absent, moisture does not exceed 6.5% by mass using the applicable method, and required quality, presentation, and marking evidence is retained."
+    source_ids:
+      - unece-ddp-06-almond-kernels-2024
+  - rule_id: val_data_quality
+    applies_to: "dataset release"
+    rule: "Confirm lot traceability, measurement evidence, calibration, temporal coverage, site and technology coverage, linked upstream datasets, exclusions, and representativeness disclosure. An unresolved product-flow identity or missing major foreground record makes validation inconclusive."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+published_dataset_profile:
+  dataset_role: "Product- and route-specific foreground production data package for a declared CPC 21429 shelled nut at facility dispatch."
+  downstream_use: "secondary_dataset; background_dataset after review, product-flow resolution, completion of upstream links, and quality disclosure."
+  allowed_use: "Product-specific process or cradle-to-gate modelling for the declared species, origin, product state, facility, technology, period, and packaging; aggregation only where representativeness and weighting are documented."
+  excluded_use: "Automatic representation of the full CPC 21429 subclass by the Almond UUID; substitution among nut species without review; use for in-shell, roasted, salted, sugared, flavoured, composite, or otherwise out-of-scope products; comparative claims or claims of PEF conformity without the additional applicable rules, life-cycle stages, verification, and harmonized scenarios."
+  required_metadata: "PCR id; CPC coordinate and scope decision; product common and scientific names; selected product-flow UUID and representative limitation; origin; crop year or lot; facility; technology; receipt and market states; form; treatment; moisture value, method, and basis; grade or specification; time period; geography; process coverage; yield; allocation; packaging; storage; linked upstream datasets."
+  required_quality_disclosure: "Data sources and collection coverage; calibration and test methods; mass-balance residuals; missing important-flow ranges; product-flow review status; technological, geographical, time representativeness, and precision; exclusions; allocation method and sensitivity; commodity-standard applicability."
+  update_trigger: "Change of species or product identity, route, facility, technology, product state, moisture or grade basis, treatment, packaging, storage system, allocation relationship, reporting period, legal or commercial specification, Tiangong product-flow resolution, or material source evidence."
+data_sources:
+  - id: "unsd-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0 Explanatory Notes, subclass 21429, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "Official product-category scope and examples; not process or amount evidence."
+  - id: "codex-cxc-6-1972-tree-nuts"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 6-1972, Code of Hygienic Practice for Tree Nuts. https://workspace.fao.org/sites/codex/Standards/CXC%206-1972/CXC_006e.pdf (retrieved 2026-08-11)"
+    used_for: "Tree-nut-only process decomposition, receipt controls, shelling, drying, defect separation, packing, storage, and hygiene requirements; not extended to non-tree nuts."
+  - id: "unece-ddp-06-almond-kernels-2024"
+    type: "standard"
+    reference: "UNECE Standard DDP-06 concerning the marketing and commercial quality control of almond kernels, 2024. https://unece.org/sites/default/files/2025-02/DDP-06_Almond_kernels_2024_e.pdf (retrieved 2026-08-11)"
+    used_for: "Narrow Almond representative qualifiers, moisture, quality, presentation, and marking only for the standard's stated product scope."
+  - id: "eu-recommendation-2021-2279-pef"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021, Annex I, Product Environmental Footprint Method. https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-11)"
+    used_for: "Functional or declared unit, reference flow, supply-chain boundary disclosure, multifunctionality hierarchy, company-specific data, and data-quality dimensions; not nut process evidence."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:424d134f29f0a16e74856fb4f4018e88ac633c4a1a79dead77203532644d768e"
+  generated_content_sha256: "sha256:99cc53bafafe0bfdffbaab39c2aca8685c40198a8f80f833c174b48749c477b8"

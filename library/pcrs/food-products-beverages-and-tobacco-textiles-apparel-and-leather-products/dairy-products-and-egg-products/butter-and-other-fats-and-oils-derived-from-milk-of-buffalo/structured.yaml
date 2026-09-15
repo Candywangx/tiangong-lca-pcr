@@ -1,10 +1,1086 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22242"
-  title: "Butter and other fats and oils derived from milk of buffalo"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.butter-and-other-fats-and-oils-derived-from-milk-of-buffalo"
+  classification_refs: "CPC 3.0: 22242, exact"
+  covered_products: "Butter and other fats and oils derived exclusively from buffalo milk or buffalo-milk products, including butter, dairy spread, butterfat, fractionated milkfat, anhydrous milkfat, butter oil, and ghee"
+  excluded_products: "Cattle-milk products under CPC 22241; products from other animals under CPC 22249; mixed-species milk products; vegetable-fat or other non-milk substitutes; products whose true identity is not a buffalo-milk fat product"
+  representative_product: "Packaged buffalo-milk butter or declared buffalo-milk fat product at the facility gate"
+  production_route: "Receipt and species verification; optional cream separation or standardisation; churning, fat concentration, recombination, fractionation, dehydration, or ghee finishing as applicable; packaging; storage; utility, cleaning, and wastewater support"
+  market_state: "Packaged or bulk product at the declared facility gate; physical state, salt/culture status, fat-product designation, packaging format, and storage condition declared"
+functional_unit:
+  what: "Buffalo-milk butter or another declared fat or oil product derived exclusively from buffalo milk"
+  how_much: "1 kg net product"
+  how_well: "Product family, buffalo-only origin, physical state, formulation or salt status, packaging state, and applicable product-identity claim are declared"
+  how_long_or_cycle: "One production batch through the declared facility gate; no use-phase duration is represented"
+  reference_flow_link: "The 1 kg net product is represented by the Tiangong product flow and mass references below"
+system_boundary:
+  rules:
+    - rule_id: buffalo_origin_boundary
+      applies_to: "Product and dairy inputs"
+      rule: "Include only lots documented as buffalo milk or buffalo-milk products; exclude cattle, other-animal, and mixed-species dairy inputs from this PCR dataset."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - codex-cxs-206-1999
+    - rule_id: foreground_gate_boundary
+      applies_to: "Foreground facility"
+      rule: "Include receiving, species and lot verification, storage, applicable separation or standardisation, fat concentration or churning, applicable finishing or dehydration, packaging, storage, cleaning, utilities, and on-site waste or wastewater operations through the declared facility gate."
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - rule_id: upstream_link_boundary
+      applies_to: "Purchased inputs"
+      rule: "Link traceable upstream datasets for buffalo milk or buffalo-milk intermediates, energy carriers, process water, ingredients, cleaning agents, refrigerants, packaging, and outsourced treatment or transport when those activities are outside direct foreground control."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: direct_emission_boundary
+      applies_to: "Foreground releases"
+      rule: "Include measured or calculated direct releases to air and water, refrigerant losses, wastewater sent off site, residues, rejects, and packaging waste without converting Codex quality criteria or BAT performance levels into inventory values."
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - rule_id: route_condition_boundary
+      applies_to: "Product variants"
+      rule: "Apply only the unit processes actually used for the declared product: churning for butter, near-total removal of water and non-fat solids for the CXS 280 product families, and any recombination, fractionation, salting, culturing, or ghee finishing that occurred."
+      source_ids:
+        - codex-cxs-279-1971
+        - codex-cxs-280-1973
+boundary_abstraction:
+  declared_starting_condition: "Traceable buffalo milk, buffalo cream, or eligible buffalo-milk intermediate accepted at the foreground facility gate, with species origin, supplier, lot, mass, composition basis, temperature or storage state, and acceptance status recorded"
+  starting_condition_role: "Upstream-linked dairy product input and first foreground custody point"
+  product_classification_scope: "CPC 3.0 subclass 22242 only; cattle 22241, other animals 22249, and mixed-species inputs are excluded"
+  recursive_input_rule: "An input already meeting this same PCR category remains an explicit product input with supplier dataset and batch linkage; do not recursively reopen its prior production inside the receiving process unless the boundary is intentionally expanded"
+  upstream_dataset_requirement: "Use a species-specific buffalo-milk or buffalo-milk-intermediate upstream dataset with geography, technology, reference period, composition basis, allocation, and data-quality disclosure; generic or cattle-milk proxies require explicit non-conformance disclosure and are not treated as exact buffalo data"
+  disclosure: "Declare starting dairy material, excluded upstream activities, included facility processes, product route, co-products, allocation decisions, outsourced operations, packaging state, storage, and plant-gate endpoint"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Buffalo-milk butter and fats"
+    uuid: "554cfc76-a4ac-4cda-9e06-d60256918b58"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "buffalo-only milk origin"
+    - "product designation"
+    - "production route"
+    - "batch or campaign"
+    - "net or dry mass basis"
+    - "water-content or solids basis when used for conversion"
+    - salted
+    - cultured
+    - recombined
+    - fractionated
+    - dehydrated
+    - "or ghee status as applicable"
+    - "packaging format"
+    - "storage condition"
+    - "facility gate"
+    - geography
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference product as net product mass in kg and state whether packaging is excluded from that mass."
+  - id: mass_basis_conversion
+    applies_to: "Material inputs, intermediates, co-products, and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured wet, dry, fat, water, or solids basis; convert only with batch-specific measured composition data and retain the original measurement and conversion record."
+  - id: energy_carrier_units
+    applies_to: "Electricity, fuels, steam, hot water, and refrigeration"
+    required_property_ref:
+      name: "Energy or mass/volume property selected for the carrier"
+      uuid: ""
+    required_unit: "declared source unit and normalized unit"
+    rule: "Preserve meter, invoice, and fuel units; document every conversion factor and normalize the resulting amount to 1 kg net reference product."
+  - id: water_stream_units
+    applies_to: "Process, cleaning, cooling, condensate, and wastewater streams"
+    required_property_ref:
+      name: "Volume or mass selected for the stream"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Keep water streams separated by purpose and treatment need; state density assumptions when converting mass and volume."
+process_map:
+  - id: receipt_and_storage
+    name: "Buffalo dairy input receipt and storage"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground custody, identity verification, and chilled or controlled storage"
+    quantitative_reference: "accepted buffalo dairy input and transferred mass"
+  - id: fat_separation_standardisation
+    name: "Fat separation and standardisation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when whole buffalo milk is separated, cream is standardised, or fat content is adjusted at the facility"
+    role: "Foreground dairy fractionation and intermediate preparation"
+    quantitative_reference: "mass of dairy input and each separated output"
+  - id: butter_or_fat_formation
+    name: "Butter or milkfat formation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground churning, concentration, recombination, or other declared formation step"
+    quantitative_reference: "mass of product intermediate and co-products"
+  - id: dehydration_fractionation_finishing
+    name: "Dehydration, fractionation, and route-specific finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include for anhydrous milkfat, butter oil, ghee, fractionated, melted, salted, cultured, or otherwise finished variants"
+    role: "Foreground route-specific finishing"
+    quantitative_reference: "mass of input intermediate and finished bulk product"
+  - id: packaging_and_product_storage
+    name: "Packaging and product storage"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground final packing, cold or controlled storage, and plant-gate output"
+    quantitative_reference: "1 kg net reference product"
+  - id: utilities_cleaning_wastewater
+    name: "Utilities, cleaning, and wastewater management"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Shared foreground support and direct environmental exchanges"
+    quantitative_reference: "allocated service to 1 kg net reference product"
+process_inventory:
+  - id: receipt_and_storage
+    label: "Buffalo dairy input receipt and storage"
+    inputs:
+      product:
+        - row_id: buffalo_dairy_input
+          role: "Accepted buffalo dairy material"
+          name: "Buffalo milk, buffalo cream, or declared buffalo-milk intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record every accepted lot of buffalo milk, buffalo cream, or eligible buffalo-milk intermediate crossing the facility gate. Supplier and species documentation must exclude mixed-species material."
+          amount:
+            expression: "Measured accepted mass by lot on the recorded wet, dry, fat, or solids basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids:
+                - unsd-cpc-3-0-2025
+                - codex-cxs-206-1999
+            ranges: []
+        - row_id: receipt_storage_energy
+          role: "Receipt and storage energy"
+          name: "Declared electricity, fuel, steam, or refrigeration service"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy, mass, or volume / declared source unit"
+          description: "Record metered or allocated electricity, fuel, steam, or refrigeration service used for unloading, pumping, cooling, and storage before transfer to production."
+          amount:
+            expression: "Metered amount where submetering exists; otherwise a documented allocation from the shortest representative facility interval"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        - row_id: receipt_dairy_rejects
+          role: "Rejected or spilled dairy material"
+          name: "Buffalo dairy reject or spill to declared recovery, treatment, or disposal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected lots, spills, and line-clearance dairy material by destination without netting them against accepted input."
+          amount:
+            expression: "Weighed or mass-balance-derived quantity by incident and destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_dairy_to_production
+          role: "Transferred buffalo dairy material"
+          name: "Accepted buffalo dairy material transferred to production"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass and composition basis transferred from storage to the next applicable process."
+          amount:
+            expression: "Measured transfer mass reconciled to accepted input, storage change, rejects, and spills"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per receipt batch and per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: fat_separation_standardisation
+    label: "Fat separation and standardisation"
+    inputs:
+      product:
+        - row_id: separation_dairy_input
+          role: "Buffalo dairy material to separation"
+          name: "Buffalo dairy material to separator or standardisation step"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the transferred buffalo milk, cream, or intermediate and its batch-specific composition basis."
+          amount:
+            expression: "Measured batch input mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per process batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids:
+                - codex-cxs-206-1999
+            ranges: []
+        - row_id: separation_energy
+          role: "Separation and standardisation energy"
+          name: "Declared electricity, fuel, steam, or refrigeration service"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy, mass, or volume / declared source unit"
+          description: "Record energy used by separators, pumps, heat treatment, cooling, and holding equipment in this step."
+          amount:
+            expression: "Metered process amount or documented interval allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg declared process output and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: buffalo_fat_intermediate
+          role: "Buffalo cream or standardised fat intermediate"
+          name: "Buffalo cream or standardised buffalo-milk fat intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the buffalo-milk fat intermediate transferred to the formation step, including mass and measured composition basis."
+          amount:
+            expression: "Measured output mass by batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per separation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids: []
+            ranges: []
+        - row_id: buffalo_skim_coproduct
+          role: "Buffalo skim-milk co-product"
+          name: "Buffalo skim milk or other declared dairy co-product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each marketable or internally used buffalo skim-milk fraction separately from the fat intermediate."
+          amount:
+            expression: "Measured co-product mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per separation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: separation_residues
+          role: "Separation residues and losses"
+          name: "Separation residue or dairy loss to declared destination"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record non-product residues, separator sludge, and unrecovered dairy losses by destination."
+          amount:
+            expression: "Weighed quantity or batch mass-balance residual, with derivation retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per separation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: butter_or_fat_formation
+    label: "Butter or milkfat formation"
+    inputs:
+      product:
+        - row_id: formation_dairy_input
+          role: "Buffalo dairy feed to formation"
+          name: "Declared buffalo dairy feed to formation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the batch of buffalo cream, buffalo-milk fat intermediate, or eligible buffalo-milk input entering churning, concentration, recombination, or other declared formation equipment."
+          amount:
+            expression: "Measured batch input mass and composition basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per formation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: formation_energy
+          role: "Formation energy"
+          name: "Declared electricity, fuel, steam, cooling, or compressed-air service"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy, mass, or volume / declared source unit"
+          description: "Record electricity, heat, cooling, compressed air, or other energy services used by the declared formation route."
+          amount:
+            expression: "Metered process amount or documented interval allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg formation output and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+        - row_id: formation_auxiliaries
+          role: "Water, salt, culture, or route ingredient"
+          name: "Declared process water or route ingredient"
+          flow_type: "product"
+          property_unit: "Mass or volume selected for the material / kg or m3"
+          description: "Record only potable water, salt, culture, or another declared route input actually added. Do not infer an amount from a Codex permitted-ingredient or composition provision."
+          amount:
+            expression: "Measured batch addition from scale, dosing, or issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per formation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_cip_ingredients
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_buffalo_fat_product
+          role: "Formed buffalo-milk fat product"
+          name: "Formed buffalo-milk butter or fat intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the butter or milkfat intermediate transferred to optional finishing or directly to packaging."
+          amount:
+            expression: "Measured batch output mass and declared product family"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per formation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: formation_dairy_coproduct
+          role: "Buttermilk or aqueous dairy co-product"
+          name: "Buttermilk or declared aqueous buffalo dairy co-product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record buttermilk or another separately used aqueous dairy stream as a co-product only when it has a documented beneficial use or market destination."
+          amount:
+            expression: "Measured co-product mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per formation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: formation_losses
+          role: "Formation losses and non-product dairy stream"
+          name: "Formation loss or non-product dairy stream"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record product loss, flush material, and non-beneficial dairy streams by treatment destination."
+          amount:
+            expression: "Weighed amount or batch mass-balance residual"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per formation batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: dehydration_fractionation_finishing
+    label: "Dehydration, fractionation, and route-specific finishing"
+    inputs:
+      product:
+        - row_id: finishing_product_input
+          role: "Buffalo-milk fat intermediate to finishing"
+          name: "Buffalo-milk fat intermediate to finishing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the batch transferred to melting, dehydration, fractionation, recombination, salting, culturing, flavour development, or another declared finishing route."
+          amount:
+            expression: "Measured batch input mass and composition basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: finishing_energy_auxiliaries
+          role: "Finishing energy and auxiliaries"
+          name: "Declared energy service, process water, or route auxiliary"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy, mass, or volume / declared source unit"
+          description: "Record route-specific heat, vacuum, cooling, electricity, water, and actual additives or ingredients without applying a generic recipe."
+          amount:
+            expression: "Metered, weighed, or batch-issued amount for the actual finishing route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finishing output and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids:
+                - codex-cxs-280-1973
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_bulk_product
+          role: "Finished bulk buffalo-milk fat product"
+          name: "Declared finished bulk buffalo-milk fat product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record finished bulk butter, milkfat, butter oil, ghee, fraction, or other in-scope product transferred to packaging."
+          amount:
+            expression: "Measured net bulk output mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+      waste:
+        - row_id: finishing_removed_material
+          role: "Removed aqueous or non-fat material"
+          name: "Removed aqueous or non-fat material to declared destination"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record water, non-fat solids, off-spec material, and residues removed during finishing, classified by actual recovery, treatment, or release route."
+          amount:
+            expression: "Measured quantity or batch mass-balance-derived quantity"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per finishing batch and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+      elementary:
+        []
+  - id: packaging_and_product_storage
+    label: "Packaging and product storage"
+    inputs:
+      product:
+        - row_id: bulk_product_to_packaging
+          role: "Finished bulk product to packaging"
+          name: "Finished bulk buffalo-milk butter or fat product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of in-scope finished bulk product entering the packaging line."
+          amount:
+            expression: "Measured batch or packaging-run input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packaging run and per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_mass_traceability
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and tertiary packaging"
+          name: "Declared packaging material or reusable transport item"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg, or count converted with measured item mass"
+          description: "Record each packaging material and reusable transport item separately by material, mass, recycled-content claim where relevant, and packaging level."
+          amount:
+            expression: "Purchasing and line-issue records less documented returns, normalized with packaging-run output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_storage_energy
+          role: "Packaging and storage energy"
+          name: "Declared electricity, fuel, refrigeration, or compressed-air service"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy, mass, or volume / declared source unit"
+          description: "Record packaging-line electricity, compressed air, cold-room or controlled-storage energy, and related utility demand through the declared gate."
+          amount:
+            expression: "Metered amount or documented allocation over the packaging and storage interval"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Net reference product at facility gate"
+          name: "Buffalo-milk butter and fats"
+          flow_type: "product"
+          flow_ref:
+            uuid: "554cfc76-a4ac-4cda-9e06-d60256918b58"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is the declared buffalo-milk butter or fat product meeting the reference-flow qualifiers. Packaging mass is not part of the 1 kg net product."
+          amount:
+            expression: "1 kg net reference product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net reference product at the declared facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: packaging_rejects
+          role: "Packaging rejects and product loss"
+          name: "Declared packaging reject or packed-product loss"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record packaging trim, damaged packs, off-spec packed product, and recovered or discarded product separately by destination."
+          amount:
+            expression: "Weighed or inventory-reconciled amount by packaging run and destination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: refrigerant_release
+          role: "Refrigerant releases"
+          name: "Declared refrigerant emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct refrigerant loss associated with in-scope cooling and storage from service records and inventory reconciliation."
+          amount:
+            expression: "Refrigerant mass balance from opening stock, additions, recoveries, closing stock, and documented equipment transfer"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product over the declared reference period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_effluent
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+  - id: utilities_cleaning_wastewater
+    label: "Utilities, cleaning, and wastewater management"
+    inputs:
+      product:
+        - row_id: shared_energy_fuel
+          role: "Shared energy and fuel"
+          name: "Declared shared electricity, fuel, steam, cooling, or compressed-air input"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy, mass, or volume / declared source unit"
+          description: "Record fuels, electricity, steam generation inputs, compressed air, cooling, and other shared utilities serving the in-scope route."
+          amount:
+            expression: "Metered site or utility-system amount allocated to the in-scope route using documented causal meters or service drivers"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids:
+                - eu-fdm-bat-2019-2031
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cleaning_water_chemicals
+          role: "Cleaning water and chemicals"
+          name: "Process water or declared cleaning and disinfection chemical"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record water and each cleaning or disinfection chemical used for tanks, pipes, separators, churns, finishing equipment, packaging equipment, and floors. Retain CIP cycle and dosing records."
+          amount:
+            expression: "Metered water and measured chemical issue or dosing amount by cleaning cycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning cycle and per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_cip_ingredients
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      waste:
+        - row_id: wastewater_to_treatment
+          role: "Wastewater sent to treatment"
+          name: "Declared wastewater stream to treatment"
+          flow_type: "waste"
+          property_unit: "Volume or mass / m3 or kg"
+          description: "Record segregated process, cleaning, cooling, and sanitary wastewater streams by volume, destination, and whether treatment is on site or off site."
+          amount:
+            expression: "Metered or water-balance-derived flow by stream and destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_effluent
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+        - row_id: treatment_residues
+          role: "Treatment sludge and separated residues"
+          name: "Declared treatment sludge or separated residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wastewater-treatment sludge, screenings, recovered fat, and other separated residues by wet or dry basis and destination."
+          amount:
+            expression: "Weighed amount or documented treatment inventory balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_mass
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: direct_water_releases
+          role: "Direct releases to water"
+          name: "Declared elementary emission to water"
+          flow_type: "elementary"
+          property_unit: "Pollutant-specific mass / kg"
+          description: "For on-site discharge, record effluent volume and each monitored pollutant load as separate elementary exchanges. Off-site wastewater remains a waste flow to the receiving treatment process."
+          amount:
+            expression: "Monitoring-period load calculated from matched effluent flow and concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product over the matched reporting period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_effluent
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+        - row_id: direct_air_releases
+          role: "Direct combustion or process releases to air"
+          name: "Declared elementary emission to air"
+          flow_type: "elementary"
+          property_unit: "Pollutant-specific mass / kg"
+          description: "Record relevant measured or calculation-supported direct air releases from in-scope utility and process equipment. Do not substitute BAT-associated performance values for site data."
+          amount:
+            expression: "Matched stack monitoring, fuel record and approved factor, or other documented site calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product over the matched reporting period"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_effluent
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Separation, formation, finishing, packaging, and shared utilities"
+    rule: "First use process subdivision, separate meters, batch records, and route-specific inventories to avoid allocation wherever the directly attributable flows can be isolated."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_system_expansion_check
+    applies_to: "Multi-functional processes"
+    rule: "If subdivision is not possible, evaluate whether system expansion represents the additional co-product functions; report the expanded function and do not present an individual-product result as though no expansion occurred."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_relationship
+    applies_to: "Buffalo skim milk, buttermilk, recovered fat, and other co-products"
+    rule: "When subdivision and system expansion are not applied, use a relevant, quantifiable physical relationship only when it reflects the causal relationship between inputs, outputs, and the functions provided; retain batch composition and mass evidence."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relationship
+    applies_to: "Remaining multi-functionality"
+    rule: "Use another relationship such as economic allocation only after documenting why subdivision, system expansion, and a relevant physical relationship are not applicable; use process-stage, geography, and reference-period-specific records and disclose sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_no_default_factor
+    applies_to: "All co-product systems"
+    rule: "This PCR provides no universal allocation factor: the selected method, co-product status, data sources, calculation, and consistency across upstream and foreground dairy stages must be disclosed for the actual facility and reference period."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_dairy_mass_traceability
+      process_id: "receipt_and_storage_fat_separation_standardisation_butter_or_fat_formation_dehydration_fractionation_finishing_packaging_and_product_storage"
+      flow_role: "Dairy input, intermediate, and product mass and identity"
+      record_type: "Scale ticket, tank gauge, batch sheet, laboratory composition record, supplier certificate"
+      raw_fields: "supplier; farm or processor; animal species; lot; product designation; gross and tare mass; net mass; wet/dry/fat/solids basis; sample time; test method; transfer time; destination"
+      collection_method: "Calibrated scale or tank measurement linked to batch and species documentation"
+      unit: "kg plus declared composition basis"
+      frequency: "Every receipt, transfer, and finished batch"
+      temporal_coverage: "Complete reference period, including start/end inventory"
+      site_scope: "Each included facility, tank, and line"
+      aggregation_rule: "Reconcile opening stock + receipts - transfers - rejects - closing stock by batch; normalize completed route to net product mass"
+      quality_evidence: "Calibration status; chain-of-custody record; species declaration; sample and test record; reconciliation sign-off"
+    - protocol_id: cp_energy_and_fuel
+      process_id: "receipt_and_storage_fat_separation_standardisation_butter_or_fat_formation_dehydration_fractionation_finishing_packaging_and_product_storage_utilities_cleaning_wastewater"
+      flow_role: "Electricity, fuel, heat, refrigeration, and compressed-air demand"
+      record_type: "Submeter, main meter, invoice, fuel delivery, boiler or refrigeration log"
+      raw_fields: "meter id; carrier; opening/closing reading; multiplier; fuel quantity; calorific or conversion basis; operating hours; process line; downtime; production mass"
+      collection_method: "Prefer process submetering; otherwise shortest representative interval with documented causal allocation"
+      unit: "source unit and normalized kWh, MJ, kg, or m3"
+      frequency: "Continuous or each billing/production interval"
+      temporal_coverage: "Complete reference period with inventory changes"
+      site_scope: "Each included utility and production line"
+      aggregation_rule: "Sum matched consumption, subtract documented exports, allocate shared service with a causal driver, normalize to net product"
+      quality_evidence: "Meter calibration; invoice reconciliation; conversion source; operating log; allocation review"
+    - protocol_id: cp_water_cip_ingredients
+      process_id: "butter_or_fat_formation_dehydration_fractionation_finishing_utilities_cleaning_wastewater"
+      flow_role: "Process water, ingredients, cleaning water, and chemicals"
+      record_type: "Water meter, CIP log, dosing record, batch issue record"
+      raw_fields: "stream; meter; cycle id; chemical or ingredient; concentration as purchased; dose; return/reuse; rinse endpoint; batch; line; product mass"
+      collection_method: "Metered water and calibrated dosing or weighed issue linked to cycle and batch"
+      unit: "m3 or kg"
+      frequency: "Every batch or CIP cycle; continuous where metered"
+      temporal_coverage: "Complete reference period including atypical cleaning"
+      site_scope: "Each included line, CIP circuit, and utility area"
+      aggregation_rule: "Sum by purpose and stream; deduct documented reuse only once; normalize to net product"
+      quality_evidence: "Meter and dosing calibration; CIP trace; purchase reconciliation; reuse record; hygiene release"
+    - protocol_id: cp_coproduct_waste_mass
+      process_id: "receipt_and_storage_fat_separation_standardisation_butter_or_fat_formation_dehydration_fractionation_finishing_packaging_and_product_storage_utilities_cleaning_wastewater"
+      flow_role: "Co-products, rejects, residues, sludge, and product losses"
+      record_type: "Scale ticket, batch balance, waste manifest, recovery or sales record"
+      raw_fields: "stream identity; mass; wet/dry basis; batch; destination; beneficial-use evidence; waste code where applicable; calculation inputs"
+      collection_method: "Direct weighing preferred; otherwise documented mass balance from matched batch records"
+      unit: "kg"
+      frequency: "Every batch, shipment, or waste collection"
+      temporal_coverage: "Complete reference period"
+      site_scope: "Each included process and destination"
+      aggregation_rule: "Sum separately by product, co-product, waste, and destination; do not net beneficial outputs against inputs"
+      quality_evidence: "Scale calibration; destination receipt; mass-balance closure; classification approval"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_and_product_storage"
+      flow_role: "Packaging inputs, reusable items, rejects, and packed output"
+      record_type: "Purchasing, item specification, line issue, return, reject, and finished-goods record"
+      raw_fields: "material; supplier; item mass; count; packaging level; recycled-content claim; reuse count; issued; returned; rejected; packed net product"
+      collection_method: "Weigh representative item or use verified specification; reconcile counts and line issues"
+      unit: "kg and count"
+      frequency: "Every packaging run; specification change checked when it occurs"
+      temporal_coverage: "Complete reference period"
+      site_scope: "Each packaging line and product format"
+      aggregation_rule: "Convert counts using verified item mass; subtract documented returns; report each material separately per net product"
+      quality_evidence: "Item-mass sample; supplier specification; issue/return reconciliation; reject record"
+    - protocol_id: cp_direct_emissions_effluent
+      process_id: "packaging_and_product_storage_utilities_cleaning_wastewater"
+      flow_role: "Refrigerant loss, wastewater flow and pollutants, and direct air emissions"
+      record_type: "Refrigerant service log, effluent flow meter, laboratory result, stack test, fuel record, permit report"
+      raw_fields: "substance; equipment or outlet; opening/closing stock; additions; recovery; flow; concentration; sample time; method; operating state; fuel use; factor source"
+      collection_method: "Mass balance, direct monitoring, or calculation from temporally matched measured activity and approved factor"
+      unit: "kg, m3, concentration unit, and kg load"
+      frequency: "At each service event and at legally or technically appropriate monitoring intervals"
+      temporal_coverage: "Matched to production reference period and operating state"
+      site_scope: "Each in-scope equipment item, stack, and discharge point"
+      aggregation_rule: "Calculate substance-specific mass; concentration × matched flow for water load; normalize only after temporal matching"
+      quality_evidence: "Service invoice; chain of custody; laboratory accreditation; meter calibration; factor/version record; permit report"
+  calculation_rules:
+    - id: normalize_to_reference_product
+      applies_to: "All quantitative inventory rows"
+      rule: "normalized amount = matched foreground amount / matched net reference-product mass; preserve the unnormalized record and basis"
+      inputs:
+        - "foreground amount"
+        - "net reference-product mass"
+        - "batch or interval linkage"
+      output: "amount per 1 kg net reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: dairy_batch_mass_balance
+      applies_to: "Receipt, separation, formation, finishing, and packaging"
+      rule: "opening inventory + inputs = outputs + closing inventory + measured losses + reconciled residual; investigate rather than silently distribute a material residual"
+      inputs:
+        - "opening and closing inventory"
+        - "input/output/co-product/waste masses"
+        - "composition basis"
+      output: "signed batch balance and documented residual"
+      source_ids: []
+    - id: water_pollutant_load
+      applies_to: "Direct releases to water"
+      rule: "pollutant load = temporally matched effluent volume × concentration after unit conversion; report each substance separately"
+      inputs:
+        - flow
+        - concentration
+        - "sampling period"
+        - "conversion factors"
+      output: "pollutant mass by outlet and period"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: refrigerant_mass_balance
+      applies_to: "Refrigeration equipment"
+      rule: "release = opening stock + additions - recovered amount - closing stock - documented equipment transfer, with sign and stock reconciliation"
+      inputs:
+        - "refrigerant stock"
+        - additions
+        - recoveries
+        - transfers
+      output: "refrigerant mass released by substance"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: multifunctionality_decision
+      applies_to: "Co-products and shared services"
+      rule: "apply subdivision or system expansion first; if neither is applied, calculate burdens using a justified physical relationship, otherwise another disclosed relationship with sensitivity"
+      inputs:
+        - "process map"
+        - "separate records"
+        - "co-product quantities and properties"
+        - "market data if used"
+      output: "allocated or expanded inventory with method record"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_species_identity
+      applies_to: "All dairy inputs and products"
+      requirement: "Maintain lot-level evidence that dairy material is buffalo-only; any cattle, other-animal, or mixed-species lot is excluded from this PCR dataset."
+      evidence: "Supplier declaration, chain of custody, receiving record, product specification, and applicable verification test"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Cover all applicable mapped processes and all material, energy, water, co-product, waste, direct-emission, packaging, and storage records for the reference period; explain omissions."
+      evidence: "Process flow sheet, record inventory, meter list, mass and water balances, and completeness review"
+    - id: dq_representativeness
+      applies_to: "Foreground and upstream datasets"
+      requirement: "Disclose technological, geographical, and time representativeness and precision; use higher-quality data for material processes and do not represent a cattle-milk proxy as exact buffalo data."
+      evidence: "Data-quality assessment, dataset metadata, source record, and proxy justification"
+    - id: dq_temporal_matching
+      applies_to: "Activity and emission data"
+      requirement: "Match production, utilities, inventories, wastewater, direct emissions, co-products, and waste to the same batch or defensible reporting interval."
+      evidence: "Timestamped records, interval reconciliation, operating log, and normalization workbook"
+    - id: dq_measurement_traceability
+      applies_to: "Measured and calculated amounts"
+      requirement: "Retain raw readings, calibration status, unit conversions, calculation formulas, factor identities and versions, reviewer, and correction history."
+      evidence: "Calibration certificate, raw export, controlled calculation, factor reference, and review sign-off"
+    - id: dq_no_generic_performance_values
+      applies_to: "Product specifications and BAT evidence"
+      requirement: "Do not use Codex composition or quality limits, or BAT-associated consumption or emission performance values, as a generic foreground LCI. Use site, batch, supplier, or approved factor records."
+      evidence: "Source-use review and row-level evidence-kind audit"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The reference product flow UUID must be 554cfc76-a4ac-4cda-9e06-d60256918b58, the Mass UUID must be 93a60a56-a3c8-11da-a746-0800200b9a66, the Units of mass UUID must be 93a60a57-a4c8-11da-a746-0800200c9a66, and the unit must be kg, with no dataset versions appended."
+    source_ids: []
+  - rule_id: validate_buffalo_only_scope
+    applies_to: "Product and dairy inputs"
+    rule: "Every dairy input and the reference product must be documented as buffalo-only; reject cattle-milk, other-animal, mixed-species, and substitute-fat records from this PCR dataset."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxs-206-1999
+  - rule_id: validate_product_route
+    applies_to: "Product identity and process map"
+    rule: "The declared product designation and actual route must select the applicable butter, milkfat, butter-oil, ghee, fractionation, recombination, salting, culturing, dehydration, packaging, and storage processes without treating a Codex permission as proof that a process occurred."
+    source_ids:
+      - codex-cxs-279-1971
+      - codex-cxs-280-1973
+  - rule_id: validate_reference_amount
+    applies_to: "Quantitative inventory"
+    rule: "The product output must equal 1 kg net product after normalization; packaging mass must remain separate and all wet, dry, fat, water, or solids conversions must retain batch-specific evidence."
+    source_ids: []
+  - rule_id: validate_process_and_record_coverage
+    applies_to: "Foreground inventory"
+    rule: "Every required and applicable conditional process must have linked foreground records for material, energy, water, co-products, wastes, direct emissions, packaging, and storage, or a documented non-applicability reason."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_mass_and_stream_balance
+    applies_to: "Dairy and water systems"
+    rule: "Receipt-to-output dairy mass balances and separated water-stream balances must reconcile within a site-defined, documented measurement uncertainty; unexplained residuals are findings, not hidden allocations."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_allocation_hierarchy
+    applies_to: "Multi-functional processes"
+    rule: "The dataset must document subdivision and system-expansion checks before physical or other allocation, identify every co-product and shared service, and retain the selected relationship and sensitivity evidence."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_source_use
+    applies_to: "Numerical and method claims"
+    rule: "Every non-foreground numerical factor must identify its source and version; Codex composition or quality limits and BAT performance values must not appear as default LCI amounts."
+    source_ids:
+      - codex-cxs-279-1971
+      - codex-cxs-280-1973
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_data_quality
+    applies_to: "Dataset profile"
+    rule: "Completeness, methodological consistency, technological, geographical and temporal representativeness, precision, documentation, nomenclature, and review status must be disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground unit-process or aggregated gate-to-gate dataset for a declared buffalo-milk butter or fat-product route"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "LCA modelling of the declared CPC 22242 buffalo-milk product when species origin, product form, route, geography, technology, reference period, boundary, allocation, packaging, storage, and data quality are compatible"
+  excluded_use: "Cattle-milk products; other-animal products; mixed-species products; generic dairy-fat averages presented as buffalo-specific; substitute-fat products; cradle-to-gate claims when required upstream buffalo milk datasets are absent; comparisons that ignore material boundary or allocation differences"
+  required_metadata: "PCR id; Tiangong reference UUIDs; buffalo-only evidence; product designation and qualifiers; facility and geography; reference period; route and technology; included and excluded processes; upstream dataset links; co-products and allocation; packaging; storage; record coverage; normalization workbook; source and factor versions"
+  required_quality_disclosure: "Completeness; methodological consistency; technological, geographical, and temporal representativeness; precision; measurement uncertainty; missing records; proxy use; mass and water balance results; allocation sensitivity; review status; deviations from this PCR"
+  update_trigger: "Species-origin evidence changes; product or route change; material process, technology, energy, water, packaging, storage, waste treatment, co-product use, or allocation change; reference-period rollover; material data-quality improvement; source revision; or replacement of a provisional or proxy input with verified foreground or buffalo-specific data"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 22242, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-08-12)"
+    used_for: "Exact buffalo-milk category identity, included product forms, and exclusions of CPC 22241 and 22249"
+  - id: "codex-cxs-279-1971"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 279-1971, Standard for Butter, official standards register: https://www.fao.org/fao-who-codexalimentarius/codex-texts/all-standards/en/ (accessed 2026-08-12)"
+    used_for: "Butter identity, milk-only derivation, water-in-oil route concept, and possible route ingredients; composition and quality values are not LCI defaults"
+  - id: "codex-cxs-280-1973"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 280-1973, Standard for Milkfat Products, official standards register: https://www.fao.org/fao-who-codexalimentarius/codex-texts/all-standards/en/ (accessed 2026-08-12)"
+    used_for: "Identity and route distinction for anhydrous milkfat, milkfat, butter oil, and ghee; composition and quality values are not LCI defaults"
+  - id: "codex-cxs-206-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 206-1999, General Standard for the Use of Dairy Terms, official standards register: https://www.fao.org/fao-who-codexalimentarius/codex-texts/all-standards/en/ (accessed 2026-08-12)"
+    used_for: "Dairy product identity, animal-origin declaration, recombined or reconstituted status, and exclusion of misleading mixed or substitute products"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, ELI: https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (accessed 2026-08-12)"
+    used_for: "Functional-unit structure, reference flow, system boundary, allocation hierarchy, data collection materiality, and data-quality disclosure"
+  - id: "eu-fdm-bat-2019-2031"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, ELI: https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (accessed 2026-08-12)"
+    used_for: "Process flow inventory, water, energy, raw material, wastewater, waste-gas and residue records, monitoring strategy, cleaning/CIP, and resource-efficiency practices; BAT performance values are not LCI defaults"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d5941e7a801b12622828a14338832d87456689a0ee744446d7ba793c53d03c3c"
+  generated_content_sha256: "sha256:449796cf9b93ab5c4c2831e46dd041af1bcc11d4adcd8742c7c7b012ffa85f1e"

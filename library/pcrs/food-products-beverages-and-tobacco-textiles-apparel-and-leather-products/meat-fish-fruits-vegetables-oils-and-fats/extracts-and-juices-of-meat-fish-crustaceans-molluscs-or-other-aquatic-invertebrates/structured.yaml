@@ -1,10 +1,2877 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21185"
-  title: "Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.extracts-and-juices-of-meat-fish-crustaceans-molluscs-or-other-aquatic-invertebrates"
+  classification_refs: "CPC 3.0 21185, exact title: Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates"
+  covered_products: "One species- and tissue-specific meat, fish, crustacean, mollusc, or other aquatic-invertebrate extract or juice, including a declared liquid, concentrated liquid, semi-liquid, paste, frozen, or dried state"
+  excluded_products: "Soups and broths; sauces; whole or cut animal products; principal-product fats or oils; fish meal; gelatine; collagen; isolated amino acids; mixed-species or mixed-state reference products"
+  representative_product: "One declared extract or juice from one declared species and one declared tissue, at one declared solids content and physical state"
+  production_route: "Receipt and preparation; aqueous or enzyme-assisted extraction; separation and clarification; conditional concentration or drying; cooling, packaging, storage; cleaning and wastewater management; conditional on-site energy generation"
+  market_state: "Facility-gate product in the declared liquid, concentrated, paste, frozen, or dried state and declared package configuration"
+functional_unit:
+  what: "Net mass of one declared extract or juice made from one exact animal species and one exact tissue or cut"
+  how_much: "1 kg net product, excluding packaging"
+  how_well: "Meets the producer's declared composition, solids or dry-matter content, physical state, food-safety specification, and release criteria"
+  how_long_or_cycle: "One released production lot at the facility gate; storage temperature and elapsed storage before release are declared"
+  reference_flow_link: "Tiangong Product flow 0238a5c5-5b90-4881-8277-cd862a581eb8"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground system"
+      rule: "Include receipt, preparation, extraction or hydrolysis, separation, clarification, applicable concentration or drying, cooling, packaging, storage, cleaning, wastewater management, and on-site energy operations used by the declared lot."
+      source_ids:
+        - eu-pef-2021-2279
+        - fao-fishmeal-process
+        - codex-cxs-117-1981
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent upstream animal production or capture, primary processing, utilities, chemicals, filtration media, refrigerants, and packaging through linked datasets rather than silently omitting them."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_lock
+      applies_to: "reference product"
+      rule: "Model one exact species, tissue, extract-or-juice identity, route, physical state, and concentration state; aggregation across those choices is prohibited."
+      source_ids:
+        - un-cpc-3.0-21185
+        - codex-cxs-117-1981
+        - fao-fisheries-paper-540
+    - rule_id: boundary_nonoperated_upstream_exclusion
+      applies_to: "non-operated upstream processes"
+      rule: "Do not import slaughter, rendering, fishmeal, oil production, or other upstream operations into the foreground unless the facility actually performs them for the declared product."
+      source_ids:
+        - jrc-sa-bref-2024
+    - rule_id: boundary_complete_lci
+      applies_to: "all exchanges"
+      rule: "Inventory raw materials, energy, water, product and co-product outputs, wastes, and emissions to air and water without substituting a collection label for an exchange."
+      source_ids:
+        - eu-pef-2021-2279
+        - jrc-sa-bref-2024
+boundary_abstraction:
+  declared_starting_condition: "One segregated, species- and tissue-specific animal material is received at the extraction facility with measured mass, state, supplier, preservation history, and upstream dataset link."
+  starting_condition_role: "Foreground gate; livestock production, capture or aquaculture, slaughter or landing, and primary cutting are upstream."
+  product_classification_scope: "CPC 3.0 subclass 21185 only after the product is demonstrably an extract or juice; category membership does not merge species, tissues, routes, or states."
+  recursive_input_rule: "A purchased CPC 21185 extract or juice used as an ingredient is recorded as one exact upstream product flow with its own dataset and is not reopened as foreground animal feedstock in the same package."
+  upstream_dataset_requirement: "Link every received animal material, purchased extract or juice, ingredient, utility, filtration medium, refrigerant, and package component to a geographically and temporally appropriate upstream dataset."
+  disclosure: "Declare species, tissue, product identity, route, state, solids content, fat-removal status, preservation, packaging, storage, geography, period, co-product fate, waste treatment, and every boundary exclusion."
+reference_flow_definition:
+  reference_amount: "1 kg net product"
+  product_flow_ref:
+    name: "Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates"
+    uuid: "0238a5c5-5b90-4881-8277-cd862a581eb8"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "exact animal species"
+    - "exact tissue"
+    - organ
+    - cut
+    - "or processing part"
+    - "product identity exactly extract or juice"
+    - aqueous
+    - thermal
+    - pressing
+    - "or enzyme-assisted route"
+    - "physical state"
+    - "measured solids or dry-matter content"
+    - "concentration state"
+    - "fat-removal status"
+    - "salt and process-aid status"
+    - "preservation treatment"
+    - "package components"
+    - "storage temperature"
+    - "production geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg of released net extract or juice; exclude every package component from the reference mass."
+  - id: wet_dry_basis
+    applies_to: "feedstock, intermediates, concentrate, dried product"
+    required_property_ref:
+      name: "Mass and measured solids fraction"
+      uuid: ""
+    required_unit: "kg and kg/kg"
+    rule: "Preserve measured wet mass and solids or moisture results; calculate dry matter from the same lot and never substitute an assumed solids value."
+  - id: ingredient_formulation_basis
+    applies_to: "salt, enzymes, acids, alkalis, antifoam, disinfectants"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record delivered formulation mass and, when relevant, measured or supplier-declared active fraction in separate metadata; do not confuse active-ingredient mass with formulation mass."
+  - id: electricity_basis
+    applies_to: "purchased and generated electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve metered electricity in kWh and allocate shared meters only by a documented causal driver."
+  - id: thermal_energy_basis
+    applies_to: "purchased steam, generated steam, purchased hot water, generated hot water"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Calculate useful thermal energy from measured mass, pressure or temperature, and enthalpy data; do not use an unverified generic steam or heat factor."
+  - id: refrigerant_basis
+    applies_to: "each named refrigerant"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record charge additions, recovery, returns, opening stock, and closing stock separately for each refrigerant and calculate loss by substance-specific inventory balance."
+  - id: wastewater_load_basis
+    applies_to: "each named pollutant discharged to water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate load from a representative measured concentration and the corresponding measured discharge volume for the same reporting interval."
+  - id: normalization_basis
+    applies_to: "all inventory exchanges"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "row-specific unit"
+    rule: "Normalize the reporting-period exchange to 1 kg of conforming net product after excluding off-specification output and reconciling inventory changes."
+process_map:
+  - id: raw_material_receipt_and_preparation
+    name: "Raw material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, cold holding, washing, trimming, size reduction"
+    quantitative_reference: "measured mass of prepared species- and tissue-specific feedstock"
+  - id: aqueous_extraction_or_hydrolysis
+    name: "Aqueous extraction or hydrolysis"
+    inclusion: "required"
+    inclusion_condition: "Always; record the one route actually used"
+    role: "Foreground solubilisation or juice release"
+    quantitative_reference: "measured mass and solids of extraction batch"
+  - id: separation_and_clarification
+    name: "Separation and clarification"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground pressing, centrifugation, clarification, filtration, or membrane separation"
+    quantitative_reference: "measured clarified liquid and separated fractions"
+  - id: concentration_or_drying
+    name: "Concentration or drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared state is concentrated, paste-like, frozen after concentration, or dried"
+    role: "Foreground evaporation, concentration, or drying"
+    quantitative_reference: "measured product mass and solids before and after conditioning"
+  - id: cooling_packaging_and_storage
+    name: "Product cooling"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground cooling before filling or final storage"
+    quantitative_reference: "measured cooled product throughput"
+  - id: cleaning_and_wastewater_management
+    name: "Cleaning and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground sanitation and discharge management"
+    quantitative_reference: "reporting-period production normalized to 1 kg net product"
+  - id: onsite_energy_generation
+    name: "On-site energy generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when fuel is combusted on site to supply steam or hot water to the declared lot"
+    role: "Foreground boiler or heater operation"
+    quantitative_reference: "measured useful steam or hot-water output"
+  - id: packaging_and_storage
+    name: "Packaging and storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground filling, packaging, cold or ambient storage, and facility-gate release"
+    quantitative_reference: "1 kg released net reference product"
+process_inventory:
+  - id: raw_material_receipt_and_preparation
+    label: "Raw material receipt and preparation"
+    inputs:
+      product:
+        - row_id: beef_skeletal_muscle_input
+          role: "Beef skeletal muscle feedstock"
+          name: "Beef skeletal muscle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Beef skeletal muscle crosses the facility gate only for a lot whose locked feedstock is bovine skeletal muscle."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - codex-cxs-117-1981
+            ranges: []
+        - row_id: chicken_skeletal_muscle_input
+          role: "Chicken skeletal muscle feedstock"
+          name: "Chicken skeletal muscle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Chicken skeletal muscle crosses the facility gate only for a lot whose locked species and tissue are chicken skeletal muscle."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - codex-cxs-117-1981
+            ranges: []
+        - row_id: atlantic_cod_skeletal_muscle_input
+          role: "Atlantic cod skeletal muscle feedstock"
+          name: "Atlantic cod skeletal muscle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Atlantic cod skeletal muscle is recorded only when that exact fish species and tissue are the locked feedstock."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+        - row_id: whiteleg_shrimp_meat_input
+          role: "Whiteleg shrimp meat feedstock"
+          name: "Whiteleg shrimp meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whiteleg shrimp meat is recorded only when the locked crustacean input is peeled shrimp meat of that species."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+        - row_id: blue_crab_meat_input
+          role: "Blue crab meat feedstock"
+          name: "Blue crab meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Blue crab meat is recorded only when that exact crustacean species and tissue are the locked feedstock."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+        - row_id: blue_mussel_meat_input
+          role: "Blue mussel meat feedstock"
+          name: "Blue mussel meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Blue mussel meat is recorded only when that exact bivalve species and tissue are the locked feedstock."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+        - row_id: european_squid_mantle_input
+          role: "European squid mantle feedstock"
+          name: "European squid mantle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "European squid mantle is recorded only when that exact cephalopod species and tissue are the locked feedstock."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+        - row_id: sea_cucumber_body_wall_input
+          role: "Sea cucumber body-wall feedstock"
+          name: "Sea cucumber body wall"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sea cucumber body wall is recorded only when that exact aquatic-invertebrate tissue is the locked feedstock."
+          amount:
+            expression: "Measured accepted wet mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - un-cpc-3.0-21185
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered electricity powers cold holding, conveying, washing, trimming, or size reduction assigned to preparation."
+          amount:
+            expression: "Metered electricity assigned to the declared lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: preparation_process_water
+          role: "Preparation process water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for feedstock washing or preparation is recorded separately from sanitation water."
+          amount:
+            expression: "Metered or batch-recorded water delivered to preparation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_water_records
+              source_ids:
+                - codex-cxs-117-1981
+            ranges: []
+        - row_id: potable_ice_input
+          role: "Potable ice"
+          name: "Potable water ice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Potable ice is recorded when it crosses the boundary as a purchased cooling and preservation input."
+          amount:
+            expression: "Measured ice mass charged to the declared lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_material_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: raw_material_rinse_wastewater
+          role: "Raw-material rinse wastewater"
+          name: "Raw-material rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "The segregated aqueous stream leaving raw-material washing is recorded before treatment or discharge."
+          amount:
+            expression: "Measured or tank-volume-derived wastewater volume."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_wastewater_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: aqueous_extraction_or_hydrolysis
+    label: "Aqueous extraction or hydrolysis"
+    inputs:
+      product:
+        - row_id: extraction_electricity
+          role: "Extraction electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for mixing, pumping, temperature control, or hydrolysis equipment is recorded at the extraction stage."
+          amount:
+            expression: "Metered electricity assigned to extraction batches."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: extraction_purchased_steam
+          role: "Purchased extraction steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam crossing the facility boundary for thermal extraction is recorded separately from on-site steam."
+          amount:
+            expression: "Metered mass and enthalpy-derived useful energy assigned to extraction."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_utility_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: extraction_purchased_hot_water
+          role: "Purchased extraction hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot water used as a heat carrier is recorded separately from process water incorporated into extraction."
+          amount:
+            expression: "Metered flow and temperature-derived useful heat assigned to extraction."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_utility_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: extraction_process_water
+          role: "Extraction process water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water added as the extraction medium is a distinct product input and is not merged with washing water."
+          amount:
+            expression: "Metered or batch-dosed volume added to extraction."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - codex-cxs-117-1981
+            ranges: []
+        - row_id: sodium_chloride_input
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade sodium chloride is recorded only when it is deliberately added to the declared product route."
+          amount:
+            expression: "Weighed formulation mass charged by batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - codex-cxs-117-1981
+            ranges: []
+        - row_id: papain_input
+          role: "Papain enzyme"
+          name: "Papain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade papain is recorded only for an enzyme-assisted route that actually doses this enzyme."
+          amount:
+            expression: "Weighed delivered formulation mass charged by batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: citric_acid_input
+          role: "Citric acid"
+          name: "Citric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade citric acid is recorded when used to adjust extraction pH or stabilize the declared product."
+          amount:
+            expression: "Weighed delivered formulation mass charged by batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: hydrochloric_acid_input
+          role: "Hydrochloric acid"
+          name: "Hydrochloric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade hydrochloric acid is recorded only when used in the declared extraction or hydrolysis formulation."
+          amount:
+            expression: "Weighed delivered solution mass and recorded concentration charged by batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: sodium_hydroxide_process_input
+          role: "Sodium hydroxide for process pH control"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade sodium hydroxide used in the product recipe is distinct from sodium hydroxide used for cleaning."
+          amount:
+            expression: "Weighed delivered solution mass and recorded concentration charged by batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polydimethylsiloxane_antifoam_input
+          role: "Polydimethylsiloxane antifoam"
+          name: "Polydimethylsiloxane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade polydimethylsiloxane antifoam is recorded only when this exact processing aid is dosed."
+          amount:
+            expression: "Weighed delivered formulation mass charged by batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_ingredient_mass
+              source_ids:
+                - codex-cxs-117-1981
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: separation_and_clarification
+    label: "Separation and clarification"
+    inputs:
+      product:
+        - row_id: separation_electricity
+          role: "Separation electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for presses, centrifuges, pumps, clarifiers, or filtration equipment is assigned to separation."
+          amount:
+            expression: "Metered electricity assigned to separation batches."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_utility_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: separation_process_water
+          role: "Separation process water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for filter rinsing or controlled dilution during separation is recorded apart from extraction water."
+          amount:
+            expression: "Metered or batch-recorded volume used by separation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: diatomaceous_earth_input
+          role: "Diatomaceous-earth filter aid"
+          name: "Diatomaceous earth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diatomaceous earth is recorded when this exact filter aid is consumed in clarification."
+          amount:
+            expression: "Weighed mass charged to filters by batch."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filter_media_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: activated_carbon_input
+          role: "Activated-carbon clarification medium"
+          name: "Activated carbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Activated carbon is recorded when consumed for decolouring, deodorising, or clarification."
+          amount:
+            expression: "Weighed mass charged by batch."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filter_media_mass
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: cellulose_filter_aid_input
+          role: "Cellulose filter aid"
+          name: "Cellulose filter aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cellulose filter aid is recorded only when this exact medium is consumed."
+          amount:
+            expression: "Weighed mass charged to filters by batch."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filter_media_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polypropylene_filter_cartridge_input
+          role: "Polypropylene filter cartridge"
+          name: "Polypropylene filter cartridge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A polypropylene cartridge is recorded as a consumable when it is installed and consumed for the declared production."
+          amount:
+            expression: "Purchased cartridge mass allocated over measured treated product before replacement."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_filter_media_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polyethersulfone_membrane_input
+          role: "Polyethersulfone ultrafiltration membrane"
+          name: "Polyethersulfone ultrafiltration membrane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A polyethersulfone membrane is recorded when that exact membrane material is consumed by the route."
+          amount:
+            expression: "Installed membrane mass allocated over measured treated product before replacement."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_filter_media_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_beef_fat_coproduct
+          role: "Recovered beef fat co-product"
+          name: "Recovered beef fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated beef fat is a co-product only when it meets a declared specification and leaves the facility for beneficial use."
+          amount:
+            expression: "Measured released co-product mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: recovered_atlantic_cod_oil_coproduct
+          role: "Recovered Atlantic cod oil co-product"
+          name: "Recovered Atlantic cod oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated Atlantic cod oil is a co-product only when it is released to a specified beneficial use."
+          amount:
+            expression: "Measured released co-product mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_mass
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: recovered_whiteleg_shrimp_oil_coproduct
+          role: "Recovered whiteleg shrimp oil co-product"
+          name: "Recovered whiteleg shrimp oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated whiteleg shrimp oil is recorded only when it is a released co-product rather than a waste."
+          amount:
+            expression: "Measured released co-product mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: recovered_whiteleg_shrimp_shell_coproduct
+          role: "Recovered whiteleg shrimp shell co-product"
+          name: "Recovered whiteleg shrimp shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Whiteleg shrimp shell is a co-product only when a specified shell stream is released for further use."
+          amount:
+            expression: "Measured released shell mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: recovered_blue_crab_shell_coproduct
+          role: "Recovered blue crab shell co-product"
+          name: "Recovered blue crab shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Blue crab shell is a co-product only when a specified shell stream is released for further use."
+          amount:
+            expression: "Measured released shell mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: beef_extraction_press_cake_waste
+          role: "Beef extraction press cake"
+          name: "Beef extraction press cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The insoluble bovine residue leaving separation is recorded as waste when it has no released co-product status."
+          amount:
+            expression: "Measured wet waste mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: atlantic_cod_extraction_press_cake_waste
+          role: "Atlantic cod extraction press cake"
+          name: "Atlantic cod extraction press cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The insoluble Atlantic cod residue is recorded as one species-specific waste stream."
+          amount:
+            expression: "Measured wet waste mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: whiteleg_shrimp_extraction_press_cake_waste
+          role: "Whiteleg shrimp extraction press cake"
+          name: "Whiteleg shrimp extraction press cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The insoluble whiteleg shrimp residue is recorded as one species-specific waste stream."
+          amount:
+            expression: "Measured wet waste mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: blue_mussel_extraction_press_cake_waste
+          role: "Blue mussel extraction press cake"
+          name: "Blue mussel extraction press cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The insoluble blue mussel residue is recorded as one species-specific waste stream."
+          amount:
+            expression: "Measured wet waste mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: european_squid_extraction_press_cake_waste
+          role: "European squid extraction press cake"
+          name: "European squid extraction press cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The insoluble European squid residue is recorded as one species-specific waste stream."
+          amount:
+            expression: "Measured wet waste mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sea_cucumber_extraction_press_cake_waste
+          role: "Sea cucumber extraction press cake"
+          name: "Sea cucumber extraction press cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The insoluble sea cucumber residue is recorded as one species-specific waste stream."
+          amount:
+            expression: "Measured wet waste mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: spent_diatomaceous_earth_waste
+          role: "Spent diatomaceous earth"
+          name: "Spent diatomaceous earth"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Used diatomaceous earth is recorded as its own waste stream after filter discharge."
+          amount:
+            expression: "Measured wet waste mass removed from filters."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: spent_activated_carbon_waste
+          role: "Spent activated carbon"
+          name: "Spent activated carbon"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Used activated carbon is recorded separately after clarification."
+          amount:
+            expression: "Measured wet waste mass removed from filters."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: spent_polypropylene_filter_cartridge_waste
+          role: "Spent polypropylene filter cartridge"
+          name: "Spent polypropylene filter cartridge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Each discarded polypropylene cartridge is recorded as a distinct solid waste."
+          amount:
+            expression: "Measured discarded cartridge mass allocated to treated product."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: spent_polyethersulfone_membrane_waste
+          role: "Spent polyethersulfone membrane"
+          name: "Spent polyethersulfone ultrafiltration membrane"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded polyethersulfone membrane mass is recorded separately from filter cartridges."
+          amount:
+            expression: "Measured discarded membrane mass allocated to treated product."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_separation_waste_mass
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+        - row_id: separation_wastewater
+          role: "Separation wastewater"
+          name: "Separation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "The aqueous stream discharged from pressing, centrifugation, or filtration is recorded before treatment."
+          amount:
+            expression: "Measured or tank-volume-derived wastewater volume."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_wastewater_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: concentration_or_drying
+    label: "Concentration or drying"
+    inputs:
+      product:
+        - row_id: concentration_electricity
+          role: "Concentration electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by evaporators, concentrators, vacuum systems, or dryers is recorded for applicable routes."
+          amount:
+            expression: "Metered electricity assigned to concentration or drying batches."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_utility_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: concentration_purchased_steam
+          role: "Purchased concentration steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam for evaporation or indirect drying is recorded separately from on-site steam."
+          amount:
+            expression: "Metered mass and enthalpy-derived useful energy assigned to applicable batches."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_concentration_utility_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: concentration_purchased_hot_water
+          role: "Purchased concentration hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot water used as a heat carrier is recorded as a separate thermal input."
+          amount:
+            expression: "Metered flow and temperature-derived useful heat assigned to applicable batches."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_concentration_utility_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+        - row_id: drying_compressed_air
+          role: "Drying compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          property_unit: "Normal volume / m3"
+          description: "Compressed air crossing the process boundary is recorded when used for atomisation or pneumatic drying controls."
+          amount:
+            expression: "Metered normal volume assigned to drying batches."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compressed_air_records
+              source_ids:
+                - fao-fisheries-paper-540
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: evaporator_condensate_wastewater
+          role: "Evaporator condensate wastewater"
+          name: "Evaporator condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Evaporator condensate is recorded as wastewater when it leaves the process for treatment or discharge rather than reuse."
+          amount:
+            expression: "Metered or condensate-tank-volume-derived discharge."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporator_condensate_records
+              source_ids:
+                - fao-fishmeal-process
+            ranges: []
+      elementary:
+        - row_id: drying_particulate_matter_to_air
+          role: "Drying particulate matter to air"
+          name: "Particulate matter, less than or equal to 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct particulate release from a dryer is calculated only from route-specific measured outlet data."
+          amount:
+            expression: "Measured concentration multiplied by corresponding dry outlet-gas volume."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_stack_measurements
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: cooling_packaging_and_storage
+    label: "Product cooling"
+    inputs:
+      product:
+        - row_id: cooling_storage_electricity
+          role: "Cooling and storage electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used for product cooling, frozen holding, cold storage, filling, sealing, or warehouse operation is recorded here."
+          amount:
+            expression: "Metered electricity assigned to the declared lot and storage interval."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: chilled_water_input
+          role: "Chilled water"
+          name: "Purchased chilled water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased chilled water is recorded as a distinct cooling input when it crosses the facility boundary."
+          amount:
+            expression: "Metered flow and temperature-derived useful cooling assigned to the declared lot."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: ammonia_refrigerant_input
+          role: "Ammonia refrigerant"
+          name: "Ammonia refrigerant, R717"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia make-up is recorded only for refrigeration equipment charged with R717."
+          amount:
+            expression: "Substance-specific inventory-balance loss assigned to production and storage."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_inventory
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: ammonia_refrigerant_to_air
+          role: "Ammonia refrigerant to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Loss of R717 is emitted as ammonia and is calculated from the ammonia-only inventory balance."
+          amount:
+            expression: "Opening stock plus additions minus closing stock, recovery, and documented transfers."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_inventory
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: cleaning_and_wastewater_management
+    label: "Cleaning and wastewater management"
+    inputs:
+      product:
+        - row_id: sanitation_process_water
+          role: "Sanitation process water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water supplied for cleaning-in-place and surface sanitation is recorded apart from recipe and preparation water."
+          amount:
+            expression: "Metered or cleaning-cycle-volume-derived sanitation water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_utility_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Sanitation electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for cleaning pumps, wastewater equipment, or sanitation controls is assigned to this process."
+          amount:
+            expression: "Metered electricity assigned to sanitation and wastewater operations."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: sanitation_purchased_steam
+          role: "Purchased sanitation steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam used for sanitation is recorded separately from process-heating steam."
+          amount:
+            expression: "Metered mass and enthalpy-derived useful energy assigned to sanitation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_utility_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sanitation_purchased_hot_water
+          role: "Purchased sanitation hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot water used for cleaning is recorded separately from water incorporated into product."
+          amount:
+            expression: "Metered flow and temperature-derived useful heat assigned to sanitation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_utility_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sodium_hydroxide_cip_input
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide used for cleaning-in-place is recorded independently from sodium hydroxide used in product processing."
+          amount:
+            expression: "Weighed delivered solution mass and recorded concentration used by cleaning cycle."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_chemical_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: nitric_acid_cip_input
+          role: "Nitric acid cleaning agent"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nitric acid used in cleaning-in-place is recorded as its own chemical input."
+          amount:
+            expression: "Weighed delivered solution mass and recorded concentration used by cleaning cycle."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_chemical_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: peracetic_acid_disinfectant_input
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Peracetic acid disinfectant is recorded when that exact disinfectant is consumed."
+          amount:
+            expression: "Weighed delivered formulation mass and recorded concentration used by cycle."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_chemical_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sodium_hypochlorite_disinfectant_input
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hypochlorite disinfectant is recorded when that exact disinfectant is consumed."
+          amount:
+            expression: "Weighed delivered solution mass and recorded concentration used by cycle."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_chemical_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cip_wastewater
+          role: "Cleaning-in-place wastewater"
+          name: "Cleaning-in-place wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Spent cleaning solution leaving the cleaning-in-place system is recorded before treatment or discharge."
+          amount:
+            expression: "Metered or cleaning-cycle-volume-derived wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_wastewater_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: wastewater_treatment_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge removed from on-site wastewater treatment is recorded as a separate wet waste stream."
+          amount:
+            expression: "Measured wet sludge mass removed during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_sludge_mass
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: chemical_oxygen_demand_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chemical oxygen demand is calculated from representative effluent analysis and matching discharge volume."
+          amount:
+            expression: "Measured COD concentration multiplied by corresponding discharge volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_discharge_sampling
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: biochemical_oxygen_demand_to_water
+          role: "Biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand, 5 days, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Five-day biochemical oxygen demand is calculated independently from the corresponding measured result."
+          amount:
+            expression: "Measured BOD5 concentration multiplied by corresponding discharge volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_discharge_sampling
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: total_suspended_solids_to_water
+          role: "Total suspended solids to water"
+          name: "Total suspended solids to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Suspended-solids discharge is calculated from the measured effluent concentration and matching volume."
+          amount:
+            expression: "Measured TSS concentration multiplied by corresponding discharge volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_discharge_sampling
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total nitrogen is recorded as its own measured pollutant load."
+          amount:
+            expression: "Measured total-nitrogen concentration multiplied by corresponding discharge volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_discharge_sampling
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus is recorded as its own measured pollutant load."
+          amount:
+            expression: "Measured total-phosphorus concentration multiplied by corresponding discharge volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_discharge_sampling
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: chloride_to_water
+          role: "Chloride to water"
+          name: "Chloride to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chloride discharge is calculated separately when chloride is monitored or materially expected from salt or cleaning inputs."
+          amount:
+            expression: "Measured chloride concentration multiplied by corresponding discharge volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_discharge_sampling
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: onsite_energy_generation
+    label: "On-site energy generation"
+    inputs:
+      product:
+        - row_id: natural_gas_input
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas consumed in an on-site boiler or heater is recorded separately from every other fuel."
+          amount:
+            expression: "Metered lower-heating-value energy consumed during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_mass_energy
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: diesel_input
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel consumed by an on-site thermal unit or emergency generator serving production is recorded separately."
+          amount:
+            expression: "Metered or invoice-reconciled mass consumed during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_mass_energy
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: lpg_input
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas is recorded as its own purchased fuel when used by on-site thermal equipment."
+          amount:
+            expression: "Metered or invoice-reconciled mass consumed during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_mass_energy
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: boiler_feedwater_input
+          role: "Boiler feedwater"
+          name: "Boiler feedwater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water entering an on-site boiler is recorded independently from process and cleaning water."
+          amount:
+            expression: "Metered boiler make-up water volume."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_water_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: onsite_steam_output
+          role: "On-site generated steam"
+          name: "On-site generated steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Useful steam produced on site is recorded as one internal energy carrier and reconciled with user-process meters."
+          amount:
+            expression: "Measured steam mass converted with measured pressure and enthalpy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_generated_heat_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: onsite_hot_water_output
+          role: "On-site generated hot water"
+          name: "On-site generated hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Useful hot water produced on site is recorded separately from steam and reconciled with user-process meters."
+          amount:
+            expression: "Measured flow converted with measured supply and return temperatures."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_generated_heat_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: boiler_blowdown_wastewater
+          role: "Boiler blowdown wastewater"
+          name: "Boiler blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Water purged from the boiler is recorded as a distinct wastewater stream before treatment or discharge."
+          amount:
+            expression: "Metered or tank-volume-derived blowdown volume."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_blowdown_records
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_to_air
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Combustion carbon dioxide is calculated independently from measured fuel use and a documented fuel carbon balance or site factor."
+          amount:
+            expression: "Measured fuel consumption multiplied by a documented site-specific carbon factor."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, expressed as nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides are reported as nitrogen dioxide mass from stack measurement or a documented site factor."
+          amount:
+            expression: "Measured concentration times dry gas volume, or measured fuel times a documented site-specific factor."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: sulfur_dioxide_to_air
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide is recorded as a distinct substance-specific combustion emission."
+          amount:
+            expression: "Measured concentration times dry gas volume, or measured fuel sulfur balance using site records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: combustion_particulate_matter_to_air
+          role: "Combustion particulate matter to air"
+          name: "Particulate matter, less than or equal to 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Stack particulate matter is recorded independently from product-dryer particulate emissions."
+          amount:
+            expression: "Measured concentration multiplied by corresponding dry stack-gas volume."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: carbon_monoxide_to_air
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon monoxide is recorded as a separate stack emission from on-site fuel combustion."
+          amount:
+            expression: "Measured concentration times dry gas volume, or measured fuel times a documented site-specific factor."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: methane_to_air
+          role: "Methane to air"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unburned methane is recorded separately when measured or derived from a documented site-specific combustion factor."
+          amount:
+            expression: "Measured concentration times dry gas volume, or measured fuel times a documented site-specific factor."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+  - id: packaging_and_storage
+    label: "Packaging and storage"
+    inputs:
+      product:
+        - row_id: carbon_dioxide_refrigerant_input
+          role: "Carbon dioxide refrigerant"
+          name: "Carbon dioxide refrigerant, R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide make-up is recorded only for refrigeration equipment charged with R744."
+          amount:
+            expression: "Substance-specific inventory-balance loss assigned to production and storage."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_inventory
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: hfc_134a_refrigerant_input
+          role: "1,1,1,2-Tetrafluoroethane refrigerant"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant, R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "HFC-134a make-up is recorded only for refrigeration equipment charged with that exact refrigerant."
+          amount:
+            expression: "Substance-specific inventory-balance loss assigned to production and storage."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_inventory
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: glass_bottle_input
+          role: "Glass bottle"
+          name: "Glass bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Glass bottles are recorded as one package component when used for the declared product."
+          amount:
+            expression: "Measured component mass issued to filled conforming units."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: hdpe_bottle_input
+          role: "High-density polyethylene bottle"
+          name: "High-density polyethylene bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "High-density polyethylene bottles are recorded separately from all other package components."
+          amount:
+            expression: "Measured component mass issued to filled conforming units."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: steel_drum_input
+          role: "Steel drum"
+          name: "Steel drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel drums are recorded when used as the immediate or transport package for the declared product."
+          amount:
+            expression: "Measured drum mass allocated by actual fills and verified reuse count where applicable."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: kraft_paper_sack_input
+          role: "Kraft-paper sack"
+          name: "Kraft-paper sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Kraft-paper sacks used for dried product are recorded apart from any polymer liner."
+          amount:
+            expression: "Measured sack mass issued to conforming filled units."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: ldpe_liner_input
+          role: "Low-density polyethylene liner"
+          name: "Low-density polyethylene liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The low-density polyethylene liner is one separate package component and is not merged with its outer sack."
+          amount:
+            expression: "Measured liner mass issued to conforming filled units."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: paperboard_carton_input
+          role: "Paperboard carton"
+          name: "Paperboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paperboard cartons are recorded as a distinct secondary package component."
+          amount:
+            expression: "Measured carton mass issued to conforming shipped units."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wooden_pallet_input
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wooden pallet mass is recorded when pallets cross the product system boundary, with verified reuse allocation if applicable."
+          amount:
+            expression: "Measured pallet mass allocated by actual loads and verified reuse count."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: ldpe_stretch_film_input
+          role: "Low-density polyethylene stretch film"
+          name: "Low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene stretch film used to secure loads is recorded separately from liners and bottles."
+          amount:
+            expression: "Measured film mass issued to conforming shipped loads."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_component_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Released reference product"
+          name: "Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0238a5c5-5b90-4881-8277-cd862a581eb8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is the one locked extract or juice at its declared state, solids content, and package configuration."
+          amount:
+            expression: "Exactly 1 kg net conforming product excluding packaging."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3.0-21185
+            ranges: []
+      waste:
+        - row_id: waste_glass_packaging
+          role: "Waste glass bottle"
+          name: "Waste glass bottle"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected or damaged glass bottles are recorded as one material-specific packaging waste."
+          amount:
+            expression: "Measured discarded glass-bottle mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_hdpe_packaging
+          role: "Waste high-density polyethylene bottle"
+          name: "Waste high-density polyethylene bottle"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected high-density polyethylene bottles are recorded separately from other polymers."
+          amount:
+            expression: "Measured discarded bottle mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_steel_packaging
+          role: "Waste steel drum"
+          name: "Waste steel drum"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded steel drums are recorded as a distinct metallic packaging waste."
+          amount:
+            expression: "Measured discarded drum mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_kraft_paper_packaging
+          role: "Waste kraft-paper sack"
+          name: "Waste kraft-paper sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected kraft-paper sacks are recorded independently from polymer liners."
+          amount:
+            expression: "Measured discarded sack mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_ldpe_packaging
+          role: "Waste low-density polyethylene"
+          name: "Waste low-density polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded low-density polyethylene liners or film are weighed as a single material stream only when collected together physically."
+          amount:
+            expression: "Measured discarded low-density polyethylene mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_paperboard_packaging
+          role: "Waste paperboard carton"
+          name: "Waste paperboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded paperboard cartons are recorded as a separate fibre-based waste stream."
+          amount:
+            expression: "Measured discarded carton mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_refrigerant_to_air
+          role: "Carbon dioxide refrigerant to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Loss of R744 is emitted as carbon dioxide and is calculated separately from combustion carbon dioxide."
+          amount:
+            expression: "Opening stock plus additions minus closing stock, recovery, and documented transfers."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_inventory
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+        - row_id: hfc_134a_refrigerant_to_air
+          role: "1,1,1,2-Tetrafluoroethane refrigerant to air"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Loss of R134a is emitted as one chemically specific HFC elementary flow."
+          amount:
+            expression: "Opening stock plus additions minus closing stock, recovery, and documented transfers."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_inventory
+              source_ids:
+                - jrc-sa-bref-2024
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared production"
+    rule: "Subdivide by species, tissue, product identity, route, and production lot wherever meters and records permit; never allocate a mixed campaign before segregated records have been exhausted."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_direct_assignment
+    applies_to: "dedicated operations"
+    rule: "Assign feedstock, ingredients, filtration media, packaging, waste, and directly metered utilities to the product that caused them."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_relation
+    applies_to: "inseparable shared operations"
+    rule: "For a remaining shared operation, use a documented causal physical relation such as measured throughput, evaporated water, solids processed, or useful heat demand."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-fishmeal-process
+  - rule_id: allocation_economic_fallback
+    applies_to: "multifunctional outputs"
+    rule: "Use economic allocation only when subdivision and a defensible causal physical relation are unavailable; use contemporaneous prices, disclose the period and currency, and test sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_coproduct_classification
+    applies_to: "separated fat, oil, shell, or other fraction"
+    rule: "Treat a separated fraction as a co-product only when it meets a declared specification and leaves the facility for an evidenced beneficial use; otherwise record the exact stream as waste."
+    source_ids:
+      - jrc-sa-bref-2024
+  - rule_id: allocation_no_avoided_burden
+    applies_to: "recycling or recovery"
+    rule: "Do not subtract an avoided product burden inside the foreground inventory; any substitution credit belongs to an explicitly declared downstream scenario."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_no_double_counting
+    applies_to: "purchased and on-site utilities"
+    rule: "A user process shall consume either a purchased carrier or an internally generated carrier for the same metered delivery; do not count both as external input."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receipt_material_mass
+      process_id: "raw_material_receipt_and_preparation"
+      flow_role: "exact feedstock and potable ice"
+      record_type: "weighbridge, scale, receiving log"
+      raw_fields: "species; tissue; supplier; lot; gross mass; tare; accepted mass; temperature"
+      collection_method: "Calibrated weighing tied to the locked lot identity"
+      unit: "kg"
+      frequency: "each delivery"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum accepted mass by exact species and tissue; do not combine candidate cards"
+      quality_evidence: "calibration record and receiving trace"
+    - protocol_id: cp_receipt_utility_records
+      process_id: "raw_material_receipt_and_preparation"
+      flow_role: "electricity"
+      record_type: "submeter or equipment meter"
+      raw_fields: "opening reading; closing reading; operating interval; lot link"
+      collection_method: "Read calibrated meter and assign only the preparation interval"
+      unit: "kWh"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum readings, subtract verified non-production use, normalize to conforming output"
+      quality_evidence: "meter identifier and calibration evidence"
+    - protocol_id: cp_receipt_water_records
+      process_id: "raw_material_receipt_and_preparation"
+      flow_role: "preparation water"
+      record_type: "water meter or batch log"
+      raw_fields: "opening reading; closing reading; batch volume; lot link"
+      collection_method: "Meter direct water supply or reconcile batch tank volume"
+      unit: "m3"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum preparation water only"
+      quality_evidence: "meter or tank calibration"
+    - protocol_id: cp_receipt_wastewater_records
+      process_id: "raw_material_receipt_and_preparation"
+      flow_role: "rinse wastewater"
+      record_type: "effluent meter or tank record"
+      raw_fields: "volume; time; destination; lot link"
+      collection_method: "Meter segregated stream or derive from calibrated tank changes"
+      unit: "m3"
+      frequency: "each batch or discharge"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum physical rinse-water discharge before treatment"
+      quality_evidence: "meter or tank record"
+    - protocol_id: cp_extraction_utility_records
+      process_id: "aqueous_extraction_or_hydrolysis"
+      flow_role: "electricity, purchased steam, purchased hot water"
+      record_type: "meter and operating log"
+      raw_fields: "carrier; readings; steam mass; pressure; temperatures; batch link"
+      collection_method: "Read carrier-specific meters and retain thermodynamic measurements"
+      unit: "kWh; kg; MJ"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Calculate each carrier separately and normalize after lot reconciliation"
+      quality_evidence: "meter calibration and batch log"
+    - protocol_id: cp_extraction_ingredient_mass
+      process_id: "aqueous_extraction_or_hydrolysis"
+      flow_role: "water, salt, enzyme, acid, alkali, antifoam"
+      record_type: "recipe issue and scale record"
+      raw_fields: "exact substance; formulation; concentration; lot; gross; tare; charged mass or volume"
+      collection_method: "Weigh or meter each named ingredient separately"
+      unit: "kg or m3"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum only actual charges; keep delivered formulation and active fraction distinct"
+      quality_evidence: "scale calibration, certificate, recipe sign-off"
+    - protocol_id: cp_separation_utility_records
+      process_id: "separation_and_clarification"
+      flow_role: "electricity and water"
+      record_type: "meter and batch log"
+      raw_fields: "readings; batch; equipment; operating interval"
+      collection_method: "Read stage-specific meters or documented submeter allocation"
+      unit: "kWh or m3"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum each carrier separately"
+      quality_evidence: "meter calibration and allocation worksheet"
+    - protocol_id: cp_filter_media_mass
+      process_id: "separation_and_clarification"
+      flow_role: "each named filtration medium"
+      record_type: "stores issue, installation, replacement log"
+      raw_fields: "medium identity; material; supplied mass; installed mass; replacement date; treated mass"
+      collection_method: "Weigh batch media; for durable media allocate installed mass over measured treated throughput"
+      unit: "kg"
+      frequency: "each charge or replacement"
+      temporal_coverage: "complete reporting period plus service interval"
+      site_scope: "facility"
+      aggregation_rule: "Allocate only by verified service throughput; no assumed lifetime"
+      quality_evidence: "purchase specification and replacement trace"
+    - protocol_id: cp_coproduct_mass
+      process_id: "separation_and_clarification"
+      flow_role: "each released co-product"
+      record_type: "product scale and release record"
+      raw_fields: "exact material; origin species; wet mass; solids; specification; destination"
+      collection_method: "Weigh each released stream and retain sale or transfer evidence"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum only specification-conforming released mass"
+      quality_evidence: "scale calibration, release certificate, destination record"
+    - protocol_id: cp_separation_waste_mass
+      process_id: "separation_and_clarification"
+      flow_role: "each solid waste"
+      record_type: "container scale and waste log"
+      raw_fields: "exact waste identity; origin species; gross; tare; wet mass; destination"
+      collection_method: "Weigh each physically separate waste stream"
+      unit: "kg"
+      frequency: "each container or batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum by exact waste identity and destination"
+      quality_evidence: "scale record and waste transfer document"
+    - protocol_id: cp_separation_wastewater_records
+      process_id: "separation_and_clarification"
+      flow_role: "separation wastewater"
+      record_type: "effluent meter or tank record"
+      raw_fields: "volume; time; destination; batch link"
+      collection_method: "Meter the segregated stream before treatment"
+      unit: "m3"
+      frequency: "each batch or discharge"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum physical separation wastewater"
+      quality_evidence: "meter or calibrated tank record"
+    - protocol_id: cp_concentration_utility_records
+      process_id: "concentration_or_drying"
+      flow_role: "electricity, steam, hot water"
+      record_type: "meter and operating log"
+      raw_fields: "carrier; readings; steam mass; pressure; temperatures; batch link"
+      collection_method: "Read equipment or line meters for applicable concentration and drying operations"
+      unit: "kWh; kg; MJ"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Calculate each carrier separately"
+      quality_evidence: "meter calibration and operating log"
+    - protocol_id: cp_compressed_air_records
+      process_id: "concentration_or_drying"
+      flow_role: "compressed air"
+      record_type: "normal-volume meter"
+      raw_fields: "opening reading; closing reading; pressure; temperature; batch link"
+      collection_method: "Meter at standardized conditions and record conversion basis"
+      unit: "m3"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum standardized volume assigned to drying"
+      quality_evidence: "meter calibration and conversion record"
+    - protocol_id: cp_evaporator_condensate_records
+      process_id: "concentration_or_drying"
+      flow_role: "condensate wastewater"
+      record_type: "condensate meter or tank record"
+      raw_fields: "volume; reuse volume; discharge volume; destination"
+      collection_method: "Meter condensate and subtract only documented internal reuse"
+      unit: "m3"
+      frequency: "each batch or discharge"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Report physical discharge, not generated condensate twice"
+      quality_evidence: "meter or tank reconciliation"
+    - protocol_id: cp_drying_stack_measurements
+      process_id: "concentration_or_drying"
+      flow_role: "dryer particulate emission"
+      record_type: "stack test or continuous monitor"
+      raw_fields: "concentration; dry gas volume; reference conditions; operating time; product mass"
+      collection_method: "Pair measured concentration with corresponding dry gas volume"
+      unit: "kg/m3 and m3"
+      frequency: "representative campaign or continuous"
+      temporal_coverage: "representative of reporting period"
+      site_scope: "emission point"
+      aggregation_rule: "Calculate load for the matching interval and normalize to conforming output"
+      quality_evidence: "laboratory method, monitor QA, operating record"
+    - protocol_id: cp_cooling_utility_records
+      process_id: "cooling_packaging_and_storage"
+      flow_role: "cooling electricity and chilled water"
+      record_type: "meter and storage log"
+      raw_fields: "readings; temperatures; flow; lot; storage duration"
+      collection_method: "Meter carrier use for cooling and declared storage period"
+      unit: "kWh; m3; MJ"
+      frequency: "each batch, shift, or storage interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Attribute by measured throughput and storage duration only when causal"
+      quality_evidence: "meter calibration and storage trace"
+    - protocol_id: cp_cooling_refrigerant_inventory
+      process_id: "cooling_packaging_and_storage"
+      flow_role: "ammonia refrigerant"
+      record_type: "charge and inventory log"
+      raw_fields: "substance; opening stock; purchases; additions; recovery; returns; closing stock; equipment"
+      collection_method: "Complete an R717-specific mass balance for cooling equipment"
+      unit: "kg"
+      frequency: "each service event and annual close"
+      temporal_coverage: "complete reporting period"
+      site_scope: "equipment and facility"
+      aggregation_rule: "Calculate R717 loss separately and allocate by documented equipment service"
+      quality_evidence: "service invoices, cylinder weights, inventory sign-off"
+    - protocol_id: cp_storage_refrigerant_inventory
+      process_id: "packaging_and_storage"
+      flow_role: "carbon dioxide and HFC-134a refrigerants"
+      record_type: "charge and inventory log"
+      raw_fields: "substance; opening stock; purchases; additions; recovery; returns; closing stock; equipment"
+      collection_method: "Complete separate mass balances for R744 and R134a storage equipment"
+      unit: "kg"
+      frequency: "each service event and annual close"
+      temporal_coverage: "complete reporting period"
+      site_scope: "equipment and facility"
+      aggregation_rule: "Calculate loss separately by substance and allocate by documented equipment service"
+      quality_evidence: "service invoices, cylinder weights, inventory sign-off"
+    - protocol_id: cp_sanitation_utility_records
+      process_id: "cleaning_and_wastewater_management"
+      flow_role: "water, electricity, steam, hot water"
+      record_type: "meter and cleaning log"
+      raw_fields: "carrier; readings; cycle; area; production link"
+      collection_method: "Meter or reconcile each carrier to documented cleaning cycles"
+      unit: "m3; kWh; kg; MJ"
+      frequency: "each cycle or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum each carrier separately and allocate by causal cleaned operation"
+      quality_evidence: "meter calibration and cleaning log"
+    - protocol_id: cp_cip_chemical_mass
+      process_id: "cleaning_and_wastewater_management"
+      flow_role: "each named cleaning or disinfecting chemical"
+      record_type: "stores issue and dosing log"
+      raw_fields: "substance; formulation; concentration; gross; tare; dose; cycle"
+      collection_method: "Weigh or meter each chemical separately"
+      unit: "kg"
+      frequency: "each cleaning cycle"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum actual delivered formulation by substance"
+      quality_evidence: "scale calibration, safety-data sheet, dosing record"
+    - protocol_id: cp_cip_wastewater_records
+      process_id: "cleaning_and_wastewater_management"
+      flow_role: "cleaning-in-place wastewater"
+      record_type: "effluent meter or cycle-volume record"
+      raw_fields: "volume; time; treatment; discharge point"
+      collection_method: "Meter CIP return or reconcile calibrated cycle volumes"
+      unit: "m3"
+      frequency: "each cycle or discharge"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum CIP wastewater separately from other streams"
+      quality_evidence: "meter or tank record"
+    - protocol_id: cp_wastewater_sludge_mass
+      process_id: "cleaning_and_wastewater_management"
+      flow_role: "wastewater sludge"
+      record_type: "container scale and removal log"
+      raw_fields: "gross; tare; wet mass; dry solids if tested; destination"
+      collection_method: "Weigh each sludge removal"
+      unit: "kg"
+      frequency: "each removal"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum wet mass and preserve measured solids separately"
+      quality_evidence: "scale record and transfer document"
+    - protocol_id: cp_wastewater_discharge_sampling
+      process_id: "cleaning_and_wastewater_management"
+      flow_role: "each named water pollutant"
+      record_type: "flow meter and accredited analysis"
+      raw_fields: "discharge volume; sampling time; COD; BOD5; TSS; total nitrogen; total phosphorus; chloride"
+      collection_method: "Use representative sampling paired with the corresponding discharge volume"
+      unit: "m3 and kg/m3"
+      frequency: "permit frequency or representative campaign"
+      temporal_coverage: "representative of reporting period"
+      site_scope: "discharge point"
+      aggregation_rule: "Calculate each pollutant independently for matched intervals"
+      quality_evidence: "laboratory report, sampling plan, flow-meter QA"
+    - protocol_id: cp_fuel_mass_energy
+      process_id: "onsite_energy_generation"
+      flow_role: "each named fuel"
+      record_type: "fuel meter, tank dip, invoice"
+      raw_fields: "fuel identity; volume or mass; density; heating value; opening; purchases; closing"
+      collection_method: "Reconcile metered or inventory fuel by exact carrier"
+      unit: "kg or MJ"
+      frequency: "each delivery and reporting-period close"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Keep natural gas, diesel, and LPG separate"
+      quality_evidence: "meter calibration, invoices, inventory reconciliation"
+    - protocol_id: cp_boiler_water_records
+      process_id: "onsite_energy_generation"
+      flow_role: "boiler feedwater"
+      record_type: "make-up water meter"
+      raw_fields: "opening reading; closing reading; boiler operating time"
+      collection_method: "Read dedicated boiler-water meter"
+      unit: "m3"
+      frequency: "each shift or reporting period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum make-up water only"
+      quality_evidence: "meter calibration"
+    - protocol_id: cp_generated_heat_records
+      process_id: "onsite_energy_generation"
+      flow_role: "generated steam and hot water"
+      record_type: "steam and heat meters"
+      raw_fields: "steam mass; pressure; enthalpy; water flow; supply temperature; return temperature"
+      collection_method: "Calculate useful output from measured thermodynamic data"
+      unit: "MJ"
+      frequency: "each shift or batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Keep steam and hot-water outputs separate and reconcile user meters"
+      quality_evidence: "meter calibration and heat-balance worksheet"
+    - protocol_id: cp_boiler_blowdown_records
+      process_id: "onsite_energy_generation"
+      flow_role: "boiler blowdown"
+      record_type: "purge meter or tank record"
+      raw_fields: "volume; time; destination"
+      collection_method: "Meter purge or reconcile calibrated blowdown tank"
+      unit: "m3"
+      frequency: "each purge or reporting period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum physical blowdown discharge"
+      quality_evidence: "meter or tank record"
+    - protocol_id: cp_stack_emissions
+      process_id: "onsite_energy_generation"
+      flow_role: "each named air emission"
+      record_type: "stack monitor, stack test, fuel analysis"
+      raw_fields: "pollutant; concentration; dry gas volume; reference conditions; fuel; operating time"
+      collection_method: "Pair pollutant-specific concentration with matching gas volume or use a documented site fuel balance"
+      unit: "kg/m3 and m3"
+      frequency: "continuous or representative campaign"
+      temporal_coverage: "representative of reporting period"
+      site_scope: "emission point"
+      aggregation_rule: "Calculate CO2, NOx as NO2, SO2, PM10, CO, and CH4 separately"
+      quality_evidence: "test method, monitor QA, fuel certificate, operating record"
+    - protocol_id: cp_packaging_component_mass
+      process_id: "packaging_and_storage"
+      flow_role: "each package component"
+      record_type: "bill of materials, scale, issue record"
+      raw_fields: "component identity; material; unit mass; units issued; rejects; reuse count"
+      collection_method: "Weigh each component and reconcile issued units to conforming output"
+      unit: "kg"
+      frequency: "each package specification or lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility and product"
+      aggregation_rule: "Calculate each component separately; reuse requires verified cycles"
+      quality_evidence: "approved BoM, scale record, issue reconciliation"
+    - protocol_id: cp_reference_product_mass
+      process_id: "packaging_and_storage"
+      flow_role: "released reference product"
+      record_type: "finished-goods scale and release record"
+      raw_fields: "species; tissue; product identity; state; solids; gross; tare; net; lot"
+      collection_method: "Weigh released net product and verify all required qualifiers"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum conforming net mass only"
+      quality_evidence: "scale calibration and release certificate"
+    - protocol_id: cp_packaging_waste_mass
+      process_id: "packaging_and_storage"
+      flow_role: "each package waste"
+      record_type: "waste scale and rejection log"
+      raw_fields: "material; component; gross; tare; mass; destination"
+      collection_method: "Weigh each material-specific waste stream"
+      unit: "kg"
+      frequency: "each container or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "facility"
+      aggregation_rule: "Sum by one exact waste identity"
+      quality_evidence: "scale record and waste transfer document"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every exchange"
+      rule: "normalized amount = reconciled reporting-period exchange / released conforming net product mass"
+      inputs:
+        - "exchange record"
+        - "cp_reference_product_mass net output"
+      output: "row amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_dry_matter
+      applies_to: "feedstock and product"
+      rule: "dry matter = measured wet mass × measured solids fraction from the same lot"
+      inputs:
+        - "wet mass"
+        - "measured solids fraction"
+      output: "dry matter mass"
+      source_ids:
+        - codex-cxs-117-1981
+        - fao-fisheries-paper-540
+    - id: calc_extraction_solids_yield
+      applies_to: "extraction and separation"
+      rule: "recovered-solids yield = measured dry matter in declared product / measured dry matter in exact feedstock; report losses and separated fractions independently"
+      inputs:
+        - "lot wet masses"
+        - "lot solids results"
+      output: "disclosed solids yield and reconciliation"
+      source_ids:
+        - fao-fishmeal-process
+        - fao-fisheries-paper-540
+    - id: calc_thermal_energy
+      applies_to: "steam and hot water"
+      rule: "useful heat is calculated from measured carrier mass or flow and measured enthalpy or temperature difference"
+      inputs:
+        - "mass or flow"
+        - pressure
+        - "supply temperature"
+        - "return temperature"
+      output: "MJ useful heat"
+      source_ids:
+        - fao-fishmeal-process
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigerant"
+      rule: "loss = opening stock + purchases + additions − closing stock − recovered quantity − returned quantity; calculate independently for each substance"
+      inputs:
+        - cp_cooling_refrigerant_inventory
+        - "cp_storage_refrigerant_inventory fields"
+      output: "kg substance emitted"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_wastewater_load
+      applies_to: "each water pollutant"
+      rule: "load = representative measured concentration × corresponding measured discharge volume, with unit conversion documented"
+      inputs:
+        - "cp_wastewater_discharge_sampling concentration and volume"
+      output: "kg pollutant discharged"
+      source_ids:
+        - jrc-sa-bref-2024
+    - id: calc_stack_load
+      applies_to: "each air pollutant"
+      rule: "load = measured concentration × corresponding dry normalized gas volume; a site fuel factor may be used only when its identity and derivation are documented"
+      inputs:
+        - "cp_stack_emissions concentration or factor"
+        - "gas volume or fuel"
+      output: "kg pollutant emitted"
+      source_ids:
+        - jrc-sa-bref-2024
+    - id: calc_packaging_mass
+      applies_to: "each package component"
+      rule: "component amount = measured unit mass × issued conforming units / conforming net product mass; reusable component mass is additionally divided by verified reuse cycles"
+      inputs:
+        - "component scale and issue records"
+        - "verified reuse count"
+        - "net output"
+      output: "kg component per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_lock
+      applies_to: "reference product and feedstock"
+      requirement: "One species, one tissue, one extract-or-juice identity, one physical state, and one concentration state are fixed for the data package."
+      evidence: "lot specification, release record, reference-flow qualifiers"
+    - id: dq_primary_manufacturing_data
+      applies_to: "foreground operations"
+      requirement: "Use company-specific measured or calculated-from-measurement data for the represented facility and reporting period."
+      evidence: "meters, batch records, laboratory reports, invoices, calculation workpapers"
+    - id: dq_temporal_representativeness
+      applies_to: "foreground inventory"
+      requirement: "Cover a representative production period including start-up, cleaning, downtime allocation, storage, and seasonal changes material to the declared product."
+      evidence: "production calendar and coverage statement"
+    - id: dq_mass_solids_reconciliation
+      applies_to: "each lot and reporting period"
+      requirement: "Reconcile wet mass and dry matter across feedstock, product, co-products, wastes, inventory changes, and measured water removal; explain material residuals."
+      evidence: "signed wet-mass and solids balance"
+    - id: dq_atomic_exchange_identity
+      applies_to: "inventory rows"
+      requirement: "Each row names one exchange; electricity, steam, hot water, each fuel, each refrigerant, each chemical, each package component, each waste, and each emission remain separate."
+      evidence: "row-level inventory audit"
+    - id: dq_upstream_dataset_links
+      applies_to: "purchased inputs"
+      requirement: "Provide an upstream dataset link, geography, time, and supplier or technology basis for every material input."
+      evidence: "dataset-link register and supplier evidence"
+    - id: dq_no_unsupported_defaults
+      applies_to: "all quantities"
+      requirement: "Do not use an author estimate, unreferenced range, or source example value as a production amount; collect the value or calculate it from collected records."
+      evidence: "row provenance and protocol linkage"
+    - id: dq_evidence_traceability
+      applies_to: "all calculated rows"
+      requirement: "Retain raw records, formula version, unit conversions, allocation driver, reviewer, and calculation date."
+      evidence: "reproducible calculation file and review sign-off"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference product UUID, Mass property UUID, Units of mass UUID, kg unit, and exactly 1 kg net output shall match section 3."
+    source_ids:
+      - un-cpc-3.0-21185
+  - rule_id: validation_qualifier_lock
+    applies_to: "data package identity"
+    rule: "Reject a package that mixes species, tissues, extract and juice identities, physical states, or concentration states, or omits any required qualifier."
+    source_ids:
+      - un-cpc-3.0-21185
+      - codex-cxs-117-1981
+  - rule_id: validation_process_applicability
+    applies_to: "process map"
+    rule: "Every required process has foreground records; each conditional process is either evidenced as operated or explicitly not applicable with a route explanation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_atomic_rows
+    applies_to: "process inventory"
+    rule: "Reject a collection or selector row; each actual exchange is represented by one concrete flow card and every actual unlisted exchange is added as a new atomic row."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_uuid_closure
+    applies_to: "Tiangong identities"
+    rule: "The reference UUIDs shall equal the verified identities; every other UUID remains blank until independently resolved and the manifest unresolved register shall exactly match all blank-UUID row ids."
+    source_ids:
+      - un-cpc-3.0-21185
+  - rule_id: validation_inventory_completeness
+    applies_to: "LCI"
+    rule: "Confirm raw feedstock, utilities, water, ingredients, filtration media, packaging, co-products, wastes, wastewater pollutants, refrigerant losses, and direct air emissions for the operated route."
+    source_ids:
+      - eu-pef-2021-2279
+      - jrc-sa-bref-2024
+  - rule_id: validation_mass_solids_balance
+    applies_to: "mass balance"
+    rule: "Wet-mass and dry-matter balances shall reconcile feedstock, product, separated fractions, waste, inventory changes, and water removal; every residual is quantified and explained."
+    source_ids:
+      - fao-fishmeal-process
+      - fao-fisheries-paper-540
+  - rule_id: validation_quantity_provenance
+    applies_to: "inventory amounts"
+    rule: "Every non-fixed value shall link to a foreground collection protocol or a calculation using collected records; unsupported defaults, ranges, and reasoned estimates are prohibited."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_allocation
+    applies_to: "shared operations and co-products"
+    rule: "Verify subdivision, direct assignment, the documented causal driver, any economic fallback, co-product classification, and absence of double counting or embedded avoided burden."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_language_alignment
+    applies_to: "bilingual PCR"
+    rule: "English and Chinese shall have the same ordered process ids, row ids, controlled tokens, UUIDs, source ids, calculation ids, and normative rule ids."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Company-specific foreground production dataset for one locked extract or juice"
+  downstream_use: "Product carbon footprint, environmental-footprint study, LCA process dataset, lifecycle model, supplier disclosure, and internal process improvement"
+  allowed_use: "Use only for the declared species, tissue, product identity, route, physical state, solids or concentration state, facility, geography, period, package, and storage condition"
+  excluded_use: "Generic poultry, generic fish, generic crustacean, generic mollusc, mixed animal input, mixed extract-and-juice product, another concentration state, soup or broth, fishmeal, gelatine, principal-product oil, or an unrepresented facility"
+  required_metadata: "All reference qualifiers; facility and period; process applicability; exact BoM; meters and protocols; upstream dataset links; co-product fate; allocation; waste destinations; discharge points; unresolved UUID status"
+  required_quality_disclosure: "Primary-data coverage; meter and laboratory QA; wet-mass and solids reconciliation; allocation sensitivity; missing data; representativeness; any added atomic rows"
+  update_trigger: "Change of species, tissue, product identity, extraction route, physical or concentration state, formulation, filtration technology, packaging, refrigerant, fuel, wastewater treatment, allocation basis, facility, or representative period"
+data_sources:
+  - id: "un-cpc-3.0-21185"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, retained official structure CSV, subclass 21185, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-06-23"
+    used_for: "Exact product-category title and category boundary"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, consolidated text, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng, retrieved 2026-08-13"
+    used_for: "Product-specific bill of materials, company-specific manufacturing data, complete raw-material, energy, product, waste and emission inventory, transparency, allocation, and data quality"
+  - id: "jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "Karlis, P. et al., Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and/or Edible Co-products Industries, JRC135916, EUR 31752 EN, DOI 10.2760/18199, https://publications.jrc.ec.europa.eu/repository/handle/JRC135916, retrieved 2026-08-13"
+    used_for: "Animal-derived input and co-product context, cleaning, water, wastewater, fuel combustion, direct emissions, monitoring, and treatment boundaries without importing non-operated upstream processes"
+  - id: "codex-cxs-117-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 117-1981, Standard for Bouillons and Consommés, revised 2015 and amended 2021, https://workspace.fao.org/sites/codex/Standards/CXS%20117-1981/CXS_117e.pdf, retrieved 2026-08-13"
+    used_for: "Definition of beef extract as concentrated water-soluble components, aqueous cooking context, salt and water inputs, and declared ready, concentrated, frozen, or dehydrated forms; no compositional value is adopted as a PCR default"
+  - id: "fao-fisheries-paper-540"
+    type: "handbook"
+    reference: "Tacon, A.G.J., Metian, M. and Hasan, M.R., Feed ingredients and fertilizers for farmed aquatic animals: sources and composition, FAO Fisheries and Aquaculture Technical Paper 540, 2009, ISBN 978-92-5-106421-4, https://www.fao.org/4/i1142e/i1142e.pdf, retrieved 2026-08-13"
+    used_for: "Exact origin and tissue naming, presswater and water-extract definitions, species-specific identity, enzyme hydrolysis, removal of undigested solids, concentration, filtration and drying route structure; feed definitions are methodological evidence only, not product defaults"
+  - id: "fao-fishmeal-process"
+    type: "handbook"
+    reference: "FAO, The production of fish meal and oil, Chapter 3: The process, https://www.fao.org/4/X6899E/X6899E04.htm, retrieved 2026-08-13"
+    used_for: "Official full-text evidence for heating, pressing, centrifugation, separation, evaporation of aqueous solubles, drying, cooling, energy carriers, waste-water and air-emission controls; fishmeal quantities and operating examples are not imported into this PCR"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0eaa84ad8fbdc4c7a44f00bfda89c8b6aad7e174f9e0ea20705e3ceef16c08c7"
+  generated_content_sha256: "sha256:bbb78859bfbd464baf251ba42d558f22ce12611702a9f981aa126a08d6bff942"

@@ -1,10 +1,1073 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21421"
-  title: "Groundnuts, shelled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.groundnuts-shelled"
+  classification_refs: "CPC 3.0: 21421, Groundnuts, shelled"
+  covered_products: "Raw or dried kernels of Arachis hypogaea L. after removal of the pod, whether whole, split, broken, sized, graded, bulk, or packaged, provided the product remains shelled groundnuts rather than a further manufactured peanut product."
+  excluded_products: "Groundnuts in shell; seed for planting; roasted or otherwise cooked peanuts; peanut oil, flour, meal, paste, butter, confectionery, and mixed or formulated foods."
+  representative_product: "Generic shelled groundnuts at the shelling-facility gate, with actual lot moisture, grade, aflatoxin-control status, net-mass basis, and packaging state declared."
+  production_route: "Receipt and pre-cleaning of in-shell groundnuts; mechanical or manual shelling and size grading; sorting, sampling/testing and lot disposition; net weighing, optional packaging, and dispatch preparation. Alternative shell and rejected-material dispositions are mutually exclusive."
+  market_state: "Bulk or packaged shelled kernels at facility gate; raw or dried state, intended use, moisture basis, grade, and packaging are qualifiers rather than separate reference flows."
+functional_unit:
+  what: "Shelled groundnuts supplied at the shelling-facility gate for the declared intended use."
+  how_much: "1 kg net mass of shelled groundnuts."
+  how_well: "At the declared shelling route, raw/dried state, moisture content and basis, grade or kernel-size class, rejected-material rule, aflatoxin-control status and limit basis, and packaging state."
+  how_long_or_cycle: "One declared production lot at facility-gate handover; storage duration included before handover is reported."
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the generic Tiangong product flow 66ce8a77-8fe1-4513-910c-741aebeec043, normalized on net mass as received unless a separately reported dry-matter result is required."
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground shelling operations"
+      rule: "Include receiving and pre-cleaning, shelling and size grading, aflatoxin-control sorting/testing and lot disposition, internal movement, net weighing, included storage, optional packaging, direct energy, direct emissions, wastes, residues, samples, and inventory changes up to facility-gate handover."
+      source_ids:
+        - eu-pef-2021-2279
+        - codex-cxc-22-1979
+        - codex-cxc-55-2004-2025
+    - rule_id: boundary_upstream_links
+      applies_to: "Product and energy inputs"
+      rule: "Keep cultivation, harvest, curing, external inbound transport, electricity generation, packaging manufacture, and external treatment outside the foreground process only when linked through representative upstream or downstream datasets; disclose every cut-off and justify its environmental insignificance."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_preservation
+      applies_to: "Alternative starting conditions"
+      rule: "Do not model in-shell receipt and already-shelled receipt as simultaneous inputs. Select one route for each lot and preserve the omitted shelling history through its upstream dataset and route qualifier."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - eu-pef-2021-2279
+    - rule_id: boundary_controlled_material
+      applies_to: "Rejected kernels, shells, dust, samples, and packaging rejects"
+      rule: "Include the measured mass and documented disposition of every controlled material stream. A stream recorded as a saleable co-product shall not also be recorded as waste, and a rejected food lot shall not be credited as feed or product without evidence that the selected disposition is lawful and meets its acceptance specification."
+      source_ids:
+        - codex-cxc-22-1979
+        - codex-cxc-55-2004-2025
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Accepted in-shell groundnuts at the shelling-facility receiving gate; an already-shelled starting input is allowed only when explicitly declared as an alternative route."
+  starting_condition_role: "Foreground entry condition for a gate-to-gate shelling dataset; cultivation, harvest, curing, and delivery burdens are represented through upstream datasets or separately linked transport."
+  product_classification_scope: "Exact generic shelled-groundnut product category; quality, intended-use, moisture, grade, aflatoxin-control and packaging differences remain qualifiers."
+  recursive_input_rule: "If shelled groundnuts enter for re-cleaning, regrading, or repacking, record them once as a same-category input with a separate upstream dataset and do not recreate their earlier shelling operations inside this foreground package."
+  upstream_dataset_requirement: "Link representative upstream datasets for in-shell groundnuts, electricity, packaging, transport not already included by suppliers, and treatment of exported wastes or residues. Preserve geography, technology, moisture, and temporal applicability."
+  disclosure: "Declare starting product state, supplier-gate versus delivered-gate convention, shelling technology, moisture and grade, lot-control route, all excluded operations, storage duration, and whether packaging and outbound loading are included."
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Groundnuts, shelled"
+    uuid: "66ce8a77-8fe1-4513-910c-741aebeec043"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "shelling route and starting condition"
+    - "raw or dried state"
+    - "moisture content"
+    - "measurement basis and method"
+    - "grade or kernel-size class"
+    - "intended use and applicable product specification"
+    - "rejected-material definition"
+    - "mass and disposition"
+    - "aflatoxin sampling"
+    - "test method"
+    - result
+    - "limit basis and lot decision"
+    - "net-mass weighing basis"
+    - "packaging type"
+    - material
+    - "tare and bulk/packaged state"
+    - "included gate storage duration"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Final shelled groundnuts"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net mass as calibrated gross mass minus packaging or container tare. Normalize all inventory results to 1 kg net shelled-groundnut output at the declared moisture basis."
+  - id: moisture_as_received
+    applies_to: "In-shell input, intermediate kernels, and final shelled groundnuts"
+    required_property_ref:
+      name: "Mass fraction and Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "% and kg"
+    rule: "Record moisture content, sampling time, test method, and whether mass is as received or moisture-corrected. Do not mix wet-basis and dry-matter masses."
+  - id: codex_kernel_moisture
+    applies_to: "Lots claiming the CXS 200-1995 intended-use scope"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "%"
+    rule: "For peanut kernels intended for processing for direct human consumption under CXS 200-1995, verify the specified maximum moisture content of 9.0%; a stricter destination requirement remains controlling and shall be disclosed."
+  - id: internal_mass_consistency
+    applies_to: "Each lot and process"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use one consistent as-received basis for input kernels, accepted kernels, shells, rejects, dust or fines, samples, inventory change, and final net output; report any separately calculated dry-matter balance."
+  - id: aflatoxin_result_basis
+    applies_to: "Aflatoxin-control records"
+    required_property_ref:
+      name: "Concentration and lot decision"
+      uuid: ""
+    required_unit: "declared test unit"
+    rule: "Record the sampled lot, sampling plan, analytical method, result, reporting limit, applicable legal or contractual limit, intended use, and accept/reject/divert decision. Never infer a concentration from a visual sort result."
+  - id: packaging_tare_separation
+    applies_to: "Packaged output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Exclude packaging tare from the 1 kg reference amount and inventory packaging material separately by type and mass."
+process_map:
+  - id: receiving_and_precleaning
+    name: "Receiving and pre-cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always included for the in-shell route; for an already-shelled route record the alternative starting condition and only the applicable receiving/cleaning operations."
+    role: "Establish lot identity, incoming net mass and quality state; remove loose foreign matter before shelling."
+    quantitative_reference: "Per kg of pre-cleaned material transferred."
+  - id: shelling_and_size_grading
+    name: "Shelling and size grading"
+    inclusion: "required"
+    inclusion_condition: "Included for the in-shell route; represented by the upstream shelled-input dataset for an already-shelled route."
+    role: "Remove pods, separate kernels and shells, remove foreign matter, and size-grade kernels."
+    quantitative_reference: "Per kg of unsorted shelled kernels produced."
+  - id: aflatoxin_control_and_lot_disposition
+    name: "Aflatoxin control and lot disposition"
+    inclusion: "required"
+    inclusion_condition: "Always included; the sampling, analysis, sorting technology, and decision rule are lot-specific."
+    role: "Inspect/sort kernels, sample and test as required, establish grade and aflatoxin-control decision, and segregate rejected material."
+    quantitative_reference: "Per kg of accepted graded kernels transferred."
+  - id: net_mass_packaging_and_dispatch
+    name: "Net mass, packaging, and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Always includes net weighing and gate handover; packaging inputs are included only for packaged output and gate storage only for the declared duration."
+    role: "Establish final net output, package or prepare bulk product, record storage and transfer at facility gate."
+    quantitative_reference: "Per 1 kg net shelled-groundnut output."
+process_inventory:
+  - id: receiving_and_precleaning
+    label: "Receiving and pre-cleaning"
+    inputs:
+      product:
+        - row_id: in_shell_groundnuts_received
+          role: "In-shell groundnuts received"
+          name: "Groundnuts, in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the lot-specific incoming groundnut mass crossing the receiving gate. Record supplier lot, origin, delivery convention, gross, tare, net mass, moisture, grade observations, and acceptance decision. The provisional range is for initial screening only when no representative lot mass balance exists; it is temporary and shall be replaced when representative batch records or reviewed transferable evidence become available."
+          amount:
+            expression: "measured accepted net mass entering the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_incoming_lot_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative lot records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: precleaning_electricity
+          role: "Receiving and pre-cleaning electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity or calculate it from equipment power and operating time assigned to the lot. The broad range is a temporary screening estimate for an unmetered candidate dataset and shall be replaced by representative metering or reviewed equipment evidence."
+          amount:
+            expression: "metered use or calculated equipment electricity allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "100"
+                unit: "kWh"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative metering or reviewed equipment evidence replaces it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: precleaned_in_shell_groundnuts
+          role: "Pre-cleaned in-shell groundnuts"
+          name: "Pre-cleaned groundnuts, in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the intermediate mass transferred to shelling on the same moisture basis as the incoming lot. The provisional range is a temporary mass-balance screen and shall be replaced by representative batch records."
+          amount:
+            expression: "measured transfer mass after pre-cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_residue_mass
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch mass records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: precleaning_rejects
+          role: "Pre-cleaning foreign matter and loose rejects"
+          name: "Pre-cleaning rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure removed stones, soil, loose shells, damaged kernels, blows, and other foreign matter by lot and preserve their classification and disposition. The range is a deliberately broad temporary screen, not a typical yield, and shall be replaced by representative batch records or reviewed evidence."
+          amount:
+            expression: "measured mass by reject class and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_residue_mass
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch reject records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: precleaning_dust_to_air
+          role: "Pre-cleaning dust released to air"
+          name: "Particulate matter, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured dust or a documented engineering estimate net of captured dust recorded as waste. The range is temporary, applies only to initial screening without representative monitoring, and shall be replaced by site monitoring or reviewed equipment-specific evidence."
+          amount:
+            expression: "measured or calculated uncaptured dust released to air"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative monitoring or reviewed equipment evidence replaces it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: shelling_and_size_grading
+    label: "Shelling and size grading"
+    inputs:
+      product:
+        - row_id: precleaned_in_shell_input
+          role: "Pre-cleaned in-shell groundnuts transferred"
+          name: "Pre-cleaned groundnuts, in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass received from pre-cleaning without duplicating the upstream supply. The temporary range supports only an initial mass-balance screen and shall be replaced by representative batch transfer records."
+          amount:
+            expression: "measured transfer mass into shelling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_residue_mass
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch transfer records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: shelling_electricity
+          role: "Shelling and grading electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity or calculate equipment use from recorded power and operating time. The range is a broad temporary screening estimate and shall be replaced by representative metering or reviewed equipment evidence."
+          amount:
+            expression: "metered use or calculated equipment electricity allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "100"
+                unit: "kWh"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative metering or reviewed equipment evidence replaces it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unsorted_shelled_kernels
+          role: "Unsorted shelled kernels transferred"
+          name: "Shelled groundnut kernels, unsorted intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record kernels leaving shelling before final quality disposition, including their moisture and size-grade state. The temporary range is for screening only and shall be replaced by representative batch transfer records."
+          amount:
+            expression: "measured kernel mass transferred to control and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_residue_mass
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch transfer records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: shells_as_coproduct
+          role: "Shells sent to documented beneficial use"
+          name: "Groundnut shells, recovered"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record shells here only when they leave the process as a lawful, specified product or co-product with a documented recipient and use. This route is mutually exclusive with shells_as_waste for each measured portion. The temporary range is not a typical yield and shall be replaced by representative batch records or reviewed transferable evidence."
+          amount:
+            expression: "measured dry or as-received shell mass sold or transferred for documented beneficial use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_and_reject_disposition
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch shell records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: shells_as_waste
+          role: "Shells sent to waste treatment or disposal"
+          name: "Groundnut shells, discarded"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only shell portions not recorded as shells_as_coproduct, with destination and treatment route. The temporary broad screen shall be replaced by representative batch records or reviewed transferable evidence."
+          amount:
+            expression: "measured shell mass by waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_and_reject_disposition
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch shell records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: shelling_fines_and_damage
+          role: "Shelling fines and damaged material"
+          name: "Shelling fines and damaged groundnut material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record broken matter, fines and damaged material removed during shelling and grading separately from clean recovered shells. The temporary range applies only to screening and shall be replaced by representative batch records."
+          amount:
+            expression: "measured mass by material class and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_and_reject_disposition
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch residue records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: shelling_dust_to_air
+          role: "Shelling and grading dust released to air"
+          name: "Particulate matter, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured dust or a documented engineering estimate net of captured material. The temporary range is for initial screening without representative monitoring and shall be replaced by site monitoring or reviewed equipment-specific evidence."
+          amount:
+            expression: "measured or calculated uncaptured dust released to air"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative monitoring or reviewed equipment evidence replaces it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: aflatoxin_control_and_lot_disposition
+    label: "Aflatoxin control and lot disposition"
+    inputs:
+      product:
+        - row_id: unsorted_kernels_input
+          role: "Unsorted shelled kernels received for control"
+          name: "Shelled groundnut kernels, unsorted intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the lot mass and identity entering inspection, sorting, sampling/testing and disposition. The temporary range is a screening aid and shall be replaced by representative lot records."
+          amount:
+            expression: "measured mass entering the control step"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aflatoxin_grade_and_lot_decision
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative lot records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: control_electricity
+          role: "Sorting and control electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or equipment-time electricity for sorting, aspiration and control equipment. The temporary range shall be replaced by representative metering or reviewed equipment evidence."
+          amount:
+            expression: "metered use or calculated equipment electricity allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "100"
+                unit: "kWh"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative metering or reviewed equipment evidence replaces it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_graded_kernels
+          role: "Accepted graded kernels"
+          name: "Shelled groundnut kernels, accepted graded intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass, moisture, grade and linked aflatoxin-control decision of kernels accepted for the declared intended use. The temporary range is for initial screening only and shall be replaced by representative batch records."
+          amount:
+            expression: "measured mass accepted for the declared intended use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aflatoxin_grade_and_lot_decision
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: rejected_material_as_product
+          role: "Rejected material diverted as a lawful specified product"
+          name: "Groundnut material diverted to specified non-food use"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a rejected portion here only when evidence demonstrates that it satisfies the legal and contractual specification for a declared non-food or other destination. It is mutually exclusive with rejected_material_as_waste for each portion and shall never be assumed to be feed merely because it is rejected from food use. The broad range is temporary and shall be replaced by representative disposition records or reviewed evidence."
+          amount:
+            expression: "measured mass with specification, analytical release, recipient and intended use documented"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_and_reject_disposition
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative disposition records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: rejected_material_as_waste
+          role: "Rejected kernels and controlled material"
+          name: "Rejected groundnut kernels and controlled material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record visually rejected, analytically non-conforming, contaminated, off-grade, sampled, or otherwise non-product material by reason and treatment route, excluding portions recorded under rejected_material_as_product. The broad range is temporary and shall be replaced by representative disposition records or reviewed evidence."
+          amount:
+            expression: "measured mass by rejection reason and documented treatment or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shell_and_reject_disposition
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative disposition records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: net_mass_packaging_and_dispatch
+    label: "Net mass, packaging, and dispatch preparation"
+    inputs:
+      product:
+        - row_id: accepted_kernels_for_dispatch
+          role: "Accepted graded kernels transferred to gate preparation"
+          name: "Shelled groundnut kernels, accepted graded intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred into final weighing and gate preparation, linked to the accepted lot-control record. The temporary range is for screening only and shall be replaced by representative batch records."
+          amount:
+            expression: "measured transfer mass before final net weighing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_net_mass_and_packaging
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch records replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and tertiary packaging materials"
+          name: "Packaging materials, by material and level"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material by type, mass, recycled-content claim if relevant, and packaging level; use zero only for a declared unpackaged bulk route. The broad range is a temporary screening estimate and shall be replaced by packaging bills of materials, tare records, or reviewed evidence."
+          amount:
+            expression: "measured packaging mass or bill-of-material quantity assigned to the output lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_net_mass_and_packaging
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until packaging bills of materials, tare records, or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dispatch_electricity
+          role: "Packaging, storage, and dispatch electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or calculated electricity for included packaging, gate storage and dispatch preparation. The broad range is temporary and shall be replaced by representative metering or reviewed equipment evidence."
+          amount:
+            expression: "metered use or calculated equipment electricity allocated to the lot and declared storage duration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "100"
+                unit: "kWh"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative metering or reviewed equipment evidence replaces it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: groundnuts_shelled_reference_output
+          role: "Groundnuts, shelled at facility gate"
+          name: "Groundnuts, shelled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66ce8a77-8fe1-4513-910c-741aebeec043"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the generic bulk or packaged shelled-groundnut output after final lot decision and net weighing. Its qualifiers preserve product state without changing the selected Tiangong flow identity."
+          amount:
+            expression: "exactly 1 kg net mass after normalization by calc_reference_normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net shelled-groundnut output at the declared moisture and packaging state"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_net_mass_and_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_rejects_and_spill
+          role: "Packaging rejects and product spill"
+          name: "Packaging rejects and groundnut spill"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap and product spill separately by material and destination. The broad range is a temporary screening estimate and shall be replaced by representative batch records or reviewed evidence."
+          amount:
+            expression: "measured mass by material class and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final net shelled-groundnut output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_net_mass_and_packaging
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg final net shelled-groundnut output; use only until representative batch records or reviewed evidence replace it"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Multi-output foreground operations"
+    rule: "Avoid allocation by subdividing separately measured operations or by expanding the system only where the substituted function and dataset are explicitly justified. Do not create an avoided-product credit solely from a waste-disposal claim."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_shell_route
+    applies_to: "Groundnut shells"
+    rule: "Treat shells as waste when they have no documented product function and model their treatment without co-product allocation. When shells are sold or transferred as a specified co-product, record only that measured portion as product and apply the PEF hierarchy to any shared burdens."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_shared_burdens
+    applies_to: "Shared burdens remaining after subdivision"
+    rule: "Use a physical relationship only where it reflects the underlying causal relationship between inputs, outputs and functions; otherwise use economic allocation with contemporaneous, geographically and temporally representative prices. Report the method, factors, price basis and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rejected_material
+    applies_to: "Rejected kernels and controlled material"
+    rule: "Assign no co-product credit to material rejected for the declared use unless a lawful alternative specification, analytical release where required, recipient and function are documented. Product diversion and waste treatment are mutually exclusive for each measured portion."
+    source_ids:
+      - codex-cxc-22-1979
+      - codex-cxc-55-2004-2025
+      - eu-pef-2021-2279
+  - rule_id: allocation_mass_balance
+    applies_to: "All lot outputs"
+    rule: "Preserve the unallocated physical mass balance separately from burden allocation: input mass equals accepted kernels plus shells, rejected material, dust/fines, samples, inventory change and measured losses on one moisture basis. Allocation shall not alter these physical quantities."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_incoming_lot_records
+      process_id: "receiving_and_precleaning"
+      flow_role: "incoming in-shell groundnuts"
+      record_type: "weighbridge, receiving, supplier, moisture and inspection records"
+      raw_fields: "lot_id; supplier_id; origin; delivery_basis; gross_mass; tare_mass; net_mass; moisture_value; moisture_basis; method; grade_observation; acceptance_decision; timestamp"
+      collection_method: "Calibrated gross-minus-tare weighing linked to lot identity, with representative moisture sampling and receiving inspection."
+      unit: "kg; %"
+      frequency: "Each incoming lot"
+      temporal_coverage: "Entire declared production period"
+      site_scope: "All supplying lots entering the represented facility or sampled population"
+      aggregation_rule: "Sum accepted net mass by lot; keep rejected lots separate; do not combine different moisture bases without correction."
+      quality_evidence: "Calibration record; sampling record; supplier document; signed receiving decision."
+    - protocol_id: cp_intermediate_and_residue_mass
+      process_id: "receiving_and_precleaning_shelling_and_size_grading"
+      flow_role: "intermediate transfers and pre-cleaning residues"
+      record_type: "batch scale, hopper, inventory and reject logs"
+      raw_fields: "lot_id; process_id; material_class; gross_mass; tare_mass; net_mass; moisture_value; destination; timestamp"
+      collection_method: "Weigh transfers and separated material, or reconcile calibrated batch scales and inventory changes."
+      unit: "kg; %"
+      frequency: "Each lot or production run"
+      temporal_coverage: "Entire declared production period"
+      site_scope: "All represented lines and shifts"
+      aggregation_rule: "Sum by lot, process and material class on a consistent moisture basis; retain inventory change."
+      quality_evidence: "Scale calibration; batch log; inventory reconciliation; disposition record."
+    - protocol_id: cp_energy_records
+      process_id: "receiving_and_precleaning_shelling_and_size_grading_aflatoxin_control_and_lot_disposition_net_mass_packaging_and_dispatch"
+      flow_role: "electricity by operation"
+      record_type: "meter, submeter, equipment power and operating-time records"
+      raw_fields: "meter_id; start_reading; end_reading; equipment_id; rated_or_measured_power; operating_time; lot_id; allocation_driver"
+      collection_method: "Prefer calibrated submeters; otherwise calculate power multiplied by recorded operating time and reconcile to the facility meter."
+      unit: "kWh"
+      frequency: "Each lot/run or meter interval"
+      temporal_coverage: "Representative period covering declared operating variability"
+      site_scope: "All included equipment and represented shifts"
+      aggregation_rule: "Subtract excluded loads; assign shared use by recorded operating time or another causal driver; normalize to accepted net output."
+      quality_evidence: "Meter calibration; utility reconciliation; equipment log; allocation worksheet."
+    - protocol_id: cp_shell_and_reject_disposition
+      process_id: "shelling_and_size_grading_aflatoxin_control_and_lot_disposition"
+      flow_role: "shells, rejects and controlled material"
+      record_type: "batch scale, sort log, test release, sales/transfer and waste records"
+      raw_fields: "lot_id; material_class; rejection_reason; gross_mass; tare_mass; net_mass; moisture_basis; analytical_release; recipient; intended_use; product_or_waste_route; treatment_destination; timestamp"
+      collection_method: "Weigh each segregated stream and link it to its mutually exclusive product-diversion or waste-disposition evidence."
+      unit: "kg"
+      frequency: "Each lot and shipment"
+      temporal_coverage: "Entire declared production period"
+      site_scope: "All shell, reject, sample and controlled-material destinations"
+      aggregation_rule: "Sum by lot, class and route; prohibit the same portion from appearing in both product and waste totals."
+      quality_evidence: "Scale calibration; laboratory result; legal/contract specification; transfer note; waste manifest."
+    - protocol_id: cp_aflatoxin_grade_and_lot_decision
+      process_id: "aflatoxin_control_and_lot_disposition"
+      flow_role: "kernel grade and aflatoxin-control decision"
+      record_type: "sampling, laboratory, sorter and release/rejection records"
+      raw_fields: "lot_id; intended_use; grade_or_size_class; sampling_plan; sample_mass; laboratory_id; analytical_method; result; unit; reporting_limit; applicable_limit; limit_source; sort_passes; accepted_mass; rejected_mass; decision; timestamp"
+      collection_method: "Apply the declared representative sampling plan and validated analytical method; link results and visual/electronic sorting records to the exact lot and disposition."
+      unit: "declared concentration unit; kg"
+      frequency: "Each controlled lot and each retest"
+      temporal_coverage: "Entire declared production period"
+      site_scope: "Every lot represented as accepted output"
+      aggregation_rule: "No averaging across independently accepted/rejected lots to conceal a non-conforming result; aggregate masses only after lot disposition."
+      quality_evidence: "Chain of custody; accredited or otherwise qualified laboratory record; method identifier; sorter log; signed lot release."
+    - protocol_id: cp_dust_records
+      process_id: "receiving_and_precleaning_shelling_and_size_grading"
+      flow_role: "captured and uncaptured particulate material"
+      record_type: "stack/area monitoring, collector mass, maintenance and operating records"
+      raw_fields: "process_id; lot_id; monitoring_method; concentration_or_mass; air_volume; captured_dust_mass; operating_time; control_efficiency_basis"
+      collection_method: "Measure direct releases where feasible; otherwise calculate from monitored air volume and concentration or a documented equipment model, subtracting captured material recorded as waste."
+      unit: "kg; supporting concentration and air-volume units"
+      frequency: "Representative monitoring event and each production aggregation interval"
+      temporal_coverage: "Representative period for equipment and control condition"
+      site_scope: "All included dust-generating and control equipment"
+      aggregation_rule: "Calculate released mass by process and period; prevent double counting captured dust and air emissions; normalize to accepted output."
+      quality_evidence: "Monitoring report; calibration; collector log; maintenance record; calculation worksheet."
+    - protocol_id: cp_final_net_mass_and_packaging
+      process_id: "net_mass_packaging_and_dispatch"
+      flow_role: "final output, packaging and gate storage"
+      record_type: "packing line, scale, bill of materials, warehouse and dispatch records"
+      raw_fields: "lot_id; output_gross_mass; tare_mass; net_mass; moisture_value; grade; package_type; packaging_material; packaging_mass; bulk_or_packaged; storage_start; storage_end; dispatch_time"
+      collection_method: "Calibrated gross-minus-tare weighing; reconcile package counts and material specifications to packaging consumption and warehouse movement."
+      unit: "kg; hour or day"
+      frequency: "Each packed or bulk lot and dispatch"
+      temporal_coverage: "Entire declared production period"
+      site_scope: "All final output and packaging configurations in the represented dataset"
+      aggregation_rule: "Sum final net mass by qualified lot; aggregate packaging by material and level; calculate included storage duration; normalize to 1 kg net output."
+      quality_evidence: "Scale calibration; packing specification; bill of materials; warehouse record; dispatch document."
+  calculation_rules:
+    - id: calc_net_mass
+      applies_to: "Incoming, intermediate and final weighed material"
+      rule: "net_mass_kg = gross_mass_kg - tare_mass_kg; packaging tare is never part of the final product mass."
+      inputs:
+        - gross_mass
+        - tare_mass
+      output: "net_mass_kg"
+      source_ids:
+        - codex-cxs-200-1995
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized_amount = attributable_period_or_lot_amount / accepted_final_net_mass_kg. The denominator contains only output released for the declared intended use and moisture basis."
+      inputs:
+        - "attributable flow amount"
+        - "accepted final net mass"
+      output: "amount per 1 kg net shelled-groundnut output"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_moisture_consistency
+      applies_to: "Physical mass balance"
+      rule: "Compare masses on the same as-received basis; when dry-matter comparison is needed, dry_mass = as_received_mass × (1 - moisture_fraction), using matched representative samples."
+      inputs:
+        - "as-received mass"
+        - "moisture fraction"
+        - "sampling time"
+      output: "disclosed dry-matter comparison"
+      source_ids:
+        - codex-cxs-200-1995
+        - codex-cxc-22-1979
+    - id: calc_lot_mass_balance
+      applies_to: "Each process and complete foreground route"
+      rule: "input_mass = accepted_output + product_coproducts + waste_and_rejects + direct_particulate_mass + samples + closing_inventory - opening_inventory + unexplained_difference. Report the unexplained difference and investigate material deviations."
+      inputs:
+        - "lot inputs"
+        - outputs
+        - shells
+        - rejects
+        - "dust/fines"
+        - samples
+        - inventories
+      output: "process and route mass-balance result"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_energy_assignment
+      applies_to: "Shared electricity"
+      rule: "Assign metered use directly where possible; otherwise use recorded equipment operating time, measured power or another documented causal driver and reconcile assigned totals to the facility meter."
+      inputs:
+        - "meter readings"
+        - power
+        - "operating time"
+        - "production records"
+      output: "kWh assigned to lot and process"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mutually_exclusive_routes
+      applies_to: "Shells and rejected material"
+      rule: "For each material portion, product_route_mass × waste_route_mass shall not represent the same physical portion; route totals shall reconcile to the segregated measured mass and carry destination evidence."
+      inputs:
+        - "segregated mass"
+        - "route flag"
+        - "transfer or waste record"
+      output: "product and waste route masses without overlap"
+      source_ids:
+        - codex-cxc-22-1979
+        - codex-cxc-55-2004-2025
+  data_quality_requirements:
+    - id: dqr_identity_and_qualifiers
+      applies_to: "Final output"
+      requirement: "Preserve the exact generic Tiangong flow UUID and declare shelling route, starting condition, raw/dried state, moisture and basis, grade, intended use/specification, aflatoxin-control record, rejected-material disposition, net-mass basis, packaging, and included storage duration."
+      evidence: "Product specification; lot record; reference-flow metadata; dispatch document."
+    - id: dqr_lot_traceability
+      applies_to: "All mass and control records"
+      requirement: "Maintain a traceable link from incoming lot through intermediates, shell and reject partitions, sampling/testing, final net mass and destination records."
+      evidence: "Lot genealogy; timestamps; chain of custody; reconciliation worksheet."
+    - id: dqr_temporal_and_technological_representativeness
+      applies_to: "Foreground data"
+      requirement: "Cover the declared representative production period and relevant seasonal, supplier, grade, moisture, equipment, shift and packaging variability; disclose exclusions and unusual operating conditions."
+      evidence: "Sampling plan; production calendar; equipment list; coverage statement."
+    - id: dqr_measurement_quality
+      applies_to: "Mass, moisture, energy and analytical results"
+      requirement: "Use calibrated or verified instruments and retain units, method identifiers, calibration status, sampling procedures, detection/reporting limits where relevant, and raw-to-aggregated calculations."
+      evidence: "Calibration certificates; laboratory report; meter records; calculation files."
+    - id: dqr_aflatoxin_control
+      applies_to: "Each accepted lot"
+      requirement: "Retain the applicable limit source, intended-use basis, sampling plan, analytical method, result, reporting limit and signed lot decision; visual sorting alone shall not be represented as a quantitative aflatoxin result."
+      evidence: "Laboratory result; sampling record; applicable regulation or contract; lot release."
+    - id: dqr_completeness_and_cutoffs
+      applies_to: "Foreground inventory"
+      requirement: "Include all material and energy inputs, direct emissions, product outputs, wastes, shells, rejects, samples and inventory changes that cross the declared boundary; disclose and justify every cut-off."
+      evidence: "Completeness checklist; mass and energy reconciliation; cut-off register."
+    - id: dqr_reasoned_estimate_replacement
+      applies_to: "Every reasoned_estimate range"
+      requirement: "Treat the range as temporary screening guidance only when foreground records and reliable transferable quantitative evidence are unavailable. Disclose its use and replace it as soon as representative batch/period records, audited supplier evidence, equipment measurements, or reviewed external evidence become available; do not present it as a typical or allowed range."
+      evidence: "Estimate register; applicability statement; replacement action and trigger record."
+    - id: dqr_source_representativeness
+      applies_to: "Linked upstream and downstream datasets"
+      requirement: "Document geography, time, technology, product state, moisture basis and allocation compatibility; replace a material proxy when a more representative dataset becomes available."
+      evidence: "Dataset metadata; applicability assessment; proxy replacement log."
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require product flow UUID 66ce8a77-8fe1-4513-910c-741aebeec043, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg; reject a substitute or more specific flow as the PCR reference identity."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_required_qualifiers
+    applies_to: "Final dataset"
+    rule: "Fail conformance if shelling route/starting condition, raw or dried state, moisture and basis, grade, intended use/specification, rejected-material rule, aflatoxin-control details, net-mass basis, packaging state, or included storage duration is missing."
+    source_ids:
+      - codex-cxs-200-1995
+      - codex-cxc-22-1979
+      - codex-cxc-55-2004-2025
+  - rule_id: validate_route_exclusivity
+    applies_to: "Alternative inputs and material dispositions"
+    rule: "Verify one starting route per lot and verify that each measured shell or rejected-material portion appears in exactly one product-diversion or waste route. Fail on simultaneous duplicate routes or unsupported beneficial-use credit."
+    source_ids:
+      - codex-cxc-22-1979
+      - codex-cxc-55-2004-2025
+      - eu-pef-2021-2279
+  - rule_id: validate_net_mass_and_moisture
+    applies_to: "Reference amount and physical balance"
+    rule: "Verify calibrated gross-minus-tare net mass, consistent moisture basis, and 1 kg normalization. If CXS 200-1995 applicability is claimed, verify kernel moisture does not exceed 9.0% and disclose any stricter destination limit."
+    source_ids:
+      - codex-cxs-200-1995
+  - rule_id: validate_aflatoxin_control
+    applies_to: "Accepted and rejected lots"
+    rule: "Verify traceable sampling plan, analytical method, result, unit, reporting limit, applicable limit and intended-use basis, and lot decision. Fail if a visual observation is used as a numeric result or if a non-conforming lot is accepted for an unsupported destination."
+    source_ids:
+      - codex-cxc-22-1979
+      - codex-cxc-55-2004-2025
+  - rule_id: validate_mass_balance
+    applies_to: "Each process and complete route"
+    rule: "Recalculate the as-received and, where reported, dry-matter balances. Require shells, rejects, dust/fines, samples and inventory changes to be represented and require material unexplained differences to be investigated and disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation_and_cutoff
+    applies_to: "Multi-output modelling and exclusions"
+    rule: "Verify the PEF allocation hierarchy, allocation factors and price/physical basis, and confirm that every cut-off is explicit and justified. Physical quantities shall remain unchanged by burden allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_packaging
+    applies_to: "Bulk and packaged routes"
+    rule: "Verify the bulk/packaged qualifier, packaging type and material, packaging mass, and tare exclusion. A packaged route with missing packaging inventory or an unpackaged route with unexplained packaging shall fail."
+    source_ids:
+      - codex-cxs-200-1995
+      - eu-pef-2021-2279
+  - rule_id: validate_reasoned_estimates
+    applies_to: "Provisional quantitative ranges"
+    rule: "Verify that every reasoned_estimate is identified as temporary screening guidance, used only under its stated no-data condition, excluded from claims of typical or allowed performance, and linked to a replacement trigger."
+    source_ids: []
+  - rule_id: validate_data_quality
+    applies_to: "Dataset publication profile"
+    rule: "Verify lot traceability, temporal and technological coverage, calibration and analytical evidence, upstream dataset representativeness, completeness, and disclosed limitations before the package is used as a secondary or background dataset."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production package for shelling, control and gate preparation of generic shelled groundnuts, with a downstream process/lifecyclemodel projection."
+  downstream_use: "secondary_dataset; background_dataset after review, representative upstream linking, and documented allocation."
+  allowed_use: "Product-footprint or life-cycle models needing a qualified facility-gate shelled-groundnut input whose route, moisture, grade, aflatoxin-control status, rejected-material disposition, net mass and packaging are compatible."
+  excluded_use: "Unqualified substitution for groundnuts in shell, planting seed, roasted/cooked peanuts, peanut oil or other manufactured peanut products; comparative assertions without equivalent function, boundary, quality and data representativeness; food-safety certification."
+  required_metadata: "Geography; facility and technology scope; period; shelling route and starting condition; incoming origin/delivery basis; raw/dried state; moisture values and basis; grade; intended use/specification; aflatoxin sampling/method/result/limit/decision; net-mass method; shell/reject routes; packaging bill; storage duration; allocation; cut-offs; linked dataset versions."
+  required_quality_disclosure: "Coverage and sampling; calibration and laboratory competence; lot genealogy; mass/energy reconciliation; reasoned estimates and replacement status; proxies; uncertainty; rejected lots; unusual conditions; limitations."
+  update_trigger: "Change in product-flow identity, CPC scope, shelling or sorting technology, representative moisture/grade mix, aflatoxin rule or sampling method, intended-use limits, shell/reject disposition, packaging configuration, energy mix, allocation basis, facility coverage, or availability of evidence that replaces a reasoned estimate or material proxy."
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, Explanatory Notes, 30 June 2025, subclass 21421 “Groundnuts, shelled”. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)."
+    used_for: "Generic product-category identity and separation from in-shell groundnuts and further manufactured products."
+  - id: "codex-cxs-200-1995"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 200-1995, Standard for Peanuts. https://www.fao.org/input/download/standards/63/CXS_200e.pdf (retrieved 2026-08-11)."
+    used_for: "Product definition for its intended-use scope, kernel moisture requirement, quality/foreign-matter controls, packaging and lot information."
+  - id: "codex-cxc-22-1979"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 22-1979, Code of Hygienic Practice for Groundnuts (Peanuts). https://workspace.fao.org/sites/codex/Standards/CXC%2022-1979/CXC_022e.pdf (retrieved 2026-08-11)."
+    used_for: "Commercial shelling process decomposition, pre-cleaning, shelling/sizing, sorting, moisture-safe handling, lot acceptance/rejection, storage and traceability."
+  - id: "codex-cxc-55-2004-2025"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 55-2004, Code of Practice for the Prevention and Reduction of Aflatoxin Contamination in Peanuts, revised 2025. https://workspace.fao.org/sites/codex/Standards/CXC%2055-2004/CXC_055e.pdf (retrieved 2026-08-11)."
+    used_for: "Aflatoxin-control stages, sampling/testing and lot-control evidence, segregation and disposition safeguards."
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 of 15 December 2021, Annex I Product Environmental Footprint Method. ELI: http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)."
+    used_for: "Functional unit and reference flow, life-cycle inventory boundary, allocation hierarchy, cut-off disclosure, data collection, data quality, representativeness and verification principles."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:51b9e9694456340eef950f61ab8050dc0d2d04bd32bd2efff7af5f6388c40c2e"
+  generated_content_sha256: "sha256:dc2007324958fb822d9aa65e108fa52e9b5fadce6b572218e5bd8c89dc4084d1"

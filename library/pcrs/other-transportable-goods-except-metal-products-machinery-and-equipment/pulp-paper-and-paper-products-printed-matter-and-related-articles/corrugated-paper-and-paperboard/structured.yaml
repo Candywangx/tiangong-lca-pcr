@@ -1,10 +1,628 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "32151"
-  title: "Corrugated paper and paperboard"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.pulp-paper-and-paper-products-printed-matter-and-related-articles.corrugated-paper-and-paperboard"
+  classification_refs: "CPC 3.0: 32151, Corrugated paper and paperboard, exact"
+  covered_products: "Corrugated paper and paperboard in reels or sheets; single-face, single-wall, double-wall, and triple-wall corrugated board; coated or laminated corrugated board only when it remains an intermediate board product"
+  excluded_products: "Linerboard and fluting medium before corrugation; pulp and base-paper manufacture; sacks and bags; cartons, boxes, cases, displays, and other converted containers; manufacturing services performed on materials owned by others"
+  representative_product: "Single-wall double-faced corrugated paperboard sheet comprising two liners and one fluted medium bonded with starch adhesive"
+  production_route: "Liner and fluting reels are conditioned, fluted, bonded on a corrugator, set or dried, slit, cut or reeled, and prepared as net saleable corrugated board"
+  market_state: "Net saleable corrugated board at the corrugator plant gate, before conversion into boxes or other containers"
+functional_unit:
+  what: "Net saleable corrugated paper or paperboard produced by corrugator conversion"
+  how_much: "1,000 kg"
+  how_well: "Conforming saleable board with declared liner and fluting grades, wall construction, flute profile, grammage, thickness, moisture content, recycled-fibre status, and surface treatment"
+  how_long_or_cycle: "One reporting-period production output normalized to 1,000 kg net saleable product"
+  reference_flow_link: "corrugated_board_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_corrugator_conversion
+      applies_to: "foreground corrugator conversion"
+      rule: "Include liner and fluting unwinding, heat or steam conditioning, corrugating rolls, starch application, single-facing and double-backing, setting or drying, slitting, cutting or reeling, stacking, and directly associated internal handling."
+      source_ids:
+        - fefco-corrugated-board-production
+        - fefco-corrugated-board-boundaries
+    - rule_id: boundary_supporting_operations
+      applies_to: "site support operations"
+      rule: "Include onsite heat or steam generation, electricity generation, water treatment, wastewater treatment, and solid-waste handling when they occur inside the reporting site boundary; otherwise represent purchased utilities or external treatment as product or waste exchanges."
+      source_ids:
+        - fefco-corrugated-board-boundaries
+    - rule_id: boundary_upstream_base_paper
+      applies_to: "upstream liner and fluting production"
+      rule: "Exclude pulp and corrugated base-paper manufacture from the foreground corrugator process, but require upstream datasets and actual grade masses for all liners and fluting media."
+      source_ids:
+        - fefco-corrugated-board-boundaries
+    - rule_id: boundary_container_conversion
+      applies_to: "downstream container manufacture"
+      rule: "Exclude printing, slotting, die-cutting, folding, stitching, and gluing that convert corrugated board into boxes or other containers; create a separate downstream process if these operations are needed."
+      source_ids:
+        - unstats-cpc-32151
+        - fefco-corrugated-board-production
+    - rule_id: boundary_cutoff_disclosure
+      applies_to: "inventory completeness"
+      rule: "Do not omit known liner, fluting, adhesive, electricity, heat or steam, water, shavings, rejects, or treatment flows. Any other omission must be quantified where feasible and disclosed with its rationale and estimated significance."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Liner and fluting reels, starch or prepared adhesive, purchased utilities, and ancillary materials are received at the corrugator site boundary."
+  starting_condition_role: "Foreground gate-to-gate corrugator conversion start; upstream fibre, pulp, recovered-paper preparation, and base-paper production remain represented by supplier or secondary datasets."
+  product_classification_scope: "CPC 3.0 subclass 32151 only; the boundary ends before conversion into CPC 32152 or 32153 sacks, bags, cartons, boxes, cases, or related containers."
+  recursive_input_rule: "Corrugated board returned internally for rework remains an internal loop. Purchased or externally recovered corrugated material crossing the boundary is recorded as a separate input with origin, treatment state, and upstream dataset; it is not silently netted against output."
+  upstream_dataset_requirement: "Use grade- and route-specific upstream datasets for each liner, fluting medium, adhesive, electricity mix, heat or steam supply, water supply, and external waste treatment."
+  disclosure: "Declare site, geography, reporting period, wall and flute construction, product mix, integrated or non-integrated operations, included finishing, upstream dataset substitutions, onsite utility generation, wastewater treatment, and all cut-offs."
+reference_flow_definition:
+  reference_amount: "1,000 kg net saleable product"
+  product_flow_ref:
+    name: "Corrugated cardboard"
+    uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "liner grades and supplier routes"
+    - "fluting grade and supplier route"
+    - "wall construction"
+    - "flute profile"
+    - "product grammage in g/m2"
+    - "thickness in mm"
+    - "moisture content and measurement basis"
+    - "recycled-fibre content claim basis"
+    - "coating or lamination"
+    - "product form"
+    - site
+    - geography
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all material flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net saleable product and material inputs or outputs in kg; convert tonnes using 1 t = 1,000 kg."
+  - id: saleable_mass_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the weighed net saleable board leaving the corrugator boundary, excluding separately reported transport packaging and excluding shavings or rejects."
+  - id: grammage_measurement
+    applies_to: "product grammage qualifier"
+    required_property_ref:
+      name: "Mass per area"
+      uuid: ""
+    required_unit: "g/m2"
+    rule: "Determine and report grammage using ISO 536:2019 or a demonstrably equivalent method; identify whether the value is measured on the assembled board or calculated from component papers."
+  - id: moisture_measurement
+    applies_to: "product moisture qualifier and moisture corrections"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Determine lot moisture using ISO 287:2017 or a demonstrably equivalent oven-drying method. Report whether inventory mass is as sold or moisture-corrected; do not mix bases."
+  - id: thickness_measurement
+    applies_to: "product thickness qualifier"
+    required_property_ref:
+      name: "Length"
+      uuid: ""
+    required_unit: "mm"
+    rule: "Determine single-sheet thickness using ISO 3034:2011 or a demonstrably equivalent method applicable to corrugated fibreboard."
+  - id: energy_measurement
+    applies_to: "electricity and purchased steam or heat"
+    required_property_ref:
+      name: "Net or gross calorific value, consistent with the selected Tiangong flow"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for heat"
+    rule: "Preserve metered units and the selected flow-property basis. Document conversions and do not convert steam mass to energy without measured enthalpy or documented operating conditions."
+process_map:
+  - id: corrugator_conversion
+    name: "Corrugator conversion to net saleable board"
+    inclusion: "required"
+    inclusion_condition: "Always included for products within this PCR"
+    role: "Foreground board forming and finishing before container conversion"
+    quantitative_reference: "1,000 kg net saleable corrugated board"
+process_inventory:
+  - id: corrugator_conversion
+    label: "Corrugator conversion to net saleable board"
+    inputs:
+      product:
+        - row_id: base_paper_input
+          role: "Liner and fluting base papers"
+          name: "Base paper or paperboard web"
+          flow_type: "product"
+          flow_ref:
+            uuid: "51b5350f-bd87-4d08-9f00-f9ae3c6e1767"
+          property_unit: "Mass / kg"
+          description: "All liner and fluting grades crossing the site boundary are collected by grade and supplier route. The selected aggregate flow provides one stable inventory role; the foreground package should preserve separate exchanges for materially different upstream grades where possible."
+          amount:
+            expression: "Sum weighed mass of all liner and fluting reels consumed, adjusted for documented inventory changes; retain grade-level masses and upstream dataset identities."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_base_paper_receipts
+              source_ids:
+                - fefco-corrugated-board-data-2024
+                - fefco-corrugated-board-material-inputs
+            ranges:
+              - role: typical_range
+                lower: "1120"
+                upper: "1120"
+                unit: "kg"
+                basis: "per 1,000 kg average corrugated board product"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fefco-corrugated-board-data-2024
+        - row_id: starch_adhesive_input
+          role: "Starch-based corrugating adhesive"
+          name: "Starch-based adhesive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2a847cb1-f8c0-4fd4-8c7c-2f26f1dcec70"
+          property_unit: "Mass / kg"
+          description: "Record the prepared starch adhesive or its dry starch and formulation constituents without double counting. The formulation basis and water content must be retained."
+          amount:
+            expression: "Measured adhesive consumption from batch preparation, issue records, or tank balance, reported on the declared wet or dry basis."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_adhesive_records
+              source_ids:
+                - fefco-corrugated-board-production
+                - fefco-corrugated-board-material-inputs
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "100"
+                unit: "kg"
+                basis: "broad first-pass estimate per 1,000 kg net saleable corrugated board"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec205030-248c-496f-9cf2-06d9d26dc6ff"
+          property_unit: "Mass / kg"
+          description: "Record water entering adhesive preparation, steam or humidification systems when not included in purchased steam, cleaning, and other corrugator operations. Avoid double counting recirculated water."
+          amount:
+            expression: "Metered or allocated site water supplied to the corrugator boundary, net of documented internal recirculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - fefco-corrugated-board-boundaries
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "broad first-pass estimate per 1,000 kg net saleable corrugated board"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_input
+          role: "Medium-voltage electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "Record corrugator drives, fans, pumps, cutting and stacking equipment, and allocated supporting electricity. Use the actual site electricity mix or supplier-specific dataset."
+          amount:
+            expression: "Metered corrugator electricity plus a documented allocation of shared site electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - fefco-corrugated-board-boundaries
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1000"
+                unit: "kWh"
+                basis: "broad first-pass estimate per 1,000 kg net saleable corrugated board"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: steam_heat_input
+          role: "Purchased steam or process heat"
+          name: "heat, steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74d07391-d5e4-4beb-bd80-4fe9a7617cf1"
+          property_unit: "Gross calorific value / MJ"
+          description: "Record purchased steam or heat used for paper conditioning and adhesive setting. If heat is generated onsite, replace this exchange with fuel and direct-emission rows under the same site boundary."
+          amount:
+            expression: "Metered heat or steam enthalpy delivered to the corrugator; document pressure, temperature, condensate return, and conversion assumptions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - fefco-corrugated-board-production
+                - fefco-corrugated-board-boundaries
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5000"
+                unit: "MJ"
+                basis: "broad first-pass estimate per 1,000 kg net saleable corrugated board"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: corrugated_board_output
+          role: "Net saleable corrugated board"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "The reference product is weighed after corrugating, setting or drying, slitting, cutting or reeling, and normal internal quality rejection, but before box conversion."
+          amount:
+            expression: "Normalize the reporting-period net saleable product mass to exactly 1,000 kg while retaining the measured unnormalized mass and moisture basis."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_saleable_product
+              source_ids:
+                - fefco-corrugated-board-boundaries
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "per reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fefco-corrugated-board-boundaries
+      waste:
+        - row_id: paper_shavings_output
+          role: "Corrugated paperboard shavings and rejects"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass / kg"
+          description: "Record corrugator trim, cuttings, and quality rejects leaving the process boundary. Internal rework is not an output; offsite recycling or treatment destinations must be disclosed."
+          amount:
+            expression: "Weighed shavings and rejected board leaving the boundary, classified by destination; do not subtract the amount from paper input without retaining the explicit output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable corrugated board"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shavings_records
+              source_ids:
+                - fefco-corrugated-board-data-2024
+                - fefco-corrugated-board-closed-loop
+            ranges:
+              - role: typical_range
+                lower: "100"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1,000 kg corrugated product"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fefco-corrugated-board-closed-loop
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_single_product
+    applies_to: "corrugator conversion producing corrugated board"
+    rule: "Treat corrugated board as the reference product and shavings, rejects, wastewater, and other treatment outputs as explicit waste or residual flows; do not assign them a share of foreground burdens merely because they may have recovery value."
+    source_ids:
+      - fefco-corrugated-board-closed-loop
+  - rule_id: allocation_subdivision_first
+    applies_to: "multiple board grades or lines sharing utilities"
+    rule: "Subdivide metered data by line, grade, campaign, or machine time wherever technically feasible. Allocate only the unresolved shared remainder, using net saleable mass as the default driver and disclosing the allocation share for every product group."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recycling_separate
+    applies_to: "paper shavings and downstream recycling"
+    rule: "In this gate-to-gate foreground dataset, report shavings and their destination without an avoided-production credit. If a downstream lifecycle model applies a closed-loop or circular-footprint method, identify the method, geography, period, recycled-content inputs, recovery outputs, and allocation factors separately."
+    source_ids:
+      - fefco-corrugated-board-closed-loop
+      - eu-pef-2021-2279
+  - rule_id: allocation_no_silent_netting
+    applies_to: "internal rework and inventory changes"
+    rule: "Internal rework may remain inside the boundary, but purchased or externally recovered board, external waste outputs, and opening or closing inventories must not be silently netted. Preserve gross records and show the normalization calculation."
+    source_ids:
+      - fefco-corrugated-board-data-2024
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_saleable_product
+      process_id: "corrugator_conversion"
+      flow_role: "net saleable corrugated board"
+      record_type: "calibrated scale record and product-quality record"
+      raw_fields: "timestamp; product code; wall construction; flute profile; liner and fluting grades; gross mass; transport-packaging mass; reject mass; moisture sample; grammage; thickness"
+      collection_method: "Export scale or production scale linked to product batch; ISO 536 grammage; ISO 287 moisture; ISO 3034 thickness or demonstrably equivalent methods"
+      unit: "kg; g/m2; % by mass; mm"
+      frequency: "Each batch or production order, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive representative months, or the full campaign for seasonal or short-run production"
+      site_scope: "All lines and products represented by the dataset"
+      aggregation_rule: "Sum net saleable mass after subtracting separately reported transport packaging; retain product-level totals before normalization"
+      quality_evidence: "Scale calibration; sampling plan; test records; reconciliation to sales or dispatch totals"
+    - protocol_id: cp_base_paper_receipts
+      process_id: "corrugator_conversion"
+      flow_role: "liner and fluting base papers"
+      record_type: "receiving, issue, and inventory record"
+      raw_fields: "supplier; mill; grade; liner or fluting role; primary or recovered fibre status; flow UUID; upstream dataset; reel mass; issue mass; opening inventory; closing inventory; moisture basis"
+      collection_method: "Calibrated receiving or process scales and inventory ledger"
+      unit: "kg"
+      frequency: "Each delivery and issue, reconciled monthly"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All base-paper inputs to included corrugator lines"
+      aggregation_rule: "Consumption = opening inventory + receipts - closing inventory - documented transfers; preserve grade-level values"
+      quality_evidence: "Scale calibration; supplier specification; invoice or goods receipt; inventory reconciliation"
+    - protocol_id: cp_adhesive_records
+      process_id: "corrugator_conversion"
+      flow_role: "starch adhesive and formulation constituents"
+      record_type: "batch sheet, purchase issue, and tank balance"
+      raw_fields: "batch id; dry starch; water; caustic soda; borax or alternatives; wet-strength agent; prepared adhesive mass; return or loss; solids content"
+      collection_method: "Batch weighing or flowmeter plus stock reconciliation"
+      unit: "kg"
+      frequency: "Each batch, aggregated monthly"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All adhesive preparation serving included lines"
+      aggregation_rule: "Report prepared adhesive and dry constituents on explicitly declared bases; prevent double counting water and formulation components"
+      quality_evidence: "Calibrated scales or meters; formulation sheet; stock reconciliation"
+    - protocol_id: cp_utility_meters
+      process_id: "corrugator_conversion"
+      flow_role: "electricity, heat or steam, and process water"
+      record_type: "utility meter and allocation record"
+      raw_fields: "meter id; start and end readings; unit; pressure; temperature; condensate return; shared-load driver; downtime"
+      collection_method: "Dedicated meters where available; otherwise documented engineering allocation from site meters"
+      unit: "kWh; MJ; kg"
+      frequency: "Continuous or per shift, aggregated monthly"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "Corrugator and included supporting operations"
+      aggregation_rule: "Subtract documented non-production loads; allocate shared utilities by measured machine time, throughput, or engineering heat balance before normalization"
+      quality_evidence: "Meter calibration; invoices; allocation worksheet; completeness reconciliation"
+    - protocol_id: cp_shavings_records
+      process_id: "corrugator_conversion"
+      flow_role: "shavings and rejected board"
+      record_type: "waste dispatch and production-reject record"
+      raw_fields: "weight ticket; container id; product grade; internal rework; external destination; recycler or treatment route; moisture basis"
+      collection_method: "Dedicated waste scale, baler scale, or verified collector weight ticket"
+      unit: "kg"
+      frequency: "Each dispatch or production shift, aggregated monthly"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All trim and rejects from included lines"
+      aggregation_rule: "Exclude internal rework from external output; sum gross external shavings and rejects by destination"
+      quality_evidence: "Scale calibration; recycler receipt; waste manifest; reconciliation to paper mass balance"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory exchange"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period net saleable board mass × 1,000 kg"
+      inputs:
+        - "exchange amount"
+        - "net saleable board mass"
+      output: "amount per 1,000 kg reference flow"
+      source_ids:
+        - fefco-corrugated-board-boundaries
+    - id: calc_base_paper_consumption
+      applies_to: "liner and fluting input"
+      rule: "consumed base paper = opening inventory + receipts - closing inventory - transfers out; retain separate liner and fluting grade totals before summing"
+      inputs:
+        - "inventory and receipt records by grade"
+      output: "kg base paper consumed by grade and in total"
+      source_ids:
+        - fefco-corrugated-board-material-inputs
+    - id: calc_board_mass_balance
+      applies_to: "corrugator conversion"
+      rule: "reconcile base papers + dry adhesive constituents + other retained materials against net saleable board + external shavings and rejects + documented inventory or moisture change; investigate and disclose the residual"
+      inputs:
+        - "base-paper records"
+        - "adhesive records"
+        - "output mass"
+        - shavings
+        - moisture
+        - inventories
+      output: "mass-balance residual and explanation"
+      source_ids:
+        - fefco-corrugated-board-data-2024
+    - id: calc_energy_conversion
+      applies_to: "heat or steam"
+      rule: "convert steam to MJ only from metered energy or documented mass, pressure, temperature, condensate return, and enthalpy difference; record the property basis used by the selected flow"
+      inputs:
+        - "steam or heat records"
+        - "operating conditions"
+      output: "MJ delivered heat on declared gross or net basis"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_moisture_disclosure
+      applies_to: "product and paper masses"
+      rule: "preserve as-sold mass as the reference basis; if dry-mass comparison is also reported, calculate it from measured moisture and keep both values with the formula"
+      inputs:
+        - "as-sold mass"
+        - "ISO 287 moisture result"
+      output: "as-sold mass and optional dry mass"
+      source_ids:
+        - iso-287-2017
+        - fefco-corrugated-board-outputs
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and process identity"
+      requirement: "Product code, wall construction, flute profile, liner and fluting grades, product form, surface treatment, site, geography, and reporting period must be unambiguous and consistent with CPC 32151."
+      evidence: "Product specification, production order, and classification review"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Use at least 12 consecutive representative months unless a shorter complete campaign is justified; identify shutdowns, abnormal periods, and the reference year."
+      evidence: "Meter extracts, production ledger, and reporting-period reconciliation"
+    - id: dq_completeness
+      applies_to: "all required inventory roles"
+      requirement: "Reconcile base papers, adhesive, utilities, saleable output, shavings, and other known outputs. Record zero only after confirming that the flow does not occur; distinguish unavailable data from zero."
+      evidence: "Mass balance, utility reconciliation, waste records, and omission log"
+    - id: dq_measurement
+      applies_to: "mass, grammage, moisture, thickness, and utilities"
+      requirement: "Retain instrument identity, calibration status, sampling frequency, test method, unit conversion, and aggregation worksheet."
+      evidence: "Calibration certificates, ISO or equivalent test records, and calculation workbook"
+    - id: dq_representativeness
+      applies_to: "site dataset and secondary datasets"
+      requirement: "Assess technological, geographical, time-related, and precision representativeness; justify any proxy upstream dataset and identify differences in fibre route, energy mix, mill technology, and product grade."
+      evidence: "EU PEF data-quality assessment and supplier dataset metadata"
+    - id: dq_supplier_coverage
+      applies_to: "liner, fluting, adhesive, energy, and treatment datasets"
+      requirement: "Every material upstream input and external treatment route must have a named dataset or a documented gap; average FEFCO values may support QA but do not replace supplier- or route-specific foreground quantities."
+      evidence: "Supplier declarations, secondary dataset references, and gap register"
+    - id: dq_industry_prior
+      applies_to: "comparison with industry evidence"
+      requirement: "Treat FEFCO weighted averages as external screening priors. Do not claim they are site-specific or universally representative outside the reported European geography, technology, and reference year."
+      evidence: "FEFCO questionnaire coverage and peer-review statement"
+validation_rules:
+  - rule_id: validation_identity_scope
+    applies_to: "product category"
+    rule: "Confirm that the output is corrugated paper or paperboard and not base paper, a box, carton, sack, bag, display, or manufacturing service; reject ambiguous product identities."
+    source_ids:
+      - unstats-cpc-32151
+      - environdec-pcr-2010-14-v4-2026
+  - rule_id: validation_reference_flow
+    applies_to: "reference flow"
+    rule: "Require exactly 1,000 kg normalized net saleable corrugated board with the mass property and units-of-mass UUIDs, plus every required product qualifier."
+    source_ids:
+      - fefco-corrugated-board-boundaries
+      - iso-536-2019
+      - iso-287-2017
+      - iso-3034-2011
+  - rule_id: validation_process_coverage
+    applies_to: "corrugator boundary"
+    rule: "Require documented coverage of paper conditioning, fluting, starch application, liner joining, setting or drying, slitting, cutting or reeling, stacking, and included supporting utilities; separately disclose every excluded onsite operation."
+    source_ids:
+      - fefco-corrugated-board-production
+      - fefco-corrugated-board-boundaries
+  - rule_id: validation_mass_balance
+    applies_to: "material inventory"
+    rule: "Check gross base-paper input, adhesive constituents, net saleable output, shavings and rejects, moisture basis, and inventory changes as one mass balance; a non-zero unexplained residual is a finding, not an automatic adjustment."
+    source_ids:
+      - fefco-corrugated-board-data-2024
+  - rule_id: validation_energy_water
+    applies_to: "utilities"
+    rule: "Require measured or transparently allocated electricity, heat or steam, and process water; require unit and property conversions to be reproducible from retained records."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_recycling
+    applies_to: "shavings and recycling"
+    rule: "Require gross shavings or reject output and destination. Reject silent netting or an avoided-production credit inside the gate-to-gate process unless a separately declared downstream recycling method is in scope."
+    source_ids:
+      - fefco-corrugated-board-closed-loop
+  - rule_id: validation_data_quality
+    applies_to: "published foreground data package"
+    rule: "Require temporal, technological, geographical, completeness, precision, calibration, proxy, and uncertainty disclosures sufficient for downstream secondary or background use."
+    source_ids:
+      - eu-pef-2021-2279
+      - fefco-corrugated-board-questionnaire-2024
+published_dataset_profile:
+  dataset_role: "Site- and technology-specific foreground dataset for corrugator conversion to corrugated paper or paperboard"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Foreground process construction, supply-chain modelling, product environmental footprint studies, EPD preparation under an applicable current PCR, scenario comparison, and lifecyclemodel assembly when product qualifiers and geography match"
+  excluded_use: "Direct representation of pulp or base-paper production; direct representation of box or container conversion; unsupported geography or technology claims; use of provisional reasoned-estimate ranges as measured site data; product-to-product comparative assertions without applicable programme rules"
+  required_metadata: "canonical PCR id; CPC reference; site and geography; reporting period; technology; liner and fluting grades and routes; wall and flute construction; grammage; thickness; moisture basis; recycled-fibre claim basis; surface treatment; reference flow UUIDs; upstream dataset identities; allocation; cut-offs"
+  required_quality_disclosure: "Primary-data share; meter and sampling coverage; calibration; mass-balance residual; proxy datasets; temporal, technological, geographical, and precision representativeness; provisional estimates; uncertainty; treatment destinations; review status"
+  update_trigger: "Material change in corrugator technology, product mix, fibre route, adhesive formulation, energy or heat supply, allocation, system boundary, site, data source, or more than five years since the foreground reference year"
+data_sources:
+  - id: "environdec-pcr-2010-14-v4-2026"
+    type: "standard"
+    reference: "EPD International, PCR 2010:14 Processed paper and paperboard, version 4.0.0, published 2026-03-03, valid until 2030-03-03, https://www.environdec.com/pcr-library/pcr_487bc5e7-8e58-474b-f2f6-08de791141fe, retrieved 2026-07-27"
+    used_for: "Current official PCR scope confirming inclusion of UN CPC 32151"
+  - id: "unstats-cpc-32151"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC subclass 32151 and class 3215 classification details, https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1073/32151, retrieved 2026-07-27"
+    used_for: "Product identity and exclusion of separate container subclasses"
+  - id: "fefco-corrugated-board-production"
+    type: "extension_guidance"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, Corrugated board production, https://www.fefco.org/lca/dscription-of-production-system/corrugated-board-production, retrieved 2026-07-27"
+    used_for: "Product construction and corrugator process decomposition"
+  - id: "fefco-corrugated-board-boundaries"
+    type: "official_guidance"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, Boundaries and declared unit, https://www.fefco.org/lca/methodology-questions/boundaries, retrieved 2026-07-27"
+    used_for: "Gate-to-gate boundary, supporting processes, and 1 tonne net saleable product basis"
+  - id: "fefco-corrugated-board-data-2024"
+    type: "dataset"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, calculated inputs and outputs for 1 tonne corrugated product, https://www.fefco.org/lca/data, retrieved 2026-07-27"
+    used_for: "European average paper input of 1.12 t/t product and 0.12 t/t paper-for-recycling output; mass-balance QA prior"
+  - id: "fefco-corrugated-board-material-inputs"
+    type: "dataset"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, Material inputs, https://www.fefco.org/lca/data-description/material/inputs, retrieved 2026-07-27"
+    used_for: "Liner, fluting, starch glue, and formulation constituent inventory roles"
+  - id: "fefco-corrugated-board-outputs"
+    type: "dataset"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, Material outputs, https://www.fefco.org/lca/data-description/material/outputs, retrieved 2026-07-27"
+    used_for: "Product moisture evidence and residue-boundary interpretation"
+  - id: "fefco-corrugated-board-questionnaire-2024"
+    type: "dataset"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, 2024 data-collection questionnaire and coverage, https://www.fefco.org/lca/data-description/questionnaire, retrieved 2026-07-27"
+    used_for: "Foreground data roles, reporting-period design, industry coverage, and representativeness caveats"
+  - id: "fefco-corrugated-board-closed-loop"
+    type: "method_factor"
+    reference: "FEFCO, European Database for Corrugated Board Life Cycle Studies, Closed-loop approach, https://www.fefco.org/lca/methodology-questions/closed-loop-approach, retrieved 2026-07-27"
+    used_for: "Recycling allocation method and typical corrugator production shavings of about 100 kg/t corrugated product"
+  - id: "iso-536-2019"
+    type: "standard"
+    reference: "ISO 536:2019, Paper and board — Determination of grammage, https://www.iso.org/standard/77583.html, retrieved 2026-07-27"
+    used_for: "Product grammage measurement"
+  - id: "iso-287-2017"
+    type: "standard"
+    reference: "ISO 287:2017, Paper and board — Determination of moisture content of a lot — Oven-drying method, https://www.iso.org/standard/69063.html, retrieved 2026-07-27"
+    used_for: "Moisture measurement applicable to corrugated board"
+  - id: "iso-3034-2011"
+    type: "standard"
+    reference: "ISO 3034:2011, Corrugated fibreboard — Determination of single sheet thickness, https://www.iso.org/standard/51266.html, retrieved 2026-07-27"
+    used_for: "Product thickness measurement"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on Product Environmental Footprint and Organisation Environmental Footprint methods, consolidated text, https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02021H2279-20211230, retrieved 2026-07-27"
+    used_for: "Allocation hierarchy, company-specific activity data, cut-off disclosure, and data-quality dimensions"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3f47ff7709f68d63051930a92c8e8f0eda7571f4c30bed63e02d265e6930f72f"
+  generated_content_sha256: "sha256:757bb43cbb82c520b78c140abd2fe2752d3d8c53df1ec2f10a860292f5373044"

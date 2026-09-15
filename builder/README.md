@@ -40,6 +40,11 @@ builder/docs/
 
 ## Builder CLI
 
+PCR generation shares literature through `npm run pcr:materials -- query|read|register`.
+See [Shared materials](docs/tools/shared-materials.md) for commands, registration fields, quality constraints and
+shared-directory configuration. Goal Harness performs the initial bounded query before dispatch and passes the
+resolved directory to each author task; this is source preparation, not a new review or release gate.
+
 ```bash
 npm run init
 npm run lint
@@ -49,10 +54,26 @@ npm run aliases:check
 npm run catalog:build
 npm run catalog:check
 npm run catalog:recover [-- --force-stale-lock]
+npm run cpc-chains:build
+npm run cpc-chains:check
+npm run goal:doctor -- --config <goal.yaml>
+npm run goal:plan -- --config <goal.yaml> --dry-run
+npm run goal:start -- --config <goal.yaml> --slots 1
+npm run goal:status -- --config <goal.yaml>
+npm run goal:resume -- --config <goal.yaml>
+npm run goal:integrate -- --config <goal.yaml>
+npm run goal:land -- --config <goal.yaml>
+npm run goal:stop -- --config <goal.yaml>
+npm run goal:uuid-audit -- --config <goal.yaml> [--apply]
+npm run goal:uuid-search -- query --config <goal.yaml> --task <task-id> --query "<flow>" --flow-type product
+npm run goal:uuid-search -- direct-read --config <goal.yaml> --task <task-id> --receipt <id> --uuid <candidate-uuid>
+npm run goal:uuid-search -- finalize --config <goal.yaml> --task <task-id> --receipt <id> --decisions <absolute-json-file>
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # protected legacy alias
 npm run pcr:sync-structured -- --pcr <library/pcrs/...> [--workspace current|revision]
+npm run pcr:check -- --pcr <library/pcrs/...> [--workspace current|revision] --format json
+npm run goal:prepare-report -- --config <goal.yaml> --task <task-id> --draft <absolute-json-file>
 npm run pcr:lifecycle -- --pcr <library/pcrs/...> [--workspace current|revision] --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
 npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
@@ -70,7 +91,7 @@ npm run validate
   byte-for-byte in classification-only mode. Register a coverage descriptor before importing a non-3.0 version.
 - Current classification mapping v2 files contain accepted positive edges only. Every edge targets a material PCR,
   excludes `manual_review`, and carries acceptance status, decision-maker, UTC decision time, and durable decision
-  reference. CPC 3.0 currently has exactly three accepted edges; CPC 2.1 is empty v2.
+  reference. Read the accepted set and count from `classifications/mappings/<system>-<version>-to-pcr.yaml`.
 - `--legacy-scaffolds` is migration/test-only and may operate only on retained v1/scaffold mapping fixtures. A current
   v2 mapping causes it to fail before mutation, preventing unaccepted-edge injection and retired-directory
   rehydration. For a v1 fixture it may create one complete four-file target when absent; an existing target must be
@@ -89,6 +110,8 @@ npm run validate
   legacy-target, or template mismatch error as a compatibility risk that requires manual review; do not force or
   repair around it.
 - `pcr:sync-structured` regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata. `--workspace` defaults to `current`; published and deprecated current files are immutable, so an open revision must be synced with `--workspace revision`.
+- `pcr:check` checks one selected current or revision PCR without syncing files or reading shared catalog/mapping indexes. It reuses Builder inspection for lifecycle, bilingual alignment, projection freshness and finite measurement consistency. Exit 0 requires complete measurement coverage with `status: pass`; a conflict fails with `PCR_CHECK_FAILED`, and an unsupported relationship with `PCR_MEASUREMENT_REVIEW_REQUIRED`. Definite Schema, lifecycle or stale-projection errors take precedence when both occur. Use `--format human|json` (default human); JSON failures leave stdout empty and emit `{ok:false,error:{code,message,details}}` on stderr. Details identify rows/rules and checks skipped. General `lint` reports measurement findings as warnings so historical PCRs are not retroactively blocked or rewritten. See [Measurement rules](docs/methods/measurement-unit-rules.md) for supported bilingual forms.
+- `goal:prepare-report` runs in the assigned clean author worktree after the four-file commit. For tasks pinned to authoring contract 2 it reads an absolute draft conforming to `builder/schemas/goal-author-draft.schema.json`, audits finalized receipts and direct UUID identity, runs actual PCR inspection and two deterministic syncs in a review worktree, then preserves draft/report/manifest in ignored Goal state. It fills only rejection fields and receipt membership; explicit UUID/decision/membership conflicts fail. Default JSON output is the submission envelope containing a hash-bound report reference. `--format human` is available for inspection. Identical inputs reuse the same reference; changed content, task/attempt/turn or evidence invalidates it. Independent intake still verifies sources and reruns quality/evidence/commit checks. See [Goal Harness](docs/tools/goal-harness.md#prepared-reports-for-new-authors).
 - `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active. Use `--workspace revision` for revision review state. A published current record permits only the one-way transition to `deprecated/deprecated_methodology`; a deprecated record cannot be reopened.
 - `pcr:bump` updates a valid semver only for an unpublished current workspace. It rejects malformed, published, deprecated, or open-revision state because a revision target version is fixed when `pcr:revise` opens it.
 - `pcr:revise` opens one explicit `revision/` workspace from a managed published release, records a greater target semver in `revision.yaml`, preserves the consumer-facing top-level release, and marks the Chinese revision out of sync. It rejects deprecated and already-open records.
@@ -98,8 +121,8 @@ npm run validate
 - `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
 - `aliases:build` deterministically derives `classifications/aliases/pcr-id-aliases.yaml` from the retained CPC leaf
   identity inventory and current accepted mapping. `aliases:check` rejects stale output, duplicate sources,
-  material-id collisions, alias chains/cycles, and invalid terminal targets. Current output has 2,874 terminal
-  classification-coverage locators and is checked before catalog lookup.
+  material-id collisions, alias chains/cycles, and invalid terminal targets. Read current membership from the
+  generated registry and its verified count from `library/catalog.yaml`; lookup checks the registry before the catalog.
 - `catalog:build` validates sources and publishes `library/catalog.yaml`, the material index, and registered coverage
   indexes as one journaled recoverable artifact set. The catalog pins the alias registry's canonical path,
   exact-byte SHA-256, and entry count; missing, truncated, or stale registry bytes fail closed. A pre-commit
@@ -109,9 +132,29 @@ npm run validate
   malformed/foreign lock when no writer is active; malformed journal or contradictory tree evidence still fails
   closed.
 - `lint` rejects stale generated vocabulary artifacts before inspecting repository content; `validate` then runs lint plus tests.
+- `goal:*` commands implement the recoverable local batch-production harness described in
+  `builder/docs/tools/goal-harness.md`. Goal state is hash-chained under the ignored Builder state root; authors use
+  durable visible Codex app-server threads in independent worktrees, and validated integrations land only through an
+  exact-byte compare-and-swap. These commands orchestrate existing Builder contracts and do not replace them.
 
 For the full workspace, release, transaction, and recovery invariants, use
 `builder/docs/contracts/published-revision-contract.md`.
+
+## CPC Product-Chain Planning Artifacts
+
+`npm run cpc-chains:build` validates the reviewed source at
+`builder/planning/cpc-product-chain-pilot.yaml`, derives repository-backed mapping, PCR-readiness, evidence, blocker,
+and executable-wave state, and atomically regenerates `builder/planning/cpc-product-chain-pilot.md`. The generated
+report contains the ready/blocked summary, chain diagrams, edge decisions, executable waves, review queue, and source
+list; the command reports the rebuilt Markdown path.
+
+`npm run cpc-chains:check` performs the same validation and derivation without writing, then fails if the generated
+Markdown report is missing or stale. A successful check reports that `builder/planning/cpc-product-chain-pilot.md` is
+current. Repository lint runs this check before the builder CLI lint.
+
+These files are planning artifacts, not classification mappings or canonical PCR truth. A
+`semantic_candidate` or official-source-only (`supported_by_official_source`) edge does not change an accepted mapping
+and does not trigger PCR generation.
 
 ## Executable Contract Boundary
 

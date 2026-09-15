@@ -1,10 +1,1788 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "25091"
-  title: "Manufactured tobacco"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.tobacco-products.manufactured-tobacco"
+  classification_refs: "CPC 3.0 25091, exact; scope operationalized with HS 2022 heading 24.03"
+  covered_products: "Other manufactured tobacco and substitutes; homogenized or reconstituted tobacco; tobacco extracts and essences"
+  excluded_products: "Unmanufactured tobacco and refuse; cigars, cigarillos and cigarettes; HS 24.04 inhalation-without-combustion and other nicotine products"
+  representative_product: "The actual saleable CPC 25091 product produced by the reporting route"
+  production_route: "Declare one or more: loose/chewing/snuff/pressed/twisted tobacco, expanded tobacco, reconstituted sheet, extract or essence"
+  market_state: "Net saleable product at the reporting facility gate; package configuration and moisture basis declared"
+functional_unit:
+  what: "Manufactured tobacco conforming to CPC 3.0 25091 and the declared route, composition, saleable form and moisture basis"
+  how_much: "1 kg net product, excluding transport packaging and separately reported sales packaging"
+  how_well: "Meets the applicable product specification; route, moisture content, tobacco/substitute composition and package configuration declared"
+  how_long_or_cycle: "One representative production period; normally at least 12 consecutive months or a justified complete campaign"
+  reference_flow_link: "Tiangong flow 0b1039e5-6251-4030-a2fd-707a1f32f365, version 01.01.000, state 100"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "All datasets"
+      rule: "Include all route steps from receipt through net saleable product at the facility gate, including route-specific cleaning, conditioning, blending, extraction, sheet formation, drying, expansion and packing when performed."
+      source_ids:
+        - us-epa-tobacco-processing-2006
+        - eu-pef-2021
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Keep supplier production outside the foreground but link a dataset for every material, ingredient, energy carrier and packaging component crossing the boundary."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_same_category_input
+      applies_to: "Purchased manufactured tobacco"
+      rule: "Record it as a distinct input with origin, route, moisture and supplier dataset; prevent double counting of its manufacture."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_optional_routes
+      applies_to: "Reconstituted, expanded, extract and essence routes"
+      rule: "Include only steps actually operated, but absence of an applicable step requires an explicit not-applicable statement."
+      source_ids:
+        - us-epa-tobacco-processing-2006
+    - rule_id: boundary_excluded_products
+      applies_to: "Multi-product tobacco sites"
+      rule: "Meter or subdivide CPC 25091 production from headings 24.01, 24.02 and 24.04."
+      source_ids:
+        - unsd-cpc-v3-2025
+        - wco-hs-2022-ch24
+boundary_abstraction:
+  declared_starting_condition: "Tobacco-bearing feedstocks and non-tobacco ingredients received at the reporting facility gate"
+  starting_condition_role: "Foreground entry; upstream farming, curing, supplier manufacture and transport are linked datasets"
+  product_classification_scope: "CPC 3.0 25091, constrained by HS 2022 heading 24.03 and the explicit exclusions in Section 1"
+  recursive_input_rule: "Purchased CPC 25091 product or intermediate is recorded as a separate input with its supplier dataset; it is not recursively remodelled unless produced inside the reporting foreground"
+  upstream_dataset_requirement: "Link separate datasets for cured leaf or other tobacco feedstocks, ingredients, water, electricity, heat, steam, fuels, refrigerants and every packaging component"
+  disclosure: "Declare route, owned and outsourced operations, cut-offs, on-site utilities, wastewater treatment, product moisture, allocation and excluded site activities"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Manufactured tobacco ()"
+    uuid: "0b1039e5-6251-4030-a2fd-707a1f32f365"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CPC 25091 classification"
+    - route
+    - "net moisture basis and measured moisture content"
+    - "tobacco and substitute composition"
+    - "saleable form"
+    - "included packaging"
+    - "reporting period"
+    - "site and geography"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_product_net_mass
+    applies_to: "Reference product and tobacco-bearing intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated net mass. Exclude tare and separately reported packaging; state whether mass is as-sold or converted to a specified moisture basis."
+  - id: measure_material_mass
+    applies_to: "Leaf, stems, fines, ingredients, refrigerants, fuels, packaging and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each named material separately from purchase, issue, weighbridge or stock-change records; do not report “materials,” “additives,” “packaging,” or “waste” aggregates."
+  - id: measure_water_volume
+    applies_to: "Process water and treated or untreated wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Meter each water and wastewater stream; convert mass only with a documented density and temperature."
+  - id: measure_electricity
+    applies_to: "Electricity by process or allocated meter"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record imported and on-site electricity separately and identify voltage level and meter boundary."
+  - id: measure_thermal_energy
+    applies_to: "Purchased hot water and other metered heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Report delivered useful heat separately from steam and fuels; disclose temperature levels and conversion basis."
+  - id: measure_steam
+    applies_to: "Purchased or internally transferred steam"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record steam mass and pressure/temperature or quality; do not combine steam with generic heat."
+  - id: measure_fuel
+    applies_to: "Natural gas and diesel"
+    required_property_ref:
+      name: "Energy and physical quantity"
+      uuid: ""
+    required_unit: "MJ plus m3 or kg/L"
+    rule: "Record each fuel separately; use net calorific value with source and period."
+  - id: measure_air_emission
+    applies_to: "Dust, refrigerants, carbon dioxide, nitrogen oxides and particulate matter"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use stack testing, continuous monitoring or documented mass balance/emission calculation for each named substance."
+  - id: measure_moisture
+    applies_to: "Feedstock, intermediate and saleable product"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg or %"
+    rule: "Use representative sampling and a declared test method; reconcile as-received and dry-matter balances."
+process_map:
+  - id: receiving_storage
+    name: "Feedstock receiving and storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Establish received tobacco-bearing mass and remove foreign material"
+    quantitative_reference: "kg accepted tobacco-bearing feedstock"
+  - id: tobacco_conversion
+    name: "Route-specific tobacco conversion"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Conditioning, blending, formulation, cutting/grinding/pressing, extraction/sheet formation, drying or remoisturizing as applicable"
+    quantitative_reference: "kg manufactured tobacco intermediate"
+  - id: expanded_tobacco
+    name: "Carbon-dioxide expansion"
+    inclusion: "conditional"
+    inclusion_condition: "Include when tobacco is expanded at the site"
+    role: "Expand cut tobacco with liquid carbon dioxide and rapid heating"
+    quantitative_reference: "kg expanded tobacco"
+  - id: packing
+    name: "Final conditioning, packing and release"
+    inclusion: "required"
+    inclusion_condition: "Always, including bulk release with zero sales packaging"
+    role: "Produce and verify the reference product"
+    quantitative_reference: "1 kg net manufactured tobacco"
+  - id: onsite_steam_generation
+    name: "On-site steam generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the site generates steam for the route"
+    role: "Convert separately recorded fuels and water to transferred steam"
+    quantitative_reference: "kg steam delivered"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when tobacco-bearing wastewater is treated on site"
+    role: "Treat process wastewater and quantify effluent and sludge"
+    quantitative_reference: "m3 wastewater treated"
+process_inventory:
+  - id: receiving_storage
+    label: "Feedstock receiving and storage"
+    inputs:
+      product:
+        - row_id: receiving_cured_tobacco
+          role: "Cured tobacco leaf"
+          name: "Cured tobacco leaf"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Received cured leaf is weighed by lot and linked to its supplier dataset. This card excludes stems and fines recorded below."
+          amount:
+            expression: "Foreground weighbridge, scale and stock-change record by lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_materials
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: receiving_tobacco_stems
+          role: "Tobacco stems"
+          name: "Tobacco stems"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separately weigh stems intentionally received for reconstituted or other routes."
+          amount:
+            expression: "Foreground lot receipt plus inventory change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_materials
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: receiving_tobacco_fines
+          role: "Tobacco fines"
+          name: "Tobacco fines"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separately weigh fines intentionally received for reconstituted or extract routes."
+          amount:
+            expression: "Foreground lot receipt plus inventory change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_materials
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: receiving_foreign_material_waste
+          role: "Foreign material removed from tobacco"
+          name: "Foreign material removed from tobacco"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Foreign matter removed during receiving inspection is weighed as a distinct waste stream."
+          amount:
+            expression: "Foreground container weight by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: tobacco_conversion
+    label: "Route-specific tobacco conversion"
+    inputs:
+      product:
+        - row_id: conversion_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Meter water directly used for conditioning, extraction, formulation, washing into product, or sheet formation; sanitation water discharged as wastewater remains separately metered."
+          amount:
+            expression: "Foreground meter or batch addition record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_water
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steam imported to conditioning, drying, extraction or concentration is recorded separately from heat and fuel."
+          amount:
+            expression: "Foreground steam meter or engineering balance with pressure and quality"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_steam
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_hot_water
+          role: "Purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot-water heat is included only where it crosses the foreground boundary and is not steam."
+          amount:
+            expression: "Foreground heat meter or mass-flow and temperature balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_heat
+              source_ids: []
+            ranges: []
+        - row_id: conversion_electricity
+          role: "Medium-voltage electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for conveyors, cutting, grinding, pressing, extraction, refining, sheet forming, fans, drying and cooling is metered or allocated from a documented submeter."
+          amount:
+            expression: "Foreground submeter by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_electricity
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_glycerol
+          role: "Glycerol"
+          name: "Glycerol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Glycerol is recorded when used in water-pipe tobacco or another declared formulation."
+          amount:
+            expression: "Foreground formulation issue less returned inventory"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_ingredients
+              source_ids:
+                - wco-hs-2022-ch24
+            ranges: []
+        - row_id: conversion_molasses
+          role: "Molasses"
+          name: "Molasses"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Molasses is recorded separately when used in the declared formulation."
+          amount:
+            expression: "Foreground formulation issue less returned inventory"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_ingredients
+              source_ids:
+                - wco-hs-2022-ch24
+            ranges: []
+        - row_id: conversion_sucrose
+          role: "Sucrose"
+          name: "Sucrose"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sucrose is recorded separately from molasses and other ingredients when used."
+          amount:
+            expression: "Foreground formulation issue less returned inventory"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_ingredients
+              source_ids:
+                - wco-hs-2022-ch24
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_tobacco_extract
+          role: "Tobacco extract"
+          name: "Tobacco extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased or internally transferred tobacco extract reapplied to sheet or used in formulation is measured as one distinct input; internal transfer is not double counted as an upstream purchase."
+          amount:
+            expression: "Foreground batch addition and internal-transfer record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_ingredients
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_ammonia_makeup
+          role: "Ammonia refrigerant makeup"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia added to a cooling system serving the route is recorded by purchase and inventory balance; omit only when the route has no ammonia system."
+          amount:
+            expression: "Purchases plus opening stock minus closing stock and documented recovery"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_refrigerants
+              source_ids: []
+            ranges: []
+        - row_id: conversion_r134a_makeup
+          role: "R-134a refrigerant makeup"
+          name: "Refrigerant R-134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a added to a cooling system serving the route is recorded separately from ammonia; omit only when no R-134a system serves the route."
+          amount:
+            expression: "Purchases plus opening stock minus closing stock and documented recovery"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_refrigerants
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conversion_intermediate
+          role: "Manufactured tobacco intermediate"
+          name: "Manufactured tobacco intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The route-specific intermediate leaving conversion is weighed before optional expansion or final packing. For extract or essence routes, this is the concentrated saleable precursor."
+          amount:
+            expression: "Foreground transfer scale with declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_outputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        - row_id: conversion_tobacco_leaf_waste
+          role: "Discarded tobacco leaf"
+          name: "Discarded tobacco leaf"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh rejected leaf that is not internally reused. Do not combine it with stems, fines or captured dust."
+          amount:
+            expression: "Foreground container scale by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_waste
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_tobacco_stem_waste
+          role: "Discarded tobacco stems"
+          name: "Discarded tobacco stems"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh unusable stems separately after subtracting documented internal transfer to a reconstituted-tobacco route."
+          amount:
+            expression: "Foreground container scale by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_waste
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_tobacco_fines_waste
+          role: "Discarded tobacco fines"
+          name: "Discarded tobacco fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh unusable fines separately after subtracting documented internal transfer to a reconstituted-tobacco or extract route."
+          amount:
+            expression: "Foreground container scale by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_waste
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_captured_tobacco_dust
+          role: "Captured tobacco dust"
+          name: "Captured tobacco dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh tobacco dust retained by filters or collectors. This flow excludes tobacco dust released to air."
+          amount:
+            expression: "Foreground collector or waste-container scale by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_waste
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: conversion_process_wastewater
+          role: "Tobacco-bearing process wastewater"
+          name: "Tobacco-bearing process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Combine only hydraulically connected wastewater that shares treatment and composition characterization; record extraction dilution water, excess extract, evaporator condensate, scrubber blowdown, equipment wash and floor wash separately in raw records."
+          amount:
+            expression: "Foreground discharge meter with sampling point and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_wastewater
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        - row_id: conversion_tobacco_dust_air
+          role: "Tobacco dust to air"
+          name: "Tobacco dust to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure tobacco particulate released after controls; captured dust is a solid waste or internal recovery, not an air emission."
+          amount:
+            expression: "Stack test or exhaust flow times measured concentration, net of capture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_air
+              source_ids:
+                - who-tobacco-environment-2017
+            ranges: []
+        - row_id: conversion_ammonia_air
+          role: "Ammonia to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report ammonia refrigerant loss to air separately where an ammonia system serves the foreground."
+          amount:
+            expression: "Refrigerant mass balance reconciled with event logs"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_refrigerants
+              source_ids: []
+            ranges: []
+        - row_id: conversion_r134a_air
+          role: "R-134a to air"
+          name: "Refrigerant R-134a to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report R-134a refrigerant loss to air separately where an R-134a system serves the foreground."
+          amount:
+            expression: "Refrigerant mass balance reconciled with event logs"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_refrigerants
+              source_ids: []
+            ranges: []
+  - id: expanded_tobacco
+    label: "Carbon-dioxide expansion"
+    inputs:
+      product:
+        - row_id: expansion_intermediate
+          role: "Cut manufactured tobacco intermediate"
+          name: "Cut manufactured tobacco intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the cut and conditioned tobacco transferred into expansion without duplicating its upstream production."
+          amount:
+            expression: "Foreground transfer scale with moisture measurement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_expansion_materials
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: expansion_liquid_co2
+          role: "Liquid carbon dioxide"
+          name: "Carbon dioxide, liquid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh liquid carbon dioxide delivered to the expansion vessel, net of measured recovery."
+          amount:
+            expression: "Foreground tank level or delivery mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_expansion_materials
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: expansion_electricity
+          role: "Medium-voltage electricity for expansion"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record expansion pumps, controls and directly associated rapid-heating equipment electricity separately from general conversion electricity."
+          amount:
+            expression: "Foreground submeter or equipment-hour allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_expansion_energy
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: expansion_expanded_tobacco
+          role: "Expanded tobacco"
+          name: "Expanded tobacco"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh expanded tobacco leaving the vessel after stabilization and moisture measurement."
+          amount:
+            expression: "Foreground transfer scale with declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_expansion_outputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: expansion_co2_air
+          role: "Carbon dioxide from expansion to air"
+          name: "Carbon dioxide from expansion to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report purchased carbon dioxide released during expansion separately from combustion carbon dioxide."
+          amount:
+            expression: "Liquid carbon-dioxide input minus measured recovery and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_expansion_outputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+  - id: packing
+    label: "Final conditioning, packing and release"
+    inputs:
+      product:
+        - row_id: packing_bulk_tobacco
+          role: "Bulk manufactured tobacco"
+          name: "Bulk manufactured tobacco"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the accepted bulk product transferred to final conditioning and packing."
+          amount:
+            expression: "Foreground transfer scale with moisture measurement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_product
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: packing_paper_pouch
+          role: "Paper pouch"
+          name: "Paper pouch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of paper pouches incorporated in saleable units; omit with a declared zero when not used."
+          amount:
+            expression: "Foreground bill of materials reconciled to issue and scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_components
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: packing_aluminium_tin
+          role: "Aluminium tin"
+          name: "Aluminium tin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aluminium tins separately from paper, glass and plastic components."
+          amount:
+            expression: "Foreground bill of materials reconciled to issue and scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_components
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: packing_glass_jar
+          role: "Glass jar"
+          name: "Glass jar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record glass jars separately when used."
+          amount:
+            expression: "Foreground bill of materials reconciled to issue and scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_components
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: packing_paperboard_box
+          role: "Paperboard box"
+          name: "Paperboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record paperboard boxes separately from paper pouches."
+          amount:
+            expression: "Foreground bill of materials reconciled to issue and scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_components
+              source_ids: []
+            ranges: []
+        - row_id: packing_ldpe_film
+          role: "Low-density polyethylene film"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene film separately from all fibre, metal and glass packaging."
+          amount:
+            expression: "Foreground bill of materials reconciled to issue and scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_components
+              source_ids: []
+            ranges: []
+        - row_id: packing_electricity
+          role: "Medium-voltage electricity for packing"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for final conditioning, filling, sealing, labelling and case handling."
+          amount:
+            expression: "Foreground submeter or equipment-hour allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packing_reference_product
+          role: "Manufactured tobacco"
+          name: "Manufactured tobacco ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0b1039e5-6251-4030-a2fd-707a1f32f365"
+          property_unit: "Mass / kg"
+          description: "This is the sole reference exchange. The Tiangong state-100 product flow is normalized to one kilogram of net conforming product; packaging remains in separate input cards."
+          amount:
+            expression: "Exactly 1 kg net conforming product by reference-flow definition"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "Reference product identity"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-v3-2025
+                - wco-hs-2022-ch24
+            ranges: []
+      waste:
+        - row_id: packing_paper_pouch_scrap
+          role: "Paper pouch scrap"
+          name: "Paper pouch scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh rejected paper pouches separately from paperboard boxes and all other packaging."
+          amount:
+            expression: "Foreground scrap container weight by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+        - row_id: packing_paperboard_scrap
+          role: "Paperboard box scrap"
+          name: "Paperboard box scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh rejected paperboard boxes separately from paper pouches and all other packaging."
+          amount:
+            expression: "Foreground scrap container weight by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+        - row_id: packing_aluminium_scrap
+          role: "Aluminium packaging scrap"
+          name: "Aluminium packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh aluminium packaging scrap separately."
+          amount:
+            expression: "Foreground scrap container weight by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+        - row_id: packing_glass_scrap
+          role: "Glass packaging scrap"
+          name: "Glass packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh glass packaging scrap separately."
+          amount:
+            expression: "Foreground scrap container weight by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+        - row_id: packing_plastic_scrap
+          role: "Polyethylene packaging scrap"
+          name: "Low-density polyethylene packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh low-density polyethylene packaging scrap separately from other polymers."
+          amount:
+            expression: "Foreground scrap container weight by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+        - row_id: packing_offspec_tobacco
+          role: "Off-specification manufactured tobacco"
+          name: "Off-specification manufactured tobacco"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Report rejected product sent outside the foreground as waste. Internally reworked material is an internal transfer and shall not be counted as both input and waste."
+          amount:
+            expression: "Foreground reject scale minus documented internal rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net manufactured tobacco"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: onsite_steam_generation
+    label: "On-site steam generation"
+    inputs:
+      product:
+        - row_id: boiler_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas delivered to the boiler separately from diesel and other fuels."
+          amount:
+            expression: "Foreground fuel meter using documented net calorific value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_inputs
+              source_ids:
+                - who-tobacco-environment-2017
+            ranges: []
+        - row_id: boiler_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record diesel used in the steam boiler or start-up burner separately from natural gas."
+          amount:
+            expression: "Foreground tank issue using documented net calorific value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_inputs
+              source_ids:
+                - who-tobacco-environment-2017
+            ranges: []
+        - row_id: boiler_feedwater
+          role: "Boiler feedwater"
+          name: "Boiler feedwater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record make-up and returned condensate separately in raw records; this exchange is net feedwater entering steam generation."
+          amount:
+            expression: "Foreground feedwater meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_inputs
+              source_ids: []
+            ranges: []
+        - row_id: boiler_electricity
+          role: "Medium-voltage electricity for boiler"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for boiler pumps, fans and controls."
+          amount:
+            expression: "Foreground submeter or equipment-hour allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_inputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: boiler_steam
+          role: "Steam delivered"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure steam transferred to tobacco conversion at the delivery boundary."
+          amount:
+            expression: "Foreground steam meter with pressure and quality"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: boiler_blowdown
+          role: "Boiler blowdown wastewater"
+          name: "Boiler blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Measure blowdown discharged from the boiler system separately from tobacco-bearing wastewater."
+          amount:
+            expression: "Foreground blowdown meter or verified water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_outputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        - row_id: boiler_co2_air
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify fossil carbon dioxide from the separately recorded boiler fuels."
+          amount:
+            expression: "Stack measurement or fuel-specific carbon balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_air
+              source_ids: []
+            ranges: []
+        - row_id: boiler_nox_air
+          role: "Nitrogen oxides expressed as nitrogen dioxide to air"
+          name: "Nitrogen oxides, expressed as nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify nitrogen oxides after installed controls."
+          amount:
+            expression: "Stack test, continuous monitor or documented fuel-specific factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_air
+              source_ids: []
+            ranges: []
+        - row_id: boiler_pm_air
+          role: "Fine particulate matter to air"
+          name: "Particulate matter, <=2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify particulate matter with aerodynamic diameter at or below 2.5 micrometres after installed controls. Any coarser fraction requires a separate atomic row."
+          amount:
+            expression: "Stack test or documented fuel-specific factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler_air
+              source_ids: []
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: treatment_electricity
+          role: "Medium-voltage electricity for wastewater treatment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by equalization, biological treatment, clarification, sludge handling and related pumps."
+          amount:
+            expression: "Foreground submeter or equipment-hour allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_inputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        - row_id: treatment_process_wastewater
+          role: "Tobacco-bearing process wastewater for treatment"
+          name: "Tobacco-bearing process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Measure tobacco-bearing wastewater entering on-site treatment at a defined sampling point."
+          amount:
+            expression: "Foreground influent meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_inputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treatment_treated_wastewater
+          role: "Treated wastewater"
+          name: "Treated wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Measure final effluent volume and retain pollutant-specific analytical results; do not substitute influent volume without a water balance."
+          amount:
+            expression: "Foreground effluent meter and sampling record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_outputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: treatment_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh sludge on the declared wet or dry basis and record treatment destination."
+          amount:
+            expression: "Foreground scale or container volume with measured solids content"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_outputs
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Multi-route or multi-product sites"
+    rule: "First subdivide by route, line, batch, meter, formulation and operating time so CPC 25091 foreground records are directly assigned."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable joint processes with multiple saleable tobacco products"
+    rule: "If subdivision is not possible and a causal physical relationship exists, allocate by net dry-matter mass or another demonstrated causal property; disclose moisture conversion and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_economic
+    applies_to: "Joint processes lacking a defensible physical relationship"
+    rule: "Use economic allocation only after documenting why subdivision and physical allocation fail; use contemporaneous net-gate values and test sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_internal_rework
+    applies_to: "Recovered tobacco returned to the same foreground"
+    rule: "Treat as an internal transfer with no co-product credit and prevent simultaneous reporting as waste and new input."
+    source_ids:
+      - us-epa-tobacco-processing-2006
+  - rule_id: allocation_waste_recovery
+    applies_to: "Waste sent for recycling, energy recovery or treatment"
+    rule: "Record the waste amount and destination. Apply any downstream credit only under the chosen study method and disclose it outside the foreground production balance."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_materials
+      process_id: "receiving_storage"
+      flow_role: "input product flows"
+      record_type: "weighment"
+      raw_fields: "flow name, supplier, lot, gross, tare, net, moisture, stock change"
+      collection_method: "calibrated scale plus inventory reconciliation"
+      unit: "kg"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "representative year or full campaign"
+      site_scope: "all receiving points"
+      aggregation_rule: "sum each atomic flow; convert moisture only after retaining raw mass"
+      quality_evidence: "calibration, lot records, stock reconciliation"
+    - protocol_id: cp_receiving_waste
+      process_id: "receiving_storage"
+      flow_role: "output waste"
+      record_type: "weighment"
+      raw_fields: "waste name, container tare, gross, destination"
+      collection_method: "calibrated container scale"
+      unit: "kg"
+      frequency: "each shipment"
+      temporal_coverage: "same period as production"
+      site_scope: "receiving area"
+      aggregation_rule: "sum by atomic waste and destination"
+      quality_evidence: "tickets, calibration, destination records"
+    - protocol_id: cp_conversion_water
+      process_id: "tobacco_conversion"
+      flow_role: "input water"
+      record_type: "meter/batch"
+      raw_fields: "meter start/end, batch additions, purpose"
+      collection_method: "calibrated meter and batch record"
+      unit: "m3"
+      frequency: "daily or each batch"
+      temporal_coverage: "same period as production"
+      site_scope: "all conversion water points"
+      aggregation_rule: "sum direct use; keep sanitation water in wastewater raw records"
+      quality_evidence: "meter calibration, batch sheets"
+    - protocol_id: cp_conversion_steam
+      process_id: "tobacco_conversion"
+      flow_role: "input steam"
+      record_type: "meter"
+      raw_fields: "mass, pressure, temperature, quality"
+      collection_method: "steam meter or verified engineering balance"
+      unit: "kg"
+      frequency: "hourly/daily"
+      temporal_coverage: "same period as production"
+      site_scope: "conversion delivery boundary"
+      aggregation_rule: "sum delivered steam only"
+      quality_evidence: "meter calibration, balance"
+    - protocol_id: cp_conversion_heat
+      process_id: "tobacco_conversion"
+      flow_role: "input purchased hot water"
+      record_type: "meter"
+      raw_fields: "mass flow, inlet/outlet temperature, time"
+      collection_method: "heat meter"
+      unit: "MJ"
+      frequency: "hourly/daily"
+      temporal_coverage: "same period as production"
+      site_scope: "conversion delivery boundary"
+      aggregation_rule: "integrate delivered energy; no steam aggregation"
+      quality_evidence: "calibration and heat balance"
+    - protocol_id: cp_conversion_electricity
+      process_id: "tobacco_conversion"
+      flow_role: "input electricity"
+      record_type: "meter"
+      raw_fields: "meter start/end, downtime, line output"
+      collection_method: "revenue-grade submeter"
+      unit: "kWh"
+      frequency: "daily/monthly"
+      temporal_coverage: "same period as production"
+      site_scope: "conversion equipment"
+      aggregation_rule: "sum metered use; shared loads follow Section 7"
+      quality_evidence: "meter certificate and production log"
+    - protocol_id: cp_conversion_ingredients
+      process_id: "tobacco_conversion"
+      flow_role: "ingredient inputs"
+      record_type: "formulation"
+      raw_fields: "ingredient identity, lot, issue, return, stock change"
+      collection_method: "batch issue and inventory balance"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as production"
+      site_scope: "formulation and reapplication points"
+      aggregation_rule: "sum each chemical or extract separately"
+      quality_evidence: "recipe, issue tickets, inventory reconciliation"
+    - protocol_id: cp_conversion_refrigerants
+      process_id: "tobacco_conversion"
+      flow_role: "refrigerant inputs and emissions"
+      record_type: "mass balance"
+      raw_fields: "refrigerant identity, purchases, stocks, recovery, charge, event losses"
+      collection_method: "annual refrigerant balance and leak log"
+      unit: "kg"
+      frequency: "each event; annual close"
+      temporal_coverage: "same period as production"
+      site_scope: "systems serving foreground"
+      aggregation_rule: "calculate each refrigerant separately; allocate shared systems by measured cooling duty"
+      quality_evidence: "invoices, service logs, inventory, allocation record"
+    - protocol_id: cp_conversion_outputs
+      process_id: "tobacco_conversion"
+      flow_role: "product output"
+      record_type: "transfer weighment"
+      raw_fields: "mass, moisture, route, batch"
+      collection_method: "calibrated transfer scale and moisture test"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as production"
+      site_scope: "conversion exit"
+      aggregation_rule: "sum as-received and retain dry-matter conversion"
+      quality_evidence: "calibration and laboratory results"
+    - protocol_id: cp_conversion_waste
+      process_id: "tobacco_conversion"
+      flow_role: "solid waste"
+      record_type: "weighment"
+      raw_fields: "atomic waste, mass, moisture, destination, internal recovery"
+      collection_method: "container scale and disposition log"
+      unit: "kg"
+      frequency: "each container"
+      temporal_coverage: "same period as production"
+      site_scope: "conversion areas"
+      aggregation_rule: "subtract documented internal transfers; sum by destination"
+      quality_evidence: "tickets and reconciliation"
+    - protocol_id: cp_conversion_wastewater
+      process_id: "tobacco_conversion"
+      flow_role: "wastewater output"
+      record_type: "meter/sample"
+      raw_fields: "stream, volume, sampling point, destination, pollutant results"
+      collection_method: "flow meter and representative sampling"
+      unit: "m3"
+      frequency: "continuous/daily; sampling per permit or study"
+      temporal_coverage: "same period as production"
+      site_scope: "each hydraulic discharge"
+      aggregation_rule: "retain component streams; aggregate only shared treatment streams"
+      quality_evidence: "calibration, laboratory reports, water balance"
+    - protocol_id: cp_conversion_air
+      process_id: "tobacco_conversion"
+      flow_role: "air emission"
+      record_type: "measurement"
+      raw_fields: "source, flow, concentration, control state, hours"
+      collection_method: "stack test or continuous measurement"
+      unit: "kg"
+      frequency: "representative operating tests"
+      temporal_coverage: "representative operating states"
+      site_scope: "all route exhausts"
+      aggregation_rule: "sum named pollutant after controls"
+      quality_evidence: "test report and control log"
+    - protocol_id: cp_expansion_materials
+      process_id: "expanded_tobacco"
+      flow_role: "material inputs"
+      record_type: "meter/weighment"
+      raw_fields: "tobacco mass/moisture, CO2 delivery, recovery, stocks"
+      collection_method: "calibrated scales and tank balance"
+      unit: "kg"
+      frequency: "each batch/delivery"
+      temporal_coverage: "same period as expansion"
+      site_scope: "expansion unit"
+      aggregation_rule: "keep tobacco and CO2 separate"
+      quality_evidence: "calibration, tank and batch logs"
+    - protocol_id: cp_expansion_energy
+      process_id: "expanded_tobacco"
+      flow_role: "electricity input"
+      record_type: "meter"
+      raw_fields: "meter start/end, equipment hours"
+      collection_method: "submeter"
+      unit: "kWh"
+      frequency: "daily/batch"
+      temporal_coverage: "same period as expansion"
+      site_scope: "expansion unit"
+      aggregation_rule: "sum only expansion load"
+      quality_evidence: "calibration and operating log"
+    - protocol_id: cp_expansion_outputs
+      process_id: "expanded_tobacco"
+      flow_role: "product and CO2 emission"
+      record_type: "mass balance"
+      raw_fields: "expanded mass/moisture, CO2 input, recovery, stocks"
+      collection_method: "scale plus CO2 mass balance"
+      unit: "kg"
+      frequency: "each batch; monthly close"
+      temporal_coverage: "same period as expansion"
+      site_scope: "expansion unit"
+      aggregation_rule: "report product and released CO2 separately"
+      quality_evidence: "calibration and reconciled balance"
+    - protocol_id: cp_packing_product
+      process_id: "packing"
+      flow_role: "bulk product input"
+      record_type: "transfer weighment"
+      raw_fields: "mass, moisture, lot"
+      collection_method: "calibrated scale"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same period as packing"
+      site_scope: "packing entry"
+      aggregation_rule: "sum by product route and moisture basis"
+      quality_evidence: "calibration and lab results"
+    - protocol_id: cp_packing_components
+      process_id: "packing"
+      flow_role: "packaging inputs"
+      record_type: "bill of materials"
+      raw_fields: "component identity, unit mass, issued count, returns, scrap"
+      collection_method: "BOM plus issue and count reconciliation"
+      unit: "kg"
+      frequency: "each batch; monthly close"
+      temporal_coverage: "same period as packing"
+      site_scope: "all packing lines"
+      aggregation_rule: "calculate each material component separately"
+      quality_evidence: "approved BOM, unit-mass checks, inventory reconciliation"
+    - protocol_id: cp_packing_electricity
+      process_id: "packing"
+      flow_role: "electricity input"
+      record_type: "meter"
+      raw_fields: "meter start/end, line output, downtime"
+      collection_method: "submeter or documented equipment-hour allocation"
+      unit: "kWh"
+      frequency: "daily/monthly"
+      temporal_coverage: "same period as packing"
+      site_scope: "packing lines"
+      aggregation_rule: "sum packing load only"
+      quality_evidence: "calibration and allocation workbook"
+    - protocol_id: cp_packing_waste
+      process_id: "packing"
+      flow_role: "waste outputs"
+      record_type: "weighment"
+      raw_fields: "waste identity, mass, destination, rework"
+      collection_method: "calibrated container scale"
+      unit: "kg"
+      frequency: "each container"
+      temporal_coverage: "same period as packing"
+      site_scope: "packing lines"
+      aggregation_rule: "keep paper, aluminium, glass, LDPE and off-spec tobacco separate"
+      quality_evidence: "tickets and mass reconciliation"
+    - protocol_id: cp_boiler_inputs
+      process_id: "onsite_steam_generation"
+      flow_role: "fuel, feedwater, electricity"
+      record_type: "meter/inventory"
+      raw_fields: "fuel quantity and NCV, feedwater, electricity, stocks"
+      collection_method: "calibrated meters and tank balance"
+      unit: "MJ, m3, kWh"
+      frequency: "daily/monthly"
+      temporal_coverage: "same period as steam use"
+      site_scope: "boilers serving foreground"
+      aggregation_rule: "each fuel separate; allocate shared boiler by metered delivered steam"
+      quality_evidence: "calibration, invoices, NCV certificate"
+    - protocol_id: cp_boiler_outputs
+      process_id: "onsite_steam_generation"
+      flow_role: "steam and blowdown"
+      record_type: "meter"
+      raw_fields: "steam mass/quality, blowdown volume"
+      collection_method: "steam and water meters"
+      unit: "kg, m3"
+      frequency: "daily"
+      temporal_coverage: "same period as steam use"
+      site_scope: "delivery and discharge points"
+      aggregation_rule: "reconcile feedwater, steam, condensate and blowdown"
+      quality_evidence: "calibration and water balance"
+    - protocol_id: cp_boiler_air
+      process_id: "onsite_steam_generation"
+      flow_role: "air emissions"
+      record_type: "measurement/calculation"
+      raw_fields: "pollutant, stack flow, concentration, fuel, carbon/NCV, control state"
+      collection_method: "stack monitoring or documented fuel calculation"
+      unit: "kg"
+      frequency: "representative test plus period calculation"
+      temporal_coverage: "same period as steam use"
+      site_scope: "boilers serving foreground"
+      aggregation_rule: "each pollutant separately; allocate by delivered steam"
+      quality_evidence: "test report, factor source, calculation workbook"
+    - protocol_id: cp_treatment_inputs
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "influent and electricity"
+      record_type: "meter/sample"
+      raw_fields: "influent volume/quality, electricity, treatment state"
+      collection_method: "flow meter, sample and submeter"
+      unit: "m3, kWh"
+      frequency: "continuous/daily"
+      temporal_coverage: "same period as discharge"
+      site_scope: "treatment plant serving foreground"
+      aggregation_rule: "allocate shared treatment using measured pollutant load where causal, otherwise flow with disclosure"
+      quality_evidence: "calibration, laboratory and operating log"
+    - protocol_id: cp_treatment_outputs
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "effluent and sludge"
+      record_type: "meter/sample/weighment"
+      raw_fields: "effluent volume/quality, sludge wet mass, solids, destination"
+      collection_method: "meter, laboratory sampling and scale"
+      unit: "m3, kg"
+      frequency: "continuous/daily; each sludge shipment"
+      temporal_coverage: "same period as discharge"
+      site_scope: "final effluent and sludge boundary"
+      aggregation_rule: "retain pollutant results and dry/wet basis; sum sludge by destination"
+      quality_evidence: "laboratory reports, tickets, water and solids balance"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground exchanges"
+      rule: "normalized exchange = period exchange / period net conforming product mass"
+      inputs:
+        - "period exchange"
+        - "net product kg"
+      output: "exchange per 1 kg product"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_net_product_mass
+      applies_to: "Packed reference product"
+      rule: "net product = gross filled units - tare of all separately reported packaging"
+      inputs:
+        - "gross filled mass"
+        - "packaging tare"
+      output: "kg net manufactured tobacco"
+      source_ids: []
+    - id: calc_dry_matter
+      applies_to: "Tobacco-bearing masses"
+      rule: "dry matter = as-received mass × (1 - moisture mass fraction)"
+      inputs:
+        - mass
+        - moisture
+      output: "kg dry matter"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "Receiving through packing"
+      rule: "inputs + opening stocks = saleable output + wastes + emissions + closing stocks; internal transfers cancel"
+      inputs:
+        - "atomic mass records and stocks"
+      output: "absolute and percentage closure"
+      source_ids:
+        - us-epa-tobacco-processing-2006
+    - id: calc_refrigerant_loss
+      applies_to: "Each refrigerant"
+      rule: "loss = purchases + opening stock - closing stock - documented recovery - net charge increase"
+      inputs:
+        - "refrigerant records"
+      output: "kg substance to air"
+      source_ids: []
+    - id: calc_expansion_co2_release
+      applies_to: "CO2 expansion"
+      rule: "release = fresh liquid CO2 input + opening stock - closing stock - documented recovery"
+      inputs:
+        - "CO2 tank and recovery records"
+      output: "kg CO2 to air"
+      source_ids:
+        - us-epa-tobacco-processing-2006
+    - id: calc_steam_allocation
+      applies_to: "Shared on-site boiler"
+      rule: "allocated boiler exchange = total boiler exchange × metered steam to foreground / total metered steam delivered"
+      inputs:
+        - "boiler records"
+        - "steam meters"
+      output: "allocated exchange"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_temporal
+      applies_to: "All foreground data"
+      requirement: "Use one coherent representative period, normally at least 12 consecutive months; campaign production may use a complete campaign with justification."
+      evidence: "dated production, meter and inventory records"
+    - id: dq_geographical
+      applies_to: "Site and upstream links"
+      requirement: "Identify facility geography and use supplier or regional datasets matching actual procurement where available."
+      evidence: "site address, supplier origin, dataset metadata"
+    - id: dq_technological
+      applies_to: "Route and equipment"
+      requirement: "Describe the actual loose/snuff/pressed/twisted, expanded, reconstituted, extract or essence route and control equipment."
+      evidence: "process diagram, equipment list, batch records"
+    - id: dq_completeness
+      applies_to: "Atomic inventory"
+      requirement: "Reconcile tobacco dry matter, net product, packaging, water, energy, wastes and direct emissions; explain every missing applicable card."
+      evidence: "balance workbook and not-applicable register"
+    - id: dq_precision
+      applies_to: "Measurements and allocations"
+      requirement: "Retain calibration, sampling uncertainty, moisture testing, allocation drivers and calculation versions."
+      evidence: "certificates, laboratory QA/QC, versioned calculations"
+    - id: dq_source_caution
+      applies_to: "External comparison"
+      requirement: "Do not transfer company-wide or cigarette-only intensities as CPC 25091 foreground facts; use them only to identify data fields or qualitative risks."
+      evidence: "source-boundary review citing hendlin-bialous-2019 and who-tobacco-environment-2017"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference exchange"
+    rule: "Error unless exactly one output uses UUID 0b1039e5-6251-4030-a2fd-707a1f32f365, Mass, Units of mass and kg."
+    source_ids:
+      - unsd-cpc-v3-2025
+  - rule_id: validate_classification
+    applies_to: "CPC/HS scope"
+    rule: "Error unless product evidence supports CPC 25091/HS 24.03 and none of the stated exclusions."
+    source_ids:
+      - unsd-cpc-v3-2025
+      - wco-hs-2022-ch24
+  - rule_id: validate_net_mass
+    applies_to: "Reference amount"
+    rule: "Error unless output is normalized to exactly 1 kg net product with moisture basis and packaging treatment declared."
+    source_ids: []
+  - rule_id: validate_route_coverage
+    applies_to: "Process map"
+    rule: "Error unless every applicable route step is included and every non-applicable conditional process is explicitly justified."
+    source_ids:
+      - us-epa-tobacco-processing-2006
+  - rule_id: validate_atomic_flows
+    applies_to: "Inventory atomicity"
+    rule: "Error if any row combines electricity, heat, steam, fuels, refrigerants, materials, packaging components, waste materials or emitted substances."
+    source_ids: []
+  - rule_id: validate_localized_reference_name
+    applies_to: "Chinese reference name"
+    rule: "Error unless the UUID-bearing Chinese selected flow is exactly 人造烟草."
+    source_ids: []
+  - rule_id: validate_material_balance
+    applies_to: "Tobacco and product balance"
+    rule: "Error unless as-received and dry-matter balances include stocks, internal transfers, product, waste and measured air losses, with closure and residual reported."
+    source_ids:
+      - us-epa-tobacco-processing-2006
+  - rule_id: validate_energy_separation
+    applies_to: "Energy records"
+    rule: "Error unless electricity, purchased hot water, steam, natural gas and diesel are separate exchanges and absent carriers have explicit not-applicable records."
+    source_ids: []
+  - rule_id: validate_refrigerants
+    applies_to: "Cooling systems"
+    rule: "Error unless every refrigerant serving the foreground is named separately with makeup and loss records, or absence is documented."
+    source_ids: []
+  - rule_id: validate_packaging
+    applies_to: "Packaging inventory"
+    rule: "Error unless each actual packaging material is a separate input and corresponding scrap is separately reported; bulk product shall declare zero sales packaging."
+    source_ids: []
+  - rule_id: validate_waste_emissions
+    applies_to: "Waste and emissions"
+    rule: "Error unless waste destinations and direct air/water emissions are substance- or material-specific and captured dust is not also reported to air."
+    source_ids:
+      - us-epa-tobacco-processing-2006
+  - rule_id: validate_allocation
+    applies_to: "Shared operations and co-products"
+    rule: "Error unless subdivision is attempted first and any physical or economic allocation has driver, period and sensitivity documented."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_data_quality
+    applies_to: "Representativeness and evidence"
+    rule: "Warn when temporal, geographical, technological, completeness or precision evidence is missing."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_no_empirical_range_transfer
+    applies_to: "Range provenance"
+    rule: "Error if an empirical range lacks at least two independent, boundary-compatible full-text sources; this PCR prescribes no empirical ranges."
+    source_ids:
+      - hendlin-bialous-2019
+      - who-tobacco-environment-2017
+published_dataset_profile:
+  dataset_role: "Unit-process foreground dataset for manufactured tobacco production"
+  downstream_use: "Product-system and lifecycle-model construction for matching CPC 25091 products"
+  allowed_use: "Declared manufactured-tobacco route, composition, moisture basis, geography, technology and factory-gate boundary"
+  excluded_use: "Cigarettes, cigars, unmanufactured tobacco, HS 24.04 products, or unmatched routes and moisture bases"
+  required_metadata: "Reference product UUID; CPC/HS evidence; route; formulation categories; moisture basis; package configuration; geography; technology; reporting period"
+  required_quality_disclosure: "Atomic inventory coverage; material and water balances; allocation; exclusions; collection protocols; data-quality evidence"
+  update_trigger: "Material change in route, formulation, equipment, energy supply, package configuration, allocation, boundary or data quality"
+data_sources:
+  - id: "unsd-cpc-v3-2025"
+    type: "standard"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact CPC 25091 identity and classification context"
+  - id: "wco-hs-2022-ch24"
+    type: "standard"
+    reference: "https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0424_2022e.pdf"
+    used_for: "HS 24.03 product scope, exclusions and water-pipe tobacco constituents"
+  - id: "us-epa-tobacco-processing-2006"
+    type: "official_guidance"
+    reference: "https://19january2017snapshot.epa.gov/sites/production/files/2015-09/documents/tobacco-products-processing-study_2006.pdf"
+    used_for: "Full-text route operations, expanded and reconstituted tobacco steps, wastewater sources and treatment"
+  - id: "who-tobacco-environment-2017"
+    type: "official_guidance"
+    reference: "https://iris.who.int/bitstream/handle/10665/255574/9789241512497-eng.pdf"
+    used_for: "Manufacturing resource, chemical, energy, effluent and evidence-quality considerations"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32021H2279"
+    used_for: "Functional unit, reference flow, company-specific foreground data, system boundary, allocation and data quality"
+  - id: "hendlin-bialous-2019"
+    type: "literature"
+    reference: "DOI: 10.1007/s13280-019-01148-3; full text: https://pure.eur.nl/ws/portalfiles/portal/48170611/Hendlin-Bialous2019_Article_TheEnvironmentalExternalitiesO.pdf"
+    used_for: "Full-text review of energy, water, wastewater, waste and reporting limitations; supports exclusion of non-comparable numerical transfers"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b2720eec736ac5d5d1a0c06317257b71511d5598b999bf3b0682c7d7efa6414b"
+  generated_content_sha256: "sha256:374a0b0c79da89b05eb9270fbc20f92069d070b74fdf40ba024e5f12963fe63a"

@@ -1,10 +1,974 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23120"
-  title: "Other cereal flours"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.other-cereal-flours"
+  classification_refs: "CPC 3.0: 23120, Other cereal flours, exact"
+  covered_products: "Dry flour made from a declared non-wheat/non-meslin cereal such as rye, barley, oats, maize, rice, sorghum, millet, or an in-scope cereal blend"
+  excluded_products: "Wheat or meslin flour; groats, meal, pellets, or starch not sold as flour; prepared mixes; non-cereal flours; wet batters or doughs"
+  representative_product: "Flour as the verified Tiangong representative product identity; the foreground package must declare the actual cereal and grade"
+  production_route: "Receipt and storage; cleaning; conditional conditioning, dehulling, or pearling; milling and separation; conditional flour treatment; finishing; bulk dispatch or packaging"
+  market_state: "Dry, saleable cereal flour at the mill gate, in declared bulk or packaged form and at declared moisture and particle-size specification"
+functional_unit:
+  what: "Provision of dry, saleable flour made from the declared cereal and meeting the declared grade and product specification at the mill gate"
+  how_much: "1 kg net flour"
+  how_well: "Declared cereal species or blend, grade, whole-grain or refined status, extraction or ash specification where applicable, moisture, particle size, treatment/additive status, and delivery form"
+  how_long_or_cycle: "One production and dispatch batch at the mill gate; no use-duration function is assigned"
+  reference_flow_link: "The reference product output flour_product_output realizes the functional unit"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "foreground_mill_operations"
+      rule: "Include receipt and storage, cleaning, milling and separation, finishing, dispatch, site energy, and dust control; include conditioning, pearling/dehulling, drying, steaming, micronisation, blending, and packaging when performed for the reference product."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_rule_2
+      applies_to: "upstream_product_inputs"
+      rule: "Keep cultivation, harvest, external drying, and inbound transport outside the foreground mill process, but link upstream datasets whenever the study boundary includes those burdens."
+      source_ids: []
+    - rule_id: boundary_rule_3
+      applies_to: "air_emissions_and_captured_material"
+      rule: "Report dust released to the environment as an elementary output; report filter dust, screenings, husk, bran, and other captured material as product or waste outputs according to actual fate."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_rule_4
+      applies_to: "conditional_routes"
+      rule: "Exclude an unperformed conditional operation rather than inserting a zero-throughput process; document the evidence that the operation was not used for the represented batches."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+boundary_abstraction:
+  declared_starting_condition: "Cereal grain of declared species, origin, moisture, storage condition, and pre-mill treatment is received at the flour mill gate"
+  starting_condition_role: "Foreground gate-to-gate starting point; upstream cereal production and external logistics remain linked product systems"
+  product_classification_scope: "Other cereal flours made from declared non-wheat/non-meslin cereal grains; classification is not a substitute for product qualifiers"
+  recursive_input_rule: "Purchased in-scope cereal flour used for blending or rework shall be recorded once as an upstream product input with its own dataset and shall not recursively invoke the same foreground milling route"
+  upstream_dataset_requirement: "Use separately documented upstream datasets for cereal grain, purchased flour, packaging, energy carriers, water supply, additives, transport when included, and waste treatment outside the mill"
+  disclosure: "Declare cereal identity, received condition, included mill operations, conditional treatments, co-product and waste fates, allocation method, packaging state, temporal/site coverage, and all excluded upstream or downstream stages"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Flour"
+    uuid: "67b80ae5-687f-418a-84ba-f06b01a6139b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cereal species or declared blend"
+    - food-grade
+    - feed-grade
+    - "or other verified grade"
+    - "whole-grain or refined status"
+    - "extraction or ash specification where applicable"
+    - "moisture basis"
+    - "particle-size specification"
+    - "heat treatment"
+    - micronisation
+    - fortification
+    - "or additive status"
+    - "bulk or packaged delivery state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference flour output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net saleable flour as received at the declared moisture; exclude packaging mass from the reference amount."
+  - id: moisture_basis
+    applies_to: "Grain, intermediate flour, co-products, and final flour"
+    required_property_ref:
+      name: "Mass and measured moisture fraction"
+      uuid: ""
+    required_unit: "kg and % mass fraction"
+    rule: "Record whether each mass is as received or dry matter. Convert between bases only with lot- or batch-specific moisture measurements using calc_dry_matter."
+  - id: energy_accounting
+    applies_to: "Purchased electricity, fuels, steam, and exported energy"
+    required_property_ref:
+      name: "Carrier-specific energy property"
+      uuid: ""
+    required_unit: "Carrier unit and MWh"
+    rule: "Preserve original metered carrier units, disclose conversion factors, and calculate a site total in MWh without double counting purchased and generated energy."
+  - id: water_accounting
+    applies_to: "Conditioning and other process water"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Keep conditioning water separate from other process and sanitation water when meters or batch records permit; normalize consistently to the reference flour output."
+  - id: packaging_mass
+    applies_to: "Sale packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record packaging by material and exclude it from flour net mass; include only packaging supplied with the reference product."
+process_map:
+  - id: grain_receipt_cleaning
+    name: "Grain receipt, storage, and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always included for received cereal grain"
+    role: "Foreground material receipt, cleaning, and contaminant removal"
+    quantitative_reference: "kg received cereal grain"
+  - id: grain_conditioning
+    name: "Conditioning, dehulling, or pearling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when water, steam, tempering, dehulling, pearling, or an equivalent preparation step is used"
+    role: "Foreground preparation of grain for milling"
+    quantitative_reference: "kg prepared grain"
+  - id: milling_separation
+    name: "Milling, sifting, and separation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground size reduction and separation of flour and associated streams"
+    quantitative_reference: "kg saleable flour"
+  - id: special_flour_treatment
+    name: "Special flour treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when drying, steaming, micronisation, turboseparation, fortification, or another post-milling treatment is used"
+    role: "Foreground product-specific treatment"
+    quantitative_reference: "kg treated flour"
+  - id: finishing_dispatch
+    name: "Blending, storage, packaging, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always include final storage and dispatch; include blending and packaging only when performed"
+    role: "Foreground finishing and product transfer at the mill gate"
+    quantitative_reference: "kg dispatched flour"
+  - id: site_utilities_control
+    name: "Site utilities and environmental control"
+    inclusion: "required"
+    inclusion_condition: "Include utility use and environmental controls serving represented production"
+    role: "Foreground facility utility accounting and direct-emission control"
+    quantitative_reference: "kg dispatched flour"
+process_inventory:
+  - id: grain_receipt_cleaning
+    label: "Grain receipt, storage, and cleaning"
+    inputs:
+      product:
+        - row_id: cereal_grain_input
+          role: "Declared cereal grain input"
+          name: "Declared cereal grain; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each cereal species and material state separately from weighbridge, goods-receipt, or supplier records. Use a verified Tiangong product flow matching the declared cereal and state when one is assigned."
+          amount:
+            expression: "measured net mass of accepted grain entering represented production, adjusted for stock change and kept on the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "2.0"
+                unit: "kg grain/kg saleable flour"
+                basis: "as-received cereal input per 1 kg saleable flour, with moisture bases disclosed"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaned_grain_output
+          role: "Cleaned grain transferred to preparation or milling"
+          name: "Cleaned declared cereal grain; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted cleaned-grain mass transferred to the next operation and preserve the cereal identity and moisture basis."
+          amount:
+            expression: "measured transfer mass or calculated receipt mass less measured cleaning removals and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_receipts
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cleaning_rejects
+          role: "Cleaning rejects and contaminants"
+          name: "Grain-cleaning rejects; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record stones, metal, chaff, foreign seeds, spoiled grain, and other rejected material by actual treatment route. Material sold or used as a co-product shall instead be represented as a product output."
+          amount:
+            expression: "measured mass by reject category and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg received cereal grain"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg rejects/kg received grain"
+                basis: "as-received cleaning rejects per kg received grain"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: cleaning_dust_air
+          role: "Uncaptured cleaning dust to air"
+          name: "Particulate matter to air; Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only dust crossing the environmental boundary. Do not include dust retained in filters or collected with screenings in this elementary row."
+          amount:
+            expression: "measured channelled and quantified diffuse dust emissions attributable to cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+  - id: grain_conditioning
+    label: "Conditioning, dehulling, or pearling"
+    inputs:
+      product:
+        - row_id: conditioning_grain_input
+          role: "Cleaned grain for preparation"
+          name: "Cleaned declared cereal grain; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cleaned grain entering only the preparation operations actually used for the declared cereal and product specification."
+          amount:
+            expression: "measured transfer mass from cleaning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: conditioning_water
+          role: "Conditioning water"
+          name: "Process water; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include water added for dampening or tempering. Keep steam condensate or separately metered sanitation water distinct."
+          amount:
+            expression: "metered water or batch recipe addition used for represented grain"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "m3/tonne saleable flour"
+                basis: "conditioning water per tonne saleable flour"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_grain_output
+          role: "Prepared grain for milling"
+          name: "Prepared declared cereal grain; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conditioned, dehulled, pearled, or otherwise prepared grain transferred to milling, including its post-preparation moisture."
+          amount:
+            expression: "measured output mass with preparation method and moisture recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: conditioning_rejects
+          role: "Hulls and preparation rejects"
+          name: "Cereal hulls or preparation rejects; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record hulls and other removed material by actual fate. Reclassify a marketable or internally used stream as a product output."
+          amount:
+            expression: "measured mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: milling_separation
+    label: "Milling, sifting, and separation"
+    inputs:
+      product:
+        - row_id: mill_grain_input
+          role: "Grain entering the mill"
+          name: "Prepared declared cereal grain; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared or directly cleaned grain entering size reduction and identify which preparation route supplied it."
+          amount:
+            expression: "measured mill-feed mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: flour_product_output
+          role: "Saleable flour output"
+          name: "Flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b80ae5-687f-418a-84ba-f06b01a6139b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative-reference product output. The dataset shall identify the actual cereal and all required qualifiers even when the generic Tiangong flow is retained."
+          amount:
+            expression: "exactly 1 kg net saleable flour on the declared moisture basis after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+        - row_id: milling_coproducts
+          role: "Bran, germ, and other marketable cereal fractions"
+          name: "Declared cereal milling co-product; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each output fraction separately with its composition, moisture, destination, and market or internal-use status."
+          amount:
+            expression: "measured co-product mass by stream, adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: captured_mill_dust
+          role: "Captured milling and filter dust"
+          name: "Captured cereal dust; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust recovered in filters or housekeeping as waste unless evidence shows that it is a marketable or internally reused product stream."
+          amount:
+            expression: "measured collected mass or a documented filter mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: milling_dust_air
+          role: "Uncaptured milling dust to air"
+          name: "Particulate matter to air; Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured channelled and quantified diffuse particulate emissions after abatement. The concentration range below is a BAT screening benchmark, not a substitute for jurisdiction-specific limits or normalized emission mass."
+          amount:
+            expression: "exhaust concentration multiplied by measured dry-gas volume and operating time, plus quantified diffuse releases where material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "mg/Nm3"
+                basis: "average over the applicable sampling period for channelled dust after abatement"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+  - id: special_flour_treatment
+    label: "Special flour treatment"
+    inputs:
+      product:
+        - row_id: untreated_flour_input
+          role: "Flour entering special treatment"
+          name: "Flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b80ae5-687f-418a-84ba-f06b01a6139b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only the flour fraction sent to drying, steaming, micronisation, turboseparation, fortification, or another declared treatment."
+          amount:
+            expression: "measured mass routed to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg treated flour output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: treatment_additives
+          role: "Fortificants or processing additives"
+          name: "Declared fortificant or processing additive; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each additive only when used and identify its concentration and upstream dataset."
+          amount:
+            expression: "batch formulation record or metered addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg treated flour output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_flour_output
+          role: "Treated flour output"
+          name: "Treated flour; use the verified generic or a more specific Tiangong product flow as applicable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the treated output with its moisture, particle-size or fraction, fortification, and treatment status."
+          amount:
+            expression: "measured saleable treated-flour mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg treated flour output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_dispatch
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: finishing_dispatch
+    label: "Blending, storage, packaging, and dispatch"
+    inputs:
+      product:
+        - row_id: finished_flour_input
+          role: "Finished flour entering dispatch preparation"
+          name: "Flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b80ae5-687f-418a-84ba-f06b01a6139b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the flour transferred to final storage, blending, bulk loading, or packaging without duplicating internal transfers in the aggregated inventory."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dispatched flour"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: packaging_inputs
+          role: "Packaging materials supplied with product"
+          name: "Declared packaging material; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bags, liners, closures, labels, and other supplied packaging separately by material; omit this row for verified bulk delivery without supplied packaging."
+          amount:
+            expression: "packaging bill of materials reconciled with purchase and production records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dispatched flour"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg packaging/kg net flour"
+                basis: "supplied packaging per kg net dispatched flour"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dispatched_flour_output
+          role: "Dispatched reference flour"
+          name: "Flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b80ae5-687f-418a-84ba-f06b01a6139b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Reconcile dispatched net flour with the quantitative-reference product and disclose whether the product is bulk or packaged."
+          amount:
+            expression: "exactly 1 kg net flour after normalization; packaging excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finishing_waste
+          role: "Packaging and product losses at finishing"
+          name: "Finishing waste by declared material; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged packaging, spills, off-spec flour, and returned internal material by fate; do not count internally reworked flour as an external waste output."
+          amount:
+            expression: "measured mass leaving the represented foreground system by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dispatched flour"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: site_utilities_control
+    label: "Site utilities and environmental control"
+    inputs:
+      product:
+        - row_id: site_energy_inputs
+          role: "Site energy carriers"
+          name: "Carrier-specific energy inputs; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / original unit and MWh equivalent"
+          description: "Record purchased electricity, fuels, steam, and other energy carriers separately in original units, then calculate the non-duplicated site total serving represented production."
+          amount:
+            expression: "metered or invoiced energy allocated to represented production after stock, export, and on-site generation reconciliation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "0.13"
+                unit: "MWh/tonne product"
+                basis: "yearly average site energy per tonne grain-milling product"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+        - row_id: other_process_water
+          role: "Other process and sanitation water"
+          name: "Process water; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record non-conditioning process and sanitation water serving represented production when material, and keep it separate from conditioning water."
+          amount:
+            expression: "metered site water less separately recorded conditioning water and excluded uses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: mill_wastewater
+          role: "Wastewater sent to treatment"
+          name: "Mill wastewater; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Include wastewater only when generated and sent across the foreground boundary; identify internal reuse and treatment destination."
+          amount:
+            expression: "measured discharge volume allocated to represented production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne saleable flour output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "independently_measurable_processes"
+    rule: "First avoid allocation by subdividing receipt, preparation, milling, treatment, finishing, and utility operations and by using process- or line-specific measurements where technically feasible."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rule_2
+    applies_to: "joint_milling_burdens"
+    rule: "When subdivision cannot avoid allocation among flour and co-products, use a documented physical causal relationship when it reflects how inputs and burdens change with outputs. If no defensible physical relationship exists, use economic allocation based on a representative price period and perform a sensitivity check."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rule_3
+    applies_to: "waste_and_coproduct_classification"
+    rule: "Classify bran, germ, hulls, screenings, off-spec flour, and captured dust from their actual fate and evidence of intended use. Do not assign co-product status solely to avoid waste burdens, and do not allocate burdens to internally recycled material as if it crossed the system boundary."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rule_4
+    applies_to: "allocation_disclosure"
+    rule: "Report the allocation method, allocation factors summing to one, physical or economic data period, zero-burden exclusions, internally recycled streams, and the sensitivity result for any material co-product allocation."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "grain_receipt_cleaning"
+      flow_role: "cereal receipts, cleaned transfer, and stock"
+      record_type: "weighbridge, goods-receipt, silo, and supplier records"
+      raw_fields: "cereal species; supplier lot; origin; mass; moisture; acceptance/rejection; silo; opening/closing stock"
+      collection_method: "Calibrated weighbridge or receiving scale reconciled to supplier documents and silo stock"
+      unit: "kg and % moisture"
+      frequency: "Each delivery and monthly stock close"
+      temporal_coverage: "Same representative period as product output; normally at least 12 consecutive months or a justified complete campaign"
+      site_scope: "Each included mill and storage boundary"
+      aggregation_rule: "Sum accepted receipts plus opening stock minus closing stock; keep cereals and moisture bases separate"
+      quality_evidence: "Scale calibration; supplier record; stock reconciliation; exception log"
+    - protocol_id: cp_process_batches
+      process_id: "grain_conditioning_milling_separation_special_flour_treatment"
+      flow_role: "process routing, intermediate transfers, water/additive recipes, and treated fractions"
+      record_type: "batch, control-system, recipe, and production logs"
+      raw_fields: "batch_id; cereal; route; input/output mass; moisture; process time; water; steam; additive; treatment setting"
+      collection_method: "Metered transfers and signed batch or control-system records"
+      unit: "kg; m3; carrier unit; process setting"
+      frequency: "Each batch or continuous line shift"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "Each included line and treatment route"
+      aggregation_rule: "Aggregate only batches matching the declared reference product and route"
+      quality_evidence: "Meter calibration; batch genealogy; recipe revision; operator exception log"
+    - protocol_id: cp_product_dispatch
+      process_id: "milling_separation_special_flour_treatment_finishing_dispatch"
+      flow_role: "saleable flour production and dispatch"
+      record_type: "production, silo, quality-release, packaging, and dispatch records"
+      raw_fields: "product_id; cereal; grade; whole/refined; extraction/ash; moisture; particle size; treatment; net mass; packaging state; destination"
+      collection_method: "Reconcile released production, silo stock change, packaged output, and bulk dispatch"
+      unit: "kg and product specification units"
+      frequency: "Each batch and monthly close"
+      temporal_coverage: "Same representative period as inputs"
+      site_scope: "Each included mill and product line"
+      aggregation_rule: "Sum only conforming net flour; exclude packaging and separately track rework"
+      quality_evidence: "Scale calibration; laboratory certificate; release record; stock reconciliation"
+    - protocol_id: cp_coproduct_waste
+      process_id: "grain_receipt_cleaning_grain_conditioning_milling_separation_finishing_dispatch"
+      flow_role: "co-products, rejects, captured dust, and wastes"
+      record_type: "scale ticket, sales, waste-transfer, and internal-use records"
+      raw_fields: "stream_id; material; mass; moisture; destination; revenue; legal status; internal reuse"
+      collection_method: "Weigh each material stream or use documented container counts and verified conversion factors"
+      unit: "kg and currency where economic allocation is used"
+      frequency: "Each transfer; monthly reconciliation"
+      temporal_coverage: "Same representative period as flour output"
+      site_scope: "All included lines and waste destinations"
+      aggregation_rule: "Sum by stream and fate; internal transfers cancel in the aggregated foreground system"
+      quality_evidence: "Scale calibration; transfer note; customer or waste-contractor record; revenue ledger"
+    - protocol_id: cp_energy_records
+      process_id: "site_utilities_control"
+      flow_role: "electricity, fuel, steam, on-site generation, and exports"
+      record_type: "meters, invoices, tank stock, and generation logs"
+      raw_fields: "carrier; meter_id; amount; unit; energy content/conversion factor; opening/closing stock; generated/exported amount; allocation key"
+      collection_method: "Calibrated meters and invoices reconciled to fuel stock and generation records"
+      unit: "original carrier unit and MWh"
+      frequency: "Continuous or invoice period; monthly close"
+      temporal_coverage: "Normally at least 12 consecutive months or justified full campaign"
+      site_scope: "Whole site with documented exclusion or allocation of non-flour uses"
+      aggregation_rule: "Convert each carrier once; subtract exports; reconcile generated and purchased energy; allocate to represented production transparently"
+      quality_evidence: "Meter calibration; invoice; fuel specification; reconciliation record"
+    - protocol_id: cp_water_records
+      process_id: "grain_conditioning_site_utilities_control"
+      flow_role: "conditioning water, other process water, and wastewater"
+      record_type: "meters, batch recipes, and discharge logs"
+      raw_fields: "meter_id; use_area; volume; batch_id; source; reused volume; discharge destination"
+      collection_method: "Submeter where available; otherwise documented batch recipe or site balance"
+      unit: "m3"
+      frequency: "Continuous or per batch; monthly close"
+      temporal_coverage: "Same representative period as flour output"
+      site_scope: "Each included mill and use area"
+      aggregation_rule: "Keep conditioning, other process, reused, and discharged water distinct; allocate unmetered shared use transparently"
+      quality_evidence: "Meter calibration; recipe record; water-balance reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "finishing_dispatch"
+      flow_role: "supplied packaging"
+      record_type: "bill of materials, purchase, stock, and packaging-line records"
+      raw_fields: "material_id; material type; unit mass; units used; opening/closing stock; scrap; product_id"
+      collection_method: "Verified packaging specification reconciled with purchases and line counts"
+      unit: "kg"
+      frequency: "Each packaging run and monthly close"
+      temporal_coverage: "Same representative period as packaged flour"
+      site_scope: "Each included packaging line"
+      aggregation_rule: "Sum packaging supplied with product by material; exclude reusable assets not transferred"
+      quality_evidence: "Supplier specification; count reconciliation; scale check"
+    - protocol_id: cp_air_emissions
+      process_id: "grain_receipt_cleaning_milling_separation_site_utilities_control"
+      flow_role: "channelled and material diffuse dust emissions"
+      record_type: "stack test, continuous/periodic monitor, exhaust-flow, operating-hour, and abatement records"
+      raw_fields: "source_id; concentration; gas volume; reference conditions; operating time; filter status; diffuse estimate method"
+      collection_method: "Applicable standard measurement or documented engineering calculation using measured concentration and gas flow"
+      unit: "mg/Nm3; Nm3; h; kg"
+      frequency: "At legally required frequency and after material control changes"
+      temporal_coverage: "Tests representative of included operating modes and production period"
+      site_scope: "Every material emission point and documented diffuse source"
+      aggregation_rule: "Convert concentration and dry-gas flow to mass; normalize by matching production; do not add captured dust"
+      quality_evidence: "Accredited test report where required; instrument calibration; sampling plan; filter maintenance record"
+  calculation_rules:
+    - id: calc_dry_matter
+      applies_to: "grain, flour, co-products, and wastes"
+      rule: "dry mass = as-received mass × (1 − moisture mass fraction); convert back only using the target stream's measured moisture fraction"
+      inputs:
+        - "as-received mass"
+        - "measured moisture fraction"
+      output: "dry mass or transparently converted as-received mass"
+      source_ids: []
+    - id: calc_reference_normalization
+      applies_to: "all foreground inventory rows"
+      rule: "normalized amount = period amount attributable to represented product ÷ net kg of conforming dispatched flour in the same period"
+      inputs:
+        - "attributable flow amount"
+        - "dispatched reference-product mass"
+      output: "amount per 1 kg reference flour"
+      source_ids: []
+    - id: calc_site_energy
+      applies_to: "site_energy_inputs"
+      rule: "Convert each carrier to MWh with disclosed factors; purchased energy + on-site generation used − exports − excluded uses, with no double counting; divide by saleable flour tonnes"
+      inputs:
+        - "carrier records"
+        - "conversion factors"
+        - generation
+        - exports
+        - "excluded uses"
+        - "product tonnes"
+      output: "MWh/tonne saleable flour"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_dust_mass
+      applies_to: "cleaning_dust_air; milling_dust_air"
+      rule: "emitted mass = measured concentration × dry-gas volume over operating time, converted to kg, plus separately quantified diffuse releases"
+      inputs:
+        - concentration
+        - "dry-gas flow or volume"
+        - "operating time"
+        - "diffuse release estimate"
+      output: "kg particulate emission per reference output"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_mass_balance
+      applies_to: "foreground mill system"
+      rule: "cereal and other material inputs + opening stock = flour + co-products + wastes + direct material emissions + closing stock; report the absolute and percentage residual without forcing it to zero"
+      inputs:
+        - "moisture-aligned inputs"
+        - outputs
+        - emissions
+        - "and stock changes"
+      output: "mass-balance residual and completeness indicator"
+      source_ids: []
+    - id: calc_allocation_factors
+      applies_to: "joint milling burdens"
+      rule: "Calculate factors from the selected physical relation or economic values for the same representative period; normalize factors to sum to one and retain an unrounded audit table"
+      inputs:
+        - "co-product quantities or economic values"
+        - "selected allocation basis"
+      output: "allocation factors and sensitivity case"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Cereal species or blend and every required qualifier shall be present and consistent across flow, process, batch, and dispatch records."
+      evidence: "Product specification, quality-release certificate, batch genealogy, and verified Tiangong flow identity"
+    - id: dq_measurement
+      applies_to: "mass, moisture, water, energy, and emissions"
+      requirement: "Use calibrated instruments or documented supplier measurements; preserve raw units and reference conditions before conversion."
+      evidence: "Calibration records, laboratory methods, invoices, meter register, and test reports"
+    - id: dq_temporal
+      applies_to: "foreground period"
+      requirement: "Use a continuous representative period, normally at least 12 months; justify a shorter complete campaign and disclose seasonality, shutdowns, and abnormal batches."
+      evidence: "Coverage table, production calendar, downtime log, and justification"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile inputs, outputs, stock change, internally recycled flows, energy, water, dust, co-products, wastes, and packaging; explain material gaps rather than balancing them with an invented flow."
+      evidence: "Mass and utility balances, completeness checklist, and reconciliation residuals"
+    - id: dq_route_specificity
+      applies_to: "conditional operations"
+      requirement: "Demonstrate whether conditioning, dehulling/pearling, special treatment, blending, and packaging were used for represented batches."
+      evidence: "Process map, batch route records, and product specification"
+    - id: dq_source_traceability
+      applies_to: "external and upstream data"
+      requirement: "Record source version or publication, retrieval date for web evidence, upstream dataset identity, geography, time, technology, and any substitution."
+      evidence: "Source register and dataset metadata"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "reference_flow_identity"
+    rule: "Confirm the reference amount is 1 kg, Mass is the reference property, and the generic Flour UUID is used only when cereal, grade, and other qualifiers make it representative; otherwise require a verified more specific flow."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "product_scope"
+    rule: "Reject a data package that does not identify the cereal or that represents wheat/meslin flour, a non-cereal flour, starch, meal not sold as flour, or a prepared mix outside this PCR."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "boundary_and_route"
+    rule: "Confirm all required operations are represented and every conditional operation is either included with records or excluded with route evidence; verify upstream and downstream exclusions are disclosed."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validation_rule_4
+    applies_to: "mass_and_moisture"
+    rule: "Recalculate dry-matter conversions and the foreground mass balance; flag inconsistent moisture bases, unexplained stock changes, duplicated internal transfers, or a material residual."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "energy_and_water"
+    rule: "Recalculate carrier conversions and water separation; flag double-counted on-site generation, energy exports, conditioning water, or shared site utilities. Compare site energy with the cited screening range and require an explanation, not automatic rejection, when outside it."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validation_rule_6
+    applies_to: "dust_and_waste"
+    rule: "Confirm captured dust is not reported as an elementary emission, channelled dust mass uses compatible concentration and gas-volume reference conditions, and waste/co-product fate matches transfer evidence."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validation_rule_7
+    applies_to: "allocation"
+    rule: "Confirm subdivision was considered first, factors sum to one, the basis matches the causal or economic evidence, and a sensitivity result is disclosed for material joint burdens."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validation_rule_8
+    applies_to: "data_coverage"
+    rule: "Confirm raw records cover the same products, sites, routes, and period as the reference output; list every check not performed and treat missing identity or material inventory evidence as inconclusive."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific foreground gate-to-gate flour-milling dataset produced from real mill records"
+  downstream_use: "secondary_dataset; background_dataset when reviewed for representativeness and linked to appropriate upstream datasets"
+  allowed_use: "Process or lifecycle-model construction for the declared cereal flour, mill technology, geography, time period, grade, treatment, and delivery state"
+  excluded_use: "Generic use for an undeclared cereal or grade; wheat/meslin flour; agricultural cultivation; retail or use stage; substitution for a product whose required qualifiers or flow identity differ"
+  required_metadata: "canonical PCR id; verified reference-flow identity; cereal species/blend; grade; whole/refined status; extraction/ash where used; moisture and particle size; treatments/additives; bulk/packaged state; site/geography; technology; period; process route; upstream dataset identities; allocation method"
+  required_quality_disclosure: "record coverage; calibration and laboratory evidence; mass-balance residual; energy and water reconciliation; emission method; co-product/waste fate; allocation factors and sensitivity; reasoned-estimate replacements; unresolved UUID substitutions"
+  update_trigger: "Change in cereal or product specification, flow identity, mill route or equipment, energy mix, dust control, co-product fate, allocation basis, packaging, site boundary, or representative period that materially changes the dataset"
+data_sources:
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Food, Drink and Milk Industries* (2019), Chapter 9 and Section 17.8, https://eippcb.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Grain-milling process decomposition; conditional treatments; water-dependence context; specific-energy QA range; dust sources, control, and BAT screening benchmark"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, *Environmental management — Life cycle assessment — Requirements and guidelines*, Clause 4.3.4.2"
+    used_for: "Allocation hierarchy, physical/economic relation, and allocation disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7dc579420c590c1860cc639448aaf8f1a5f0e3e873bfcf5be1df55e2245d6064"
+  generated_content_sha256: "sha256:e825b5aef1ef917ec6e54fc959a5829437a6b7f0cc53da91d71befebb18cfa63"

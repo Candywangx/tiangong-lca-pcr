@@ -1,10 +1,2728 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23512"
-  title: "Beet sugar"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.beet-sugar"
+  classification_refs: "CPC 3.0: 23512 Beet sugar"
+  covered_products: "Marketable sugar whose sucrose is extracted from sugar beet"
+  excluded_products: "Cane sugar; purchased-raw-sugar refining; syrup, molasses, beet pulp or carbonatation lime as reference products"
+  representative_product: "Beet-derived crystalline sugar, production mix at plant"
+  production_route: "Reception and cleaning; slicing and diffusion; purification; evaporation and crystallisation; finishing; applicable pulp, energy, treatment and packaging operations"
+  market_state: "Net conforming beet sugar at factory gate, bulk or with separately declared packaging"
+functional_unit:
+  what: "Provision of marketable beet sugar at the producing factory gate"
+  how_much: "1 kg net conforming beet sugar, excluding packaging mass"
+  how_well: "Declared grade, sucrose-content basis, moisture, physical form and packaging status"
+  how_long_or_cycle: "One released lot or declared campaign-average production mix"
+  reference_flow_link: "reference_beet_sugar in sugar_finishing"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate_scope
+      applies_to: "foreground manufacture"
+      rule: "Include all required and applicable conditional factory operations and directly controlled utilities, wastes and emissions."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - eu-fdm-bat-2019
+        - us-epa-beet-sugar-1974
+    - rule_id: sb_atomic_exchanges
+      applies_to: "inventory"
+      rule: "Keep every material, chemical, electricity, steam, hot water, fuel, refrigerant, package, waste and emission as its own exchange."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - eu-fdm-bat-2019
+        - us-epa-beet-sugar-1974
+    - rule_id: sb_internal_recycling
+      applies_to: "internal water, condensate, juice, sugar and energy"
+      rule: "Represent each internal transfer once and prevent an equivalent external input or credit."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - us-epa-beet-sugar-1974
+    - rule_id: sb_conditional_routes
+      applies_to: "pulp, energy, chemicals, refrigeration and packaging"
+      rule: "Include a conditional atomic card only when its exact technology or material is present and document non-applicability otherwise."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - eu-fdm-bat-2019
+        - us-epa-beet-sugar-1974
+    - rule_id: sb_upstream_downstream
+      applies_to: "linked life-cycle stages"
+      rule: "Link purchased inputs upstream and exclude distribution, use and end-of-life from this factory-gate dataset."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "accepted sugar beet at the factory gate"
+  starting_condition_role: "foreground manufacturing gate"
+  product_classification_scope: "CPC 3.0 code 23512"
+  recursive_input_rule: "Re-entering beet sugar or intermediates remain visible product inputs linked to their source dataset."
+  upstream_dataset_requirement: "Link beet, each purchased energy carrier, each chemical, water and each packaging material to specific upstream datasets."
+  disclosure: "Declare campaign, technology, internal loops, pulp route, energy system, treatment, packaging, co-products, allocation and exclusions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Beet sugar"
+    uuid: "f6141c1d-e50a-4f80-9125-cc7eb82eb51a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "beet feedstock origin"
+    - route
+    - grade
+    - "sucrose and moisture basis"
+    - "physical form"
+    - "bulk or packaged state"
+    - "site/geography"
+    - campaign
+    - allocation
+    - "co-product states and destinations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net conforming sugar mass and exclude all packaging."
+  - id: wet_dry_basis
+    applies_to: "beet, pulp, molasses, lime and sludge"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet mass and dry matter separately."
+  - id: sucrose_basis
+    applies_to: "beet, juices, molasses and sugar"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Declare analytical method, sampling point and wet/dry basis."
+  - id: carrier_specific_energy
+    applies_to: "electricity, steam, hot water and each fuel"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Meter each carrier separately and prevent double counting fuel input with generated energy."
+  - id: water_balance
+    applies_to: "external, embedded, recovered, evaporated and discharged water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Keep external withdrawal, internal loops and discharge separate."
+process_map:
+  - id: beet_reception_cleaning
+    name: "Sugar beet reception, fluming, washing, and tare removal"
+    inclusion: "required"
+    inclusion_condition: "Always for delivered sugar beet"
+    role: "foreground_process"
+    quantitative_reference: "cleaned_sugar_beets"
+  - id: slicing_diffusion
+    name: "Beet slicing and countercurrent diffusion"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground_process"
+    quantitative_reference: "raw_diffusion_juice"
+  - id: juice_purification
+    name: "Juice liming, carbonatation, clarification, and filtration"
+    inclusion: "required"
+    inclusion_condition: "Always; conditional reagent cards apply only to the actual route"
+    role: "foreground_process"
+    quantitative_reference: "purified_thin_juice"
+  - id: evaporation_crystallisation
+    name: "Juice evaporation, vacuum crystallisation, and centrifugation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground_process"
+    quantitative_reference: "sugar_crystals"
+  - id: sugar_finishing
+    name: "Sugar drying, cooling, storage, quality release, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging cards apply only to packaged reference product"
+    role: "foreground_process"
+    quantitative_reference: "reference_beet_sugar"
+  - id: pulp_handling
+    name: "Beet-pulp pressing, drying, and co-product preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include operations performed within the site boundary"
+    role: "foreground_process"
+    quantitative_reference: "pressed_beet_pulp"
+  - id: onsite_energy_supply
+    name: "On-site steam, electricity, and hot-water generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when energy carriers are converted on site"
+    role: "foreground_process"
+    quantitative_reference: "onsite_steam_output"
+  - id: wastewater_treatment
+    name: "Wastewater collection, treatment, discharge, and residual management"
+    inclusion: "required"
+    inclusion_condition: "Include on-site treatment; otherwise model the off-site hand-off"
+    role: "foreground_process"
+    quantitative_reference: "treated_process_water"
+process_inventory:
+  - id: beet_reception_cleaning
+    label: "Sugar beet reception, fluming, washing, and tare removal"
+    inputs:
+      product:
+        - row_id: sugar_beets_received
+          role: "Sugar beet"
+          name: "Sugar beet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sugar beet crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified product flow. Record gross and net mass, tare, sucrose, moisture, origin and receiving time."
+          amount:
+            expression: "Net accepted beet mass after the declared weighbridge and tare procedure."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges:
+              - role: qa_guardrail
+                lower: "6"
+                upper: "8"
+                unit: "kg accepted sugar beet"
+                basis: "per 1 kg net conforming beet sugar"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - ec-jrc-fdm-bref-2019
+        - row_id: reception_makeup_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified product flow. Exclude recirculated flume and wash water from this external input."
+          amount:
+            expression: "Metered external make-up water allocated to reception and cleaning."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: reception_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered consumption or a documented causal share of the reconciled facility meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaned_sugar_beets
+          role: "Cleaned sugar beet"
+          name: "Cleaned sugar beet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cleaned sugar beet crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified product flow. Transfer this intermediate to slicing without creating an external co-product."
+          amount:
+            expression: "Measured transfer mass or accepted beet minus separately quantified tare and losses."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        - row_id: beet_soil_waste
+          role: "Soil from sugar beet cleaning"
+          name: "Soil from sugar beet cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Soil from sugar beet cleaning crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed dispatched soil mass by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: beet_stone_waste
+          role: "Stones from sugar beet cleaning"
+          name: "Stones from sugar beet cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stones from sugar beet cleaning crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed dispatched stone mass by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: beet_weed_waste
+          role: "Weeds from sugar beet cleaning"
+          name: "Weeds from sugar beet cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weeds from sugar beet cleaning cross the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified waste flow. Keep this plant-tare identity, quantity and destination separate from beet tops and all other tare."
+          amount:
+            expression: "Weighed dispatched weed mass by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: beet_top_waste
+          role: "Beet tops from sugar beet cleaning"
+          name: "Beet tops from sugar beet cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Beet tops from sugar beet cleaning cross the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified waste flow. Keep this plant-tare identity, quantity and destination separate from weeds and all other tare."
+          amount:
+            expression: "Weighed dispatched beet-top mass by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Sugar-beet cleaning wastewater"
+          name: "Sugar-beet cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Sugar-beet cleaning wastewater crosses the sugar beet reception, fluming, washing, and tare removal boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered net transfer volume to treatment or off-site hand-off."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      elementary:
+        []
+  - id: slicing_diffusion
+    label: "Beet slicing and countercurrent diffusion"
+    inputs:
+      product:
+        - row_id: diffusion_beet_input
+          role: "Cleaned sugar beet"
+          name: "Cleaned sugar beet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cleaned sugar beet crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured internal transfer from reception and cleaning."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: diffusion_fresh_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Do not combine with recovered condensate or pulp-press water."
+          amount:
+            expression: "Metered external water added to the diffuser."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: diffusion_recovered_condensate
+          role: "Recovered process condensate"
+          name: "Recovered process condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Recovered process condensate crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Record once as an internal transfer and prevent an equivalent external-water input."
+          amount:
+            expression: "Metered internal condensate supplied to diffusion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: diffusion_pulp_press_water
+          role: "Beet-pulp press water"
+          name: "Beet-pulp press water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Beet-pulp press water crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered internal pulp-press water returned to diffusion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: diffusion_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered steam enthalpy supplied to the diffuser."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: diffusion_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered electricity for slicers, conveyors, pumps and diffuser drives."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: raw_diffusion_juice
+          role: "Raw sugar-beet diffusion juice"
+          name: "Raw sugar-beet diffusion juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Raw sugar-beet diffusion juice crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured or balanced juice mass with sucrose and dry-matter analyses."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: wet_beet_pulp
+          role: "Wet beet pulp"
+          name: "Wet beet pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet beet pulp crosses the beet slicing and countercurrent diffusion boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured wet pulp mass and dry matter at the diffuser outlet."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: juice_purification
+    label: "Juice liming, carbonatation, clarification, and filtration"
+    inputs:
+      product:
+        - row_id: purification_raw_juice
+          role: "Raw sugar-beet diffusion juice"
+          name: "Raw sugar-beet diffusion juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Raw sugar-beet diffusion juice crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured internal transfer from diffusion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: purification_quicklime
+          role: "Calcium oxide"
+          name: "Calcium oxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calcium oxide crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. If limestone is calcined on site, model limestone and kiln operation in a separate applicable process rather than substituting its mass here."
+          amount:
+            expression: "Stock-adjusted mass of calcium oxide used for liming."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: purification_carbon_dioxide
+          role: "Carbon dioxide"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered purchased or on-site-generated carbon dioxide entering carbonatation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: purification_sulfur_dioxide
+          role: "Sulfur dioxide"
+          name: "Sulfur dioxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Conditional: record only when the plant sulfites purified juice."
+          amount:
+            expression: "Metered sulfur dioxide entering sulfitation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: purification_diatomaceous_earth
+          role: "Diatomaceous earth filter aid"
+          name: "Diatomaceous earth filter aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diatomaceous earth filter aid crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Conditional: record only when this specific filter aid is used."
+          amount:
+            expression: "Stock-adjusted mass dosed to filtration."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: purification_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered external water used for slaking, filter washing or other purification duties."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: purification_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered steam enthalpy supplied to juice heating and purification."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: purification_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered electricity for pumps, filters and clarification equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: purified_thin_juice
+          role: "Purified sugar-beet thin juice"
+          name: "Purified sugar-beet thin juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purified sugar-beet thin juice crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured thin-juice mass with sucrose, dry matter and impurity indicators."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: carbonatation_lime_product
+          role: "Carbonatation lime"
+          name: "Carbonatation lime"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carbonatation lime crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified product flow. Use this product row only when the output qualifies as a co-product."
+          amount:
+            expression: "Weighed output sent to a documented beneficial use with specification and economic status."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        - row_id: carbonatation_lime_waste
+          role: "Waste carbonatation lime"
+          name: "Waste carbonatation lime"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste carbonatation lime crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified waste flow. Mutually exclusive with the co-product quantity for the same material."
+          amount:
+            expression: "Weighed lime mud or filter-cake waste sent to its actual treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: spent_diatomaceous_earth
+          role: "Spent diatomaceous earth filter aid"
+          name: "Spent diatomaceous earth filter aid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent diatomaceous earth filter aid crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified waste flow. Conditional on use of diatomaceous earth."
+          amount:
+            expression: "Weighed spent filter aid by actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: purification_wastewater
+          role: "Sugar-juice purification wastewater"
+          name: "Sugar-juice purification wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Sugar-juice purification wastewater crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered net wastewater transferred to treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      elementary:
+        - row_id: purification_ammonia_air
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia, to air crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified elementary flow. Record only when monitored or material to the route."
+          amount:
+            expression: "Measured vented mass or concentration-flow-duration calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: purification_sulfur_dioxide_air
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide, to air crosses the juice liming, carbonatation, clarification, and filtration boundary as one separately quantified elementary flow. Conditional on sulfitation; do not combine with other sulfur species."
+          amount:
+            expression: "Measured release or sulfur balance for sulfitation vents."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+  - id: evaporation_crystallisation
+    label: "Juice evaporation, vacuum crystallisation, and centrifugation"
+    inputs:
+      product:
+        - row_id: evaporation_juice_input
+          role: "Purified sugar-beet thin juice"
+          name: "Purified sugar-beet thin juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purified sugar-beet thin juice crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured internal thin-juice transfer."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: evaporation_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered steam enthalpy to multiple-effect evaporators and vacuum pans."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: evaporation_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered electricity for evaporators, vacuum equipment, centrifuges and pumps."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: evaporation_cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Cooling water crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep recirculated cooling water out of the external input."
+          amount:
+            expression: "Metered external cooling-water input."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sugar_crystals
+          role: "Beet-sugar crystals"
+          name: "Beet-sugar crystals"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Beet-sugar crystals crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured crystal mass after centrifugation and before finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_release
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: beet_molasses
+          role: "Beet molasses"
+          name: "Beet molasses"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Beet molasses crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured molasses mass with dry matter, sugar content and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: recovered_condensate
+          role: "Recovered process condensate"
+          name: "Recovered process condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Recovered process condensate crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered condensate sent to a named internal use or external destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        - row_id: evaporation_wastewater
+          role: "Evaporation and crystallisation wastewater"
+          name: "Evaporation and crystallisation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Evaporation and crystallisation wastewater crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered net blowdown, cleaning and process wastewater sent to treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      elementary:
+        - row_id: process_water_vapour
+          role: "Water, to air"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Water, to air crosses the juice evaporation, vacuum crystallisation, and centrifugation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Water balance residual assigned to measured or calculated evaporation after internal condensate recovery."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+  - id: sugar_finishing
+    label: "Sugar drying, cooling, storage, quality release, and packaging"
+    inputs:
+      product:
+        - row_id: finishing_sugar_crystals
+          role: "Beet-sugar crystals"
+          name: "Beet-sugar crystals"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Beet-sugar crystals crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured internal transfer from crystallisation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_release
+              source_ids:
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered electricity for drying, cooling, conveying, silos and packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Conditional on actual steam use."
+          amount:
+            expression: "Metered steam supplied to indirect sugar drying or facility finishing duties."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_hot_water
+          role: "Hot water"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Hot water crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep the water mass in the site water balance and avoid double counting its heat."
+          amount:
+            expression: "Metered heat content of externally supplied hot water used in finishing or cleaning."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_ammonia_refrigerant
+          role: "Ammonia refrigerant"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Conditional on ammonia refrigeration; other refrigerants require separate rows."
+          amount:
+            expression: "Stock reconciliation of ammonia charged to finishing refrigeration equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_paper_sack
+          role: "Kraft paper sugar sack"
+          name: "Kraft paper sugar sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Kraft paper sugar sack crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "BOM and stock-reconciled mass used for packaged product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_polypropylene_woven_sack
+          role: "Woven polypropylene sugar sack"
+          name: "Woven polypropylene sugar sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Woven polypropylene sugar sack crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "BOM and stock-reconciled mass used for packaged product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_ldpe_liner
+          role: "Low-density polyethylene bag liner"
+          name: "Low-density polyethylene bag liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene bag liner crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "BOM and stock-reconciled mass used for packaged product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_corrugated_carton
+          role: "Corrugated paperboard carton"
+          name: "Corrugated paperboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated paperboard carton crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "BOM and stock-reconciled mass used for packaged product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_wood_pallet
+          role: "Wood pallet"
+          name: "Wood pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wood pallet crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Issued pallet mass assigned to the declared packaged product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_beet_sugar
+          role: "Beet sugar"
+          name: "Beet sugar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f6141c1d-e50a-4f80-9125-cc7eb82eb51a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Beet sugar crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified product flow. The released reference product is the only inventory row carrying the confirmed beet-sugar UUID."
+          amount:
+            expression: "Fixed at 1 kg net conforming beet sugar; packaging mass is excluded."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_product_quality_release
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: offspec_beet_sugar_waste
+          role: "Off-specification beet sugar"
+          name: "Off-specification beet sugar"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-specification beet sugar crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed mass leaving internal rework for downgrade, recovery or waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: waste_kraft_paper_sack
+          role: "Waste kraft paper sugar sack"
+          name: "Waste kraft paper sugar sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste kraft paper sugar sack crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed paper-sack scrap by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: waste_polypropylene_woven_sack
+          role: "Waste woven polypropylene sugar sack"
+          name: "Waste woven polypropylene sugar sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste woven polypropylene sugar sack crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed woven-polypropylene sack scrap by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: waste_ldpe_liner
+          role: "Waste low-density polyethylene liner"
+          name: "Waste low-density polyethylene liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste low-density polyethylene liner crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed liner scrap by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: waste_corrugated_carton
+          role: "Waste corrugated paperboard carton"
+          name: "Waste corrugated paperboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste corrugated paperboard carton crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed carton scrap by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: waste_wood_pallet
+          role: "Waste wood pallet"
+          name: "Waste wood pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste wood pallet crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed unusable pallet mass by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: sugar_particulate_matter_air
+          role: "Particulate matter, PM10, to air"
+          name: "Particulate matter, PM10, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter, PM10, to air crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified elementary flow. Do not combine PM10 with other particulate size fractions."
+          amount:
+            expression: "Post-abatement monitored mass or concentration-flow-duration calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_ammonia_air
+          role: "Ammonia, to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia, to air crosses the sugar drying, cooling, storage, quality release, and packaging boundary as one separately quantified elementary flow. Conditional on ammonia refrigeration."
+          amount:
+            expression: "Refrigerant stock loss adjusted for recovered and transferred ammonia."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+  - id: pulp_handling
+    label: "Beet-pulp pressing, drying, and co-product preparation"
+    inputs:
+      product:
+        - row_id: pulp_wet_input
+          role: "Wet beet pulp"
+          name: "Wet beet pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet beet pulp crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Measured internal pulp transfer from diffusion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: pulp_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered electricity for pressing, drying auxiliaries and conveying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_drying_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on indirect steam drying."
+          amount:
+            expression: "Metered steam for indirect pulp drying."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_drying_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on natural-gas firing."
+          amount:
+            expression: "Metered natural-gas energy for direct pulp drying."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_drying_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Diesel fuel crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on diesel firing."
+          amount:
+            expression: "Stock-reconciled diesel energy for direct pulp drying."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_drying_lpg
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Liquefied petroleum gas crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on LPG firing."
+          amount:
+            expression: "Metered or stock-reconciled LPG energy for direct pulp drying."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_molasses_input
+          role: "Beet molasses"
+          name: "Beet molasses"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Beet molasses crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on molassed-pulp production."
+          amount:
+            expression: "Measured molasses applied to beet pulp."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pressed_beet_pulp
+          role: "Pressed beet pulp"
+          name: "Pressed beet pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pressed beet pulp crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Use for pressed pulp dispatched or transferred as a separately quantified state."
+          amount:
+            expression: "Weighed pressed-pulp output with dry matter."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: dried_beet_pulp
+          role: "Dried beet pulp"
+          name: "Dried beet pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dried beet pulp crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on on-site drying."
+          amount:
+            expression: "Weighed dried-pulp output with dry matter."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: molassed_beet_pulp
+          role: "Molassed beet pulp"
+          name: "Molassed beet pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Molassed beet pulp crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified product flow. Conditional on on-site molassing."
+          amount:
+            expression: "Weighed molassed-pulp output with dry matter and molasses addition."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_dispatch
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      waste:
+        - row_id: offspec_beet_pulp_waste
+          role: "Off-specification beet pulp"
+          name: "Off-specification beet pulp"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-specification beet pulp crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed pulp rejected from useful output and sent to actual treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: pulp_dryer_pm10_air
+          role: "Particulate matter, PM10, to air"
+          name: "Particulate matter, PM10, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter, PM10, to air crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or concentration-flow-duration calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_dryer_nitrogen_oxides_air
+          role: "Nitrogen oxides, to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides, to air crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-and-factor calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_dryer_carbon_monoxide_air
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon monoxide, to air crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-and-factor calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_dryer_sulfur_oxides_air
+          role: "Sulfur oxides, to air"
+          name: "Sulfur oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur oxides, to air crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified elementary flow. Conditional where sulfur-bearing fuel is used."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-sulfur calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pulp_dryer_tvoc_air
+          role: "Non-methane volatile organic compounds, to air"
+          name: "Non-methane volatile organic compounds, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Non-methane volatile organic compounds, to air crosses the beet-pulp pressing, drying, and co-product preparation boundary as one separately quantified elementary flow. Conditional on high-temperature direct drying or monitoring requirement."
+          amount:
+            expression: "Post-abatement monitored total non-methane volatile-organic mass."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: onsite_energy_supply
+    label: "On-site steam, electricity, and hot-water generation"
+    inputs:
+      product:
+        - row_id: boiler_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered external boiler make-up water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_auxiliary_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered imported electricity used by boilers and generators."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on natural-gas use."
+          amount:
+            expression: "Metered natural-gas energy using the period lower heating value."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Diesel fuel crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on diesel use."
+          amount:
+            expression: "Delivery and stock-reconciled diesel energy."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_lpg
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Liquefied petroleum gas crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on LPG use."
+          amount:
+            expression: "Metered or stock-reconciled LPG energy."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_hard_coal
+          role: "Hard coal"
+          name: "Hard coal"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Hard coal crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on coal use."
+          amount:
+            expression: "Delivery and stock-reconciled coal energy with lower heating value."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_recovered_biogas
+          role: "Biogas"
+          name: "Biogas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Biogas crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on biogas use."
+          amount:
+            expression: "Metered recovered-biogas energy with methane content."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: boiler_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on this specific treatment chemistry."
+          amount:
+            expression: "Stock-adjusted mass dosed to boiler-water treatment."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: boiler_trisodium_phosphate
+          role: "Trisodium phosphate"
+          name: "Trisodium phosphate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Trisodium phosphate crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Conditional on this specific treatment chemistry."
+          amount:
+            expression: "Stock-adjusted mass dosed to boiler-water treatment."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: onsite_steam_output
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered useful steam enthalpy sent to production."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_electricity_output
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered generated electricity sent to production or export."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_hot_water_output
+          role: "Hot water"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Hot water crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered useful hot-water heat sent to production."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: boiler_bottom_ash_waste
+          role: "Boiler bottom ash"
+          name: "Boiler bottom ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Boiler bottom ash crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified waste flow. Conditional on ash-forming fuel."
+          amount:
+            expression: "Weighed bottom ash by actual destination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: boiler_fly_ash_waste
+          role: "Boiler fly ash"
+          name: "Boiler fly ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Boiler fly ash crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified waste flow. Conditional on ash-forming fuel."
+          amount:
+            expression: "Weighed collected fly ash by actual destination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: boiler_blowdown_wastewater
+          role: "Boiler blowdown wastewater"
+          name: "Boiler blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Boiler blowdown wastewater crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered blowdown sent to treatment or discharge."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: onsite_carbon_dioxide_fossil_air
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide, fossil, to air crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Fuel input multiplied by a cited carbon and oxidation factor or direct measurement."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_carbon_dioxide_biogenic_air
+          role: "Carbon dioxide, biogenic, to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide, biogenic, to air crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Biogas input multiplied by a cited biogenic-carbon and oxidation factor."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_nitrogen_oxides_air
+          role: "Nitrogen oxides, to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides, to air crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-and-factor calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_sulfur_dioxide_air
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide, to air crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-sulfur calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_carbon_monoxide_air
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon monoxide, to air crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-and-factor calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: onsite_pm10_air
+          role: "Particulate matter, PM10, to air"
+          name: "Particulate matter, PM10, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter, PM10, to air crosses the on-site steam, electricity, and hot-water generation boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Post-abatement monitored mass or fuel-and-factor calculation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+  - id: wastewater_treatment
+    label: "Wastewater collection, treatment, discharge, and residual management"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_electricity
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Submetered electricity for pumps, aeration and treatment equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_calcium_hydroxide
+          role: "Calcium hydroxide"
+          name: "Calcium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calcium hydroxide crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified product flow. Conditional on this specific treatment chemistry."
+          amount:
+            expression: "Stock-adjusted mass dosed for pH or precipitation."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: wastewater_ferric_chloride
+          role: "Ferric chloride"
+          name: "Ferric chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ferric chloride crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified product flow. Conditional on this specific treatment chemistry."
+          amount:
+            expression: "Stock-adjusted mass dosed for coagulation or phosphorus removal."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: wastewater_polyacrylamide
+          role: "Anionic polyacrylamide"
+          name: "Anionic polyacrylamide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anionic polyacrylamide crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified product flow. Conditional on this specific treatment chemistry."
+          amount:
+            expression: "Stock-adjusted mass dosed for flocculation or sludge dewatering."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_inventory
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: wastewater_received
+          role: "Beet-sugar manufacturing wastewater"
+          name: "Beet-sugar manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Beet-sugar manufacturing wastewater crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered net influent by source stream without double counting internal transfers."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_process_water
+          role: "Treated process water"
+          name: "Treated process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Treated process water crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified product flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Metered treated water recycled to a named process or sent to another installation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: recovered_biogas
+          role: "Biogas"
+          name: "Biogas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Biogas crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified product flow. Conditional on anaerobic treatment and useful recovery."
+          amount:
+            expression: "Metered useful biogas with methane content and destination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: wastewater_treatment_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater-treatment sludge crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified waste flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Weighed wet and dry sludge mass by actual destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_residue_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+      elementary:
+        - row_id: effluent_bod5_water
+          role: "Biochemical oxygen demand, BOD5, to water"
+          name: "Biochemical oxygen demand, BOD5, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Biochemical oxygen demand, BOD5, to water crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by representative BOD5 concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: effluent_cod_water
+          role: "Chemical oxygen demand, to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chemical oxygen demand, to water crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by representative COD concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: effluent_suspended_solids_water
+          role: "Suspended solids, to water"
+          name: "Suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Suspended solids, to water crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by representative suspended-solids concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - eu-fdm-bat-2019
+                - us-epa-beet-sugar-1974
+            ranges: []
+        - row_id: effluent_total_nitrogen_water
+          role: "Nitrogen, total, to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen, total, to water crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by representative total-nitrogen concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: effluent_total_phosphorus_water
+          role: "Phosphorus, total, to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Phosphorus, total, to water crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified elementary flow. Keep its identity, quantity and destination or source separate from all alternatives."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by representative total-phosphorus concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_quantity_quality
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: wastewater_methane_air
+          role: "Methane, to air"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Methane, to air crosses the wastewater collection, treatment, discharge, and residual management boundary as one separately quantified elementary flow. Conditional on anaerobic treatment."
+          amount:
+            expression: "Anaerobic-treatment gas balance minus captured, flared and oxidised methane."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming beet sugar"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_subdivide
+    applies_to: "separable operations"
+    rule: "Avoid allocation through meters, batch records and subdivision."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: alloc_internal_recycling
+    applies_to: "internal loops"
+    rule: "Do not treat an internal recovered flow as a co-product and do not credit it twice."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - iso-14044-2006
+  - rule_id: alloc_output_classification
+    applies_to: "pulp, molasses, lime and recovered biogas"
+    rule: "Use a product row only with documented specification, beneficial destination and economic status; otherwise use the corresponding waste row."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - us-epa-beet-sugar-1974
+      - iso-14044-2006
+  - rule_id: alloc_economic_coproducts
+    applies_to: "inseparable shared burdens"
+    rule: "After subdivision, use same-period factory-gate net revenue only when no defensible physical relationship exists; disclose prices and sensitivity."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "all"
+      flow_role: "feedstocks and intermediates"
+      record_type: "scales, tanks, inventories and laboratory records"
+      raw_fields: "flow; mass; inventory; moisture; sucrose; time"
+      collection_method: "calibrated measurement and stock reconciliation"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "full campaign"
+      site_scope: "site"
+      aggregation_rule: "sum each atomic flow and normalise"
+      quality_evidence: "calibration, ledger and analyses"
+    - protocol_id: cp_water_balance
+      process_id: "all"
+      flow_role: "water and condensate"
+      record_type: "flowmeters, tanks and moisture records"
+      raw_fields: "source; destination; volume; density; reuse flag"
+      collection_method: "meter external and internal streams separately"
+      unit: "m3; kg"
+      frequency: "continuous/shift"
+      temporal_coverage: "full campaign"
+      site_scope: "site"
+      aggregation_rule: "close net site balance"
+      quality_evidence: "calibration and water-loop diagram"
+    - protocol_id: cp_energy_balance
+      process_id: "all"
+      flow_role: "electricity, steam, hot water and fuels"
+      record_type: "meters, deliveries and stock"
+      raw_fields: "carrier; quantity; LHV; source; destination"
+      collection_method: "carrier-specific meter and stock reconciliation"
+      unit: "kWh; MJ"
+      frequency: "continuous/daily"
+      temporal_coverage: "full campaign"
+      site_scope: "site"
+      aggregation_rule: "preserve carrier identity"
+      quality_evidence: "meters, invoices and fuel analyses"
+    - protocol_id: cp_chemical_inventory
+      process_id: "purification_energy_and_treatment"
+      flow_role: "each chemical"
+      record_type: "purchase, stock and dosing records"
+      raw_fields: "chemical; grade; purity; stock; dose"
+      collection_method: "opening plus receipts minus closing and transfers"
+      unit: "kg"
+      frequency: "batch/daily"
+      temporal_coverage: "full campaign"
+      site_scope: "consuming unit"
+      aggregation_rule: "sum each chemical separately"
+      quality_evidence: "supplier specification and dosing log"
+    - protocol_id: cp_refrigerant_records
+      process_id: "sugar_finishing"
+      flow_role: "refrigerant charge and loss"
+      record_type: "service and stock records"
+      raw_fields: "refrigerant; charge; recovery; addition; transfer"
+      collection_method: "refrigerant mass balance"
+      unit: "kg"
+      frequency: "each service; annual"
+      temporal_coverage: "reporting period"
+      site_scope: "refrigeration system"
+      aggregation_rule: "additions minus recovery and inventory change"
+      quality_evidence: "service log"
+    - protocol_id: cp_product_quality_release
+      process_id: "crystallisation_and_finishing"
+      flow_role: "crystals and reference sugar"
+      record_type: "scale and laboratory release"
+      raw_fields: "lot; mass; sucrose; moisture; grade; status"
+      collection_method: "calibrated mass and declared analytical method"
+      unit: "kg; fraction"
+      frequency: "each lot"
+      temporal_coverage: "full campaign"
+      site_scope: "product system"
+      aggregation_rule: "net released mass"
+      quality_evidence: "calibration and release certificate"
+    - protocol_id: cp_coproduct_dispatch
+      process_id: "pulp_lime_molasses_and_biogas"
+      flow_role: "useful outputs"
+      record_type: "scales, quality, destination and invoice"
+      raw_fields: "product; state; mass; dry matter; destination; value"
+      collection_method: "reconcile dispatch and inventory"
+      unit: "kg; MJ"
+      frequency: "each dispatch"
+      temporal_coverage: "same inventory period"
+      site_scope: "site"
+      aggregation_rule: "separate each product state"
+      quality_evidence: "specification and acceptance"
+    - protocol_id: cp_packaging_records
+      process_id: "sugar_finishing"
+      flow_role: "each package component"
+      record_type: "BOM, issue and stock"
+      raw_fields: "component; material; mass; count; scrap"
+      collection_method: "component mass and stock reconciliation"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same product period"
+      site_scope: "packaging line"
+      aggregation_rule: "each material separately"
+      quality_evidence: "supplier specification and stock"
+    - protocol_id: cp_waste_and_residue_records
+      process_id: "all"
+      flow_role: "each waste"
+      record_type: "transfer note, scale and contractor"
+      raw_fields: "waste; origin; mass; destination; treatment"
+      collection_method: "weigh dispatch and reconcile storage"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "full campaign"
+      site_scope: "site"
+      aggregation_rule: "each waste and destination separately"
+      quality_evidence: "transfer note and acceptance"
+    - protocol_id: cp_wastewater_quantity_quality
+      process_id: "cleaning_purification_energy_and_treatment"
+      flow_role: "wastewater and water pollutants"
+      record_type: "flow and laboratory sampling"
+      raw_fields: "stream; volume; analyte; concentration; period"
+      collection_method: "match flow and representative sample"
+      unit: "m3; kg"
+      frequency: "continuous/permit"
+      temporal_coverage: "full campaign"
+      site_scope: "each stream"
+      aggregation_rule: "pollutant-specific load"
+      quality_evidence: "calibration and laboratory report"
+    - protocol_id: cp_air_emissions
+      process_id: "purification_finishing_drying_energy_and_treatment"
+      flow_role: "each air pollutant"
+      record_type: "stack, monitor, fuel and operating log"
+      raw_fields: "source; pollutant; concentration; flow; time; fuel; factor"
+      collection_method: "direct measurement or transparent calculation"
+      unit: "kg"
+      frequency: "continuous/permit"
+      temporal_coverage: "representative campaign"
+      site_scope: "each source"
+      aggregation_rule: "pollutant-specific mass"
+      quality_evidence: "monitor/stack report and factor citation"
+  calculation_rules:
+    - id: calc_reference_normalisation
+      applies_to: "all rows"
+      rule: "assigned period amount / net conforming beet-sugar mass"
+      inputs:
+        - "atomic amount"
+        - "reference mass"
+      output: "amount/kg sugar"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_mass_sucrose_balance
+      applies_to: "material stages"
+      rule: "reconcile mass and measured sucrose across products, wastes, emissions and inventory change"
+      inputs:
+        - masses
+        - analyses
+        - inventories
+      output: "closure"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - us-epa-beet-sugar-1974
+    - id: calc_water_balance
+      applies_to: "site and water processes"
+      rule: "external plus embedded water = products plus wastes plus discharge plus evaporation plus inventory change; internal loops cancel"
+      inputs:
+        - "water records"
+      output: "closure"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - us-epa-beet-sugar-1974
+    - id: calc_energy_balance
+      applies_to: "site energy"
+      rule: "reconcile each carrier's import, generation, use, recovery and export; fuel energy = quantity × cited LHV"
+      inputs:
+        - meters
+        - fuel
+        - LHV
+      output: "carrier balance"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - eu-fdm-bat-2019
+    - id: calc_pollutant_load
+      applies_to: "air and water emissions"
+      rule: "matched concentration × flow × time, or measured carrier × cited factor"
+      inputs:
+        - "measurements and factors"
+      output: "pollutant mass"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - eu-fdm-bat-2019
+        - us-epa-beet-sugar-1974
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all rows"
+      requirement: "Resolve only exact Tiangong identities; unresolved UUIDs stay blank and manifest-listed."
+      evidence: "double-kernel identity review"
+    - id: dq_atomicity
+      applies_to: "all rows"
+      requirement: "No card may combine carriers, alternatives, package types, wastes or pollutants."
+      evidence: "parser audit and applicability log"
+    - id: dq_primary
+      applies_to: "foreground"
+      requirement: "Use complete company-specific campaign records including start-up, shutdown and inventory change."
+      evidence: "dated raw records"
+    - id: dq_balance
+      applies_to: "mass, sucrose, energy and water"
+      requirement: "Close balances within declared measurement uncertainty and investigate residuals."
+      evidence: "reconciliation worksheets"
+    - id: dq_background
+      applies_to: "upstream links"
+      requirement: "Match material, technology, geography and time and disclose every proxy."
+      evidence: "dataset selection record"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "reference"
+    rule: "Use Beet sugar f6141c1d-e50a-4f80-9125-cc7eb82eb51a, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, kg and CPC 23512."
+    source_ids: []
+  - rule_id: val_atomic_inventory
+    applies_to: "inventory"
+    rule: "Each selected flow shall be a single concrete exchange and every card shall contain a non-empty description."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - eu-fdm-bat-2019
+      - us-epa-beet-sugar-1974
+  - rule_id: val_no_provisional_ranges
+    applies_to: "amounts"
+    rule: "No inference-only quantitative range may remain; quantities shall come from foreground records, calculation rules or cited external evidence."
+    source_ids: []
+  - rule_id: val_route_completeness
+    applies_to: "conditional routes"
+    rule: "Declare applicability for every chemical, energy, refrigeration, pulp, treatment and packaging row."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - eu-fdm-bat-2019
+      - us-epa-beet-sugar-1974
+  - rule_id: val_balances
+    applies_to: "material, sucrose, energy and water"
+    rule: "Reconcile all imports, internal transfers, products, wastes, emissions and inventory changes without double counting."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - us-epa-beet-sugar-1974
+  - rule_id: val_uuid_resolution
+    applies_to: "identity"
+    rule: "Only double-confirmed UUIDs may be populated; all other rows shall remain blank and manifest-listed."
+    source_ids: []
+  - rule_id: val_allocation
+    applies_to: "co-products"
+    rule: "Declare state, destination, economic status and allocation for every qualifying co-product."
+    source_ids:
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground beet-sugar manufacturing dataset"
+  downstream_use: "LCA process, lifecycle model and product-footprint studies"
+  allowed_use: "Beet-sugar routes matching declared site, campaign, technology, product and packaging"
+  excluded_use: "Cane sugar, raw-sugar refining, cultivation, distribution, use or end-of-life"
+  required_metadata: "PCR id; CPC; reference UUID chain; grade; sucrose/moisture; route; site; campaign; energy; water; treatment; packaging; co-products; allocation"
+  required_quality_disclosure: "primary-data coverage; balances; meters; analyses; proxies; applicability; unresolved UUIDs; allocation and uncertainty"
+  update_trigger: "change in product, beet source, process, fuel, refrigerant, treatment, package, co-product market, allocation, site, period, source or UUID"
+data_sources:
+  - id: "ec-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, 2019. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf"
+    used_for: "process boundary, water/energy loops, chemicals, co-products, wastes and emissions; beet-input QA range"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031, BAT conclusions for food, drink and milk industries. https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj"
+    used_for: "beet-pulp pressing/drying routes; energy and wastewater performance context; PM10, NOx, CO, SOx and NMVOC monitoring"
+  - id: "us-epa-beet-sugar-1974"
+    type: "official_guidance"
+    reference: "US EPA, Development Document for Effluent Limitations Guidelines and Standards of Performance for New Sources: Beet Sugar Processing Subcategory, EPA 440/1-74-002-b, 1974. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=10004HMU.TXT"
+    used_for: "independent process decomposition; beet, limestone/lime, sulfur, fuel and water inputs; diffusion, pulp water return, carbonatation, sulfitation, wastewater and water balance"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines. https://www.iso.org/standard/38498.html"
+    used_for: "boundary, allocation, calculation, quality and reporting"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:40b73e772449e733346846bb9e93a52144fd330e5cff8e65cdc9c11281ddc9e8"
+  generated_content_sha256: "sha256:dad4f649eae5e10732e467c4066dec8d9e3abfcfa21768ced05da4c9a8d6da1b"

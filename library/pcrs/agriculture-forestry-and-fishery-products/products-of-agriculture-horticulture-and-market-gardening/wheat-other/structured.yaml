@@ -1,10 +1,788 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "01112"
-  title: "Wheat, other"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-other"
+  classification_refs: "CPC 3.0:01112 Wheat, other"
+  covered_products: "Wheat grain not intended for sowing within CPC 3.0 code 01112, including common wheat, durum wheat, club wheat, red durum wheat, and another declared wheat type; harvested, dried, cleaned, handled, or conditioned grain where those operations are declared"
+  excluded_products: "Wheat seed for sowing; flour; semolina; bran; straw as the declared product; foods and other manufactured wheat products"
+  representative_product: "Tempered wheat grain conditioned for milling"
+  production_route: "Field cultivation, harvest, postharvest drying and cleaning, and declared conditioning or tempering"
+  market_state: "Bulk saleable grain at the declared farm, storage, or conditioning gate; moisture, grade, destination, and conditioning status declared"
+functional_unit:
+  what: "Non-seed wheat grain delivered as tempered grain conditioned for milling"
+  how_much: "1,000 kg net saleable grain on the declared as-received moisture basis"
+  how_well: "Wheat suitable for its declared processing use; for common wheat and durum wheat intended for human-food processing within the scope of CXS 199-1995, moisture is not above 14.5% m/m and that standard's quality and safety qualifiers apply; other wheat types follow their separately declared destination specification"
+  how_long_or_cycle: "One declared crop cycle and its associated postharvest conditioning lot; storage beyond the declared gate is excluded unless explicitly modelled"
+  reference_flow_link: "The quantity of the reference product output row tempered_wheat_reference_product equals 1,000 kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_crop_cycle
+      applies_to: "foreground_system_boundary"
+      rule: "Include field preparation, sowing, crop husbandry, irrigation where used, fertiliser and crop-protection application, harvest, and the postharvest operations needed to reach the declared reference grain state."
+      source_ids:
+        - fao-leap-animal-feeds-2016
+    - rule_id: boundary_upstream_inputs
+      applies_to: "upstream_dataset_links"
+      rule: "Link upstream production and delivery datasets for every purchased material and energy input; keep the on-farm or postharvest use in the foreground inventory."
+      source_ids:
+        - eu-pef-2021-2279
+        - fao-leap-animal-feeds-2016
+    - rule_id: boundary_field_emissions
+      applies_to: "direct_field_emissions"
+      rule: "Include direct and indirect nitrogen emissions from managed soil, crop-residue nitrogen returned to soil, and CO2 from lime and urea when applicable; apply a declared IPCC tier or a reviewed regional method without double counting."
+      source_ids:
+        - ipcc-2019-managed-soils
+    - rule_id: boundary_postharvest_gate
+      applies_to: "postharvest_operations"
+      rule: "Include drying, cleaning, handling, storage, and tempering only to the declared gate; disclose excluded storage or conditioning and do not include milling or food manufacture."
+      source_ids:
+        - codex-cxs-199-1995
+        - eu-pef-2021-2279
+    - rule_id: boundary_data_gaps
+      applies_to: "completeness"
+      rule: "Do not omit an environmentally relevant flow solely because primary data are missing. Use a documented proxy or provisional estimate, disclose the gap and uncertainty, and prioritize replacement with primary data."
+      source_ids:
+        - eu-pef-2021-2279
+        - fao-leap-animal-feeds-2016
+boundary_abstraction:
+  declared_starting_condition: "Field prepared for sowing at the start of the declared crop cycle, with prior land use, previous crop, soil condition, and retained residue state declared"
+  starting_condition_role: "Foreground cultivation starting gate"
+  product_classification_scope: "CPC 3.0 code 01112 non-seed wheat grain; CPC 01111 wheat seed is an upstream input category, not the reference product"
+  recursive_input_rule: "If a CPC 01112 wheat product enters the foreground system, record it once at the physical receiving process and link a separate upstream dataset; do not expand another copy of this PCR inside the same foreground package"
+  upstream_dataset_requirement: "Purchased seed, fertilisers, amendments, crop-protection products, fuels, electricity, water supply, and transport services require geographically and temporally appropriate upstream datasets"
+  disclosure: "Declare land-use history, crop rotation, tillage, irrigation, fertiliser and residue management, yield, grain moisture, co-product treatment, postharvest operations, storage duration included, and final gate"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Tempered wheat grain"
+    uuid: "78bd12e1-801c-4f96-a880-dba39e22783c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species or cultivar"
+    - "seed status"
+    - "intended use"
+    - geography
+    - "crop season"
+    - "irrigation regime"
+    - "tillage and rotation context"
+    - "moisture content and measurement method"
+    - "market grade"
+    - "drying and cleaning status"
+    - "tempering status"
+    - "final gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all grain mass balances"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record the reference amount as net saleable grain mass. Packaging, vehicle tare, and rejected material are excluded from reference mass."
+  - id: moisture_basis
+    applies_to: "Grain inputs, intermediate grain, and reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and % m/m moisture"
+    rule: "Preserve measured as-received mass and moisture. If masses are converted to a common moisture basis, use dry matter conservation and retain both measured and converted values. For common wheat and durum wheat intended for human-food processing within its stated scope, validate the final lot against the 14.5% m/m maximum in codex-cxs-199-1995; otherwise apply the separately declared destination specification."
+  - id: area_normalization
+    applies_to: "Area-based cultivation records"
+    required_property_ref:
+      name: "Area"
+      uuid: ""
+    required_unit: "ha"
+    rule: "Normalize each crop-cycle amount to 1,000 kg reference product as amount per hectare multiplied by 1,000 and divided by net saleable grain yield in kg per hectare."
+  - id: nutrient_mass
+    applies_to: "Mineral and organic nutrient inputs"
+    required_property_ref:
+      name: "Nutrient mass"
+      uuid: ""
+    required_unit: "kg N, kg P2O5, or kg K2O"
+    rule: "Record both product mass and declared nutrient analysis; never substitute formulated product mass for nutrient mass in emission calculations."
+  - id: energy_consistency
+    applies_to: "Fuel, electricity, drying, and handling energy"
+    required_property_ref:
+      name: "Energy or fuel mass/volume"
+      uuid: ""
+    required_unit: "MJ, kWh, kg, or L"
+    rule: "Preserve the measured billing or meter unit and document any lower-heating-value or electricity conversion factor used for normalization."
+process_map:
+  - id: crop_cultivation
+    name: "Wheat cultivation and harvest"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground crop production; Tiangong process d145ea84-0aa6-4fca-a8f8-99ef3684d016"
+    quantitative_reference: "One declared crop cycle and measured harvested grain output"
+  - id: postharvest_conditioning
+    name: "Grain drying, cleaning, handling, and tempering"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground postharvest preparation; Tiangong processes 7279cfd0-c54b-4799-b15b-3564219d1907 and e080aa90-8ea0-473d-881e-1fcc99d84ee0"
+    quantitative_reference: "1,000 kg net saleable tempered wheat grain"
+process_inventory:
+  - id: crop_cultivation
+    label: "Wheat cultivation and harvest"
+    inputs:
+      product:
+        - row_id: wheat_seed_input
+          role: "Wheat seed for sowing"
+          name: "Wheat seed for sowing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or retained sowing seed that enters the crop cycle. The exact seed flow UUID remains to be selected for the declared seed type and geography."
+          amount:
+            expression: "measured seed issued to the declared field area"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crop_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "50"
+                upper: "350"
+                unit: "kg/ha"
+                basis: "seed applied per cultivated hectare in the declared crop cycle"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fertiliser_and_amendment_inputs
+          role: "Fertilisers and soil amendments"
+          name: "Fertiliser and soil amendment products"
+          flow_type: "product"
+          property_unit: "Mass / kg product and kg declared nutrient"
+          description: "Record each mineral fertiliser, manure, compost, lime, urea, and other amendment separately with product mass, nutrient analysis, application date, and field area."
+          amount:
+            expression: "measured purchased, issued, or applied mass reconciled to field application records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crop_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "800"
+                unit: "kg declared nutrient/ha"
+                basis: "aggregate N, P2O5, and K2O applied per cultivated hectare"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: crop_protection_inputs
+          role: "Crop-protection products"
+          name: "Crop-protection products"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product and kg active ingredient"
+          description: "Record formulated herbicide, fungicide, insecticide, growth regulator, and seed-treatment products separately, including active ingredient concentration where available."
+          amount:
+            expression: "measured issued or applied formulated product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crop_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg formulated product/ha"
+                basis: "total crop-protection product applied per cultivated hectare"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: irrigation_water_input
+          role: "Irrigation water"
+          name: "Irrigation water supply"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include irrigation water only where irrigation occurs. Record both delivered water and, where required by the study, the resource withdrawal and source type without double counting."
+          amount:
+            expression: "metered, pump-runtime-derived, or water-account volume delivered to the field"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crop_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "12000"
+                unit: "m3/ha"
+                basis: "irrigation water delivered per cultivated hectare"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: field_energy_inputs
+          role: "Field fuel and energy"
+          name: "Field fuel and electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record diesel, gasoline, electricity, and other energy carriers separately by operation; retain physical purchase or meter units and the conversion used to aggregate energy."
+          amount:
+            expression: "measured fuel issue and electricity meter records converted to MJ with disclosed factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crop_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50000"
+                unit: "MJ/ha"
+                basis: "aggregate direct field energy per cultivated hectare"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: harvested_wheat_output
+          role: "Harvested wheat grain"
+          name: "Harvested non-seed wheat grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record gross harvested grain and the net saleable quantity after field-level rejects. Moisture shall be measured for every represented lot."
+          amount:
+            expression: "measured scale-ticket or calibrated mass record for harvested and saleable grain"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cultivated hectare and per crop cycle"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_outputs
+              source_ids:
+                - faostat-ag-production-2000-2020
+                - fao-wheat-crop-information
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "9"
+                unit: "t/ha"
+                basis: "deliberately broad screen informed by reported regional means and good-irrigated yield context; replace with reviewed regional evidence and do not treat as an allowed conformance interval"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: collected_crop_coproduct
+          role: "Collected straw or other crop co-product"
+          name: "Collected wheat straw or declared crop co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "Record straw or another crop product only when it is intentionally collected and leaves the field as a product. Residue left or incorporated in soil is not an output product."
+          amount:
+            expression: "measured or calculated collected dry mass, excluding residue returned to soil"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_harvest_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg dry matter/kg net saleable grain"
+                basis: "collected residue dry mass relative to saleable grain mass"
+                basis_kind: "crop_cycle"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        - row_id: managed_soil_n_emissions
+          role: "Managed-soil nitrogen emissions"
+          name: "Nitrous oxide and associated managed-soil nitrogen emissions by compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg emitted substance"
+          description: "Calculate direct and indirect N2O and associated nitrogen-loss pathways from collected nitrogen inputs, residue management, and regional conditions using the declared IPCC tier or an accepted regional method."
+          amount:
+            expression: "calculated separately for direct N2O, volatilization and deposition, and leaching and runoff pathways"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_nitrogen_activity
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "not fixed by this PCR"
+                unit: "kg emitted substance/ha"
+                basis: "calculated emission per cultivated hectare and crop cycle"
+                basis_kind: "crop_cycle"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - ipcc-2019-managed-soils
+        - row_id: lime_urea_co2
+          role: "Carbon dioxide from lime and urea"
+          name: "Carbon dioxide to air from lime and urea application"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Calculate CO2 from lime and urea application when those inputs occur, using collected application masses and the selected IPCC method."
+          amount:
+            expression: "calculated from collected lime and urea application mass and declared carbon-content or default factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable grain output"
+              kind: "crop_cycle"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_nitrogen_activity
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "not fixed by this PCR"
+                unit: "kg CO2/ha"
+                basis: "calculated emission per cultivated hectare and crop cycle"
+                basis_kind: "crop_cycle"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - ipcc-2019-managed-soils
+  - id: postharvest_conditioning
+    label: "Grain drying, cleaning, handling, and tempering"
+    inputs:
+      product:
+        - row_id: received_wheat_input
+          role: "Harvested wheat received"
+          name: "Harvested non-seed wheat grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass and moisture of each received lot and reconcile it with the cultivation output or an upstream wheat dataset."
+          amount:
+            expression: "measured received mass by lot before cleaning and conditioning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable tempered grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.95"
+                upper: "1.30"
+                unit: "kg received grain/kg reference product"
+                basis: "as-received grain before cleaning, drying, and tempering"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_water_input
+          role: "Conditioning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water added during tempering and any separately metered cleaning water. Do not infer water uptake from grain mass difference without a moisture balance."
+          amount:
+            expression: "measured water addition by lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable tempered grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg water/kg reference product"
+                basis: "water added during declared cleaning and tempering operations"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: postharvest_energy_input
+          role: "Postharvest energy"
+          name: "Electricity and fuel supply for postharvest operations"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity and fuels separately for drying, conveying, aeration, cleaning, handling, and tempering."
+          amount:
+            expression: "measured meters, invoices, or equipment logs converted to MJ with disclosed factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable tempered grain output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_postharvest_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "MJ/kg reference product"
+                basis: "aggregate direct postharvest energy through the declared gate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tempered_wheat_reference_product
+          role: "Tempered wheat reference product"
+          name: "Tempered wheat grain"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bd12e1-801c-4f96-a880-dba39e22783c"
+          property_unit: "Mass / kg"
+          description: "This is the declared reference product after the included drying, cleaning, handling, and tempering operations."
+          amount:
+            expression: "exactly 1,000 kg net saleable product on the declared moisture basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "PCR reference product amount"
+                basis_kind: "reference_flow"
+                evidence_kind: "source_rule"
+                source_ids: []
+      waste:
+        - row_id: screenings_and_rejects
+          role: "Screenings and rejected grain"
+          name: "Wheat cleaning screenings and rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record screenings, stones, dust collected as waste, and grain rejected from the saleable product. Material sold or used as a co-product shall be recorded as a product flow instead."
+          amount:
+            expression: "measured rejected or collected waste mass by lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable tempered grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg waste/kg received grain"
+                basis: "waste and rejects relative to received grain mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: grain_dust_to_air
+          role: "Uncaptured grain dust"
+          name: "Particulate matter to air from grain handling"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated uncaptured particulate emissions from drying, conveying, and cleaning; do not include dust already counted in collected screenings."
+          amount:
+            expression: "measured emissions or calculated emissions from equipment-specific factors and throughput"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable tempered grain output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_postharvest_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.01"
+                unit: "kg particulate/kg received grain"
+                basis: "uncaptured dust relative to received grain mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "multifunctional_processes"
+    rule: "Avoid allocation by subdividing cultivation and postharvest operations and assigning directly measured inputs, outputs, and emissions to the product or operation that causes them."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_crop_coproducts
+    applies_to: "collected_straw_and_other_coproducts"
+    rule: "Residue returned to soil receives no product allocation. When straw or another co-product leaves the field and subdivision is not possible, apply a documented physical relationship that reflects causality; if no defensible physical relationship exists, use economic allocation with geography- and period-specific prices and report sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-leap-animal-feeds-2016
+  - rule_id: allocation_rotation
+    applies_to: "shared_rotation_operations"
+    rule: "Assign crop-specific operations directly. Allocate genuinely shared multi-crop or multi-year operations by the physical driver such as treated area, operation time, or measured use, and disclose the chosen driver and period."
+    source_ids:
+      - fao-leap-animal-feeds-2016
+  - rule_id: allocation_waste
+    applies_to: "postharvest_rejects"
+    rule: "Treat material without an intended market or internal productive use as waste. If screenings or rejected grain are sold or used productively, reclassify them as product flows and apply the multifunctionality hierarchy."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_crop_inputs
+      process_id: "crop_cultivation"
+      flow_role: "Seed, fertiliser, amendment, crop-protection, irrigation, fuel, and electricity inputs"
+      record_type: "invoices, issue logs, application logs, meters, field records"
+      raw_fields: "product identity; quantity; nutrient or active-ingredient analysis; field area; date; operation; meter or invoice id"
+      collection_method: "reconcile purchases and issues to field application and meter records"
+      unit: "native unit plus kg, m3, kWh, or MJ after documented conversion"
+      frequency: "each application or operation"
+      temporal_coverage: "full declared crop cycle"
+      site_scope: "every represented field or homogeneous field group"
+      aggregation_rule: "sum by product and field, then normalize by net saleable grain yield"
+      quality_evidence: "invoice or issue record, calibrated meter, application log, field map, and conversion factor source"
+    - protocol_id: cp_harvest_outputs
+      process_id: "crop_cultivation"
+      flow_role: "Harvested grain and collected crop co-products"
+      record_type: "scale tickets, yield monitor, moisture tests, field and storage logs"
+      raw_fields: "gross mass; net mass; moisture; field area; lot id; reject mass; collected straw mass and dry-matter fraction"
+      collection_method: "calibrated scale or validated yield monitor reconciled to storage receipts"
+      unit: "kg, % m/m moisture, ha"
+      frequency: "each harvest lot"
+      temporal_coverage: "complete harvest period for the declared crop cycle"
+      site_scope: "every represented field and storage receiving point"
+      aggregation_rule: "sum lot dry matter and as-received mass separately; retain yield-weighted moisture"
+      quality_evidence: "scale calibration, moisture-meter calibration, lot reconciliation, and field-to-store mass balance"
+    - protocol_id: cp_nitrogen_activity
+      process_id: "crop_cultivation"
+      flow_role: "Managed-soil nitrogen and carbon activity data"
+      record_type: "fertiliser records, amendment analysis, yield and residue records, soil and management records"
+      raw_fields: "synthetic N; organic N; residue yield and N content; removal fraction; urea; lime; soil type; climate; irrigation; method tier"
+      collection_method: "compile activity data required by the declared IPCC or accepted regional method"
+      unit: "kg N, kg product, kg dry matter, ha"
+      frequency: "each application and annual crop-cycle calculation"
+      temporal_coverage: "full crop cycle and applicable emission period"
+      site_scope: "each represented field or homogeneous emission stratum"
+      aggregation_rule: "calculate by stratum, sum emissions, then normalize by saleable grain output"
+      quality_evidence: "source records, laboratory analyses, method version, factors, equations, and independent calculation check"
+    - protocol_id: cp_postharvest_inputs
+      process_id: "postharvest_conditioning"
+      flow_role: "Received grain, conditioning water, electricity, and fuel"
+      record_type: "receiving tickets, moisture tests, water and energy meters, invoices, batch logs"
+      raw_fields: "lot id; received mass and moisture; water added; electricity; fuel; operation; start and end time"
+      collection_method: "calibrated scale, moisture test, meter, invoice, or equipment log"
+      unit: "kg, % m/m moisture, m3, kWh, MJ"
+      frequency: "each lot and billing period"
+      temporal_coverage: "all lots and operations represented by the dataset"
+      site_scope: "each represented receiving and conditioning site"
+      aggregation_rule: "allocate shared meter totals by measured throughput or operating time and disclose method"
+      quality_evidence: "scale and meter calibration, invoices, batch sheets, and meter reconciliation"
+    - protocol_id: cp_postharvest_outputs
+      process_id: "postharvest_conditioning"
+      flow_role: "Saleable grain, screenings, rejects, and dust"
+      record_type: "dispatch tickets, moisture and grade tests, waste tickets, emission measurements or equipment factors"
+      raw_fields: "saleable mass; moisture; grade; waste mass; disposition; particulate result or factor; throughput"
+      collection_method: "calibrated scale and laboratory or inspection records; measured emissions preferred"
+      unit: "kg and % m/m moisture"
+      frequency: "each finished lot and waste movement"
+      temporal_coverage: "all represented postharvest lots"
+      site_scope: "each represented dispatch, storage, and waste-handling site"
+      aggregation_rule: "reconcile incoming grain, water addition, saleable output, waste, and moisture change on wet and dry bases"
+      quality_evidence: "scale calibration, test report, waste receipt, mass-balance check, and factor source where used"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all crop-cycle and process amounts"
+      rule: "Normalized amount = recorded amount multiplied by 1,000 divided by net saleable reference-product mass in kg on the same moisture basis"
+      inputs:
+        - "recorded amount"
+        - "net saleable grain mass"
+        - "moisture basis"
+      output: "amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_moisture_conversion
+      applies_to: "grain mass conversion"
+      rule: "Dry matter = as-received mass multiplied by one minus moisture fraction. Converted mass at target moisture = dry matter divided by one minus target moisture fraction."
+      inputs:
+        - "as-received mass"
+        - "measured moisture"
+        - "target moisture"
+      output: "dry matter and explicitly labelled converted mass"
+      source_ids:
+        - codex-cxs-199-1995
+    - id: calc_managed_soil_emissions
+      applies_to: "managed-soil nitrogen emissions"
+      rule: "Apply the declared IPCC tier equations to synthetic and organic N, crop-residue N, volatilization, deposition, leaching, and runoff activity data; convert N2O-N to N2O where required and prevent double counting across pathways."
+      inputs:
+        - "nitrogen activity fields"
+        - "residue data"
+        - "regional conditions"
+        - "selected factors"
+      output: "direct and indirect N2O and associated nitrogen-loss flows"
+      source_ids:
+        - ipcc-2019-managed-soils
+    - id: calc_lime_urea_co2
+      applies_to: "lime and urea application"
+      rule: "Calculate CO2 from collected lime and urea application amounts using the declared IPCC carbon-content or emission factors."
+      inputs:
+        - "lime type and mass"
+        - "urea mass"
+        - "selected factors"
+      output: "kg CO2 per crop cycle"
+      source_ids:
+        - ipcc-2019-managed-soils
+    - id: calc_postharvest_mass_balance
+      applies_to: "postharvest conditioning"
+      rule: "Reconcile received dry matter with saleable-product dry matter, collected co-products, wastes, and measured losses; water addition and removal shall be reported separately from dry-matter loss."
+      inputs:
+        - "received and output masses"
+        - moisture
+        - "water addition"
+        - "waste and co-product mass"
+      output: "wet-mass and dry-matter balance with unexplained difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and process identity"
+      requirement: "Preserve lot, field, crop season, geography, cultivar or species, intended use, seed status, market grade, moisture basis, operations, and final gate."
+      evidence: "linked field, lot, test, and dispatch records"
+    - id: dq_temporal
+      applies_to: "temporal representativeness"
+      requirement: "Use a complete crop cycle and all represented postharvest lots. Multi-year averages shall retain annual values, coverage, and weighting."
+      evidence: "dated records and coverage reconciliation"
+    - id: dq_geography_technology
+      applies_to: "geographic and technological representativeness"
+      requirement: "Match irrigation, tillage, field operations, electricity, fuels, drying, cleaning, and tempering technology to the represented region and period."
+      evidence: "field map, equipment list, supplier geography, and dataset metadata"
+    - id: dq_completeness
+      applies_to: "inventory completeness"
+      requirement: "Reconcile purchased and issued inputs, harvested and dispatched outputs, co-products, wastes, water, and energy; explain every material gap or proxy."
+      evidence: "mass, nutrient, water, and energy reconciliation plus gap register"
+    - id: dq_measurement
+      applies_to: "measurement quality"
+      requirement: "Retain calibration or verification evidence for scales, moisture meters, water and energy meters, and laboratory analyses."
+      evidence: "calibration certificates, test reports, and meter checks"
+    - id: dq_sources_uncertainty
+      applies_to: "secondary data and estimates"
+      requirement: "Document source, version, geography, time, method, and uncertainty for every secondary dataset, factor, proxy, and reasoned estimate. Replace provisional ranges before active review unless explicitly accepted."
+      evidence: "source register, uncertainty records, and reviewer disposition"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference_product"
+    rule: "Confirm the reference output is 1,000 kg of flow 78bd12e1-801c-4f96-a880-dba39e22783c with Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass group 93a60a57-a4c8-11da-a746-0800200c9a66, and all required qualifiers."
+    source_ids: []
+  - rule_id: validation_product_quality
+    applies_to: "grain_quality"
+    rule: "For common wheat and durum wheat declared suitable for human-food processing within the scope of CXS 199-1995, verify measured moisture is not above 14.5% m/m. For every wheat type, retain the separately applicable destination quality and safety evidence and do not extend CXS 199-1995 to an excluded type."
+    source_ids:
+      - codex-cxs-199-1995
+  - rule_id: validation_crop_coverage
+    applies_to: "crop_cultivation"
+    rule: "Require complete crop-cycle coverage for material and energy inputs, harvest outputs, residue management, and direct field emissions; every omission or proxy shall be disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-leap-animal-feeds-2016
+  - rule_id: validation_nitrogen_method
+    applies_to: "managed_soil_emissions"
+    rule: "Reconcile nitrogen activity data to the declared emission equations, identify the IPCC tier or regional method and factors, and check direct and indirect pathways for missing terms and double counting."
+    source_ids:
+      - ipcc-2019-managed-soils
+  - rule_id: validation_mass_balance
+    applies_to: "postharvest_conditioning"
+    rule: "Require wet-mass and dry-matter balances across received grain, water addition or removal, product, co-products, wastes, and measured losses; investigate any unexplained difference."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "multifunctionality"
+    rule: "Confirm direct assignment or subdivision was attempted before allocation, and retain the physical or economic allocation driver, period, factor, and sensitivity where allocation remains."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-leap-animal-feeds-2016
+  - rule_id: validation_reasoned_estimates
+    applies_to: "provisional_ranges"
+    rule: "Flag every reasoned_estimate as provisional and replace it with regional reviewed evidence before activation unless the review record explicitly accepts continued use."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production data package for non-seed wheat grain through the declared postharvest conditioning gate"
+  downstream_use: "May be published as a secondary_dataset or background_dataset for process and lifecyclemodel construction after review"
+  allowed_use: "Attributional modelling of declared wheat cultivation and conditioning routes with matching geography, period, technology, moisture basis, product quality, and allocation context"
+  excluded_use: "Wheat seed production; flour or semolina manufacture; unidentified global substitution; comparative assertions where required qualifiers, representativeness, or allocation sensitivity are missing"
+  required_metadata: "PCR id and version state; geography; crop season; field and lot coverage; cultivar or species; intended use; irrigation and tillage; rotation; moisture basis; grade; gate; process route; allocation; source and dataset versions"
+  required_quality_disclosure: "Primary-data coverage; calibration status; mass and nutrient reconciliation; temporal, geographic, and technological representativeness; proxies; reasoned estimates; uncertainty; allocation sensitivity; unresolved UUIDs"
+  update_trigger: "New reviewed regional evidence, revised Codex or IPCC rules, material technology or market-state change, UUID replacement, changed allocation practice, or evidence that a screening range is not representative"
+data_sources:
+  - id: "codex-cxs-199-1995"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 199-1995, Standard for Wheat and Durum Wheat, amended 2019 with 2025 corrigendum, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+199-1995%2FCXS_199e.pdf, retrieved 2026-08-07"
+    used_for: "Product scope, species, processing-use quality, moisture maximum, contaminants, hygiene, and lot qualifiers"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Product Environmental Footprint method and PEFCR requirements, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30, retrieved 2026-08-07"
+    used_for: "System-boundary completeness, data gaps, primary and secondary data quality, and multifunctionality hierarchy"
+  - id: "fao-leap-animal-feeds-2016"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership, Environmental performance of animal feeds supply chains: Guidelines for assessment, 2016, https://openknowledge.fao.org/server/api/core/bitstreams/040bf0e7-e652-4eda-807c-37172c403671/content, retrieved 2026-08-07"
+    used_for: "Crop-production process coverage, allocation, primary-data preference, data management, representativeness, completeness, and uncertainty"
+  - id: "ipcc-2019-managed-soils"
+    type: "method_factor"
+    reference: "IPCC, 2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11: N2O Emissions from Managed Soils, and CO2 Emissions from Lime and Urea Application, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf, retrieved 2026-08-07"
+    used_for: "Nitrogen activity data, direct and indirect N2O, crop-residue nitrogen, volatilization, leaching and runoff, and lime and urea CO2 calculations"
+  - id: "faostat-ag-production-2000-2020"
+    type: "dataset"
+    reference: "FAO, Agricultural production statistics 2000-2020, FAOSTAT Analytical Brief 41, https://openknowledge.fao.org/server/api/core/bitstreams/b75223dd-4e30-43aa-85a9-4c587753b027/content, retrieved 2026-08-07"
+    used_for: "Regional wheat yield means used only as broad plausibility evidence"
+  - id: "fao-wheat-crop-information"
+    type: "official_guidance"
+    reference: "FAO Land and Water, Wheat crop information, https://www.fao.org/land-water/databases-and-software/crop-information/wheat/en/, retrieved 2026-08-07"
+    used_for: "Good irrigated wheat-yield context used only in the broad yield plausibility screen"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:218e72f93a1f8bcceb3b83dbd715056910654e85c0f7f8eaafb6af9b11813a40"
+  generated_content_sha256: "sha256:1f5ceb54ad699fee98f4e55061dd4854b2add261d4c8a2934bc14edff6c327f9"

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "viewer-snapshot-manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "snapshot_id", "goal_id", "harness_snapshot_id", "captured_at", "validated_at", "validation_summary", "catalog_scope", "previous_snapshot_id", "previous_manifest_ref", "sequence", "generator_version", "generator_contract_sha256", "schema_contract_sha256", "source", "capture", "predecessor", "lineage", "counts", "refs"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "kind": { "const": "viewer-snapshot-manifest" },
+    "snapshot_id": { "type": "string", "minLength": 1 },
+    "goal_id": { "type": "string", "minLength": 1 },
+    "harness_snapshot_id": { "type": "string", "minLength": 1 },
+    "captured_at": { "type": "string", "pattern": "Z$" },
+    "validated_at": { "type": "string", "pattern": "Z$" },
+    "validation_summary": { "type": "object", "additionalProperties": false, "required": ["status", "checks"], "properties": { "status": { "const": "passed" }, "checks": { "type": "integer", "minimum": 0 } } },
+    "catalog_scope": { "enum": ["material", "all", "legacy"] },
+    "previous_snapshot_id": { "type": ["string", "null"] },
+    "previous_manifest_ref": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "generator_version": { "type": "string", "minLength": 1 },
+    "generator_contract_sha256": { "$ref": "#/$defs/ref" },
+    "schema_contract_sha256": { "$ref": "#/$defs/ref" },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["catalog", "aliases", "coverage", "release_revision_markers"],
+      "properties": {
+        "catalog": { "$ref": "#/$defs/ref" },
+        "aliases": { "$ref": "#/$defs/ref" },
+        "coverage": { "type": "array", "items": { "$ref": "#/$defs/coverageSource" } },
+        "release_revision_markers": { "type": "object", "additionalProperties": { "$ref": "#/$defs/ref" } }
+      }
+    },
+    "capture": {
+      "type": "object", "additionalProperties": false, "required": ["source_ref", "integration_commit", "base_commit", "tree_hash", "validation_state", "ui_bundle_ref"],
+      "properties": {
+        "source_ref": { "type": "string", "minLength": 1 },
+        "integration_commit": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "base_commit": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "tree_hash": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "validation_state": { "const": "validated" },
+        "ui_bundle_ref": { "$ref": "#/$defs/ref" }
+      }
+    },
+    "predecessor": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] },
+    "lineage": {
+      "type": "object", "additionalProperties": false, "required": ["renames"],
+      "properties": { "renames": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } } }
+    },
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pcr", "alias", "coverage", "catalog_shards", "alias_shards", "coverage_shards"],
+      "properties": {
+        "pcr": { "type": "integer", "minimum": 0 }, "alias": { "type": "integer", "minimum": 0 }, "coverage": { "type": "integer", "minimum": 0 },
+        "catalog_shards": { "type": "integer", "minimum": 0 }, "alias_shards": { "type": "integer", "minimum": 0 }, "coverage_shards": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "refs": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pcr_entries", "alias_entries", "coverage_entries", "catalog_shards", "alias_shards", "coverage_shards", "catalog_root", "alias_root", "coverage_root"],
+      "properties": {
+        "pcr_entries": { "$ref": "#/$defs/refMap" }, "alias_entries": { "$ref": "#/$defs/refMap" }, "coverage_entries": { "$ref": "#/$defs/refMap" },
+        "catalog_shards": { "$ref": "#/$defs/refMap" }, "alias_shards": { "$ref": "#/$defs/refMap" }, "coverage_shards": { "$ref": "#/$defs/refMap" }
+        ,"catalog_root": { "$ref": "#/$defs/ref" }, "alias_root": { "$ref": "#/$defs/ref" }, "coverage_root": { "$ref": "#/$defs/ref" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "sequence": { "type": "integer", "minimum": 2 } } },
+      "then": {
+        "properties": {
+          "predecessor": { "$ref": "#/$defs/ref" },
+          "previous_manifest_ref": { "$ref": "#/$defs/ref" },
+          "previous_snapshot_id": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "ref": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "refMap": { "type": "object", "additionalProperties": { "$ref": "#/$defs/ref" } },
+    "coverageSource": {
+      "type": "object", "additionalProperties": false, "required": ["coordinate", "ref"],
+      "properties": {
+        "coordinate": { "$ref": "#/$defs/coordinate" }, "ref": { "$ref": "#/$defs/ref" }
+      }
+    },
+    "coordinate": {
+      "type": "object", "additionalProperties": false, "required": ["system", "version"],
+      "properties": { "system": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" }, "version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" } }
+    }
+  }
+}

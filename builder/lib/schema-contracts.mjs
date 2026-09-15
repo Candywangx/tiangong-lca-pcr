@@ -9,6 +9,7 @@ import { isValidUtcTimestamp } from "./lifecycle-policy.mjs";
 const BUILDER_SCHEMA_FILES = [
   "catalog.schema.json",
   "classification-mapping.schema.json",
+  "cpc-product-chain.schema.json",
   "pcr-manifest.schema.json",
   "pcr-markdown-frontmatter.schema.json",
   "pcr-release-history.schema.json",
@@ -126,7 +127,105 @@ export const validateReleaseHistory = (value) =>
   validateBuilderContract("pcr-release-history.schema.json", value);
 export const assertReleaseHistory = (value, options = {}) =>
   assertBuilderContract("pcr-release-history.schema.json", value, options);
+export function validateCpcProductChain(value) {
+  const result = validateBuilderContract("cpc-product-chain.schema.json", value);
+  if (!result.valid) {
+    return result;
+  }
+  const errors = value.official_sources.flatMap((source, index) =>
+    isValidAbsoluteUri(source.url)
+      ? []
+      : [{
+          code: "semantic.absolute_uri",
+          instance_path: `/official_sources/${index}/url`,
+          schema_path: "#/$defs/officialSource/properties/url",
+          keyword: "format",
+          message: "must be a valid absolute URI",
+          params: { format: "uri" },
+        }]);
+  return errors.length === 0
+    ? result
+    : {
+        ...result,
+        valid: false,
+        code: "PCR_SCHEMA_INVALID",
+        errors,
+        issues: errors,
+      };
+}
+
+export function assertCpcProductChain(value, options = {}) {
+  const result = validateCpcProductChain(value);
+  if (result.valid) {
+    return value;
+  }
+  const contract = resolveContractId("cpc-product-chain.schema.json");
+  throw new ContractSchemaError({
+    code: options.code,
+    contract,
+    entityKind: options.entityKind ?? "CPC product-chain pilot",
+    source: options.source,
+    issues: result.errors,
+  });
+}
 
 function resolveContractId(contract) {
   return contractIds.get(contract) ?? contract;
+}
+
+function isValidAbsoluteUri(value) {
+  if (
+    !/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) ||
+    !/^(?:[A-Za-z0-9._~:/?#\[\]@!$&'()*+,;=-]|%[0-9A-Fa-f]{2})+$/u.test(value) ||
+    /\s/u.test(value) ||
+    /%(?![0-9A-Fa-f]{2})/u.test(value) ||
+    value.indexOf("#") !== value.lastIndexOf("#")
+  ) {
+    return false;
+  }
+  try {
+    const parsed = new URL(value);
+    return hasValidRawBracketPlacement(value, parsed);
+  } catch {
+    return false;
+  }
+}
+
+function hasValidRawBracketPlacement(value, parsed) {
+  const hasOpeningBracket = value.includes("[");
+  const hasClosingBracket = value.includes("]");
+  if (!hasOpeningBracket && !hasClosingBracket) {
+    return true;
+  }
+  if (!hasOpeningBracket || !hasClosingBracket) {
+    return false;
+  }
+
+  const schemeEnd = value.indexOf(":");
+  if (value.slice(schemeEnd + 1, schemeEnd + 3) !== "//") {
+    return false;
+  }
+  const authorityStart = schemeEnd + 3;
+  const authorityTail = value.slice(authorityStart);
+  const authorityTerminator = authorityTail.search(/[/?#]/u);
+  const authorityEnd = authorityTerminator === -1
+    ? value.length
+    : authorityStart + authorityTerminator;
+  const authority = value.slice(authorityStart, authorityEnd);
+  const hostStart = authority.lastIndexOf("@") + 1;
+  const hostAndPort = authority.slice(hostStart);
+  const closingBracket = hostAndPort.indexOf("]");
+  const afterHost = hostAndPort.slice(closingBracket + 1);
+
+  return (
+    parsed.hostname.startsWith("[") &&
+    parsed.hostname.endsWith("]") &&
+    !/[\[\]]/u.test(authority.slice(0, hostStart)) &&
+    hostAndPort.startsWith("[") &&
+    closingBracket > 1 &&
+    !hostAndPort.slice(1, closingBracket).includes("[") &&
+    !/[\[\]]/u.test(afterHost) &&
+    (afterHost === "" || /^:[0-9]+$/u.test(afterHost)) &&
+    !/[\[\]]/u.test(value.slice(authorityEnd))
+  );
 }

@@ -1,10 +1,1225 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26310"
-  title: "Silk yarn and yarn spun from silk waste; silk-worn gut"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.silk-yarn-and-yarn-spun-from-silk-waste-silk-worn-gut"
+  classification_refs: "CPC 3.0: 26310, Silk yarn and yarn spun from silk waste; silk-worn gut"
+  covered_products: "Thrown or twisted filament silk yarn made from incoming raw silk; spun silk yarn made from silk waste; silkworm gut formed from a silkworm silk gland"
+  excluded_products: "Raw silk not thrown (CPC 26110); woven or knitted silk fabric; dyed or weighted silk unless the treatment is explicitly included as an additional foreground process; synthetic or regenerated filament yarn; finished sutures or fishing tackle; retail packaging"
+  representative_product: "Undyed spun silk yarn made from degummed silk waste"
+  production_route: "One declared route: filament-yarn forming from raw silk; silk-waste degumming, dressing and spinning; or acid-assisted silkworm-gut forming"
+  market_state: "Unpackaged, undyed, unweighted saleable yarn or silkworm gut at the factory gate, with declared moisture/conditioning state and quality specification"
+functional_unit:
+  what: "Saleable silk yarn or silkworm gut providing a declared textile-yarn or gut-filament specification"
+  how_much: "1 kg net dry product mass, excluding any carrier, cone, wrap, pallet, or other packaging"
+  how_well: "Meets the declared route, material origin, sericin condition where applicable, yarn construction, linear density or gut diameter, twist where applicable, and tensile-quality specification"
+  how_long_or_cycle: "One production batch delivered at the factory gate; no use-stage duration is assigned to this intermediate product"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_gate
+      applies_to: "all routes"
+      rule: "Include only the declared route processes under direct foreground control, from receipt of raw silk, silk waste, or dissected silk glands through saleable unpackaged product at the factory gate."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - iso-14044-2006
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link raw silk, silk waste, silk glands, water, chemicals, electricity, steam, and natural gas to upstream datasets with disclosed geography, technology, and supply scenario; do not assign zero burdens to purchased inputs."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_route_selection
+      applies_to: "product identity"
+      rule: "Select one route and declare every included optional step. Silk-waste yarn requires degumming/dressing and spinning; filament yarn requires forming/twisting/winding; silkworm gut requires acid-assisted gland stretching."
+      source_ids:
+        - eu-textiles-bref-2023
+        - yin-et-al-2021-spun-silk
+        - cenis-et-al-2015-silkworm-gut
+    - rule_id: boundary_wet_operations
+      applies_to: "degumming and washing"
+      rule: "Include process water, each chemical, delivered steam, electricity, saleable recovered sericin when produced, and the sericin-bearing wastewater leaving the process."
+      source_ids:
+        - eu-textiles-bref-2023
+        - ifc-textiles-ehs-2007
+    - rule_id: boundary_actual_atomic_exchanges
+      applies_to: "all foreground processes"
+      rule: "Record every actual material, chemical, electricity supply, steam supply, fuel, waste stream, recovered product, and direct elementary emission as a separate exchange; a flow not pre-listed in this PCR shall still be added as one specific atomic exchange."
+      source_ids:
+        - eu-textiles-bref-2023
+        - ifc-textiles-ehs-2007
+    - rule_id: boundary_exclusions
+      applies_to: "downstream and upstream processes"
+      rule: "Keep sericulture, cocoon production, raw-silk production, dyeing, weighting, fabric formation, product use, retail packaging, and outbound distribution outside the foreground boundary unless the declared study explicitly adds them as separate processes."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - eu-textiles-bref-2023
+boundary_abstraction:
+  declared_starting_condition: "One route-specific material received at the foreground facility: raw silk, silk waste, or a dissected silkworm silk gland"
+  starting_condition_role: "Upstream product input to a directly controlled yarn- or gut-forming route"
+  product_classification_scope: "CPC 3.0 code 26310 output; incoming raw silk and recovered silk waste retain their own product identities"
+  recursive_input_rule: "A CPC 26310 silk-yarn input used for gassing or another directly controlled finishing step remains an explicit product input and links to its upstream process; it is not recursively expanded inside the same process."
+  upstream_dataset_requirement: "A geographically and technologically representative upstream dataset is required for every purchased input and utility; proxy use shall be disclosed and justified."
+  disclosure: "Declare route, starting material, sericin condition, included mechanical and wet processes, gassing status, production geography and period, allocation method, and all unresolved or proxy identities."
+reference_flow_definition:
+  reference_amount: "1 kg net dry product"
+  product_flow_ref:
+    name: "Spun Silk"
+    uuid: "6c639604-29e8-44b6-be18-4e0ad97fdef8"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product route"
+    - "silk source and species where known"
+    - "filament or staple form"
+    - "sericin condition where applicable"
+    - single
+    - "folded or cabled construction"
+    - "linear density in tex or"
+    - "for silkworm gut"
+    - "diameter and length"
+    - "twist direction and twist level where applicable"
+    - "moisture or conditioning basis"
+    - "quality-test method"
+    - "production geography"
+    - "included processing steps"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "reference product and all mass-balance flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass on the declared dry or conditioned basis; retain measured gross mass, packaging tare, moisture or conditioning method, and conversion calculation."
+  - id: linear_density_tex
+    applies_to: "silk yarn and silkworm gut when linear density is specified"
+    required_property_ref:
+      name: "Linear density"
+      uuid: ""
+    required_unit: "tex"
+    rule: "Express and convert linear density using the Tex System; if measured from yarn packages, declare the conditioning and test procedure."
+  - id: electricity_metering
+    applies_to: "each electricity card"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record the electricity supply voltage and supply scenario, preserve metered kWh, and do not merge electricity with steam, natural gas, or other energy carriers."
+  - id: steam_metering
+    applies_to: "delivered steam"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record delivered steam mass, pressure, condensate-return boundary, and meter or invoice basis; any conversion to energy shall retain the measured steam state and calculation inputs."
+  - id: fuel_metering
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve purchased fuel mass and declared supply state; if volume or energy is the raw record, retain measured conditions and the site-specific conversion factor."
+  - id: chemical_active_mass
+    applies_to: "sodium carbonate and acetic acid"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report each chemical separately as product mass or active-substance-equivalent mass using supplier concentration and batch issue records; do not aggregate chemicals."
+process_map:
+  - id: silk_filament_yarn_forming
+    name: "Filament silk yarn forming, twisting and winding"
+    inclusion: "conditional"
+    inclusion_condition: "Required when the declared product is filament silk yarn made from incoming raw silk"
+    role: "Foreground filament-yarn production"
+    quantitative_reference: "Per 1 kg net dry filament silk yarn output"
+  - id: silk_waste_degumming_dressing
+    name: "Silk-waste degumming and dressing"
+    inclusion: "conditional"
+    inclusion_condition: "Required when the declared product is yarn spun from silk waste"
+    role: "Foreground wet preparation and fibre dressing"
+    quantitative_reference: "Per kg degummed silk fibre output transferred to spinning"
+  - id: spun_silk_spinning
+    name: "Spun-silk drafting, spinning, plying and winding"
+    inclusion: "conditional"
+    inclusion_condition: "Required when the declared product is yarn spun from silk waste"
+    role: "Foreground spun-yarn production"
+    quantitative_reference: "Per 1 kg net dry spun silk yarn output"
+  - id: spun_silk_gassing
+    name: "Spun-silk yarn gassing"
+    inclusion: "conditional"
+    inclusion_condition: "Included only when protruding fibres and neps are removed with a fuel-gas flame"
+    role: "Foreground route-specific yarn finishing"
+    quantitative_reference: "Per 1 kg net dry gassed spun silk yarn output"
+  - id: silkworm_gut_forming
+    name: "Silkworm-gut acid conditioning and stretching"
+    inclusion: "conditional"
+    inclusion_condition: "Required when the declared product is silkworm gut"
+    role: "Foreground gut-filament forming"
+    quantitative_reference: "Per 1 kg net dry silkworm gut output"
+process_inventory:
+  - id: silk_filament_yarn_forming
+    label: "Filament silk yarn forming, twisting and winding"
+    inputs:
+      product:
+        - row_id: filament_raw_silk_input
+          role: "Incoming raw silk"
+          name: "Raw Silk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "343df125-d682-4ffa-8829-5fbc785bdbc9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Raw silk crosses the foreground boundary for doubling, twisting, throwing and winding into filament yarn."
+          amount:
+            expression: "Weighed net dry or conditioned mass issued to the route, less returned unused material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry filament silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filament_batch_records
+              source_ids:
+                - eu-textiles-bref-2023
+            ranges: []
+        - row_id: filament_electricity
+          role: "Medium-voltage grid electricity"
+          name: "Electricity, medium voltage, grid supply at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by twisting, throwing, winding, ventilation and directly assigned auxiliary equipment is recorded separately from heat and fuel."
+          amount:
+            expression: "Route-assigned interval meter reading or documented submeter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry filament silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filament_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: filament_yarn_output
+          role: "Saleable filament silk yarn"
+          name: "Silk filament yarn, thrown and wound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The output is thrown or twisted filament silk yarn meeting the declared construction and linear-density specification."
+          amount:
+            expression: "Weighed net dry or conditioned conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "route output before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filament_batch_records
+              source_ids:
+                - iso-1144-2016
+                - iso-2060-1994
+                - iso-2062-2009
+            ranges: []
+        - row_id: filament_recovered_silk_waste
+          role: "Recovered silk waste"
+          name: "Silk waste"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e8fb97e6-a2ec-40d6-8dee-2cafe1a25106"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Silk offcuts and broken filament transferred as a usable input to another production system are recorded as this product output."
+          amount:
+            expression: "Weighed mass accepted for recovery and transferred out of the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry filament silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filament_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+      waste:
+        - row_id: filament_discarded_silk_waste
+          role: "Discarded silk waste"
+          name: "Silk waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "690d2d6b-d573-4ab5-9e50-742a2ee12275"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Silk residues not accepted for recovery and sent to waste management are recorded separately from recovered silk waste."
+          amount:
+            expression: "Weighed mass crossing the waste-management boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry filament silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filament_batch_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: silk_waste_degumming_dressing
+    label: "Silk-waste degumming and dressing"
+    inputs:
+      product:
+        - row_id: waste_degumming_silk_input
+          role: "Incoming silk waste"
+          name: "Silk waste"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e8fb97e6-a2ec-40d6-8dee-2cafe1a25106"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Silk waste is the route-specific raw material and is recorded as a product input when purchased or transferred for recovery."
+          amount:
+            expression: "Weighed received mass issued to the batch, corrected to the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+        - row_id: waste_degumming_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water entering degumming, washing and rinsing is recorded as one water product input."
+          amount:
+            expression: "Metered process-water mass, or metered volume converted with recorded water density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_water_meter
+              source_ids:
+                - eu-textiles-bref-2023
+            ranges: []
+        - row_id: waste_degumming_sodium_carbonate
+          role: "Sodium carbonate"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5462c2da-d3dd-41f0-a78f-51024d2d1a69"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sodium carbonate is recorded only for a batch whose documented degumming recipe uses this specific alkali."
+          amount:
+            expression: "Net chemical mass issued to the batch from weighed issue records or supplier invoice reconciliation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_batch_records
+              source_ids:
+                - eu-textiles-bref-2023
+            ranges: []
+        - row_id: waste_degumming_steam
+          role: "Supplied steam"
+          name: "Steam, 10 bar, supplied to plant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steam crossing the process boundary for bath heating is recorded separately from electricity and fuel."
+          amount:
+            expression: "Metered delivered steam mass assigned to the batch; declare pressure and condensate-return boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_steam_meter
+              source_ids:
+                - eu-textiles-bref-2023
+            ranges: []
+        - row_id: waste_degumming_electricity
+          role: "Medium-voltage grid electricity"
+          name: "Electricity, medium voltage, grid supply at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by bath circulation, washing, dressing, combing and directly assigned auxiliaries is recorded independently."
+          amount:
+            expression: "Route-assigned interval meter reading or documented submeter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: degummed_silk_fibre_output
+          role: "Degummed silk fibre"
+          name: "Degummed silk fibre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dressed fibre output has the route-declared portion of sericin and contaminants removed and is ready for drafting and spinning."
+          amount:
+            expression: "Weighed net dry or conditioned fibre mass transferred to spinning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "degumming and dressing batch output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_batch_records
+              source_ids:
+                - eu-textiles-bref-2023
+                - yin-et-al-2021-spun-silk
+            ranges: []
+        - row_id: recovered_sericin_output
+          role: "Recovered sericin"
+          name: "Recovered sericin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sericin isolated as a saleable product is recorded only when recovery, product quality and transfer are documented; dissolved sericin remaining in wastewater is not this product."
+          amount:
+            expression: "Weighed dry recovered sericin meeting the declared product specification"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_batch_records
+              source_ids:
+                - eu-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: degumming_wastewater
+          role: "Silk degumming wastewater"
+          name: "Silk degumming wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The sericin-bearing aqueous stream sent to on-site or off-site treatment is recorded as one route-specific waste flow."
+          amount:
+            expression: "Metered discharge mass, or measured volume converted with recorded density, assigned to the batch before treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg degummed silk fibre output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_degumming_batch_records
+              source_ids:
+                - eu-textiles-bref-2023
+                - ifc-textiles-ehs-2007
+            ranges: []
+      elementary:
+        []
+  - id: spun_silk_spinning
+    label: "Spun-silk drafting, spinning, plying and winding"
+    inputs:
+      product:
+        - row_id: spinning_degummed_silk_input
+          role: "Degummed silk fibre input"
+          name: "Degummed silk fibre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Degummed, dressed silk fibre crosses into drafting and spinning as one specific intermediate product."
+          amount:
+            expression: "Weighed net dry or conditioned fibre mass issued to spinning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+        - row_id: spinning_electricity
+          role: "Medium-voltage grid electricity"
+          name: "Electricity, medium voltage, grid supply at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by drafting, roving, spinning, plying, winding, ventilation and directly assigned auxiliary equipment is recorded independently."
+          amount:
+            expression: "Route-assigned interval meter reading or documented submeter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: spun_silk_output
+          role: "Spun silk yarn"
+          name: "Spun Silk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6c639604-29e8-44b6-be18-4e0ad97fdef8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The conforming output is the representative reference product for the silk-waste spinning route."
+          amount:
+            expression: "Weighed net dry or conditioned conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "route output before packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_batch_records
+              source_ids:
+                - iso-1144-2016
+                - iso-2060-1994
+                - iso-2062-2009
+                - yin-et-al-2021-spun-silk
+            ranges: []
+      waste:
+        - row_id: spinning_silk_waste
+          role: "Discarded silk waste"
+          name: "Silk waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "690d2d6b-d573-4ab5-9e50-742a2ee12275"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Short fibres, neps and off-specification silk sent to waste management are recorded as one silk-waste flow."
+          amount:
+            expression: "Weighed mass crossing the waste-management boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+      elementary:
+        []
+  - id: spun_silk_gassing
+    label: "Spun-silk yarn gassing"
+    inputs:
+      product:
+        - row_id: gassing_spun_silk_input
+          role: "Ungassed spun silk yarn"
+          name: "Spun Silk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6c639604-29e8-44b6-be18-4e0ad97fdef8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Spun silk yarn enters this optional process only when a fuel-gas flame is used to remove protruding fibres and neps."
+          amount:
+            expression: "Weighed net dry or conditioned input to the gassing line"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry gassed spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+        - row_id: gassing_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Natural gas consumed by the gassing flame is recorded as one fuel input."
+          amount:
+            expression: "Metered or invoiced fuel mass assigned to the gassing line and production batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry gassed spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_gas_meter
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+        - row_id: gassing_electricity
+          role: "Medium-voltage grid electricity"
+          name: "Electricity, medium voltage, grid supply at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by the gassing machine, drive, controls and directly assigned extraction equipment is recorded separately from natural gas."
+          amount:
+            expression: "Line submeter reading or documented allocation from interval-meter records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry gassed spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gassing_spun_silk_output
+          role: "Gassed spun silk yarn"
+          name: "Spun Silk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6c639604-29e8-44b6-be18-4e0ad97fdef8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is conforming spun silk yarn after the declared gassing operation."
+          amount:
+            expression: "Weighed net dry or conditioned conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "route output before packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+      waste:
+        - row_id: gassing_silk_waste
+          role: "Captured silk waste from gassing"
+          name: "Silk waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "690d2d6b-d573-4ab5-9e50-742a2ee12275"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Captured burnt fibre, neps and off-specification silk sent to waste management are recorded as silk waste."
+          amount:
+            expression: "Weighed captured material crossing the waste-management boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry gassed spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_batch_records
+              source_ids:
+                - yin-et-al-2021-spun-silk
+            ranges: []
+      elementary:
+        - row_id: gassing_carbon_monoxide_air
+          role: "Fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Direct fossil carbon monoxide leaving the gassing process to unspecified air is recorded from route-specific monitoring or a validated site emission inventory."
+          amount:
+            expression: "Measured or site-inventory mass emitted after abatement; no default factor is supplied by this PCR"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry gassed spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_air_monitoring
+              source_ids:
+                - yin-et-al-2021-spun-silk
+                - ifc-textiles-ehs-2007
+            ranges: []
+        - row_id: gassing_particulate_air
+          role: "Fine particulate matter to air"
+          name: "Particulate matter, <2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fine particulate matter not captured by the extraction or abatement system is recorded separately from captured silk waste."
+          amount:
+            expression: "Measured emitted mass after abatement; no default factor is supplied by this PCR"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry gassed spun silk yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gassing_air_monitoring
+              source_ids:
+                - yin-et-al-2021-spun-silk
+                - ifc-textiles-ehs-2007
+            ranges: []
+  - id: silkworm_gut_forming
+    label: "Silkworm-gut acid conditioning and stretching"
+    inputs:
+      product:
+        - row_id: silk_gland_input
+          role: "Silkworm silk gland"
+          name: "Silkworm silk gland"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A dissected Bombyx mori silk gland is the specific biological material entering the gut-forming route."
+          amount:
+            expression: "Weighed fresh gland mass issued to the forming batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry silkworm gut output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gut_batch_records
+              source_ids:
+                - cenis-et-al-2015-silkworm-gut
+            ranges: []
+        - row_id: silkworm_gut_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water used to prepare the acid bath and rinse the formed gut is recorded separately from acetic acid."
+          amount:
+            expression: "Metered water mass, or metered volume converted with recorded water density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry silkworm gut output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gut_water_meter
+              source_ids:
+                - cenis-et-al-2015-silkworm-gut
+            ranges: []
+        - row_id: silkworm_gut_acetic_acid
+          role: "Acetic acid"
+          name: "Acetic acid (acetic acid)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c7564d76-47c4-440c-9eb8-3242c38eeb1b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Acetic acid in the conditioning bath is recorded as pure-acid-equivalent mass, distinct from bath water."
+          amount:
+            expression: "Solution mass multiplied by the supplier-certified acetic-acid mass fraction using calc_acetic_acid_active_mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry silkworm gut output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gut_acid_records
+              source_ids:
+                - cenis-et-al-2015-silkworm-gut
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: silkworm_gut_output
+          role: "Saleable silkworm gut"
+          name: "Silkworm gut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The output is acid-conditioned and stretched silkworm gut meeting the declared diameter, length and tensile specification."
+          amount:
+            expression: "Weighed net dry conforming product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "route output before packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gut_batch_records
+              source_ids:
+                - cenis-et-al-2015-silkworm-gut
+                - iso-2062-2009
+            ranges: []
+      waste:
+        - row_id: silkworm_tissue_waste
+          role: "Silkworm tissue waste"
+          name: "Silkworm tissue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Biological tissue remaining after silk-gland removal and sent to waste management is recorded as one specific waste stream."
+          amount:
+            expression: "Weighed wet mass crossing the waste-management boundary, with dry-matter content retained when measured"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry silkworm gut output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gut_batch_records
+              source_ids:
+                - cenis-et-al-2015-silkworm-gut
+            ranges: []
+        - row_id: silkworm_acidic_wastewater
+          role: "Spent silkworm-gut acetic-acid bath"
+          name: "Spent silkworm-gut acetic-acid bath"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The spent aqueous acetic-acid bath sent to treatment is recorded separately from biological tissue waste."
+          amount:
+            expression: "Measured bath mass discharged to treatment, or measured volume converted with recorded density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry silkworm gut output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gut_batch_records
+              source_ids:
+                - cenis-et-al-2015-silkworm-gut
+                - ifc-textiles-ehs-2007
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "all routes"
+    rule: "Subdivide route-specific processes and separately meter batches, utilities and outputs before applying allocation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_recovered_silk
+    applies_to: "recovered silk waste"
+    rule: "When recovered silk waste is transferred as a useful product, keep it as a product output and document the allocation relationship; material sent to waste management remains a Waste flow and receives no product credit."
+    source_ids:
+      - iso-14044-2006
+      - yin-et-al-2021-spun-silk
+  - rule_id: allocation_recovered_sericin
+    applies_to: "recovered sericin"
+    rule: "When saleable sericin is recovered, first subdivide the recovery operation; if shared burdens cannot be subdivided, use a documented physical relationship that reflects the process, and use economic allocation only when no defensible physical relationship exists."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bref-2023
+  - rule_id: allocation_no_unreported_credit
+    applies_to: "all wastes and co-products"
+    rule: "Do not apply avoided-burden, substitution or recycling credits unless the study explicitly models the additional function and reports the method, substituted product, geography and sensitivity result."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_filament_batch_records
+      process_id: "silk_filament_yarn_forming"
+      flow_role: "material, product and silk-waste mass"
+      record_type: "scale tickets and batch records"
+      raw_fields: "batch_id; row_id; gross_mass; tare_mass; moisture_or_conditioning_basis; accepted_output_mass; recovered_mass; discarded_mass"
+      collection_method: "Calibrated scale linked to production and disposition records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Representative continuous 12-month period or all batches in the declared shorter period"
+      site_scope: "All included filament-yarn lines"
+      aggregation_rule: "Sum by row_id and batch; subtract tare and returned material; normalize with calc_normalize_reference"
+      quality_evidence: "Calibration records, batch genealogy, recovery acceptance and waste transfer notes"
+    - protocol_id: cp_filament_electricity_meter
+      process_id: "silk_filament_yarn_forming"
+      flow_role: "medium-voltage grid electricity"
+      record_type: "interval meter or submeter"
+      raw_fields: "meter_id; voltage; supplier; interval_start; interval_end; opening_kwh; closing_kwh; excluded_load_kwh"
+      collection_method: "Calibrated meter; subtract documented non-route loads"
+      unit: "kWh"
+      frequency: "Each interval and monthly reconciliation"
+      temporal_coverage: "Same period as product batches"
+      site_scope: "All included filament-yarn equipment"
+      aggregation_rule: "Sum route kWh and allocate shared measured loads with disclosed driver"
+      quality_evidence: "Meter calibration, bills and load-allocation worksheet"
+    - protocol_id: cp_degumming_batch_records
+      process_id: "silk_waste_degumming_dressing"
+      flow_role: "silk waste, sodium carbonate, fibre output, recovered sericin and wastewater"
+      record_type: "scale, recipe and batch records"
+      raw_fields: "batch_id; row_id; gross_mass; tare_mass; moisture_basis; recipe_issue_mass; output_mass; wastewater_mass_or_volume; density; destination"
+      collection_method: "Calibrated scales and batch recipe/disposition records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Representative continuous 12-month period or all batches in the declared shorter period"
+      site_scope: "All included degumming and dressing lines"
+      aggregation_rule: "Sum each row separately; convert wastewater volume only with recorded density"
+      quality_evidence: "Calibration, recipe approval, batch genealogy, discharge and transfer records"
+    - protocol_id: cp_degumming_water_meter
+      process_id: "silk_waste_degumming_dressing"
+      flow_role: "process water"
+      record_type: "water meter"
+      raw_fields: "meter_id; opening_volume; closing_volume; density; batch_id; reused_water_mass"
+      collection_method: "Calibrated meter with batch assignment"
+      unit: "kg"
+      frequency: "Each batch or metering interval"
+      temporal_coverage: "Same period as degumming batches"
+      site_scope: "All included wet-process lines"
+      aggregation_rule: "Fresh input only; report reused internal water separately without double counting"
+      quality_evidence: "Meter calibration and water balance"
+    - protocol_id: cp_degumming_steam_meter
+      process_id: "silk_waste_degumming_dressing"
+      flow_role: "supplied steam"
+      record_type: "steam meter or supplier record"
+      raw_fields: "meter_id; steam_mass; pressure; condensate_return_mass; batch_id"
+      collection_method: "Calibrated steam meter or reconciled supplier record"
+      unit: "kg"
+      frequency: "Each batch or metering interval"
+      temporal_coverage: "Same period as degumming batches"
+      site_scope: "All included wet-process lines"
+      aggregation_rule: "Sum delivered steam crossing the boundary; disclose condensate-return convention"
+      quality_evidence: "Meter calibration, steam balance and invoice reconciliation"
+    - protocol_id: cp_degumming_electricity_meter
+      process_id: "silk_waste_degumming_dressing"
+      flow_role: "medium-voltage grid electricity"
+      record_type: "interval meter or submeter"
+      raw_fields: "meter_id; voltage; supplier; interval_start; interval_end; opening_kwh; closing_kwh; excluded_load_kwh"
+      collection_method: "Calibrated meter; subtract documented non-route loads"
+      unit: "kWh"
+      frequency: "Each interval and monthly reconciliation"
+      temporal_coverage: "Same period as degumming batches"
+      site_scope: "All included wet-process and dressing equipment"
+      aggregation_rule: "Sum route kWh and allocate shared measured loads with disclosed driver"
+      quality_evidence: "Meter calibration, bills and allocation worksheet"
+    - protocol_id: cp_spinning_batch_records
+      process_id: "spun_silk_spinning"
+      flow_role: "degummed fibre, spun silk and silk-waste mass"
+      record_type: "scale tickets and batch records"
+      raw_fields: "batch_id; row_id; gross_mass; tare_mass; moisture_or_conditioning_basis; accepted_output_mass; discarded_mass"
+      collection_method: "Calibrated scale linked to spinning and disposition records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Representative continuous 12-month period or all batches in the declared shorter period"
+      site_scope: "All included spinning lines"
+      aggregation_rule: "Sum by row_id and batch; subtract tare; normalize with calc_normalize_reference"
+      quality_evidence: "Calibration, batch genealogy, quality release and waste transfer notes"
+    - protocol_id: cp_spinning_electricity_meter
+      process_id: "spun_silk_spinning"
+      flow_role: "medium-voltage grid electricity"
+      record_type: "interval meter or submeter"
+      raw_fields: "meter_id; voltage; supplier; interval_start; interval_end; opening_kwh; closing_kwh; excluded_load_kwh"
+      collection_method: "Calibrated meter; subtract documented non-route loads"
+      unit: "kWh"
+      frequency: "Each interval and monthly reconciliation"
+      temporal_coverage: "Same period as spinning batches"
+      site_scope: "All included spinning equipment"
+      aggregation_rule: "Sum route kWh and allocate shared measured loads with disclosed driver"
+      quality_evidence: "Meter calibration, bills and allocation worksheet"
+    - protocol_id: cp_gassing_batch_records
+      process_id: "spun_silk_gassing"
+      flow_role: "yarn input, yarn output and captured silk waste"
+      record_type: "scale tickets and batch records"
+      raw_fields: "batch_id; row_id; gross_mass; tare_mass; conditioning_basis; accepted_output_mass; captured_waste_mass"
+      collection_method: "Calibrated scale linked to gassing and disposition records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "All gassed batches in the declared period"
+      site_scope: "All included gassing lines"
+      aggregation_rule: "Sum each row separately and normalize with calc_normalize_reference"
+      quality_evidence: "Calibration, batch genealogy, quality release and waste transfer notes"
+    - protocol_id: cp_gassing_gas_meter
+      process_id: "spun_silk_gassing"
+      flow_role: "gaseous natural gas"
+      record_type: "fuel meter or invoice"
+      raw_fields: "meter_id; raw_volume_or_mass; temperature; pressure; conversion_factor; assigned_batch; supplier"
+      collection_method: "Calibrated meter or supplier record with site-specific conversion"
+      unit: "kg"
+      frequency: "Each interval and monthly reconciliation"
+      temporal_coverage: "Same period as gassed batches"
+      site_scope: "All included gassing burners"
+      aggregation_rule: "Convert raw record to kg using retained measured conditions; allocate shared use with disclosed driver"
+      quality_evidence: "Meter calibration, gas bills and conversion worksheet"
+    - protocol_id: cp_gassing_electricity_meter
+      process_id: "spun_silk_gassing"
+      flow_role: "medium-voltage grid electricity"
+      record_type: "interval meter or submeter"
+      raw_fields: "meter_id; voltage; supplier; opening_kwh; closing_kwh; excluded_load_kwh"
+      collection_method: "Calibrated meter; subtract documented non-route loads"
+      unit: "kWh"
+      frequency: "Each interval and monthly reconciliation"
+      temporal_coverage: "Same period as gassed batches"
+      site_scope: "Gassing drive, control and assigned extraction equipment"
+      aggregation_rule: "Sum route kWh and allocate shared measured loads with disclosed driver"
+      quality_evidence: "Meter calibration, bills and allocation worksheet"
+    - protocol_id: cp_gassing_air_monitoring
+      process_id: "spun_silk_gassing"
+      flow_role: "carbon monoxide and fine particulate emissions"
+      record_type: "stack or workplace-exhaust monitoring and operating log"
+      raw_fields: "sampling_point; pollutant; concentration; gas_flow; duration; abatement_state; batch_id; detection_limit"
+      collection_method: "Accredited or documented site method applied downstream of included abatement"
+      unit: "kg"
+      frequency: "Representative operating campaigns and after material change"
+      temporal_coverage: "Covers normal, start-up and shut-down conditions in the declared period"
+      site_scope: "Every included gassing exhaust"
+      aggregation_rule: "Calculate emitted mass from measured concentration, flow and duration; report below-detection treatment"
+      quality_evidence: "Method, calibration, detection limits, lab report and operating log"
+    - protocol_id: cp_gut_batch_records
+      process_id: "silkworm_gut_forming"
+      flow_role: "silk gland, gut product, tissue waste and spent acidic bath"
+      record_type: "scale, bath and batch records"
+      raw_fields: "batch_id; row_id; gross_mass; tare_mass; acid_bath_mass_or_volume; density; product_dry_mass; tissue_wet_mass; destination"
+      collection_method: "Calibrated scales and batch/disposition records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "All batches in the declared production period"
+      site_scope: "All included gut-forming stations"
+      aggregation_rule: "Sum each row separately; retain wet/dry basis; normalize with calc_normalize_reference"
+      quality_evidence: "Calibration, batch genealogy, product quality and waste-transfer records"
+    - protocol_id: cp_gut_water_meter
+      process_id: "silkworm_gut_forming"
+      flow_role: "process water"
+      record_type: "water meter or weighed addition"
+      raw_fields: "batch_id; water_volume_or_mass; density; reused_water_mass"
+      collection_method: "Calibrated meter or scale"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same period as gut batches"
+      site_scope: "All included bath and rinse stations"
+      aggregation_rule: "Fresh input only; convert volume only with recorded density"
+      quality_evidence: "Meter or scale calibration and bath sheet"
+    - protocol_id: cp_gut_acid_records
+      process_id: "silkworm_gut_forming"
+      flow_role: "acetic acid"
+      record_type: "supplier certificate and weighed solution issue"
+      raw_fields: "batch_id; solution_mass; certified_acetic_acid_mass_fraction; returned_solution_mass"
+      collection_method: "Weighed issue reconciled to supplier concentration"
+      unit: "kg active acetic acid"
+      frequency: "Each batch and supplier lot"
+      temporal_coverage: "Same period as gut batches"
+      site_scope: "All included acid baths"
+      aggregation_rule: "Apply calc_acetic_acid_active_mass; do not combine with process water"
+      quality_evidence: "Scale calibration, certificate of analysis and batch recipe"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "every inventory row"
+      rule: "normalized_amount = route-period row amount / route-period net dry conforming product mass"
+      inputs:
+        - "row amount"
+        - "net dry conforming product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_net_dry_product_mass
+      applies_to: "yarn or gut product"
+      rule: "net_dry_mass = gross conditioned mass - packaging tare - measured water mass above the declared dry basis"
+      inputs:
+        - "gross mass"
+        - tare
+        - "moisture or conditioning result"
+      output: "kg net dry product"
+      source_ids:
+        - iso-2060-1994
+    - id: calc_acetic_acid_active_mass
+      applies_to: "silkworm_gut_acetic_acid"
+      rule: "active_acetic_acid_mass = net solution mass × supplier-certified acetic-acid mass fraction"
+      inputs:
+        - "solution mass"
+        - "certified mass fraction"
+        - "returned solution mass"
+      output: "kg active acetic acid"
+      source_ids:
+        - cenis-et-al-2015-silkworm-gut
+    - id: calc_direct_air_emission
+      applies_to: "gassing elementary outputs"
+      rule: "emitted_mass = measured concentration × measured exhaust flow × operating duration, with unit conversion and documented below-detection handling"
+      inputs:
+        - concentration
+        - "exhaust flow"
+        - duration
+        - "abatement state"
+      output: "kg pollutant emitted"
+      source_ids:
+        - ifc-textiles-ehs-2007
+    - id: calc_route_mass_balance
+      applies_to: "each route process"
+      rule: "mass_balance_gap = total measured mass inputs - total measured product, waste and measured emission outputs, reported with moisture and accumulation terms"
+      inputs:
+        - "all mass inputs"
+        - "all mass outputs"
+        - "moisture change"
+        - "stock change"
+      output: "disclosed kg and percent mass-balance gap"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "every flow card"
+      requirement: "Preserve row_id, flow direction, flow type, selected flow name and confirmed UUID; an unresolved UUID shall remain explicit and shall not be replaced by a broad candidate."
+      evidence: "Flow list/get verification record and manifest review metadata"
+    - id: dq_route
+      applies_to: "product and process map"
+      requirement: "Route, starting material, sericin condition, gassing status and included processes shall be batch-traceable."
+      evidence: "Product specification and batch genealogy"
+    - id: dq_measurement
+      applies_to: "foreground amounts"
+      requirement: "Use calibrated meters or scales and retain raw records, tare, unit conversion, allocation driver and detection-limit treatment."
+      evidence: "Calibration certificates, meter exports, scale tickets and calculation workbook"
+    - id: dq_temporal
+      applies_to: "published average"
+      requirement: "Cover a representative continuous 12-month period; a shorter campaign is allowed only with production dates, batch coverage and seasonality limitation disclosed."
+      evidence: "Production calendar and completeness calculation"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Reconcile production, material, chemical, utility, waste, wastewater and direct-emission records; explain every omitted or below-detection exchange."
+      evidence: "Route mass balance, utility reconciliation and omission log"
+    - id: dq_external_links
+      applies_to: "upstream datasets"
+      requirement: "Match input identity, geography, technology, voltage, steam pressure and fuel supply state as closely as available; disclose every proxy and mismatch."
+      evidence: "Upstream dataset metadata and proxy justification"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference product"
+    rule: "The data package shall normalize to 1 kg net dry product and use confirmed Spun Silk UUID 6c639604-29e8-44b6-be18-4e0ad97fdef8 for the representative spun-silk product; another covered route shall use an exact reviewed product UUID before release."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - iso-14044-2006
+  - rule_id: validation_route_declaration
+    applies_to: "process map"
+    rule: "Exactly one covered product route shall be declared, and every route-required process plus every actually used optional process shall be present."
+    source_ids:
+      - eu-textiles-bref-2023
+      - yin-et-al-2021-spun-silk
+      - cenis-et-al-2015-silkworm-gut
+  - rule_id: validation_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Every exchange shall have one row_id, one direction, one flow type and one specific selected flow; combined utilities, chemicals, packaging, wastes or emissions fail validation."
+    source_ids:
+      - eu-textiles-bref-2023
+      - ifc-textiles-ehs-2007
+  - rule_id: validation_foreground_amounts
+    applies_to: "all foreground rows"
+    rule: "Every amount shall come from a retained foreground record or an explicit calculation from collected records; this PCR supplies no guessed default amount or reasoned-estimate range."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validation_wet_route
+    applies_to: "silk-waste degumming"
+    rule: "A wet-route package shall contain silk waste, process water, each actual chemical, steam when transferred, electricity, degummed fibre, recovered sericin when produced, and route-specific wastewater, with all amounts separately reconciled."
+    source_ids:
+      - eu-textiles-bref-2023
+      - ifc-textiles-ehs-2007
+      - yin-et-al-2021-spun-silk
+  - rule_id: validation_gassing
+    applies_to: "gassing route"
+    rule: "When gassing is included, natural gas, electricity, yarn input/output, captured silk waste, fossil carbon monoxide and fine particulate emissions shall be measured or explicitly documented below detection after abatement."
+    source_ids:
+      - yin-et-al-2021-spun-silk
+      - ifc-textiles-ehs-2007
+  - rule_id: validation_gut_route
+    applies_to: "silkworm-gut forming"
+    rule: "A gut-route package shall separately record silk gland, process water, active acetic acid, gut output, tissue waste and spent acidic bath and shall declare diameter, length and tensile-quality evidence."
+    source_ids:
+      - cenis-et-al-2015-silkworm-gut
+      - iso-2062-2009
+  - rule_id: validation_mass_balance
+    applies_to: "each route"
+    rule: "The route mass balance shall report input, product, recovered material, waste, wastewater, measured emissions, moisture change, stock change and residual gap on consistent bases."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validation_uuid_resolution
+    applies_to: "release readiness"
+    rule: "Every route-required unresolved flow identity shall be resolved or accepted through formal review before active or published release; the confirmed reference product, Mass property and Units of mass group identities shall remain unchanged unless superseded by documented public-record review; semantically rejected candidates shall not be substituted."
+    source_ids:
+      - unsd-cpc-3-0-2025
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one declared CPC 26310 silk-yarn or silkworm-gut route"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product-footprint, LCA and supply-chain modelling when route, geography, period, product specification and upstream links match the study"
+  excluded_use: "Undeclared average across filament yarn, spun silk and silkworm gut; proxy for raw silk, woven fabric, dyed or weighted silk, finished sutures, or a route with materially different wet processing or energy supply"
+  required_metadata: "PCR id and version; product route; product and flow UUIDs; geography; reference period; silk source/species where known; sericin condition; yarn construction or gut dimensions; linear density or diameter; twist where applicable; moisture basis; process list; utility supply scenarios; allocation method; data owner and review status"
+  required_quality_disclosure: "Foreground coverage; meter and scale calibration; mass-balance gap; proxy datasets; unresolved identities; below-detection treatment; wastewater destination; abatement state; allocation sensitivity; excluded processes"
+  update_trigger: "Change in starting material, route, degumming recipe, gassing technology, energy supply, product specification, allocation method, wastewater treatment, abatement, geography, or a material change in measured inventory"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, code 26310, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
+    used_for: "Product-category scope and classification identity"
+  - id: "eu-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, 2023, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf (retrieved 2026-08-12)"
+    used_for: "Silk input boundary, yarn processing, silk scouring, utilities, wastewater and monitoring"
+  - id: "ifc-textiles-ehs-2007"
+    type: "official_guidance"
+    reference: "IFC / World Bank Group, Environmental, Health, and Safety Guidelines for Textile Manufacturing, 30 April 2007, https://www.ifc.org/content/dam/ifc/doc/2000/2007-textiles-manufacturing-ehs-guidelines-en.pdf (retrieved 2026-08-12)"
+    used_for: "Wastewater, energy, air-emission and monitoring requirements"
+  - id: "iso-1144-2016"
+    type: "standard"
+    reference: "ISO 1144:2016, Textiles — Universal system for designating linear density (Tex System), https://www.iso.org/standard/70774.html (retrieved 2026-08-12)"
+    used_for: "Linear-density declaration and unit convention"
+  - id: "iso-2060-1994"
+    type: "standard"
+    reference: "ISO 2060:1994, Textiles — Yarn from packages — Determination of linear density (mass per unit length) by the skein method, https://www.iso.org/standard/6837.html (retrieved 2026-08-12)"
+    used_for: "Yarn mass-per-length measurement and conditioning declaration"
+  - id: "iso-2062-2009"
+    type: "standard"
+    reference: "ISO 2062:2009, Textiles — Yarns from packages — Determination of single-end breaking force and elongation at break using constant rate of extension, https://www.iso.org/standard/45642.html (retrieved 2026-08-12)"
+    used_for: "Yarn and gut tensile-quality evidence"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html (retrieved 2026-08-12)"
+    used_for: "Boundary, inventory, allocation, normalization and data-quality method"
+  - id: "yin-et-al-2021-spun-silk"
+    type: "literature"
+    reference: "Yin, R. et al., Cleaner Production of Mulberry Spun Silk Yarns via a Shortened and Gassing-free Production Route, Journal of Cleaner Production, DOI: 10.1016/j.jclepro.2020.123690"
+    used_for: "Silk-waste degumming, dressing, spinning, gassing and waste-flow decomposition"
+  - id: "cenis-et-al-2015-silkworm-gut"
+    type: "literature"
+    reference: "Cenis, J. L. et al., Mechanical behaviour and formation process of silkworm silk gut, Soft Matter 11 (2015) 8981–8991, DOI: 10.1039/C5SM01877C"
+    used_for: "Silk-gland, acidic-bath and stretching route for silkworm gut"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:89b1fe8b811733b95eb4cf339835b8837be01c6ad7b1d233b1a1d130f8517e7c"
+  generated_content_sha256: "sha256:ebd542fb3d534ffadf52f049bb37da8708fef95e21f5f581a0d1acdbaf65ec41"

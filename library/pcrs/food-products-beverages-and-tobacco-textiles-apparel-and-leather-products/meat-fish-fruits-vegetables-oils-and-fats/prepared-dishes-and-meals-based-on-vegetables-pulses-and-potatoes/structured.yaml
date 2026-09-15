@@ -1,10 +1,1988 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21391"
-  title: "Prepared dishes and meals based on vegetables, pulses and potatoes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.prepared-dishes-and-meals-based-on-vegetables-pulses-and-potatoes"
+  classification_refs: "CPC 3.0: 21391, exact mapping context"
+  covered_products: "Ready-made, seasoned and cooked dishes or meals with vegetables, pulses, or potatoes as main ingredients; ambient-stable, chilled, or frozen"
+  excluded_products: "Meat-, fish-, cereal-, couscous-, stuffed-pasta-, or pizza-based meals; merely preserved single ingredients; food-service and household preparation"
+  representative_product: "Packaged potato–chickpea vegetable meal"
+  production_route: "Ingredient receiving; washing, sorting, peeling/cutting and pulse hydration as applicable; formulation and cooking; filling and sealing; thermal preservation and/or chilling/freezing; on-site storage"
+  market_state: "Declared as ambient-stable, chilled, or frozen at the manufacturing-site gate"
+functional_unit:
+  what: "Supply a prepared, seasoned and cooked vegetable-, pulse-, or potato-based dish or meal for consumption after the declared final preparation"
+  how_much: "1,000 kg net prepared meal, excluding packaging, at the manufacturing-site gate"
+  how_well: "Meets the declared recipe, ingredient predominance, food-safety controls, preservation route, packaging integrity, storage condition, and applicable product specification"
+  how_long_or_cycle: "One production reporting period; shelf life is a required product qualifier rather than an extension of the reference amount"
+  reference_flow_link: "reference_product_flow"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "foreground manufacturing"
+      rule: "Include ingredient preparation, formulation/cooking, filling/sealing, applicable preservation and on-site cold storage, sanitation, on-site waste handling, and direct emissions from the manufacturing site."
+      source_ids:
+        - rasines-et-al-2024-precooked-vegetables
+        - schmidt-rivera-et-al-2014-convenience-food
+    - rule_id: boundary_rule_2
+      applies_to: "upstream and downstream stages"
+      rule: "Exclude agriculture, ingredient manufacture, packaging manufacture, distribution beyond the site gate, consumer storage/preparation, and end of life from foreground collection, but link representative background datasets when the study boundary includes them."
+      source_ids:
+        - ec-pef-2021-2279
+    - rule_id: boundary_rule_3
+      applies_to: "route-specific operations"
+      rule: "Include pulse hydration, blanching, retorting/pasteurisation, chilling, freezing, and wastewater treatment only when used; mark each absent atomic exchange or process as not applicable and retain the route declaration."
+      source_ids:
+        - rasines-et-al-2024-precooked-vegetables
+        - codex-cxc-1-1969
+boundary_abstraction:
+  declared_starting_condition: "Accepted food ingredients, processing aids, cleaning chemicals, packaging components, and utilities at the manufacturing-site receiving gate"
+  starting_condition_role: "Foreground manufacturing entry condition"
+  product_classification_scope: "Prepared dishes and meals whose defining main ingredients are vegetables, pulses, or potatoes"
+  recursive_input_rule: "A purchased prepared ingredient already within this product category is recorded once as a specific product input with an upstream dataset; do not reopen its internal preparation inside this foreground system."
+  upstream_dataset_requirement: "Each purchased ingredient, packaging component, electricity supply, fuel, refrigerant, chemical, and treatment service requires a geographically and technologically representative upstream dataset."
+  disclosure: "Declare ingredient origin and state, recipe, preparation and preservation route, shared-equipment treatment, packaging configuration, cold-chain condition at the gate, waste treatment destination, exclusions, and any recursive same-category input."
+reference_flow_definition:
+  reference_amount: "1,000 kg net prepared meal"
+  product_flow_ref:
+    name: "Prepared vegetable-, pulse-, or potato-based dish or meal"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual recipe and ingredient mass fractions"
+    - "dominant ingredient basis"
+    - "ambient/chilled/frozen market state"
+    - "ready-to-eat or reheating status"
+    - "preservation route"
+    - "net mass and packaging exclusion"
+    - "manufacturing geography and technology"
+    - "storage temperature"
+    - "declared shelf life"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1,000 kg of net edible prepared meal at the manufacturing-site gate; exclude all packaging mass from the reference amount."
+  - id: ingredient_mass
+    applies_to: "every recipe ingredient"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each ingredient separately on an as-received mass basis and retain moisture or solids content when it materially changes comparability."
+  - id: utility_energy
+    applies_to: "electricity, steam, purchased heat, and fuels"
+    required_property_ref:
+      name: "Energy or fuel-specific mass/volume"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Preserve measured billing or meter units, identify lower or higher heating value where fuel energy is converted, and normalize only after unit conversion is documented."
+  - id: water_mass_volume
+    applies_to: "process and sanitation water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Distinguish recipe water, preparation water, and sanitation water; document density assumptions when converting volume to mass."
+  - id: packaging_mass
+    applies_to: "each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each primary, secondary, and tertiary packaging material separately; do not include packaging in the net-product reference amount."
+  - id: emission_load
+    applies_to: "direct air and water emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calculate a pollutant load from measured concentration and measured flow over the same period, or use a documented direct mass measurement."
+process_map:
+  - id: ingredient_preparation
+    name: "Ingredient receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "All products"
+    role: "Foreground ingredient acceptance, washing, sorting, peeling, cutting, and pulse hydration where used"
+    quantitative_reference: "kg accepted or prepared ingredient"
+  - id: formulation_cooking
+    name: "Formulation and cooking"
+    inclusion: "required"
+    inclusion_condition: "All products"
+    role: "Foreground recipe dosing, mixing, cooking, and bulk-meal production"
+    quantitative_reference: "kg bulk cooked meal"
+  - id: filling_packaging
+    name: "Filling, sealing, and packing"
+    inclusion: "required"
+    inclusion_condition: "All products"
+    role: "Foreground primary, secondary, and tertiary packaging"
+    quantitative_reference: "kg packaged meal"
+  - id: preservation_storage
+    name: "Preservation and on-site storage"
+    inclusion: "required"
+    inclusion_condition: "Route-specific preservation and declared market state"
+    role: "Foreground heat treatment, cooling/freezing, and site storage"
+    quantitative_reference: "kg saleable meal at site gate"
+  - id: sanitation_wastewater
+    name: "Sanitation, waste, and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "All products; treatment outputs depend on site route"
+    role: "Foreground cleaning, waste segregation, and on-site wastewater treatment or discharge"
+    quantitative_reference: "production-period records normalized to reference flow"
+process_inventory:
+  - id: ingredient_preparation
+    label: "Ingredient receiving and preparation"
+    inputs:
+      product:
+        - row_id: raw_potato
+          role: "Raw potatoes"
+          name: "Potato, raw"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Raw potatoes enter preparation as a separately weighed recipe ingredient."
+          amount:
+            expression: "Net accepted mass from receiving and batch records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - un-cpc-3-0
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: raw_carrot
+          role: "Raw carrots"
+          name: "Carrot, raw"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Raw carrots enter preparation as a separately weighed recipe ingredient."
+          amount:
+            expression: "Net accepted mass from receiving and batch records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: raw_onion
+          role: "Raw onions"
+          name: "Onion, raw"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Raw onions enter preparation as a separately weighed recipe ingredient."
+          amount:
+            expression: "Net accepted mass from receiving and batch records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: dry_chickpea
+          role: "Dry chickpeas"
+          name: "Chickpea, dry"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Dry chickpeas enter the representative pulse hydration route as a separately weighed ingredient."
+          amount:
+            expression: "Net accepted dry mass from receiving and batch records; not applicable when no chickpea is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - un-cpc-3-0
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Water, process"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for washing, peeling assistance, and pulse hydration is metered separately from recipe and sanitation water."
+          amount:
+            expression: "Process-area water meter less separately metered sanitation water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers sorting, cutting, peeling, pumping, and preparation equipment."
+          amount:
+            expression: "Submetered preparation electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: sodium_hypochlorite
+          role: "Sodium hypochlorite for produce disinfection"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sodium hypochlorite is recorded only when used to disinfect incoming produce."
+          amount:
+            expression: "Active-product mass issued to the preparation line"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+                - codex-cxc-1-1969
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_potato
+          role: "Prepared potato"
+          name: "Potato, prepared for cooking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Washed, peeled as applicable, and cut potato leaves preparation for cooking."
+          amount:
+            expression: "Measured transfer mass or input mass less separately measured potato losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared potato output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_mass_balance
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: prepared_carrot
+          role: "Prepared carrot"
+          name: "Carrot, prepared for cooking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Washed and cut carrot leaves preparation for cooking."
+          amount:
+            expression: "Measured transfer mass or input mass less separately measured carrot losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared carrot output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_mass_balance
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: prepared_onion
+          role: "Prepared onion"
+          name: "Onion, prepared for cooking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Peeled and cut onion leaves preparation for cooking."
+          amount:
+            expression: "Measured transfer mass or input mass less separately measured onion losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared onion output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_mass_balance
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: hydrated_chickpea
+          role: "Hydrated chickpeas"
+          name: "Chickpea, hydrated"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Hydrated chickpeas leave preparation for cooking when the dry-pulse route is used."
+          amount:
+            expression: "Measured drained mass after hydration; not applicable for pre-cooked or absent chickpeas"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg hydrated chickpea output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_mass_balance
+              source_ids:
+                - un-cpc-3-0
+            ranges: []
+      waste:
+        - row_id: potato_peel_waste
+          role: "Potato peel waste"
+          name: "Potato peel waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Potato peel removed on site is weighed as a distinct biodegradable waste stream."
+          amount:
+            expression: "Measured mass sent to the declared treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: rejected_vegetable_waste
+          role: "Rejected vegetable matter"
+          name: "Rejected vegetable matter"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Rejected edible and inedible vegetable matter other than potato peel is kept separate from other solid waste."
+          amount:
+            expression: "Measured mass by destination and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater from vegetable preparation"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from washing and preparation is measured before mixing with other site wastewater where practicable."
+          amount:
+            expression: "Measured or water-balance-derived volume sent to on-site or off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+      elementary:
+        []
+  - id: formulation_cooking
+    label: "Formulation and cooking"
+    inputs:
+      product:
+        - row_id: prepared_potato_input
+          role: "Prepared potato input"
+          name: "Potato, prepared for cooking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Prepared potato is transferred into recipe formulation."
+          amount:
+            expression: "Measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: prepared_carrot_input
+          role: "Prepared carrot input"
+          name: "Carrot, prepared for cooking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Prepared carrot is transferred into recipe formulation."
+          amount:
+            expression: "Measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: prepared_onion_input
+          role: "Prepared onion input"
+          name: "Onion, prepared for cooking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Prepared onion is transferred into recipe formulation."
+          amount:
+            expression: "Measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: hydrated_chickpea_input
+          role: "Hydrated chickpea input"
+          name: "Chickpea, hydrated"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Hydrated chickpeas are dosed separately into the representative recipe."
+          amount:
+            expression: "Measured batch dose; not applicable when no chickpea is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - un-cpc-3-0
+            ranges: []
+        - row_id: tomato_puree
+          role: "Tomato puree"
+          name: "Tomato puree"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Tomato puree is a separately weighed sauce ingredient."
+          amount:
+            expression: "Measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: sunflower_oil
+          role: "Sunflower oil"
+          name: "Sunflower oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sunflower oil is a separately weighed recipe ingredient."
+          amount:
+            expression: "Measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: salt
+          role: "Salt"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Salt is a separately weighed recipe ingredient."
+          amount:
+            expression: "Measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: recipe_water
+          role: "Recipe water"
+          name: "Water, potable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Water incorporated into the meal is recorded separately from preparation and sanitation water."
+          amount:
+            expression: "Metered or batch-dosed mass incorporated into product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_batch
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: cooking_electricity
+          role: "Cooking electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by mixers, pumps, electric cooking equipment, and controls is submetered."
+          amount:
+            expression: "Submetered formulation and cooking electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: cooking_steam
+          role: "Cooking steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased or site-generated steam delivered to cooking equipment is recorded as steam."
+          amount:
+            expression: "Steam-meter reading or mass and enthalpy calculation for the cooking line"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: purchased_heat
+          role: "Purchased heat"
+          name: "Heat, district or industrial"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot water or district heat is recorded separately when it crosses the site boundary."
+          amount:
+            expression: "Supplier meter or invoice attributable to cooking; not applicable when no heat is purchased"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Natural gas combusted on site for boilers or direct heating is recorded separately."
+          amount:
+            expression: "Fuel meter reading attributable to this product and reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: liquefied_petroleum_gas
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Liquefied petroleum gas is recorded only for equipment that consumes it."
+          amount:
+            expression: "Tank issue or invoice attributable to this product; not applicable when unused"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: light_fuel_oil
+          role: "Light fuel oil"
+          name: "Light fuel oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Light fuel oil is recorded separately for boilers or backup thermal equipment that consumes it."
+          amount:
+            expression: "Tank issue or invoice attributable to this product; not applicable when unused"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_cooked_meal
+          role: "Bulk cooked meal"
+          name: "Prepared vegetable and chickpea meal, bulk"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The cooked, formulated meal leaves the cooker before primary packaging."
+          amount:
+            expression: "Measured bulk cooked output corrected for returned or held material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk cooked meal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+      waste:
+        - row_id: offspec_cooked_food
+          role: "Off-specification cooked food"
+          name: "Off-specification cooked food"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Cooked material rejected before packaging is weighed separately from preparation residues."
+          amount:
+            expression: "Measured mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Fossil carbon dioxide from on-site combustion is reported as a direct air emission."
+          amount:
+            expression: "Measured stack mass or fuel-specific calculation from collected fuel records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Carbon monoxide from on-site combustion is reported separately."
+          amount:
+            expression: "Measured stack load over the production period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: nitrogen_oxides
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Nitrogen oxides from on-site combustion are reported as NOx on the facility's declared measurement basis."
+          amount:
+            expression: "Measured stack load over the production period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: sulfur_dioxide
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sulfur dioxide is reported separately when sulfur-containing fuel is combusted on site."
+          amount:
+            expression: "Measured stack load or sulfur mass-balance calculation; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: particulate_matter
+          role: "Particulate matter to air"
+          name: "Particulate matter, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Particulate matter from a channelled combustion source is reported separately when present."
+          amount:
+            expression: "Measured stack load over the production period; not applicable without a channelled particulate source"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: filling_packaging
+    label: "Filling, sealing, and packing"
+    inputs:
+      product:
+        - row_id: bulk_cooked_meal_input
+          role: "Bulk cooked meal input"
+          name: "Prepared vegetable and chickpea meal, bulk"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Bulk cooked meal is transferred to filling equipment."
+          amount:
+            expression: "Measured filler feed mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: pet_tray
+          role: "Polyethylene terephthalate tray"
+          name: "Polyethylene terephthalate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Each PET primary tray is recorded by material mass."
+          amount:
+            expression: "Purchased mass issued to the product minus verified unused returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: polyethylene_lidding_film
+          role: "Polyethylene lidding film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Polyethylene lidding film is recorded separately from the rigid tray."
+          amount:
+            expression: "Roll consumption attributable to saleable and rejected packages"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: paper_label
+          role: "Paper label"
+          name: "Paper label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Paper labels are recorded as a separate primary-packaging component."
+          amount:
+            expression: "Count multiplied by measured unit mass, including rejected labels"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: corrugated_carton
+          role: "Corrugated carton"
+          name: "Corrugated board box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Corrugated cartons used for distribution packing are recorded separately."
+          amount:
+            expression: "Carton count multiplied by verified unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "One-way pallet mass or the attributable loss of reusable pallets is recorded."
+          amount:
+            expression: "One-way pallet mass plus measured replacement mass of reusable pallets"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: stretch_film
+          role: "Stretch film"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Pallet stretch film is recorded separately from primary lidding film."
+          amount:
+            expression: "Roll consumption attributable to palletised product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for filling, sealing, labelling, conveying, and pallet wrapping is recorded."
+          amount:
+            expression: "Packaging-line submeter or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_meal
+          role: "Packaged prepared meal"
+          name: "Packaged prepared vegetable and chickpea meal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sealed meal units leave the packaging line before final preservation or storage."
+          amount:
+            expression: "Net food mass of accepted sealed units; packaging mass retained separately"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged-meal net content"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+      waste:
+        - row_id: pet_packaging_scrap
+          role: "PET packaging scrap"
+          name: "Waste polyethylene terephthalate"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Rejected PET trays and trim are weighed separately by destination."
+          amount:
+            expression: "Measured scrap mass by recycling or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: polyethylene_packaging_scrap
+          role: "Polyethylene packaging scrap"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Rejected lidding and stretch film are weighed separately from rigid plastics."
+          amount:
+            expression: "Measured scrap mass by recycling or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: paperboard_packaging_scrap
+          role: "Paperboard packaging scrap"
+          name: "Waste paperboard"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Rejected cartons and labels are weighed as a fibre-packaging waste stream."
+          amount:
+            expression: "Measured scrap mass by recycling or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+      elementary:
+        []
+  - id: preservation_storage
+    label: "Preservation and on-site storage"
+    inputs:
+      product:
+        - row_id: packaged_meal_input
+          role: "Packaged meal input"
+          name: "Packaged prepared vegetable and chickpea meal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Accepted sealed meal units enter the declared preservation and storage route."
+          amount:
+            expression: "Net food mass entering preservation and storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: cold_storage_electricity
+          role: "Cold-storage electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for cooling, freezing, and on-site temperature-controlled storage is separately recorded."
+          amount:
+            expression: "Submetered energy allocated by measured occupancy, mass, and storage time"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_storage
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+        - row_id: ammonia_refrigerant
+          role: "Ammonia refrigerant"
+          name: "Ammonia"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Ammonia charged to refrigeration equipment is recorded separately when used."
+          amount:
+            expression: "Purchases plus opening inventory minus closing inventory, recovered quantity, and transfers; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - eu-fdm-bat-2019
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: carbon_dioxide_refrigerant
+          role: "Carbon dioxide refrigerant"
+          name: "Carbon dioxide, refrigerant grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Carbon dioxide charged to refrigeration equipment is recorded separately when used."
+          amount:
+            expression: "Purchases plus opening inventory minus closing inventory, recovered quantity, and transfers; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: r134a_refrigerant
+          role: "R134a refrigerant"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "R134a is recorded separately only where legacy or existing equipment uses it."
+          amount:
+            expression: "Purchases plus opening inventory minus closing inventory, recovered quantity, and transfers; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_prepared_meal
+          role: "Final prepared meal"
+          name: "Prepared vegetable-, pulse-, or potato-based dish or meal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The saleable meal leaves the site in the declared ambient, chilled, or frozen state."
+          amount:
+            expression: "Net mass of saleable product released at the manufacturing-site gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - un-cpc-3-0
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+      waste:
+        - row_id: offspec_packaged_meal
+          role: "Off-specification packaged meal"
+          name: "Off-specification packaged prepared meal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Packaged units rejected after preservation or storage are weighed with packaging and food portions distinguishable in records."
+          amount:
+            expression: "Measured rejected net food mass; packaging is reported in its material-specific scrap row"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+      elementary:
+        - row_id: ammonia_to_air
+          role: "Ammonia to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Ammonia lost from the refrigeration system is reported as a direct air emission."
+          amount:
+            expression: "Refrigerant mass-balance loss assigned to the product"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+            ranges: []
+        - row_id: carbon_dioxide_refrigerant_to_air
+          role: "Refrigerant carbon dioxide to air"
+          name: "Carbon dioxide, refrigerant, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Refrigerant-grade carbon dioxide lost from the refrigeration system is reported separately."
+          amount:
+            expression: "Refrigerant mass-balance loss assigned to the product"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: r134a_to_air
+          role: "R134a to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "R134a lost from existing refrigeration equipment is reported as a distinct direct air emission."
+          amount:
+            expression: "Refrigerant mass-balance loss assigned to the product; not applicable when no R134a is used"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - schmidt-rivera-et-al-2014-convenience-food
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: sanitation_wastewater
+    label: "Sanitation, waste, and wastewater management"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation water"
+          name: "Water, process"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for equipment and area cleaning is metered separately from preparation and recipe water."
+          amount:
+            expression: "Sanitation submeter or documented water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-fdm-bat-2019
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Sanitation electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for cleaning-in-place pumps and on-site wastewater treatment is separately recorded."
+          amount:
+            expression: "Sanitation and treatment submeter or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sodium hydroxide used for alkaline cleaning is recorded as one chemical."
+          amount:
+            expression: "Product mass issued, with concentration retained in records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: nitric_acid
+          role: "Nitric acid cleaner"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Nitric acid used for acid cleaning is recorded separately from alkaline cleaner."
+          amount:
+            expression: "Product mass issued, with concentration retained in records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Peracetic acid used for equipment disinfection is recorded as one chemical."
+          amount:
+            expression: "Product mass issued, with active concentration retained in records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_sodium_hypochlorite
+          role: "Sodium hypochlorite for sanitation"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sodium hypochlorite used in sanitation is recorded separately from produce-disinfection use."
+          amount:
+            expression: "Product mass issued to sanitation, with active concentration retained in records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - codex-cxc-1-1969
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: factory_wastewater
+          role: "Factory wastewater"
+          name: "Wastewater from food manufacturing"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Combined factory wastewater sent to off-site treatment is reported as a waste flow; direct discharge pollutants are reported separately below."
+          amount:
+            expression: "Calibrated discharge meter over the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Sludge from food-industry wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sludge leaving on-site wastewater treatment is weighed by treatment destination."
+          amount:
+            expression: "Wet mass and dry-solids fraction measured for each dispatch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: mixed_solid_waste
+          role: "Mixed solid waste"
+          name: "Mixed municipal solid waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Non-hazardous mixed solid waste not represented by a more specific food or packaging row is weighed separately."
+          amount:
+            expression: "Measured mass by disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: food_processing_residue
+          role: "Food-processing residue"
+          name: "Food-processing residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Source-separated biodegradable food residue sent to animal feed, anaerobic digestion, composting, or another declared route is recorded separately."
+          amount:
+            expression: "Measured dispatched mass by destination and legal status"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - rasines-et-al-2024-precooked-vegetables
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "COD is reported as a distinct direct water-emission load when treated effluent leaves the site to a receiving water body."
+          amount:
+            expression: "Flow-proportional concentration multiplied by matched discharge volume; not applicable for wholly off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: bod_to_water
+          role: "Biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "BOD is reported separately from COD for direct discharge where monitored."
+          amount:
+            expression: "Flow-proportional concentration multiplied by matched discharge volume; not applicable for wholly off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Total nitrogen is reported as its own direct water-emission load."
+          amount:
+            expression: "Flow-proportional concentration multiplied by matched discharge volume; not applicable for wholly off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Total phosphorus is reported as its own direct water-emission load."
+          amount:
+            expression: "Flow-proportional concentration multiplied by matched discharge volume; not applicable for wholly off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: suspended_solids_to_water
+          role: "Suspended solids to water"
+          name: "Suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Total suspended solids are reported as a distinct direct water-emission load."
+          amount:
+            expression: "Flow-proportional concentration multiplied by matched discharge volume; not applicable for wholly off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: chloride_to_water
+          role: "Chloride to water"
+          name: "Chloride, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Chloride is reported separately where relevant to direct discharge."
+          amount:
+            expression: "Flow-proportional concentration multiplied by matched discharge volume; not applicable for wholly off-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net prepared meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "shared processes and equipment"
+    rule: "Avoid allocation by submetering, batch records, or subdivision wherever the product-specific inputs and outputs can be isolated."
+    source_ids:
+      - ec-pef-2021-2279
+      - eu-fdm-bat-2019
+  - rule_id: allocation_rule_2
+    applies_to: "shared utilities and storage"
+    rule: "When subdivision is not possible, allocate a shared utility using a causally relevant physical driver such as measured equipment time and power, steam duty, occupied refrigerated volume-mass-time, or treated wastewater load; document the driver and reconciliation to the facility total."
+    source_ids:
+      - ec-pef-2021-2279
+      - schmidt-rivera-et-al-2014-convenience-food
+  - rule_id: allocation_rule_3
+    applies_to: "shared mass-handling operations"
+    rule: "Use mass allocation only when mass throughput is a demonstrably relevant physical relationship; do not apply it automatically to heating, cooling, or treatment operations with materially different intensities."
+    source_ids:
+      - ec-pef-2021-2279
+      - rasines-et-al-2024-precooked-vegetables
+  - rule_id: allocation_rule_4
+    applies_to: "food residues and recovered materials"
+    rule: "First determine and disclose whether each output is waste or a co-product under the applicable jurisdiction. For a co-product, follow subdivision or system expansion before physical allocation; any substitution credit belongs only to the declared expanded-system study and shall not be silently embedded in a gate-to-gate dataset."
+    source_ids:
+      - ec-pef-2021-2279
+      - eu-fdm-bat-2019
+  - rule_id: allocation_rule_5
+    applies_to: "economic allocation"
+    rule: "Use economic allocation only when subdivision, system expansion, and a relevant physical relationship are not feasible; use contemporaneous net values, disclose the period and sensitivity, and keep the unallocated facility totals."
+    source_ids:
+      - ec-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ingredient_mass
+      process_id: "ingredient_preparation"
+      flow_role: "individual received ingredient"
+      record_type: "receiving and batch record"
+      raw_fields: "ingredient identity, supplier lot, gross mass, tare, accepted mass, moisture/solids where relevant"
+      collection_method: "calibrated receiving scale reconciled to batch issue"
+      unit: "kg"
+      frequency: "each lot and batch"
+      temporal_coverage: "representative production period, normally at least 12 consecutive months"
+      site_scope: "each manufacturing site"
+      aggregation_rule: "sum accepted mass by ingredient and product, then normalize"
+      quality_evidence: "calibration, lot traceability, recipe reconciliation"
+    - protocol_id: cp_preparation_mass_balance
+      process_id: "ingredient_preparation"
+      flow_role: "prepared ingredient and preparation loss"
+      record_type: "batch mass balance"
+      raw_fields: "input mass, prepared transfer mass, peel, reject, retained work-in-process"
+      collection_method: "calibrated line scales and inventory reconciliation"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as reference-product output"
+      site_scope: "each preparation line"
+      aggregation_rule: "input equals transfers plus measured losses and inventory change"
+      quality_evidence: "scale calibration, signed batch record, closure result"
+    - protocol_id: cp_recipe_batch
+      process_id: "formulation_cooking"
+      flow_role: "individual recipe ingredient"
+      record_type: "recipe and dosing record"
+      raw_fields: "recipe version, ingredient id, dose, returned amount, batch output"
+      collection_method: "calibrated dosing equipment or verified manual weigh sheet"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as reference-product output"
+      site_scope: "each cooking line"
+      aggregation_rule: "sum net doses by ingredient and recipe version"
+      quality_evidence: "recipe authorization, calibration, batch traceability"
+    - protocol_id: cp_energy_records
+      process_id: "all"
+      flow_role: "electricity, steam, and purchased heat"
+      record_type: "meter, invoice, and operating log"
+      raw_fields: "meter ids, opening/closing readings, steam mass/pressure, heat quantity, operating time, product throughput"
+      collection_method: "calibrated submeter preferred; documented physical allocation otherwise"
+      unit: "kWh, MJ, kg steam"
+      frequency: "continuous or each billing interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "site and relevant line"
+      aggregation_rule: "reconcile process totals to site purchase/generation and normalize"
+      quality_evidence: "meter calibration, invoices, reconciliation"
+    - protocol_id: cp_fuel_records
+      process_id: "formulation_cooking"
+      flow_role: "each on-site fuel"
+      record_type: "tank, meter, and invoice record"
+      raw_fields: "fuel identity, quantity, density, heating-value basis, opening/closing inventory, equipment"
+      collection_method: "calibrated meter or inventory balance"
+      unit: "kg or m3"
+      frequency: "each delivery and reporting interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "each combustion unit"
+      aggregation_rule: "reconcile receipts, inventory change, and consumption by unit"
+      quality_evidence: "invoices, tank calibration, fuel certificate"
+    - protocol_id: cp_water_balance
+      process_id: "ingredient_preparation_sanitation_wastewater"
+      flow_role: "preparation, recipe, sanitation, and discharge water"
+      record_type: "meter and water-balance record"
+      raw_fields: "meter ids, readings, recipe addition, discharge, evaporation estimate, product water, losses"
+      collection_method: "calibrated submeters and site water balance"
+      unit: "m3 and kg"
+      frequency: "continuous or daily"
+      temporal_coverage: "full reporting period"
+      site_scope: "each water-use area and discharge point"
+      aggregation_rule: "reconcile intake with product, discharge, evaporation, and inventory change"
+      quality_evidence: "meter calibration, balance closure, maintenance log"
+    - protocol_id: cp_packaging_records
+      process_id: "filling_packaging"
+      flow_role: "each packaging component"
+      record_type: "purchase, issue, count, and scrap record"
+      raw_fields: "material, specification, unit mass, issued count/mass, unused returns, scrap"
+      collection_method: "verified bill of materials plus line issue and scrap weights"
+      unit: "kg"
+      frequency: "each production order"
+      temporal_coverage: "full reporting period"
+      site_scope: "each packaging line"
+      aggregation_rule: "issued minus return equals saleable packaging plus scrap"
+      quality_evidence: "supplier specification, unit-mass check, reconciliation"
+    - protocol_id: cp_product_output
+      process_id: "all"
+      flow_role: "intermediate and final product"
+      record_type: "production and release record"
+      raw_fields: "batch id, gross/net mass, packaging tare, hold/rework/reject, market state"
+      collection_method: "calibrated checkweigher and release records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "each line and site"
+      aggregation_rule: "sum released net mass; exclude packaging and unresolved holds"
+      quality_evidence: "checkweigher calibration, release authorization, mass balance"
+    - protocol_id: cp_waste_records
+      process_id: "all"
+      flow_role: "each solid or liquid waste stream"
+      record_type: "container weight and transfer note"
+      raw_fields: "waste identity, legal status, wet mass, dry solids where relevant, destination, treatment"
+      collection_method: "calibrated weighbridge/scale and transfer documentation"
+      unit: "kg or m3"
+      frequency: "each dispatch"
+      temporal_coverage: "full reporting period"
+      site_scope: "each site"
+      aggregation_rule: "sum by atomic waste identity and destination; no netting with credits"
+      quality_evidence: "transfer note, scale ticket, destination evidence"
+    - protocol_id: cp_chemical_records
+      process_id: "ingredient_preparation_sanitation_wastewater"
+      flow_role: "each processing or cleaning chemical"
+      record_type: "issue and concentration record"
+      raw_fields: "chemical identity, product mass, active concentration, return/reuse, process area"
+      collection_method: "inventory issue records and dosing-system totalizer"
+      unit: "kg"
+      frequency: "each batch or cleaning cycle"
+      temporal_coverage: "full reporting period"
+      site_scope: "each dosing system"
+      aggregation_rule: "calculate active and formulated product amounts without merging chemicals"
+      quality_evidence: "safety data sheet, concentration certificate, dosing calibration"
+    - protocol_id: cp_cold_storage
+      process_id: "preservation_storage"
+      flow_role: "storage electricity"
+      record_type: "submeter and occupancy log"
+      raw_fields: "electricity, product mass, occupied volume, entry/exit time, temperature, route"
+      collection_method: "calibrated meter linked to warehouse management records"
+      unit: "kWh, kg, h"
+      frequency: "continuous"
+      temporal_coverage: "full reporting period including seasonal variation"
+      site_scope: "each cold room or freezer"
+      aggregation_rule: "allocate by a justified mass-volume-time driver and reconcile to meter"
+      quality_evidence: "meter calibration, temperature log, occupancy record"
+    - protocol_id: cp_refrigerant_balance
+      process_id: "preservation_storage"
+      flow_role: "each refrigerant and direct leak"
+      record_type: "refrigerant inventory and service record"
+      raw_fields: "refrigerant identity, opening stock, purchases, additions, recovery, transfer, closing stock, equipment"
+      collection_method: "annual equipment-level mass balance supported by service records"
+      unit: "kg"
+      frequency: "each service event and annual close"
+      temporal_coverage: "full reporting period"
+      site_scope: "each refrigeration system"
+      aggregation_rule: "calculate loss separately for ammonia, carbon dioxide, and R134a; allocate with documented storage driver"
+      quality_evidence: "technician record, cylinder weights, inventory reconciliation"
+    - protocol_id: cp_air_emissions
+      process_id: "formulation_cooking"
+      flow_role: "each direct combustion emission"
+      record_type: "stack measurement and fuel record"
+      raw_fields: "source, operating hours, gas flow, pollutant concentration, oxygen/reference conditions, fuel use"
+      collection_method: "representative stack test or continuous monitoring; matched-period load calculation"
+      unit: "kg"
+      frequency: "permit or risk-based frequency and each material change"
+      temporal_coverage: "representative operation within reporting period"
+      site_scope: "each emission source"
+      aggregation_rule: "concentration times matched flow and time, then reconcile to fuel operation"
+      quality_evidence: "laboratory accreditation, instrument calibration, sampling report"
+    - protocol_id: cp_wastewater_monitoring
+      process_id: "sanitation_wastewater"
+      flow_role: "wastewater volume and each direct pollutant"
+      record_type: "flow meter and laboratory result"
+      raw_fields: "volume, sampling time, pH, temperature, COD, BOD, TN, TP, TSS, chloride, treatment route"
+      collection_method: "flow-proportional composite sampling where applicable and matched discharge metering"
+      unit: "m3, mg/L, kg"
+      frequency: "site permit or BAT frequency and each material change"
+      temporal_coverage: "full reporting period with representative sampling"
+      site_scope: "each final discharge point"
+      aggregation_rule: "concentration times matched volume; report off-site wastewater as waste, not direct emission"
+      quality_evidence: "accredited analysis, meter calibration, chain of custody"
+  calculation_rules:
+    - id: calc_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period row amount / released net product mass × 1,000 kg"
+      inputs:
+        - "atomic row total"
+        - "released net product mass"
+      output: "amount per 1,000 kg net prepared meal"
+      source_ids:
+        - ec-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "ingredient preparation, cooking, and packaging"
+      rule: "input mass + opening work-in-process = output mass + separately identified waste + closing work-in-process; investigate material imbalance before release"
+      inputs:
+        - "calibrated batch and inventory records"
+      output: "reconciled process mass balance"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_energy_allocation
+      applies_to: "shared energy"
+      rule: "product energy = shared-meter energy × documented causal driver share; sum of all shares must equal the shared-meter total"
+      inputs:
+        - "meter total"
+        - "equipment time/power"
+        - "thermal duty"
+        - "or storage driver"
+      output: "product-attributed energy"
+      source_ids:
+        - ec-pef-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigerant"
+      rule: "loss = opening inventory + purchases + additions received − closing inventory − recovered quantity − transfers out; negative or unexplained results require correction"
+      inputs:
+        - "equipment-level refrigerant records"
+      output: "direct loss by refrigerant"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_emission_load
+      applies_to: "each direct air or water pollutant"
+      rule: "load = representative concentration × matched flow integrated over the same operating or discharge period, with documented unit conversion"
+      inputs:
+        - concentration
+        - flow
+        - duration
+        - "reference conditions"
+      output: "pollutant mass"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_packaging_balance
+      applies_to: "each packaging component"
+      rule: "purchased/issued mass − unused returns = mass on saleable packages + separately measured scrap + inventory change"
+      inputs:
+        - "component issue"
+        - return
+        - "product count"
+        - "unit mass"
+        - scrap
+      output: "component mass and scrap"
+      source_ids:
+        - rasines-et-al-2024-precooked-vegetables
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and every atomic flow"
+      requirement: "Preserve recipe version, supplier or equipment identity, physical state, market state, treatment destination, and any Tiangong UUID once resolved."
+      evidence: "recipe, specification, lot records, service and transfer documents"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one common representative reporting period, normally at least 12 consecutive months; explain shorter campaigns and cover seasonal or preservation-route variation."
+      evidence: "date-bounded extracts and production calendar"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Reconcile ingredient, water, energy, packaging, product, waste, and emission totals to facility control totals; disclose exclusions and unclosed balances."
+      evidence: "signed reconciliation and variance investigation"
+    - id: dq_measurement
+      applies_to: "meters, scales, and analyses"
+      requirement: "Use calibrated instruments and accredited or otherwise demonstrated fit-for-purpose laboratory methods; retain detection limits and reference conditions."
+      evidence: "calibration certificates, laboratory scope, sampling reports"
+    - id: dq_technology
+      applies_to: "cooking, preservation, refrigeration, and treatment"
+      requirement: "Record equipment type, fuel, heat source, preservation temperature/time control, refrigerant, storage temperature, and wastewater route."
+      evidence: "equipment register, HACCP records, operating logs"
+    - id: dq_supplier_background
+      applies_to: "purchased inputs and services"
+      requirement: "Select background datasets matching ingredient origin, technology, electricity geography, fuel, packaging resin/fibre, refrigerant, and waste destination; record every proxy."
+      evidence: "dataset selection log and supplier evidence"
+    - id: dq_no_unsupported_ranges
+      applies_to: "all important flows"
+      requirement: "Do not publish a quantitative range until at least two independent, boundary-, unit-, and basis-compatible original sources have been verified, unless a controlling specification prescribes the interval."
+      evidence: "range-evidence review or unresolved-range entry"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "PCR identity and reference flow"
+    rule: "Reject a data package if the product is not primarily vegetable-, pulse-, or potato-based, if its market/preservation state is undeclared, or if the reference amount includes packaging."
+    source_ids:
+      - un-cpc-3-0
+  - rule_id: validation_rule_2
+    applies_to: "recipe and inventory atomicity"
+    rule: "Require the recipe ingredient sum, each utility, each fuel, each refrigerant, each packaging component, each waste, and each direct emission to have a separate row; reject collection labels and combined carriers."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validation_rule_3
+    applies_to: "process completeness"
+    rule: "Require every applicable preparation, cooking, packaging, preservation/storage, sanitation, waste, and treatment process to have inputs and outputs; require an explicit not-applicable statement for route-dependent rows that are absent."
+    source_ids:
+      - rasines-et-al-2024-precooked-vegetables
+      - codex-cxc-1-1969
+  - rule_id: validation_rule_4
+    applies_to: "mass and utility reconciliation"
+    rule: "Require process mass balances and reconciliation of electricity, heat, fuel, water, packaging, refrigerant, and waste records to facility totals within a documented acceptance criterion."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validation_rule_5
+    applies_to: "direct emissions"
+    rule: "Require each reported emission load to use matched concentration, flow, time, and reference conditions; do not report off-site wastewater treatment as a direct water emission."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validation_rule_6
+    applies_to: "allocation"
+    rule: "Require evidence that subdivision was attempted before allocation, that any physical driver is causally relevant, and that allocation factors reconcile to one; reject undisclosed economic allocation or embedded substitution credits."
+    source_ids:
+      - ec-pef-2021-2279
+  - rule_id: validation_rule_7
+    applies_to: "food-safety route evidence"
+    rule: "Require the declared preservation and storage conditions to be supported by validated control measures and monitored batch records; this PCR does not prescribe a universal time-temperature schedule."
+    source_ids:
+      - codex-cxc-1-1969
+  - rule_id: validation_rule_8
+    applies_to: "unresolved evidence"
+    rule: "Fail publication readiness while Tiangong identities or important-flow range evidence remain unresolved; a candidate dataset may proceed only with the gaps explicitly disclosed and no invented UUID or range."
+    source_ids:
+      - ec-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for a declared prepared vegetable-, pulse-, or potato-based meal"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-specific LCA and lifecycle models when recipe, market state, preservation route, geography, technology, allocation, and system boundary are compatible"
+  excluded_use: "Nutrition equivalence claims; generic substitution for meat-, fish-, cereal-, pizza-, or single-ingredient preserved products; use-phase or end-of-life claims not modelled by the dataset"
+  required_metadata: "PCR id and version state; product name and recipe; ingredient mass fractions; net reference mass; market state; preservation route; packaging components; site geography and technology; reporting period; allocation; storage condition; shelf life; data sources and unresolved identities"
+  required_quality_disclosure: "Primary-data share; meter and mass-balance coverage; temporal and geographic representativeness; background proxies; excluded flows; allocation factors; wastewater route; refrigerant balance; unresolved UUIDs and ranges"
+  update_trigger: "Recipe or dominant ingredient change; preservation or packaging redesign; fuel, electricity, refrigerant, storage, or wastewater-route change; site/technology change; allocation change; material production shift; new verified Tiangong identity or compatible range evidence"
+data_sources:
+  - id: "un-cpc-3-0"
+    type: "standard"
+    reference: "United Nations Statistics Division. Central Product Classification Version 3.0, structure and classification resources. https://unstats.un.org/unsd/classifications/Econ/CPC.cshtml (accessed 2026-08-24)."
+    used_for: "Category title, classification context, and product-basis scope"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries. https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj/eng (accessed 2026-08-24)."
+    used_for: "Facility inventories, energy/water/raw-material monitoring, cleaning chemicals, refrigeration, wastes, wastewater and direct-emission data rules"
+  - id: "ec-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, Annex I. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (accessed 2026-08-24)."
+    used_for: "Functional unit, system boundary, foreground/background separation, allocation hierarchy, data quality and validation"
+  - id: "codex-cxc-1-1969"
+    type: "standard"
+    reference: "FAO and WHO. 2023. General Principles of Food Hygiene. Codex Alimentarius Code of Practice CXC 1-1969, revised 2022. https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (accessed 2026-08-24)."
+    used_for: "Process description, hygienic design and cleaning, hazard-control validation, monitoring, documentation and storage-route disclosure"
+  - id: "rasines-et-al-2024-precooked-vegetables"
+    type: "literature"
+    reference: "Rasines, L.; Morera, S.; San Miguel, G.; et al. Exploring the total cost of whole fresh, fresh-cut and pre-cooked vegetables. International Journal of Life Cycle Assessment 29, 967–982 (2024). https://doi.org/10.1007/s11367-024-02292-z"
+    used_for: "Vegetable preparation, washing/disinfection, cutting/peeling, blanching/draining, sauce dosing, heat treatment, packaging, cold storage, waste and foreground data structure"
+  - id: "schmidt-rivera-et-al-2014-convenience-food"
+    type: "literature"
+    reference: "Schmidt Rivera, X. C.; Espinoza Orias, N.; Azapagic, A. Life cycle environmental impacts of convenience food: comparison of ready and home-made meals. Journal of Cleaner Production 73, 294–309 (2014). https://doi.org/10.1016/j.jclepro.2014.01.008"
+    used_for: "Ready-meal manufacturing, ingredient cooking and combining, packaging, refrigeration, utilities, refrigerant leakage, wastes and mass-allocation evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:55cc289a6c25058e73681ff180648ae19cdb7a50cd668ecf47629e711f3d2cd5"
+  generated_content_sha256: "sha256:a26d648229cb78cc090abb821eccd4ce64c8cc5e0a5d6d4ffb44fc2dc281561e"

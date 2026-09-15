@@ -1,10 +1,1134 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21141"
-  title: "Meat of chickens, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-chickens-frozen"
+  classification_refs: "CPC 3.0: 21141 — Meat of chickens, frozen"
+  covered_products: "Raw frozen meat of domestic chickens, including whole carcasses and cuts, bone-in or boneless, skin-on or skinless, with glazing and packaging states declared"
+  excluded_products: "Fresh or chilled chicken meat; edible chicken offal marketed separately; mechanically separated meat; cooked, seasoned, cured, canned, or otherwise manufactured chicken products; meat of other poultry species"
+  representative_product: "Frozen raw chicken meat, production mix at plant"
+  production_route: "Live-bird reception, slaughter and dressing, chilling, conditional cutting or deboning, freezing, conditional glazing and packaging, frozen storage, and plant-gate dispatch"
+  market_state: "Frozen finished product at the producing plant gate, maintained at -18 °C or colder unless a stricter applicable specification is declared"
+functional_unit:
+  what: "Raw frozen meat of domestic chickens supplied at the producing plant gate"
+  how_much: "1 kg net chicken meat, excluding packaging and excluding separately marketed co-products"
+  how_well: "Product identity, cut, bone status, skin status, glazing fraction, packaging inclusion, and frozen-temperature condition are declared; product remains within the applicable food-safety and commercial specification"
+  how_long_or_cycle: "Through the declared plant frozen-storage period up to dispatch; storage duration is reported"
+  reference_flow_link: "frozen_chicken_meat_at_plant_gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_stages
+      applies_to: "foreground plant operations"
+      rule: "Include live-bird reception after facility acceptance, slaughter, dressing, carcass washing where used, chilling, conditional cutting or deboning, freezing, conditional glazing and packaging, frozen storage, cleaning and sanitation, on-site utilities allocated to these stages, and management of outputs crossing the foreground boundary."
+      source_ids:
+        - codex-cxc-58-2005
+        - codex-cxc-8-1976
+    - rule_id: boundary_upstream_live_birds
+      applies_to: "live-chicken supply"
+      rule: "Represent farm production, feed, hatchery burdens where applicable, and transport before slaughter-facility acceptance through traceable upstream datasets; do not silently treat live birds as burden-free."
+      source_ids:
+        - fao-leap-poultry-2016
+    - rule_id: boundary_cold_chain
+      applies_to: "freezing and plant frozen storage"
+      rule: "Include electricity, thermal loads, refrigerant make-up and direct losses, defrosting, and duration-dependent frozen storage through plant-gate dispatch. Declare freezer technology, refrigerant, storage duration, and temperature records."
+      source_ids:
+        - codex-cxc-8-1976
+    - rule_id: boundary_packaging
+      applies_to: "packaging operations"
+      rule: "Include packaging materials and packaging waste when packaging occurs before the declared plant gate. If packaging is excluded from the reference product mass, it still remains an inventory input when inside the boundary."
+      source_ids:
+        - codex-cxc-8-1976
+    - rule_id: boundary_wastewater_and_byproducts
+      applies_to: "slaughter, cutting, cleaning, and freezing"
+      rule: "Record wastewater, edible co-products, animal by-products, condemned material, feathers, blood, bones, trimmings, product losses, and packaging waste separately when they cross the foreground boundary; link off-site treatment or recovery through appropriate datasets."
+      source_ids:
+        - codex-cxc-58-2005
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream life-cycle stages"
+      rule: "Exclude distribution after plant dispatch, retail, cooking, consumption, and post-consumer end-of-life. Disclose any study-specific extension instead of presenting it as PCR-conforming plant-gate scope."
+      source_ids:
+        - fao-leap-poultry-2016
+boundary_abstraction:
+  declared_starting_condition: "Live domestic chickens accepted at the slaughter-facility reception point, with accepted mass, mortality or rejection, supplier, origin, and transport handover recorded"
+  starting_condition_role: "Foreground plant-gate input and link point to upstream poultry-production and inbound-transport datasets"
+  product_classification_scope: "Frozen raw chicken meat corresponding to CPC 3.0 code 21141; classification is mapping context and does not define canonical PCR identity"
+  recursive_input_rule: "A purchased frozen chicken-meat input within this product category shall be recorded as an upstream product input with supplier, product form, mass, and dataset reference; do not recursively reproduce its upstream production inside the same foreground process"
+  upstream_dataset_requirement: "Use traceable upstream datasets for live-chicken production, feed and hatchery burdens where applicable, inbound transport, purchased energy and materials, packaging, and off-site waste or wastewater treatment"
+  disclosure: "Declare plant geography, reporting period, product mix, product form, allocation method, cut and bone/skin states, glazing fraction, packaging boundary, freezer and refrigerant technology, frozen-storage duration, dispatch temperature, upstream dataset choices, exclusions, and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat of chickens, frozen"
+    uuid: "00dbb94a-580a-4aae-979b-a7b1f4278116"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species: domestic chicken"
+    - "product form and cut"
+    - "bone status"
+    - "skin status"
+    - "net meat mass basis"
+    - "glazing mass fraction"
+    - "packaging included or excluded"
+    - "freezing technology"
+    - "plant geography"
+    - "production period"
+    - "frozen-storage duration"
+    - "dispatch temperature"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net frozen chicken meat as the quantitative reference. Exclude packaging and separately marketed co-products from the reference mass."
+  - id: glaze_mass_separation
+    applies_to: "glazed product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure gross frozen mass and glaze mass separately; calculate net chicken-meat mass after subtracting glaze water. Declare the measurement method and sampling plan."
+  - id: input_output_mass_consistency
+    applies_to: "live birds, meat intermediates, final meat, co-products, waste, and wastewater solids"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert all mass records to kg and retain wet/dry basis and measurement point. Reconcile each production period against the declared mass-balance perimeter."
+  - id: frozen_temperature_condition
+    applies_to: "reference product and frozen storage"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Record product temperature at freezer exit and dispatch, plus continuous or representative cold-store records. The declared frozen product shall be maintained at -18 °C or colder, subject only to applicable documented tolerances."
+  - id: storage_duration_basis
+    applies_to: "frozen storage electricity and refrigerant losses"
+    required_property_ref:
+      name: "Time"
+      uuid: ""
+    required_unit: "day"
+    rule: "Record average and range of residence time. Normalize duration-dependent inventories to the actual kg-day service before reporting them per 1 kg reference product."
+  - id: energy_carrier_separation
+    applies_to: "electricity, fuels, steam, heat, and refrigeration"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, or carrier mass/volume"
+    rule: "Preserve measured carrier units and conversion factors. Do not combine electricity, thermal energy, and refrigerant make-up into one undifferentiated energy total."
+process_map:
+  - id: slaughter_dressing_chilling
+    name: "Live-bird reception, slaughter, dressing, and primary chilling"
+    inclusion: "required"
+    inclusion_condition: "Always included for chicken meat produced from live birds at the reporting plant"
+    role: "Foreground conversion of accepted live birds into chilled dressed meat and co-products"
+    quantitative_reference: "kg chilled dressed chicken output"
+  - id: cutting_deboning
+    name: "Cutting and deboning"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the reference product is a cut, portion, or boneless product, or when cutting losses occur before freezing"
+    role: "Foreground product preparation"
+    quantitative_reference: "kg prepared chicken meat output"
+  - id: freezing_glazing_packaging
+    name: "Freezing, conditional glazing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Freezing is required; include glazing and each packaging level only when performed before the declared plant gate"
+    role: "Foreground conversion to frozen saleable form"
+    quantitative_reference: "kg frozen chicken meat before frozen storage"
+  - id: frozen_storage_dispatch
+    name: "Frozen storage and plant-gate dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always include storage between freezer exit and dispatch; zero duration is allowed only with evidence"
+    role: "Foreground cold-store service and final reference output"
+    quantitative_reference: "kg reference product dispatched and kg-day stored"
+process_inventory:
+  - id: slaughter_dressing_chilling
+    label: "Live-bird reception, slaughter, dressing, and primary chilling"
+    inputs:
+      product:
+        - row_id: live_chickens_input
+          role: "Accepted live chickens"
+          name: "Unresolved — select the exact Tiangong live-chicken product flow before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record live chickens after facility acceptance, including received mass, rejected or dead-on-arrival mass, supplier, origin, and upstream dataset link."
+          amount:
+            expression: "accepted live-chicken mass assigned to the reporting product group"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_bird_intake
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "1.1"
+                upper: "4.0"
+                unit: "kg/kg reference product"
+                basis: "accepted live-bird mass per 1 kg frozen chicken meat dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_water
+          role: "Process and sanitation water"
+          name: "Unresolved — select the exact Tiangong water product flow before publication"
+          flow_type: "product"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record metered water used for scalding, washing, evisceration, chilling where applicable, cleaning, and sanitation, net of separately metered reuse."
+          amount:
+            expression: "metered water allocated to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled dressed chicken output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.05"
+                unit: "m3/kg process output"
+                basis: "metered process and sanitation water per kg chilled dressed chicken"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_electricity
+          role: "Purchased electricity"
+          name: "Unresolved — select a geography- and voltage-appropriate Tiangong electricity flow before publication"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record interval-metered or invoice-reconciled electricity for reception, slaughter, dressing, pumps, ventilation, chilling, cleaning, and allocated shared utilities."
+          amount:
+            expression: "measured electricity allocated to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled dressed chicken output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "1.5"
+                unit: "kWh/kg process output"
+                basis: "electricity per kg chilled dressed chicken"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_thermal_energy
+          role: "Thermal energy carriers"
+          name: "Unresolved — select each exact Tiangong fuel, steam, or heat flow before publication"
+          flow_type: "product"
+          property_unit: "Energy or carrier property / MJ or native carrier unit"
+          description: "Record fuels, steam, or purchased heat separately by carrier for scalding, hot water, sanitation, and other thermal duties."
+          amount:
+            expression: "measured carrier use converted with documented factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled dressed chicken output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "MJ/kg process output"
+                basis: "delivered thermal energy per kg chilled dressed chicken"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_chicken_intermediate
+          role: "Chilled dressed chicken intermediate"
+          name: "Unresolved — select an exact Tiangong intermediate product flow only if one exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable chilled carcass or meat mass transferred to cutting or freezing, with temperature and bone/skin state."
+          amount:
+            expression: "weighed chilled dressed chicken transferred from the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per process batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.25"
+                upper: "0.95"
+                unit: "kg/kg accepted live chickens"
+                basis: "chilled dressed chicken mass divided by accepted live-chicken mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: edible_coproducts
+          role: "Edible co-products"
+          name: "Unresolved — select exact Tiangong co-product flows before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separately marketed edible co-products by product type and measured mass; do not include them in the reference product mass."
+          amount:
+            expression: "measured edible co-product mass by type"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg chilled dressed chicken output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg process output"
+                basis: "edible co-product mass per kg chilled dressed chicken"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: animal_byproducts_waste
+          role: "Animal by-products and condemned material"
+          name: "Unresolved — select exact Tiangong waste or recoverable-product flows according to destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record blood, feathers, inedible viscera, condemned material, mortality, and other animal by-products separately by destination and regulatory status."
+          amount:
+            expression: "measured mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled dressed chicken output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "2.5"
+                unit: "kg/kg process output"
+                basis: "animal by-products and condemned material per kg chilled dressed chicken"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_wastewater
+          role: "Slaughter wastewater"
+          name: "Unresolved — select the exact Tiangong wastewater flow or treatment input before publication"
+          flow_type: "waste"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record wastewater volume or mass at the process boundary and retain sampling data for solids, organic load, nutrients, fats, and treatment destination where available."
+          amount:
+            expression: "metered discharge plus documented internal transfers to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled dressed chicken output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.0005"
+                upper: "0.06"
+                unit: "m3/kg process output"
+                basis: "wastewater leaving this process per kg chilled dressed chicken"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: cutting_deboning
+    label: "Cutting and deboning"
+    inputs:
+      product:
+        - row_id: cutting_chilled_input
+          role: "Chilled chicken for cutting"
+          name: "Unresolved — select an exact Tiangong intermediate product flow only if one exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and declared product state of chilled chicken entering cutting or deboning."
+          amount:
+            expression: "weighed chilled chicken issued to cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cutting batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges: []
+        - row_id: cutting_utilities
+          role: "Cutting electricity and water"
+          name: "Unresolved — select exact Tiangong electricity and water flows before publication"
+          flow_type: "product"
+          property_unit: "Energy and Volume or Mass / kWh and m3 or kg"
+          description: "Record electricity and water as separate inventory flows; this combined card defines the shared collection requirement but shall project to separate concrete exchanges."
+          amount:
+            expression: "metered utilities allocated to cutting and sanitation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared chicken meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh-equivalent or m3 reported separately per kg process output"
+                basis: "separate cutting electricity and water intensities screened against this broad per-flow upper bound"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_chicken_intermediate
+          role: "Prepared chicken meat intermediate"
+          name: "Unresolved — select an exact Tiangong intermediate product flow only if one exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared meat transferred to freezing, with cut, bone, skin, and net-meat states."
+          amount:
+            expression: "weighed prepared meat transferred to freezing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cutting batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.3"
+                upper: "1.0"
+                unit: "kg/kg chilled chicken input"
+                basis: "prepared meat mass divided by chilled chicken input mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: cutting_residues
+          role: "Bones, skin, and trimmings"
+          name: "Unresolved — select exact Tiangong product or waste flows according to actual destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record bones, skin, fat, trimmings, and rejected meat separately by whether they are co-products, recoverable materials, animal by-products, or wastes."
+          amount:
+            expression: "measured residue mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared chicken meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.5"
+                unit: "kg/kg process output"
+                basis: "cutting residues per kg prepared chicken meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: freezing_glazing_packaging
+    label: "Freezing, conditional glazing, and packaging"
+    inputs:
+      product:
+        - row_id: freezing_meat_input
+          role: "Prepared chicken meat for freezing"
+          name: "Unresolved — select an exact Tiangong chilled chicken intermediate only if one exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net chicken-meat mass entering the freezer, excluding any subsequently added glaze and packaging."
+          amount:
+            expression: "weighed net chicken meat entering freezing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per freezing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Freezing electricity"
+          name: "Unresolved — select a geography- and voltage-appropriate Tiangong electricity flow before publication"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for freezers, conveyors, pumps, fans, defrosting, and allocated refrigeration auxiliaries, separated from cold-store electricity."
+          amount:
+            expression: "measured electricity allocated to freezing and packaging"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg frozen chicken meat before storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_packaging_records
+              source_ids:
+                - codex-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "0.02"
+                upper: "3.0"
+                unit: "kWh/kg process output"
+                basis: "freezing and packaging electricity per kg frozen chicken meat before storage"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: glazing_water
+          role: "Glazing water"
+          name: "Unresolved — select the exact Tiangong water product flow before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable water retained as glaze separately from process water when glazing is applied."
+          amount:
+            expression: "gross frozen mass minus measured net chicken-meat mass, reconciled to applied glaze water"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net chicken meat"
+                basis: "retained glaze water per kg net reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Unresolved — select exact Tiangong packaging material flows before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging separately by material and mass when applied before the plant gate."
+          amount:
+            expression: "issued packaging minus returned and separately measured unused packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net chicken meat"
+                basis: "total packaging material per kg net reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: freezing_refrigerant_makeup
+          role: "Refrigerant make-up for freezing"
+          name: "Unresolved — select the exact Tiangong refrigerant product flow before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant type and make-up charged to freezing equipment, using a documented allocation of the site refrigerant balance."
+          amount:
+            expression: "allocated annual refrigerant make-up from inventory reconciliation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg frozen chicken meat before storage"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg process output"
+                basis: "allocated refrigerant make-up per kg frozen chicken meat before storage"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_chicken_before_storage
+          role: "Frozen chicken meat before plant storage"
+          name: "Unresolved — internal intermediate; do not reuse the reference-product UUID unless the exchange is the final plant-gate output"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net chicken-meat mass leaving freezing separately from glaze and packaging mass, with freezer-exit temperature."
+          amount:
+            expression: "net frozen chicken-meat mass after deducting glaze and packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per freezing batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_packaging_records
+              source_ids:
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: freezing_packaging_waste
+          role: "Packaging and product losses"
+          name: "Unresolved — select exact Tiangong waste flows before publication"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged packaging, rejected frozen product, purge, spilled glaze, and other process losses separately by material and destination."
+          amount:
+            expression: "measured losses and stock reconciliation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg frozen chicken meat before storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg process output"
+                basis: "material losses per kg frozen chicken meat before storage"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: freezing_refrigerant_emissions
+          role: "Direct refrigerant emissions from freezing"
+          name: "Unresolved — select the exact Tiangong elementary flow for each emitted refrigerant before publication"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct emissions by refrigerant species from the reconciled make-up balance unless leak measurements provide a better basis."
+          amount:
+            expression: "allocated refrigerant loss by species after subtracting recovered and transferred quantities"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg frozen chicken meat before storage"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg process output"
+                basis: "direct refrigerant emissions per kg frozen chicken meat before storage"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: frozen_storage_dispatch
+    label: "Frozen storage and plant-gate dispatch"
+    inputs:
+      product:
+        - row_id: stored_frozen_chicken_input
+          role: "Frozen chicken entering storage"
+          name: "Unresolved — internal intermediate; do not use the reference-product UUID for an input without applying the recursive-input rule"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net chicken-meat mass, glaze, packaging, entry temperature, storage location, and entry time."
+          amount:
+            expression: "weighed or stock-reconciled net chicken-meat mass entering storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per storage lot"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_store_records
+              source_ids: []
+            ranges: []
+        - row_id: cold_store_electricity
+          role: "Cold-store electricity"
+          name: "Unresolved — select a geography- and voltage-appropriate Tiangong electricity flow before publication"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for refrigeration, fans, lighting, defrost, doors, and allocated auxiliaries during the declared plant storage period."
+          amount:
+            expression: "metered cold-store electricity allocated by measured load or kg-day occupancy"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg-day of frozen chicken storage, then per 1 kg reference product using actual residence time"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_store_records
+              source_ids:
+                - codex-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "0.0001"
+                upper: "0.2"
+                unit: "kWh/kg-day"
+                basis: "cold-store electricity per kg-day occupancy"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cold_store_refrigerant_makeup
+          role: "Refrigerant make-up for cold storage"
+          name: "Unresolved — select the exact Tiangong refrigerant product flow before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant type and the cold-store share of reconciled site make-up."
+          amount:
+            expression: "allocated annual refrigerant make-up by equipment or cooling load"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product using actual residence time"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg reference product"
+                basis: "allocated refrigerant make-up for the declared plant storage period"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_chicken_meat_at_plant_gate
+          role: "Frozen chicken meat at plant gate"
+          name: "Meat of chickens, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "00dbb94a-580a-4aae-979b-a7b1f4278116"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole reference-product output. Report net chicken-meat mass excluding glaze and packaging, together with all required qualifiers and dispatch temperature."
+          amount:
+            expression: "fixed quantitative reference of 1 kg net frozen chicken meat dispatched"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: cold_store_product_loss
+          role: "Cold-store product losses"
+          name: "Unresolved — select exact Tiangong product or waste flows according to destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged, thawed, rejected, or inventory-short frozen product separately by destination."
+          amount:
+            expression: "stock reconciliation and rejection records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_store_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg reference product"
+                basis: "cold-store product losses per kg dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: cold_store_refrigerant_emissions
+          role: "Direct refrigerant emissions from cold storage"
+          name: "Unresolved — select the exact Tiangong elementary flow for each emitted refrigerant before publication"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct emissions by refrigerant species from the reconciled cold-store make-up balance unless direct leak measurements are available."
+          amount:
+            expression: "allocated refrigerant loss by species after subtracting recovered and transferred quantities"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product using actual residence time"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg reference product"
+                basis: "direct refrigerant emissions for the declared plant storage period"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "separately metered processes and product lines"
+    rule: "Avoid allocation by subdividing processes and directly assigning measured materials, energy, emissions, and wastes to the product line whenever technically feasible."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_co_products
+    applies_to: "edible co-products, recoverable animal by-products, and saleable cutting outputs"
+    rule: "After subdivision, allocate remaining shared burdens using a documented physical causal relationship where one can be demonstrated. If no defensible causal relationship exists, use mass allocation on consistent wet-mass product outputs and report an economic-allocation sensitivity."
+    source_ids:
+      - iso-14044-2006
+      - fao-leap-poultry-2016
+  - rule_id: allocation_waste_treatment
+    applies_to: "wastes and animal by-products sent to treatment"
+    rule: "Do not assign avoided-product credits without an explicitly declared substitution method and receiving-system boundary. Include treatment burdens and disclose any recovery credit separately."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_utilities
+    applies_to: "refrigeration, boilers, water systems, sanitation, wastewater treatment, and site services"
+    rule: "Allocate shared utilities using measured submetering where available; otherwise use a documented causal driver such as equipment load, operating hours, water volume, organic load, occupied cold-store kg-day, or throughput."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_consistency
+    applies_to: "reference product and all co-products"
+    rule: "Apply the selected allocation hierarchy consistently across the reporting period and disclose product quantities, allocation factors, factor sum, prices and reference period when economic sensitivity is used, and any material exclusions."
+    source_ids:
+      - iso-14044-2006
+      - fao-leap-poultry-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_live_bird_intake
+      process_id: "slaughter_dressing_chilling"
+      flow_role: "accepted live chickens and reception losses"
+      record_type: "weighbridge, receiving, supplier, and rejection records"
+      raw_fields: "received gross mass; tare; accepted mass; rejected mass; dead-on-arrival mass; supplier; origin; arrival time; upstream dataset reference"
+      collection_method: "calibrated weighbridge or verified scales reconciled to receiving records"
+      unit: "kg"
+      frequency: "each delivery"
+      temporal_coverage: "full reporting period"
+      site_scope: "all suppliers and reception points serving the product group"
+      aggregation_rule: "sum accepted mass by supplier and product group; retain rejected and dead-on-arrival mass separately"
+      quality_evidence: "scale calibration; ticket IDs; supplier traceability; completeness reconciliation"
+    - protocol_id: cp_slaughter_records
+      process_id: "slaughter_dressing_chilling"
+      flow_role: "utilities, meat output, co-products, animal by-products, and wastewater"
+      record_type: "meters, production logs, invoices, scales, waste manifests, and laboratory records"
+      raw_fields: "water; electricity; fuel/steam/heat; chilled output mass; co-product mass; waste mass; wastewater volume; wastewater quality; operating hours"
+      collection_method: "direct meters and scales preferred; reconcile invoices and stock changes for shared utilities"
+      unit: "native unit and kg output"
+      frequency: "shift or batch for production; at least monthly for reconciliations"
+      temporal_coverage: "representative continuous period covering seasonality, normally at least 12 months"
+      site_scope: "all relevant slaughter, dressing, chilling, sanitation, and utility areas"
+      aggregation_rule: "allocate shared totals with declared causal driver; normalize to kg chilled output"
+      quality_evidence: "meter calibration; invoice reconciliation; mass balance; laboratory QA; treatment manifests"
+    - protocol_id: cp_cutting_records
+      process_id: "cutting_deboning"
+      flow_role: "chilled input, prepared output, utilities, and residues"
+      record_type: "batch sheets, scales, meters, and waste records"
+      raw_fields: "chilled input mass; prepared output mass; cut; bone and skin state; electricity; water; bones; skin; trimmings; rejects"
+      collection_method: "calibrated batch scales and submetering or documented allocation from site totals"
+      unit: "kg, kWh, m3"
+      frequency: "each batch or shift"
+      temporal_coverage: "all cutting campaigns in reporting period"
+      site_scope: "all included cutting and deboning lines"
+      aggregation_rule: "calculate yield and normalize utilities and residues to kg prepared output"
+      quality_evidence: "scale calibration; batch reconciliation; product specification; residue destination evidence"
+    - protocol_id: cp_freezing_packaging_records
+      process_id: "freezing_glazing_packaging"
+      flow_role: "freezer input/output, electricity, glaze, packaging, losses, and temperature"
+      record_type: "batch scales, electricity meters, packaging issue records, temperature logger, and rejection records"
+      raw_fields: "net meat input; net frozen output; gross glazed mass; glaze mass; packaging by material; electricity; freezer-exit temperature; losses; freezer technology"
+      collection_method: "calibrated scales, submetering, material issue reconciliation, and logged temperature measurements"
+      unit: "kg, kWh, °C"
+      frequency: "each batch and continuous temperature logging"
+      temporal_coverage: "all freezing campaigns in reporting period"
+      site_scope: "all freezers, glazing stations, and packaging lines serving the reference product"
+      aggregation_rule: "normalize to kg net frozen meat; keep glaze and packaging outside net meat mass"
+      quality_evidence: "scale and meter calibration; packaging stock reconciliation; logger calibration; batch mass balance"
+    - protocol_id: cp_cold_store_records
+      process_id: "frozen_storage_dispatch"
+      flow_role: "occupancy, residence time, electricity, temperature, dispatch, and losses"
+      record_type: "warehouse management system, electricity meter, temperature logger, dispatch scale, and stock counts"
+      raw_fields: "lot mass; entry and exit time; location; electricity; temperature; defrost events; dispatched net mass; losses"
+      collection_method: "lot tracking, calibrated dispatch scales, submetering, and continuous or justified representative temperature logging"
+      unit: "kg, day, kg-day, kWh, °C"
+      frequency: "each lot; continuous temperature; monthly energy reconciliation"
+      temporal_coverage: "full reporting period including seasonal ambient conditions"
+      site_scope: "all on-site frozen stores serving the reference product"
+      aggregation_rule: "allocate electricity by measured load or kg-day; normalize to actual lot residence time and kg dispatched"
+      quality_evidence: "warehouse traceability; meter and logger calibration; stock reconciliation; excursion records"
+    - protocol_id: cp_refrigerant_balance
+      process_id: "freezing_glazing_packaging_frozen_storage_dispatch"
+      flow_role: "refrigerant make-up and direct emissions"
+      record_type: "refrigerant purchase, charge, recovery, service, transfer, and equipment records"
+      raw_fields: "refrigerant species; opening stock; purchases; charges; recovery; transfers; closing stock; equipment identity; cooling load or operating hours"
+      collection_method: "annual mass-balance reconciliation supplemented by leak detection and service records"
+      unit: "kg refrigerant"
+      frequency: "each service event with annual reconciliation"
+      temporal_coverage: "full reporting year"
+      site_scope: "all refrigeration equipment serving included processes"
+      aggregation_rule: "calculate loss by species and allocate by direct equipment record, cooling load, or operating hours"
+      quality_evidence: "purchase invoices; technician records; cylinder reconciliation; leak-test evidence"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground exchanges"
+      rule: "normalized amount = exchange amount assigned to product group / net reference-product mass dispatched"
+      inputs:
+        - "assigned exchange amount"
+        - "net dispatched meat mass"
+      output: "exchange amount per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_net_meat_mass
+      applies_to: "glazed and packaged product"
+      rule: "net chicken-meat mass = gross packaged product mass - packaging mass - retained glaze mass; verify with direct product specification and sampling"
+      inputs:
+        - "gross mass"
+        - "packaging mass"
+        - "glaze mass"
+        - "sampling results"
+      output: "kg net chicken meat"
+      source_ids:
+        - codex-cxc-8-1976
+    - id: calc_process_yield
+      applies_to: "slaughter, cutting, freezing, and storage"
+      rule: "yield = qualifying process output mass / qualifying process input mass; keep co-products, waste, water gain, and losses as separate terms"
+      inputs:
+        - "input mass"
+        - "output mass"
+        - "co-product mass"
+        - "waste mass"
+        - "water gain"
+        - "stock change"
+      output: "dimensionless yield and reconciled mass balance"
+      source_ids:
+        - codex-cxc-58-2005
+    - id: calc_storage_service
+      applies_to: "frozen storage"
+      rule: "kg-day = sum for each lot of net meat mass multiplied by residence time; allocated storage electricity = store electricity multiplied by product-group kg-day / total compatible kg-day"
+      inputs:
+        - "lot mass"
+        - "entry time"
+        - "exit time"
+        - "store electricity"
+        - "total occupancy"
+      output: "kg-day and kWh per kg reference product"
+      source_ids:
+        - codex-cxc-8-1976
+    - id: calc_refrigerant_loss
+      applies_to: "freezing and cold storage"
+      rule: "refrigerant loss by species = opening stock + purchases + received transfers - closing stock - recovered stock - outgoing transfers; allocate only the share serving included equipment"
+      inputs:
+        - "refrigerant inventory and service records"
+        - "equipment allocation driver"
+      output: "kg direct refrigerant emission per kg reference product"
+      source_ids: []
+    - id: calc_allocation_factors
+      applies_to: "co-products and shared utilities"
+      rule: "calculate factors from the declared causal driver; verify that the complete factor set sums to 1 within rounding tolerance and retain unrounded factors"
+      inputs:
+        - "product quantities"
+        - "causal driver"
+        - "optional market values"
+        - "shared inventory"
+      output: "documented allocation factors and sensitivity result"
+      source_ids:
+        - iso-14044-2006
+        - fao-leap-poultry-2016
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and inventory flows"
+      requirement: "Verify the reference UUID exactly as specified. Resolve every other product, waste, elementary, flow-property, and unit-group identity against Tiangong before publication; retain semantic descriptions where identity remains unresolved."
+      evidence: "Tiangong readback; identity review record"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one coherent reporting period that represents normal operation and captures relevant seasonality; normally target at least 12 months or justify a shorter campaign."
+      evidence: "record coverage table; operating calendar; exception justification"
+    - id: dq_geographic_technology
+      applies_to: "facility and upstream datasets"
+      requirement: "Declare facility geography, freezer and refrigeration technology, refrigerant species, product route, and the geography and technology of material upstream datasets."
+      evidence: "facility metadata; equipment register; dataset metadata"
+    - id: dq_completeness
+      applies_to: "mass, energy, water, co-products, wastes, wastewater, and refrigerants"
+      requirement: "Reconcile production, utility, stock, and waste records. Explain missing meters, estimated shares, exclusions, and any unresolved mass-balance difference."
+      evidence: "meter and invoice reconciliation; mass balance; waste manifests; data-gap log"
+    - id: dq_temperature_traceability
+      applies_to: "freezing and cold storage"
+      requirement: "Retain calibrated freezer-exit and dispatch measurements plus continuous or justified representative storage records, including excursions and corrective actions."
+      evidence: "temperature logs; calibration records; excursion reports; codex-cxc-8-1976"
+    - id: dq_hygiene_route
+      applies_to: "slaughter and dressing boundary"
+      requirement: "Confirm that included operations correspond to the actual slaughter, dressing, chilling, cutting, and handling route and that condemned material and hygiene-related cleaning flows are represented."
+      evidence: "process flow diagram; production records; codex-cxc-58-2005"
+    - id: dq_provisional_ranges
+      applies_to: "all reasoned_estimate ranges"
+      requirement: "Treat broad ranges only as QA screens. Replace them with measured or source-backed ranges, or obtain explicit reviewer acceptance, before using them as publication-critical constraints."
+      evidence: "range review log; accepted evidence references"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow UUID 00dbb94a-580a-4aae-979b-a7b1f4278116, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and reference amount 1."
+    source_ids: []
+  - rule_id: validate_reference_qualifiers
+    applies_to: "reference flow metadata"
+    rule: "Fail completeness when any required qualifier is absent or when gross product, glaze, or packaging mass is substituted for net chicken-meat mass."
+    source_ids:
+      - codex-cxc-8-1976
+  - rule_id: validate_product_scope
+    applies_to: "product identity"
+    rule: "Reject fresh or chilled meat, edible offal marketed separately, mechanically separated meat, cooked or manufactured products, and non-chicken poultry from this PCR scope."
+    source_ids: []
+  - rule_id: validate_process_coverage
+    applies_to: "process map and inventory"
+    rule: "Require detailed inventories for slaughter/dressing/chilling, freezing/glazing/packaging, and frozen storage/dispatch; require cutting/deboning when the declared product route includes it."
+    source_ids:
+      - codex-cxc-58-2005
+      - codex-cxc-8-1976
+  - rule_id: validate_frozen_condition
+    applies_to: "freezer exit, storage, and dispatch"
+    rule: "Require temperature records demonstrating -18 °C or colder for the declared frozen state, subject only to documented applicable tolerances; flag unexplained excursions."
+    source_ids:
+      - codex-cxc-8-1976
+  - rule_id: validate_mass_balance
+    applies_to: "each process and reporting period"
+    rule: "Check input mass, output meat, co-products, wastes, added glaze water, wastewater terms where measured, and stock changes; require explanation for material imbalance and prevent double counting of intermediates."
+    source_ids:
+      - codex-cxc-58-2005
+  - rule_id: validate_inventory_identity
+    applies_to: "non-reference exchanges"
+    rule: "Fail publication readiness when a semantic candidate is presented as a resolved Tiangong flow without exact UUID verification. Unresolved inventory UUIDs are acceptable only while lifecycle status remains candidate."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared burdens and co-products"
+    rule: "Require declared allocation hierarchy, driver, complete factor set, unrounded factors, factor-sum check, product quantities, and economic sensitivity when mass allocation is used without a physical causal relation."
+    source_ids:
+      - iso-14044-2006
+      - fao-leap-poultry-2016
+  - rule_id: validate_cold_store_service
+    applies_to: "storage inventories"
+    rule: "Require storage duration and kg-day basis; reject a duration-independent allocation when residence time materially differs among product groups and no alternative causal measurement is supplied."
+    source_ids:
+      - codex-cxc-8-1976
+  - rule_id: validate_refrigerants
+    applies_to: "freezing and cold storage"
+    rule: "Require refrigerant species, equipment scope, make-up/recovery balance, allocation method, and corresponding direct elementary emissions or an evidence-backed zero-loss statement."
+    source_ids: []
+  - rule_id: validate_packaging_glaze
+    applies_to: "packaged or glazed product"
+    rule: "Require separate masses for net chicken meat, glaze, and each packaging material; confirm that only net chicken meat forms the 1 kg reference amount."
+    source_ids:
+      - codex-cxc-8-1976
+  - rule_id: validate_provisional_ranges
+    applies_to: "reasoned_estimate QA guardrails"
+    rule: "Emit a review finding when a measured value falls outside a provisional guardrail; do not automatically replace the measured value or treat the guardrail as an allowed range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground plant-gate production data package for frozen chicken meat, suitable after review for publication as a secondary_dataset or background_dataset"
+  downstream_use: "Construction of process datasets and lifecyclemodel projections for frozen chicken meat where product form, geography, technology, allocation, glazing, packaging, storage, and temperature conditions are compatible"
+  allowed_use: "Product carbon-footprint or LCA modelling, supply-chain inventory construction, benchmarking, and scenario analysis within the declared scope and data quality"
+  excluded_use: "Claims about fresh/chilled chicken, edible offal, other poultry species, cooked or manufactured products, retail or consumer stages, or geographies and technologies not represented without explicit adaptation"
+  required_metadata: "PCR id and version state; CPC mapping context; facility geography; reporting period; production route; product form; cut; bone and skin states; net-mass method; glaze fraction; packaging boundary; freezer technology; refrigerant; storage duration; dispatch temperature; allocation method; upstream datasets; unresolved identities; exclusions"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; temporal and site coverage; mass-balance result; allocation factors and sensitivity; cold-chain records; refrigerant reconciliation; wastewater and waste coverage; source-backed versus reasoned ranges; uncertainty and data gaps"
+  update_trigger: "Material change in product scope, plant route, freezer or refrigeration technology, refrigerant, packaging or glazing practice, allocation method, geography, upstream live-bird supply, storage duration, applicable regulation, verified Tiangong identities, or evidence replacing provisional ranges"
+data_sources:
+  - id: "codex-cxc-58-2005"
+    type: "official_guidance"
+    reference: "FAO/WHO Codex Alimentarius, Code of Hygienic Practice for Meat, CXC 58-2005, https://workspace.fao.org/sites/codex/Standards/CXC%2058-2005/CXC_058e.pdf (retrieved 2026-08-11)"
+    used_for: "Slaughter, dressing, cutting, chilling, hygiene-process decomposition, product and waste handling, temperature traceability, and validation requirements"
+  - id: "codex-cxc-8-1976"
+    type: "official_guidance"
+    reference: "FAO/WHO Codex Alimentarius, Code of Practice for the Processing and Handling of Quick Frozen Foods, CXC 8-1976, https://workspace.fao.org/sites/codex/Standards/CXC%208-1976/CXC_008e.pdf (retrieved 2026-08-11)"
+    used_for: "Quick-freezing and cold-chain boundary, -18 °C frozen condition, storage, temperature records, packaging/glazing handling, and validation"
+  - id: "fao-leap-poultry-2016"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership, Greenhouse gas emissions and fossil energy use from poultry supply chains: Guidelines for assessment, 2016, https://openknowledge.fao.org/handle/20.500.14283/i6421en (retrieved 2026-08-11)"
+    used_for: "Poultry supply-chain boundary, upstream dataset requirement, co-product and shared-burden method context, and data-quality framing"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html (retrieved 2026-08-11)"
+    used_for: "LCI scope, allocation hierarchy, consistency, calculation, reporting, and review rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fbda373c20207b8a0092dcb55c8fafde643f4ae399c1b858396bcc3739212c03"
+  generated_content_sha256: "sha256:63bd40424ac6d29a9bae8598a987e78c7e6c857fb088836e603637b800f395e5"

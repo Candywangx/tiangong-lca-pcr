@@ -1,10 +1,1014 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23660"
-  title: "Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.chocolate-and-other-food-preparations-containing-cocoa-except-sweetened-cocoa-powder-ot-3fe2fc05"
+  classification_refs: "CPC 3.0 23660, Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms"
+  covered_products: "Finished chocolate and cocoa-containing food preparations supplied as non-bulk units or portions, including declared plain, milk, white, filled, coated, moulded, flaked, vermicelli, praline, and inclusion-containing forms"
+  excluded_products: "Sweetened cocoa powder; cocoa beans; cocoa liquor/paste, cocoa butter, cocoa powder, and bulk chocolate sold as intermediates; cocoa-free confectionery; prepared cocoa beverages"
+  representative_product: "Packaged finished chocolate in a declared non-bulk market form"
+  production_route: "Received cocoa materials and other ingredients -> dosing and formulation -> refining/conching -> tempering, forming, filling or finishing -> cooling -> non-bulk packaging; add on-site cocoa-bean processing when applicable"
+  market_state: "Net edible product in a declared solid or semi-solid non-bulk form, packaged and released at the factory gate"
+functional_unit:
+  what: "Provision of finished chocolate or another cocoa-containing food preparation in its declared non-bulk market form at the factory gate"
+  how_much: "1 kg net edible product, excluding packaging mass"
+  how_well: "Product subtype, formulation class, cocoa-content declaration, ingredient and allergen profile, physical form, filling or inclusions, quality specification, and packaging configuration are declared"
+  how_long_or_cycle: "One released production batch at factory gate; no use duration is assigned"
+  reference_flow_link: "1 kg of the category-defining Chocolate product flow, with the required product qualifiers declared"
+system_boundary:
+  rules:
+    - rule_id: boundary_default_gate
+      applies_to: "foreground starting and ending gates"
+      rule: "Begin at site receipt of cocoa materials, other ingredients, and packaging; end with released non-bulk product and separately recorded packaging at factory gate. Require upstream datasets for purchased inputs."
+      source_ids:
+        - ec-pef-2021-2279
+        - bianchi-2020-chocolate-lca
+    - rule_id: boundary_on_site_cocoa_processing
+      applies_to: "sites receiving dried cocoa beans"
+      rule: "Include cleaning and selection, roasting, winnowing, milling, and any on-site pressing or cake grinding used to produce cocoa liquor, butter, or powder."
+      source_ids:
+        - bianchi-2020-chocolate-lca
+    - rule_id: boundary_environmental_inventory
+      applies_to: "all foreground processes"
+      rule: "Inventory raw materials, water, energy, waste water, waste gas, solid waste, and relevant direct emissions; retain a process flow sheet showing where emissions arise."
+      source_ids:
+        - eu-fdm-bat-2019
+    - rule_id: boundary_downstream_separation
+      applies_to: "distribution, use, and end of life"
+      rule: "Exclude downstream stages from this foreground package but keep product and packaging outputs suitable for connection to a downstream cradle-to-grave model."
+      source_ids:
+        - ec-pef-2021-2279
+    - rule_id: boundary_no_double_counting
+      applies_to: "shared utilities and internal intermediates"
+      rule: "Assign each input, emission, waste, and intermediate transfer once; where site totals are allocated to processes, do not also add the same submetered quantity."
+      source_ids:
+        - ec-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "received_cocoa_materials_and_other_ingredients; declare whether cocoa enters as dried beans, liquor/paste, butter, powder, chocolate, or another cocoa preparation"
+  starting_condition_role: "foreground manufacturing gate and determinant of whether cocoa-bean primary processing is included"
+  product_classification_scope: "CPC 3.0 23660; finished non-bulk chocolate and other cocoa-containing food preparations, excluding sweetened cocoa powder"
+  recursive_input_rule: "A purchased input already within this product category, such as chocolate used for coating or filling, is recorded as a separate product input with its own upstream dataset and is not recursively expanded inside the same foreground package."
+  upstream_dataset_requirement: "Representative upstream datasets are required for each cocoa derivative, sugar or sweetener, dairy ingredient, fat, inclusion, additive, packaging material, fuel, electricity mix, water supply, and external waste treatment service."
+  disclosure: "Declare formulation and cocoa-content basis, starting cocoa-material condition, included unit operations, geography, reference year, technology, batch scope, internal rework, co-products, packaging configuration, utility allocation, cut-offs, and omitted flows."
+reference_flow_definition:
+  reference_amount: "1 kg net edible product"
+  product_flow_ref:
+    name: "Chocolate"
+    uuid: "4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype"
+    - "formulation class"
+    - "total cocoa solids or applicable cocoa-content declaration"
+    - "dairy status"
+    - "filling or inclusion type"
+    - "physical form"
+    - "net edible mass"
+    - "packaging configuration"
+    - "starting cocoa-material condition"
+    - "production geography"
+    - "reference year"
+    - "factory gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Express the reference flow as net edible product mass at factory gate; do not include packaging mass."
+  - id: packaging_mass_separation
+    applies_to: "packaging inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure packaging separately from edible product and report each material class without adding it to reference product mass."
+  - id: ingredient_mass_basis
+    applies_to: "cocoa and other ingredient inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record as-received mass and retain dry-matter, moisture, cocoa-solids, or concentration data when required to reconcile formulations."
+  - id: rework_mass_tracking
+    applies_to: "off-spec product and internal rework"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record generation and re-entry of internal rework separately; count only material leaving the foreground boundary as waste or co-product."
+  - id: utility_unit_preservation
+    applies_to: "electricity, heat, cooling, fuels, and water"
+    required_property_ref:
+      name: "activity-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as metered"
+    rule: "Preserve the metered unit and conversion factor; do not combine electricity, thermal energy, cooling service, fuel mass, and water mass into one undifferentiated quantity."
+process_map:
+  - id: cocoa_bean_processing
+    name: "On-site cocoa-bean processing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the site receives dried cocoa beans and produces cocoa liquor, butter, or powder used in the reference product."
+    role: "foreground cocoa intermediate production"
+    quantitative_reference: "kg cocoa intermediates transferred to formulation"
+  - id: ingredient_formulation
+    name: "Ingredient receipt, dosing, and formulation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground material preparation"
+    quantitative_reference: "kg formulated chocolate mix"
+  - id: refining_conching
+    name: "Refining and conching"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground particle-size reduction, mixing, flavour development, and moisture/volatile removal"
+    quantitative_reference: "kg refined chocolate mass"
+  - id: tempering_forming_finishing
+    name: "Tempering, forming, filling, coating, and cooling"
+    inclusion: "required"
+    inclusion_condition: "Include only the finishing operations used by the declared product subtype."
+    role: "foreground final product formation"
+    quantitative_reference: "kg finished edible product before packaging"
+  - id: non_bulk_packaging
+    name: "Non-bulk packaging"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground packaging and release"
+    quantitative_reference: "kg net edible product plus separately measured packaging"
+  - id: site_utilities_environmental_control
+    name: "Site utilities, cleaning, and environmental control"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "shared foreground support and environmental-flow accounting"
+    quantitative_reference: "site utility and emission totals normalized to kg reference product"
+process_inventory:
+  - id: cocoa_bean_processing
+    label: "On-site cocoa-bean processing"
+    inputs:
+      product:
+        - row_id: cocoa_bean_input
+          role: "Dried cocoa beans received for on-site transformation"
+          name: "Dried cocoa beans"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dried cocoa beans only when bean cleaning, roasting, winnowing, milling, pressing, or cake grinding occurs inside the foreground site."
+          amount:
+            expression: "measured as-received cocoa bean mass attributable to the reference product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cocoa_bean_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg net edible product"
+                basis: "broad first-pass screening estimate; replace with batch mass-balance evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cocoa_intermediate_output
+          role: "Cocoa intermediates transferred to formulation"
+          name: "Cocoa liquor, cocoa butter, or cocoa powder as applicable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cocoa liquor, cocoa butter, cocoa powder, or other cocoa intermediates separately by actual material identity and transferred mass."
+          amount:
+            expression: "measured transfer mass by cocoa intermediate type"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cocoa_intermediate_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cocoa_processing_residues
+          role: "Cocoa shells, screenings, and rejected beans leaving the site"
+          name: "Cocoa processing residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each residue route separately; internal reuse is an internal transfer and must not be counted as an avoided product."
+          amount:
+            expression: "measured residue mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: ingredient_formulation
+    label: "Ingredient receipt, dosing, and formulation"
+    inputs:
+      product:
+        - row_id: cocoa_material_inputs
+          role: "Cocoa-derived materials used in the formulation"
+          name: "Declared cocoa-derived material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each purchased or internally transferred cocoa liquor, cocoa butter, cocoa powder, chocolate, or other cocoa preparation separately."
+          amount:
+            expression: "measured batch issue mass by ingredient and lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "1.2"
+                unit: "kg/kg net edible product"
+                basis: "broad product-family screening estimate; replace with formulation and mass-balance evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: other_ingredient_inputs
+          role: "Sugar, dairy, fats, inclusions, additives, and other ingredients"
+          name: "Declared non-cocoa ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ingredient masses separately by material identity; retain concentration or dry-matter information where formulation reconciliation needs it."
+          amount:
+            expression: "measured batch issue mass by ingredient and lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.2"
+                unit: "kg/kg net edible product"
+                basis: "broad product-family screening estimate; replace with formulation and mass-balance evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formulated_mix_output
+          role: "Formulated chocolate mix transferred to refining"
+          name: "Formulated chocolate mix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the reconciled mass of formulated mix transferred to the refining/conching stage."
+          amount:
+            expression: "measured transfer mass or calculated ingredient sum adjusted for measured losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_formulation_inputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: refining_conching
+    label: "Refining and conching"
+    inputs:
+      product:
+        - row_id: formulated_mix_input
+          role: "Formulated mix supplied to refining and conching"
+          name: "Formulated chocolate mix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred from formulation without creating a second upstream burden for the same internal intermediate."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_transfers
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refined_chocolate_mass
+          role: "Refined and conched chocolate mass"
+          name: "Refined chocolate mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass leaving the declared refining/conching sequence. Bianchi et al. identify refining and conching as central chocolate-manufacturing operations (bianchi-2020-chocolate-lca)."
+          amount:
+            expression: "measured transfer mass after refining/conching"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_transfers
+              source_ids:
+                - bianchi-2020-chocolate-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1.2"
+                unit: "kg/kg net edible product"
+                basis: "broad first-pass mass-balance screening estimate; replace with batch evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: off_spec_chocolate
+          role: "Off-spec chocolate not internally reworked"
+          name: "Off-spec chocolate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only material that leaves the foreground system as waste or a separately marketed co-product; track internal rework as an internal loop."
+          amount:
+            expression: "measured off-spec mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg net edible product"
+                basis: "broad first-pass screening estimate; replace with disposition records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: tempering_forming_finishing
+    label: "Tempering, forming, filling, coating, and cooling"
+    inputs:
+      product:
+        - row_id: finishing_material_inputs
+          role: "Refined chocolate and declared fillings or inclusions"
+          name: "Refined chocolate, filling, coating, or inclusion as applicable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record internal refined chocolate transfer and any separately purchased or produced filling, coating, or inclusion not already captured in formulation."
+          amount:
+            expression: "measured transfer or batch issue mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_transfers
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_unpacked_product
+          role: "Finished edible product before packaging"
+          name: "Finished unpacked chocolate or cocoa-containing preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming product after tempering, forming, filling or coating, and cooling, before packaging."
+          amount:
+            expression: "measured conforming unpacked product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_product_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: non_bulk_packaging
+    label: "Non-bulk packaging"
+    inputs:
+      product:
+        - row_id: packaging_material_inputs
+          role: "Primary and secondary packaging materials"
+          name: "Declared packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each wrapper, film, foil, paper, board, tray, carton, label, adhesive, and other packaging material separately by actual mass and material."
+          amount:
+            expression: "measured or purchase-and-stock-reconciled packaging consumption"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg net edible product"
+                basis: "broad non-bulk packaging screening estimate; replace with bill-of-material and issue records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Released packaged reference product"
+          name: "Chocolate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3"
+          property_unit: "Mass / kg"
+          description: "The edible portion is the quantitative reference; packaging is connected separately and is not included in the 1 kg reference amount."
+          amount:
+            expression: "1 kg measured net edible product after release reconciliation"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging scrap and rejected packaging"
+          name: "Packaging waste by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap by material and actual treatment or recovery destination."
+          amount:
+            expression: "measured packaging scrap mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg net edible product"
+                basis: "broad first-pass screening estimate; replace with waste records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: site_utilities_environmental_control
+    label: "Site utilities, cleaning, and environmental control"
+    inputs:
+      product:
+        - row_id: site_electricity
+          role: "Site electricity used by foreground production"
+          name: "Electricity, declared grid or supplier mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use process submetering where available; otherwise allocate a complete site electricity balance to products with the disclosed rule."
+          amount:
+            expression: "metered electricity attributable to the foreground production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "5"
+                unit: "kWh/kg net edible product"
+                basis: "broad first-pass site electricity estimate; replace with submeter or invoice reconciliation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: site_thermal_energy
+          role: "Site thermal energy or fuel used by foreground production"
+          name: "Declared fuel or purchased thermal energy"
+          flow_type: "product"
+          property_unit: "Energy or mass / MJ or kg"
+          description: "Record purchased heat and each direct fuel separately; do not double count fuel energy and purchased heat."
+          amount:
+            expression: "metered purchased heat or reconciled fuel consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg net edible product"
+                basis: "broad first-pass thermal-energy estimate; replace with meter or fuel records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: site_cooling_energy
+          role: "Cooling energy or service used by foreground production"
+          name: "Cooling electricity or cooling service"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record cooling electricity or purchased cooling service and state whether it is already included in site electricity."
+          amount:
+            expression: "submetered or engineering-allocated cooling energy"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg net edible product"
+                basis: "broad first-pass cooling estimate; replace with submetering or equipment calculation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_water
+          role: "Water used for cleaning and process support"
+          name: "Water supply by source"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record water by source and purpose; dry cleaning with zero water must be explicitly documented rather than omitted."
+          amount:
+            expression: "metered or reconciled water use attributable to foreground production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net edible product"
+                basis: "broad first-pass cleaning and support-water estimate; replace with water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Process and cleaning wastewater sent to treatment"
+          name: "Wastewater to declared treatment"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record wastewater quantity, treatment destination, and relevant monitored characteristics; a documented zero-discharge route is allowed."
+          amount:
+            expression: "metered or water-balance-derived wastewater quantity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net edible product"
+                basis: "broad first-pass wastewater estimate; replace with flow monitoring or water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_site_emissions
+          role: "Direct air and water emissions from on-site operations"
+          name: "Relevant elementary flow by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated direct emissions from combustion, roasting, dust control, refrigeration losses, wastewater discharge, and other foreground sources. Do not duplicate emissions already represented by purchased energy or off-site treatment datasets."
+          amount:
+            expression: "measured concentration and flow, mass-balance loss, or fuel-factor calculation by source"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg substance/kg net edible product"
+                basis: "deliberately broad first-pass screen for each reported substance; replace with monitored or factor-based evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "foreground burdens"
+    rule: "Avoid allocation by subdividing processes, separately metering unit operations, and tracking internal intermediates and rework."
+    source_ids:
+      - ec-pef-2021-2279
+  - rule_id: allocation_internal_rework
+    applies_to: "internal rework"
+    rule: "Treat rework that returns to the same foreground system as an internal loop; do not credit it as an avoided product and do not count it as waste unless it leaves the boundary."
+    source_ids: []
+  - rule_id: allocation_physical_relation
+    applies_to: "unavoidable co-product allocation"
+    rule: "Use a demonstrable physical relationship that reflects how inputs and outputs change; disclose the relationship, factor, and affected flows."
+    source_ids:
+      - ec-pef-2021-2279
+      - bianchi-2020-chocolate-lca
+  - rule_id: allocation_fallback_sensitivity
+    applies_to: "cocoa liquor, butter, powder, or other jointly produced outputs"
+    rule: "If no more representative physical relation is available, use dry mass as the provisional allocation basis and test an energy-content or economic alternative when the result is material."
+    source_ids:
+      - bianchi-2020-chocolate-lca
+  - rule_id: allocation_shared_utilities
+    applies_to: "site totals not directly metered to products"
+    rule: "Allocate using documented causal drivers such as equipment energy, operating time, throughput, or production mass; reconcile allocated totals to the site record and prevent double counting."
+    source_ids:
+      - ec-pef-2021-2279
+      - eu-fdm-bat-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_cocoa_bean_inputs
+      process_id: "cocoa_bean_processing"
+      flow_role: "dried cocoa beans"
+      record_type: "receiving and batch issue records"
+      raw_fields: "lot id; supplier; origin; mass; moisture; receiving date; batch id"
+      collection_method: "calibrated scale or weighbridge reconciled to inventory"
+      unit: "kg"
+      frequency: "per lot and batch"
+      temporal_coverage: "representative production period, normally at least 12 consecutive months"
+      site_scope: "all lines receiving beans for covered products"
+      aggregation_rule: "sum attributable bean mass and normalize to released net product"
+      quality_evidence: "scale calibration; lot traceability; inventory reconciliation"
+    - protocol_id: cp_cocoa_intermediate_outputs
+      process_id: "cocoa_bean_processing"
+      flow_role: "cocoa liquor, butter, powder, and residues"
+      record_type: "transfer and yield records"
+      raw_fields: "batch id; intermediate identity; input mass; output mass; moisture or solids; destination"
+      collection_method: "calibrated scale plus batch mass balance"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all on-site bean-processing lines"
+      aggregation_rule: "sum outputs by identity and reconcile to bean input and residues"
+      quality_evidence: "scale calibration; batch yield report; reconciliation"
+    - protocol_id: cp_formulation_inputs
+      process_id: "ingredient_formulation"
+      flow_role: "cocoa and non-cocoa formulation inputs"
+      record_type: "recipe, batch issue, and inventory records"
+      raw_fields: "product code; batch id; ingredient id; lot id; issued mass; return mass; moisture or concentration"
+      collection_method: "calibrated dosing system and inventory reconciliation"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all formulation lines for covered products"
+      aggregation_rule: "net issued mass by ingredient divided by released net product"
+      quality_evidence: "recipe version; dosing calibration; lot and stock reconciliation"
+    - protocol_id: cp_process_transfers
+      process_id: "refining_conching"
+      flow_role: "internal formulated and refined chocolate transfers"
+      record_type: "batch transfer records"
+      raw_fields: "batch id; source process; destination process; material identity; gross mass; tare; timestamp"
+      collection_method: "calibrated vessel, load-cell, or mass-balance transfer record"
+      unit: "kg"
+      frequency: "per transfer or batch"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all covered refining, conching, and finishing lines"
+      aggregation_rule: "reconcile incoming and outgoing transfers without adding upstream burdens twice"
+      quality_evidence: "equipment calibration; batch genealogy; transfer reconciliation"
+    - protocol_id: cp_finished_product_mass
+      process_id: "tempering_forming_finishing"
+      flow_role: "conforming finished edible product"
+      record_type: "production and release records"
+      raw_fields: "product code; batch id; gross mass; packaging tare; net edible mass; rejects; release status"
+      collection_method: "calibrated checkweigher or reconciled production scale"
+      unit: "kg"
+      frequency: "per batch and packaging run"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all covered forming and finishing lines"
+      aggregation_rule: "sum released net edible mass; exclude packaging and unreleased rejects"
+      quality_evidence: "scale calibration; release record; net-content reconciliation"
+    - protocol_id: cp_packaging_materials
+      process_id: "non_bulk_packaging"
+      flow_role: "packaging consumption"
+      record_type: "bill of materials, issue, return, and stock records"
+      raw_fields: "packaging material id; composition; issued mass; returned mass; packaged units; scrap"
+      collection_method: "measured issue/return or supplier mass verified by sampling"
+      unit: "kg"
+      frequency: "per packaging run and monthly reconciliation"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all non-bulk packaging lines"
+      aggregation_rule: "net consumed packaging mass by material divided by released net product"
+      quality_evidence: "bill-of-material revision; stock reconciliation; sample weighing"
+    - protocol_id: cp_waste_outputs
+      process_id: "non_bulk_packaging"
+      flow_role: "food and packaging wastes"
+      record_type: "waste logs and transfer documents"
+      raw_fields: "waste type; source process; mass; date; destination; treatment route; rework status"
+      collection_method: "calibrated waste scale and contractor records"
+      unit: "kg"
+      frequency: "per collection and monthly reconciliation"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all foreground processes"
+      aggregation_rule: "sum only waste crossing the site boundary by type and route"
+      quality_evidence: "scale calibration; transfer note; rework reconciliation"
+    - protocol_id: cp_site_utilities
+      process_id: "site_utilities_environmental_control"
+      flow_role: "electricity, heat, fuels, and cooling"
+      record_type: "meters, invoices, fuel receipts, and production logs"
+      raw_fields: "meter id; opening and closing readings; fuel quantity; calorific value; production period; line operating hours"
+      collection_method: "revenue meter, submeter, or reconciled engineering allocation"
+      unit: "native meter unit, kWh, MJ, or kg"
+      frequency: "continuous or per invoice; aggregate monthly"
+      temporal_coverage: "representative production period, normally at least 12 consecutive months"
+      site_scope: "complete site and all covered production lines"
+      aggregation_rule: "subtract excluded uses, allocate with disclosed driver, and reconcile to site total"
+      quality_evidence: "meter calibration; invoices; allocation worksheet; site-total reconciliation"
+    - protocol_id: cp_water_wastewater
+      process_id: "site_utilities_environmental_control"
+      flow_role: "water and wastewater"
+      record_type: "supply and discharge meters, water balance, and monitoring records"
+      raw_fields: "source; inflow; use area; discharge route; flow; pH; temperature; monitored pollutant loads"
+      collection_method: "meters and documented water balance; accredited analysis where applicable"
+      unit: "kg, m3, and substance-specific units"
+      frequency: "continuous or monthly flow; monitoring frequency appropriate to permit and source"
+      temporal_coverage: "same period as reference product"
+      site_scope: "complete site water system"
+      aggregation_rule: "reconcile inflow, consumption, product incorporation, evaporation, and discharge"
+      quality_evidence: "meter calibration; water-balance closure; laboratory reports"
+    - protocol_id: cp_direct_emissions
+      process_id: "site_utilities_environmental_control"
+      flow_role: "direct emissions to air and water"
+      record_type: "stack, fugitive, refrigerant, wastewater, and fuel records"
+      raw_fields: "source id; substance; concentration; flow; operating time; fuel use; factor; refrigerant additions; compartment"
+      collection_method: "direct monitoring or transparent calculation from collected activity data"
+      unit: "kg substance and source-specific measurement units"
+      frequency: "by monitoring plan and per material event"
+      temporal_coverage: "same period as reference product"
+      site_scope: "all foreground emission sources"
+      aggregation_rule: "concentration x flow x time or collected activity x documented factor, then normalize"
+      quality_evidence: "calibration; laboratory report; factor citation; calculation worksheet"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground inventory rows"
+      rule: "normalized amount = attributable period amount / released net edible product kg"
+      inputs:
+        - "protocol-specific attributable amount"
+        - cp_finished_product_mass
+      output: "amount per 1 kg net edible reference product"
+      source_ids: []
+    - id: calc_formulation_balance
+      applies_to: "ingredient formulation"
+      rule: "net ingredient input = issued mass - returned unused mass; reconcile sum of net inputs to internal transfers, measured losses, and wastes"
+      inputs:
+        - cp_formulation_inputs
+        - cp_process_transfers
+        - cp_waste_outputs
+      output: "reconciled kg ingredient by type per reference flow"
+      source_ids:
+        - codex-cxs-87-1981
+    - id: calc_packaging_consumption
+      applies_to: "packaging"
+      rule: "net packaging consumed = issued mass - unused return; reconcile to packaged units and packaging scrap"
+      inputs:
+        - cp_packaging_materials
+        - cp_waste_outputs
+      output: "kg packaging material by type per reference flow"
+      source_ids: []
+    - id: calc_utility_allocation
+      applies_to: "shared site utilities"
+      rule: "attributable utility = complete site utility total - excluded uses, multiplied by disclosed causal allocation share; sum of shares must equal the allocable total"
+      inputs:
+        - cp_site_utilities
+        - "operating hours"
+        - throughput
+        - "submeter data"
+      output: "kWh, MJ, or kg utility per reference flow"
+      source_ids:
+        - ec-pef-2021-2279
+        - eu-fdm-bat-2019
+    - id: calc_water_balance
+      applies_to: "water and wastewater"
+      rule: "water input = product incorporation + evaporation + wastewater + other measured losses within documented uncertainty"
+      inputs:
+        - cp_water_wastewater
+      output: "reconciled water input and wastewater per reference flow"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_direct_emissions
+      applies_to: "direct emissions"
+      rule: "emission mass = measured concentration x standardized volumetric flow x operating time, or collected activity x cited emission factor"
+      inputs:
+        - cp_direct_emissions
+      output: "kg substance by compartment per reference flow"
+      source_ids:
+        - eu-fdm-bat-2019
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain product code, subtype, recipe version, cocoa-content declaration, physical form, filling or inclusions, packaging configuration, batch id, and release status."
+      evidence: "product specification; recipe; release record; codex-cxs-87-1981"
+    - id: dq_mass_measurement
+      applies_to: "all material inputs and outputs"
+      requirement: "Use calibrated weighing systems and reconcile ingredient, intermediate, product, rework, waste, and packaging masses for the same production population."
+      evidence: "calibration records; batch and period mass balances"
+    - id: dq_temporal_coverage
+      applies_to: "foreground activity data"
+      requirement: "Use a representative continuous period, normally at least 12 months, or disclose seasonality, campaign duration, start-up, shutdown, and other departures."
+      evidence: "dated raw records; coverage statement"
+    - id: dq_geography_technology
+      applies_to: "site and upstream links"
+      requirement: "Declare site geography, production technology, cocoa-material starting condition, energy supply, wastewater treatment, and representativeness of upstream datasets."
+      evidence: "site description; supplier and dataset metadata"
+    - id: dq_environmental_completeness
+      applies_to: "utilities, wastes, wastewater, and emissions"
+      requirement: "Maintain a complete inventory of water, energy, raw materials, waste water, waste gas, solid waste, and relevant direct emissions, with justified zeroes and omissions."
+      evidence: "process flow sheet; inventories and monitoring plan; eu-fdm-bat-2019"
+    - id: dq_allocation
+      applies_to: "shared processes and co-products"
+      requirement: "Retain subdivision attempts, allocation drivers, factors, reconciliations, and sensitivity results for material allocation choices."
+      evidence: "allocation worksheet; meter reconciliation; sensitivity result"
+    - id: dq_estimate_replacement
+      applies_to: "provisional reasoned ranges"
+      requirement: "Treat every reasoned_estimate range as a replaceable QA screen, never as a published default; replace or explicitly review it before methodology activation."
+      evidence: "review record and source-backed or foreground range evidence"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require Chocolate UUID 4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3, Product flow type, reference property Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "product identity"
+    rule: "Require a non-bulk finished cocoa-containing preparation and reject sweetened cocoa powder, bulk cocoa/chocolate intermediates, cocoa-free confectionery, and prepared beverages."
+    source_ids:
+      - codex-cxs-87-1981
+  - rule_id: validate_qualifiers
+    applies_to: "reference product metadata"
+    rule: "Fail completeness when any required qualifier in section 3 is absent."
+    source_ids:
+      - codex-cxs-87-1981
+  - rule_id: validate_starting_condition
+    applies_to: "system boundary"
+    rule: "Require the incoming cocoa-material condition and inclusion or exclusion of on-site cocoa-bean processing to be explicit and consistent with process inventory."
+    source_ids:
+      - bianchi-2020-chocolate-lca
+  - rule_id: validate_process_coverage
+    applies_to: "process map and inventory"
+    rule: "Require formulation, refining/conching, declared finishing operations, non-bulk packaging, and site utilities; require cocoa-bean processing when beans enter the site."
+    source_ids:
+      - bianchi-2020-chocolate-lca
+      - eu-fdm-bat-2019
+  - rule_id: validate_mass_balance
+    applies_to: "material inventory"
+    rule: "Reconcile ingredients and internal transfers to released edible product, packaging, wastes, emissions, and inventory change within disclosed uncertainty."
+    source_ids: []
+  - rule_id: validate_environmental_inventory
+    applies_to: "site utilities and releases"
+    rule: "Require complete water, energy, raw-material, wastewater, waste-gas, solid-waste, and relevant direct-emission records, with zeroes and omissions justified."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_allocation
+    applies_to: "shared utilities and co-products"
+    rule: "Require allocation avoidance evidence, disclosed causal driver or fallback basis, complete total reconciliation, and no duplicate utility or intermediate burden."
+    source_ids:
+      - ec-pef-2021-2279
+      - bianchi-2020-chocolate-lca
+  - rule_id: validate_reasoned_estimates
+    applies_to: "QA ranges"
+    rule: "Flag every reasoned_estimate as provisional and fail activation if a publication-critical allowed range still relies on unreviewed reasoned evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground unit-process data package for finished non-bulk chocolate and cocoa-containing food preparations"
+  downstream_use: "secondary_dataset; background_dataset; process and lifecyclemodel projections"
+  allowed_use: "Products matching CPC 3.0 23660 and the declared formulation, physical form, starting condition, geography, technology, packaging, and factory-gate boundary"
+  excluded_use: "Sweetened cocoa powder; bulk cocoa/chocolate intermediates; cocoa-free confectionery; prepared beverages; products with materially different starting conditions or unit operations; comparative consumer claims without a separately justified functional equivalence"
+  required_metadata: "canonical PCR id; reference UUID and mass basis; product subtype; formulation and cocoa-content declaration; dairy, filling, and inclusion status; physical form; starting cocoa material; site geography; reference year; technology; process coverage; packaging bill; allocation; cut-offs; upstream dataset identities"
+  required_quality_disclosure: "raw-record coverage; calibration; mass, water, and utility reconciliation; data gaps; estimated shares; reasoned-estimate replacements; allocation and sensitivity; wastewater and direct-emission monitoring; upstream representativeness"
+  update_trigger: "material recipe or cocoa-content change; new starting cocoa material; changed process route, equipment, energy mix, packaging, geography, allocation, environmental control, regulatory requirement, or data period; replacement of a material provisional estimate"
+data_sources:
+  - id: "codex-cxs-87-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 87-1981, Standard for Chocolate and Chocolate Products, amended 2025 with 2026 corrigendum, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B87-1981%2FCXS_087e.pdf (retrieved 2026-08-10)"
+    used_for: "Product scope, chocolate types, composition and cocoa-content qualifiers, identity validation"
+  - id: "ec-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annexes I-II, https://environment.ec.europa.eu/publications/recommendation-use-environmental-footprint-methods_en (retrieved 2026-08-10)"
+    used_for: "Functional unit and reference flow framing, life-cycle boundary, inventory completeness, allocation hierarchy, data quality and robustness"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-10)"
+    used_for: "Process flow sheets and inventories of water, energy, raw materials, wastewater, waste gas, solid waste and emissions; monitoring and quality evidence"
+  - id: "bianchi-2020-chocolate-lca"
+    type: "literature"
+    reference: "Bianchi, F. R. et al. (2020), Environmental analysis along the supply chain of dark, milk and white chocolate: a life cycle comparison, The International Journal of Life Cycle Assessment, https://doi.org/10.1007/s11367-020-01817-6"
+    used_for: "Chocolate manufacturing process decomposition, ingredient and packaging relevance, energy/cooling context, co-product allocation sensitivity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e4863e66def7d1fc81c25e47b5cb27b39d287710856df2241d0c1c9f62fd1a74"
+  generated_content_sha256: "sha256:fe200c8cfdadfb6bc4653d45a9aee3a21668b5da9b13f7bd3f9dea4a0b100617"

@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-livers-and-roes-dried-smoked-salted-or-in-brine
 title:
   en-US: "Fish livers and roes dried, smoked, salted or in brine"
-  zh-CN: null
-status: scaffold
+  zh-CN: "干制、熏制、腌制或盐渍的鱼肝和鱼籽"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,77 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "21227"
     title: "Fish livers and roes dried, smoked, salted or in brine"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  review_notes:
+    - "Existing process boundaries, amount modes, evidence kinds, collection protocols, source references, and source-backed method rules were retained while inventory selectors were split into atomic exchanges."
+    - "Existing broad reasoned_estimate ranges were retained only where they still apply to one atomic exchange; no new quantitative range or reasoned_estimate was created."
+  flow_identity_review:
+    search_method: "flow-hybrid-search, one independent query per target atomic flow"
+    direct_read_method: "Tiangong flow list and flow get with state_code=100"
+    acceptance_criteria: "Exact flow type, atomic name semantics, compatible industry and geography context, reference property and unit, supply scenario or elementary-flow compartment"
+    unresolved_inventory_uuid_rows:
+      incoming_fresh_fish_liver: "Hybrid search returned only a combined fresh-or-chilled fish-livers-and-roes flow, generic whole-fish flows, or fish-liver oil; state_code=100 direct reads rejected the product and incoming-state mismatch."
+      incoming_chilled_fish_liver: "Hybrid search returned only a combined fresh-or-chilled fish-livers-and-roes flow, generic whole-fish flows, or fish-liver oil; state_code=100 direct reads rejected the product and incoming-state mismatch."
+      incoming_frozen_fish_liver: "Hybrid search returned only a combined fresh-or-chilled fish-livers-and-roes flow, generic whole-fish flows, or fish-liver oil; state_code=100 direct reads rejected the product and incoming-state mismatch."
+      incoming_fresh_fish_roe: "Hybrid search returned only a combined fresh-or-chilled fish-livers-and-roes flow, generic whole-fish flows, or fish-liver oil; state_code=100 direct reads rejected the product and incoming-state mismatch."
+      incoming_chilled_fish_roe: "Hybrid search returned only a combined fresh-or-chilled fish-livers-and-roes flow, generic whole-fish flows, or fish-liver oil; state_code=100 direct reads rejected the product and incoming-state mismatch."
+      incoming_frozen_fish_roe: "Hybrid search returned only a combined fresh-or-chilled fish-livers-and-roes flow, generic whole-fish flows, or fish-liver oil; state_code=100 direct reads rejected the product and incoming-state mismatch."
+      preparation_electricity_onsite_photovoltaic: "Hybrid search returned state_code=100 photovoltaic flows at 35–330 kV and at power-plant or technology-mix supply points; direct reads rejected the voltage and supply-scenario mismatch."
+      preparation_chilled_water: "Hybrid search returned frozen seafood products rather than a chilled-water product flow; no semantically relevant candidate qualified for UUID selection."
+      prepared_fish_liver: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      prepared_fish_roe: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      preparation_residual_fish_liver_tissue: "Hybrid candidates were generic offal or combined fish-processing by-products; state_code=100 direct reads did not preserve this specific preparation-waste identity."
+      preparation_residual_damaged_fish_roe: "Hybrid candidates were generic offal or combined fish-processing by-products; state_code=100 direct reads did not preserve this specific preparation-waste identity."
+      preparation_residual_fish_membrane: "Hybrid candidates were generic offal or combined fish-processing by-products; state_code=100 direct reads did not preserve this specific preparation-waste identity."
+      preparation_wastewater: "Hybrid candidates were landing-site wastewater or generic cleaning discharge with incompatible site and treatment semantics; state_code=100 direct reads were rejected."
+      preservation_fish_liver_feed: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      preservation_fish_roe_feed: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      preservation_electricity_onsite_photovoltaic: "Hybrid search returned state_code=100 photovoltaic flows at 35–330 kV and at power-plant or technology-mix supply points; direct reads rejected the voltage and supply-scenario mismatch."
+      preservation_hot_water: "Hybrid candidates combined steam and hot water, represented boiler equipment, or encoded natural-gas heat; state_code=100 direct reads rejected the carrier mismatch."
+      preservation_fuel_oil: "Hybrid candidates were a volume-reference heavy-fuel-oil flow tied to refinery-furnace combustion, a Bayer-process fuel-oil flow, or a less specific heavy-oil product; state_code=100 direct reads rejected property, route, or semantic mismatch."
+      smoking_hardwood_chips: "Hybrid search found a state_code=100 Wood Chip flow with Volume reference property and a mass-reference sawn-hardwood flow; direct reads rejected the property or material-form mismatch."
+      preservation_liquid_smoke: "Hybrid search returned unrelated corn-oil, formaldehyde, and industrial-chemical flows; no semantically relevant liquid-smoke candidate qualified for UUID selection."
+      preserved_fish_liver_intermediate: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      preserved_fish_roe_intermediate: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      preservation_wastewater: "Hybrid searches returned non-wastewater industrial rows or wastewater with incompatible landing-site, discharge, and treatment semantics; no state_code=100 candidate passed direct review."
+      rejected_preserved_fish_liver: "Hybrid candidates were generic offal or combined fish-processing by-products; state_code=100 direct reads did not preserve the anatomical product, preserved state, and rejection-waste identity."
+      rejected_preserved_fish_roe: "Hybrid candidates were generic offal or combined fish-processing by-products; state_code=100 direct reads did not preserve the anatomical product, preserved state, and rejection-waste identity."
+      onsite_nitrogen_dioxide: "Hybrid search returned nitrite or nitrogen-monoxide records rather than nitrogen dioxide; no semantically correct candidate qualified for UUID selection."
+      onsite_sulfur_dioxide: "Hybrid search returned sulfur-oxides group flows; state_code=100 direct reads rejected the chemical-identity mismatch with sulfur dioxide."
+      onsite_nmvoc: "Hybrid search found state_code=100 NMVOC flows only for non-urban/high-stack, lower-stratosphere, indoor, soil, or water compartments; direct reads rejected the unresolved compartment mismatch."
+      packaging_fish_liver_feed: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      packaging_fish_roe_feed: "Hybrid search returned fish oil, generic preserved fish, or the combined fish-livers-and-roes record; state_code=100 direct reads rejected the anatomical product and intermediate-state mismatch."
+      packaging_polypropylene_tub: "Hybrid candidates were polypropylene chips, recycled polypropylene from an unrelated hydrometallurgical route, or plastic pipes; state_code=100 direct reads rejected the packaging-component mismatch."
+      packaging_aluminium_lid: "Hybrid candidates were aluminium foil, a generic aluminium shell, or rolled foil; state_code=100 direct reads rejected the lid-component mismatch."
+      storage_electricity_onsite_photovoltaic: "Hybrid search returned state_code=100 photovoltaic flows at 35–330 kV and at power-plant or technology-mix supply points; direct reads rejected the voltage and supply-scenario mismatch."
+      packaging_polyethylene_scrap: "Hybrid candidates were PET waste, polypropylene waste, or generic plastic packaging waste; direct reads rejected the polymer-specific identity mismatch."
+      packaging_polypropylene_scrap: "The state_code=100 polypropylene-waste candidate was tied to a mechanical-recycling route; direct read rejected the unresolved destination mismatch for this facility-gate waste row."
+      packaging_glass_waste: "The state_code=100 Glass Waste candidate was specific to wafer production; direct read rejected the industry and origin mismatch."
+      packaging_aluminium_scrap: "The state_code=100 Aluminium Scrap candidate encoded aluminium recovery treatment and did not preserve food-packaging-lid origin; direct read was rejected."
+      packaging_paperboard_scrap: "Hybrid candidates were separator-paper scrap or combined paper-and-cardboard packaging waste; direct reads rejected the component-specific identity mismatch."
+      packaging_corrugated_scrap: "The state_code=100 cardboard-packaging-waste candidate did not establish corrugated-board identity; direct read was rejected."
+      packaging_wood_waste: "Hybrid candidates were generic wood waste from primary production or unspecified offcuts; direct reads rejected the pallet-origin mismatch."
+      rejected_finished_fish_liver: "Hybrid candidates were generic offal or combined fish-processing by-products; direct reads rejected the finished preserved-liver identity mismatch."
+      rejected_finished_fish_roe: "Hybrid candidates were generic offal or combined fish-processing by-products; direct reads rejected the finished preserved-roe identity mismatch."
+      storage_r404a_emission: "Hybrid search returned unrelated chemical elementary flows; no state_code=100 R404A elementary-flow candidate qualified for direct selection."
+      storage_r507a_emission: "Hybrid search returned unrelated dye-chemical elementary flows; no state_code=100 R507A elementary-flow candidate qualified for direct selection."
+      storage_r744_emission: "Hybrid candidates were fossil carbon-dioxide elementary flows whose state_code=100 direct reads did not establish R744 refrigerant origin; the source-semantic mismatch was rejected."
+  unresolved_items:
+    - "Every inventory row listed under flow_identity_review.unresolved_inventory_uuid_rows keeps an atomic selected-flow name without a UUID until a state_code=100 Tiangong identity passes direct review."
+    - "Route-, species-, product-form-, packaging-, fuel-, refrigerant-, and compartment-specific records remain foreground disclosures; unresolved rows must not be collapsed back into selectors."

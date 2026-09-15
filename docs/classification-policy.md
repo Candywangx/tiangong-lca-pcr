@@ -21,8 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: 2026-07-14
-lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
+lastReviewedAt: 2026-09-15
+lastReviewedCommit: 09d9c2ea9d3b678cb96f648a500404ee6e6d032c
+lastReviewedNote: "Reviewed inventory-source consistency against PCR PR #9: current membership and counts resolve from canonical mappings, manifests, material/coverage indexes and the catalog alias binding."
 ---
 
 # Classification Policy
@@ -68,8 +69,8 @@ Partial or divergent targets fail closed. The mode must not overwrite an accepte
 Mappings under `classifications/mappings/` are the maintained edge input from external codes to canonical PCR ids.
 Repository current mappings use `schema_version: 2` and `status: current`; they contain accepted positive edges only.
 Every edge points to a material PCR and carries `acceptance.status: accepted`, `decided_by`, a strict UTC
-`decided_at_utc`, and a durable `decision_ref`. CPC 3.0 contains exactly three accepted edges (`01111`, `04412`, and
-`04911`); CPC 2.1 is empty v2. Adding another classification system always adds source and coverage inputs; add
+`decided_at_utc`, and a durable `decision_ref`. The canonical mapping for each system/version and its durable decision
+references define the current accepted set and count. Adding another classification system always adds source and coverage inputs; add
 mapping edges only for reviewed semantic matches, never by copying a PCR tree or manufacturing one edge per leaf.
 
 External classification codes must not become PCR directory names. If two classification leaves resolve to the same semantic PCR, map both leaves to that PCR id. If two different PCRs would otherwise share the same semantic slug, disambiguate with a short stable hash or a clearer semantic qualifier, not with the classification code.
@@ -91,8 +92,8 @@ Each known leaf has one coverage status: `mapped`, `unmapped`, `candidate_sugges
 Only `mapped` selects a canonical PCR, and it requires a schema-valid accepted v2 edge whose target is a material
 lifecycle pair. The coverage entry projects the acceptance decision, and runtime resolution compares that evidence
 with the canonical mapping before selection. Candidate suggestions and manual-review targets are evidence, not
-accepted identity edges, and must never be selected automatically. CPC 3.0 coverage remains complete at 2,877
-leaves: 3 mapped, 2,874 unmapped, and 0 unknown.
+accepted identity edges, and must never be selected automatically. Read current leaf and status counts from the
+summary in `classifications/indexes/<system>-<version>-coverage.json` or the public CLI below.
 
 Use the public CLI to inspect coverage without loading the methodology catalog:
 
@@ -109,7 +110,7 @@ successful result with `mapping: null` and `pcr: null`; an unknown coordinate or
 ## Retired PCR Identity Aliases
 
 `classifications/aliases/pcr-id-aliases.yaml` is a deterministic generated registry, not a mapping file and not a PCR
-catalog. Its current 2,874 aliases preserve old CPC leaf-derived ids as terminal `classification_coverage` locators.
+catalog. Its entries preserve old CPC leaf-derived ids as terminal `classification_coverage` locators.
 Every source id and historical source path is unique; aliases may not collide with material ids, chain, cycle, or
 point at an unknown coverage leaf. Rebuild with `npm run aliases:build` and verify with `npm run aliases:check`; do not
 hand-edit the registry. `library/catalog.yaml` pins its canonical path, exact-byte SHA-256, and entry count; runtime
@@ -130,6 +131,8 @@ redirect locator; guidance and validation reject it.
 
 Phase 2 is complete: ordinary CPC imports create zero PCR records, current mapping v2 retains accepted material edges
 only, and the alias-first redirect contract preserves retired ids. The first Phase 3 pilot removes only CPC `99000`:
-that code is known-unmapped and the old PCR id redirects. The repository now contains 2,876 PCR directories—3
-material and 2,873 surviving legacy scaffolds—while the alias count remains 2,874. CPC `98000` and bulk physical
+that code is known-unmapped and the old PCR id redirects. Canonical manifests under `library/pcrs/` define the current
+physical inventory and lifecycle states. `library/indexes/pcr-index.yaml` enumerates material records; explicit
+`list --scope legacy` browsing inventories surviving scaffolds. Read alias membership from the registry and its
+verified count from `library/catalog.yaml`. CPC `98000` and bulk physical
 migration are still pending; do not describe the pilot as completion of physical migration.

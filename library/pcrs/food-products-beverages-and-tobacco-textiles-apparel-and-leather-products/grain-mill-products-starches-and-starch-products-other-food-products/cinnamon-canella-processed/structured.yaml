@@ -1,10 +1,1356 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23925"
-  title: "Cinnamon (canella), processed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.cinnamon-canella-processed"
+  classification_refs: "CPC 3.0: 23925 — Cinnamon (canella), processed"
+  covered_products: "Dried, cleaned, graded whole Cinnamomum cassia bark sticks retaining recognizable bark form and sold as food spice in bulk cartons."
+  excluded_products: "Powder, ground cinnamon, chips for milling or extraction, bark oil, extracts, mixed-species products, composite Ceylon quills, wet or undried bark, and retail-ready packs."
+  representative_product: "Whole cassia bark sticks, moisture content at or below 14% wet basis, bulk packed in corrugated fibreboard cartons with polypropylene liners."
+  production_route: "Freshly peeled inner bark receipt; dry cleaning; 45 °C electrically heated forced-air drying; grading and cutting; bulk packaging; ambient dry storage; gate release."
+  market_state: "Food-grade, dry, intact bark sticks; declared species, origin, grade, stick length, moisture result, batch, packaging configuration, and no-grinding status."
+functional_unit:
+  what: "Provision of dried, cleaned, graded whole Cinnamomum cassia bark sticks at the processing-facility gate."
+  how_much: "1 kg net product mass."
+  how_well: "Moisture content ≤14% wet basis; recognizable whole bark form; declared species, origin, grade, stick length, batch, packaging, and no-grinding status; conforms to applicable food-safety specifications."
+  how_long_or_cycle: "One production batch, normalized to 1 kg gate product."
+  reference_flow_link: "reference_whole_cinnamon_bark"
+system_boundary:
+  rules:
+    - rule_id: boundary_locked_product_form
+      applies_to: "Entire dataset"
+      rule: "Include only whole bark sticks. Powder, grinding, chips for extraction, and oil production are outside the dataset and shall not be averaged with it."
+      source_ids:
+        - unido-postharvest-spices-2006
+        - arifin-et-al-2021-koerintji
+    - rule_id: boundary_same_day_drying
+      applies_to: "Receipt and drying"
+      rule: "Minimize elapsed time between receipt and drying; record any hold and disposition of mould-affected bark."
+      source_ids:
+        - codex-cxc-78-2017
+    - rule_id: boundary_no_route_substitution
+      applies_to: "Drying and post-treatment"
+      rule: "The representative route is electrically heated forced-air drying at 45 °C with no steam, fuel combustion, irradiation, fumigation, refrigeration, or wet bark washing. Presence of any excluded operation requires a separate route-specific dataset."
+      source_ids:
+        - li-et-al-2024-cassia-drying
+        - codex-cxc-78-2017
+    - rule_id: boundary_supporting_operations
+      applies_to: "Facility operations"
+      rule: "Include batch-attributable sanitation, packaging, ambient dry storage, wastewater, solid waste, and direct releases."
+      source_ids:
+        - codex-cxc-1-1969
+        - unido-postharvest-spices-2006
+boundary_abstraction:
+  declared_starting_condition: "fresh_peeled_inner_bark_received"
+  starting_condition_role: "First foreground-controlled state: freshly peeled Cinnamomum cassia inner bark delivered to the processing facility before dry cleaning."
+  product_classification_scope: "CPC 3.0 23925 represented only by the locked whole-bark-stick route."
+  recursive_input_rule: "Any purchased processed cinnamon input already in CPC 23925 shall be recorded as a separate same-category product input with supplier dataset and form qualifier; it cannot be relabelled as fresh peeled bark or blended into foreground yield."
+  upstream_dataset_requirement: "Supplier dataset or disclosure for cultivation, harvesting, peeling, origin, species, incoming moisture, and delivered fresh-bark mass."
+  disclosure: "Declare species, origin, incoming and final moisture, dryer set point, rejected bark, dust controls, sanitation method, packaging masses, storage conditions, and every deviation from the locked route."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cinnamon (canella), processed"
+    uuid: "3955425f-128e-48d4-b46e-04bf9ee70c22"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species=Cinnamomum cassia"
+    - "product_form=whole_bark_sticks"
+    - "drying_route=electric_forced_air_45C"
+    - "moisture_basis=wet_basis"
+    - moisture_percent
+    - grade
+    - stick_length_mm
+    - origin
+    - batch_id
+    - "packaging=corrugated_carton_with_pp_liner"
+    - "grinding=none"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all material or waste mass rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize net output and all mass flows to 1 kg reference product; retain unrounded batch totals."
+  - id: moisture_wet_basis
+    applies_to: "Incoming and dried bark"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% wet basis"
+    rule: "Calculate moisture_percent = 100 * water_mass / wet_sample_mass; do not mix wet-basis and dry-basis results."
+  - id: electricity_metering
+    applies_to: "Dryer, grader, packer, sanitation, and ambient-store electricity"
+    required_property_ref:
+      name: "Electrical energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record submetered kWh by unit operation; allocate only shared metered use using documented operating time or throughput."
+  - id: packaging_net_mass
+    applies_to: "Carton, polypropylene liner, label, and strapping"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each packaging material separately from invoice mass, item count multiplied by measured item mass, or issue records."
+  - id: wastewater_mass
+    applies_to: "Sanitation wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve measured unit and density assumption; do not combine wastewater with elementary emissions to water."
+process_map:
+  - id: bark_receipt_and_dry_cleaning
+    name: "Bark receipt and dry cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always included."
+    role: "Verify incoming identity and remove foreign matter and nonconforming bark without wet washing."
+    quantitative_reference: "kg accepted fresh peeled bark"
+  - id: electric_hot_air_drying
+    name: "45 °C electric hot-air drying"
+    inclusion: "required"
+    inclusion_condition: "Always included for the locked route."
+    role: "Reduce bark moisture while retaining whole bark form."
+    quantitative_reference: "kg dried bark"
+  - id: grading_and_stick_cutting
+    name: "Grading and stick cutting"
+    inclusion: "required"
+    inclusion_condition: "Always included."
+    role: "Grade intact bark and cut to declared stick length without milling."
+    quantitative_reference: "kg graded whole bark sticks"
+  - id: bulk_carton_packaging
+    name: "Bulk carton packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included."
+    role: "Pack whole sticks in corrugated cartons with PP liners and identify the batch."
+    quantitative_reference: "kg net packed product"
+  - id: ambient_dry_storage
+    name: "Ambient dry storage and gate release"
+    inclusion: "required"
+    inclusion_condition: "Always included; mechanical refrigeration is prohibited in the locked route."
+    role: "Maintain dry, pest-protected product and release the reference flow."
+    quantitative_reference: "kg reference product"
+  - id: facility_sanitation
+    name: "Facility and equipment sanitation"
+    inclusion: "conditional"
+    inclusion_condition: "Include attributable sanitation performed for the batch or allocated reporting period; wet bark washing remains excluded."
+    role: "Sanitation support for the locked route."
+    quantitative_reference: "kg reference product"
+process_inventory:
+  - id: bark_receipt_and_dry_cleaning
+    label: "Bark receipt and dry cleaning"
+    inputs:
+      product:
+        - row_id: fresh_peeled_cassia_bark_input
+          role: "Fresh peeled cassia inner bark"
+          name: "fresh_peeled_cassia_inner_bark"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured wet mass received before rejection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bark_mass_moisture
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1.1"
+                upper: "3.0"
+                unit: "kg/kg reference product"
+                basis: "broad initial range before site yield evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_cleaned_bark_output
+          role: "Accepted cleaned bark"
+          name: "accepted_dry_cleaned_cassia_bark"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "accepted_cleaned_bark_kg = fresh_peeled_cassia_bark_input_kg - foreign_matter_kg - mould_damaged_bark_kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per received batch, then per 1 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bark_mass_moisture
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: removed_foreign_matter_waste
+          role: "Removed foreign matter"
+          name: "foreign_matter_from_bark_dry_cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured stones, soil, plant debris, string, plastic, and other foreign matter; keep disposal fates separate in raw records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted cleaned bark"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids: []
+            ranges: []
+        - row_id: mould_damaged_bark_waste
+          role: "Mould-damaged or nonconforming bark"
+          name: "mould_damaged_or_nonconforming_cassia_bark"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured rejected bark; record treatment or disposal and prohibit return to product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted cleaned bark"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids:
+                - codex-cxc-78-2017
+            ranges: []
+      elementary:
+        - row_id: receipt_bark_dust_to_air
+          role: "Fugitive bark dust to air"
+          name: "cinnamon_bark_dust_to_air_at_receipt"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured release or generated_dust_kg - collected_dust_kg; do not use a negative result."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted cleaned bark"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.01"
+                unit: "kg/kg accepted cleaned bark"
+                basis: "broad initial range pending site measurements"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: electric_hot_air_drying
+    label: "45 °C electric hot-air drying"
+    inputs:
+      product:
+        - row_id: accepted_cleaned_bark_input_to_dryer
+          role: "Accepted cleaned bark input"
+          name: "accepted_dry_cleaned_cassia_bark"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured bark charged to the dryer."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per dryer batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bark_mass_moisture
+              source_ids: []
+            ranges: []
+        - row_id: dryer_heater_electricity
+          role: "Electricity for resistive heating"
+          name: "grid_electricity_for_resistive_dryer_heating"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered electricity used by heating elements during the batch."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dried bark"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_operation_electricity
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.2"
+                upper: "5.0"
+                unit: "kWh/kg dried bark"
+                basis: "broad initial electric heating range"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dryer_fan_control_electricity
+          role: "Electricity for fans and controls"
+          name: "grid_electricity_for_dryer_fans_and_controls"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered fan, conveyor, sensor, and control electricity excluding heater electricity."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dried bark"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_operation_electricity
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "1.0"
+                unit: "kWh/kg dried bark"
+                basis: "broad initial auxiliary electricity range"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_whole_bark_output
+          role: "Dried whole bark"
+          name: "dried_whole_cassia_bark_before_grading"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured discharge mass after reaching moisture content ≤14% wet basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per dryer batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bark_mass_moisture
+              source_ids:
+                - sri-lanka-cinnamon-postharvest
+                - li-et-al-2024-cassia-drying
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: bark_water_to_air
+          role: "Water evaporated from bark to air"
+          name: "water_to_air_from_cinnamon_bark_drying"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "bark_water_to_air_kg = dryer_charge_kg * incoming_moisture_fraction - dried_bark_kg * final_moisture_fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dried bark"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_bark_mass_moisture
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+  - id: grading_and_stick_cutting
+    label: "Grading and stick cutting"
+    inputs:
+      product:
+        - row_id: dried_bark_input_to_grading
+          role: "Dried bark input"
+          name: "dried_whole_cassia_bark_before_grading"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured dried bark entering grading and cutting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per grading batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grade_cut_yield
+              source_ids: []
+            ranges: []
+        - row_id: grader_cutter_electricity
+          role: "Electricity for grading and cutting"
+          name: "grid_electricity_for_grading_and_stick_cutting"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or power-times-runtime electricity for graders, conveyors, and cutters."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg graded whole bark sticks"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_operation_electricity
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kWh/kg graded whole bark sticks"
+                basis: "broad initial grading and cutting range"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: graded_whole_bark_sticks
+          role: "Graded whole bark sticks"
+          name: "graded_whole_cassia_bark_sticks"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured accepted whole-stick mass meeting declared grade and length; no powder fraction is included."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per grading batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grade_cut_yield
+              source_ids:
+                - arifin-et-al-2021-koerintji
+            ranges: []
+      waste:
+        - row_id: bark_trimming_residue_waste
+          role: "Bark trimming residue"
+          name: "cinnamon_bark_trimming_residue_not_sold"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured non-saleable trims. If sold, model a separate co-product and apply the allocation rules."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg graded whole bark sticks"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg dried bark input"
+                basis: "trimming residue fraction of grading input"
+                basis_kind: "process_output"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: collected_bark_dust_waste
+          role: "Collected bark dust"
+          name: "collected_cinnamon_bark_dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured captured dust from grading and cutting; never include it in whole-stick product mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg graded whole bark sticks"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: grading_bark_dust_to_air
+          role: "Fugitive grading dust to air"
+          name: "cinnamon_bark_dust_to_air_from_grading"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured release or documented dust mass balance."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg graded whole bark sticks"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.01"
+                unit: "kg/kg graded whole bark sticks"
+                basis: "broad initial range pending site measurements"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: bulk_carton_packaging
+    label: "Bulk carton packaging"
+    inputs:
+      product:
+        - row_id: graded_sticks_input_to_packaging
+          role: "Graded sticks entering packaging"
+          name: "graded_whole_cassia_bark_sticks"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured graded-stick mass charged to packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per packaging batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_carton_input
+          role: "Corrugated fibreboard cartons"
+          name: "corrugated_fibreboard_carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Carton count multiplied by verified unit mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_mass
+              source_ids:
+                - unido-postharvest-spices-2006
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "0.30"
+                unit: "kg/kg net packed product"
+                basis: "broad bulk-carton estimate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: polypropylene_liner_input
+          role: "Polypropylene carton liners"
+          name: "food_grade_polypropylene_carton_liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Liner count multiplied by verified unit mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_mass
+              source_ids:
+                - unido-postharvest-spices-2006
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.05"
+                unit: "kg/kg net packed product"
+                basis: "broad bulk-liner estimate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: paper_batch_label_input
+          role: "Paper batch labels"
+          name: "paper_batch_label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Label count multiplied by verified unit mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_mass
+              source_ids:
+                - unido-postharvest-spices-2006
+            ranges: []
+        - row_id: polypropylene_strap_input
+          role: "Polypropylene carton strapping"
+          name: "polypropylene_carton_strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Issued strap length multiplied by verified linear density."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity for carton forming and sealing"
+          name: "grid_electricity_for_carton_forming_and_sealing"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or power-times-runtime packaging equipment electricity."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_operation_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_whole_bark_output
+          role: "Packed whole cinnamon bark"
+          name: "bulk_packed_whole_cassia_bark_sticks"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Gross packed mass minus separately verified packaging tare."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per packaging batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: corrugated_carton_offcut_waste
+          role: "Corrugated carton offcuts"
+          name: "corrugated_fibreboard_carton_offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured corrugated offcuts and damaged cartons."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_liner_offcut_waste
+          role: "Polypropylene liner offcuts"
+          name: "polypropylene_liner_offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured rejected liners and liner offcuts."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: paper_label_release_liner_waste
+          role: "Paper label release-liner waste"
+          name: "silicone_coated_paper_label_release_liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured release-liner waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_strap_offcut_waste
+          role: "Polypropylene strap offcuts"
+          name: "polypropylene_strap_offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured strap offcuts and rejected straps."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: ambient_dry_storage
+    label: "Ambient dry storage and gate release"
+    inputs:
+      product:
+        - row_id: packed_bark_input_to_storage
+          role: "Packed bark entering ambient storage"
+          name: "bulk_packed_whole_cassia_bark_sticks"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Net packed product mass placed in ambient dry storage."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per storage lot"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ambient_storage_release
+              source_ids: []
+            ranges: []
+        - row_id: ambient_storage_electricity
+          role: "Electricity for ventilation and lighting"
+          name: "grid_electricity_for_ambient_store_ventilation_and_lighting"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered ambient-store electricity allocated by kg_product * storage_days; no refrigeration load is permitted."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ambient_storage_release
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.2"
+                unit: "kWh/kg reference product"
+                basis: "broad ambient storage range for the declared storage period"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_whole_cinnamon_bark
+          role: "Reference whole cinnamon bark"
+          name: "Cinnamon (canella), processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3955425f-128e-48d4-b46e-04bf9ee70c22"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "1 kg net released product meeting every required qualifier."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_ambient_storage_release
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: facility_sanitation
+    label: "Facility and equipment sanitation"
+    inputs:
+      product:
+        - row_id: cold_sanitation_water
+          role: "Cold potable sanitation water"
+          name: "potable_water_for_floor_and_equipment_sanitation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured cold water used for facility and equipment sanitation; never report as bark-washing water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids:
+                - codex-cxc-1-1969
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5.0"
+                unit: "kg/kg reference product"
+                basis: "broad initial facility sanitation range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: hot_sanitation_water
+          role: "Hot potable sanitation water"
+          name: "hot_potable_water_for_equipment_sanitation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured hot water supplied to sanitation; record supply temperature and upstream utility dataset separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium hydroxide cleaning agent"
+          name: "sodium_hydroxide_cleaning_agent_as_supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured formulated cleaner mass and declared NaOH concentration; record only when used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hypochlorite_sanitizer
+          role: "Sodium hypochlorite sanitizer"
+          name: "sodium_hypochlorite_sanitizer_as_supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured formulated sanitizer mass and declared available-chlorine concentration; record only when used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids: []
+            ranges: []
+        - row_id: sanitation_equipment_electricity
+          role: "Electricity for sanitation equipment"
+          name: "grid_electricity_for_sanitation_equipment"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or power-times-runtime electricity for pumps, vacuum cleaners, and cleaning equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_operation_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "facility_sanitation_wastewater_to_treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured wastewater transferred to treatment; exclude separately measured direct emissions to water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_water_emissions
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5.0"
+                unit: "kg/kg reference product"
+                basis: "broad initial sanitation wastewater range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dry_sanitation_sweepings_waste
+          role: "Dry sanitation sweepings"
+          name: "dry_sanitation_sweepings_from_cinnamon_processing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured dry sweepings from floors and equipment, kept separate from bark trim and captured dust."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product using documented batch allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_solid_waste_dust
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "chemical_oxygen_demand_to_water_from_direct_discharge"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "cod_to_water_kg = direct_discharge_m3 * cod_mg_per_L / 1000; zero when all wastewater is transferred to treatment without direct discharge."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_water_emissions
+              source_ids: []
+            ranges: []
+        - row_id: bod5_to_water
+          role: "Biochemical oxygen demand to water"
+          name: "biochemical_oxygen_demand_5d_to_water_from_direct_discharge"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "bod5_to_water_kg = direct_discharge_m3 * bod5_mg_per_L / 1000; zero when all wastewater is transferred to treatment without direct discharge."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_water_emissions
+              source_ids: []
+            ranges: []
+        - row_id: tss_to_water
+          role: "Total suspended solids to water"
+          name: "total_suspended_solids_to_water_from_direct_discharge"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "tss_to_water_kg = direct_discharge_m3 * tss_mg_per_L / 1000; zero when all wastewater is transferred to treatment without direct discharge."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_water_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "All unit operations"
+    rule: "Subdivide receiving, drying, grading, packaging, storage, and sanitation by batch or metered operation before allocation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_whole_vs_powder_prohibited
+    applies_to: "Whole sticks and powder-capable residues"
+    rule: "Never average burdens between whole bark sticks and powder, ground spice, milling feed, or extraction feed."
+    source_ids:
+      - boundary_locked_product_form
+  - rule_id: allocation_saleable_trim
+    applies_to: "Saleable bark trims"
+    rule: "Treat separately sold trim as a co-product with its own mass and destination. Prefer physical subdivision; if impossible, allocate shared grading burdens by dry mass and disclose price sensitivity."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_waste_no_credit
+    applies_to: "Rejects, dust, wastewater, and packaging offcuts"
+    rule: "Treat as waste unless a documented purchaser and separate product specification establish a co-product. Do not apply avoided-burden credits inside this foreground dataset."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bark_mass_moisture
+      process_id: "bark_receipt_and_dry_cleaning_electric_hot_air_drying"
+      flow_role: "bark masses, moisture, dryer charge and discharge"
+      record_type: "scale and laboratory records"
+      raw_fields: "batch_id; timestamp; species; origin; wet_mass_kg; reject_mass_kg; sample_id; wet_sample_mass_g; dry_sample_mass_g; moisture_percent; dryer_setpoint_C; drying_time_h"
+      collection_method: "Calibrated scales and representative moisture sampling with declared method."
+      unit: "kg; g; % wet basis; °C; h"
+      frequency: "Every batch"
+      temporal_coverage: "Complete batch from receipt through dryer discharge"
+      site_scope: "All lines producing the declared product"
+      aggregation_rule: "Sum masses by batch; calculate moisture only on one wet-basis convention; normalize after batch closure."
+      quality_evidence: "Calibration certificates, sample chain, test report, signed batch mass balance."
+    - protocol_id: cp_reject_solid_waste_dust
+      process_id: "bark_receipt_and_dry_cleaning_grading_and_stick_cutting_facility_sanitation"
+      flow_role: "rejects, trims, captured dust, sweepings, fugitive dust"
+      record_type: "waste and control-device records"
+      raw_fields: "batch_id; material_id; gross_kg; tare_kg; net_kg; stage; fate; generated_dust_kg; collected_dust_kg"
+      collection_method: "Tared material-specific containers and disposition records."
+      unit: "kg"
+      frequency: "Every batch or container change"
+      temporal_coverage: "Same reporting period as production"
+      site_scope: "Entire facility with production-line attribution"
+      aggregation_rule: "Keep every material and fate separate; calculate fugitive dust as generated minus collected only when both are measured."
+      quality_evidence: "Scale checks, labelled containers, photographs or manifests, nonnegative balance."
+    - protocol_id: cp_operation_electricity
+      process_id: "electric_hot_air_drying_grading_and_stick_cutting_bulk_carton_packaging_facility_sanitation"
+      flow_role: "atomic electricity rows"
+      record_type: "meter or runtime records"
+      raw_fields: "meter_id; start_kWh; end_kWh; equipment_id; rated_kW; runtime_h; batch_id; operation"
+      collection_method: "Dedicated submeter preferred; otherwise verified power-times-runtime."
+      unit: "kWh"
+      frequency: "Every batch"
+      temporal_coverage: "Representative continuous 12-month period where available"
+      site_scope: "Each named unit operation"
+      aggregation_rule: "Keep heater, fans/controls, grading/cutting, packaging, and sanitation electricity separate."
+      quality_evidence: "Meter calibration, photographs, runtime log, site-bill reconciliation."
+    - protocol_id: cp_grade_cut_yield
+      process_id: "grading_and_stick_cutting"
+      flow_role: "feed, accepted sticks, trims, dust"
+      record_type: "scale and grade records"
+      raw_fields: "batch_id; feed_kg; accepted_sticks_kg; trim_kg; dust_kg; grade; stick_length_mm; grinding_used"
+      collection_method: "Weigh each fraction and inspect declared whole-bark form."
+      unit: "kg; mm"
+      frequency: "Every batch"
+      temporal_coverage: "Complete grading batch"
+      site_scope: "All graders and cutters"
+      aggregation_rule: "Require feed_kg = accepted_sticks_kg + trim_kg + dust_kg + unexplained_loss_kg; investigate unexplained loss."
+      quality_evidence: "Calibrated scale, grade sheet, length sample, grinding_used=false."
+    - protocol_id: cp_packaging_material_mass
+      process_id: "bulk_carton_packaging"
+      flow_role: "product and each packaging material"
+      record_type: "issue, count, mass, and invoice records"
+      raw_fields: "batch_id; net_product_kg; carton_count; carton_unit_kg; liner_count; liner_unit_kg; label_count; label_unit_kg; strap_length_m; strap_kg_per_m; gross_kg; tare_kg"
+      collection_method: "Count-times-unit-mass or direct weighing, by material."
+      unit: "kg; count; m"
+      frequency: "Every packaging batch"
+      temporal_coverage: "Same period as packed product"
+      site_scope: "All packaging lines"
+      aggregation_rule: "Calculate each material independently; reconcile gross, tare, and net mass."
+      quality_evidence: "Supplier specification, unit-mass sample, scale record, batch label."
+    - protocol_id: cp_packaging_waste_mass
+      process_id: "bulk_carton_packaging"
+      flow_role: "material-specific offcuts"
+      record_type: "waste records"
+      raw_fields: "batch_id; waste_material_id; gross_kg; tare_kg; net_kg; fate"
+      collection_method: "Tared, material-specific waste containers."
+      unit: "kg"
+      frequency: "Every container change"
+      temporal_coverage: "Same period as packaging"
+      site_scope: "All packaging lines"
+      aggregation_rule: "No combined packaging-waste row; aggregate only within the identical material id and fate."
+      quality_evidence: "Scale ticket, labelled bin, recycling or disposal receipt."
+    - protocol_id: cp_ambient_storage_release
+      process_id: "ambient_dry_storage"
+      flow_role: "inventory days, electricity, and release"
+      record_type: "warehouse and meter records"
+      raw_fields: "batch_id; entry_date; release_date; net_kg; storage_location; temperature_C; relative_humidity_percent; meter_start_kWh; meter_end_kWh; refrigeration_used; release_moisture_percent"
+      collection_method: "Warehouse management records, ambient logger, submeter, release test."
+      unit: "kg; day; °C; %; kWh"
+      frequency: "Each lot and monthly meter period"
+      temporal_coverage: "Entire declared storage duration"
+      site_scope: "Ambient store areas holding the product"
+      aggregation_rule: "Allocate shared electricity by kg-day; require refrigeration_used=false."
+      quality_evidence: "Inventory reconciliation, logger data, meter record, release authorization."
+    - protocol_id: cp_sanitation_inputs
+      process_id: "facility_sanitation"
+      flow_role: "cold water, hot water, NaOH cleaner, NaOCl sanitizer"
+      record_type: "meter and chemical issue records"
+      raw_fields: "sanitation_event_id; batch_ids; cold_water_kg; hot_water_kg; hot_water_temperature_C; naoh_product_kg; naoh_concentration_percent; naocl_product_kg; available_chlorine_percent; area_m2; duration_h"
+      collection_method: "Utility meters and controlled chemical issue/dosing logs."
+      unit: "kg; °C; %; m2; h"
+      frequency: "Every sanitation event"
+      temporal_coverage: "Same period as attributable production"
+      site_scope: "Named equipment and floor zones"
+      aggregation_rule: "Allocate by documented causal driver, preferably equipment time or cleaned area; never describe this water as bark washing."
+      quality_evidence: "Meter readings, sanitation sign-off, SDS, concentration checks."
+    - protocol_id: cp_wastewater_water_emissions
+      process_id: "facility_sanitation"
+      flow_role: "wastewater and COD, BOD5, TSS direct emissions"
+      record_type: "effluent and laboratory records"
+      raw_fields: "event_id; wastewater_kg; transferred_to_treatment_kg; direct_discharge_m3; cod_mg_per_L; bod5_mg_per_L; tss_mg_per_L; sample_id; destination"
+      collection_method: "Effluent meter or balance plus representative accredited sampling."
+      unit: "kg; m3; mg/L"
+      frequency: "Every discharge or representative campaign"
+      temporal_coverage: "Same period as sanitation"
+      site_scope: "Each discharge destination"
+      aggregation_rule: "Keep wastewater-to-treatment separate from direct emissions; apply each concentration only to its matched direct-discharge volume."
+      quality_evidence: "Chain of custody, laboratory accreditation, meter calibration, treatment manifest."
+  calculation_rules:
+    - id: calc_moisture_wet_basis
+      applies_to: "Bark moisture"
+      rule: "moisture_percent = 100 * (wet_sample_mass_g - dry_sample_mass_g) / wet_sample_mass_g"
+      inputs:
+        - wet_sample_mass_g
+        - dry_sample_mass_g
+      output: "moisture_percent"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_bark_water_to_air
+      applies_to: "Drying"
+      rule: "bark_water_to_air_kg = dryer_charge_kg * incoming_moisture_fraction - dried_bark_kg * final_moisture_fraction"
+      inputs:
+        - dryer_charge_kg
+        - incoming_moisture_fraction
+        - dried_bark_kg
+        - final_moisture_fraction
+      output: "bark_water_to_air_kg"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_grading_mass_balance
+      applies_to: "Grading"
+      rule: "unexplained_loss_kg = feed_kg - accepted_sticks_kg - trim_kg - collected_dust_kg - fugitive_dust_kg"
+      inputs:
+        - "named grading masses"
+      output: "unexplained_loss_kg"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_packaging_material
+      applies_to: "Each packaging input"
+      rule: "material_kg = item_count * measured_unit_mass_kg or strap_kg = strap_length_m * strap_kg_per_m"
+      inputs:
+        - counts
+        - lengths
+        - "unit masses"
+      output: "material-specific kg"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_storage_electricity
+      applies_to: "Ambient store"
+      rule: "allocated_kWh = warehouse_kWh * batch_kg_days / total_warehouse_kg_days"
+      inputs:
+        - "submeter kWh and inventory kg-days"
+      output: "batch storage kWh"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_water_emission
+      applies_to: "COD, BOD5, or TSS"
+      rule: "emission_kg = direct_discharge_m3 * concentration_mg_per_L / 1000"
+      inputs:
+        - "matched volume and concentration"
+      output: "pollutant-specific kg"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "Entire package"
+      requirement: "Demonstrate Cinnamomum cassia, whole bark sticks, electric 45 °C forced-air drying, no grinding, and no excluded operation."
+      evidence: "Supplier identity, batch route sheet, equipment log, product photographs, and release record."
+    - id: dq_temporal_coverage
+      applies_to: "Energy, sanitation, waste, and storage"
+      requirement: "Prefer 12 consecutive representative months; if shorter, cover at least three complete batches and disclose seasonality."
+      evidence: "Date-bounded raw records and production totals."
+    - id: dq_mass_balance
+      applies_to: "Receipt, drying, grading, and packaging"
+      requirement: "Investigate absolute unexplained mass greater than 2% of input; moisture loss must be reported separately from solid loss."
+      evidence: "Signed stage mass balances and moisture results."
+    - id: dq_atomic_flows_v1
+      applies_to: "Entire inventory"
+      requirement: "One card per physical flow and role. Do not use collection placeholders such as energy, materials, chemicals, fuels, refrigerants, packaging, wastes, or emissions."
+      evidence: "Row inventory and raw-field mapping."
+    - id: dq_uuid_scope
+      applies_to: "Flow identities"
+      requirement: "Only reference_whole_cinnamon_bark may carry a flow UUID in this PCR; all other flow UUID fields remain empty pending independent identity review."
+      evidence: "UUID audit and Tiangong state_code=100 readback evidence."
+    - id: dq_reasoned_estimates
+      applies_to: "Provisional ranges"
+      requirement: "Never substitute a reasoned-estimate range for a foreground amount; retain it only as a QA screen and replace before publication where critical."
+      evidence: "Finding log and source-upgrade record."
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require UUID 3955425f-128e-48d4-b46e-04bf9ee70c22, name Cinnamon (canella), processed, CPC 3.0 23925, Product flow, and Mass."
+    source_ids: []
+  - rule_id: validate_locked_route
+    applies_to: "Process map"
+    rule: "Fail if grinding, powder output, fuel-fired drying, steam, fumigation, irradiation, refrigeration, wet bark washing, or another species/product form is averaged into the dataset."
+    source_ids:
+      - boundary_locked_product_form
+      - boundary_no_route_substitution
+  - rule_id: validate_moisture_and_temperature
+    applies_to: "Drying and release"
+    rule: "Require dryer set point 45 °C and final moisture content ≤14% wet basis with batch-linked measurements."
+    source_ids:
+      - sri-lanka-cinnamon-postharvest
+      - li-et-al-2024-cassia-drying
+      - arifin-et-al-2021-koerintji
+  - rule_id: validate_process_completeness
+    applies_to: "Inventory"
+    rule: "Require all five production processes and attributable sanitation; every process, row, direction, flow type, basis, unit, protocol, and quality-evidence field must be populated."
+    source_ids: []
+  - rule_id: validate_atomic_flows_v1
+    applies_to: "Inventory"
+    rule: "Reject aggregate cards named energy, materials, chemicals, fuels, refrigerants, packaging, wastes, or emissions; preserve electricity uses, packaging materials, cleaning agents, wastewater, solid wastes, dust, and water emissions as atomic rows."
+    source_ids: []
+  - rule_id: validate_no_other_flow_uuid
+    applies_to: "Inventory"
+    rule: "Fail if any row other than reference_whole_cinnamon_bark contains a flow UUID. Flow-property and unit-group UUIDs in the reference object are not flow UUIDs."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Receipt, drying, grading, packaging"
+    rule: "Require nonnegative component masses and stage closure; investigate unexplained mass above 2% of stage input."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_food_safety_records
+    applies_to: "Receipt, drying, storage, sanitation"
+    rule: "Require mould rejection, same-day or justified drying, moisture control, pest-protected storage, sanitation records, and traceable batch labels."
+    source_ids:
+      - codex-cxc-78-2017
+      - codex-cxc-1-1969
+      - unido-postharvest-spices-2006
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for bulk whole processed cinnamon bark."
+  downstream_use: "secondary_dataset; background_dataset after review and publication."
+  allowed_use: "LCA of foods or supply chains requiring dried whole Cinnamomum cassia bark sticks from the locked processing route."
+  excluded_use: "Powder or ground cinnamon, oils or extracts, mixed species, composite quills, wet bark, fuel-fired or solar-only drying, sterilized or irradiated product, refrigerated product, retail packs, or cultivation and harvesting."
+  required_metadata: "species; origin; batch; product_form; grade; stick_length_mm; incoming and final moisture; dryer set point and time; no-grinding status; packaging masses; storage days; reporting period; geography."
+  required_quality_disclosure: "Source coverage; meter and scale calibration; sampling method; mass-balance closure; reasoned-estimate substitutions; waste fates; wastewater destination; excluded operations; allocation decisions."
+  update_trigger: "Change in species, product form, dryer technology or heat source, moisture specification, sanitation route, packaging configuration, storage technology, co-product fate, or reference-flow identity."
+data_sources:
+  - id: "codex-cxc-78-2017"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 78-2017, Code of Practice for the Prevention and Reduction of Mycotoxins in Spices. https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/"
+    used_for: "Rapid drying, moisture control, dry cleaning, mould rejection, and protected storage."
+  - id: "codex-cxc-1-1969"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 1-1969, General Principles of Food Hygiene, revised 2022. https://www.fao.org/fao-who-codexalimentarius/publications/en/"
+    used_for: "Sanitation, hygiene controls, records, and food-safety verification."
+  - id: "unido-postharvest-spices-2006"
+    type: "handbook"
+    reference: "UNIDO, Herbs, Spices and Essential Oils: Post-harvest Operations in Developing Countries, 2006. https://www.unido.org/publications/ot/9656588/pdf"
+    used_for: "Process decomposition; cleaning; packaging; labelling; storage; separation of whole and ground routes."
+  - id: "sri-lanka-cinnamon-postharvest"
+    type: "official_guidance"
+    reference: "Sri Lanka Department of Cinnamon Development, Post Harvest Technology. https://cinnamon.gov.lk/about-cinnamon/post-harvest-technology/"
+    used_for: "Whole-bark handling, drying, ≤14% moisture endpoint, grading, and traceability qualifiers."
+  - id: "li-et-al-2024-cassia-drying"
+    type: "literature"
+    reference: "Li et al., Evaluation of different drying methods on the quality of Cinnamomum cassia barks, Heliyon 10 (2024) e34608. https://doi.org/10.1016/j.heliyon.2024.e34608"
+    used_for: "Cassia-specific drying process and 45 °C oven-drying route selection."
+  - id: "arifin-et-al-2021-koerintji"
+    type: "literature"
+    reference: "Arifin et al., The Effect of Geographical Indications on the Koerintji Cinnamon Sales Price and Information of Origin, Agronomy 11 (2021) 1410. https://doi.org/10.3390/agronomy11071410"
+    used_for: "Cassia bark drying to 10–14% moisture, grading, cutting, foreign-object removal, packaging, and whole-versus-powder separation."
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines. https://www.iso.org/standard/38498.html"
+    used_for: "Allocation hierarchy, subdivision, and disclosure."
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass applied to measured batch inputs, outputs, moisture, and pollutant concentration-volume calculations."
+    used_for: "Moisture, yield, dust, packaging, storage, wastewater, and stage-closure formulas."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a0f3443c28254a52203f58c6c7c08a0c5f2869b5695229468fadaebae4cd156a"
+  generated_content_sha256: "sha256:16b9290f5670585b586230a3223811eaa1aa622a780b5912104aed3ba6d9b256"

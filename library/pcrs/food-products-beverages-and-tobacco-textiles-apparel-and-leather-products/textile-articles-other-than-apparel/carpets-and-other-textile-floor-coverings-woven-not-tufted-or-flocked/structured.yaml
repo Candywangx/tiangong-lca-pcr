@@ -1,10 +1,666 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "27220"
-  title: "Carpets and other textile floor coverings, woven, not tufted or flocked"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.carpets-and-other-textile-floor-coverings-woven-not-tufted-or-flocked"
+  classification_refs: "CPC 3.0: 27220 (exact)"
+  covered_products: "Woven carpets and woven textile floor coverings, including broadloom, rolls, rugs, and tiles, that are neither tufted nor flocked"
+  excluded_products: "Knotted, tufted, flocked, felt, and non-textile floor coverings; installation, use, maintenance, and end-of-life services"
+  representative_product: "Saleable woven carpet or textile floor covering at the manufacturing plant gate"
+  production_route: "Yarn preparation and weaving; conditional wet processing; conditional backing or coating; cutting, inspection, and packaging"
+  market_state: "Finished product, manufactured; production mix at plant"
+functional_unit:
+  what: "Woven carpet or other woven textile floor covering providing a finished floor-covering product"
+  how_much: "1 kg of net saleable product at the manufacturing plant gate"
+  how_well: "Conforms to the declared construction, fibre composition, dimensions, mass per area, backing or coating state, and quality grade"
+  how_long_or_cycle: "One completed manufacturing batch; service life is outside this factory-gate reference"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the declared reference product output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when yarn and any separately purchased dyes, auxiliaries, backing compounds, packaging, water, and energy enter the reporting plant. It includes yarn preparation performed at the plant, weaving, conditional wet processing, conditional backing or coating, drying or curing, cutting, inspection, packing, internal scrap handling, direct emissions, and wastewater leaving the plant. The boundary ends with the net saleable woven floor covering at the plant gate."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground system boundary"
+      rule: "Include all on-site operations and exchanges from received yarn and auxiliary materials through net saleable packed product at the manufacturing plant gate."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - epd-cpcr004-2025
+    - rule_id: boundary_conditional_routes
+      applies_to: "wet processing and backing or coating"
+      rule: "Include each conditional operation when performed for the declared product and explicitly disclose whether it is on-site, outsourced with an upstream dataset, or not applicable."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_no_recursive_duplication
+      applies_to: "same-category purchased inputs"
+      rule: "Model a purchased same-category input as one upstream product exchange and do not reproduce its production inventory in the receiving process."
+      source_ids:
+        - ec-environmental-footprint-2021
+boundary_abstraction:
+  declared_starting_condition: "Yarn and other purchased materials received at the reporting plant gate with supplier identity, mass, composition, and upstream dataset references"
+  starting_condition_role: "Foreground manufacturing input boundary"
+  product_classification_scope: "Woven carpets and textile floor coverings that are neither tufted nor flocked"
+  recursive_input_rule: "A purchased input already within this product category is recorded once as a product input with an upstream dataset and is not recursively decomposed in the receiving foreground process"
+  upstream_dataset_requirement: "Use geographically, technologically, and temporally representative upstream datasets for yarn, chemicals, backing compounds, packaging, electricity, fuels, water supply, and waste or wastewater treatment"
+  disclosure: "Declare fibre composition, weaving construction, integrated and outsourced operations, wet-processing route, backing or coating route, recycled-content claim basis, plant geography, reporting period, cut-off decisions, and upstream-data substitutions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Carpets and other textile floor coverings, woven, not tufted or flocked"
+    uuid: "d54c5255-fc7f-4613-86da-08cf2afe8632"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fibre composition by mass"
+    - "woven construction"
+    - "product form"
+    - dimensions
+    - "mass per area"
+    - "backing or coating state and composition"
+    - "dyeing or printing state"
+    - "quality grade"
+    - "manufacturing geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net saleable product mass after trimming and before shipment; exclude pallets and transport packaging from reference mass."
+  - id: area_to_mass
+    applies_to: "production or sales records expressed by area"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert area to mass only with measured product-specific mass per area for the declared construction and batch; retain both the area record and measured conversion factor."
+  - id: moisture_basis
+    applies_to: "yarn, textile intermediates, and finished product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State the moisture or conditioning basis whenever it materially affects mass balance; do not mix conditioned and as-received masses without a documented conversion."
+  - id: energy_conversion
+    applies_to: "electricity and thermal-energy records"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the invoiced or metered unit and conversion factor; use 1 kWh = 3.6 MJ when conversion is required and do not combine electricity with thermal energy in one exchange."
+process_map:
+  - id: yarn_preparation_and_weaving
+    name: "Yarn preparation and weaving"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground formation of the woven carpet web"
+    quantitative_reference: "kg greige woven carpet output"
+  - id: wet_processing
+    name: "Wet pretreatment, dyeing, printing, washing, and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include when any wet operation is performed for the declared product"
+    role: "Foreground colouration and wet finishing"
+    quantitative_reference: "kg wet-finished woven carpet output"
+  - id: finishing_and_packaging
+    name: "Backing or coating, curing, cutting, inspection, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include cutting, inspection, and packaging; include backing, coating, and curing only when performed"
+    role: "Foreground conversion to saleable plant-gate product"
+    quantitative_reference: "kg net saleable reference product"
+process_inventory:
+  - id: yarn_preparation_and_weaving
+    label: "Yarn preparation and weaving"
+    inputs:
+      product:
+        - row_id: wool_carpet_yarn_input
+          role: "Wool carpet yarn input"
+          name: "Wool carpet yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wool carpet yarn only when it is the specific yarn crossing into this process. Other fibre compositions and distinct warp, weft, pile, or binding yarn identities require separate exchanges in the foreground dataset."
+          amount:
+            expression: "measured issued yarn mass net of returned unused yarn"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg greige woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: grid_electricity_weaving
+          role: "Grid electricity for weaving"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered grid electricity consumed by yarn preparation, loom operation, dust extraction, and directly attributable auxiliaries."
+          amount:
+            expression: "metered electricity allocated to the weaving batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg greige woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: greige_woven_carpet_output
+          role: "Greige woven carpet output"
+          name: "Greige woven carpet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of woven carpet web accepted for wet processing or final finishing."
+          amount:
+            expression: "measured accepted greige woven carpet mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output before wet processing or finishing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: weaving_textile_offcuts
+          role: "Weaving textile offcuts"
+          name: "Woven carpet loom-start offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only woven carpet loom-start and defective woven-piece offcuts sent to one declared treatment route. Yarn ends and other waste identities require separate foreground exchanges."
+          amount:
+            expression: "measured mass sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg greige woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: wet_processing
+    label: "Wet pretreatment, dyeing, printing, washing, and drying"
+    inputs:
+      product:
+        - row_id: greige_woven_carpet_input
+          role: "Greige woven carpet input"
+          name: "Greige woven carpet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured greige woven carpet entering the wet-processing route."
+          amount:
+            expression: "measured input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg wet-finished woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: process_water_wet_finishing
+          role: "Process water for wet finishing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record metered freshwater entering pretreatment, dyeing, printing, washing, or rinsing operations."
+          amount:
+            expression: "metered water supplied to the wet-processing batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-finished woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: acid_dyestuff_input
+          role: "Acid dyestuff input"
+          name: "Acid dyestuff formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one declared acid dyestuff formulation used for wool or polyamide fibre when applicable. Reactive, disperse, pigment, and other formulations require separate exchanges in the foreground dataset."
+          amount:
+            expression: "weighed or invoiced formulation mass charged to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg wet-finished woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: grid_electricity_wet_finishing
+          role: "Grid electricity for wet finishing"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered grid electricity used by wet-processing equipment, pumps, ventilation, and drying equipment; thermal energy is a separate exchange in a concrete dataset when used."
+          amount:
+            expression: "metered electricity allocated to the wet-processing batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-finished woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_finished_woven_carpet_output
+          role: "Wet-finished woven carpet output"
+          name: "Wet-finished woven carpet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of conforming woven carpet leaving wet processing for final finishing."
+          amount:
+            expression: "measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "wet-processing output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: wet_finishing_wastewater
+          role: "Wet-finishing wastewater"
+          name: "Textile wet-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater leaving wet processing at its actual treatment state before on-site or off-site treatment."
+          amount:
+            expression: "metered wastewater volume discharged from the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-finished woven carpet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: finishing_and_packaging
+    label: "Backing or coating, curing, cutting, inspection, and packaging"
+    inputs:
+      product:
+        - row_id: greige_woven_carpet_finishing_input
+          role: "Greige woven carpet finishing input"
+          name: "Greige woven carpet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record greige woven carpet entering final finishing only when the wet-processing route is not used."
+          amount:
+            expression: "measured input mass; not applicable when wet-finished woven carpet enters this process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: wet_finished_woven_carpet_finishing_input
+          role: "Wet-finished woven carpet finishing input"
+          name: "Wet-finished woven carpet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wet-finished woven carpet entering final finishing only when the wet-processing route is used."
+          amount:
+            expression: "measured input mass; not applicable when greige woven carpet enters this process directly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: styrene_butadiene_latex_input
+          role: "Styrene-butadiene latex backing input"
+          name: "Styrene-butadiene latex backing formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record styrene-butadiene latex backing formulation only when it is applied. Natural latex, polyurethane, hot-melt adhesive, fillers, and other distinct formulations require separate exchanges in the foreground dataset."
+          amount:
+            expression: "weighed or metered compound mass consumed by the batch; not applicable when no backing or coating is applied"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: grid_electricity_finishing
+          role: "Grid electricity for finishing"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered grid electricity used for backing or coating equipment, curing auxiliaries, cutting, inspection, and packing."
+          amount:
+            expression: "metered electricity allocated to the finishing batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: polyethylene_packaging_film_input
+          role: "Polyethylene packaging film input"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of polyethylene film crossing the system boundary as product packaging; other packaging components require separate exchanges."
+          amount:
+            expression: "measured or purchase-accounted film mass consumed by the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - epd-cpcr004-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_woven_carpet_output
+          role: "Net saleable woven carpet reference product"
+          name: "Carpets and other textile floor coverings, woven, not tufted or flocked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d54c5255-fc7f-4613-86da-08cf2afe8632"
+          property_unit: "Mass / kg"
+          description: "This is the exact public Tiangong reference product selected for CPC 27220 and is normalized to 1 kg."
+          amount:
+            expression: "net accepted product mass divided by the same net accepted product mass, yielding exactly 1 kg reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - unsd-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: carpet_trim_waste_output
+          role: "Carpet trim waste output"
+          name: "Woven carpet trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of woven carpet edge trim and rejected cut pieces sent to one declared treatment route."
+          amount:
+            expression: "measured mass sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - epd-cpcr004-2025
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared operations and utilities"
+    rule: "Subdivide or meter product lines and batches before applying allocation; record the meter, production time, or batch key used."
+    source_ids:
+      - ec-environmental-footprint-2021
+  - rule_id: allocation_physical_relation
+    applies_to: "unavoidable shared foreground burdens"
+    rule: "Allocate using a documented physical causal relation such as machine time, metered energy, processed mass, or occupied production time; use mass allocation only when no more representative causal relation is available."
+    source_ids:
+      - ec-environmental-footprint-2021
+  - rule_id: allocation_scrap_disclosure
+    applies_to: "sold, recycled, or internally reused scrap"
+    rule: "Record scrap quantity and destination separately and disclose any burden or credit treatment; do not reduce gross material input by scrap output without showing both exchanges."
+    source_ids:
+      - ec-environmental-footprint-2021
+      - epd-pcr2019-14-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_weaving_batch_records
+      process_id: "yarn_preparation_and_weaving"
+      flow_role: "yarn, electricity, greige output, and offcut records"
+      record_type: "batch production record and utility meter allocation"
+      raw_fields: "batch_id; product_id; yarn_material_id; yarn_mass_kg; electricity_kwh; accepted_output_kg; offcut_kg; treatment_route"
+      collection_method: "reconcile warehouse issues and returns, batch scales, loom counters, and submeter or documented meter allocation"
+      unit: "kg; kWh"
+      frequency: "each batch, aggregated monthly"
+      temporal_coverage: "at least 12 representative months or the full shorter production campaign"
+      site_scope: "every reporting-site weaving line producing the declared product"
+      aggregation_rule: "sum flow-specific records by batch, then divide by accepted greige output; do not combine different yarn identities before upstream datasets are assigned"
+      quality_evidence: "calibrated scale records, meter records, stock reconciliation, batch release record, and treatment receipt"
+    - protocol_id: cp_wet_processing_batch_records
+      process_id: "wet_processing"
+      flow_role: "greige input, water, dyestuff, electricity, finished output, and wastewater records"
+      record_type: "recipe, batch record, meter record, and discharge record"
+      raw_fields: "batch_id; product_id; input_kg; chemical_id; chemical_mass_kg; water_m3; electricity_kwh; output_kg; wastewater_m3; treatment_state"
+      collection_method: "reconcile recipe charges and weighed additions with inlet, utility, output, and discharge meters"
+      unit: "kg; m3; kWh"
+      frequency: "each wet-processing batch, aggregated monthly"
+      temporal_coverage: "at least 12 representative months or the full shorter production campaign"
+      site_scope: "every reporting-site wet-processing line used for the declared product"
+      aggregation_rule: "sum each chemically specific flow and utility separately, then divide by accepted wet-finished output"
+      quality_evidence: "calibrated meters and scales, approved recipe, batch record, laboratory release record, and wastewater log"
+    - protocol_id: cp_finishing_batch_records
+      process_id: "finishing_and_packaging"
+      flow_role: "woven web, backing compound, electricity, packaging film, saleable product, and trim waste records"
+      record_type: "batch record, formulation issue, meter allocation, packing record, and quality release"
+      raw_fields: "batch_id; product_id; input_web_kg; compound_id; compound_kg; electricity_kwh; packaging_film_kg; accepted_product_kg; trim_waste_kg; treatment_route"
+      collection_method: "reconcile material issues, line meter data, scales, packing records, and final quality release"
+      unit: "kg; kWh"
+      frequency: "each finishing batch, aggregated monthly"
+      temporal_coverage: "at least 12 representative months or the full shorter production campaign"
+      site_scope: "every reporting-site finishing line producing the declared product"
+      aggregation_rule: "sum each specific exchange by batch and normalize to net accepted product; exclude shipping pallets from reference mass"
+      quality_evidence: "calibrated scale and meter records, formulation issue record, packaging reconciliation, quality release, and waste receipt"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = recorded exchange amount / net accepted product mass in kg"
+      inputs:
+        - "flow-specific recorded amount"
+        - accepted_product_kg
+      output: "amount per kg reference product"
+      source_ids:
+        - ec-environmental-footprint-2021
+    - id: calc_area_to_mass
+      applies_to: "area-based production and sales records"
+      rule: "product mass = product area multiplied by measured batch-specific mass per area"
+      inputs:
+        - product_area_m2
+        - measured_mass_per_area_kg_per_m2
+      output: "product_mass_kg"
+      source_ids:
+        - epd-cpcr004-2025
+    - id: calc_energy_unit
+      applies_to: "electricity or thermal-energy records"
+      rule: "MJ = kWh multiplied by 3.6 when a common energy unit is required; keep electricity and thermal energy as distinct exchanges"
+      inputs:
+        - recorded_energy_kwh
+      output: "energy_MJ"
+      source_ids:
+        - ec-environmental-footprint-2021
+    - id: calc_mass_balance
+      applies_to: "each process and reporting period"
+      rule: "mass-balance difference = total mass inputs minus saleable and intermediate products, separately recorded wastes, and quantified direct mass emissions"
+      inputs:
+        - "mass input records"
+        - "product output records"
+        - "waste records"
+        - "direct emission records"
+      output: "disclosed unexplained mass-balance difference"
+      source_ids:
+        - jrc-textiles-bref-2023
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all product and material exchanges"
+      requirement: "Preserve product, fibre, chemical formulation, supplier, batch, and treatment-route identifiers needed to select one upstream flow per exchange."
+      evidence: "purchase specification, recipe, batch record, and supplier declaration"
+    - id: dq_measurement
+      applies_to: "mass, water, and energy records"
+      requirement: "Use calibrated or legally controlled measurement devices where available and retain the allocation method when one meter serves multiple products."
+      evidence: "calibration certificate, meter record, and allocation worksheet"
+    - id: dq_temporal
+      applies_to: "foreground reporting period"
+      requirement: "Cover at least 12 representative months unless the production campaign is shorter; document shutdowns, atypical batches, and seasonality."
+      evidence: "dated batch and utility records with coverage statement"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile purchased and issued materials, production output, packaging, waste, wastewater, and directly measured releases; explain missing or estimated exchanges."
+      evidence: "mass balance, utility reconciliation, waste receipts, and exception log"
+    - id: dq_upstream
+      applies_to: "upstream datasets"
+      requirement: "Document geography, technology, reference year, substitution, and data quality for every material, energy, water, packaging, and treatment dataset."
+      evidence: "upstream dataset register and substitution log"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Require the exact CPC 27220 public product-flow UUID, Mass property UUID, Units of mass UUID, kg unit, and all required qualifiers."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validation_process_coverage
+    applies_to: "foreground process map"
+    rule: "Require weaving and finishing records; require wet-processing and backing or coating records whenever the declared route includes those operations."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - epd-cpcr004-2025
+  - rule_id: validation_atomic_exchanges
+    applies_to: "inventory rows"
+    rule: "Reject a row that combines multiple materials, utilities, fuels, wastes, or emissions; each exchange must have one identity, amount rule, property, unit, and treatment route where applicable."
+    source_ids:
+      - ec-environmental-footprint-2021
+  - rule_id: validation_collection_trace
+    applies_to: "foreground amounts"
+    rule: "Require every collected or calculated amount to trace to the declared protocol, reporting period, site scope, raw record, and normalization calculation."
+    source_ids:
+      - ec-environmental-footprint-2021
+  - rule_id: validation_mass_balance
+    applies_to: "each foreground process"
+    rule: "Report inputs, products, wastes, and quantified emissions on a consistent moisture basis and explain any material unexplained balance difference."
+    source_ids:
+      - jrc-textiles-bref-2023
+  - rule_id: validation_unresolved_uuid
+    applies_to: "non-reference inventory flow identity"
+    rule: "Before publication, resolve each manifest-listed row_id to one verified Tiangong flow UUID or document its explicit row-level rejection; never substitute a semantically broader or adjacent-category flow."
+    source_ids:
+      - unsd-cpc-3-2025
+published_dataset_profile:
+  dataset_role: "Product-specific or product-family foreground manufacturing dataset that may be released as a secondary_dataset or background_dataset after review"
+  downstream_use: "Foreground process datasets and lifecyclemodel projections for woven carpets and textile floor coverings at the plant gate"
+  allowed_use: "Studies matching the declared woven construction, fibre composition, finishing route, backing or coating state, geography, technology, and reporting period"
+  excluded_use: "Knotted, tufted, flocked, felt, or non-textile floor coverings; installation, use, maintenance, or end-of-life without additional modules; products with materially different construction or formulation"
+  required_metadata: "PCR id and version; reference-flow UUIDs; required qualifiers; site and geography; reporting period; technology; product-family weighting; process coverage; allocation; cut-offs; upstream dataset register"
+  required_quality_disclosure: "primary-data share; temporal coverage; meter and scale basis; mass-balance result; data gaps; estimates; allocation; upstream substitutions; unresolved identity decisions; verification status"
+  update_trigger: "Material change in fibre composition, woven construction, wet-processing route, backing or coating formulation, plant technology, energy supply, product mass per area, allocation, reporting period, or upstream datasets"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 explanatory notes, code 27220, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-13)"
+    used_for: "Product boundary and classification identity"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, published January 2023. https://bureau-industrial-transformation.jrc.ec.europa.eu/index.php/reference/textiles-industry (retrieved 2026-08-13)"
+    used_for: "Process decomposition, wet processing, finishing, carpet backing, collection, and mass-balance checks"
+  - id: "epd-cpcr004-2025"
+    type: "standard"
+    reference: "International EPD System, c-PCR-004 Resilient, textile and laminate floor coverings (EN 16810), validity update 2025. https://www.environdec.com/pcr-library/pcr2019-14-c-pcr-004 (retrieved 2026-08-13)"
+    used_for: "Floor-covering product qualifiers, area-to-mass context, packaging, and route coverage"
+  - id: "epd-pcr2019-14-2025"
+    type: "standard"
+    reference: "International EPD System, PCR 2019:14 Construction products (EN 15804+A2), version 2.0.1, 2025. https://www.environdec.com/pcr-library/pcr_6b99d07c-4b75-4763-4485-08dd775d2e49 (retrieved 2026-08-13)"
+    used_for: "Dataset profile, scrap disclosure, upstream datasets, and construction-product context"
+  - id: "ec-environmental-footprint-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, 15 December 2021. https://green-forum.ec.europa.eu/publications/commission-recommendation-eu-20212279-15-december-2021-use-environmental-footprint-methods-measure_en (retrieved 2026-08-13)"
+    used_for: "Foreground collection, normalization, allocation hierarchy, traceability, and atomic exchange validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:582633f9b3b6f71bf3a232fb8d54e40cc9560c4a5707a2dcdda33dd441f3fa72"
+  generated_content_sha256: "sha256:78c73c80ee8ce911ae7d0f88e3a28bc329e84cf285a4875303e0a6bff3930300"

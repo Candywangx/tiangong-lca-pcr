@@ -1,10 +1,796 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21651"
-  title: "Palm oil, crude"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.palm-oil-crude"
+  classification_refs: "CPC 3.0: 21651, Palm oil, crude"
+  covered_products: "Unrefined crude palm oil obtained from the mesocarp of oil-palm fresh fruit bunches and delivered in bulk at the producing mill gate"
+  excluded_products: "Refined, bleached, deodorized, or fractionated palm oil; palm olein; palm stearin; palm kernel oil; recovered low-grade technical oil when separately marketed; other vegetable oils"
+  representative_product: "Crude palm oil after clarification and moisture removal, before refining or fractionation"
+  production_route: "Fresh fruit bunch reception, sterilization or cooking, threshing, digestion, pressing, clarification, drying, and bulk mill storage, with associated kernel, energy, effluent, and residue management"
+  market_state: "Bulk, unrefined liquid or semi-solid crude oil at the palm oil mill gate; quality characteristics and storage temperature declared"
+functional_unit:
+  what: "Provision of crude palm oil as an unrefined bulk feedstock at the palm oil mill gate"
+  how_much: "1 kg of crude palm oil on the declared as-delivered mass basis"
+  how_well: "Product meets the producer's declared crude-oil specification; moisture, impurities, free fatty acid basis, and any off-spec status are reported"
+  how_long_or_cycle: "One completed production output over the declared reporting period; no service lifetime applies"
+  reference_flow_link: "crude_palm_oil_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_mill_gate_operations
+      applies_to: "foreground crude palm oil production"
+      rule: "Include fresh-fruit-bunch receipt, sterilization or cooking, threshing, digestion, pressing, clarification, drying, bulk mill storage, kernel and residue recovery, on-site energy generation, and effluent or residue management when operated by or physically integrated with the mill."
+      source_ids:
+        - fao-palm-oil-processing-2002
+    - rule_id: boundary_upstream_traceability
+      applies_to: "fresh fruit bunches and purchased utilities"
+      rule: "Model cultivation and inbound fresh-fruit-bunch transport as traceable upstream product inputs, and model purchased electricity, fuels, water, chemicals, and waste services with geographically and technologically representative upstream datasets."
+      source_ids:
+        - eu-jrc-ilcd-handbook-2010
+    - rule_id: boundary_excluded_downstream
+      applies_to: "downstream processing"
+      rule: "Exclude refining, bleaching, deodorization, fractionation, manufacture of palm kernel oil, packaging for consumer sale, and distribution beyond the producing mill gate from the foreground reference-product dataset."
+      source_ids:
+        - fao-palm-oil-processing-2002
+    - rule_id: boundary_no_unreported_disposal
+      applies_to: "effluent, residues, and direct emissions"
+      rule: "Do not assume mill effluent, empty fruit bunches, fibre, shells, ash, sludge, or direct emissions are burden-free or zero; record their measured disposition and the treatment route or document a justified data gap."
+      source_ids:
+        - fao-palm-oil-processing-2002
+        - eu-jrc-ilcd-handbook-2010
+boundary_abstraction:
+  declared_starting_condition: "Fresh fruit bunches or loose oil-palm fruit received at the mill, with supplier or estate origin, receipt mass, receipt time, and inbound transport treatment declared"
+  starting_condition_role: "Upstream product input to the mill foreground system"
+  product_classification_scope: "Crude palm oil from oil-palm fruit mesocarp; palm-kernel oil and refined or fractionated palm-oil products are outside the category"
+  recursive_input_rule: "Any externally purchased crude palm oil entering blending or reprocessing is recorded as a separate same-category input with its own upstream dataset and quantity; it is not reclassified as fresh fruit bunch input or silently merged with mill-produced oil"
+  upstream_dataset_requirement: "Use supplier-, estate-, route-, and period-representative datasets for fresh fruit bunch production and inbound transport, and representative datasets for purchased utilities, fuels, chemicals, and external treatment services"
+  disclosure: "Declare the share and origin of own-estate and third-party fruit, mill route and scale, receipt-to-processing control, energy configuration, effluent treatment, residue destinations, co-product treatment, allocation method, and any upstream or foreground data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Palm oil, crude"
+    uuid: "c25748fe-ebcf-4a0e-bcf9-544edb1645b1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "production geography"
+    - "reporting period"
+    - "mill route and scale"
+    - "fresh-fruit-bunch origin and starting condition"
+    - "crude-oil moisture"
+    - impurities
+    - "and free fatty acid reporting basis"
+    - "allocation method"
+    - "energy configuration"
+    - "effluent treatment route"
+    - "bulk storage condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "crude palm oil reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every reported inventory to exactly 1 kg of as-delivered crude palm oil after clarification and drying; report measured oil moisture and impurities so alternative dry-matter calculations remain reproducible."
+  - id: material_mass_basis
+    applies_to: "fresh fruit bunches, kernels, residues, effluent, and oil stocks"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record as-received mass and, where moisture materially changes interpretation, measured moisture or dry-matter content; do not convert between wet and dry bases without the measured content and formula."
+  - id: energy_quantity_basis
+    applies_to: "purchased electricity, fuels, generated electricity, and steam"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuels and thermal energy"
+    rule: "Preserve metered or invoice units, document lower or higher heating value for fuels, and record every conversion factor used to normalize energy to the reference flow."
+  - id: reporting_period_balance
+    applies_to: "all foreground inputs, outputs, and stock changes"
+    required_property_ref:
+      name: "Mass or Energy as applicable"
+      uuid: ""
+    required_unit: "source unit and normalized unit"
+    rule: "Use one common reporting period and include opening and closing stocks when they materially affect the normalized balance."
+process_map:
+  - id: ffb_reception_preparation
+    name: "Fresh fruit bunch reception, sterilization, and threshing"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground fruit receipt, quality control, heat treatment, and separation of fruit from bunches"
+    quantitative_reference: "kg fresh fruit bunches received and kg prepared fruit transferred"
+  - id: oil_extraction_finishing
+    name: "Digestion, pressing, clarification, drying, and bulk storage"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground extraction and finishing of crude palm oil, including kernel and press-residue recovery"
+    quantitative_reference: "1 kg crude palm oil output"
+  - id: mill_energy_residue_management
+    name: "Mill energy, effluent, and residue management"
+    inclusion: "required"
+    inclusion_condition: "Always included; zero quantities are permitted only when records demonstrate that a route is absent"
+    role: "Foreground or linked treatment of internally generated fuels, mill effluent, solid residues, ash, sludge, and direct emissions"
+    quantitative_reference: "kg crude palm oil output and treatment-specific input"
+process_inventory:
+  - id: ffb_reception_preparation
+    label: "Fresh fruit bunch reception, sterilization, and threshing"
+    inputs:
+      product:
+        - row_id: fresh_fruit_bunch_input
+          role: "Fresh fruit bunches received"
+          name: "Oil-palm fresh fruit bunches (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fresh fruit bunches cross the mill foreground boundary as the principal raw-material input. Record each supply origin or an auditable aggregated origin group and link cultivation and inbound transport to upstream datasets."
+          amount:
+            expression: "measured weighbridge or calibrated scale mass received, adjusted for documented rejects and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ffb_receipt
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges:
+              - role: qa_guardrail
+                lower: "4.17"
+                upper: "5.00"
+                unit: "kg fresh fruit bunches/kg crude palm oil"
+                basis: "inverse of the FAO-reported 20-24 tonnes crude palm oil per 100 tonnes fresh fruit bunches for a well-run mill"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-palm-oil-processing-2002
+        - row_id: sterilization_water_steam
+          role: "Sterilization water or steam supply"
+          name: "Process water or steam supply (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water and externally supplied steam used to sterilize or cook fruit. Internally generated steam is transferred from mill_energy_residue_management without double counting its fuel inputs."
+          amount:
+            expression: "metered use or calculated use from calibrated batch volume, cycle count, and condensate return"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_energy_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg water/kg crude palm oil"
+                basis: "net external water supplied to fruit preparation per 1 kg crude palm oil"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fruit_transfer
+          role: "Prepared sterilized fruit transferred to extraction"
+          name: "Sterilized oil-palm fruit (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred to digestion and pressing as an internal product flow so fruit losses, rejects, and stocks remain visible."
+          amount:
+            expression: "measured transfer mass or mass balance from received fruit, rejected fruit, empty bunches, condensate, and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_residue_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+      waste:
+        - row_id: empty_bunches_rejects
+          role: "Empty fruit bunches and rejected fruit"
+          name: "Empty fruit bunches and rejected oil-palm fruit (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated empty bunches and rejected or spoiled fruit by actual destination. Material used as fuel, mulch, or another product is transferred to the receiving process and is not simultaneously recorded as final waste."
+          amount:
+            expression: "measured mass by disposition or documented mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_residue_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Sterilizer condensate and preparation wastewater"
+          name: "Palm oil mill preparation wastewater (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record condensate or wastewater leaving fruit preparation and link it to reuse, effluent treatment, or final discharge."
+          amount:
+            expression: "measured flow or calculated tank and cycle balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_emissions
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+      elementary:
+        []
+  - id: oil_extraction_finishing
+    label: "Digestion, pressing, clarification, drying, and bulk storage"
+    inputs:
+      product:
+        - row_id: prepared_fruit_input
+          role: "Prepared sterilized fruit"
+          name: "Sterilized oil-palm fruit (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive the internal prepared-fruit transfer from ffb_reception_preparation on the same reporting-period and mass basis."
+          amount:
+            expression: "equal to prepared_fruit_transfer after documented transfer losses and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_residue_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+        - row_id: clarification_water
+          role: "Clarification and cleaning water"
+          name: "Process water (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hot-water dilution, equipment cleaning, and other water used in extraction and clarification, net of separately measured reuse."
+          amount:
+            expression: "metered water or calculated use from calibrated vessel volume and operating cycles"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_energy_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg water/kg crude palm oil"
+                basis: "net external water supplied to extraction, clarification, and cleaning per 1 kg crude palm oil"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_electricity
+          role: "Electricity and mechanical energy"
+          name: "Electricity supply (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by digesters, presses, pumps, screens, centrifuges, kernel recovery, and storage. Separate purchased electricity from internally generated electricity."
+          amount:
+            expression: "submetered use or calculated allocation from mill meter readings and documented equipment operating data"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg crude palm oil"
+                basis: "net purchased electricity attributable to extraction and finishing per 1 kg crude palm oil"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_palm_oil_output
+          role: "Crude palm oil reference output"
+          name: "Palm oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c25748fe-ebcf-4a0e-bcf9-544edb1645b1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record saleable crude palm oil after clarification and drying and before refining or fractionation. Off-spec oil and recovered technical oil are recorded separately."
+          amount:
+            expression: "fixed reference amount based on calibrated tank, scale, or custody-transfer records"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+        - row_id: palm_kernel_coproduct
+          role: "Palm kernels recovered"
+          name: "Palm kernels (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dry recovered palm kernels as a co-product when they leave the mill for further processing. Do not include downstream palm-kernel oil extraction."
+          amount:
+            expression: "measured dispatch mass plus stock change, corrected only with recorded moisture data"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_residue_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+      waste:
+        - row_id: fibre_shell_residue
+          role: "Press fibre and palm kernel shells"
+          name: "Palm press fibre and palm kernel shells (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fibre and shells separately where measured, including quantities used as internal boiler fuel, sold, reused, or discarded."
+          amount:
+            expression: "measured mass by residue type and destination or documented mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproduct_residue_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+        - row_id: pome_output
+          role: "Palm oil mill effluent from extraction and clarification"
+          name: "Palm oil mill effluent (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater, sludge, and oil-bearing liquid sent to recovery, treatment, land application, or discharge. Do not assume zero burden for unmeasured releases."
+          amount:
+            expression: "measured flow and sampled composition or calculated water balance with documented uncertainty"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_emissions
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg effluent/kg crude palm oil"
+                basis: "total liquid effluent leaving extraction and clarification per 1 kg crude palm oil"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: mill_energy_residue_management
+    label: "Mill energy, effluent, and residue management"
+    inputs:
+      product:
+        - row_id: internal_biomass_fuel
+          role: "Internally recovered biomass fuels"
+          name: "Palm mill biomass residues used as fuel (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fibre, shells, or empty bunches used in mill boilers as internal transfers and reconcile them with the corresponding residue outputs."
+          amount:
+            expression: "measured feed mass by residue type and moisture content"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+        - row_id: supplemental_energy
+          role: "Supplemental fuel and purchased electricity"
+          name: "Supplemental fuel and purchased electricity by actual type (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ fuel and kWh electricity"
+          description: "Record all purchased fossil or biogenic fuel and electricity used for steam, power generation, backup equipment, effluent treatment, and residue handling."
+          amount:
+            expression: "invoice, calibrated meter, or tank-dip records by energy carrier"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg crude palm oil"
+                basis: "purchased fuel energy supplied to the mill per 1 kg crude palm oil, excluding internal biomass energy"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: residues_to_management
+          role: "Mill effluent and solid residues entering management"
+          name: "Palm oil mill effluent and residues by actual type (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Receive mill effluent, empty bunches, fibre, shells, ash, and other residues by type and origin without netting exports or final discharges."
+          amount:
+            expression: "equal to recorded upstream residue transfers after documented recovery and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_emissions
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: generated_energy_transfer
+          role: "Internally generated steam and electricity"
+          name: "Mill-generated steam and electricity (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ steam and kWh electricity"
+          description: "Record useful steam and electricity generated on site and transferred to mill operations. Do not credit internal energy as an exported co-product."
+          amount:
+            expression: "metered generation and internal delivery, with conversion efficiency documented"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_energy_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+        - row_id: exported_coproducts
+          role: "Exported kernels, biomass residues, recovered oil, or surplus energy"
+          name: "Exported mill co-product by actual type (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass or Energy / kg, MJ, or kWh as applicable"
+          description: "Record each exported co-product separately with its mass or energy, destination, quality, and revenue status. Do not combine exports with internal use."
+          amount:
+            expression: "measured dispatch quantity plus stock change by co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_residue_records
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+      waste:
+        - row_id: final_waste_outputs
+          role: "Treatment sludge, boiler ash, and final wastes"
+          name: "Palm oil mill final waste by actual type (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record final wastes by type and actual treatment or disposal route. Ash, sludge, or empty bunches used beneficially remain explicit outputs and are not deleted from the mass balance."
+          amount:
+            expression: "measured dispatch mass or documented treatment mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_emissions
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+      elementary:
+        - row_id: direct_air_emissions
+          role: "Direct air emissions from boilers and effluent treatment"
+          name: "Individual elementary flows to air (Tiangong UUIDs unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg per substance"
+          description: "Record measured emissions or calculate them from collected fuel, treatment, and operating data with a cited factor set. Include methane from anaerobic effluent treatment or unmanaged effluent when applicable; do not assume capture or oxidation without records."
+          amount:
+            expression: "direct measurement or activity data multiplied by a documented, study-selected emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_emissions
+              source_ids: []
+            ranges: []
+        - row_id: treated_effluent_release
+          role: "Treated effluent discharge to water or land"
+          name: "Individual elementary flows to water or land (Tiangong UUIDs unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg water and kg per substance"
+          description: "Record final discharged water volume or mass and measured pollutant loads by receiving compartment. Reused water is an internal or product transfer, not an elementary discharge."
+          amount:
+            expression: "measured discharge multiplied by sampled concentration, with sampling coverage and detection-limit treatment documented"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_emissions
+              source_ids:
+                - fao-palm-oil-processing-2002
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "all multifunctional mill processes"
+    rule: "First avoid allocation by separately metering or subdividing reception, extraction, kernel recovery, energy generation, effluent treatment, and residue handling; assign inputs and emissions directly where a physical process relationship is documented."
+    source_ids:
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: allocation_residual_choice
+    applies_to: "crude palm oil, palm kernels, exported residues, recovered oil, and exported energy"
+    rule: "When subdivision cannot resolve a remaining shared burden, select and document a causal physical relationship. If no defensible physical relationship exists, use a documented economic relationship based on consistent reporting-period prices; disclose the method, data, co-product status, and allocation shares."
+    source_ids:
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: allocation_internal_energy
+    applies_to: "fibre, shells, empty bunches, steam, and electricity used within the mill"
+    rule: "Treat internal residue fuel and internally generated energy as transfers and do not create an avoided-product credit. Assign boiler and generation burdens to consuming mill processes by metered energy delivery or another documented physical relationship."
+    source_ids:
+      - fao-palm-oil-processing-2002
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: allocation_export_sensitivity
+    applies_to: "exported co-products"
+    rule: "Do not apply substitution or avoided-burden credits inside the attributional foreground dataset. When exported co-products materially affect results, report a sensitivity case using an alternative defensible allocation basis."
+    source_ids:
+      - eu-jrc-ilcd-handbook-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ffb_receipt
+      process_id: "ffb_reception_preparation"
+      flow_role: "fresh fruit bunch receipt and origin"
+      record_type: "weighbridge ticket, supplier record, harvest or dispatch record"
+      raw_fields: "timestamp; supplier or estate; gross mass; tare mass; net mass; rejected mass; origin; transport mode and distance; receipt condition"
+      collection_method: "calibrated weighbridge or scale reconciled to supplier and inventory records"
+      unit: "kg"
+      frequency: "every delivery or batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "all fruit received by the declared mill"
+      aggregation_rule: "sum accepted net mass by origin; reconcile rejects and opening or closing stock"
+      quality_evidence: "calibration certificate; ticket sequence check; supplier reconciliation"
+    - protocol_id: cp_water_energy_records
+      process_id: "all_processes"
+      flow_role: "water, electricity, fuel, steam, and internally generated energy"
+      record_type: "meter reading, invoice, tank record, fuel analysis, operating log"
+      raw_fields: "meter id; opening and closing reading; purchase quantity; fuel type; heating-value basis; biomass moisture; steam or electricity generation; internal delivery; downtime"
+      collection_method: "calibrated meters and invoice or stock reconciliation; engineering calculation only from recorded operating data"
+      unit: "kg water; kWh electricity; MJ fuel or steam"
+      frequency: "continuous or each receipt, aggregated monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "all foreground operations and shared utilities"
+      aggregation_rule: "subtract documented non-PCR users and stock change; normalize attributable net use to crude palm oil output"
+      quality_evidence: "meter calibration; invoices; fuel certificates; reconciliation worksheet"
+    - protocol_id: cp_coproduct_residue_records
+      process_id: "all_processes"
+      flow_role: "crude oil, kernels, internal transfers, co-products, residues, and stock changes"
+      record_type: "calibrated scale or tank record, dispatch note, laboratory moisture result, inventory record"
+      raw_fields: "flow type; origin process; destination; gross and net mass; moisture; quality grade; opening stock; closing stock; dispatch quantity; revenue status"
+      collection_method: "direct weighing or calibrated tank volume with density and temperature record; documented mass balance where direct weighing is unavailable"
+      unit: "kg"
+      frequency: "each batch or dispatch, aggregated monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "all production lines, storage tanks, and residue destinations"
+      aggregation_rule: "sum by flow and destination; correct only with measured moisture, density, and stock data"
+      quality_evidence: "scale or tank calibration; dispatch reconciliation; laboratory result; mass-balance review"
+    - protocol_id: cp_effluent_emissions
+      process_id: "mill_energy_residue_management"
+      flow_role: "effluent, treatment, final waste, and direct emissions"
+      record_type: "flow meter, sampling result, fuel record, treatment log, waste manifest, emission monitoring record"
+      raw_fields: "flow or mass; sampling time; concentration; detection limit; treatment technology; capture or flare operation; fuel quantity; factor identity; discharge compartment; waste destination"
+      collection_method: "continuous or batch flow measurement plus representative sampling; direct emissions monitoring or calculation from collected activity data and cited factors"
+      unit: "kg; m3; kg substance; operating hours"
+      frequency: "continuous or each batch with sampling at a documented representative frequency"
+      temporal_coverage: "full reporting period including shutdown and upset events"
+      site_scope: "every treatment unit, discharge point, boiler, generator, flare, and final waste route"
+      aggregation_rule: "calculate pollutant load as measured flow times concentration; aggregate by compartment and event; retain zeros only when measurement supports them"
+      quality_evidence: "meter calibration; laboratory QA/QC; chain of custody; factor citation; treatment and flare logs; waste manifests"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = attributable reporting-period amount / reporting-period mass of conforming crude palm oil output"
+      inputs:
+        - "attributable amount"
+        - "crude palm oil output mass"
+        - "stock adjustments"
+      output: "amount per 1 kg crude palm oil"
+      source_ids:
+        - eu-jrc-ilcd-handbook-2010
+    - id: calc_oil_extraction_ratio
+      applies_to: "fresh fruit bunch input and crude palm oil output"
+      rule: "oil extraction ratio = conforming crude palm oil output mass / accepted fresh fruit bunch input mass"
+      inputs:
+        - crude_palm_oil_output
+        - fresh_fruit_bunch_input
+      output: "kg crude palm oil/kg accepted fresh fruit bunches"
+      source_ids:
+        - fao-palm-oil-processing-2002
+    - id: calc_material_balance
+      applies_to: "each process and total foreground system"
+      rule: "balance closure = (accounted outputs + closing stock - opening stock) / accounted inputs; report the balance gap without forcing closure by an undocumented residual"
+      inputs:
+        - "measured inputs"
+        - outputs
+        - "internal transfers"
+        - stocks
+      output: "balance closure and unexplained mass gap"
+      source_ids:
+        - eu-jrc-ilcd-handbook-2010
+    - id: calc_pollutant_load
+      applies_to: "treated effluent and sampled releases"
+      rule: "pollutant load = measured discharge mass or volume times measured concentration, with unit conversion and below-detection treatment documented"
+      inputs:
+        - "discharge flow"
+        - concentration
+        - "density if needed"
+        - "sampling coverage"
+      output: "kg substance per reporting period and per kg crude palm oil"
+      source_ids:
+        - eu-jrc-ilcd-handbook-2010
+    - id: calc_factor_emissions
+      applies_to: "non-measured boiler or treatment emissions"
+      rule: "emission = collected activity datum times a cited, technology- and region-appropriate factor; factor identity, version, unit, and applicability are mandatory"
+      inputs:
+        - "fuel or treatment activity"
+        - factor
+        - "capture or oxidation data"
+      output: "kg elementary flow per kg crude palm oil"
+      source_ids:
+        - eu-jrc-ilcd-handbook-2010
+  data_quality_requirements:
+    - id: dq_identity_and_traceability
+      applies_to: "fruit, oil, co-products, and residues"
+      requirement: "Preserve origin, destination, reporting period, process route, quality state, and the link between raw records and each normalized row."
+      evidence: "weighbridge tickets; dispatch records; process logs; record-to-row traceability table"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground data"
+      requirement: "Cover one complete, declared reporting period, normally 12 consecutive months; a shorter campaign is allowed only when seasonality, startup, shutdown, maintenance, and representativeness are explicitly assessed."
+      evidence: "dated meter series; production calendar; downtime and maintenance logs; representativeness justification"
+    - id: dq_measurement_control
+      applies_to: "mass, water, energy, effluent, and laboratory data"
+      requirement: "Use calibrated instruments or document the engineering calculation and uncertainty; retain calibration status, sampling method, detection limits, and corrections."
+      evidence: "calibration certificates; laboratory QA/QC; meter and sampling procedures"
+    - id: dq_completeness
+      applies_to: "all required processes and important flows"
+      requirement: "Include every required process and all material product, waste, energy, water, and elementary flows; quantify or explicitly disclose gaps rather than assigning unsupported zeros."
+      evidence: "completeness checklist; mass and energy reconciliation; gap register"
+    - id: dq_representativeness
+      applies_to: "upstream datasets and foreground factors"
+      requirement: "Document time, geography, technology, and supplier coverage and justify any proxy dataset or factor."
+      evidence: "dataset metadata; supplier coverage table; factor citation and applicability review"
+    - id: dq_allocation_review
+      applies_to: "multifunctional processes"
+      requirement: "Preserve direct assignments, selected allocation relationship, period data, shares, and sensitivity results sufficient for an independent recalculation."
+      evidence: "allocation worksheet; prices or physical relationship data; sensitivity calculation"
+validation_rules:
+  - rule_id: validate_reference_flow_identity
+    applies_to: "reference flow"
+    rule: "Confirm the product flow UUID is c25748fe-ebcf-4a0e-bcf9-544edb1645b1, the flow property UUID is 93a60a56-a3c8-11da-a746-0800200b9a66, the unit group UUID is 93a60a57-a4c8-11da-a746-0800200c9a66, the reference amount is 1, and the reference unit is kg."
+    source_ids: []
+  - rule_id: validate_scope_and_qualifiers
+    applies_to: "dataset identity"
+    rule: "Confirm the dataset represents unrefined crude palm oil at the producing mill gate and declares every required qualifier; reject refined, fractionated, or palm-kernel-oil outputs as this PCR's reference product."
+    source_ids:
+      - fao-palm-oil-processing-2002
+  - rule_id: validate_process_completeness
+    applies_to: "process inventory"
+    rule: "Confirm all three required processes are present and that fresh fruit bunches, process water, energy, crude palm oil, kernels, residues, effluent, direct emissions, final treatment, and stock changes are recorded or supported by an explicit, reviewed non-applicability statement."
+    source_ids:
+      - fao-palm-oil-processing-2002
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: validate_mass_balance_and_yield
+    applies_to: "material inventory"
+    rule: "Recalculate the extraction ratio and process or system mass balances. Values outside a cited or provisional QA guardrail trigger investigation, not automatic replacement; unresolved material gaps make validation inconclusive."
+    source_ids:
+      - fao-palm-oil-processing-2002
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: validate_energy_effluent_emissions
+    applies_to: "utilities and environmental flows"
+    rule: "Reconcile purchased and internally generated energy, verify effluent route and sampled loads, and confirm that boiler and anaerobic-treatment emissions are measured or calculated from collected activity data with cited factors; unsupported zero emissions are errors."
+    source_ids:
+      - fao-palm-oil-processing-2002
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: validate_allocation_recalculation
+    applies_to: "co-products"
+    rule: "Recalculate allocation shares from retained foreground data, confirm internal transfers receive no avoided-product credit, and verify the selected method and sensitivity case are disclosed."
+    source_ids:
+      - eu-jrc-ilcd-handbook-2010
+  - rule_id: validate_data_quality
+    applies_to: "complete foreground package"
+    rule: "Confirm calibration, temporal coverage, origin and destination traceability, representativeness, gap disclosure, and raw-record-to-row lineage; missing evidence produces a finding and may make validation inconclusive."
+    source_ids:
+      - eu-jrc-ilcd-handbook-2010
+published_dataset_profile:
+  dataset_role: "Foreground unit-process or aggregated mill-gate dataset for crude palm oil production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Attributional LCI and LCA models requiring unrefined crude palm oil at a declared producing mill gate, provided geography, technology, fruit origin, quality state, allocation, energy, and effluent-treatment qualifiers match the study"
+  excluded_use: "Direct representation of refined or fractionated palm oil, palm kernel oil, cultivation-only systems, generic markets without geography and time qualification, or comparative claims lacking compatible scope and critical review"
+  required_metadata: "PCR id and version; reference flow UUID and unit; geography; reporting period; mill route and scale; fruit origin and upstream dataset links; oil quality basis; process coverage; energy configuration; effluent and residue routes; allocation method and shares; source and factor identities; completeness and uncertainty statements"
+  required_quality_disclosure: "Primary-data share; instrument and sampling coverage; mass and energy balance gaps; temporal, geographical, and technological representativeness; proxy data and emission factors; provisional QA guardrail findings; unresolved non-reference UUIDs; allocation sensitivity"
+  update_trigger: "Material change in fruit supply, mill technology or capacity, oil quality basis, energy system, methane capture, effluent or residue treatment, co-product destination or value, allocation method, regulatory requirements, or evidence showing the dataset is no longer representative"
+data_sources:
+  - id: "fao-palm-oil-processing-2002"
+    type: "official_guidance"
+    reference: "Food and Agriculture Organization of the United Nations, *Small-Scale Palm Oil Processing in Africa*, FAO Agricultural Services Bulletin 148, ISBN 92-5-104859-2, 2002, https://www.fao.org/4/y4355e/y4355e00.htm (retrieved 2026-08-11)"
+    used_for: "Palm-oil mill unit operations; separation of crude palm oil production from refining and kernel-oil extraction; source-backed extraction-yield QA range; moisture and residue context; energy, solid-residue, and effluent route identification"
+  - id: "eu-jrc-ilcd-handbook-2010"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *International Reference Life Cycle Data System (ILCD) Handbook - General guide for Life Cycle Assessment - Detailed guidance*, EUR 24708 EN, ISBN 978-92-79-19092-6, DOI 10.2788/38479, 2010, https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference-flow consistency; boundary completeness; foreground primary data and quality requirements; multifunctionality hierarchy, subdivision, physical relationships, residual allocation, and sensitivity disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e57d5a17e2d66383f9e162266cd1fe4b476e747d4065dacf8d00a4141669ee29"
+  generated_content_sha256: "sha256:3281f704875f948cea337ae0ebe9dc99e3948cfd400abf010516667b4b52a02a"

@@ -1,10 +1,1806 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21155"
-  title: "Edible offal of sheep, fresh, chilled or frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.edible-offal-of-sheep-fresh-chilled-or-frozen"
+  classification_refs: "CPC 3.0:21155, narrower methodology scope"
+  covered_products: "Post-mortem-inspected edible sheep liver, air-chilled to 0–3 °C and packaged at the processing-facility gate"
+  excluded_products: "Other sheep tissues; mixed offal; goat offal; fresh liver; frozen liver; cooked, cured or otherwise prepared liver; retail or consumer-stage product"
+  representative_product: "Packaged chilled sheep liver"
+  production_route: "Integrated sheep slaughter; red-offal separation; liver trimming; potable-water washing; forced-air R717 chilling and cold holding; LDPE primary wrapping; corrugated-fibreboard secondary packaging; off-site wastewater treatment"
+  market_state: "Chilled, never frozen, packaged, ex-works processing-facility gate"
+functional_unit:
+  what: "Packaged edible sheep liver from the locked slaughterhouse and air-chilling route"
+  how_much: "1,000 kg net product mass, excluding packaging"
+  how_well: "Post-mortem accepted for human consumption; liver tissue only; core temperature 0–3 °C at gate; packaging intact; no freezing"
+  how_long_or_cycle: "One reporting period containing complete slaughter, separation, washing, chilling, packaging and sanitation records; normally 12 consecutive months"
+  reference_flow_link: "packaged_chilled_sheep_liver"
+system_boundary:
+  rules:
+    - rule_id: sb_route_lock
+      applies_to: "foreground system"
+      rule: "Include only the integrated chilled-sheep-liver route stated in section 1; do not average tissues, fresh/chilled/frozen states or mutually exclusive wastewater and refrigeration routes."
+      source_ids:
+        - fao-small-ruminant-slaughter-manual
+        - eu-ec-853-2004-meat-hygiene
+    - rule_id: sb_upstream_scope
+      applies_to: "upstream supply"
+      rule: "Include sheep husbandry and inbound transport through traceable upstream datasets attached to live_sheep_input; keep those upstream processes outside foreground measurements."
+      source_ids:
+        - fao-who-cxc-58-2005-meat-hygiene
+    - rule_id: sb_foreground_scope
+      applies_to: "slaughterhouse foreground"
+      rule: "Include slaughter/evisceration, red-offal separation, liver trimming, potable-water washing, forced-air chilling and cold holding, packaging, sanitation, waste handling and transfer of wastewater to off-site treatment."
+      source_ids:
+        - fao-who-cxc-58-2005-meat-hygiene
+        - fao-slaughter-meat-processing-guidelines
+        - fao-small-ruminant-slaughter-manual
+    - rule_id: sb_temperature_gate
+      applies_to: "product release"
+      rule: "Release only liver with a measured core temperature of 0–3 °C; maintain the cold chain and exclude any frozen lot."
+      source_ids:
+        - eu-ec-853-2004-meat-hygiene
+    - rule_id: sb_wastewater_route
+      applies_to: "wastewater"
+      rule: "Model the locked off-site-treatment route: record carrier volume and each listed pollutant load separately at the facility sewer boundary; do not also model a direct elementary discharge."
+      source_ids:
+        - ifc-2007-meat-processing-ehs
+    - rule_id: sb_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude distribution after the factory gate, retail, cooking, consumption, packaging end-of-life and off-site wastewater treatment beyond the transfer boundary."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Live sheep accepted at the integrated slaughterhouse receiving gate, with upstream husbandry and inbound transport supplied by traceable upstream datasets"
+  starting_condition_role: "Foreground slaughter input carrying upstream sheep-production and inbound-transport burdens"
+  product_classification_scope: "CPC 3.0:21155 context; this methodology is restricted to chilled sheep liver"
+  recursive_input_rule: "If an input already represents edible sheep liver from another facility, do not restart the live-sheep route; link the upstream liver dataset and disclose the transferred starting condition, but such a route is outside this locked PCR"
+  upstream_dataset_requirement: "Species-, production-system-, geography-, period- and transport-representative live-sheep supply datasets; no generic sheep-offal proxy"
+  disclosure: "Declare slaughterhouse, reporting period, live-sheep origin, slaughter and inspection regime, organ identity, temperature log, refrigeration technology, wastewater destination, package specification and allocation price basis"
+reference_flow_definition:
+  reference_amount: "1,000 kg net packaged chilled sheep liver"
+  product_flow_ref:
+    name: "Edible offal of sheep, fresh, chilled or frozen"
+    uuid: "1f8ad4d0-18e1-4ee6-8006-0d578c5e07eb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species=Ovis aries"
+    - "tissue=liver"
+    - "temperature_state=chilled"
+    - "gate_core_temperature=0–3 °C"
+    - "freezing_history=never_frozen"
+    - "slaughter_route=integrated_slaughterhouse"
+    - "chilling_route=forced_air_R717"
+    - "wastewater_route=off_site_treatment"
+    - "packaging=LDPE_film_and_corrugated_fibreboard"
+    - "net_mass_excludes_packaging=true"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "packaged_chilled_sheep_liver"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net liver mass after packaging tare deduction; normalise all inventory to 1,000 kg net product."
+  - id: live_weight_basis
+    applies_to: "live_sheep_input"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg live weight"
+    rule: "Record verified live weight at slaughterhouse receipt; do not substitute carcass weight."
+  - id: intermediate_mass_consistency
+    applies_to: "all liver intermediate rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use the same calibrated scale basis and batch identity through trimming, washing, chilling and packaging."
+  - id: water_volume_conversion
+    applies_to: "potable-water and wastewater carrier rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Preserve metered m3; if mass is recorded, convert using measured water density or a disclosed accepted conversion."
+  - id: electricity_metering
+    applies_to: "grid-electricity rows"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use imported active electricity from dedicated sub-meters or a documented allocation of the facility meter; do not combine electricity with thermal energy."
+  - id: purchased_hot_water_metering
+    applies_to: "purchased-hot-water rows"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record delivered thermal energy; when only volume and temperatures are metered, calculate with calc_hot_water_energy."
+  - id: chemical_solution_mass
+    applies_to: "detergent and disinfectant rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg solution"
+    rule: "Record formulated solution mass and separately retain supplier concentration; do not report active ingredient mass as formulated solution mass."
+  - id: temperature_compliance
+    applies_to: "chilled liver"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Use calibrated core-temperature readings; all released lots must be 0–3 °C and must not have frozen."
+process_map:
+  - id: slaughter_evisceration
+    name: "Sheep slaughter and evisceration"
+    inclusion: "required"
+    inclusion_condition: "Always for the locked integrated route"
+    role: "Foreground joint-production process"
+    quantitative_reference: "kg live sheep received and complete slaughter outputs"
+  - id: liver_separation_trimming
+    name: "Red-offal separation and liver trimming"
+    inclusion: "required"
+    inclusion_condition: "Always for the locked liver route"
+    role: "Foreground organ separation"
+    quantitative_reference: "kg red-offal pluck processed"
+  - id: liver_washing
+    name: "Potable-water liver washing"
+    inclusion: "required"
+    inclusion_condition: "Always for the locked route"
+    role: "Foreground cleaning"
+    quantitative_reference: "kg trimmed liver input"
+  - id: air_chilling_cold_holding
+    name: "Forced-air chilling and cold holding"
+    inclusion: "required"
+    inclusion_condition: "Always; central R717 system"
+    role: "Foreground temperature control"
+    quantitative_reference: "kg washed liver entering chilling and holding hours"
+  - id: primary_packaging
+    name: "LDPE wrapping and corrugated-fibreboard packing"
+    inclusion: "required"
+    inclusion_condition: "Always for the locked packaged gate product"
+    role: "Foreground packaging"
+    quantitative_reference: "kg net chilled liver packed"
+  - id: equipment_sanitation
+    name: "Route equipment and room sanitation"
+    inclusion: "required"
+    inclusion_condition: "Always; sodium-hydroxide detergent followed by sodium-hypochlorite disinfection"
+    role: "Foreground hygiene support"
+    quantitative_reference: "sanitation event and 1,000 kg reference product"
+process_inventory:
+  - id: slaughter_evisceration
+    label: "Sheep slaughter and evisceration"
+    inputs:
+      product:
+        - row_id: live_sheep_input
+          role: "Live sheep received for slaughter"
+          name: "Live sheep"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Live sheep crossing the slaughterhouse gate are recorded by verified species-specific live weight and linked to upstream husbandry and inbound-transport datasets."
+          amount:
+            expression: "verified receiving-scale live weight for sheep slaughtered in the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids:
+                - fao-who-cxc-58-2005-meat-hygiene
+            ranges: []
+        - row_id: slaughter_potable_water
+          role: "Potable water used in slaughter and evisceration"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record only potable water used by slaughter and evisceration operations; sanitation water is assigned to equipment_sanitation."
+          amount:
+            expression: "dedicated meter or documented meter allocation for slaughter and evisceration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+            ranges: []
+        - row_id: slaughter_grid_electricity
+          role: "Grid electricity used in slaughter and evisceration"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record imported active electricity for the slaughter floor, evisceration line and directly associated equipment."
+          amount:
+            expression: "sub-metered electricity or documented allocation from the facility import meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids: []
+            ranges: []
+        - row_id: slaughter_purchased_hot_water
+          role: "Purchased hot water used in slaughter operations"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This route purchases centrally supplied hot water and uses no on-site combustion for this thermal service."
+          amount:
+            expression: "delivered thermal-energy meter or calc_hot_water_energy from foreground records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_sheep_carcass
+          role: "Dressed sheep carcass co-product"
+          name: "Dressed sheep carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable dressed carcass mass separately from every offal and by-product output."
+          amount:
+            expression: "calibrated hot- or cold-carcass weight with the weighing state disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per slaughter reporting period and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids: []
+            ranges: []
+        - row_id: red_offal_pluck
+          role: "Red-offal pluck sent to organ separation"
+          name: "Sheep red-offal pluck"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The liver, heart, lungs and trachea remain a single physically handled pluck at this transfer point; individual tissues are separated in the next process."
+          amount:
+            expression: "measured pluck mass transferred to liver_separation_trimming"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids:
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+        - row_id: sheepskin_coproduct
+          role: "Sheepskin co-product"
+          name: "Sheepskin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable sheepskin mass and destination separately."
+          amount:
+            expression: "measured dispatched sheepskin mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per slaughter reporting period and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids: []
+            ranges: []
+        - row_id: recovered_sheep_blood
+          role: "Recovered sheep blood co-product"
+          name: "Recovered sheep blood"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only blood collected in a closed system and sold or transferred as a co-product; blood entering wastewater is captured by pollutant measurements instead."
+          amount:
+            expression: "measured collected blood dispatched as co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per slaughter reporting period and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids:
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+      waste:
+        - row_id: paunch_contents_waste
+          role: "Paunch contents sent to waste management"
+          name: "Sheep paunch contents waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed gastrointestinal contents by wet mass and actual destination."
+          amount:
+            expression: "measured container mass net of tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastes
+              source_ids:
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+        - row_id: inedible_slaughter_trim_waste
+          role: "Inedible slaughter trim sent to waste management"
+          name: "Inedible sheep slaughter trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record condemned or inedible solid tissue from slaughter separately from paunch contents and organ-line trim."
+          amount:
+            expression: "measured waste-container mass net of tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastes
+              source_ids: []
+            ranges: []
+        - row_id: slaughter_wastewater_carrier
+          role: "Slaughter wastewater carrier sent to off-site treatment"
+          name: "Slaughter wastewater to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record liquid volume at the off-site sewer transfer boundary; pollutant loads below are constituents of this carrier and are not additional carrier mass."
+          amount:
+            expression: "effluent meter volume assigned to slaughter and evisceration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: slaughter_wastewater_cod
+          role: "COD in slaughter wastewater"
+          name: "Chemical oxygen demand in slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg COD"
+          description: "Record chemical oxygen demand as an individual pollutant load in the wastewater transferred off site."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and COD concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: slaughter_wastewater_total_nitrogen
+          role: "Total nitrogen in slaughter wastewater"
+          name: "Total nitrogen in slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg N"
+          description: "Record total nitrogen as an individual pollutant load in the wastewater transferred off site."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-nitrogen concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: slaughter_wastewater_total_phosphorus
+          role: "Total phosphorus in slaughter wastewater"
+          name: "Total phosphorus in slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg P"
+          description: "Record total phosphorus as an individual pollutant load in the wastewater transferred off site."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-phosphorus concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: slaughter_wastewater_tss
+          role: "Total suspended solids in slaughter wastewater"
+          name: "Total suspended solids in slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg TSS"
+          description: "Record total suspended solids as an individual pollutant load in the wastewater transferred off site."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and TSS concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: slaughter_wastewater_oil_grease
+          role: "Oil and grease in slaughter wastewater"
+          name: "Oil and grease in slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record oil and grease as an individual pollutant load in the wastewater transferred off site."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and oil-and-grease concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+      elementary:
+        []
+  - id: liver_separation_trimming
+    label: "Red-offal separation and liver trimming"
+    inputs:
+      product:
+        - row_id: red_offal_pluck_input
+          role: "Red-offal pluck received from slaughter"
+          name: "Sheep red-offal pluck"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the same batch-linked pluck mass reported by red_offal_pluck; no duplicate upstream burden is added."
+          amount:
+            expression: "batch-linked measured transfer mass equal to red_offal_pluck"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids:
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+        - row_id: separation_grid_electricity
+          role: "Grid electricity used for separation and trimming"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conveyors, task lighting and powered trimming equipment assigned to this line."
+          amount:
+            expression: "sub-metered electricity or documented allocation from the facility import meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: trimmed_raw_sheep_liver
+          role: "Trimmed raw sheep liver"
+          name: "Trimmed raw sheep liver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liver accepted after veterinary disposition, tissue separation and visible-defect trimming."
+          amount:
+            expression: "calibrated scale mass after trimming and before washing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids:
+                - fao-slaughter-meat-processing-guidelines
+            ranges: []
+        - row_id: sheep_heart_coproduct
+          role: "Sheep heart co-product"
+          name: "Edible sheep heart"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record heart output separately; it must never be averaged with liver."
+          amount:
+            expression: "measured accepted heart mass and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per slaughter reporting period and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids:
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+        - row_id: sheep_lungs_coproduct
+          role: "Sheep lungs co-product"
+          name: "Sheep lungs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lungs separately with the actual food, feed or rendering destination."
+          amount:
+            expression: "measured lungs mass and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per slaughter reporting period and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids:
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+        - row_id: sheep_trachea_coproduct
+          role: "Sheep trachea co-product"
+          name: "Sheep trachea"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the trachea separately with its actual destination."
+          amount:
+            expression: "measured trachea mass and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per slaughter reporting period and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: inedible_liver_trim
+          role: "Inedible liver trim"
+          name: "Inedible sheep liver trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed vessels, connective tissue and other non-saleable liver trim separately from rejected whole liver."
+          amount:
+            expression: "measured trim-container mass net of tare"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids: []
+            ranges: []
+        - row_id: rejected_sheep_liver
+          role: "Rejected sheep liver"
+          name: "Rejected sheep liver waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record whole or partial liver rejected after post-mortem disposition separately from routine trim."
+          amount:
+            expression: "measured rejected-liver mass and recorded disposition reason"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_outputs
+              source_ids:
+                - fao-who-cxc-58-2005-meat-hygiene
+            ranges: []
+      elementary:
+        []
+  - id: liver_washing
+    label: "Potable-water liver washing"
+    inputs:
+      product:
+        - row_id: trimmed_liver_washing_input
+          role: "Trimmed liver entering washing"
+          name: "Trimmed raw sheep liver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the same batch-linked mass as trimmed_raw_sheep_liver."
+          amount:
+            expression: "batch-linked measured transfer mass equal to trimmed_raw_sheep_liver"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_washing_mass_water
+              source_ids: []
+            ranges: []
+        - row_id: washing_potable_water
+          role: "Potable washing water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Use potable water only and record the meter serving the liver washing line."
+          amount:
+            expression: "dedicated washing-line meter volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_washing_mass_water
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+                - fao-small-ruminant-slaughter-manual
+            ranges: []
+        - row_id: washing_grid_electricity
+          role: "Grid electricity used for liver washing"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for the dedicated washing pump and line equipment."
+          amount:
+            expression: "sub-metered electricity or documented allocation from the facility import meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_washing_mass_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: washed_sheep_liver
+          role: "Washed sheep liver"
+          name: "Washed raw sheep liver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record drained liver mass after potable-water washing and before chilling."
+          amount:
+            expression: "calibrated drained-product mass after the declared drip time"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_washing_mass_water
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: washing_wastewater_carrier
+          role: "Washing wastewater carrier sent to off-site treatment"
+          name: "Liver-washing wastewater to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record washing-effluent volume at the sewer transfer boundary; constituent loads are reported in separate cards."
+          amount:
+            expression: "dedicated effluent meter or validated water-balance volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_washing_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: washing_wastewater_cod
+          role: "COD in washing wastewater"
+          name: "Chemical oxygen demand in liver-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg COD"
+          description: "Record chemical oxygen demand as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and COD concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: washing_wastewater_total_nitrogen
+          role: "Total nitrogen in washing wastewater"
+          name: "Total nitrogen in liver-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg N"
+          description: "Record total nitrogen as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-nitrogen concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: washing_wastewater_total_phosphorus
+          role: "Total phosphorus in washing wastewater"
+          name: "Total phosphorus in liver-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg P"
+          description: "Record total phosphorus as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-phosphorus concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: washing_wastewater_tss
+          role: "Total suspended solids in washing wastewater"
+          name: "Total suspended solids in liver-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg TSS"
+          description: "Record total suspended solids as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and TSS concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: washing_wastewater_oil_grease
+          role: "Oil and grease in washing wastewater"
+          name: "Oil and grease in liver-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record oil and grease as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and oil-and-grease concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+      elementary:
+        []
+  - id: air_chilling_cold_holding
+    label: "Forced-air chilling and cold holding"
+    inputs:
+      product:
+        - row_id: washed_liver_chilling_input
+          role: "Washed liver entering chilling"
+          name: "Washed raw sheep liver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the same batch-linked mass as washed_sheep_liver."
+          amount:
+            expression: "batch-linked measured transfer mass equal to washed_sheep_liver"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_energy_temperature
+              source_ids: []
+            ranges: []
+        - row_id: chilling_grid_electricity
+          role: "Grid electricity used for chilling and cold holding"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for compressors, fans, pumps and the allocated share of cold holding; do not include other facility refrigeration loads."
+          amount:
+            expression: "refrigeration sub-meter energy allocated by measured liver chamber load and holding time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_energy_temperature
+              source_ids: []
+            ranges: []
+        - row_id: ammonia_refrigerant_replenishment
+          role: "Ammonia refrigerant replenishment"
+          name: "Anhydrous ammonia refrigerant (R717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The locked central refrigeration system uses anhydrous ammonia (R717); record replenishment attributable to this product route from the annual refrigerant balance."
+          amount:
+            expression: "calc_refrigerant_loss allocated by metered refrigeration electricity share"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_sheep_liver
+          role: "Chilled sheep liver"
+          name: "Chilled sheep liver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record batch mass and core-temperature readings after forced-air chilling and before packaging."
+          amount:
+            expression: "calibrated mass of lots meeting 0–3 °C core-temperature and never-frozen criteria"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_energy_temperature
+              source_ids:
+                - eu-ec-853-2004-meat-hygiene
+                - fao-meat-cold-store-manual
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: ammonia_refrigerant_to_air
+          role: "Ammonia refrigerant emitted to air"
+          name: "Ammonia to air from R717 refrigeration leakage"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Report the R717 loss calculated from the same closed refrigerant inventory as the replenishment input; do not create a generic refrigerant card."
+          amount:
+            expression: "calc_refrigerant_loss allocated by metered refrigeration electricity share"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids: []
+            ranges: []
+  - id: primary_packaging
+    label: "LDPE wrapping and corrugated-fibreboard packing"
+    inputs:
+      product:
+        - row_id: chilled_liver_packaging_input
+          role: "Chilled liver entering packaging"
+          name: "Chilled sheep liver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the same accepted-lot mass as chilled_sheep_liver."
+          amount:
+            expression: "batch-linked measured transfer mass equal to chilled_sheep_liver"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film_input
+          role: "LDPE primary packaging film"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene film net of returned unused stock; do not combine it with fibreboard."
+          amount:
+            expression: "opening inventory plus receipts minus closing inventory minus separately measured trim waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+            ranges: []
+        - row_id: corrugated_fibreboard_input
+          role: "Corrugated-fibreboard secondary cartons"
+          name: "Corrugated fibreboard"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-fibreboard carton mass separately from LDPE film."
+          amount:
+            expression: "opening inventory plus receipts minus closing inventory minus separately measured trim waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+            ranges: []
+        - row_id: packaging_grid_electricity
+          role: "Grid electricity used for packaging"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for sealing, labelling and carton handling."
+          amount:
+            expression: "packaging-line sub-meter or documented equipment-runtime calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_chilled_sheep_liver
+          role: "Packaged chilled sheep liver"
+          name: "Edible offal of sheep, fresh, chilled or frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1f8ad4d0-18e1-4ee6-8006-0d578c5e07eb"
+          property_unit: "Mass / kg"
+          description: "This is the sole reference-product row. The 1,000 kg amount is net liver mass and excludes LDPE and fibreboard tare."
+          amount:
+            expression: "1,000 kg net packaged chilled sheep liver"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: ldpe_trim_waste
+          role: "LDPE packaging trim waste"
+          name: "Low-density polyethylene packaging trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record LDPE film trim and rejected film separately from fibreboard waste."
+          amount:
+            expression: "measured waste-bin mass net of tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_fibreboard_trim_waste
+          role: "Corrugated-fibreboard trim waste"
+          name: "Corrugated-fibreboard packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged cartons and fibreboard trim separately from LDPE waste."
+          amount:
+            expression: "measured waste-bin mass net of tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: equipment_sanitation
+    label: "Route equipment and room sanitation"
+    inputs:
+      product:
+        - row_id: sanitation_potable_water
+          role: "Potable sanitation water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record cold potable water used for cleaning and final rinsing across the foreground route."
+          amount:
+            expression: "sanitation meter volume or event-level measured volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+            ranges: []
+        - row_id: sanitation_purchased_hot_water
+          role: "Purchased hot water for sanitation"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased hot-water thermal energy separately from cold water and electricity."
+          amount:
+            expression: "delivered thermal-energy meter or calc_hot_water_energy from event records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids:
+                - fao-slaughter-meat-processing-guidelines
+            ranges: []
+        - row_id: sanitation_grid_electricity
+          role: "Grid electricity used for sanitation"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for sanitation pumps, foamers and related equipment."
+          amount:
+            expression: "sanitation sub-meter or documented equipment-runtime calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide_detergent
+          role: "Sodium-hydroxide-based alkaline detergent"
+          name: "Sodium-hydroxide-based alkaline detergent solution"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "The locked sanitation route uses one formulated sodium-hydroxide-based alkaline detergent; record solution mass and concentration separately."
+          amount:
+            expression: "purchase and issue records reconciled to sanitation events"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+            ranges: []
+        - row_id: sodium_hypochlorite_disinfectant
+          role: "Sodium-hypochlorite disinfectant"
+          name: "Sodium hypochlorite disinfectant solution"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "The locked sanitation route uses one formulated sodium-hypochlorite solution after cleaning; record solution mass and available-chlorine concentration separately."
+          amount:
+            expression: "purchase and issue records reconciled to sanitation events"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_inputs
+              source_ids:
+                - eu-ec-852-2004-food-hygiene
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater_carrier
+          role: "Sanitation wastewater carrier sent to off-site treatment"
+          name: "Sanitation wastewater to off-site treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record sanitation-effluent volume at the sewer transfer boundary; constituent pollutant loads are separate cards."
+          amount:
+            expression: "dedicated effluent meter or validated water-balance volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: sanitation_wastewater_cod
+          role: "COD in sanitation wastewater"
+          name: "Chemical oxygen demand in sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg COD"
+          description: "Record chemical oxygen demand as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and COD concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: sanitation_wastewater_total_nitrogen
+          role: "Total nitrogen in sanitation wastewater"
+          name: "Total nitrogen in sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg N"
+          description: "Record total nitrogen as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-nitrogen concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: sanitation_wastewater_total_phosphorus
+          role: "Total phosphorus in sanitation wastewater"
+          name: "Total phosphorus in sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg P"
+          description: "Record total phosphorus as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-phosphorus concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: sanitation_wastewater_tss
+          role: "Total suspended solids in sanitation wastewater"
+          name: "Total suspended solids in sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg TSS"
+          description: "Record total suspended solids as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and TSS concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: sanitation_wastewater_oil_grease
+          role: "Oil and grease in sanitation wastewater"
+          name: "Oil and grease in sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record oil and grease as an individual pollutant load."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and oil-and-grease concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - ifc-2007-meat-processing-ehs
+            ranges: []
+        - row_id: sanitation_wastewater_residual_chlorine
+          role: "Total residual chlorine in sanitation wastewater"
+          name: "Total residual chlorine in sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg as Cl2"
+          description: "Record total residual chlorine separately because the locked route uses sodium hypochlorite."
+          amount:
+            expression: "calc_wastewater_pollutant_load using matched volume and total-residual-chlorine concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg packaged chilled sheep liver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater
+              source_ids:
+                - us-epa-2004-meat-effluent-development
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_subdivide_direct_operations
+    applies_to: "liver_washing; air_chilling_cold_holding; primary_packaging"
+    rule: "Attribute metered post-separation liver operations directly to liver; do not dilute these burdens across carcass, skin or other organs."
+    source_ids:
+      - bamber-et-al-2026-allocation-review
+  - rule_id: alloc_joint_block_definition
+    applies_to: "slaughter_evisceration; liver_separation_trimming"
+    rule: "Treat slaughter through completion of organ separation as one joint-production block when its shared inputs cannot be subdivided; retain separate measured masses and destinations for carcass, liver, heart, lungs, trachea, sheepskin and recovered blood."
+    source_ids:
+      - le-feon-2020-meat-coproduct-allocation
+  - rule_id: alloc_primary_economic
+    applies_to: "joint-production block"
+    rule: "Apply calc_economic_allocation using contemporaneous net ex-works revenue for every marketable output at the common separation gate. Waste and legally condemned material receive no co-product share; their handling burden remains with the joint block."
+    source_ids:
+      - eu-pef-2013-allocation-hierarchy
+      - le-feon-2020-meat-coproduct-allocation
+  - rule_id: alloc_price_evidence
+    applies_to: "co-product price ledger"
+    rule: "Use invoiced net prices and saleable masses for the same reporting period, currency and gate; disclose zero-price, internal-transfer and missing-price treatment. Do not infer a liver price from another organ."
+    source_ids:
+      - eu-pef-2013-allocation-hierarchy
+  - rule_id: alloc_economic_sensitivity
+    applies_to: "liver allocation result"
+    rule: "Recalculate the liver share using every observed monthly net price in the reporting period and report the minimum, maximum and mass-weighted base result; if fewer than 12 months exist, report all observed months and the evidence gap without inventing prices."
+    source_ids:
+      - le-feon-2020-meat-coproduct-allocation
+      - bamber-et-al-2026-allocation-review
+  - rule_id: alloc_method_sensitivity
+    applies_to: "liver allocation result"
+    rule: "Also report mass-based allocation across marketable outputs and, only when tissue-growth data support it, a biophysical allocation result; keep these as sensitivity scenarios and do not merge them with the primary economic result."
+    source_ids:
+      - le-feon-2020-meat-coproduct-allocation
+      - bamber-et-al-2026-allocation-review
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_slaughter_mass_outputs
+      process_id: "slaughter_evisceration"
+      flow_role: "live sheep and joint-product masses"
+      record_type: "receiving, scale and dispatch records"
+      raw_fields: "batch_id; slaughter_date; live_weight_kg; carcass_mass_kg; pluck_mass_kg; sheepskin_mass_kg; recovered_blood_mass_kg; scale_id; weighing_state"
+      collection_method: "calibrated scales linked by slaughter batch"
+      unit: "kg"
+      frequency: "every slaughter batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "target slaughterhouse"
+      aggregation_rule: "sum each atomic output by row_id; preserve batch links"
+      quality_evidence: "calibration certificates; receiving tickets; dispatch records; reconciliation sign-off"
+    - protocol_id: cp_slaughter_utilities
+      process_id: "slaughter_evisceration"
+      flow_role: "water, electricity and purchased hot water"
+      record_type: "meter records"
+      raw_fields: "timestamp; meter_id; potable_water_m3; grid_electricity_kWh; hot_water_energy_MJ; hot_water_volume_m3; supply_temperature_C; return_temperature_C; allocation_driver"
+      collection_method: "dedicated meters; documented meter allocation only when no sub-meter exists"
+      unit: "m3; kWh; MJ; °C"
+      frequency: "daily or finer"
+      temporal_coverage: "complete reporting period"
+      site_scope: "slaughter and evisceration line"
+      aggregation_rule: "sum readings by utility; subtract verified non-route loads"
+      quality_evidence: "meter calibration; invoices; allocation worksheet"
+    - protocol_id: cp_slaughter_wastes
+      process_id: "slaughter_evisceration"
+      flow_role: "paunch contents and inedible trim"
+      record_type: "waste container and consignment records"
+      raw_fields: "date; batch_id; waste_row_id; gross_mass_kg; tare_mass_kg; destination; manifest_id"
+      collection_method: "calibrated container scale and waste consignment record"
+      unit: "kg"
+      frequency: "every consignment"
+      temporal_coverage: "complete reporting period"
+      site_scope: "slaughter floor"
+      aggregation_rule: "sum net mass separately by row_id and destination"
+      quality_evidence: "scale checks; waste manifests; contractor receipts"
+    - protocol_id: cp_slaughter_wastewater
+      process_id: "slaughter_evisceration"
+      flow_role: "wastewater carrier and pollutant loads"
+      record_type: "flow meter and laboratory records"
+      raw_fields: "sample_id; start_time; end_time; wastewater_volume_m3; COD_mg_L; TN_mg_L; TP_mg_L; TSS_mg_L; oil_grease_mg_L; laboratory_method; sewer_destination"
+      collection_method: "flow-proportional composite sampling matched to effluent volume"
+      unit: "m3; mg/L"
+      frequency: "representative composite per production day or permit frequency, whichever is stricter"
+      temporal_coverage: "complete reporting period"
+      site_scope: "slaughter wastewater substream before sewer mixing"
+      aggregation_rule: "calculate each pollutant with calc_wastewater_pollutant_load; volume-weight across samples"
+      quality_evidence: "accredited laboratory reports; meter calibration; chain of custody"
+    - protocol_id: cp_separation_outputs
+      process_id: "liver_separation_trimming"
+      flow_role: "pluck input, tissue outputs, trim, rejection and electricity"
+      record_type: "batch scale, disposition and meter records"
+      raw_fields: "batch_id; pluck_input_kg; trimmed_liver_kg; heart_kg; lungs_kg; trachea_kg; inedible_trim_kg; rejected_liver_kg; rejection_reason; destination; electricity_kWh"
+      collection_method: "calibrated scales, veterinary disposition records and sub-meter"
+      unit: "kg; kWh"
+      frequency: "every batch; electricity daily or finer"
+      temporal_coverage: "complete reporting period"
+      site_scope: "red-offal separation line"
+      aggregation_rule: "sum each atomic row_id; reconcile tissue outputs and wastes to pluck input"
+      quality_evidence: "scale calibration; inspection record; signed mass-balance review"
+    - protocol_id: cp_washing_mass_water
+      process_id: "liver_washing"
+      flow_role: "liver mass, potable water and electricity"
+      record_type: "batch scale and meter records"
+      raw_fields: "batch_id; trimmed_liver_input_kg; washed_liver_drained_kg; drip_time_min; potable_water_m3; electricity_kWh; meter_id"
+      collection_method: "calibrated scales and dedicated meters"
+      unit: "kg; min; m3; kWh"
+      frequency: "every batch; meters daily or finer"
+      temporal_coverage: "complete reporting period"
+      site_scope: "liver washing line"
+      aggregation_rule: "sum by row_id; preserve batch transfer equality"
+      quality_evidence: "calibration records; potable-water compliance record; batch sheet"
+    - protocol_id: cp_washing_wastewater
+      process_id: "liver_washing"
+      flow_role: "washing wastewater and pollutant loads"
+      record_type: "flow meter and laboratory records"
+      raw_fields: "sample_id; start_time; end_time; wastewater_volume_m3; COD_mg_L; TN_mg_L; TP_mg_L; TSS_mg_L; oil_grease_mg_L; laboratory_method; sewer_destination"
+      collection_method: "flow-proportional composite sampling matched to washing volume"
+      unit: "m3; mg/L"
+      frequency: "representative composite per production day or permit frequency, whichever is stricter"
+      temporal_coverage: "complete reporting period"
+      site_scope: "liver washing substream before sewer mixing"
+      aggregation_rule: "calculate each pollutant with calc_wastewater_pollutant_load; volume-weight across samples"
+      quality_evidence: "accredited laboratory reports; meter calibration; chain of custody"
+    - protocol_id: cp_chilling_energy_temperature
+      process_id: "air_chilling_cold_holding"
+      flow_role: "liver mass, electricity, temperature and holding time"
+      record_type: "batch, sub-meter and temperature logger records"
+      raw_fields: "lot_id; washed_liver_input_kg; chilled_liver_output_kg; chamber_id; entry_time; release_time; holding_hours; core_temperature_C; air_temperature_C; electricity_kWh; freezing_deviation"
+      collection_method: "calibrated core probes, continuous air logger and refrigeration sub-meter"
+      unit: "kg; h; °C; kWh"
+      frequency: "every lot; continuous temperature"
+      temporal_coverage: "complete reporting period"
+      site_scope: "R717 liver chilling chamber"
+      aggregation_rule: "accept only lots with all release core readings 0–3 °C and no freezing; sum route electricity"
+      quality_evidence: "probe calibration; logger audit trail; sub-meter calibration; deviation log"
+    - protocol_id: cp_refrigerant_inventory
+      process_id: "air_chilling_cold_holding"
+      flow_role: "R717 replenishment and air loss"
+      record_type: "refrigerant inventory and service records"
+      raw_fields: "period_start; opening_charge_kg; purchases_kg; transfers_in_kg; closing_charge_kg; recovered_kg; returned_kg; transfers_out_kg; service_event; total_refrigeration_kWh; liver_route_refrigeration_kWh"
+      collection_method: "closed annual refrigerant mass balance reconciled to service invoices"
+      unit: "kg; kWh"
+      frequency: "every service event and annual close"
+      temporal_coverage: "same reporting period as product dataset"
+      site_scope: "central R717 system and liver-route allocation"
+      aggregation_rule: "calculate total loss with calc_refrigerant_loss; allocate by metered refrigeration electricity share"
+      quality_evidence: "technician records; purchase invoices; recovery receipts; signed balance"
+    - protocol_id: cp_packaging_materials
+      process_id: "primary_packaging"
+      flow_role: "chilled liver, LDPE and fibreboard"
+      record_type: "batch and material inventory records"
+      raw_fields: "lot_id; chilled_liver_input_kg; packaged_net_liver_kg; material_row_id; opening_stock_kg; receipts_kg; closing_stock_kg; returned_stock_kg; trim_waste_kg"
+      collection_method: "calibrated product scale and material inventory reconciliation"
+      unit: "kg"
+      frequency: "every lot; material inventory monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "liver packaging line"
+      aggregation_rule: "calculate consumption separately by material row_id; exclude packaging tare from reference mass"
+      quality_evidence: "scale calibration; purchase invoices; stock count; reconciliation worksheet"
+    - protocol_id: cp_packaging_energy
+      process_id: "primary_packaging"
+      flow_role: "packaging electricity"
+      record_type: "meter or equipment-runtime records"
+      raw_fields: "date; meter_id; electricity_kWh; equipment_id; rated_power_kW; runtime_h; allocation_driver"
+      collection_method: "line sub-meter; runtime calculation only if sub-meter unavailable"
+      unit: "kWh; kW; h"
+      frequency: "daily or finer"
+      temporal_coverage: "complete reporting period"
+      site_scope: "liver packaging line"
+      aggregation_rule: "sum sub-meter; otherwise sum rated_power_kW * runtime_h with disclosed load factor from measured evidence"
+      quality_evidence: "meter check; equipment log; calculation review"
+    - protocol_id: cp_packaging_waste
+      process_id: "primary_packaging"
+      flow_role: "LDPE and fibreboard waste"
+      record_type: "waste-bin and consignment records"
+      raw_fields: "date; waste_row_id; gross_mass_kg; tare_mass_kg; destination; manifest_id"
+      collection_method: "dedicated labelled bins and calibrated scale"
+      unit: "kg"
+      frequency: "every waste removal"
+      temporal_coverage: "complete reporting period"
+      site_scope: "liver packaging line"
+      aggregation_rule: "sum net mass separately by material row_id"
+      quality_evidence: "scale check; waste manifest; bin labelling audit"
+    - protocol_id: cp_sanitation_inputs
+      process_id: "equipment_sanitation"
+      flow_role: "water, hot water, electricity, detergent and disinfectant"
+      record_type: "sanitation event, meter and chemical issue records"
+      raw_fields: "event_id; start_time; end_time; potable_water_m3; hot_water_energy_MJ; hot_water_volume_m3; supply_temperature_C; return_temperature_C; electricity_kWh; detergent_solution_kg; detergent_NaOH_mass_fraction; hypochlorite_solution_kg; available_chlorine_mass_fraction; covered_area"
+      collection_method: "event-level meters and reconciled chemical issue records"
+      unit: "m3; MJ; °C; kWh; kg solution; mass fraction"
+      frequency: "every sanitation event"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all route equipment and rooms"
+      aggregation_rule: "sum each atomic input; retain concentration and covered-area evidence"
+      quality_evidence: "sanitation log; meter calibration; supplier certificate; stock reconciliation"
+    - protocol_id: cp_sanitation_wastewater
+      process_id: "equipment_sanitation"
+      flow_role: "sanitation wastewater and pollutant loads"
+      record_type: "flow meter and laboratory records"
+      raw_fields: "sample_id; start_time; end_time; wastewater_volume_m3; COD_mg_L; TN_mg_L; TP_mg_L; TSS_mg_L; oil_grease_mg_L; residual_chlorine_mg_L; laboratory_method; sewer_destination"
+      collection_method: "flow-proportional composite sampling matched to sanitation volume; grab sample for residual chlorine when method requires"
+      unit: "m3; mg/L"
+      frequency: "representative sample per sanitation regime and permit frequency, whichever is stricter"
+      temporal_coverage: "complete reporting period"
+      site_scope: "sanitation substream before sewer mixing"
+      aggregation_rule: "calculate each pollutant with calc_wastewater_pollutant_load; volume-weight across samples"
+      quality_evidence: "accredited laboratory reports; meter calibration; chain of custody"
+    - protocol_id: cp_coproduct_prices
+      process_id: "slaughter_evisceration"
+      flow_role: "economic allocation evidence"
+      record_type: "sales invoice and internal transfer ledger"
+      raw_fields: "month; product_row_id; saleable_mass_kg; gross_revenue; rebates; transport_after_gate; net_exworks_revenue; currency; exchange_rate; invoice_id; zero_price_reason"
+      collection_method: "invoice reconciliation at common separation gate; no cross-organ price proxy"
+      unit: "kg; currency"
+      frequency: "every sale; monthly close"
+      temporal_coverage: "same reporting period, normally 12 consecutive months"
+      site_scope: "all marketable outputs of the joint-production block"
+      aggregation_rule: "mass-weighted net price by product_row_id; preserve every observed monthly price for sensitivity"
+      quality_evidence: "invoices; audited ledger; exchange-rate source; signed zero-price review"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "all inventory rows"
+      rule: "normalized_amount = period_amount / packaged_net_liver_kg * 1000"
+      inputs:
+        - period_amount
+        - packaged_net_liver_kg
+      output: "amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_hot_water_energy
+      applies_to: "purchased hot water"
+      rule: "hot_water_energy_MJ = water_mass_kg * specific_heat_MJ_per_kgK * (supply_temperature_C - return_temperature_C)"
+      inputs:
+        - hot_water_volume_m3
+        - "measured density"
+        - supply_temperature_C
+        - return_temperature_C
+        - "accepted specific heat"
+      output: "MJ delivered thermal energy"
+      source_ids: []
+    - id: calc_wastewater_pollutant_load
+      applies_to: "each wastewater pollutant row"
+      rule: "pollutant_load_kg = wastewater_volume_m3 * concentration_mg_L / 1000"
+      inputs:
+        - "matched wastewater_volume_m3"
+        - "pollutant-specific concentration_mg_L"
+      output: "kg pollutant transferred to off-site treatment"
+      source_ids:
+        - ifc-2007-meat-processing-ehs
+    - id: calc_refrigerant_loss
+      applies_to: "R717 input and air output"
+      rule: "refrigerant_loss_kg = opening_charge_kg + purchases_kg + transfers_in_kg - closing_charge_kg - recovered_kg - returned_kg - transfers_out_kg; liver_route_loss_kg = refrigerant_loss_kg * liver_route_refrigeration_kWh / total_refrigeration_kWh"
+      inputs:
+        - "closed refrigerant inventory"
+        - "liver-route and total refrigeration electricity"
+      output: "kg R717 replenishment and kg NH3 to air assigned to liver route"
+      source_ids: []
+    - id: calc_joint_mass_balance
+      applies_to: "slaughter and separation joint block"
+      rule: "mass_balance_gap_kg = live_weight_kg - sum(all measured product and waste output masses) - measured_evaporation_or_untracked_liquid_kg"
+      inputs:
+        - "every atomic mass output"
+        - live_weight_kg
+        - "disclosed untracked liquid or evaporation term"
+      output: "kg and percent mass-balance gap"
+      source_ids: []
+    - id: calc_liver_yield
+      applies_to: "liver route"
+      rule: "liver_yield = packaged_net_liver_kg / live_weight_kg"
+      inputs:
+        - packaged_net_liver_kg
+        - live_weight_kg
+      output: "kg packaged chilled liver per kg live sheep"
+      source_ids: []
+    - id: calc_economic_allocation
+      applies_to: "joint-production block"
+      rule: "AF_i = max(net_exworks_revenue_i, 0) / sum_j(max(net_exworks_revenue_j, 0)); net_exworks_revenue_i = saleable_mass_i * net_exworks_price_i"
+      inputs:
+        - "saleable mass and contemporaneous net ex-works price for each marketable product_row_id"
+      output: "allocation fraction for each marketable output"
+      source_ids:
+        - eu-pef-2013-allocation-hierarchy
+        - le-feon-2020-meat-coproduct-allocation
+    - id: calc_liver_joint_burden
+      applies_to: "chilled sheep liver"
+      rule: "liver_joint_burden = AF_liver * total_joint_block_burden; add direct post-separation liver burdens without allocation"
+      inputs:
+        - AF_liver
+        - "joint block inventory and impacts"
+        - "direct liver operations"
+      output: "allocated upstream and slaughter burden plus direct liver burden"
+      source_ids:
+        - le-feon-2020-meat-coproduct-allocation
+    - id: calc_economic_sensitivity
+      applies_to: "liver allocation"
+      rule: "recompute AF_liver for each observed monthly price vector; report base mass-weighted AF_liver, minimum AF_liver and maximum AF_liver with the associated month and price vector"
+      inputs:
+        - "monthly cp_coproduct_prices records"
+      output: "reproducible economic-allocation sensitivity interval"
+      source_ids:
+        - le-feon-2020-meat-coproduct-allocation
+        - bamber-et-al-2026-allocation-review
+    - id: calc_mass_allocation_sensitivity
+      applies_to: "joint-production block"
+      rule: "mass_AF_i = saleable_mass_i / sum_j(saleable_mass_j) for the same marketable-output set"
+      inputs:
+        - "saleable mass by product_row_id"
+      output: "mass-allocation sensitivity result"
+      source_ids:
+        - le-feon-2020-meat-coproduct-allocation
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "full dataset"
+      requirement: "Dataset metadata must declare sheep liver, chilled 0–3 °C, never frozen, forced-air R717 refrigeration, LDPE plus fibreboard packaging and off-site wastewater treatment."
+      evidence: "lot specification; process map; signed route declaration"
+    - id: dq_temporal_match
+      applies_to: "all records"
+      requirement: "Product, utilities, wastes, wastewater, refrigerant inventory and price evidence must cover the same reporting period; disclose any justified gap."
+      evidence: "date-range reconciliation"
+    - id: dq_mass_traceability
+      applies_to: "slaughter through packaging"
+      requirement: "Preserve batch or lot links through every intermediate liver row and reconcile all joint outputs by atomic row_id."
+      evidence: "batch ledger; calc_joint_mass_balance review"
+    - id: dq_meter_quality
+      applies_to: "utilities and wastewater"
+      requirement: "Use calibrated meters; disclose estimation only when a named meter is unavailable and retain the allocation worksheet."
+      evidence: "calibration certificate; meter register; worksheet"
+    - id: dq_temperature_quality
+      applies_to: "chilled liver"
+      requirement: "Use calibrated core probes and continuous chamber logs; retain every deviation and disposition."
+      evidence: "logger file; probe certificate; release record"
+    - id: dq_water_hygiene
+      applies_to: "washing and sanitation"
+      requirement: "Potable-water status and cleaning/disinfection records must be valid for the reporting period."
+      evidence: "potable-water certificate; sanitation verification"
+    - id: dq_pollutant_sampling
+      applies_to: "wastewater"
+      requirement: "Match concentration samples to volume and operating regime; do not use permit limits as measured concentrations."
+      evidence: "chain of custody; accredited laboratory report; sampling plan"
+    - id: dq_price_audit
+      applies_to: "allocation"
+      requirement: "Prices must be organ-specific, contemporaneous, net ex-works and invoice-reconciled; retain all months used in sensitivity."
+      evidence: "invoice ledger; monthly price vector; audit sign-off"
+    - id: dq_no_default_amounts
+      applies_to: "all non-reference rows"
+      requirement: "Missing quantities remain explicit evidence gaps; they must not be filled with generic PCR defaults."
+      evidence: "completeness register keyed by row_id"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "Require the exact Tiangong UUID, Mass property UUID, 1,000 kg net amount and all required qualifiers."
+    source_ids: []
+  - rule_id: val_single_tissue_state
+    applies_to: "product identity"
+    rule: "Reject organ averaging, mixed-offal reference products, fresh liver, frozen liver or any lot with freezing history."
+    source_ids: []
+  - rule_id: val_process_completion
+    applies_to: "process map"
+    rule: "Require all six processes in the declared order and a detailed section for every process_id."
+    source_ids: []
+  - rule_id: val_atomic_rows
+    applies_to: "process inventory"
+    rule: "Require one card per actual material, utility, chemical, refrigerant, packaging material, co-product, waste, wastewater pollutant and air emission; reject aggregate cards such as energy, materials, chemicals, packaging, wastes or emissions."
+    source_ids: []
+  - rule_id: val_uuid_policy
+    applies_to: "flow identity"
+    rule: "Permit a flow UUID only on packaged_chilled_sheep_liver; require every other atomic flow UUID to remain blank pending separate reviewed identity selection."
+    source_ids: []
+  - rule_id: val_transfer_equality
+    applies_to: "intermediate liver and pluck rows"
+    rule: "Require batch-linked output/input equality at every adjacent process transfer; differences must be represented as a named product or waste row, not hidden loss."
+    source_ids: []
+  - rule_id: val_mass_balance
+    applies_to: "joint-production block"
+    rule: "Calculate and disclose the mass-balance gap and every included term; unexplained differences make completeness inconclusive."
+    source_ids: []
+  - rule_id: val_temperature
+    applies_to: "product release"
+    rule: "Reject lots without calibrated core readings or with any release reading below 0 °C or above 3 °C; retain evidence that product never froze."
+    source_ids:
+      - eu-ec-853-2004-meat-hygiene
+  - rule_id: val_refrigerant_balance
+    applies_to: "R717 system"
+    rule: "Require a closed inventory and equality of allocated R717 replenishment input and ammonia-to-air loss unless documented recovery, return or transfer terms explain the difference."
+    source_ids: []
+  - rule_id: val_wastewater_no_double_count
+    applies_to: "wastewater"
+    rule: "Require carrier volume and each pollutant load as separate rows; because wastewater is transferred off site, reject simultaneous direct-to-water elementary emissions for the same load."
+    source_ids:
+      - ifc-2007-meat-processing-ehs
+  - rule_id: val_allocation_ledger
+    applies_to: "joint-production block"
+    rule: "Require masses, destinations and price records for carcass, liver, heart, lungs, trachea, sheepskin and recovered blood, plus explicit treatment of zero-price and waste outputs."
+    source_ids:
+      - le-feon-2020-meat-coproduct-allocation
+  - rule_id: val_allocation_sensitivity
+    applies_to: "liver burden"
+    rule: "Require reproducible monthly economic sensitivity and mass-allocation sensitivity; do not accept a single undocumented economic fraction."
+    source_ids:
+      - le-feon-2020-meat-coproduct-allocation
+      - bamber-et-al-2026-allocation-review
+  - rule_id: val_foreground_amounts
+    applies_to: "non-reference amounts"
+    rule: "Require foreground_record or calculated_value, its collection protocol, and reporting-period evidence; reject uncited generic defaults."
+    source_ids: []
+  - rule_id: val_bilingual_structure
+    applies_to: "PCR source"
+    rule: "Require identical ordered process_id, row_id, controlled token, formula, numeric value, UUID, URL, source_id and collection-protocol field sequences in en-US and zh-CN."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; eligible as background_dataset only after independent methodology and data-quality review"
+  downstream_use: "Foreground data packages and downstream process or lifecyclemodel projections for packaged chilled sheep liver at the processing-facility gate"
+  allowed_use: "Studies whose species, tissue, chilled state, integrated slaughter route, refrigeration, packaging, wastewater boundary, geography and period are demonstrably representative"
+  excluded_use: "Other organs; mixed offal; fresh or frozen liver; goat offal; cooked products; retail or consumption stages; facilities using materially different refrigeration or wastewater routes without adaptation"
+  required_metadata: "all required qualifiers; site and period; live-sheep origin; process map; meter coverage; inspection regime; temperature evidence; package specification; wastewater destination; R717 balance; allocation ledger and sensitivities"
+  required_quality_disclosure: "data coverage by row_id; mass-balance gap; estimated meter shares; sampling representativeness; temperature deviations; refrigerant balance; missing-price months; allocation sensitivity results"
+  update_trigger: "change in organ or temperature scope, slaughter route, refrigeration technology, wastewater destination, package materials, hygiene chemicals, regulation, Tiangong reference identity, or material co-product price structure"
+data_sources:
+  - id: "fao-who-cxc-58-2005-meat-hygiene"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 58-2005, Code of Hygienic Practice for Meat. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B58-2005%252FCXC_058e.pdf (retrieved 2026-08-13)"
+    used_for: "slaughter hygiene, inspection, cross-contamination control, temperature records and traceability"
+  - id: "eu-ec-853-2004-meat-hygiene"
+    type: "standard"
+    reference: "Regulation (EC) No 853/2004, specific hygiene rules for food of animal origin. https://eur-lex.europa.eu/eli/reg/2004/853/oj/eng (retrieved 2026-08-13)"
+    used_for: "offal chilling to no more than 3 °C, cold-chain and packaging/storage controls"
+  - id: "eu-ec-852-2004-food-hygiene"
+    type: "standard"
+    reference: "Regulation (EC) No 852/2004, hygiene of foodstuffs. https://eur-lex.europa.eu/eli/reg/2004/852/oj/eng (retrieved 2026-08-13)"
+    used_for: "potable water, equipment cleaning/disinfection, waste handling and packaging hygiene"
+  - id: "fao-small-ruminant-slaughter-manual"
+    type: "handbook"
+    reference: "FAO, Manual for the slaughter of small ruminants in developing countries, Chapters 7–8. https://www.fao.org/4/x6552e/X6552E07.htm and https://www.fao.org/4/x6552e/X6552E08.htm (retrieved 2026-08-13)"
+    used_for: "liver as red offal, separate offal cleaning, organ separation, waste and chilling route decomposition"
+  - id: "fao-slaughter-meat-processing-guidelines"
+    type: "handbook"
+    reference: "FAO, Guidelines for slaughtering, meat cutting and further processing. https://www.fao.org/4/t0279e/T0279E04.htm (retrieved 2026-08-13)"
+    used_for: "inspection, trimming, minimum clean-water washing and immediate refrigeration"
+  - id: "fao-meat-cold-store-manual"
+    type: "handbook"
+    reference: "FAO, Manual on meat cold store operation and management. https://www.fao.org/4/T0098E/T0098E02.htm (retrieved 2026-08-13)"
+    used_for: "primary chilling endpoint and separate control of edible offal"
+  - id: "ifc-2007-meat-processing-ehs"
+    type: "official_guidance"
+    reference: "IFC / World Bank Group, Environmental, Health, and Safety Guidelines for Meat Processing, 2007. https://www.ifc.org/content/dam/ifc/doc/2000/2007-meat-processing-ehs-guidelines-en.pdf (retrieved 2026-08-13)"
+    used_for: "separate water, energy, waste and wastewater pollutant records; COD, TN, TP, TSS and oil-and-grease parameters"
+  - id: "us-epa-2004-meat-effluent-development"
+    type: "official_guidance"
+    reference: "US EPA, Technical Development Document for the Final Effluent Limitations Guidelines and Standards for the Meat and Poultry Products Point Source Category, 2004. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100Q1U2.TXT (retrieved 2026-08-13)"
+    used_for: "total residual chlorine as a distinct meat-processing wastewater parameter"
+  - id: "eu-pef-2013-allocation-hierarchy"
+    type: "official_guidance"
+    reference: "European Commission Recommendation 2013/179/EU on Product Environmental Footprint methods. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013H0179 (retrieved 2026-08-13)"
+    used_for: "subdivision priority, physical relationship and documented economic-allocation fallback"
+  - id: "le-feon-2020-meat-coproduct-allocation"
+    type: "literature"
+    reference: "Le Féon, S. et al. (2020), Allocation factors for meat coproducts: Dataset to perform life cycle assessment at slaughterhouse. Data in Brief 33:106558. https://doi.org/10.1016/j.dib.2020.106558"
+    used_for: "lamb slaughter co-product mass, economic and biophysical allocation and sensitivity evidence"
+  - id: "bamber-et-al-2026-allocation-review"
+    type: "literature"
+    reference: "Bamber, N., Kroebel, R. and Pelletier, N. (2026), Allocation in field crop and livestock life cycle assessment. International Journal of Life Cycle Assessment. https://doi.org/10.1007/s11367-026-02618-z"
+    used_for: "allocation hierarchy, causal alternatives and price-volatility sensitivity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:834dddb66c7e2437076b8512258095eb3cb681168b33faf645dd12984b9f43b9"
+  generated_content_sha256: "sha256:e693d386b5daf71484010ad4937ad8a49ee15a03bfea1054233ca264ac50674e"

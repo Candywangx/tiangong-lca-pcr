@@ -1,10 +1,2500 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23311"
-  title: "Dog or cat food, put up for retail sale"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.dog-or-cat-food-put-up-for-retail-sale"
+  classification_refs: "CPC 3.0: 23311, Dog or cat food, put up for retail sale"
+  covered_products: "Retail-packaged complete or complementary food intended for dogs or cats, including dry, wet, and semi-moist products and treats marketed as complementary pet food"
+  excluded_products: "Feed for species other than dogs or cats; veterinary medicinal products; unpackaged or bulk feed not put up for retail sale; home-prepared food; feeding dishes and equipment; standalone packaging products"
+  representative_product: "A declared retail-ready dog or cat food product; downstream PEF comparison distinguishes wet cat food, dry cat food, wet dog food, and dry dog food"
+  production_route: "Ingredient receipt, formulation and preparation, route-specific thermal processing, retail packaging, and site-support and loss management"
+  market_state: "Conforming product at the manufacturing gate in its as-sold moisture state and retail packaging configuration"
+functional_unit:
+  what: "Manufacture retail-ready dog or cat food in the declared as-sold state"
+  how_much: "1 kg net pet-food content, excluding packaging mass"
+  how_well: "Conforming to the declared complete or complementary feeding purpose, target species and life stage, recipe, moisture class, metabolizable-energy declaration, and packaging configuration"
+  how_long_or_cycle: "One production batch or reporting-period aggregate normalized to 1 kg conforming net output"
+  reference_flow_link: "rf_retail_ready_pet_food"
+system_boundary:
+  rules:
+    - rule_id: sb_received_materials
+      applies_to: "manufacturing foreground"
+      rule: "Include receipt, storage losses, weighing, grinding or size reduction, and mixing of ingredients and additives when performed at the reporting site."
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+        - fediaf-recipes-processing
+    - rule_id: sb_route_specific_processing
+      applies_to: "manufacturing foreground"
+      rule: "Include the declared dry, wet, or semi-moist processing route, including product-contact heating, cooling, drying, coating, filling, sealing, and sterilisation steps that occur at the reporting site."
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+        - fediaf-recipes-processing
+    - rule_id: sb_packaging
+      applies_to: "manufacturing foreground"
+      rule: "Include consumption and manufacturing-site losses of primary, secondary, and tertiary packaging; model production of packaging materials with linked upstream datasets."
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+    - rule_id: sb_site_support
+      applies_to: "manufacturing foreground"
+      rule: "Include line and shared-site electricity, fuels, water, cleaning and sanitation materials, refrigeration, compressed air, on-site generation, manufacturing losses, wastewater, solid waste treatment, and direct elementary emissions when applicable."
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+    - rule_id: sb_upstream_linking
+      applies_to: "background connection"
+      rule: "Represent ingredient production, packaging production, purchased energy, water supply, inbound material transport when in scope, and waste treatment through linked background datasets; do not treat missing links as zero burden."
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+        - eu-recommendation-2021-2279
+        - fao-leap-feed-2016
+    - rule_id: sb_downstream_exclusion
+      applies_to: "manufacturing dataset"
+      rule: "Exclude distribution after the manufacturing gate, retail storage, consumer transport, feeding and use, consumer food loss, and packaging end-of-life from this foreground manufacturing dataset; add them explicitly for a cradle-to-grave study."
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+    - rule_id: sb_recursive_rework
+      applies_to: "rework and same-category inputs"
+      rule: "Record internal rework once at the process where it re-enters and retain its original burdens within the same system; require an upstream dataset for purchased same-category material crossing the declared starting boundary."
+      source_ids:
+        - eu-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Ingredients, feed materials, additives, processing aids, and packaging components as physically received at the manufacturing site, with their moisture state, origin, supplier identity, and upstream dataset references declared"
+  starting_condition_role: "Factory-gate starting condition for a foreground pet-food manufacturing dataset"
+  product_classification_scope: "Retail-packaged complete or complementary food intended for dogs or cats"
+  recursive_input_rule: "Internally recycled or reworked pet food from the same manufacturing system is recorded as an internal loop and is not assigned duplicate upstream burdens; purchased finished or semi-finished dog or cat food entering from another system is an input product flow with an upstream dataset"
+  upstream_dataset_requirement: "Link every purchased ingredient, feed material, additive, processing aid, energy carrier, water supply, and packaging material to a geographically and technologically representative upstream dataset or disclose the unresolved data gap"
+  disclosure: "Declare species, feeding purpose, life stage, moisture class, product route, site, geography, reporting period, recipe or product-family aggregation, rework treatment, packaging configuration, allocation method, excluded processes, and all missing upstream or downstream stages"
+reference_flow_definition:
+  reference_amount: "1 kg net pet-food content"
+  product_flow_ref:
+    name: "Dog or cat food, put up for retail sale"
+    uuid: "a044700b-9c04-49d8-8842-c967c80099d4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "target species"
+    - "complete or complementary feeding purpose"
+    - "target life stage or physiological state"
+    - "moisture class (dry/wet/semi-moist)"
+    - "as-sold moisture content"
+    - "metabolizable-energy density and method"
+    - "net content"
+    - "recipe or product family"
+    - "manufacturing route"
+    - "packaging masses and materials by level (primary/secondary/tertiary)"
+    - "manufacturing site and geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Normalize every inventory result to 1 kg conforming net pet-food content; record packaging mass separately and do not include it in the reference amount."
+  - id: as_sold_moisture
+    applies_to: "reference product and ingredient quantities"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report the product in its as-sold state and retain measured moisture or dry-matter data needed to reconcile wet, dry, or semi-moist classifications and material balances."
+  - id: energy_carrier_separation
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ or carrier-specific mass/volume plus lower-heating-value conversion for fuels"
+    rule: "Preserve each energy carrier separately. Record measured purchased or generated quantities and document every conversion factor without replacing carrier identity with a single undifferentiated energy total."
+  - id: water_accounting
+    applies_to: "process and sanitation water"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Record withdrawal or supplied water by measured quantity and convert between mass and volume only with a declared density assumption and temperature basis when material."
+  - id: packaging_mass_conversion
+    applies_to: "primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert packaging item counts or surface areas to mass with product-specific specifications, measured sample masses, or supplier data, and retain the source record."
+  - id: daily_ration_conversion
+    applies_to: "downstream complete-meal PEF use"
+    required_property_ref:
+      name: "Mass and metabolizable energy"
+      uuid: ""
+    required_unit: "kg and kcal ME/kg"
+    rule: "Do not compare complete pet foods on the 1 kg manufacturing reference alone. Calculate product mass per daily ration as declared daily energy requirement divided by product-specific metabolizable-energy density and disclose both inputs and their methods."
+process_map:
+  - id: formulation_preparation
+    name: "Ingredient receipt, formulation, and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included for manufactured pet food"
+    role: "Foreground material preparation"
+    quantitative_reference: "Prepared mix sent to declared processing route"
+  - id: dry_route_processing
+    name: "Dry or semi-moist thermal processing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared route uses extrusion, baking, drying, coating, or dry/semi-moist forming"
+    role: "Foreground dry-route processing"
+    quantitative_reference: "Bulk conforming dry or semi-moist product"
+  - id: wet_route_processing
+    name: "Wet filling, sealing, and thermal sterilisation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when product is filled into primary packs before sealed-pack heat treatment"
+    role: "Foreground wet-route processing"
+    quantitative_reference: "Sterilised wet product in primary packaging"
+  - id: retail_packaging
+    name: "Retail and distribution packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include product-specific packaging consumed at the site; wet-route primary packs remain in the preceding process"
+    role: "Foreground packaging"
+    quantitative_reference: "1 kg conforming net pet-food output"
+  - id: site_support_losses
+    name: "Site support, sanitation, and loss management"
+    inclusion: "required"
+    inclusion_condition: "Always include attributable site-controlled support and loss-management activities"
+    role: "Foreground shared-site support"
+    quantitative_reference: "Allocated share per 1 kg conforming net pet-food output"
+process_inventory:
+  - id: formulation_preparation
+    label: "Ingredient receipt, formulation, and preparation"
+    inputs:
+      product:
+        - row_id: formula_chicken_meat
+          role: "Fresh chicken meat ingredient"
+          name: "Fresh chicken meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Fresh chicken meat as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_poultry_byproduct_meal
+          role: "Poultry by-product meal ingredient"
+          name: "Poultry by-product meal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Poultry by-product meal as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_wheat_grain
+          role: "Wheat grain ingredient"
+          name: "Wheat grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Wheat grain as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_maize_grain
+          role: "Maize grain ingredient"
+          name: "Maize grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Maize grain as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_rice_grain
+          role: "Rice grain ingredient"
+          name: "Rice grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Rice grain as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_soybean_meal
+          role: "Soybean meal ingredient"
+          name: "Soybean meal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Soybean meal as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_poultry_fat
+          role: "Poultry fat ingredient"
+          name: "Poultry fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Poultry fat as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_fish_oil
+          role: "Fish oil ingredient"
+          name: "Fish oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Fish oil as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_calcium_carbonate
+          role: "Calcium carbonate ingredient"
+          name: "Calcium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Calcium carbonate as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_sodium_chloride
+          role: "Sodium chloride ingredient"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Sodium chloride as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: formula_taurine
+          role: "Taurine ingredient"
+          name: "Taurine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Taurine as one ingredient exchange when it is consumed in the declared recipe."
+          amount:
+            expression: "Measured as-received mass issued to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formula_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record process water added during formulation and preparation as one water exchange."
+          amount:
+            expression: "Metered or batch-recorded water supplied to grinding, mixing, slurry preparation, or preconditioning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_formula
+          role: "Prepared formulation sent to processing"
+          name: "Prepared pet-food formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Prepared pet-food formulation as one conforming product output exchange."
+          amount:
+            expression: "Measured transfer mass or batch mass calculated and reconciled from formulation records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-recipes-processing
+            ranges: []
+      waste:
+        - row_id: preparation_dust_waste
+          role: "Captured cereal ingredient dust"
+          name: "Captured cereal ingredient dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Captured cereal ingredient dust as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: rejected_prepared_formula
+          role: "Rejected prepared formulation"
+          name: "Rejected prepared pet-food formulation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected prepared pet-food formulation as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+      elementary:
+        - row_id: preparation_pm10_air
+          role: "Preparation PM10 emission to air"
+          name: "Particulate matter below 10 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter below 10 micrometres to air as one elementary exchange when it crosses the environmental boundary from ingredient handling or size reduction."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: dry_route_processing
+    label: "Dry or semi-moist thermal processing"
+    inputs:
+      product:
+        - row_id: dry_prepared_formula
+          role: "Prepared formulation for dry-route processing"
+          name: "Prepared pet-food formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared formulation transferred into dry or semi-moist processing without duplicating ingredient burdens."
+          amount:
+            expression: "Measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: dry_route_electricity
+          role: "Dry-route grid electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Grid electricity consumed by conveying, extrusion, forming, drying, cooling, coating, and controls as one energy or utility exchange."
+          amount:
+            expression: "Line-metered quantity or allocated site-meter quantity for this electricity exchange"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: dry_route_purchased_steam
+          role: "Dry-route purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased steam consumed by preconditioning, cooking, baking, or drying as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: dry_route_purchased_hot_water
+          role: "Dry-route purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased hot water consumed by preconditioning, cooking, or thermal cleaning assigned to the route as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: dry_route_natural_gas
+          role: "Dry-route natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record Natural gas consumed by on-site dry-route combustion as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: dry_route_diesel
+          role: "Dry-route diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Diesel fuel consumed by dry-route burners or dedicated mobile equipment as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: dry_route_lpg
+          role: "Dry-route liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Liquefied petroleum gas consumed by dry-route burners as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_dry_pet_food
+          role: "Bulk dry or semi-moist pet food"
+          name: "Bulk dry or semi-moist dog or cat food"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Bulk dry or semi-moist dog or cat food as one conforming product output exchange."
+          amount:
+            expression: "Measured conforming bulk product mass with measured moisture content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_yield
+              source_ids:
+                - fediaf-recipes-processing
+                - fediaf-nutritional-guidelines-2024
+            ranges: []
+      waste:
+        - row_id: dry_route_fines
+          role: "Dry pet-food fines"
+          name: "Dry pet-food fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Dry pet-food fines as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: dry_route_startup_waste
+          role: "Dry-route start-up waste"
+          name: "Dry pet-food start-up waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Dry pet-food start-up waste as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: dry_route_reject
+          role: "Rejected dry pet food"
+          name: "Rejected dry or semi-moist dog or cat food"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected dry or semi-moist dog or cat food as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+      elementary:
+        - row_id: dry_route_co2_air
+          role: "Dry-route fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Carbon dioxide, fossil, to air as one elementary exchange when it crosses the environmental boundary from on-site dry-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: dry_route_nox_air
+          role: "Dry-route nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen oxides to air as one elementary exchange when it crosses the environmental boundary from on-site dry-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: dry_route_so2_air
+          role: "Dry-route sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Sulfur dioxide to air as one elementary exchange when it crosses the environmental boundary from on-site dry-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: dry_route_pm25_air
+          role: "Dry-route PM2.5 to air"
+          name: "Particulate matter below 2.5 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter below 2.5 micrometres to air as one elementary exchange when it crosses the environmental boundary from drying or on-site dry-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk dry or semi-moist product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: wet_route_processing
+    label: "Wet filling, sealing, and thermal sterilisation"
+    inputs:
+      product:
+        - row_id: wet_prepared_formula
+          role: "Prepared formulation for wet-route processing"
+          name: "Prepared wet pet-food formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared wet formulation transferred into filling and sterilisation without duplicating ingredient burdens."
+          amount:
+            expression: "Measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_route_process_water
+          role: "Wet-route process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record wet-route process water as one water input exchange."
+          amount:
+            expression: "Metered or batch-recorded water supplied to wet preparation, filling, sterilisation, or cooling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_tinplate_can
+          role: "Tin-plated steel food can"
+          name: "Tin-plated steel food can"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Tin-plated steel food can as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_aluminium_lid
+          role: "Aluminium food-can lid"
+          name: "Aluminium food-can lid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Aluminium food-can lid as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_polypropylene_tray
+          role: "Polypropylene food tray"
+          name: "Polypropylene food tray"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polypropylene food tray as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_retort_pouch
+          role: "Polyamide-polyethylene retort pouch"
+          name: "Polyamide-polyethylene retort pouch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyamide-polyethylene retort pouch as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_paper_label
+          role: "Printed paper label for wet packs"
+          name: "Printed paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Printed paper label as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_route_electricity
+          role: "Wet-route grid electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Grid electricity consumed by preparation, filling, sealing, sterilisation, cooling, and controls as one energy or utility exchange."
+          amount:
+            expression: "Line-metered quantity or allocated site-meter quantity for this electricity exchange"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_route_purchased_steam
+          role: "Wet-route purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased steam consumed by cooking or thermal sterilisation as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_route_natural_gas
+          role: "Wet-route natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record Natural gas consumed by on-site wet-route combustion as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_route_diesel
+          role: "Wet-route diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Diesel fuel consumed by wet-route burners or dedicated mobile equipment as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: wet_route_lpg
+          role: "Wet-route liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Liquefied petroleum gas consumed by wet-route burners as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sterilised_wet_pet_food
+          role: "Sterilised wet pet food in primary packaging"
+          name: "Wet dog or cat food in primary packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg net pet-food content"
+          description: "Record Wet dog or cat food in primary packaging as one conforming product output exchange."
+          amount:
+            expression: "Measured conforming net content and unit count reconciled to batch yield"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_yield
+              source_ids:
+                - fediaf-recipes-processing
+                - fediaf-nutritional-guidelines-2024
+            ranges: []
+      waste:
+        - row_id: wet_product_reject
+          role: "Rejected wet pet food"
+          name: "Rejected wet dog or cat food"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected wet dog or cat food as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: wet_tinplate_scrap
+          role: "Waste tin-plated steel can"
+          name: "Waste tin-plated steel food can"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste tin-plated steel food can as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: wet_aluminium_lid_scrap
+          role: "Waste aluminium lid"
+          name: "Waste aluminium food-can lid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste aluminium food-can lid as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: wet_polypropylene_tray_scrap
+          role: "Waste polypropylene tray"
+          name: "Waste polypropylene food tray"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste polypropylene food tray as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: wet_retort_pouch_scrap
+          role: "Waste retort pouch"
+          name: "Waste polyamide-polyethylene retort pouch"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste polyamide-polyethylene retort pouch as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: wet_paper_label_scrap
+          role: "Waste printed paper label"
+          name: "Waste printed paper label"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste printed paper label as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+      elementary:
+        - row_id: wet_route_co2_air
+          role: "Wet-route fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Carbon dioxide, fossil, to air as one elementary exchange when it crosses the environmental boundary from on-site wet-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: wet_route_nox_air
+          role: "Wet-route nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen oxides to air as one elementary exchange when it crosses the environmental boundary from on-site wet-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: wet_route_so2_air
+          role: "Wet-route sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Sulfur dioxide to air as one elementary exchange when it crosses the environmental boundary from on-site wet-route combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: wet_route_pm25_air
+          role: "Wet-route PM2.5 to air"
+          name: "Particulate matter below 2.5 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter below 2.5 micrometres to air as one elementary exchange when it crosses the environmental boundary from wet-route combustion or thermal processing."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg sterilised wet product net content"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: retail_packaging
+    label: "Retail and distribution packaging"
+    inputs:
+      product:
+        - row_id: pack_bulk_dry_product
+          role: "Bulk dry product entering final packaging"
+          name: "Bulk dry or semi-moist dog or cat food"
+          flow_type: "product"
+          property_unit: "Mass / kg net pet-food content"
+          description: "Record bulk dry or semi-moist product entering final packaging as one route input."
+          amount:
+            expression: "Measured transferred net product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_yield
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_wet_product
+          role: "Wet product entering final packaging"
+          name: "Wet dog or cat food in primary packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg net pet-food content"
+          description: "Record wet product already in primary packaging entering final packaging as one route input."
+          amount:
+            expression: "Measured transferred net product mass and unit count"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_yield
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_ldpe_bag
+          role: "Low-density polyethylene pet-food bag"
+          name: "Low-density polyethylene pet-food bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Low-density polyethylene pet-food bag as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: pack_paper_label
+          role: "Printed paper label"
+          name: "Printed paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Printed paper label as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: pack_folding_carton
+          role: "Paperboard folding carton"
+          name: "Paperboard folding carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Paperboard folding carton as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: pack_corrugated_shipper
+          role: "Corrugated paperboard shipping carton"
+          name: "Corrugated paperboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Corrugated paperboard shipping carton as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: pack_ldpe_shrink_film
+          role: "Low-density polyethylene shrink film"
+          name: "Low-density polyethylene shrink film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Low-density polyethylene shrink film as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: pack_wood_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Wooden pallet as one packaging-component input without combining it with another packaging material."
+          amount:
+            expression: "Issued mass, or item count multiplied by verified mass per item, for this single component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fediaf-recipes-processing
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging-line grid electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Grid electricity consumed by filling, sealing, coding, cartoning, palletising, and packaging controls as one energy or utility exchange."
+          amount:
+            expression: "Line-metered quantity or allocated site-meter quantity for this electricity exchange"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retail_ready_pet_food
+          role: "Retail-ready dog or cat food"
+          name: "Dog or cat food, put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a044700b-9c04-49d8-8842-c967c80099d4"
+          property_unit: "Mass / kg"
+          description: "Record Dog or cat food, put up for retail sale as one conforming product output exchange."
+          amount:
+            expression: "Fixed reference output of 1 kg after measured conforming yield is normalised"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-regulation-767-2009
+            ranges: []
+      waste:
+        - row_id: pack_ldpe_scrap
+          role: "Waste low-density polyethylene film"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste low-density polyethylene film as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_paper_label_scrap
+          role: "Waste printed paper label"
+          name: "Waste printed paper label"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste printed paper label as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_folding_carton_scrap
+          role: "Waste paperboard folding carton"
+          name: "Waste paperboard folding carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste paperboard folding carton as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_corrugated_scrap
+          role: "Waste corrugated paperboard"
+          name: "Waste corrugated paperboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste corrugated paperboard as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_wood_waste
+          role: "Waste wooden packaging"
+          name: "Waste wooden packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste wooden packaging as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: pack_product_reject
+          role: "Rejected packaged pet food"
+          name: "Rejected packaged dog or cat food"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected packaged dog or cat food as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_yield_losses
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+      elementary:
+        []
+  - id: site_support_losses
+    label: "Site support, sanitation, and loss management"
+    inputs:
+      product:
+        - row_id: site_grid_electricity
+          role: "Shared-site grid electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Grid electricity consumed by refrigeration, compressed-air generation, ventilation, lighting, water treatment, and shared controls as one energy or utility exchange."
+          amount:
+            expression: "Line-metered quantity or allocated site-meter quantity for this electricity exchange"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_purchased_steam
+          role: "Shared-site purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased steam consumed by shared boilers, cleaning, or thermal support as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_purchased_hot_water
+          role: "Shared-site purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased hot water consumed by shared cleaning or thermal support as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_purchased_chilled_water
+          role: "Shared-site purchased chilled water"
+          name: "Purchased chilled water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased chilled water consumed by shared process or cold-room cooling as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_natural_gas
+          role: "Shared-site natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record Natural gas consumed by shared on-site combustion as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_diesel
+          role: "Shared-site diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Diesel fuel consumed by shared generators, burners, or site-controlled mobile equipment as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_lpg
+          role: "Shared-site liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Liquefied petroleum gas consumed by shared burners as one energy or utility exchange."
+          amount:
+            expression: "Metered, purchased, or inventory-issued quantity for this single carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: site_refrigerant_r717
+          role: "Refrigerant ammonia R-717"
+          name: "Refrigerant ammonia (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant ammonia R-717 charged to site-controlled refrigeration as one product input."
+          amount:
+            expression: "Measured charge, recharge, or inventory-balance quantity attributable to the product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_refrigerant_r134a
+          role: "Refrigerant R-134a"
+          name: "Refrigerant R-134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant R-134a charged to site-controlled refrigeration as one product input."
+          amount:
+            expression: "Measured charge, recharge, or inventory-balance quantity attributable to the product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_refrigerant_r404a
+          role: "Refrigerant R-404A"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant R-404A charged to site-controlled refrigeration as one product input."
+          amount:
+            expression: "Measured charge, recharge, or inventory-balance quantity attributable to the product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: sanitation_water
+          role: "Sanitation process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record process water used for product-contact and site sanitation as one water input."
+          amount:
+            expression: "Metered or cleaning-log water quantity allocated to the product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: sanitation_sodium_hydroxide
+          role: "Sodium hydroxide cleaning chemical"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide used for sanitation as one chemical input."
+          amount:
+            expression: "Inventory-issued active-substance mass allocated from sanitation records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: sanitation_nitric_acid
+          role: "Nitric acid cleaning chemical"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record nitric acid used for sanitation as one chemical input."
+          amount:
+            expression: "Inventory-issued active-substance mass allocated from sanitation records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: sanitation_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peracetic acid used for sanitation as one chemical input."
+          amount:
+            expression: "Inventory-issued active-substance mass allocated from sanitation records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: manufacturing_wastewater
+          role: "Manufacturing wastewater"
+          name: "Manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record Manufacturing wastewater as one waste output and identify its treatment destination."
+          amount:
+            expression: "Metered discharge volume or water-balance quantity assigned to the documented treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_waste
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_floor_sweepings
+          role: "Pet-food floor sweepings"
+          name: "Pet-food floor sweepings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Pet-food floor sweepings as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_waste
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+        - row_id: site_wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Pet-food manufacturing wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Pet-food manufacturing wastewater-treatment sludge as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_waste
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_used_cleaning_wipes
+          role: "Used polypropylene cleaning wipes"
+          name: "Used polypropylene cleaning wipes"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Used polypropylene cleaning wipes as one waste output and identify its treatment destination."
+          amount:
+            expression: "Measured quantity by disposition; exclude internal rework from external waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_waste
+              source_ids:
+                - fediaf-pet-food-pefcr-2025
+            ranges: []
+      elementary:
+        - row_id: site_co2_air
+          role: "Shared-site fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Carbon dioxide, fossil, to air as one elementary exchange when it crosses the environmental boundary from shared on-site combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_nox_air
+          role: "Shared-site nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen oxides to air as one elementary exchange when it crosses the environmental boundary from shared on-site combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_so2_air
+          role: "Shared-site sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Sulfur dioxide to air as one elementary exchange when it crosses the environmental boundary from shared on-site combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_pm25_air
+          role: "Shared-site PM2.5 to air"
+          name: "Particulate matter below 2.5 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Particulate matter below 2.5 micrometres to air as one elementary exchange when it crosses the environmental boundary from shared on-site combustion."
+          amount:
+            expression: "Pollutant-specific monitored mass or calculation from the recorded source quantity and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_r717_air
+          role: "Ammonia R-717 refrigerant to air"
+          name: "Ammonia (R-717) to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Ammonia (R-717) to air as one elementary exchange when it crosses the environmental boundary from site-controlled refrigeration."
+          amount:
+            expression: "Refrigerant-specific unrecovered loss calculated from charge, recovery, and inventory balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_r134a_air
+          role: "Refrigerant R-134a to air"
+          name: "Refrigerant R-134a to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Refrigerant R-134a to air as one elementary exchange when it crosses the environmental boundary from site-controlled refrigeration."
+          amount:
+            expression: "Refrigerant-specific unrecovered loss calculated from charge, recovery, and inventory balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_r404a_air
+          role: "Refrigerant R-404A to air"
+          name: "Refrigerant R-404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Refrigerant R-404A to air as one elementary exchange when it crosses the environmental boundary from site-controlled refrigeration."
+          amount:
+            expression: "Refrigerant-specific unrecovered loss calculated from charge, recovery, and inventory balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_cod_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Chemical oxygen demand to water as one elementary exchange when it crosses the environmental boundary from directly discharged treated effluent."
+          amount:
+            expression: "Discharge volume multiplied by representative measured chemical-oxygen-demand concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_total_n_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Total nitrogen to water as one elementary exchange when it crosses the environmental boundary from directly discharged treated effluent."
+          amount:
+            expression: "Discharge volume multiplied by representative measured total-nitrogen concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: site_total_p_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Total phosphorus to water as one elementary exchange when it crosses the environmental boundary from directly discharged treated effluent."
+          amount:
+            expression: "Discharge volume multiplied by representative measured total-phosphorus concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming net pet-food output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-recommendation-2021-2279
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "all shared and multifunctional processes"
+    rule: "Avoid allocation by subdivision, separate metering, batch records, or direct assignment whenever the input, output, waste, or emission can be attributed to one product or production line."
+    source_ids:
+      - eu-recommendation-2021-2279
+      - fao-leap-feed-2016
+  - rule_id: allocation_route_specific
+    applies_to: "dry, wet, and semi-moist lines"
+    rule: "Keep route-specific processing separate. Do not allocate dry-route burdens to wet products or wet-route burdens to dry products unless a measured shared process demonstrably serves both."
+    source_ids:
+      - fediaf-pet-food-pefcr-2025
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared electricity, fuel, water, sanitation, and support services"
+    rule: "Use product-specific meters or operating records first. When direct assignment is unavailable, allocate shared manufacturing utilities by conforming net production mass over the same site and period and disclose the products included."
+    source_ids:
+      - fediaf-pet-food-pefcr-2025
+  - rule_id: allocation_physical_causality
+    applies_to: "shared processes not represented by production mass"
+    rule: "Use another physical parameter only when it explains the causal use of the shared process, and document the parameter, period, and reconciliation to the site total."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: allocation_economic_fallback
+    applies_to: "multifunctional outputs without defensible physical causality"
+    rule: "Use economic allocation only after subdivision and physical causality are shown not to be feasible; disclose prices, averaging period, coproduct grouping, and a sensitivity assessment for comparative use."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: allocation_rework_and_waste
+    applies_to: "rework, residues, and waste"
+    rule: "Internal rework carries its existing burdens and receives no new coproduct credit. Include collection, transport, and treatment burdens for waste leaving the system; do not assign avoided-burden credits unless a downstream study explicitly applies a compatible system-expansion rule."
+    source_ids:
+      - fao-leap-feed-2016
+      - eu-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_formula_materials
+      process_id: "formulation_preparation"
+      flow_role: "Ingredient and feed-material inputs"
+      record_type: "Batch formulation and material issue records"
+      raw_fields: "material id; supplier; origin; lot; as-received mass; moisture or dry matter when available; returned quantity"
+      collection_method: "Reconcile approved recipe, warehouse issues, returns, and batch records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Representative production period, normally at least 12 consecutive months or a justified seasonal campaign"
+      site_scope: "Every site and line in dataset scope"
+      aggregation_rule: "Sum net issued mass by material and divide by conforming net output"
+      quality_evidence: "Signed batch records; inventory reconciliation; supplier specifications"
+    - protocol_id: cp_process_water
+      process_id: "formulation_preparation_dry_route_processing_wet_route_processing"
+      flow_role: "Added and process water"
+      record_type: "Meter and batch records"
+      raw_fields: "meter id; opening and closing reading; batch id; process; quantity; recirculated quantity"
+      collection_method: "Read calibrated meters or documented batch dosing systems"
+      unit: "m3 or kg"
+      frequency: "Continuous or each batch"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Each included site and process line"
+      aggregation_rule: "Subtract separately metered recirculation when appropriate and normalize net supplied water to output"
+      quality_evidence: "Meter calibration; dosing records; water balance"
+    - protocol_id: cp_energy_carriers
+      process_id: "dry_route_processing_wet_route_processing_retail_packaging_site_support_losses"
+      flow_role: "Electricity, fuels, steam, and on-site generation"
+      record_type: "Meter, invoice, and fuel-stock records"
+      raw_fields: "carrier; meter; quantity; unit; supplier; generation; export; line or site; period"
+      collection_method: "Collect line meters where available and reconcile to site invoices and stock change"
+      unit: "kWh, MJ, kg, or m3"
+      frequency: "Continuous, monthly, or each delivery"
+      temporal_coverage: "Same period as product output and representative of normal operation"
+      site_scope: "Every included site with line and shared-site separation"
+      aggregation_rule: "Directly assign line meters; allocate reconciled shared remainder under Section 7"
+      quality_evidence: "Calibration; invoices; meter hierarchy; energy balance"
+    - protocol_id: cp_packaging_materials
+      process_id: "wet_route_processing_retail_packaging"
+      flow_role: "Packaging inputs and losses"
+      record_type: "Packaging bill of materials and issue records"
+      raw_fields: "component id; material; packaging level; item count; mass per item; issued mass; returned mass; scrap"
+      collection_method: "Combine product packaging specification with issued quantities and verified sample or supplier mass"
+      unit: "item and kg"
+      frequency: "Each packaging run or batch"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every packaging configuration in scope"
+      aggregation_rule: "Convert item counts to mass, subtract verified returns, and normalize to net product output"
+      quality_evidence: "Approved packaging specification; sample-weighing record; inventory reconciliation"
+    - protocol_id: cp_product_quality_yield
+      process_id: "dry_route_processing_wet_route_processing_retail_packaging"
+      flow_role: "Conforming output and product qualifiers"
+      record_type: "Batch yield, laboratory, and label records"
+      raw_fields: "species; feeding purpose; life stage; route; product mass; unit count; net content; moisture; metabolizable energy; release status"
+      collection_method: "Collect released-batch weights and quality results using documented methods"
+      unit: "kg; percent moisture; kcal ME/kg"
+      frequency: "Each released batch"
+      temporal_coverage: "Same period as inventory inputs"
+      site_scope: "Every product family, route, and site in scope"
+      aggregation_rule: "Sum conforming released net content; keep rejected product out of denominator"
+      quality_evidence: "Calibrated scales; laboratory report; approved label; batch-release record"
+    - protocol_id: cp_batch_yield_losses
+      process_id: "formulation_preparation_dry_route_processing_wet_route_processing_retail_packaging"
+      flow_role: "Transfers, rework, and manufacturing losses"
+      record_type: "Batch mass-balance and waste records"
+      raw_fields: "input mass; transfer mass; conforming output; rework in and out; loss mass; waste type; destination"
+      collection_method: "Reconcile adjacent process transfers and weigh losses by disposition"
+      unit: "kg"
+      frequency: "Each batch with period reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included line and site"
+      aggregation_rule: "Aggregate without double counting internal transfers or rework and normalize external losses to output"
+      quality_evidence: "Batch reconciliation; scale records; waste tickets; rework ledger"
+    - protocol_id: cp_sanitation_records
+      process_id: "site_support_losses"
+      flow_role: "Sanitation water and materials"
+      record_type: "Cleaning schedules, dosing logs, and material issues"
+      raw_fields: "area or equipment; cleaning event; water; chemical id; concentration; issued quantity; recovery"
+      collection_method: "Collect automated cleaning-system records or signed sanitation logs and material issues"
+      unit: "m3 and kg"
+      frequency: "Each cleaning event"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All shared and line-specific sanitation in scope"
+      aggregation_rule: "Directly assign line events; allocate shared events under Section 7"
+      quality_evidence: "Dosing calibration; cleaning log; chemical inventory reconciliation"
+    - protocol_id: cp_wastewater_waste
+      process_id: "site_support_losses"
+      flow_role: "Wastewater and solid or hazardous waste"
+      record_type: "Discharge meters, analytical reports, and waste shipment records"
+      raw_fields: "waste id; quantity; water volume; pollutant load; treatment route; carrier; destination"
+      collection_method: "Collect metered discharge and weighed shipment records; reconcile on-site treatment transfers"
+      unit: "m3 and kg"
+      frequency: "Continuous, each shipment, or permit interval"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included site"
+      aggregation_rule: "Sum by waste identity and treatment route; prevent duplication between generation and treatment output"
+      quality_evidence: "Meter calibration; laboratory analysis; manifests; contractor receipts"
+    - protocol_id: cp_direct_emissions
+      process_id: "formulation_preparation_dry_route_processing_wet_route_processing_site_support_losses"
+      flow_role: "Direct elementary emissions"
+      record_type: "Monitoring, permit, fuel, refrigerant, and engineering records"
+      raw_fields: "pollutant; compartment; measured concentration or factor; activity; calculation method; period"
+      collection_method: "Prefer direct monitoring; otherwise use documented mass balance or engineering calculation tied to collected activity"
+      unit: "kg pollutant"
+      frequency: "Monitoring or reporting interval"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every emitting source in dataset scope"
+      aggregation_rule: "Calculate pollutant mass, reconcile with permits, and allocate only shared sources under Section 7"
+      quality_evidence: "Calibration; laboratory report; permit filing; calculation workbook"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period or batch amount / conforming net pet-food output"
+      inputs:
+        - "collected amount"
+        - "conforming net output mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+    - id: calc_packaging_mass
+      applies_to: "packaging item records"
+      rule: "packaging mass = issued item count × verified mass per item, less returned conforming items; reconcile the result to packaging inventory issues"
+      inputs:
+        - "item count"
+        - "mass per item"
+        - returns
+        - "issued mass"
+      output: "kg packaging per 1 kg net pet-food output"
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+    - id: calc_energy_conversion
+      applies_to: "fuels and purchased thermal energy"
+      rule: "carrier energy = collected carrier quantity × documented lower heating value or supplier energy content; preserve original quantity and factor"
+      inputs:
+        - "carrier quantity"
+        - "conversion factor"
+        - "factor source"
+      output: "MJ by carrier and original carrier quantity"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_shared_allocation
+      applies_to: "shared-site inputs and emissions"
+      rule: "allocated amount = reconciled shared total × selected physical allocation share; conforming production mass is the default share unless another causal parameter is justified"
+      inputs:
+        - "shared total"
+        - "product outputs"
+        - "allocation parameter"
+      output: "allocated amount per product family"
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+        - fao-leap-feed-2016
+    - id: calc_mass_balance
+      applies_to: "each process and overall manufacturing system"
+      rule: "mass-balance residual = total material inputs + internal transfers in − conforming outputs − internal transfers out − measured rework stock change − measured wastes − measured direct mass emissions"
+      inputs:
+        - ingredient
+        - water
+        - packaging
+        - transfer
+        - output
+        - rework
+        - waste
+        - "and emission records"
+      output: "disclosed residual and reconciliation status"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_daily_ration_equivalence
+      applies_to: "downstream complete pet-food PEF use"
+      rule: "daily-ration mass = declared daily metabolizable-energy requirement / measured or substantiated product metabolizable-energy density"
+      inputs:
+        - "daily energy requirement"
+        - "kcal ME/kg"
+        - "target species and body-weight basis"
+      output: "kg product per declared daily ration"
+      source_ids:
+        - fediaf-pet-food-pefcr-2025
+        - fediaf-nutritional-guidelines-2024
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Preserve product, species, complete or complementary status, life stage, route, moisture, metabolizable-energy method, net content, recipe or product family, packaging, site, geography, and reporting period."
+      evidence: "Approved specification, label, and batch-release record"
+    - id: dq_primary_foreground
+      applies_to: "site-controlled processes"
+      requirement: "Use primary site- or supply-chain-specific data for processes under the manufacturer's control or direct influence; explain every secondary-data substitution."
+      evidence: "Meters, invoices, batch records, engineering records, and substitution log"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground records"
+      requirement: "Cover a period representative of normal production and disclose shutdowns, trials, abnormal losses, seasonal campaigns, and excluded batches."
+      evidence: "Production calendar and coverage reconciliation"
+    - id: dq_completeness
+      applies_to: "material and energy inventory"
+      requirement: "Reconcile purchased and issued materials, energy, water, product output, rework, packaging, waste, wastewater, and direct emissions to site totals; missing flows are data gaps, not zero values."
+      evidence: "Mass, energy, water, and waste reconciliation"
+    - id: dq_route_separation
+      applies_to: "wet, dry, and semi-moist products"
+      requirement: "Separate route-specific lines and meters or document the allocation of shared processes; do not merge unlike routes without preserving their technology shares."
+      evidence: "Line mapping, meter hierarchy, and allocation workbook"
+    - id: dq_geography_technology
+      applies_to: "upstream links"
+      requirement: "Use supplier, geographic, and technology information at the most specific available level and disclose proxy datasets."
+      evidence: "Supplier records and background-dataset mapping"
+    - id: dq_measurement_quality
+      applies_to: "measured values"
+      requirement: "Retain calibration, sampling, laboratory method, estimation formula, and responsible record for every material measurement or calculation."
+      evidence: "Calibration certificates, laboratory reports, and calculation files"
+    - id: dq_reviewability
+      applies_to: "dataset package"
+      requirement: "Keep raw records, transformations, allocation parameters, exclusions, and reconciliation results traceable from each normalized row to its evidence."
+      evidence: "Audit trail and reviewer sign-off"
+validation_rules:
+  - rule_id: val_reference_output
+    applies_to: "reference flow"
+    rule: "The normalized conforming output shall equal 1 kg net pet-food content, packaging shall be separate, and all inventory rows shall use a declared conversion to that reference."
+    source_ids:
+      - fediaf-pet-food-pefcr-2025
+      - eu-regulation-767-2009
+  - rule_id: val_required_qualifiers
+    applies_to: "product identity"
+    rule: "All Required qualifiers in Section 3 shall be present and internally consistent with product, batch, label, and process-route records."
+    source_ids:
+      - eu-regulation-767-2009
+      - fediaf-nutritional-guidelines-2024
+  - rule_id: val_feeding_purpose
+    applies_to: "complete and complementary product claims"
+    rule: "A complete product shall be identified as sufficient for a daily ration; a complementary product shall identify the other feed or feeding context needed and shall not be represented as a complete daily ration by itself."
+    source_ids:
+      - eu-regulation-767-2009
+      - fediaf-nutritional-guidelines-2024
+  - rule_id: val_route_processes
+    applies_to: "process map"
+    rule: "Include the dry-route process only when applicable and the wet-route process only when applicable; at least one declared route-specific process shall connect preparation to retail-ready output."
+    source_ids:
+      - fediaf-recipes-processing
+  - rule_id: val_packaging_reconciliation
+    applies_to: "packaging inventory"
+    rule: "Packaging components by material and level shall reconcile to the declared retail configuration and wet-route primary packaging shall not be counted again in final packaging."
+    source_ids:
+      - fediaf-pet-food-pefcr-2025
+  - rule_id: val_mass_balance
+    applies_to: "each process and overall manufacturing"
+    rule: "Report the mass-balance residual and investigate material residuals using the declared measurement uncertainty and missing-flow review; do not force closure by assigning an unexplained residual to waste."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: val_energy_reconciliation
+    applies_to: "energy inventory"
+    rule: "Route-specific plus allocated shared energy shall reconcile to site totals by carrier and period; on-site generation, own use, export, and contractual electricity instruments shall be disclosed separately."
+    source_ids:
+      - fediaf-pet-food-pefcr-2025
+  - rule_id: val_rework_no_double_count
+    applies_to: "rework and same-category inputs"
+    rule: "Internal rework shall appear as a linked internal transfer without duplicate upstream burdens, while purchased same-category input shall have a separate upstream dataset."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: val_allocation_disclosure
+    applies_to: "shared processes and coproducts"
+    rule: "Every allocated row shall identify the allocation rule, denominator, products included, period, and reconciliation to the unallocated total."
+    source_ids:
+      - fao-leap-feed-2016
+      - fediaf-pet-food-pefcr-2025
+  - rule_id: val_data_source_coverage
+    applies_to: "external and background evidence"
+    rule: "Every external method rule shall cite a listed source and every purchased material or service shall have an upstream dataset reference or an explicit unresolved data gap."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: val_daily_ration_use
+    applies_to: "downstream PEF interpretation"
+    rule: "A complete-meal comparison shall use product-specific metabolizable-energy density and a declared species/body-weight daily-energy basis to convert the manufacturing result to a daily ration; the 1 kg result alone is not a comparative PEF functional unit."
+    source_ids:
+      - fediaf-pet-food-pefcr-2025
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for retail-packaged dog or cat food"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supplier-specific or site-specific cradle-to-gate modelling; product-system assembly; manufacturing improvement; downstream PEF modelling after adding required upstream and downstream stages and, for complete meals, conversion to the daily-ration functional unit"
+  excluded_use: "Standalone cradle-to-grave or comparative environmental claims; nutritional-compliance certification; pet-food safety certification; veterinary or therapeutic claims; substitution for missing ingredient, distribution, use, or end-of-life stages"
+  required_metadata: "All Section 3 qualifiers; site and geography; reporting period; product and route shares; upstream dataset mapping; packaging bill; allocation rules; data coverage; exclusions; mass and energy reconciliation"
+  required_quality_disclosure: "Primary versus secondary data status; measurement and estimation methods; temporal, geographic, and technological representativeness; completeness; proxy datasets; allocation; abnormal production; unresolved UUIDs; missing ranges and upstream links"
+  update_trigger: "Material change in recipe or ingredient sourcing, species or life-stage claim, complete/complementary status, moisture or energy density, processing route or equipment, site energy or water system, packaging configuration, waste treatment, allocation basis, or data-quality evidence"
+data_sources:
+  - id: "fediaf-pet-food-pefcr-2025"
+    type: "standard"
+    reference: "FEDIAF, Prepared Pet Food for Cats and Dogs, updated PEFCR, 2025, https://europeanpetfood.org/wp-content/uploads/2025/02/PEFCR_PetFood_update.pdf (retrieved 2026-07-25)"
+    used_for: "Product scope, representative subcategories, downstream daily-ration functional unit, life-cycle stages, mandatory company-specific data, foreground/background distinction, manufacturing inventory, allocation, data quality, and packaging"
+  - id: "eu-regulation-767-2009"
+    type: "standard"
+    reference: "Regulation (EC) No 767/2009 on the placing on the market and use of feed, https://eur-lex.europa.eu/eli/reg/2009/767/oj/eng (retrieved 2026-07-25)"
+    used_for: "Complete, complementary, compound-feed, labelling, packaging, and net-quantity product identity"
+  - id: "eu-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-07-25)"
+    used_for: "General PEF method, foreground and primary-data rules, life-cycle inventory completeness, allocation hierarchy, and direct-emission treatment"
+  - id: "fediaf-nutritional-guidelines-2024"
+    type: "handbook"
+    reference: "FEDIAF Nutritional Guidelines for Complete and Complementary Pet Food for Cats and Dogs, publication July 2024, https://europeanpetfood.org/wp-content/uploads/2024/09/FEDIAF-Nutritional-Guidelines_2024.pdf (retrieved 2026-07-25)"
+    used_for: "Feeding-purpose definitions, species and life-stage qualifiers, moisture class, metabolizable-energy and nutritional-adequacy metadata"
+  - id: "fediaf-recipes-processing"
+    type: "extension_guidance"
+    reference: "FEDIAF, Recipes and Processing, https://fediaf.org/prepared-pet-foods/recipes-and-processing.html (retrieved 2026-07-25)"
+    used_for: "Ingredient measurement, grinding and mixing, dry cooking-extrusion and finishing, wet filling and sterilisation process decomposition"
+  - id: "fao-leap-feed-2016"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership, Environmental performance of animal feeds supply chains: Guidelines for assessment, 2016, https://openknowledge.fao.org/server/api/core/bitstreams/040bf0e7-e652-4eda-807c-37172c403671/content (retrieved 2026-07-25)"
+    used_for: "Feed-processing system boundaries, subdivision and physical allocation hierarchy, economic fallback, coproduct and waste treatment"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1a95bce618d234ed602ddd4d976fa09726a00591384e2f8b79cfb75afcf8be5f"
+  generated_content_sha256: "sha256:c5fd98f001a1a738a62aa9ff715eebd498497357ec3e28ec0a3cc2f8bf8c2035"

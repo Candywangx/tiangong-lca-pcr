@@ -1,0 +1,474 @@
+import { createHash, randomUUID } from "node:crypto";
+import { spawn } from "node:child_process";
+import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, realpathSync, renameSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { homedir } from "node:os";
+import { StringDecoder } from "node:string_decoder";
+
+import { GoalHarnessError } from "./errors.mjs";
+import { readRecoveredSessionTurn } from "./session-recovery.mjs";
+
+export class CodexAppServerAdapter {
+  constructor({
+    command = "codex",
+    args = ["app-server", "--stdio"],
+    endpoint = null,
+    spawnFactory = (program, programArgs, options) => spawn(program, programArgs, options),
+    webSocketFactory = (url) => new WebSocket(url),
+    requestTimeoutMs = 30_000,
+    environment = process.env,
+    sessionsRoot = path.join(environment.CODEX_HOME || path.join(homedir(), ".codex"), "sessions"),
+  } = {}) {
+    this.command = command;
+    this.args = args;
+    this.endpoint = endpoint;
+    this.spawnFactory = spawnFactory;
+    this.webSocketFactory = webSocketFactory;
+    this.requestTimeoutMs = requestTimeoutMs;
+    this.environment = environment;
+    this.sessionsRoot = sessionsRoot;
+    this.child = null;
+    this.socket = null;
+    this.connected = false;
+    this.nextId = 1;
+    this.pending = new Map();
+    this.stderr = "";
+  }
+
+  async doctor() {
+    try {
+      const initialize = await this.connect();
+      const list = await this.request("thread/list", { limit: 1, cursor: null, archived: false });
+      return { ok: true, initialize, thread_list: list };
+    } catch (error) {
+      throw visibleTaskError("app-server doctor", error, this.stderr);
+    }
+  }
+
+  async createAuthorTask(input) {
+    return this.withStartIntent(input, 'author', async save => this.createAuthorTaskWire({...input, saveStartIntent:save}));
+  }
+
+  async withStartIntent(input, kind, start) {
+    if (!input.receiptStateDir || !input.clientUserMessageId) return start(() => {});
+    const binding = {kind,client_user_message_id:input.clientUserMessageId,worktree_path:input.worktreePath,thread_id:input.threadId ?? null,
+      model:input.model ?? null,reasoning_effort:input.reasoningEffort ?? null,
+      prompt_sha256:createHash('sha256').update(input.prompt ?? '').digest('hex')};
+    const intentDir = path.join(input.receiptStateDir,'author-start-intents');
+    mkdirSync(intentDir,{recursive:true});
+    const intentPath = path.join(intentDir,`${createHash('sha256').update(input.clientUserMessageId).digest('hex')}.json`);
+    let intent;
+    const save = patch => {
+      intent = {...intent,...patch};
+      const temp = `${intentPath}.${randomUUID()}.tmp`;
+      writeFileSync(temp,JSON.stringify(intent),{flag:'wx',mode:0o600});
+      syncPath(temp);renameSync(temp,intentPath);syncPath(intentDir);
+    };
+    if (existsSync(intentPath)) {
+      intent=JSON.parse(readFileSync(intentPath,'utf8'));
+      if (JSON.stringify(intent.binding) !== JSON.stringify(binding)) throw startUncertain('Saved author start binding changed.');
+      if (intent.visible) return intent.visible;
+      if (!intent.thread_id) throw startUncertain('Thread start outcome cannot be proved; preserve its intent for reconciliation.');
+      await this.connect();
+      const response = await this.request('thread/read',{threadId:intent.thread_id,includeTurns:true});
+      if (response.thread?.id !== intent.thread_id || response.thread?.cwd !== input.worktreePath) throw startUncertain('Thread identity cannot be reconciled.');
+      const matching=(response.thread.turns ?? []).filter(turn=>turn.clientUserMessageId === input.clientUserMessageId
+        || (turn.items ?? []).some(item=>item.type === 'userMessage' && (item.id === input.clientUserMessageId || item.clientUserMessageId === input.clientUserMessageId)));
+      if (matching.length !== 1 || !matching[0].id) throw startUncertain('No unique turn is bound to the persisted clientUserMessageId.');
+      const visible={thread_id:intent.thread_id,turn_id:matching[0].id};save({visible,status:'started'});return visible;
+    }
+    intent={schema_version:1,binding,status:'start_requested',thread_id:input.threadId ?? null,created_at:new Date().toISOString()};
+    // Exclusive creation makes an unproved concurrent or crashed start fail closed.
+    writeFileSync(intentPath,JSON.stringify(intent),{flag:'wx',mode:0o600});syncPath(intentPath);syncPath(intentDir);
+    const visible=await start(save);save({visible,status:'started'});return visible;
+  }
+
+  async createAuthorTaskWire({
+    worktreePath,
+    additionalWorkspaceRoots = [],
+    title,
+    prompt,
+    outputSchema,
+    sandbox = "danger-full-access",
+    approvalPolicy = "never",
+    model = null,
+    reasoningEffort = null,
+    clientUserMessageId = null,
+    projectId = null,
+    receiptStateDir = null,
+    saveStartIntent = () => {},
+  }) {
+    try {
+      await this.connect();
+      const started = await this.request("thread/start", compact({
+        cwd: worktreePath,
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
+        ephemeral: false,
+        approvalPolicy,
+        sandbox,
+        model,
+        projectId,
+      }));
+      const threadId = started?.thread?.id;
+      if (!threadId) {
+        throw new Error("thread/start returned no thread.id");
+      }
+      saveStartIntent({thread_id:threadId,status:"thread_started"});
+      await this.request("thread/name/set", { threadId, name: title });
+      saveStartIntent({status:"turn_start_requested"});
+      const turn = await this.request("turn/start", compact({
+        threadId,
+        cwd: worktreePath,
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
+        input: [{ type: "text", text: prompt }],
+        outputSchema,
+        model,
+        effort: reasoningEffort,
+        clientUserMessageId,
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
+      }));
+      const turnId = turn?.turn?.id;
+      if (!turnId) {
+        throw new Error("turn/start returned no turn.id");
+      }
+      return { thread_id: threadId, turn_id: turnId };
+    } catch (error) {
+      throw visibleTaskError("thread/start", error, this.stderr);
+    }
+  }
+
+  async resumeThread({ threadId }) {
+    try {
+      await this.connect();
+      return await this.request("thread/resume", { threadId, persistExtendedHistory: true });
+    } catch (error) {
+      throw visibleTaskError("thread/resume", error, this.stderr);
+    }
+  }
+
+  async startRepairTurn(input) {
+    return this.withStartIntent(input,'repair',async save=>this.startRepairTurnWire({...input,saveStartIntent:save}));
+  }
+
+  async startRepairTurnWire({
+    threadId,
+    worktreePath,
+    additionalWorkspaceRoots = [],
+    prompt,
+    outputSchema,
+    model = null,
+    reasoningEffort = null,
+    clientUserMessageId = null,
+    receiptStateDir = null,
+    saveStartIntent = () => {},
+  }) {
+    try {
+      await this.connect();
+      const params = compact({
+        threadId,
+        cwd: worktreePath,
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
+        input: [{ type: "text", text: prompt }],
+        outputSchema,
+        model,
+        effort: reasoningEffort,
+        clientUserMessageId,
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
+      });
+      let turn;
+      saveStartIntent({status:"turn_start_requested"});
+      try {
+        turn = await this.request("turn/start", params);
+      } catch (error) {
+        if (!/thread not found/iu.test(error?.message ?? "")) throw error;
+        await this.request("thread/resume", { threadId, persistExtendedHistory: true });
+        turn = await this.request("turn/start", params);
+      }
+      const turnId = turn?.turn?.id;
+      if (!turnId) throw new Error("turn/start returned no turn.id");
+      return { thread_id: threadId, turn_id: turnId };
+    } catch (error) {
+      throw visibleTaskError("repair turn/start", error, this.stderr);
+    }
+  }
+
+  async findProjectByRoot(projectRoot) {
+    try {
+      await this.connect();
+      let cursor = null;
+      do {
+        const response = await this.request("project/list", { cursor, limit: 100 });
+        const match = (response?.data ?? []).find((project) =>
+          (project.roots ?? []).some((root) => root.path === projectRoot),
+        );
+        if (match) return match;
+        cursor = response?.nextCursor ?? null;
+      } while (cursor);
+      return null;
+    } catch (error) {
+      throw visibleTaskError("project/list", error, this.stderr);
+    }
+  }
+
+  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null, deadline = Infinity }) {
+    try {
+      await this.connect({ deadline });
+      const response = await this.request("thread/read", { threadId, includeTurns }, { deadline });
+      if (includeTurns && expectedTurnId && worktreePath && response.thread?.status?.type === "idle"
+        && !response.thread.turns?.some((turn) => turn.id === expectedTurnId)) {
+        if (response.thread.id !== threadId || response.thread.cwd !== worktreePath) {
+          throw new GoalHarnessError("GOAL_SESSION_RECOVERY_INVALID", "Codex thread identity or worktree changed.");
+        }
+        const recovered = readRecoveredSessionTurn({ sessionPath: response.thread.path,
+          sessionsRoot: this.sessionsRoot, threadId, turnId: expectedTurnId, worktreePath });
+        if (recovered) return { ...response, session_recovery: recovered.audit,
+          thread: { ...response.thread, turns: [...(response.thread.turns ?? []), recovered.turn] } };
+      }
+      return response;
+    } catch (error) {
+      throw visibleTaskError("thread/read", error, this.stderr);
+    }
+  }
+
+  async interruptTurn({ threadId, turnId }) {
+    try {
+      await this.connect();
+      return await this.request("turn/interrupt", { threadId, turnId });
+    } catch (error) {
+      throw visibleTaskError("turn/interrupt", error, this.stderr);
+    }
+  }
+
+  async connect({ deadline = Infinity } = {}) {
+    waitBudget(this.requestTimeoutMs, deadline, "connect");
+    if (this.connected) {
+      return this.initializeResult;
+    }
+    if (!this.child && !this.socket) await this.startTransport({ deadline });
+    const result = await this.request("initialize", {
+      clientInfo: { name: "tiangong-pcr-goal-harness", title: "TianGong PCR Goal Harness", version: "1.0.0" },
+      capabilities: { experimentalApi: true },
+    }, { deadline });
+    this.notify("initialized", {});
+    this.initializeResult = result;
+    this.connected = true;
+    return result;
+  }
+
+  request(method, params, { timeoutMs = this.requestTimeoutMs, deadline = Infinity } = {}) {
+    const budget = waitBudget(timeoutMs, deadline, method, params?.threadId);
+    if (!this.child && !this.socket) throw new Error("Codex app-server transport is not connected");
+    const id = this.nextId;
+    this.nextId += 1;
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        this.pending.delete(id);
+        // Cancel only this client wait. The durable author turn keeps running;
+        // a late response is ignored because its request id is no longer pending.
+        reject(budget.deadlineLimited ? reviewWindowError(method, params?.threadId) : new Error(`Timed out waiting for ${method}`));
+      }, budget.timeoutMs);
+      this.pending.set(id, { resolve, reject, timeout, method });
+      try { this.write({ id, method, params }); }
+      catch (error) { clearTimeout(timeout); this.pending.delete(id); reject(error); }
+    });
+  }
+
+  notify(method, params) {
+    this.write({ method, params });
+  }
+
+  async close() {
+    if (!this.child && !this.socket) return;
+    for (const pending of this.pending.values()) {
+      clearTimeout(pending.timeout);
+      pending.reject(new Error("Codex app-server closed"));
+    }
+    this.pending.clear();
+    if (this.socket) this.socket.close();
+    if (this.child) this.child.kill("SIGTERM");
+    this.child = null;
+    this.socket = null;
+    this.connected = false;
+  }
+
+  async startTransport({ deadline = Infinity } = {}) {
+    if (this.endpoint) {
+      await this.startWebSocket({ deadline });
+    } else {
+      this.startProcess();
+    }
+  }
+
+  async startWebSocket({ deadline = Infinity } = {}) {
+    const budget = waitBudget(this.requestTimeoutMs, deadline, "connect");
+    let socket;
+    try {
+      socket = this.webSocketFactory(this.endpoint);
+    } catch (error) {
+      throw visibleTaskError("websocket start", error, this.stderr);
+    }
+    this.socket = socket;
+    await new Promise((resolve, reject) => {
+      const cleanup = () => {
+        clearTimeout(timeout);
+        socket.removeEventListener?.("open", onOpen);
+        socket.removeEventListener?.("error", onError);
+      };
+      const onOpen = () => { cleanup(); resolve(); };
+      const onError = event => {
+        cleanup();
+        reject(new Error(`WebSocket connection failed: ${event.message ?? "unknown error"}`));
+      };
+      const timeout = setTimeout(() => {
+        cleanup();
+        if (this.socket === socket) this.socket = null;
+        this.connected = false;
+        reject(budget.deadlineLimited ? reviewWindowError("connect") : new Error(`Timed out connecting to ${this.endpoint}`));
+        socket.close();
+      }, budget.timeoutMs);
+      socket.addEventListener("open", onOpen, { once: true });
+      socket.addEventListener("error", onError, { once: true });
+    });
+    socket.addEventListener("message", (event) => this.handleLine(String(event.data)));
+    socket.addEventListener("error", (event) => this.rejectPending(new Error(`Codex app-server WebSocket error: ${event.message ?? "unknown error"}`)));
+    socket.addEventListener("close", (event) => {
+      this.rejectPending(new Error(`Codex app-server WebSocket closed with code ${event.code ?? "unknown"}`));
+      this.connected = false;
+    });
+  }
+
+  startProcess() {
+    try {
+      this.child = this.spawnFactory(this.command, this.args, {
+        stdio: ["pipe", "pipe", "pipe"],
+        env: this.environment,
+      });
+    } catch (error) {
+      throw visibleTaskError("process start", error, this.stderr);
+    }
+    const stdoutDecoder = new StringDecoder("utf8");
+    let stdoutBuffer = "";
+    this.child.stdout.on("data", (chunk) => {
+      stdoutBuffer += stdoutDecoder.write(chunk);
+      while (stdoutBuffer.includes("\n")) {
+        const lineEnd = stdoutBuffer.indexOf("\n");
+        const line = stdoutBuffer.slice(0, lineEnd).trim();
+        stdoutBuffer = stdoutBuffer.slice(lineEnd + 1);
+        if (line) this.handleLine(line);
+      }
+    });
+    this.child.stderr.on("data", (chunk) => {
+      this.stderr = `${this.stderr}${chunk.toString("utf8")}`.slice(-16_384);
+    });
+    this.child.on("error", (error) => this.rejectPending(error));
+    this.child.on("exit", (code, signal) => {
+      this.rejectPending(new Error(`Codex app-server exited with code ${code ?? "null"}, signal ${signal ?? "null"}`));
+      this.connected = false;
+    });
+  }
+
+  handleLine(line) {
+    let message;
+    try {
+      message = JSON.parse(line);
+    } catch (error) {
+      this.rejectPending(new Error(`Codex app-server emitted invalid JSON: ${error.message}`));
+      return;
+    }
+    if (!Object.hasOwn(message, "id")) return;
+    const pending = this.pending.get(message.id);
+    if (!pending) return;
+    clearTimeout(pending.timeout);
+    this.pending.delete(message.id);
+    if (message.error) {
+      pending.reject(new Error(`${pending.method}: ${message.error.message ?? JSON.stringify(message.error)}`));
+    } else {
+      pending.resolve(message.result);
+    }
+  }
+
+  rejectPending(error) {
+    for (const pending of this.pending.values()) {
+      clearTimeout(pending.timeout);
+      pending.reject(error);
+    }
+    this.pending.clear();
+  }
+
+  write(message) {
+    if (this.socket?.readyState === 1) {
+      this.socket.send(JSON.stringify(message));
+      return;
+    }
+    if (!this.child?.stdin?.writable) {
+      throw new Error("Codex app-server stdin is unavailable");
+    }
+    this.child.stdin.write(`${JSON.stringify(message)}\n`);
+  }
+}
+
+function authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots = []) {
+  return {
+    type: "workspaceWrite",
+    writableRoots: [...new Set([
+      worktreePath,
+      receiptStateDir,
+      ...additionalWorkspaceRoots,
+      ...linkedWorktreeGitWritableRoots(worktreePath),
+    ].filter(Boolean))],
+    networkAccess: true,
+  };
+}
+
+function linkedWorktreeGitWritableRoots(worktreePath) {
+  try {
+    const dotGit = readFileSync(path.join(worktreePath, ".git"), "utf8").trim();
+    const match = /^gitdir:\s*(.+)$/u.exec(dotGit);
+    if (!match) return [];
+    const worktreeGitDir = realpathSync(path.resolve(worktreePath, match[1]));
+    const commonRelative = readFileSync(path.join(worktreeGitDir, "commondir"), "utf8").trim();
+    const commonGitDir = realpathSync(path.resolve(worktreeGitDir, commonRelative));
+    const worktreesRoot = path.join(commonGitDir, "worktrees");
+    const relativeMetadata = path.relative(worktreesRoot, worktreeGitDir);
+    if (!relativeMetadata || relativeMetadata.startsWith("..") || path.isAbsolute(relativeMetadata)) return [];
+    const head = readFileSync(path.join(worktreeGitDir, "HEAD"), "utf8").trim();
+    if (!/^ref:\s+refs\/heads\/codex\/[A-Za-z0-9._/-]+$/u.test(head)) return [];
+    return [
+      worktreeGitDir,
+      path.join(commonGitDir, "objects"),
+      path.join(commonGitDir, "refs", "heads", "codex"),
+      path.join(commonGitDir, "logs", "refs", "heads", "codex"),
+    ];
+  } catch {
+    return [];
+  }
+}
+
+function visibleTaskError(operation, error, stderr) {
+  if (error instanceof GoalHarnessError) return error;
+  return new GoalHarnessError(
+    "GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE",
+    `Codex visible task interface failed at ${operation}: ${error.message}`,
+    { operation, stderr_tail: stderr || null, required_interface: "codex app-server localhost WebSocket or stdio + thread/start with durable threads" },
+  );
+}
+
+function compact(value) {
+  return Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== null && entry !== undefined));
+}
+
+function syncPath(file) {const fd=openSync(file,'r');try {fsyncSync(fd);} finally {closeSync(fd);}}
+function startUncertain(message) {return new GoalHarnessError('GOAL_AUTHOR_START_UNCERTAIN',message,{phase:'author_start',origin:'app_server',failure_kind:'unknown',retryable:false});}
+
+function reviewWindowError(operation, subjectId) {
+  return new GoalHarnessError("GOAL_REVIEW_WINDOW_EXHAUSTED", "The current review execution window is exhausted.", {
+    phase: "harvest", origin: "harness_deadline", failure_kind: "execution_window", retryable: false,
+    operation, ...(subjectId ? { subject_id: subjectId } : {}),
+  });
+}
+
+function waitBudget(timeoutMs, deadline, operation, subjectId) {
+  const remaining = deadline - Date.now();
+  if (!(remaining > 0)) throw reviewWindowError(operation, subjectId);
+  return { timeoutMs: Math.min(timeoutMs, remaining), deadlineLimited: remaining <= timeoutMs };
+}

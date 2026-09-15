@@ -1,10 +1,390 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26421"
-  title: "Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.yarn-of-man-made-filaments-multiple-or-cabled-other-than-sewing-thread-high-tenacity-ya-0a2734ab"
+  classification_refs: "CPC 3.0: 26421"
+  covered_products: "Multiple, folded, plied, or cabled yarn of synthetic or artificial continuous filaments, other than the explicit exclusions"
+  excluded_products: "Sewing thread; high-tenacity yarn of polyamides, polyesters, or viscose rayon; yarn put up for retail sale; staple-fibre yarn; monofilament sold as such; products whose defining operation is texturing rather than plying or cabling"
+  representative_product: "Factory-gate polyester-filament two-ply yarn, wound for bulk industrial transfer and reported as net yarn mass"
+  production_route: "Assembly winding or direct creeling of qualifying filament yarn, twisting or cabling, and take-up winding"
+  market_state: "Finished industrial yarn at the producing facility gate, not put up for retail sale, net of reusable carriers and external transport packaging"
+functional_unit:
+  what: "Provision of qualifying multiple or cabled man-made filament yarn ready for downstream textile conversion"
+  how_much: "1,000 kg net yarn mass"
+  how_well: "Conforming to CPC 26421 with declared filament material, number of component ends, ply or cable construction, twist direction and twist level, linear density, and package form"
+  how_long_or_cycle: "One completed production lot at the factory gate; no use-stage service duration is assigned"
+  reference_flow_link: "Net mass of the qualifying output flow from doubling_twisting_winding"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include directly controlled assembly winding or creeling, twisting or cabling, take-up winding, in-process inspection, electricity use, qualifying output, and yarn waste handling for the reported lot."
+      source_ids:
+        - kim-et-al-2025-twisting-process
+        - eu-textiles-bat-2022
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased_filament_yarn"
+      rule: "Keep each purchased filament yarn as an atomic product input linked to an upstream dataset; do not reconstruct polymer or filament production inside this foreground process."
+      source_ids:
+        - unsd-cpc-3-0-26421
+    - rule_id: boundary_excluded_operations
+      applies_to: "excluded_operations"
+      rule: "Exclude dyeing, chemical finishing, external transport packaging, distribution, use, and end-of-life unless the study explicitly extends the boundary and inventories each added operation separately."
+      source_ids:
+        - eu-textiles-bat-2022
+boundary_abstraction:
+  declared_starting_condition: "Qualifying single or already-plied man-made filament yarn received on production packages, with material identity and upstream dataset reference declared"
+  starting_condition_role: "Purchased product input to the foreground doubling, twisting, cabling, and winding operation"
+  product_classification_scope: "CPC 26421 output; CPC 35520 synthetic filament yarn and CPC 35550 artificial filament yarn are common upstream input scopes"
+  recursive_input_rule: "Any purchased yarn already classified within CPC 26421 remains a visible product input and links to a separate upstream dataset; it is not absorbed into the foreground output identity."
+  upstream_dataset_requirement: "Every purchased filament-yarn input requires a supplier-specific or representative upstream production dataset with matching polymer, yarn state, and geography."
+  disclosure: "Declare input polymer, package state, component-end count, machinery route, process ownership, lot coverage, excluded wet or thermal operations, and whether reusable carriers cross the reporting boundary."
+reference_flow_definition:
+  reference_amount: "1,000 kg net yarn mass"
+  product_flow_ref:
+    name: "Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale"
+    uuid: "d3526e15-e0a8-4d96-8688-2738fd9d20ba"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "filament polymer or material"
+    - "number of component ends"
+    - "ply or cable construction"
+    - "S or Z twist direction"
+    - "twist level"
+    - "linear density"
+    - "high-tenacity exclusion confirmation"
+    - "non-retail market state"
+    - "net-mass basis"
+    - "production geography and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and yarn material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net yarn mass excluding reusable carriers and external transport packaging; state the conditioning basis used for weighing."
+  - id: electricity_energy
+    applies_to: "Medium-voltage electricity input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert verified meter readings to MJ using a disclosed conversion and retain the original electricity-meter unit."
+  - id: twist_linear_density
+    applies_to: "Product identity and lot records"
+    required_property_ref:
+      name: "Declared engineering measurements"
+      uuid: ""
+    required_unit: "turns/m and tex or dtex"
+    rule: "Record twist direction, twist level, and linear density using the same test or production-control basis for the reported lot."
+process_map:
+  - id: doubling_twisting_winding
+    name: "Assembly winding, twisting or cabling, and take-up winding"
+    inclusion: "required"
+    inclusion_condition: "Always required for the qualifying foreground product"
+    role: "Foreground production"
+    quantitative_reference: "1,000 kg net qualifying yarn output"
+process_inventory:
+  - id: doubling_twisting_winding
+    label: "Assembly winding, twisting or cabling, and take-up winding"
+    inputs:
+      product:
+        - row_id: input_polyester_filament
+          role: "Polyester filament yarn input"
+          name: "Polyester Filament"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30173859-61d4-4518-ba9e-6846b8491c1b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased polyester filament yarn when it enters the reported lot as a component yarn."
+          amount:
+            expression: "Foreground net mass entering the lot, reconciled against output and polyester yarn waste."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: input_nylon6_filament
+          role: "Nylon 6 filament yarn input"
+          name: "Nylon 6 filament yarn, non-high-tenacity"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record ordinary-strength Nylon 6 filament yarn when it enters the reported lot; high-tenacity polyamide yarn is outside this PCR."
+          amount:
+            expression: "Foreground net mass entering the lot, reconciled against output and Nylon 6 yarn waste."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: input_artificial_filament
+          role: "Artificial filament yarn input"
+          name: "Artificial filament yarn (except sewing thread and multiple or cabled yarn), not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "af18d089-ed9e-4dd9-b3e3-5f5decb6c61b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased artificial filament yarn when it enters the reported lot as a component yarn."
+          amount:
+            expression: "Foreground net mass entering the lot, reconciled against output and artificial filament yarn waste."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: input_medium_voltage_electricity
+          role: "Grid-supplied medium-voltage alternating current"
+          name: "Alternating current, 1-35 kV, consumption mix at user"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record metered electricity supplied to the twisting and winding machinery and directly supporting equipment within the process boundary."
+          amount:
+            expression: "Foreground submeter or reconciled facility-meter consumption for the reported lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_multiple_cabled_yarn
+          role: "Qualifying multiple or cabled man-made filament yarn"
+          name: "Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3526e15-e0a8-4d96-8688-2738fd9d20ba"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only output that satisfies the product identity and all exclusions in this PCR."
+          amount:
+            expression: "Foreground net mass of accepted qualifying yarn output; use this measurement as the normalization denominator."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_polyester_filament_yarn
+          role: "Waste polyester filament yarn"
+          name: "Waste polyester filament yarn"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record polyester filament yarn removed as breaks, start-up loss, off-specification yarn, or winding waste."
+          amount:
+            expression: "Foreground segregated waste mass leaving the process or transferred to on-site recovery."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: waste_nylon6_filament_yarn
+          role: "Waste Nylon 6 filament yarn"
+          name: "Waste Nylon 6 filament yarn"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record ordinary-strength Nylon 6 filament yarn removed as breaks, start-up loss, off-specification yarn, or winding waste."
+          amount:
+            expression: "Foreground segregated waste mass leaving the process or transferred to on-site recovery."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: waste_artificial_filament_yarn
+          role: "Waste artificial filament yarn"
+          name: "Waste artificial filament yarn"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record artificial filament yarn removed as breaks, start-up loss, off-specification yarn, or winding waste."
+          amount:
+            expression: "Foreground segregated waste mass leaving the process or transferred to on-site recovery."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net qualifying yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_lots
+    applies_to: "mixed_product_production"
+    rule: "Subdivide production by product lot, machine, and reporting period before applying allocation."
+    source_ids: []
+  - rule_id: allocation_shared_electricity
+    applies_to: "shared_electricity"
+    rule: "When direct submetering is unavailable, allocate shared electricity using documented machine operating time and measured load; retain raw meter and production records."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: allocation_yarn_waste
+    applies_to: "yarn_waste"
+    rule: "Keep burdens of generated yarn waste with the foreground process up to the waste handover point; do not credit avoided virgin production inside this foreground inventory."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_yarn_mass_balance
+      process_id: "doubling_twisting_winding"
+      flow_role: "filament-yarn inputs, qualifying yarn output, and polymer-specific yarn wastes"
+      record_type: "weighbridge, scale, lot ledger, and quality-release records"
+      raw_fields: "timestamp; lot_id; material_identity; polymer; high_tenacity_flag; input_mass; accepted_output_mass; waste_mass; carrier_tare; disposition"
+      collection_method: "Weigh each input, accepted output, and segregated waste stream on calibrated equipment; subtract documented carrier tare and link every record to the lot."
+      unit: "kg"
+      frequency: "each lot and each waste handover"
+      temporal_coverage: "entire reporting period"
+      site_scope: "all included lines and shifts"
+      aggregation_rule: "sum net masses by row_id and lot, then normalize with calc_normalize_reference_mass"
+      quality_evidence: "calibration records; tare records; lot genealogy; quality-release status; waste transfer records"
+    - protocol_id: cp_electricity_meter
+      process_id: "doubling_twisting_winding"
+      flow_role: "input_medium_voltage_electricity"
+      record_type: "electricity submeter or reconciled facility meter"
+      raw_fields: "meter_id; timestamp_start; timestamp_end; opening_reading; closing_reading; original_unit; machine_runtime; measured_load; lot_id"
+      collection_method: "Read the dedicated submeter for each lot; when shared, reconcile facility readings and allocate only with documented operating time and measured load."
+      unit: "original meter unit and MJ"
+      frequency: "each lot or meter interval"
+      temporal_coverage: "entire reporting period"
+      site_scope: "all included twisting, winding, and directly supporting equipment"
+      aggregation_rule: "subtract opening from closing readings, remove documented out-of-boundary use, allocate shared use, convert to MJ, and normalize"
+      quality_evidence: "meter identity; meter calibration or verification; reconciliation; allocation record"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "all inventory exchanges"
+      rule: "normalization factor = 1,000 kg / measured net qualifying output kg; multiply each measured exchange by the factor"
+      inputs:
+        - "measured exchange"
+        - "measured net qualifying output"
+      output: "exchange per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_yarn_mass_reconciliation
+      applies_to: "yarn material balance"
+      rule: "Reconcile each polymer-specific yarn input against accepted yarn output, segregated yarn waste, and documented work-in-progress change; disclose any residual without forcing it to zero."
+      inputs:
+        - "net input mass"
+        - "accepted output mass"
+        - "waste mass"
+        - "work-in-progress change"
+      output: "disclosed mass-balance residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain evidence for polymer or material, component-end count, ply or cable construction, twist direction and level, linear density, high-tenacity exclusion, and non-retail market state."
+      evidence: "product specification; lot release; test or production-control record"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Include every actual material, electricity, waste, and elementary exchange within the declared process boundary as a separate atomic row; add a specific row when an actual exchange is not represented above."
+      evidence: "input-output inventory; purchase records; meters; waste records; emission records"
+    - id: dq_temporal_site_scope
+      applies_to: "foreground records"
+      requirement: "Cover the complete declared reporting period and every included line and shift; disclose exclusions, shutdowns, abnormal operations, and data gaps."
+      evidence: "production calendar; meter interval coverage; lot register; gap log"
+    - id: dq_identity_resolution
+      applies_to: "Tiangong references"
+      requirement: "Use only verified state_code 100 UUIDs whose type, name, classification, property, and unit semantics match the exchange; leave unresolved UUIDs blank and preserve the specific flow name."
+      evidence: "Tiangong identity verification and manifest review metadata"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_product"
+    rule: "The output uses UUID d3526e15-e0a8-4d96-8688-2738fd9d20ba, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, and the declared CPC 26421 scope."
+    source_ids:
+      - unsd-cpc-3-0-26421
+  - rule_id: validate_exclusions
+    applies_to: "product_lot"
+    rule: "Records confirm that the product is not sewing thread, not high-tenacity polyamide, polyester, or viscose rayon yarn, and not put up for retail sale."
+    source_ids:
+      - unsd-cpc-3-0-26421
+  - rule_id: validate_normalization
+    applies_to: "inventory"
+    rule: "Every exchange is normalized to exactly 1,000 kg measured net qualifying output using calc_normalize_reference_mass, while raw foreground values remain retained."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory"
+    rule: "Every selected flow names one concrete product, electricity supply, waste, or elementary flow; combined categories and selector instructions are absent."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_mass_reconciliation
+    applies_to: "yarn_material_balance"
+    rule: "Polymer-specific yarn inputs, accepted output, yarn wastes, and work-in-progress changes are reconciled and any residual is disclosed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for multiple or cabled man-made filament yarn"
+  downstream_use: "secondary_dataset; background_dataset when reviewed for representativeness"
+  allowed_use: "Product carbon footprinting, process LCA, and downstream textile models requiring a CPC 26421 factory-gate yarn input"
+  excluded_use: "Sewing thread, high-tenacity excluded yarns, retail-sale yarn, staple-fibre yarn, monofilament, or textured-yarn production represented only by false-twist texturing"
+  required_metadata: "PCR id; geography; reporting period; technology; polymer or material; component-end count; ply or cable construction; twist direction and level; linear density; package state; net-mass basis; upstream input dataset links; allocation method"
+  required_quality_disclosure: "Meter and scale coverage; calibration; lot coverage; mass-balance residual; unresolved UUIDs; exclusions; abnormal operations; data gaps; allocation and conversion methods"
+  update_trigger: "Change in polymer input, ply or cable construction, twisting technology, electricity supply, site, allocation basis, output specification, or a material data gap or UUID resolution"
+data_sources:
+  - id: "unsd-cpc-3-0-26421"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, code 26421, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
+    used_for: "Product scope, reference identity, and exclusions"
+  - id: "kim-et-al-2025-twisting-process"
+    type: "literature"
+    reference: "Kim, H., Rho, S., and Jeong, W. (2025), Manufacturing and characterization of conductive threads based on twisting process for applying smartwear, Fashion and Textiles 12:4, https://doi.org/10.1186/s40691-024-00406-7"
+    used_for: "Evidence that multiple PET filament ends are combined by sequential twisting operations; process decomposition only, no amount ranges"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508, BAT conclusions for the textiles industry, http://data.europa.eu/eli/dec_impl/2022/2508/oj (retrieved 2026-08-12)"
+    used_for: "Transferable input-output inventory, material, energy, waste, and data-quality recording principles; no numerical BAT level is applied to yarn manufacture"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:16fab27c39e6386b9555ac6c781631339a173669f597f2bdaa39996e91ef2ac4"
+  generated_content_sha256: "sha256:1b2fe62e55777a52342abd68dfab3aaebd5a6045858885e416ca70781ef71094"

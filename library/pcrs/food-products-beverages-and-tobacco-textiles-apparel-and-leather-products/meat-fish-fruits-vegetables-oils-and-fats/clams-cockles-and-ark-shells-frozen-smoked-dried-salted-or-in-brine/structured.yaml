@@ -1,10 +1,808 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21265"
-  title: "Clams, cockles and ark shells, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.clams-cockles-and-ark-shells-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21265 (exact scope reference)"
+  covered_products: "Food-grade clams, cockles and ark shells, in shell or shucked, frozen, smoked, dried, salted or in brine; edible flour, meal and pellets made from these molluscs"
+  excluded_products: "Live, fresh or chilled molluscs; otherwise prepared or preserved products; inedible flour, meal or pellets; dead or unfit molluscs"
+  representative_product: "Generic qualified saleable CPC 21265 product, with species or commercial group, presentation and primary preservation route declared"
+  production_route: "Exactly one of frozen, smoked, dried, salted, or brine; combined primary routes require separate review"
+  market_state: "Qualified saleable product at the processing-facility gate, after applicable immediate packaging and controlled holding"
+functional_unit:
+  what: "Qualified saleable food product of clams, cockles or ark shells within the declared presentation and one primary preservation route"
+  how_much: "1 kg product content on the declared saleable mass basis; immediate packaging is excluded"
+  how_well: "Conforming to the producer's release specification and applicable food-safety controls, with route, presentation and mass-condition qualifiers reported"
+  how_long_or_cycle: "One production and release cycle ending at the processing-facility gate; no use-duration service is represented"
+  reference_flow_link: "Output reference_product from packaging_holding_release"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "Foreground processing"
+      rule: "Include receipt, sorting and cleaning, the one selected preservation route, immediate packaging, applicable in-facility controlled holding, utilities, process water, ingredients, rejects, wastewater, direct releases and treatment until product release."
+      source_ids:
+        - eu-pef-2021-2279
+        - codex-cxc-52-2003
+    - rule_id: boundary_route_exclusivity
+      applies_to: "Preservation route"
+      rule: "Include exactly one of frozen, smoked, dried, salted, or brine; route-inapplicable inputs and operations shall be absent rather than zero-filled as if performed."
+      source_ids:
+        - unsd-cpc-3-0-21265
+    - rule_id: boundary_upstream_downstream
+      applies_to: "Linked life-cycle stages"
+      rule: "Model cultivation or wild harvest, landing and delivered upstream materials with linked datasets. Exclude post-gate distribution, retail, preparation, consumption and end-of-life from this foreground dataset, while preserving them for a downstream life-cycle model."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_shellfish_control
+      applies_to: "Received bivalves and release"
+      rule: "Retain lot traceability and evidence of applicable growing-area, harvest, purification or approved processing controls; maintain conditions that prevent contamination and uncontrolled microbial growth through release."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Live, raw or previously chilled/frozen bivalve input received at the processing facility with lot identity, origin, harvest or supplier status, incoming mass, shell presentation and temperature or condition recorded"
+  starting_condition_role: "Upstream product input to foreground receipt, preparation and preservation"
+  product_classification_scope: "The exact generic CPC 3.0 subclass 21265 semantic scope, independent of species and facility"
+  recursive_input_rule: "If a purchased input is itself a CPC 21265 preserved product, record it once as an upstream product flow with its own dataset and do not recreate its preservation inventory inside this foreground system; disclose its route and mass basis."
+  upstream_dataset_requirement: "Link representative upstream datasets for cultivation or wild harvest, landing, prior handling, ingredients, energy carriers and packaging production through their delivered inputs; disclose proxies."
+  disclosure: "Declare source area or supplier, traceability lot, incoming state, shell presentation, prior treatment, selected primary route, facility gate, geography, period, technology, packaging and controlled-holding conditions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Clams, cockles and ark shells, frozen, smoked, dried, salted or in brine"
+    uuid: "7a159b9e-de7a-4ef0-906e-8f2e8615d6cd"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species or commercial group"
+    - in-shell
+    - shucked
+    - "or flour/meal/pellet presentation"
+    - "exactly one primary route"
+    - "cooked state where smoking includes cooking"
+    - "reference mass basis"
+    - "final moisture condition"
+    - "salt or brine condition when applicable"
+    - "glaze and deglazed mass when frozen and glazed"
+    - "drained-mass or net-contents basis and packing-medium fraction when in brine"
+    - "facility geography"
+    - "production period"
+    - technology
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Set the quantitative reference to exactly 1 kg of qualified saleable product content at facility release; exclude immediate packaging mass."
+  - id: presentation_mass_basis
+    applies_to: "In-shell, shucked and comminuted presentations"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "For an in-shell product, shell mass remains in the product content mass; for a shucked or flour/meal/pellet product, use only the marketed content. Report edible-part fraction separately when relevant and do not compare presentations without conversion."
+  - id: frozen_glaze_basis
+    applies_to: "Frozen glazed product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record gross frozen mass, glaze mass and deglazed product mass using the facility's documented control method. Use deglazed product mass as the reference basis unless the applicable market specification defines another basis, which shall be disclosed."
+  - id: brine_mass_basis
+    applies_to: "Product in brine or other packing medium"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use drained mass when the marketed specification declares drained mass; otherwise use net contents and report product and packing-medium fractions. Do not mix drained-mass and net-contents datasets."
+  - id: moisture_salt_condition
+    applies_to: "Dried, salted, smoked or brined product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report final moisture and salt concentration on the declared test basis. Normalize on the as-sold basis unless a dry-matter conversion is explicitly required and the measured conversion is disclosed."
+process_map:
+  - id: receiving_preparation
+    name: "Receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "All datasets"
+    role: "Foreground receipt, traceability, sorting, washing and presentation preparation"
+    quantitative_reference: "kg accepted prepared bivalve material"
+  - id: primary_preservation
+    name: "Primary preservation"
+    inclusion: "required"
+    inclusion_condition: "Execute exactly one declared route"
+    role: "Foreground freezing, smoking, drying, salting or brining"
+    quantitative_reference: "kg preserved product leaving the selected route"
+  - id: packaging_holding_release
+    name: "Packaging, controlled holding and release"
+    inclusion: "required"
+    inclusion_condition: "All datasets; route-specific holding controls apply only when required"
+    role: "Foreground immediate packaging, in-facility holding and product release"
+    quantitative_reference: "1 kg qualified saleable reference product"
+process_inventory:
+  - id: receiving_preparation
+    label: "Receiving and preparation"
+    inputs:
+      product:
+        - row_id: received_bivalves
+          role: "Received bivalve material"
+          name: "Received clams, cockles or ark shells"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all live, raw or previously chilled/frozen bivalve material crossing the facility gate, including shell and prior-treatment state."
+          amount:
+            expression: "measured lot input mass; the provisional range applies only as a same-route, same-presentation QA screen and is replaced when complete reporting-period lot mass balances are available"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualified saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_traceability_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "20"
+                unit: "kg/kg qualified saleable product"
+                basis: "same declared route and presentation only; replace with reporting-period mass balance before reviewed use"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or otherwise reconciled water entering washing, de-sanding, shucking support and hygiene operations."
+          amount:
+            expression: "measured water use allocated to accepted preparation output; the provisional range is replaced when route-line submetering or reconciled batch records cover the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted prepared bivalve material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_waste_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg accepted prepared material"
+                basis: "applies only to water crossing this process boundary; replace with metered or reconciled foreground records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_bivalves
+          role: "Accepted prepared bivalve material"
+          name: "Prepared clams, cockles or ark shells"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate accepted material from measured incoming, reject, removed-shell and transfer masses, preserving presentation identity."
+          amount:
+            expression: "measured accepted output reconciled by calc_preparation_mass_balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_traceability_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_rejects_shells
+          role: "Rejected material and removed shells"
+          name: "Bivalve preparation rejects and shells"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected organisms, debris and shells removed from products marketed without shell; classify a separately sold output as a co-product instead of waste."
+          amount:
+            expression: "measured destination-specific mass; the provisional range is replaced when complete batch or reporting-period mass balances are available"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg received bivalve material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_waste_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.95"
+                unit: "kg/kg received bivalve material"
+                basis: "route- and presentation-specific screen; replace with measured destination-specific mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving the foreground process before any linked treatment dataset."
+          amount:
+            expression: "measured discharge or calculated water balance; replace the provisional range when discharge metering or a reconciled water balance covers the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted prepared bivalve material"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_waste_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg accepted prepared material"
+                basis: "applies only to wastewater crossing this process boundary; replace with metered or reconciled records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: primary_preservation
+    label: "Primary preservation"
+    inputs:
+      product:
+        - row_id: prepared_bivalve_input
+          role: "Prepared bivalve input"
+          name: "Prepared clams, cockles or ark shells"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer only the accepted prepared material assigned to the declared route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs_energy
+              source_ids: []
+            ranges: []
+        - row_id: route_electricity
+          role: "Route electricity"
+          name: "Electricity, delivered"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by the selected freezing, smoking, drying, salting or brining route; do not combine route records."
+          amount:
+            expression: "metered or allocated electricity for the declared route; the provisional range is only a within-route screen and is replaced when route-line meters or reconciled energy records cover the reporting period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved route output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kWh/kg preserved route output"
+                basis: "use only within the same declared route and technology; not for cross-route comparison; replace with metered or reconciled records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: route_salt_brine
+          role: "Salt or brine ingredients"
+          name: "Salt or brine ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record salt, water and other brine ingredients only for the salted or brine route, separated by ingredient in the implemented inventory."
+          amount:
+            expression: "measured ingredient issue less documented return; absent for other routes; replace the provisional range when formulation and batch-issue records cover the reporting period"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg salted or brined route output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg salted or brined route output"
+                basis: "applies only to the selected salted or brine route; replace with formulation and batch-issue records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: route_smoking_medium
+          role: "Smoking medium"
+          name: "Smoking medium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record smoke-generating material or smoke preparation only for the smoked route, with energy fuels retained as separate carrier rows."
+          amount:
+            expression: "measured consumption assigned to smoked output; absent for other routes; replace the provisional range when batch issue and return records cover the reporting period"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg smoked route output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs_energy
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg smoked route output"
+                basis: "applies only to the selected smoked route and declared medium; replace with batch records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: route_glazing_water
+          role: "Glazing water"
+          name: "Glazing water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water retained as protective glaze only for a glazed frozen route; keep other process water separate."
+          amount:
+            expression: "measured glaze addition reconciled to gross and deglazed mass; absent when unglazed or on other routes; replace the provisional range when glaze checks cover every represented product family"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg deglazed frozen route output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_condition_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg deglazed frozen product"
+                basis: "applies only to glazed frozen product; replace with documented gross/deglazed checks"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_bivalves
+          role: "Preserved bivalve product"
+          name: "Preserved clams, cockles or ark shells"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the output of the single declared route with route-specific moisture, salt, glaze or packing-medium condition."
+          amount:
+            expression: "measured route output reconciled by calc_route_yield"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_condition_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: route_brine_wastewater
+          role: "Spent brine and route wastewater"
+          name: "Spent brine or route wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent brine and process wastewater only when generated by the selected route, before linked treatment."
+          amount:
+            expression: "measured discharge or reconciled route water and salt balance; absent when not generated; replace the provisional range when route-specific discharge records cover the reporting period"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved route output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_waste_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg preserved route output"
+                basis: "applies only when the selected route generates this flow; replace with discharge records or a reconciled route balance"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packaging_holding_release
+    label: "Packaging, controlled holding and release"
+    inputs:
+      product:
+        - row_id: preserved_product_input
+          role: "Preserved product input"
+          name: "Preserved clams, cockles or ark shells"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record preserved product entering final conditioning and release without mixing route or presentation records."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per release lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_holding_release
+              source_ids: []
+            ranges: []
+        - row_id: immediate_packaging
+          role: "Immediate packaging"
+          name: "Immediate packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each primary and secondary packaging material crossing the facility boundary; packaging is inventory input but not part of the 1 kg reference mass."
+          amount:
+            expression: "bill-of-material or measured packaging issue less documented return; replace the provisional range when packaging specifications cover all represented formats"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualified saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_holding_release
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg qualified saleable product"
+                basis: "includes only immediate packaging in the declared format; replace with bill-of-material or issue records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: holding_electricity
+          role: "Controlled-holding electricity"
+          name: "Electricity, delivered"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for frozen storage or other specified in-facility temperature/humidity holding through release; absent where no controlled holding is required."
+          amount:
+            expression: "metered or allocated electricity using actual holding duration; the provisional range is replaced when equipment meters and lot residence-time records cover the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg qualified saleable reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_holding_release
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg qualified saleable product"
+                basis: "applies only to declared in-facility controlled holding and its actual duration; replace with metered and residence-time records"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Qualified saleable reference product"
+          name: "Clams, cockles and ark shells, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7a159b9e-de7a-4ef0-906e-8f2e8615d6cd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the exact generic Tiangong CPC 21265 product flow on the declared route, presentation and saleable mass basis."
+          amount:
+            expression: "exactly 1 kg qualified saleable product content excluding immediate packaging"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-21265
+            ranges: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap"
+          name: "Packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record offcuts, damaged packs and other packaging material not incorporated into released units, by material and destination."
+          amount:
+            expression: "measured or reconciled packaging issue minus packaged output; replace the provisional range when material-specific issue and scrap records cover the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg immediate packaging input"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_holding_release
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg/kg immediate packaging input"
+                basis: "material-specific screen; replace with reconciled issue and scrap records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Route, product and line burdens"
+    rule: "First avoid allocation through route-specific records, process subdivision and direct measurement. Never average the five mutually exclusive preservation routes into one foreground result."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_coproduct
+    applies_to: "Saleable shell, meat, meal or other co-products"
+    rule: "Where subdivision is not feasible, use a documented physical causal relationship; use economic allocation only when no defensible physical relationship exists, and report the method, factor basis, prices and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_credit
+    applies_to: "Rejects, shells, spent brine and packaging waste"
+    rule: "Treat an output as waste when the holder discards or pays for its management. Do not assign an avoided-burden credit inside this foreground dataset unless a separate consequential or circularity scenario is explicitly selected and documented."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_traceability_mass
+      process_id: "receiving_preparation"
+      flow_role: "received and accepted bivalve masses"
+      record_type: "receiving lot and calibrated scale records"
+      raw_fields: "lot_id; supplier; source_area; harvest_or_supplier_status; species_or_group; incoming_state; shell_presentation; prior_treatment; receipt_temperature; gross_mass; tare_mass; accepted_mass; reject_mass"
+      collection_method: "weigh each lot and link records to traceability documentation"
+      unit: "kg; deg C where recorded"
+      frequency: "each received lot"
+      temporal_coverage: "complete represented production period, normally 12 consecutive months or a justified seasonal campaign"
+      site_scope: "all source suppliers and facility receiving points represented"
+      aggregation_rule: "sum net mass by route, presentation and destination; no cross-route averaging"
+      quality_evidence: "scale calibration; lot reconciliation; traceability and applicable harvest/processing control evidence"
+    - protocol_id: cp_water_waste_balance
+      process_id: "receiving_preparation_primary_preservation"
+      flow_role: "water, wastewater, rejects and spent brine"
+      record_type: "meter, batch, tank and waste destination records"
+      raw_fields: "meter_start; meter_end; batch_water; retained_water; discharge_mass_or_volume; salt_mass; reject_mass; waste_destination"
+      collection_method: "meter where available, otherwise reconciled batch balance with conversion evidence"
+      unit: "kg; m3 with measured density where converted"
+      frequency: "each batch or at least monthly meter interval"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all included lines and discharge points"
+      aggregation_rule: "allocate only by documented causal driver, then normalize to relevant process output"
+      quality_evidence: "meter calibration; tank calibration; balance closure; destination receipts"
+    - protocol_id: cp_route_inputs_energy
+      process_id: "primary_preservation"
+      flow_role: "route inputs, electricity, fuels and smoking media"
+      record_type: "route batch sheets, meters, invoices and material issue/return records"
+      raw_fields: "route; batch_id; input_mass; output_mass; ingredient_mass; electricity_kwh; fuel_quantity; smoking_medium_issue; returned_quantity; operating_time"
+      collection_method: "segregate records by exactly one route and reconcile invoices to meters or batch issues"
+      unit: "kg; kWh; carrier-specific unit"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "complete represented production period or justified route campaign"
+      site_scope: "each included route line and technology"
+      aggregation_rule: "subtract documented returns; allocate shared utilities by measured operating driver; normalize to route output"
+      quality_evidence: "meter calibration; invoice reconciliation; formulation and batch authorization"
+    - protocol_id: cp_product_condition_mass
+      process_id: "primary_preservation_packaging_holding_release"
+      flow_role: "moisture, salt, glaze, packing medium and saleable mass condition"
+      record_type: "laboratory, QA and check-weigh records"
+      raw_fields: "route; presentation; cooked_state; moisture_value_and_basis; salt_value_and_basis; gross_frozen_mass; deglazed_mass; glaze_mass; net_contents; drained_mass; packing_medium_mass; release_status"
+      collection_method: "use documented facility methods and calibrated balances; keep test basis with result"
+      unit: "kg; mass fraction; percent as declared"
+      frequency: "each release lot or statistically justified lot plan"
+      temporal_coverage: "complete represented product families and period"
+      site_scope: "every route-presentation-mass-basis combination"
+      aggregation_rule: "calculate separate averages for each declared combination; do not pool incompatible bases"
+      quality_evidence: "method identifier; laboratory or QA record; calibration; sample plan"
+    - protocol_id: cp_packaging_holding_release
+      process_id: "packaging_holding_release"
+      flow_role: "packaging, holding energy, duration, scrap and released product"
+      record_type: "bill of material, packaging issue, storage meter, inventory movement and release records"
+      raw_fields: "packaging_material; packaging_issue; returned_packaging; scrap_mass; storage_zone; meter_reading; entry_time; release_time; released_content_mass; release_specification"
+      collection_method: "reconcile material issue and storage energy to released lots and actual residence time"
+      unit: "kg; kWh; hour or day"
+      frequency: "each lot with monthly reconciliation"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all packaging formats and in-facility controlled storage zones"
+      aggregation_rule: "normalize material and allocated holding energy to released product content mass"
+      quality_evidence: "specification revision; meter and scale calibration; issue-return reconciliation; release authorization"
+  calculation_rules:
+    - id: calc_reference_mass
+      applies_to: "Reference product"
+      rule: "Select the declared mass basis: in-shell or marketed shucked content; deglazed mass for glazed frozen product unless another market basis is disclosed; drained mass for brined product when that is the marketed basis, otherwise net contents with packing-medium fraction. Exclude immediate packaging."
+      inputs:
+        - "release mass"
+        - presentation
+        - "gross and deglazed mass"
+        - "drained mass"
+        - "net contents"
+        - "packing-medium mass"
+        - "release specification"
+      output: "kg qualified saleable product content"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_preparation_mass_balance
+      applies_to: "Receiving and preparation"
+      rule: "accepted prepared mass = received net mass - rejects - removed shell - other documented losses, with any retained water separately reported"
+      inputs:
+        - "received net mass"
+        - rejects
+        - "removed shell"
+        - "other losses"
+        - "retained water"
+      output: "kg accepted prepared material and balance closure"
+      source_ids: []
+    - id: calc_route_yield
+      applies_to: "Primary preservation"
+      rule: "route yield = preserved route output mass / prepared route input mass; calculate separately for each route, presentation and moisture/salt condition"
+      inputs:
+        - "prepared input mass"
+        - "preserved output mass"
+        - "route and condition qualifiers"
+      output: "route-specific mass yield"
+      source_ids: []
+    - id: calc_specific_inventory
+      applies_to: "All foreground inputs and outputs"
+      rule: "specific amount = reconciled amount assigned to the process / corresponding process output or PCR reference mass stated on the row"
+      inputs:
+        - "collected amount"
+        - "allocation driver"
+        - "process output"
+        - "reference mass"
+      output: "row amount on declared basis"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_holding_energy
+      applies_to: "Controlled holding"
+      rule: "lot holding electricity = zone electricity x documented lot occupancy driver / total zone occupancy driver; retain actual holding duration and do not assign storage to lots that bypass it"
+      inputs:
+        - "zone electricity"
+        - "entry and release time"
+        - "mass or pallet occupancy driver"
+      output: "kWh per kg released content for applicable lots"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Received and released product"
+      requirement: "Preserve lot-level source, species or commercial group, incoming state, route, presentation and release identity, together with applicable harvest, growing-area, purification or approved processing evidence."
+      evidence: "receiving records, supplier documents, traceability link and release record; codex-cxc-52-2003"
+    - id: dq_route_separation
+      applies_to: "All inventory"
+      requirement: "Maintain separate batch or allocation records for each mutually exclusive route and each incompatible mass basis; report shared-utility allocation drivers."
+      evidence: "route batch sheets, meters and allocation workbook"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground activity data"
+      requirement: "Represent normally 12 consecutive months; a shorter seasonal campaign is allowed only when it covers the complete production season and its representativeness is justified."
+      evidence: "date-stamped source records and representativeness statement"
+    - id: dq_mass_condition
+      applies_to: "Reference flow"
+      requirement: "Retain measured or specified moisture, salt, glaze, drained-mass or net-contents data wherever applicable; never infer cross-route equivalence from equal wet mass."
+      evidence: "QA tests, check-weighs and release specification"
+    - id: dq_completeness
+      applies_to: "Foreground boundary"
+      requirement: "Reconcile product, water, salt/brine, energy, packaging, waste and direct-release records; disclose missing flows, proxies and excluded operations."
+      evidence: "mass/energy reconciliation and completeness checklist; eu-pef-2021-2279"
+    - id: dq_reasoned_estimates
+      applies_to: "All provisional ranges"
+      requirement: "Treat every reasoned_estimate range only as a candidate-stage QA screen, not as a measured default or publication-critical allowed range. Replace it when the row-specific trigger stated in the Amount rule or Basis is met; until then disclose use, route, condition and uncertainty."
+      evidence: "estimate register linked to foreground collection gaps and replacement evidence"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Reference flow"
+    rule: "Require product-flow UUID 7a159b9e-de7a-4ef0-906e-8f2e8615d6cd, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg and reference amount exactly 1."
+    source_ids:
+      - unsd-cpc-3-0-21265
+  - rule_id: validate_scope_route
+    applies_to: "Product category"
+    rule: "Require a covered presentation and exactly one route token from frozen, smoked, dried, salted, or brine; reject live/fresh/chilled, otherwise-preserved, inedible or unfit products and unreviewed combined routes."
+    source_ids:
+      - unsd-cpc-3-0-21265
+  - rule_id: validate_mass_basis
+    applies_to: "Reference product"
+    rule: "Require packaging exclusion and all applicable in-shell/shucked, moisture, salt, glaze/deglazed, drained-mass/net-contents and packing-medium declarations before accepting the 1 kg reference."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_processes
+    applies_to: "Process map"
+    rule: "Require all three process inventories and confirm that route-inapplicable preservation rows are absent; require additional carrier, refrigerant, ingredient, emission or waste rows whenever they actually cross the foreground boundary."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_traceability_control
+    applies_to: "Bivalve receipt and release"
+    rule: "Require lot linkage and evidence of applicable source-area, harvest, purification or approved processing controls, plus controlled storage and handling conditions."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_inventory_records
+    applies_to: "Foreground amounts"
+    rule: "Require collection protocol links for collected or calculated rows, compatible normalization bases, route-separated calculations and disclosure of proxies or missing records."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "Shared processes and outputs"
+    rule: "Require subdivision or direct measurement first; where allocation remains, require the selected causal or economic basis, factors, data period and sensitivity disclosure."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_reasoned_estimates
+    applies_to: "Provisional QA ranges"
+    rule: "Flag every used reasoned_estimate as temporary and route/condition-specific; fail reviewed use if a replacement trigger has been met but the range has not been replaced by foreground or source-backed evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground processing dataset for one declared CPC 21265 product route, presentation and saleable mass basis"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Attributional modelling of the represented route, technology, geography, period, presentation and mass condition; connection to documented upstream cultivation or harvest datasets and downstream distribution or life-cycle models"
+  excluded_use: "Live, fresh or chilled molluscs; other prepared or preserved products; unfit products; route-average substitution; unreviewed multi-route products; comparisons across in-shell/shucked, wet/dry, glazed/deglazed or drained/net-content bases without explicit conversion"
+  required_metadata: "Species or commercial group; origin and traceability basis; incoming state; shell presentation; exactly one route; cooked state; final moisture and salt condition; glaze and deglazed mass; drained-mass or net-contents basis and packing-medium fraction; packaging; facility geography; production period; technology; holding condition; upstream dataset links"
+  required_quality_disclosure: "Temporal and site coverage; meter and scale calibration; mass and energy balance closure; route separation; allocation method; rejected lots; waste destinations; proxies; missing flows; all reasoned_estimate uses and replacement status"
+  update_trigger: "Change in route, species/presentation mix, mass-basis specification, food-safety control, formulation, technology, packaging, holding regime, allocation basis, source requirement or upstream dataset; or availability of foreground/source evidence that replaces a provisional estimate"
+data_sources:
+  - id: "unsd-cpc-3-0-21265"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21265, CPC_Ver_3.0_Structure_30Jun2025.csv, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Exact generic product scope, inclusions, exclusions and mutually exclusive route vocabulary"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, https://workspace.fao.org/sites/codex/Standards/CXC%2052-2003/CXC_052e.pdf (accessed 2026-08-11)"
+    used_for: "Bivalve traceability, source-area and harvest controls, hygienic processing, packaging, storage and route-control requirements"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I, Product Environmental Footprint Method, http://data.europa.eu/eli/reco/2021/2279/oj (accessed 2026-08-11)"
+    used_for: "Functional unit, system boundary, inventory completeness, allocation hierarchy, data quality and life-cycle dataset use"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fa46fb519f3f73680d02a83e00203de647934cda711b1ef98172fb485d48cb68"
+  generated_content_sha256: "sha256:ca8bd0b6a0367fe7eb06a18d60d68868d717ec904bab77584583a43717f54cae"

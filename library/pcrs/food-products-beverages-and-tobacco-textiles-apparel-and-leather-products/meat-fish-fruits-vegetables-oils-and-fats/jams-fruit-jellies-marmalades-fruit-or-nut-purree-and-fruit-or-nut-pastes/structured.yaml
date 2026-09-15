@@ -1,10 +1,899 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21494"
-  title: "Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.jams-fruit-jellies-marmalades-fruit-or-nut-purree-and-fruit-or-nut-pastes"
+  classification_refs: "UNSD CPC 3.0: 21494, “Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes”"
+  covered_products: "Marketable jams, fruit jellies, citrus and non-citrus marmalades, fruit purées and pastes, and nut purées and pastes, including packaged or bulk factory-gate products and both CXS-conforming and explicitly non-CXS routes"
+  excluded_products: "Unprocessed, frozen, or simply dried fruit or nuts sold as such; fruit juices or nectars sold as beverages; roasted or salted nuts sold as such; products outside the declared fruit-or-nut preserve, purée, or paste identity"
+  representative_product: "One declared marketable product from one of the four route families, normalized to net product mass at the factory gate"
+  production_route: "Ingredient receipt and preparation; exactly one declared transformation route; final conditioning and pack-out; site utilities, cleaning, and wastewater handling"
+  market_state: "Shelf-stable, chilled, frozen, aseptic, or otherwise preserved product, packaged for sale or transferred in a declared bulk container at the factory gate"
+functional_unit:
+  what: "Produce a declared jam, fruit jelly, marmalade, fruit purée or paste, or nut purée or paste"
+  how_much: "1 kg net marketable product, excluding packaging mass"
+  how_well: "Meets the declared route-specific composition, food-safety release, quality, preservation, and market specification; CXS 296-2009 requirements apply only when cxs_jam_jelly_marmalade is declared"
+  how_long_or_cycle: "One released production lot at the factory gate; declared shelf life and its packaging dependence are metadata but downstream storage losses and service are outside this factory-gate unit"
+  reference_flow_link: "The reference flow is the normalized net mass of released product needed to provide the stated factory-gate function"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary starts when fruit, nuts, fruit-derived intermediates, sweetening ingredients, formulation ingredients, packaging, utilities, and cleaning materials are received at the manufacturing site. It ends when released net product and its declared packaging or bulk containment leave the factory gate. Upstream production and inbound transport are linked as secondary datasets. Distribution after the factory gate, retail and consumer storage, use, food loss after the gate, and end-of-life are excluded from this foreground dataset and must be added by a downstream full-life-cycle model when relevant."
+      source_ids: []
+    - rule_id: boundary_known_flows
+      applies_to: "foreground_manufacturing"
+      rule: "Record all known product, energy, water, waste, wastewater, and direct elementary flows for included manufacturing processes; avoid cut-off. If a downstream PEF study applies cut-off, it may exclude no more than the PEF cumulative 3% condition and shall explicitly justify environmental significance."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - rule_id: boundary_packaging
+      applies_to: "packaging_and_packout"
+      rule: "Include production of primary, secondary, transport, and bulk-container packaging required at the factory gate, plus on-site packaging losses; exclude packaging mass from the 1 kg net reference product."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - rule_id: boundary_route_evidence
+      applies_to: "route_specific_processes"
+      rule: "Apply CXS 296-2009 requirements only when the declared product and market purpose fall within its scope. For non-CXS preserves and all finished fruit or nut purée/paste routes, use actual foreground specifications and applicable legal or buyer requirements without extrapolating CXS thresholds."
+      source_ids:
+        - codex-cxs-296-2009
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased_inputs"
+      rule: "Link each purchased ingredient, packaging material, energy carrier, water supply, and externally treated waste to geographically, technologically, and temporally representative upstream datasets; disclose proxies and missing links."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Measured quantities and declared states of all received fruit, nuts, intermediates, sweetening and other formulation ingredients, packaging, utilities, and cleaning materials at the manufacturing-site boundary"
+  starting_condition_role: "Factory-gate foreground manufacturing starting condition"
+  product_classification_scope: "Semantic category represented by CPC 3.0 code 21494; the concrete dataset is narrowed by mandatory product and route qualifiers"
+  recursive_input_rule: "If a purchased input is itself a jam, jelly, marmalade, fruit or nut purée, or fruit or nut paste, record it as a technosphere product input with its supplier dataset and do not recursively re-run its production inside the receiving process"
+  upstream_dataset_requirement: "Supplier-specific or representative secondary datasets are required for fruit and nut production or processing, sweeteners and other ingredients, packaging, energy, water, inbound transport, and off-site treatment"
+  disclosure: "Declare route family, CXS applicability, input states and origins, preservation technology, packaging or bulk state, allocation choices, cut-offs, proxies, data gaps, and excluded downstream stages"
+reference_flow_definition:
+  reference_amount: "1 kg net marketable product at factory gate"
+  product_flow_ref:
+    name: "Jams, fruit jellies, marmalades, fruit or nut purée and fruit or nut pastes"
+    uuid: "7d119b90-a5ca-4bbc-8ab7-b1b3e3f878f9"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "route family"
+    - "product name and fruit or nut species"
+    - "formulation and ingredient mass fractions"
+    - "CXS applicability and claimed product definition"
+    - "soluble solids or dry-matter basis and test method"
+    - "preservation technology"
+    - "packaged or bulk market state"
+    - "packaging format and net fill"
+    - "declared shelf life and storage condition"
+    - "production geography"
+    - "production site"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to released net product mass after final quality disposition and excluding primary, secondary, and transport packaging mass."
+  - id: mass_input_consistency
+    applies_to: "Ingredients, water, product, residues, wastes, and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured wet-mass values; declare any conversion from volume, dry matter, concentrate, or formulation records and retain density, moisture, or solids evidence."
+  - id: solids_basis_declaration
+    applies_to: "Soluble-solids or dry-matter results"
+    required_property_ref:
+      name: "Route-specific analytical property"
+      uuid: ""
+    required_unit: "% mass fraction or °Brix as reported"
+    rule: "State the analytical method, sample state, temperature correction if applicable, and whether the value is soluble solids, total solids, or dry matter; do not interchange these measures."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, fuels, steam, and purchased heat"
+    required_property_ref:
+      name: "Carrier-specific energy property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as metered"
+    rule: "Keep each carrier in its measured unit and convert only with a disclosed conversion factor; do not merge electricity and thermal energy into an undocumented energy total."
+process_map:
+  - id: ingredient_preparation
+    name: "Ingredient receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Include for every route; record no-operation or pre-prepared inputs explicitly"
+    role: "Foreground receipt, sorting, washing, trimming, de-stoning, dehulling, or preparation"
+    quantitative_reference: "kg prepared ingredient stream"
+  - id: fruit_preserve_transformation
+    name: "Jam, jelly, marmalade, or other fruit-preserve transformation"
+    inclusion: "conditional"
+    inclusion_condition: "Include for route family cxs_jam_jelly_marmalade or non_cxs_fruit_preserve"
+    role: "Foreground formulation, extraction, cooking, concentration, gelling, and preservation as applicable"
+    quantitative_reference: "kg bulk fruit-preserve output"
+  - id: puree_paste_transformation
+    name: "Fruit or nut purée/paste transformation"
+    inclusion: "conditional"
+    inclusion_condition: "Include for route family fruit_puree_or_paste or nut_puree_or_paste"
+    role: "Foreground pulping, sieving, grinding, refining, concentration, roasting, or stabilization as applicable"
+    quantitative_reference: "kg bulk purée or paste output"
+  - id: final_conditioning_packout
+    name: "Final conditioning and pack-out"
+    inclusion: "required"
+    inclusion_condition: "Include release conditioning and packaged or bulk filling; record no separate conditioning if not used"
+    role: "Foreground cooling, deaeration, thermal or aseptic hold, filling, closure, and pack-out"
+    quantitative_reference: "1 kg released net product"
+  - id: site_utilities_cleaning
+    name: "Site utilities, cleaning, and wastewater handling"
+    inclusion: "required"
+    inclusion_condition: "Include site services attributable to the declared product; record zero with evidence where a carrier is not used"
+    role: "Foreground utility supply, cleaning-in-place or other sanitation, and wastewater transfer"
+    quantitative_reference: "per 1 kg released net product"
+process_inventory:
+  - id: ingredient_preparation
+    label: "Ingredient receipt and preparation"
+    inputs:
+      product:
+        - row_id: main_ingredient_input
+          role: "Fruit, nut, or fruit-derived main ingredient"
+          name: "Route-specific fruit, nut, pulp, juice, purée, concentrate, or other main ingredient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each received main ingredient separately by species, origin, condition, and supplier lot. Do not combine fresh fruit, frozen fruit, pulp, purée, juice, concentrate, or nuts without a transparent formulation calculation."
+          amount:
+            expression: "Measured received mass allocated to released product lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "5"
+                unit: "kg/kg reference product"
+                basis: "received main ingredient per kg released net product across dilute, sweetened, and concentrated route variants"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_main_stream
+          role: "Prepared fruit or nut stream"
+          name: "Prepared route-specific fruit or nut stream"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass passed to the declared transformation route after preparation."
+          amount:
+            expression: "Measured prepared stream mass transferred to transformation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.03"
+                upper: "5"
+                unit: "kg/kg reference product"
+                basis: "prepared main stream per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Sorting, trimming, stones, peels, shells, or preparation residues"
+          name: "Route-specific preparation residue or waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each residue stream by material type and destination, including edible recovery, feed, by-product sale, treatment, or disposal."
+          amount:
+            expression: "Measured residue mass leaving ingredient preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_byproduct_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg reference product"
+                basis: "preparation residues per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: fruit_preserve_transformation
+    label: "Jam, jelly, marmalade, or other fruit-preserve transformation"
+    inputs:
+      product:
+        - row_id: preserve_fruit_input
+          role: "Prepared fruit, juice, extract, pulp, or purée"
+          name: "Prepared fruit ingredient for the declared preserve"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the actual fruit ingredient form used. For a CXS route, retain the data needed to calculate the applicable Section 3.1.2 fruit content and any aqueous-extract water deduction."
+          amount:
+            expression: "Measured mass entering the preserve batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids:
+                - codex-cxs-296-2009
+            ranges: []
+        - row_id: sweetening_ingredient_input
+          role: "Sweetening ingredients"
+          name: "Route-specific sweetening ingredient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each sugar, fruit sugar, syrup, honey, or other declared sweetening ingredient separately. A non-CXS sweetener-formulated route shall be identified as non-CXS rather than treated as conforming by analogy."
+          amount:
+            expression: "Measured formulation mass by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids:
+                - codex-cxs-296-2009
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg reference product"
+                basis: "total sweetening ingredients per kg released net product across CXS and non-CXS preserves"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preserve_other_ingredients
+          role: "Other formulation ingredients"
+          name: "Route-specific formulation ingredient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record pectin or other gelling agents, acids, salts, spices, plant ingredients, oils, antifoaming agents, preservatives, colours, and flavours individually where used and legally permitted."
+          amount:
+            expression: "Measured formulation mass by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids:
+                - codex-cxs-296-2009
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_preserve_output
+          role: "Bulk jam, jelly, marmalade, or preserve"
+          name: "Bulk declared fruit-preserve product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the transferred bulk product mass and route-specific quality disposition before pack-out."
+          amount:
+            expression: "Measured accepted bulk product transferred to final conditioning and pack-out"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids:
+                - codex-cxs-296-2009
+            ranges: []
+      waste:
+        - row_id: preserve_offspec_waste
+          role: "Off-specification preserve and process residues"
+          name: "Off-specification preserve or process residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rework separately from material leaving the product system for treatment or disposal."
+          amount:
+            expression: "Measured mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_byproduct_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "off-specification preserve and residues per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: puree_paste_transformation
+    label: "Fruit or nut purée/paste transformation"
+    inputs:
+      product:
+        - row_id: puree_paste_main_input
+          role: "Prepared fruit or nut stream"
+          name: "Prepared route-specific fruit or nut stream"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "For fruit routes, record pulping, sieving, optional blanching, deaeration, concentration, and preservation. For nut routes, record optional roasting, blanching or dehulling, grinding or refining, homogenization, stabilization, and preservation. These operations are route candidates and shall be included only when performed."
+          amount:
+            expression: "Measured mass entering the purée or paste route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids: []
+            ranges: []
+        - row_id: puree_paste_other_ingredients
+          role: "Purée or paste formulation ingredients"
+          name: "Route-specific purée or paste formulation ingredient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record every added water, oil, sweetener, salt, acid, stabilizer, antioxidant, or other ingredient from the actual formulation. CXS 296-2009 does not supply composition limits for this finished-product route."
+          amount:
+            expression: "Measured formulation mass by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_formula_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_puree_paste_output
+          role: "Bulk fruit or nut purée or paste"
+          name: "Bulk declared fruit or nut purée or paste"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted bulk output with its measured dry matter or soluble solids, particle-size or texture specification where relevant, preservation state, and quality disposition."
+          amount:
+            expression: "Measured accepted bulk output transferred to final conditioning and pack-out"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: puree_paste_residues
+          role: "Sieving residues, skins, shells, fines, or off-specification purée/paste"
+          name: "Route-specific purée or paste residue or waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record separated material and rejected product by type, mass, and destination. Recovered co-products shall not be relabelled as zero-burden waste."
+          amount:
+            expression: "Measured mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_byproduct_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg reference product"
+                basis: "route residues and off-specification product per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: final_conditioning_packout
+    label: "Final conditioning and pack-out"
+    inputs:
+      product:
+        - row_id: accepted_bulk_product
+          role: "Accepted bulk product"
+          name: "Accepted bulk preserve, fruit purée/paste, or nut purée/paste"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted bulk stream received from exactly one declared transformation route."
+          amount:
+            expression: "Measured transfer mass to final conditioning and pack-out"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_input
+          role: "Packaging and bulk-container materials"
+          name: "Material-specific packaging or bulk-container input"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record primary, closure, label, secondary, transport, and bulk-container materials separately, including reusable-container trip or loss data when applicable."
+          amount:
+            expression: "Issued packaging mass minus returned unused material, allocated to released product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-recommendation-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg reference product"
+                basis: "packaging and bulk containment per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_reference_product
+          role: "Released reference product"
+          name: "Jams, fruit jellies, marmalades, fruit or nut purée and fruit or nut pastes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7d119b90-a5ca-4bbc-8ab7-b1b3e3f878f9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole reference product output. Packaging mass is not included in its amount."
+          amount:
+            expression: "1 kg after normalization from measured released net product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_release_records
+              source_ids:
+                - eu-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging scrap and rejected containers"
+          name: "Material-specific packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record packaging scrap, breakage, rejected containers, labels, closures, and unrecovered reusable-container losses by material and destination."
+          amount:
+            expression: "Measured or inventory-reconciled packaging waste mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg reference product"
+                basis: "packaging waste per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: site_utilities_cleaning
+    label: "Site utilities, cleaning, and wastewater handling"
+    inputs:
+      product:
+        - row_id: process_cleaning_water
+          role: "Process and cleaning water"
+          name: "Source-specific water supply"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water by source and use, separating ingredient water where possible from process, cooling, and cleaning water."
+          amount:
+            expression: "Metered or reconciled water supplied to included foreground processes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg reference product"
+                basis: "ingredient, process, cooling, and cleaning water recorded at the site per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_input
+          role: "Electricity"
+          name: "Site-specific electricity supply"
+          flow_type: "product"
+          property_unit: "Electric energy / kWh"
+          description: "Record metered electricity and the applicable supplier or grid mix separately from fuels and purchased heat."
+          amount:
+            expression: "Metered electricity attributable to included processes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg reference product"
+                basis: "attributable site electricity per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_energy_input
+          role: "Fuels, steam, or purchased heat"
+          name: "Carrier-specific fuel, steam, or purchased heat"
+          flow_type: "product"
+          property_unit: "Carrier-specific energy or mass unit"
+          description: "Record each fuel, steam, or purchased-heat carrier separately in its measured unit and retain the conversion used for any MJ-normalized screening."
+          amount:
+            expression: "Metered or purchased amount attributable to included processes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg reference product"
+                basis: "attributable lower-heating-value energy or purchased heat per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: manufacturing_wastewater
+          role: "Manufacturing wastewater sent to treatment"
+          name: "Site-specific manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wastewater mass or volume, destination, and measured pollutant loads or concentrations. Keep internally recycled water out of the leaving-wastewater amount."
+          amount:
+            expression: "Metered or volume-and-density converted wastewater leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg reference product"
+                basis: "wastewater leaving the site per kg released net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "multi_product_lines_and_shared_services"
+    rule: "Avoid allocation first by product-specific batch records, submetering, process subdivision, or system expansion. Collect only flows directly attributable to the declared product when subdivision is possible."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_physical_second
+    applies_to: "unavoidable_shared_inputs_and_outputs"
+    rule: "If subdivision or system expansion is not possible, use and justify a measurable causal physical relationship such as batch mass, operating time, metered energy, or equipment throughput that represents resource use."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_other_last
+    applies_to: "no_defensible_physical_relationship"
+    rule: "Use economic or another relationship only after documenting why subdivision, system expansion, and physical allocation are not feasible; use process-stage market values and disclose period, geography, prices, and sensitivity."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "preparation_and_transformation_outputs"
+    rule: "Classify edible or saleable residues as co-products when they carry a function or value; classify only streams sent for treatment or disposal as waste. Record rework as an internal loop, not a co-product or avoided burden."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_formula_records
+      process_id: "ingredient_preparation"
+      flow_role: "Main and formulation ingredients plus prepared transfers"
+      record_type: "Batch and inventory records"
+      raw_fields: "lot_id; product_code; ingredient_id; species; origin; received_state; opening_stock; receipts; issued_mass; returns; closing_stock; formulation_version; prepared_transfer_mass"
+      collection_method: "Calibrated scales, weighbridge, tank level with verified density, and inventory reconciliation"
+      unit: "kg"
+      frequency: "Each receipt and batch"
+      temporal_coverage: "Entire declared reporting period"
+      site_scope: "All included receiving, preparation, and formulation areas"
+      aggregation_rule: "Reconcile beginning stock plus receipts minus ending stock and non-product dispositions; allocate only by documented batch linkage"
+      quality_evidence: "Calibration certificates, supplier lot records, formulation approval, stock reconciliation, and variance investigation"
+    - protocol_id: cp_product_release_records
+      process_id: "final_conditioning_packout"
+      flow_role: "Bulk transfer, route quality, and released net product"
+      record_type: "Batch, laboratory, fill, and release records"
+      raw_fields: "route_family; cxs_applicability; product_definition; batch_id; bulk_mass; net_fill; released_units; released_net_mass; soluble_solids_or_dry_matter; method; preservation_state; shelf_life; disposition"
+      collection_method: "Calibrated transfer/fill measurements and approved laboratory or quality records"
+      unit: "kg and declared quality units"
+      frequency: "Each batch and release lot"
+      temporal_coverage: "Entire declared reporting period"
+      site_scope: "All included transformation and pack-out lines"
+      aggregation_rule: "Sum released net mass excluding packaging; preserve route-specific quality results and rejected or reworked quantities separately"
+      quality_evidence: "Scale calibration, test method, sampling plan, release authorization, and lot traceability"
+    - protocol_id: cp_waste_byproduct_records
+      process_id: "ingredient_preparation"
+      flow_role: "Preparation residues, co-products, rework, and transformation wastes"
+      record_type: "Waste, by-product, and disposition records"
+      raw_fields: "batch_id; stream_id; material_type; mass; moisture_or_solids_if_used; destination; waste_or_coproduct_status; revenue_if_economic_allocation; rework_return"
+      collection_method: "Calibrated scales, container counts with verified tare, and transfer documentation"
+      unit: "kg"
+      frequency: "Each batch or removal"
+      temporal_coverage: "Entire declared reporting period"
+      site_scope: "All included process areas and destinations"
+      aggregation_rule: "Aggregate by stream and disposition; subtract documented rework returned to the same product system"
+      quality_evidence: "Scale or tare evidence, transfer notes, treatment receipts, sales records, and classification rationale"
+    - protocol_id: cp_packaging_records
+      process_id: "final_conditioning_packout"
+      flow_role: "Packaging inputs and wastes"
+      record_type: "Bill-of-packaging and issue-return records"
+      raw_fields: "packaging_item; material; unit_mass; issued_count; returned_count; rejected_count; reusable_trips; loss_rate; net_fill"
+      collection_method: "Supplier specifications verified by tare measurements and inventory reconciliation"
+      unit: "kg and count"
+      frequency: "Each packaging lot and production batch"
+      temporal_coverage: "Entire declared reporting period"
+      site_scope: "All primary, closure, label, secondary, transport, and bulk-container materials"
+      aggregation_rule: "Convert counts to mass with verified unit mass; subtract unused returns; separate reusable trip allocation and losses"
+      quality_evidence: "Supplier specification, sampled tare, line issue-return record, and waste reconciliation"
+    - protocol_id: cp_utility_records
+      process_id: "site_utilities_cleaning"
+      flow_role: "Water, electricity, fuels, steam, purchased heat, and cleaning materials"
+      record_type: "Meter, invoice, and operating records"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; calibration; batch_or_line; operating_time; heating_value_if_used; cleaning_cycle; internal_reuse"
+      collection_method: "Submeters preferred; otherwise main meter or invoices allocated by documented physical driver"
+      unit: "Carrier-specific unit"
+      frequency: "Continuous, shift, batch, or billing interval"
+      temporal_coverage: "Entire declared reporting period with complete meter reconciliation"
+      site_scope: "All included production, utilities, and sanitation areas"
+      aggregation_rule: "Difference readings, subtract documented excluded loads, allocate shared loads using section 7 hierarchy, and preserve carrier units"
+      quality_evidence: "Meter calibration, invoices, control-system export, operating logs, and allocation worksheet"
+    - protocol_id: cp_wastewater_records
+      process_id: "site_utilities_cleaning"
+      flow_role: "Wastewater quantity and pollutant data"
+      record_type: "Effluent meter, sampling, and transfer records"
+      raw_fields: "outlet_id; volume; density_if_mass_conversion; flow_period; COD; BOD; suspended_solids; nutrients; pH; treatment_destination; internal_reuse"
+      collection_method: "Calibrated effluent meter plus representative sampling or verified off-site treatment records"
+      unit: "kg or m3 and analyte-specific units"
+      frequency: "Continuous or each discharge and sampling event"
+      temporal_coverage: "Entire declared reporting period"
+      site_scope: "All included wastewater outlets"
+      aggregation_rule: "Convert volume to mass only with documented density; flow-weight pollutant concentrations; exclude verified internal reuse"
+      quality_evidence: "Meter calibration, laboratory reports, chain of custody, permit monitoring, and treatment receipts"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = attributable reporting-period amount / released net product mass; packaging mass is excluded from the denominator"
+      inputs:
+        - "attributable flow amount"
+        - "released net product mass"
+      output: "flow amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - id: calc_batch_mass_balance
+      applies_to: "Each transformation route"
+      rule: "mass-balance residual = total measured inputs - released product - co-products - wastes - wastewater - measured or calculated evaporated water - documented inventory change; report residual and investigation"
+      inputs:
+        - "all batch input and output masses"
+        - "inventory change"
+        - "evaporation evidence"
+      output: "reconciled mass balance and residual"
+      source_ids: []
+    - id: calc_cxs_fruit_content
+      applies_to: "Declared CXS jam, jelly, or marmalade route"
+      rule: "Calculate fruit ingredient as a percentage of finished product under the applicable CXS 296-2009 Section 3.1.2 provision; for jelly deduct water used to prepare aqueous extracts where required; apply fruit-specific and mixed-fruit provisions rather than a generic threshold"
+      inputs:
+        - "fruit ingredient mass by type"
+        - "finished product mass"
+        - "aqueous-extract water"
+        - "declared CXS product definition"
+      output: "CXS fruit-content result and applicable threshold"
+      source_ids:
+        - codex-cxs-296-2009
+    - id: calc_packaging_mass
+      applies_to: "Packaging inputs"
+      rule: "packaging mass = sum of material-specific net issued counts multiplied by verified unit mass, adjusted for documented reusable trips or losses"
+      inputs:
+        - counts
+        - "unit masses"
+        - returns
+        - "rejected units"
+        - "reusable-trip data"
+      output: "kg packaging per kg reference product"
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - id: calc_shared_service_allocation
+      applies_to: "Shared utilities and services"
+      rule: "Apply section 7 hierarchy and calculate the declared product share from submetered use or the justified physical driver; economic allocation is last resort"
+      inputs:
+        - "shared total"
+        - "product-specific meter or physical driver"
+        - "co-product values if last resort"
+      output: "attributable shared-service amount and allocation factor"
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+  data_quality_requirements:
+    - id: dq_completeness_consistency
+      applies_to: "Foreground dataset"
+      requirement: "Include all known inputs and outputs for included processes and reconcile process, batch, utility, packaging, waste, and wastewater records to the same reporting period and product scope."
+      evidence: "Completeness checklist, reconciliations, and documented cut-offs or data gaps; PEF completeness and methodological consistency principles"
+    - id: dq_representativeness
+      applies_to: "Foreground and secondary data"
+      requirement: "Assess technological, geographical, and time-related representativeness and precision; state product, route, site, geography, reporting period, measurement basis, and uncertainty or proxy status."
+      evidence: "DQR or equivalent documented assessment following Recommendation (EU) 2021/2279"
+    - id: dq_cxs_scope
+      applies_to: "CXS claims"
+      requirement: "Retain evidence that the product definition, direct-consumption purpose, formulation, fruit content, soluble solids, fill, labelling, and applicable national choice correspond to the relevant CXS provision. Do not mark non-CXS routes as compliant."
+      evidence: "Approved specification, formula, laboratory results, fill records, label, and applicable legal review"
+    - id: dq_reasoned_estimates
+      applies_to: "All reasoned_estimate ranges"
+      requirement: "Treat every provisional range as screening-only. Validate it against foreground records, replace it with site-specific or reviewed evidence before maturity advances beyond candidate, and investigate and disclose any out-of-range result."
+      evidence: "Range replacement log, foreground records, reviewed source, and variance investigation"
+    - id: dq_source_traceability
+      applies_to: "Purchased inputs and treatment services"
+      requirement: "Link each material upstream and treatment dataset to supplier, geography, technology, time period, and any proxy decision; do not use an unqualified category average when product-specific information exists."
+      evidence: "Supplier records, dataset metadata, and proxy justification"
+validation_rules:
+  - rule_id: validate_identity_and_reference
+    applies_to: "dataset_identity"
+    rule: "Confirm the manifest PCR id, common product-flow UUID, Mass flow-property UUID, Units of mass UUID, kg unit, route family, product identity, net-mass basis, and all required qualifiers are present and consistent."
+    source_ids:
+      - unsd-cpc-3-0-21494
+  - rule_id: validate_exactly_one_route
+    applies_to: "process_inventory"
+    rule: "Confirm exactly one transformation route family describes the reference product and that the matching conditional process is included; exclude the other transformation process unless separately metered co-production is explicitly modelled and allocated."
+    source_ids: []
+  - rule_id: validate_cxs_scope_and_composition
+    applies_to: "cxs_jam_jelly_marmalade"
+    rule: "Only for a declared CXS route, verify scope and the applicable CXS product definition and Section 3.1.2 formulation: jam/jelly uses the applicable 45% or 35% general provision with its listed fruit exceptions and mixed-fruit adjustment; citrus marmalade uses at least 200 g citrus ingredient per 1000 g finished product including at least 75 g endocarp; non-citrus marmalade uses at least 30% fruit generally or 11% for ginger. Do not apply these thresholds to non-CXS preserves, finished purées, or nut pastes."
+    source_ids:
+      - codex-cxs-296-2009
+  - rule_id: validate_cxs_solids_fill
+    applies_to: "cxs_jam_jelly_marmalade"
+    rule: "Only for a declared CXS route, verify the applicable national choice for soluble solids and the CXS provision: products under Section 3.1.2(a-c) are 60-65% or greater as applicable, non-citrus marmalade is 40-65% or less as applicable, and container fill is at least 90% of water capacity minus necessary headspace. Preserve the test and fill evidence."
+    source_ids:
+      - codex-cxs-296-2009
+  - rule_id: validate_non_cxs_boundary
+    applies_to: "non_cxs_and_puree_paste_routes"
+    rule: "Confirm the data package does not cite CXS thresholds as compliance evidence for reduced-sugar or further-processing preserves, special-diet or sweetener-formulated products, or any finished fruit purée, nut purée, or fruit/nut paste; validate against the declared applicable specification instead."
+    source_ids:
+      - codex-cxs-296-2009
+  - rule_id: validate_mass_and_allocation
+    applies_to: "foreground_inventory"
+    rule: "Reconcile reference product, ingredients, packaging, residues, co-products, wastes, wastewater, evaporation, and inventory changes; confirm shared flows follow the allocation hierarchy and all factors sum to one for the allocated total."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: validate_data_quality_and_ranges
+    applies_to: "foreground_and_secondary_data"
+    rule: "Confirm completeness, methodological consistency, technological, geographical, and temporal representativeness, precision, source traceability, and disposition of every reasoned-estimate range and out-of-range value."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+published_dataset_profile:
+  dataset_role: "Product-specific factory-gate foreground data package and resulting unit-process dataset for one declared route and market state"
+  downstream_use: "secondary_dataset; background_dataset after review and publication under the library lifecycle contract"
+  allowed_use: "Product-system modelling for the declared product, route, site, geography, reporting period, and packaging or bulk state; downstream models may add distribution, storage, use, loss, and end-of-life stages"
+  excluded_use: "Unqualified category-average claims; comparative assertions between unlike route families or product specifications; CXS conformity claims for non-CXS products; direct extrapolation to fruit juices, whole fruit or nuts, or other excluded products"
+  required_metadata: "PCR id; UUID references; route family; product and species; formulation; CXS applicability; quality and solids basis; preservation technology; packaging or bulk state; net fill; shelf life and storage condition; site, geography, reporting period; allocation; cut-offs; upstream datasets; proxies; data gaps"
+  required_quality_disclosure: "Record coverage and reconciliation; measurement and calculation methods; calibration; representativeness and precision; CXS evidence where applicable; allocation and cut-offs; reasoned-estimate status and replacement; out-of-range investigations; uncertainty and missing-flow limitations"
+  update_trigger: "Material change to product identity, formulation, route, preservation, packaging, site, utility supply, allocation, applicable law or standard; revised official CPC or CXS scope; new reviewed evidence replacing a reasoned estimate; or a data-quality finding that changes results or fitness for use"
+data_sources:
+  - id: "unsd-cpc-3-0-21494"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21494, “Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes”, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-08-11)"
+    used_for: "Classification identity only; it does not supply process, composition, or quantitative inventory rules"
+  - id: "codex-cxs-296-2009"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 296-2009, Standard for Jams, Jellies and Marmalades, adopted 2009 and official text amended through 2025, https://workspace.fao.org/sites/codex/Standards/CXS%20296-2009/CXS_296e.pdf (accessed 2026-08-11)"
+    used_for: "Scope, product definitions, applicable fruit-content and soluble-solids provisions, quality, fill, and explicit boundary against non-covered products"
+  - id: "eu-pef-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 of 15 December 2021, Annex I Product Environmental Footprint Method, CELEX 32021H2279, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (accessed 2026-08-11)"
+    used_for: "Functional unit and reference flow, supply-chain and packaging boundary, company-specific data, cut-off, allocation hierarchy, data quality, and reporting"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d311278ac9fae99da6b9204f71f4253f7a6423be7180bf639cbc612b2f81a80b"
+  generated_content_sha256: "sha256:83a126cf68ad889b837fea667b37f4d4038f62c39499de2c5b2b565abfc9115a"

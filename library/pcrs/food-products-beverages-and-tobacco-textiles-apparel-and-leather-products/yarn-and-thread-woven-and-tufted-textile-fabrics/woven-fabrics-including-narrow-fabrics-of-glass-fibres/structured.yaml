@@ -1,10 +1,1044 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26890"
-  title: "Woven fabrics (including narrow fabrics) of glass fibres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-including-narrow-fabrics-of-glass-fibres"
+  classification_refs: "CPC 3.0 26890, exact"
+  covered_products: "Woven glass-fibre cloth, woven roving, woven open-mesh fabric, woven tapes and narrow woven glass-fibre fabrics"
+  excluded_products: "Glass yarn and roving sold as such; mats, veils, tissues, nonwovens, knitted or stitched multiaxial fabrics, glass wool, coated or impregnated fabrics, composites and fabricated articles"
+  representative_product: "Saleable greige woven glass-fibre fabric wound on a core and ready at the producing plant gate"
+  production_route: "Purchased continuous-filament glass yarn or roving; warping; conditional on-site sizing; loom weaving; inspection or slitting; rolling and packaging"
+  market_state: "Conforming fabric at plant gate, with weave, width, areal mass, glass type and sizing or finish state declared"
+functional_unit:
+  what: "Conforming woven glass-fibre fabric within the declared construction and specification"
+  how_much: "1 kg net fabric mass, excluding removable transport packaging"
+  how_well: "Meets the producer's declared weave, nominal width, nominal areal mass, glass type, yarn specification, sizing or finish state and acceptance criteria"
+  how_long_or_cycle: "One production campaign or another declared representative production period at the plant gate"
+  reference_flow_link: "The functional unit is realized by the UUID-backed reference product flow below and normalized to its Mass property in kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_yarn
+      applies_to: "foreground_system_boundary"
+      rule: "Start foreground collection when purchased glass continuous-filament yarn or roving crosses the weaving-plant gate; upstream glass melting, fibre drawing and yarn manufacture remain linked upstream datasets."
+      source_ids:
+        - un-cpc-3-2025
+        - ec-jrc-glass-bref-2013
+        - ec-jrc-textiles-bref-2023
+    - rule_id: boundary_required_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include warping, loom weaving, inspection, slitting or edge trimming, rolling, packaging, internal material handling, directly attributable utilities, process wastes and direct emissions."
+      source_ids:
+        - ec-jrc-textiles-bref-2023
+    - rule_id: boundary_conditional_sizing
+      applies_to: "foreground_system_boundary"
+      rule: "Include on-site warp sizing, preparation and associated wastewater only when performed; otherwise declare the inherited yarn sizing state and keep upstream sizing in the yarn dataset."
+      source_ids:
+        - ec-jrc-textiles-bref-2023
+    - rule_id: boundary_excluded_finishing
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude post-weaving coating, polymer impregnation, wet finishing, heat cleaning and coupling-agent treatment unless explicitly included and the resulting product still satisfies the declared CPC 26890 scope."
+      source_ids:
+        - un-cpc-3-2025
+        - ec-jrc-textiles-bref-2023
+    - rule_id: boundary_downstream
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude distribution beyond the plant gate, fabrication into composite parts, use, maintenance and end of life from this gate-to-gate foreground package."
+      source_ids:
+        - ec-jrc-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased glass continuous-filament yarn or roving received at the weaving plant, including inherited sizing state"
+  starting_condition_role: "Upstream material input and physical starting condition for foreground fabric formation"
+  product_classification_scope: "Woven glass-fibre fabrics within CPC 3.0 code 26890"
+  recursive_input_rule: "A purchased CPC 26890 fabric used only for inspection, slitting or repacking is recorded as an explicit background product input and must not be recursively represented as yarn-to-fabric manufacture"
+  upstream_dataset_requirement: "Link geographically and technologically representative datasets for glass raw-material preparation, melting, fibre drawing, yarn or roving manufacture, purchased sizing chemicals, electricity, water and packaging"
+  disclosure: "Declare plant geography, production period, loom technology, product construction, inherited and on-site sizing, included finishing, cut-off decisions, utility supply and treatment routes"
+reference_flow_definition:
+  reference_amount: "1 kg net conforming product"
+  product_flow_ref:
+    name: "Woven fabrics (including narrow fabrics) of glass fibres"
+    uuid: "59caf1b9-5a05-4eef-8ba2-bc94aa28f43f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "weave architecture"
+    - "broad or narrow construction"
+    - "nominal width"
+    - "nominal areal mass"
+    - "glass type"
+    - "warp and weft yarn or roving specification"
+    - "sizing or finish state"
+    - "plant geography"
+    - "production period"
+    - "plant-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net conforming fabric mass on calibrated scales; exclude removable cores, film, pallets and other transport packaging."
+  - id: mass_conversion
+    applies_to: "Yarn, fabric, chemicals and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert all mass records to kg and retain the original unit, conversion factor and moisture or solids basis where relevant."
+  - id: water_mass
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert metered volume using measured density when material; otherwise document the water-density convention used."
+  - id: electricity_measurement
+    applies_to: "Electricity consumed by each foreground process"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use submetered consumption where available; otherwise derive consumption from a documented meter difference or defensible equipment-time allocation."
+  - id: areal_mass_check
+    applies_to: "Reference product consistency"
+    required_property_ref:
+      name: "Mass per area"
+      uuid: ""
+    required_unit: "g/m2"
+    rule: "Record nominal and measured areal mass as product qualifiers; do not substitute area for the kg reference amount."
+  - id: dry_solids_basis
+    applies_to: "Sizing agents and sizing wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record supplied solution mass and dry-solids fraction separately so retained size and discharged solids can be reconciled."
+process_map:
+  - id: warping
+    name: "Yarn receipt and warping"
+    inclusion: "required"
+    inclusion_condition: "Always for yarn-to-woven-fabric production"
+    role: "Foreground yarn preparation"
+    quantitative_reference: "kg warped glass-fibre yarn delivered on beam"
+  - id: sizing
+    name: "On-site warp sizing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when size is prepared or applied at the weaving plant"
+    role: "Foreground yarn conditioning"
+    quantitative_reference: "kg sized warp delivered on beam"
+  - id: weaving
+    name: "Loom weaving"
+    inclusion: "required"
+    inclusion_condition: "Always for products in scope"
+    role: "Foreground fabric formation"
+    quantitative_reference: "kg greige woven glass-fibre fabric"
+  - id: inspection_packaging
+    name: "Inspection, slitting, rolling and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always for the plant-gate reference product"
+    role: "Foreground product finishing without coating"
+    quantitative_reference: "kg net conforming woven glass-fibre fabric"
+process_inventory:
+  - id: warping
+    label: "Yarn receipt and warping"
+    inputs:
+      product:
+        - row_id: warping_glass_warp_yarn
+          role: "Glass-fibre warp yarn"
+          name: "Glass fiber yarn"
+          flow_type: "product"
+          flow_ref:
+            uuid: "52480783-8003-4f68-9f65-0c61335127d8"
+          property_unit: "Mass / kg"
+          description: "Purchased continuous-filament glass yarn or roving crosses the plant boundary and is assembled into the warp. The receipt mass, returned material and opening stock must be traceable to supplier and warehouse records."
+          amount:
+            expression: "Record accepted input mass consumed by the warping campaign after stock reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg warped glass-fibre yarn delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warping_mass_balance
+              source_ids:
+                - ec-jrc-glass-bref-2013
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: warping_electricity
+          role: "Warping electricity"
+          name: "Alternating current supplied to the warping line"
+          flow_type: "product"
+          property_unit: "Net calorific value / kWh"
+          description: "Electricity drives creels, tension control, warpers and directly attributable material handling. Its final UUID must match the site's geography, voltage and supply mix."
+          amount:
+            expression: "Record submetered consumption or documented meter difference attributable to the campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg warped glass-fibre yarn delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warping_electricity
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+                - toffe-et-al-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: warped_glass_warp_on_beam
+          role: "Warped glass-fibre yarn on beam"
+          name: "Warped glass-fibre yarn on beam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate is the measured warp output transferred to sizing or directly to weaving. It is not the finished product and therefore remains a separate foreground intermediate."
+          amount:
+            expression: "Record net beam mass less the verified empty-beam tare"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per warping campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warping_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: warping_glass_yarn_waste
+          role: "Warping glass-yarn waste"
+          name: "Waste glass-fibre yarn from warping"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Broken ends, tangled yarn and unrecoverable warp losses leaving the process are recorded separately from internally reused material."
+          amount:
+            expression: "Weigh collected waste by destination and reconcile it with yarn input, output and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg warped glass-fibre yarn delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warping_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: sizing
+    label: "On-site warp sizing"
+    inputs:
+      product:
+        - row_id: sizing_warped_glass_yarn
+          role: "Warped glass-fibre yarn entering sizing"
+          name: "Warped glass-fibre yarn on beam entering sizing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Warped yarn enters this conditional process only when the plant prepares or applies size. Purchased pre-sized yarn bypasses this process and its inherited size is disclosed upstream."
+          amount:
+            expression: "Record net beam mass entering the sizing campaign after empty-beam tare correction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sized glass-fibre warp delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_process_water
+          role: "Sizing process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Water used to prepare or dilute the sizing bath crosses the process boundary as one atomic input. Cleaning water is added as a separate atomic card when it is attributable to the sizing campaign."
+          amount:
+            expression: "Record metered or batch-recipe water charged to the sizing preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sized glass-fibre warp delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_polyvinyl_alcohol
+          role: "Polyvinyl-alcohol sizing agent"
+          name: "Polyvinyl alcohol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cea707dd-98a3-451d-bc43-2dcc145091e9"
+          property_unit: "Mass / kg"
+          description: "Polyvinyl alcohol is recorded only when it is present in the site formulation. Every other starch, polymer, lubricant, antistatic agent or additive actually used must be added as its own atomic exchange."
+          amount:
+            expression: "Record supplied product mass and dry-solids fraction from batch sheets and supplier specifications"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sized glass-fibre warp delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_electricity
+          role: "Sizing electricity"
+          name: "Alternating current supplied to the sizing line"
+          flow_type: "product"
+          property_unit: "Net calorific value / kWh"
+          description: "Electricity drives preparation, pumping, application and drying equipment used by the sizing operation. Its UUID remains site-dependent."
+          amount:
+            expression: "Record submetered consumption or documented meter difference attributable to the sizing campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sized glass-fibre warp delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_electricity
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sized_glass_warp_on_beam
+          role: "Sized glass-fibre warp on beam"
+          name: "Sized glass-fibre warp on beam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate contains the measured glass-fibre warp plus retained size and proceeds to the loom. The retained dry size must be supported by a mass balance or product test."
+          amount:
+            expression: "Record net output-beam mass and retained size state for the campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per sizing campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: sizing_wastewater
+          role: "Sizing wastewater"
+          name: "Wastewater from glass-fibre warp sizing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater discharged from bath preparation, application or attributable cleaning is recorded with its destination and measured solids or pollutant data. Recirculated water remains internal until discharged."
+          amount:
+            expression: "Record metered discharge or reconciled batch volume and retain measured dry solids, COD and treatment route as separate attributes or exchanges"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sized glass-fibre warp delivered on beam"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_wastewater
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: weaving
+    label: "Loom weaving"
+    inputs:
+      product:
+        - row_id: weaving_warp_yarn_on_beam
+          role: "Glass-fibre warp on loom beam"
+          name: "Glass-fibre warp yarn on loom beam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The actual warped input to the loom is recorded with its sized or unsized state. This single intermediate must not be replaced by the finished-fabric reference flow."
+          amount:
+            expression: "Record net beam mass consumed, correcting for returned warp and verified empty-beam tare"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg greige woven glass-fibre fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: weaving_glass_weft_yarn
+          role: "Glass-fibre weft yarn"
+          name: "Glass fiber yarn"
+          flow_type: "product"
+          flow_ref:
+            uuid: "52480783-8003-4f68-9f65-0c61335127d8"
+          property_unit: "Mass / kg"
+          description: "Continuous-filament glass yarn or roving inserted as weft crosses the loom boundary separately from warp. Warehouse issues and returned packages support the consumed mass."
+          amount:
+            expression: "Record accepted weft mass issued to and consumed by the weaving campaign after stock reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg greige woven glass-fibre fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_mass_balance
+              source_ids:
+                - ec-jrc-glass-bref-2013
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: weaving_electricity
+          role: "Weaving electricity"
+          name: "Alternating current supplied to the weaving line"
+          flow_type: "product"
+          property_unit: "Net calorific value / kWh"
+          description: "Electricity powers the loom, controls, local extraction and directly attributable handling. Campaign metering must separate productive, idle and excluded finishing loads where material."
+          amount:
+            expression: "Record loom-line submeter data or documented meter differences over the campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg greige woven glass-fibre fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_electricity
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+                - toffe-et-al-2019
+            ranges: []
+        - row_id: weaving_loom_lubricating_oil
+          role: "Loom lubricating oil"
+          name: "Lubricating oil consumed by the glass-fibre weaving loom"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Make-up lubricating oil consumed by the loom is recorded as one specific product input after the site declares the actual grade. Oil remaining in durable equipment is not treated as consumed inventory."
+          amount:
+            expression: "Record issued make-up mass less returned usable oil for the campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg greige woven glass-fibre fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_lubricant
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: greige_woven_glass_fabric
+          role: "Greige woven glass-fibre fabric"
+          name: "Greige woven glass-fibre fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The loom output is weighed before inspection losses and removable packaging. Its construction and sizing state must match the campaign record."
+          amount:
+            expression: "Record net greige roll mass after tare correction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per weaving campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+      waste:
+        - row_id: weaving_glass_fabric_waste
+          role: "Weaving glass-fabric waste"
+          name: "Waste woven glass-fibre fabric from weaving"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Start-up strips, damaged selvedges and rejected loom material leaving the process are weighed separately by management destination. Internally reused material is recorded as an internal loop, not a waste output."
+          amount:
+            expression: "Weigh collected loom waste and reconcile it with warp, weft, retained size, output and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg greige woven glass-fibre fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_mass_balance
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        - row_id: weaving_glass_fibre_dust_to_air
+          role: "Glass-fibre dust to air"
+          name: "Glass-fibre dust emitted to air from weaving"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct glass-fibre particulate released beyond capture equipment is included only from measured or permitted emission records. Captured dust sent to waste management is a separate waste flow."
+          amount:
+            expression: "Record measured stack or workplace-extraction discharge attributable to the campaign; do not infer a release from handled mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg greige woven glass-fibre fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_air_emissions
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+  - id: inspection_packaging
+    label: "Inspection, slitting, rolling and packaging"
+    inputs:
+      product:
+        - row_id: packaging_greige_glass_fabric
+          role: "Greige woven glass-fibre fabric entering inspection"
+          name: "Greige woven glass-fibre fabric entering inspection"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Greige roll mass enters inspection and any required edge trimming or slitting. If material comes from another site, record it as a purchased background input and disclose that the dataset does not represent yarn-to-fabric manufacture."
+          amount:
+            expression: "Record net incoming roll mass after core and packaging tare correction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming woven glass-fibre fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Inspection and packaging electricity"
+          name: "Alternating current supplied to inspection and packaging"
+          flow_type: "product"
+          property_unit: "Net calorific value / kWh"
+          description: "Electricity powers inspection frames, slitters, winders and directly attributable packaging equipment. The identity depends on site supply conditions."
+          amount:
+            expression: "Record submetered consumption or documented allocated meter difference for the campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming woven glass-fibre fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_electricity
+              source_ids:
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+        - row_id: packaging_paperboard_core
+          role: "Paperboard winding core"
+          name: "Cardboard tube or Paper core"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+          property_unit: "Mass / kg"
+          description: "The paperboard core shipped with the finished roll is recorded separately from plastic film and any pallet. Core mass is excluded from reference-product net mass."
+          amount:
+            expression: "Record purchased or weighed core mass shipped with conforming rolls"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming woven glass-fibre fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+        - row_id: packaging_polyethylene_film
+          role: "Polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyethylene film applied to the roll is one packaging input. The producer must declare polymer type and recycled content; straps, labels and pallets are added as separate atomic exchanges when used."
+          amount:
+            expression: "Record purchased or issued film mass consumed by the packaged campaign after stock reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming woven glass-fibre fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: woven_glass_fabric_reference
+          role: "Woven glass-fibre fabric reference product"
+          name: "Woven fabrics (including narrow fabrics) of glass fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "59caf1b9-5a05-4eef-8ba2-bc94aa28f43f"
+          property_unit: "Mass / kg"
+          description: "The conforming net fabric output realizes the reference flow. Removable cores, film, pallets and other transport packaging are recorded separately and excluded from this mass."
+          amount:
+            expression: "Record calibrated net conforming fabric mass and normalize the data package to 1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - un-cpc-3-2025
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+      waste:
+        - row_id: packaging_offspec_glass_fabric
+          role: "Off-spec woven glass-fibre fabric"
+          name: "Off-spec woven glass-fibre fabric sent to waste management"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Fabric rejected during inspection or generated by slitting is recorded by actual waste-management destination. Saleable downgraded product is a co-product and is not recorded as waste."
+          amount:
+            expression: "Weigh rejected fabric and reconcile it with incoming greige mass, conforming output and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming woven glass-fibre fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+        - row_id: packaging_paperboard_waste
+          role: "Paperboard packaging waste"
+          name: "Paper and cardboard packaging waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a318022d-c960-4eb5-a81c-04a9c4dda7e4"
+          property_unit: "Mass / kg"
+          description: "Damaged cores and other paperboard packaging discarded at the plant are recorded separately from shipped cores and from plastic packaging waste."
+          amount:
+            expression: "Weigh or reconcile paperboard packaging discarded during the campaign by management destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming woven glass-fibre fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - techfab-pwc-glass-fabric-2025
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "foreground_burden_allocation"
+    rule: "First avoid allocation through submetering, campaign-specific material records, subdivision by loom line and explicit internal-loop accounting."
+    source_ids:
+      - iso-14044-2006
+      - ec-jrc-pef-2021
+  - rule_id: allocation_shared_energy
+    applies_to: "shared utilities and equipment"
+    rule: "Allocate unmetered shared electricity by recorded equipment operating time or loom-hours when these represent the causal driver; disclose idle-load treatment and test material alternatives."
+    source_ids:
+      - iso-14044-2006
+      - toffe-et-al-2019
+  - rule_id: allocation_shared_materials
+    applies_to: "shared materials and wastes"
+    rule: "Allocate shared yarn, sizing, packaging and solid-waste records by measured mass attributable to each product campaign unless a more causal physical parameter is demonstrated."
+    source_ids:
+      - iso-14044-2006
+      - ec-jrc-pef-2021
+  - rule_id: allocation_internal_rework
+    applies_to: "internal rework"
+    rule: "Treat material returned to the same foreground production system as an internal loop with no co-product credit and prevent double counting of its mass and burdens."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_saleable_downgrade
+    applies_to: "saleable downgraded fabric"
+    rule: "Treat saleable downgraded fabric as a co-product; use a documented physical relationship where defensible and use economic allocation only when physical relationships cannot be justified, with sensitivity disclosure."
+    source_ids:
+      - iso-14044-2006
+      - ec-jrc-pef-2021
+  - rule_id: allocation_waste_recovery
+    applies_to: "waste sent to recovery"
+    rule: "Keep collection and pre-treatment within the foreground boundary; apply recycling or substitution credits only in an explicitly declared downstream method and never as an undocumented negative waste amount."
+    source_ids:
+      - ec-jrc-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_warping_mass_balance
+      process_id: "warping"
+      flow_role: "warp yarn, warped beam and yarn waste"
+      record_type: "Warehouse issue, scale ticket and campaign log"
+      raw_fields: "item id, glass type, yarn specification, lot, opening stock, issued mass, returned mass, beam gross mass, beam tare, waste mass, destination"
+      collection_method: "Reconcile calibrated weights and stock movements by campaign"
+      unit: "kg"
+      frequency: "Each campaign"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included warping lines"
+      aggregation_rule: "Sum accepted records; keep internal reuse separate; normalize only after mass reconciliation"
+      quality_evidence: "Calibration certificate, warehouse ledger, campaign log, waste ticket"
+    - protocol_id: cp_warping_electricity
+      process_id: "warping"
+      flow_role: "electricity"
+      record_type: "Submeter or main-meter interval record"
+      raw_fields: "meter id, start, end, kWh, line state, campaign id, included auxiliaries"
+      collection_method: "Submeter difference; otherwise documented allocation from coincident main-meter data"
+      unit: "kWh"
+      frequency: "Each campaign or interval"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included warping lines"
+      aggregation_rule: "Sum productive and attributable auxiliary intervals; disclose idle treatment"
+      quality_evidence: "Meter register, interval export, allocation worksheet"
+    - protocol_id: cp_sizing_mass_balance
+      process_id: "sizing"
+      flow_role: "warped yarn, water, PVA, other formulation components and sized output"
+      record_type: "Batch sheet, recipe, meter and scale record"
+      raw_fields: "batch id, input beam mass, water, chemical product mass, dry solids, output beam mass, returns, residues"
+      collection_method: "Reconcile batch inputs, retained size and outputs"
+      unit: "kg"
+      frequency: "Each sizing batch"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included sizing lines"
+      aggregation_rule: "Sum valid batches by product; retain supplied and dry-solids bases"
+      quality_evidence: "Approved recipe, supplier specification, scale and meter records"
+    - protocol_id: cp_sizing_electricity
+      process_id: "sizing"
+      flow_role: "electricity"
+      record_type: "Submeter or main-meter interval record"
+      raw_fields: "meter id, start, end, kWh, batch id, dryer and pump state"
+      collection_method: "Submeter difference; otherwise documented equipment-time allocation"
+      unit: "kWh"
+      frequency: "Each batch or interval"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included sizing lines"
+      aggregation_rule: "Sum attributable intervals by batch"
+      quality_evidence: "Meter register, interval export, allocation worksheet"
+    - protocol_id: cp_sizing_wastewater
+      process_id: "sizing"
+      flow_role: "wastewater"
+      record_type: "Effluent meter, batch balance and laboratory record"
+      raw_fields: "discharge mass or volume, density basis, COD, dry solids, treatment route, sample time, batch id"
+      collection_method: "Use effluent meter and representative sampling; reconcile with batch water"
+      unit: "kg"
+      frequency: "Each batch with periodic analysis"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included sizing discharges"
+      aggregation_rule: "Aggregate volume-weighted analytical results and retain treatment routing"
+      quality_evidence: "Meter calibration, laboratory report, discharge manifest"
+    - protocol_id: cp_weaving_mass_balance
+      process_id: "weaving"
+      flow_role: "warp, weft, greige output and loom waste"
+      record_type: "Beam record, warehouse issue, roll scale and waste ticket"
+      raw_fields: "campaign id, product code, warp input, weft issue and return, greige roll gross mass, tare, waste mass, stock change"
+      collection_method: "Reconcile calibrated masses for each loom campaign"
+      unit: "kg"
+      frequency: "Each campaign"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included looms"
+      aggregation_rule: "Sum accepted campaigns after mass-balance review"
+      quality_evidence: "Scale calibration, loom ticket, warehouse ledger, waste ticket"
+    - protocol_id: cp_weaving_electricity
+      process_id: "weaving"
+      flow_role: "electricity"
+      record_type: "Loom-line submeter or interval record"
+      raw_fields: "meter id, loom id, start, end, kWh, operating time, idle time, campaign id"
+      collection_method: "Submeter by campaign; otherwise allocate coincident interval use by recorded loom-hours"
+      unit: "kWh"
+      frequency: "Each campaign or interval"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included looms and direct extraction"
+      aggregation_rule: "Sum attributable intervals; disclose allocation and idle load"
+      quality_evidence: "Meter register, machine log, allocation worksheet"
+    - protocol_id: cp_weaving_lubricant
+      process_id: "weaving"
+      flow_role: "lubricating oil"
+      record_type: "Stores issue and maintenance record"
+      raw_fields: "product id, grade, issued mass, returned mass, machine id, date, campaign"
+      collection_method: "Reconcile make-up oil issued and returned"
+      unit: "kg"
+      frequency: "Each issue, aggregated by campaign"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included looms"
+      aggregation_rule: "Sum net consumed make-up oil by machine campaign"
+      quality_evidence: "Safety data sheet, stores ledger, maintenance record"
+    - protocol_id: cp_weaving_air_emissions
+      process_id: "weaving"
+      flow_role: "glass-fibre dust to air"
+      record_type: "Stack test, extraction record or permit report"
+      raw_fields: "source id, sampling method, concentration, gas flow, operating time, capture status, campaign"
+      collection_method: "Calculate released mass only from measured source data aligned to production"
+      unit: "kg"
+      frequency: "Each valid measurement period"
+      temporal_coverage: "Representative operating condition"
+      site_scope: "All relevant direct release points"
+      aggregation_rule: "Integrate concentration and flow over aligned time; no unsupported inference"
+      quality_evidence: "Accredited test report, permit record, operating log"
+    - protocol_id: cp_packaging_mass_balance
+      process_id: "inspection_packaging"
+      flow_role: "greige input, reference output, rejects, cores, film and paperboard waste"
+      record_type: "Roll ticket, scale, packaging issue and waste record"
+      raw_fields: "roll id, incoming gross and tare, conforming net mass, reject mass, core mass, film issue, other packaging, waste mass, destination"
+      collection_method: "Reconcile calibrated roll and packaging masses by campaign"
+      unit: "kg"
+      frequency: "Each roll or campaign"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included inspection and packaging lines"
+      aggregation_rule: "Sum accepted rolls and packaging issues; exclude removable packaging from product mass"
+      quality_evidence: "Scale calibration, roll ticket, bill of materials, waste ticket"
+    - protocol_id: cp_packaging_electricity
+      process_id: "inspection_packaging"
+      flow_role: "electricity"
+      record_type: "Submeter or interval record"
+      raw_fields: "meter id, start, end, kWh, equipment state, campaign id"
+      collection_method: "Submeter difference; otherwise documented equipment-time allocation"
+      unit: "kWh"
+      frequency: "Each campaign or interval"
+      temporal_coverage: "Representative production period"
+      site_scope: "All included inspection and packaging equipment"
+      aggregation_rule: "Sum attributable intervals by campaign"
+      quality_evidence: "Meter register, equipment log, allocation worksheet"
+  calculation_rules:
+    - id: calc_net_roll_mass
+      applies_to: "Greige and conforming rolls"
+      rule: "Net fabric mass equals gross roll mass minus verified core, wrapper and other removable tare mass."
+      inputs:
+        - "Gross scale mass"
+        - "core tare"
+        - "wrapper tare"
+        - "other removable tare"
+      output: "Net fabric mass in kg"
+      source_ids:
+        - techfab-pwc-glass-fabric-2025
+    - id: calc_process_intensity
+      applies_to: "Every foreground exchange"
+      rule: "Normalized exchange equals accepted campaign exchange divided by accepted net output mass for the applicable process or reference product."
+      inputs:
+        - "Accepted exchange"
+        - "accepted process output or reference mass"
+      output: "Exchange per kg basis"
+      source_ids:
+        - iso-14044-2006
+        - ec-jrc-pef-2021
+    - id: calc_mass_balance
+      applies_to: "Each material-processing stage"
+      rule: "Reconcile opening stock plus inputs with outputs, closing stock, internal returns and waste; investigate rather than force-close unexplained differences."
+      inputs:
+        - "Opening stock"
+        - inputs
+        - "product and intermediate outputs"
+        - returns
+        - waste
+        - "closing stock"
+      output: "Documented mass-balance difference"
+      source_ids:
+        - iso-14044-2006
+        - techfab-pwc-glass-fabric-2025
+    - id: calc_dry_size
+      applies_to: "Sizing formulation and discharge"
+      rule: "Dry sizing-agent mass equals supplied product mass multiplied by supplier or measured dry-solids fraction; keep water mass separate."
+      inputs:
+        - "Supplied product mass"
+        - "dry-solids fraction"
+      output: "Dry sizing-agent mass in kg"
+      source_ids:
+        - ec-jrc-textiles-bref-2023
+    - id: calc_measured_dust
+      applies_to: "Direct glass-fibre dust release"
+      rule: "Released mass equals measured concentration multiplied by aligned dry gas volume or flow-time integral, with unit conversions documented."
+      inputs:
+        - "Measured concentration"
+        - "gas flow or volume"
+        - "aligned operating time"
+      output: "Released particulate mass in kg"
+      source_ids:
+        - ec-jrc-textiles-bref-2023
+  data_quality_requirements:
+    - id: dq_technology
+      applies_to: "Product and process route"
+      requirement: "Identify loom type, weave architecture, glass type, yarn specifications, sizing state, nominal width and areal mass for every aggregated product family."
+      evidence: "Product specification, bill of materials and campaign routing"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use a declared representative period that covers normal operation, start-up, rejects and maintenance effects; identify exclusions and abnormal campaigns."
+      evidence: "Production calendar, campaign register and exclusion log"
+    - id: dq_geography
+      applies_to: "Utilities and upstream datasets"
+      requirement: "Match plant country or grid region and disclose the geography of significant yarn, chemical and packaging suppliers."
+      evidence: "Site record, supplier declaration and dataset metadata"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Reconcile material mass and account separately for each used utility, sizing component, packaging component, waste stream and measured direct emission; do not collapse them into collection labels."
+      evidence: "Mass balance, utility register, formulation, packaging bill and waste register"
+    - id: dq_measurement
+      applies_to: "Meters and scales"
+      requirement: "Use in-calibration instruments and retain raw readings, taring records, data treatment and uncertainty or precision evidence."
+      evidence: "Calibration certificates, raw exports and calculation worksheet"
+    - id: dq_uuid_identity
+      applies_to: "Tiangong references"
+      requirement: "Before publication, resolve every used UUID by direct state100 read and confirm name, flow type, property and required qualifiers; unresolved identities remain review blockers."
+      evidence: "Tiangong direct-read evidence and reviewer sign-off"
+    - id: dq_source_traceability
+      applies_to: "Method rules"
+      requirement: "Retain the exact cited report, standard or full-text article edition used for each boundary, calculation or quality rule."
+      evidence: "Controlled source register and retrieval date"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm the reference product is a woven glass-fibre fabric within CPC 26890 and that excluded nonwoven, knitted, coated, impregnated or composite products are absent."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm the reference output uses UUID 59caf1b9-5a05-4eef-8ba2-bc94aa28f43f, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66 and kg net product mass."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_qualifiers
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject an incomplete reference definition unless all required product, process, geography and period qualifiers are declared."
+    source_ids:
+      - iso-ts-14027-2017
+      - iso-14025-2006
+  - rule_id: validate_boundary
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm warping, weaving, inspection and packaging are present, on-site sizing is included when performed, upstream yarn production is linked, and excluded finishing and downstream stages are not silently mixed into the foreground package."
+    source_ids:
+      - ec-jrc-glass-bref-2013
+      - ec-jrc-textiles-bref-2023
+  - rule_id: validate_atomic_inventory
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm each inventory card represents one concrete exchange and that every actual electricity supply, chemical, packaging material, waste and direct emission is separately represented."
+    source_ids:
+      - ec-jrc-textiles-bref-2023
+  - rule_id: validate_mass_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm stage and overall material balances reconcile within documented measurement precision and that unexplained differences are investigated rather than assigned to an invented flow."
+    source_ids:
+      - iso-14044-2006
+      - techfab-pwc-glass-fabric-2025
+  - rule_id: validate_foreground_values
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm inventory amounts come from collected foreground records or calculations from those records; reject unsupported generic or AI-authored numerical ranges."
+    source_ids:
+      - iso-14044-2006
+      - ec-jrc-pef-2021
+  - rule_id: validate_allocation
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm allocation is first avoided, any remaining physical or economic allocation is documented and sensitivity is disclosed where method choice could materially affect results."
+    source_ids:
+      - iso-14044-2006
+      - ec-jrc-pef-2021
+  - rule_id: validate_uuid_state
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm every UUID stored in the data package resolves at public state100 with exact semantic identity; fail publication on unresolved or mismatched UUIDs."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_bilingual_alignment
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm English and Chinese machine fields, rule order, process order, row order and UUIDs remain aligned."
+    source_ids:
+      - iso-ts-14027-2017
+published_dataset_profile:
+  dataset_role: "Product-specific or plant-average cradle-from-yarn-to-gate foreground unit-process package for woven glass-fibre fabric manufacture"
+  downstream_use: "Publication as a process dataset and use in lifecyclemodel projections with linked upstream yarn, utility, chemical, packaging and waste-treatment datasets"
+  allowed_use: "Products and routes satisfying the declared CPC 26890 boundary, qualifiers, site geography and production period"
+  excluded_use: "Nonwoven, knitted, stitched multiaxial, coated, impregnated or composite products; glass melting or fibre drawing; unsupported market averages; downstream fabrication or use"
+  required_metadata: "PCR id and version; reference UUIDs; CPC code; plant geography; period; product construction; glass and yarn specifications; sizing state; process map; allocation; cut-offs; upstream links; UUID review state"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; mass-balance differences; shared-utility allocation; data gaps; unresolved identities; representativeness and uncertainty"
+  update_trigger: "Product construction or route change; sizing or finishing change; major loom or utility change; supplier or geography change; newer representative period; source or Tiangong identity revision"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 26890, 2025. <https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf>"
+    used_for: "Official product identity, included woven-fabric scope and classification boundary; retrieved 2026-08-12"
+  - id: "ec-jrc-glass-bref-2013"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Manufacture of Glass, 2013, DOI 10.2791/69502. <https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/GLS_Adopted_03_2012_0.pdf>"
+    used_for: "Upstream continuous-filament glass-fibre and sizing context, upstream dataset requirements and emissions awareness; retrieved 2026-08-12"
+  - id: "ec-jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Textiles Industry, 2023. <https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf>"
+    used_for: "Warping, sizing and weaving process decomposition, utilities, oils, water, wastewater and inventory completeness; retrieved 2026-08-12"
+  - id: "ec-jrc-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the Environmental Footprint methods. <https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32021H2279>"
+    used_for: "Functional unit, system boundary, allocation, inventory, data quality and recycling-method rules; retrieved 2026-08-12"
+  - id: "iso-14040-2006"
+    type: "standard"
+    reference: "ISO 14040:2006, Environmental management — Life cycle assessment — Principles and framework. <https://www.iso.org/standard/37456.html>"
+    used_for: "LCA goal, scope and inventory framework; retrieved 2026-08-12"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines. <https://www.iso.org/standard/38498.html>"
+    used_for: "Boundary, allocation, inventory calculation, quality and validation rules; retrieved 2026-08-12"
+  - id: "iso-14025-2006"
+    type: "standard"
+    reference: "ISO 14025:2006, Environmental labels and declarations — Type III environmental declarations — Principles and procedures. <https://www.iso.org/standard/38131.html>"
+    used_for: "PCR and disclosure context; retrieved 2026-08-12"
+  - id: "iso-ts-14027-2017"
+    type: "standard"
+    reference: "ISO/TS 14027:2017, Environmental labels and declarations — Development of product category rules. <https://www.iso.org/standard/66123.html>"
+    used_for: "PCR content and communication alignment; retrieved 2026-08-12"
+  - id: "iso-14067-2018"
+    type: "standard"
+    reference: "ISO 14067:2018, Greenhouse gases — Carbon footprint of products. <https://www.iso.org/standard/71206.html>"
+    used_for: "Product carbon-footprint application context; retrieved 2026-08-12"
+  - id: "techfab-pwc-glass-fabric-2025"
+    type: "literature"
+    reference: "Tech-Fab Europe and PwC, Life Cycle Assessment report for glass fibre fabrics, January 2025. <https://www.solidian-kelteks.com/images/downloads/250127_LCA_Tech_Fab_report__Open_mesh_Jan_2025.pdf>"
+    used_for: "Product context, 1 kg gate reference, primary-data fields, packaging, mass balance and product-family limitations; retrieved 2026-08-12"
+  - id: "toffe-et-al-2019"
+    type: "literature"
+    reference: "Toffe et al., A Scale-up of Energy-Cycle Analysis on Processing Non-Woven Flax/PLA Tape and Triaxial Glass Fibre Fabric for Composites, Journal of Manufacturing and Materials Processing 3(4):92, 2019, DOI 10.3390/jmmp3040092. <https://eprints.bournemouth.ac.uk/32952/7/jmmp-03-00092.pdf>"
+    used_for: "Peer-reviewed full-text evidence for batch-specific machine electricity measurement and production-output normalization; not used to define woven process identity; retrieved 2026-08-12"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e1afd831a5176ef3aa2d29eef61e17136b6f8e3d9f0c6994783d160cba669bcc"
+  generated_content_sha256: "sha256:6100286eeb690745afb7e6dc0159cd1298420553ff5290367e9c399f00b86521"

@@ -1,10 +1,826 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21121"
-  title: "Meat of chickens, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-chickens-fresh-or-chilled"
+  classification_refs: "CPC 3.0 21121, Meat of chickens, fresh or chilled, exact scope reference"
+  covered_products: "Edible meat of chickens, fresh or chilled; whole dressed carcasses; bone-in cuts; boneless cuts; skin-on or skinless cuts; bulk or primary-packaged product"
+  excluded_products: "Live chickens; frozen chicken meat; edible poultry offal as a separate product; rendered fat; mechanically separated meat unless explicitly classified within the applicable jurisdiction; cooked, seasoned, marinated, cured, smoked, canned, or otherwise prepared chicken products"
+  representative_product: "Inspected whole dressed chicken carcass, chilled and ready for dispatch at the slaughterhouse gate"
+  production_route: "Live-bird reception and inspection; stunning; bleeding; scalding; defeathering; head and feet removal as applicable; evisceration and post-mortem inspection; washing; rapid chilling; optional cutting and primary packaging; chilled holding and dispatch"
+  market_state: "Fresh or chilled edible chicken meat at the slaughterhouse or processing-plant gate; never frozen during the represented route"
+functional_unit:
+  what: "Provision of edible fresh or chilled chicken meat that has passed the applicable post-mortem inspection and is ready for dispatch at the declared plant gate"
+  how_much: "1 kg net mass of the declared chicken-meat product, excluding packaging, free ice, and separately marketed offal or other co-products"
+  how_well: "Product identity, form, hygiene disposition, chilling method, dispatch temperature, and packaging state meet the applicable legal and customer specification; the product has not been frozen or further prepared"
+  how_long_or_cycle: "One identified production lot through slaughter, chilling, declared optional preparation, and plant-gate dispatch; chilled conditions are maintained through the gate"
+  reference_flow_link: "One functional unit is realized by exactly 1 kg of the declared reference product flow at the plant gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_slaughter_route
+      applies_to: "Foreground slaughter and chilling"
+      rule: "Include live-bird reception and inspection, stunning, bleeding, scalding, defeathering, head and feet removal as applicable, evisceration, post-mortem inspection, washing, chilling, chilled holding, and dispatch. Include cutting, deboning, and primary packaging when performed before the declared product gate."
+      source_ids:
+        - ifc-poultry-processing-ehs-2007
+        - codex-cxc-58-2005
+    - rule_id: boundary_rule_cold_chain
+      applies_to: "Chilled product"
+      rule: "Include refrigeration and handling needed to reduce product temperature rapidly and maintain the declared chilled state through the plant gate. A temporary cold-chain interruption may be represented only when necessary for documented operations and its duration and temperature consequence are recorded."
+      source_ids:
+        - codex-cxc-58-2005
+    - rule_id: boundary_rule_upstream
+      applies_to: "Live chickens and other supplied inputs"
+      rule: "Exclude farming, hatchery, feed production, and off-site supply processes from the slaughter foreground, but link their burdens through upstream datasets. Include inbound transport separately when it is not already included in the delivered live-chicken dataset."
+      source_ids:
+        - ifc-poultry-processing-ehs-2007
+    - rule_id: boundary_rule_stream_separation
+      applies_to: "Meat, edible co-products, inedible material, and wastewater"
+      rule: "Keep reference meat, edible offal, saleable by-products, condemned material, blood, feathers, other solids, and wastewater as distinct streams. Do not route recoverable organic material implicitly into wastewater."
+      source_ids:
+        - ifc-poultry-processing-ehs-2007
+        - ec-bat-slaughterhouses-2023
+    - rule_id: boundary_rule_treatment
+      applies_to: "On-site and off-site treatment"
+      rule: "Include on-site wastewater or by-product treatment burdens when operated within the declared plant boundary. Otherwise record the outgoing waste or co-product and link the appropriate off-site treatment or processing dataset."
+      source_ids:
+        - ec-bat-slaughterhouses-2023
+boundary_abstraction:
+  declared_starting_condition: "Live chickens accepted for slaughter at the slaughterhouse receiving point, with supplier, origin, arrival mass, bird count, mortality, and inspection disposition recorded"
+  starting_condition_role: "Foreground-gate input condition; upstream husbandry and feed production are supplied by linked background datasets rather than repeated inside the slaughter foreground"
+  product_classification_scope: "Edible chicken meat that remains fresh or chilled under CPC 3.0 21121; frozen meat, edible offal, and prepared or preserved chicken products remain outside this PCR identity"
+  recursive_input_rule: "If fresh or chilled chicken meat enters a cutting, deboning, repacking, or rework operation, record it as a separate same-category technosphere input with an upstream dataset and do not recursively reproduce its slaughter inventory in the receiving process"
+  upstream_dataset_requirement: "Require traceable upstream datasets for live-chicken production and any inbound transport, electricity, fuel or heat, water supply, chemicals, packaging, refrigerant, and off-site treatment that crosses the selected boundary"
+  disclosure: "Declare geography, plant type, product form, chilling method, gate temperature limit, drainage convention, reporting period, included optional operations, treatment ownership, co-product destinations, allocation method, and all deviations from this boundary"
+reference_flow_definition:
+  reference_amount: "1 kg net fresh or chilled chicken meat at plant gate"
+  product_flow_ref:
+    name: "Meat of chickens, fresh or chilled"
+    uuid: "562d85c5-f2c0-4a72-b866-5b3587bf4f29"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "chicken species and production class"
+    - "whole carcass or named cut"
+    - "bone-in or boneless"
+    - "skin-on or skinless"
+    - "fresh or chilled state"
+    - "chilling method"
+    - "measured product temperature at gate"
+    - "net mass basis and drainage convention"
+    - "packaging state"
+    - "plant-gate geography"
+    - "production-lot period"
+    - "included cutting"
+    - deboning
+    - packaging
+    - wastewater-treatment
+    - "and by-product-treatment operations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh saleable fresh or chilled chicken meat after chilling and the declared drainage period. Deduct packaging tare, free ice, containers, separately marketed offal, and separately marketed by-products. Normalize the completed inventory to 1 kg net reference product."
+  - id: product_temperature
+    applies_to: "Reference product at plant gate"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Record product temperature using the applicable lot sampling plan. Use 4 °C or below as the default guideline for chilled poultry unless a stricter competent-authority or customer limit applies; retain the actual limit, measurement points, and exceptions."
+  - id: water_uptake_disclosure
+    applies_to: "Water-chilled product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "When immersion or spray chilling changes product mass, determine uptake from documented pre-chill and post-drain mass measurements and disclose the method. Do not hide retained water by changing the declared reference amount."
+  - id: live_mass_basis
+    applies_to: "Incoming live chickens"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg live weight"
+    rule: "Record both bird count and measured net live weight by lot. Use mass, not bird count alone, for yield and mass-balance calculations."
+  - id: energy_conversion
+    applies_to: "Electricity, fuels, steam, heat, and refrigeration"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve source meter units. Convert MJ to kWh by dividing by 3.6 and disclose lower- or higher-heating-value conventions for fuels. Do not combine purchased electricity and fuel energy until both are converted to the same net-energy basis."
+  - id: water_volume_conversion
+    applies_to: "Supplied water and wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use metered volume; convert litres to cubic metres by dividing by 1,000. Keep separately discharged non-contact cooling water and stormwater distinct from process wastewater."
+  - id: packaging_exclusion
+    applies_to: "Reference product and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Packaging is excluded from reference-product mass and recorded as a separate input when primary packaging occurs before the declared plant gate."
+  - id: normalization_denominator
+    applies_to: "All foreground inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "per 1,000 kg reference product"
+    rule: "Aggregate the declared reporting period first, then divide each flow by net conforming reference-product mass and multiply by 1,000. Do not normalize by total live-bird mass, total carcass mass, or total co-product output unless a source range explicitly uses that separate basis."
+process_map:
+  - id: slaughter_chill_gate
+    name: "Chicken slaughtering, chilling, and plant-gate preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; cutting, deboning, primary packaging, on-site treatment, and by-product processing are included within this process only when they occur before the declared gate and are disclosed"
+    role: "Foreground production of fresh or chilled chicken meat"
+    quantitative_reference: "1,000 kg net conforming reference product at plant gate"
+process_inventory:
+  - id: slaughter_chill_gate
+    label: "Chicken slaughtering, chilling, and plant-gate preparation"
+    inputs:
+      product:
+        - row_id: incoming_live_chickens
+          role: "Accepted live chickens"
+          name: "Live chickens, accepted for slaughter; use a mass-compatible Tiangong product flow matching the declared bird and market state"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Accepted birds cross the foreground boundary at slaughterhouse reception. Record net live mass and bird count by lot; upstream husbandry remains in the linked live-chicken dataset."
+          amount:
+            expression: "measured net live weight of accepted birds entering the slaughter route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming fresh or chilled chicken meat at plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_bird_receipt
+              source_ids:
+                - ifc-poultry-processing-ehs-2007
+            ranges:
+              - role: default_estimate
+                lower: "1200"
+                upper: "4000"
+                unit: "kg live weight"
+                basis: "per 1,000 kg net reference product; broad envelope for whole carcasses and declared cuts, to be replaced by product-specific reviewed yield evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: purchased_electricity
+          role: "Purchased electricity"
+          name: "Site- and voltage-appropriate purchased electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity supplies slaughter-line equipment, pumps, ventilation, chilling, cold holding, optional cutting and packaging, and on-site treatment included in the boundary."
+          amount:
+            expression: "metered purchased electricity allocated to the included operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-bat-slaughterhouses-2023
+                - ifc-poultry-processing-ehs-2007
+            ranges: []
+        - row_id: process_heat
+          role: "Fuel, steam, or supplied process heat"
+          name: "Site-specific fuel, steam, or heat product flow; create separate inventory rows in the produced dataset for materially different energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh after documented conversion"
+          description: "Record fuels, steam, or supplied heat used for scalding, hot water, sanitation, space conditioning, and any included treatment operation without combining unlike products into one untraceable amount."
+          amount:
+            expression: "metered or invoice-reconciled net energy by carrier for included operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-bat-slaughterhouses-2023
+                - ifc-poultry-processing-ehs-2007
+            ranges: []
+        - row_id: process_water
+          role: "Potable process and sanitation water"
+          name: "Geography-appropriate potable or process-water product flow"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record supplied water used for scalding, carcass washing, chilling, cleaning, sanitation, and included treatment operations. Keep non-contact cooling water separate."
+          amount:
+            expression: "metered supplied process and sanitation water minus separately metered non-process uses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids:
+                - ifc-poultry-processing-ehs-2007
+                - ec-bat-slaughterhouses-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "5.07"
+                upper: "67.4"
+                unit: "m3"
+                basis: "per 1,000 kg slaughtered animal on the source basis; compare only after documenting conversion from the PCR reference-product basis"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - ifc-poultry-processing-ehs-2007
+        - row_id: cleaning_agents
+          role: "Cleaning and disinfection agents"
+          name: "Product-specific cleaning or disinfection agent flow"
+          flow_type: "product"
+          property_unit: "Mass / kg product and kg active ingredient where relevant"
+          description: "Record each materially different cleaning or disinfection product used in included areas; active ingredient concentration and dilution water must remain traceable."
+          amount:
+            expression: "issued quantity minus returned stock, reconciled to cleaning records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables_records
+              source_ids:
+                - ifc-poultry-processing-ehs-2007
+                - ec-bat-slaughterhouses-2023
+            ranges: []
+        - row_id: primary_packaging
+          role: "Primary packaging materials"
+          name: "Material-specific primary packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Packaging crosses the foreground boundary only when the declared product is packed before the plant gate. Record films, trays, absorbent pads, labels, cartons, and reusable-container losses separately where material."
+          amount:
+            expression: "packaging issued to conforming product plus attributable packaging scrap, by material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "200"
+                unit: "kg packaging"
+                basis: "per 1,000 kg net reference product; zero represents unpackaged bulk product and the upper bound is a broad authoring screen"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Refrigerant-specific product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant added to refrigeration systems serving the included route. Allocate shared systems using documented metering, engineering load, or operating-hour evidence."
+          amount:
+            expression: "measured annual or campaign make-up attributable to included chilling and cold holding"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-bat-slaughterhouses-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_chicken_meat
+          role: "Fresh or chilled chicken meat reference product"
+          name: "Meat of chickens, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "562d85c5-f2c0-4a72-b866-5b3587bf4f29"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the conforming reference output after inspection, chilling, declared optional preparation, and drainage at the plant gate."
+          amount:
+            expression: "net conforming product mass normalized to exactly 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output_records
+              source_ids:
+                - codex-cxc-58-2005
+                - ifc-poultry-processing-ehs-2007
+            ranges: []
+        - row_id: edible_offal_coproducts
+          role: "Edible offal co-products"
+          name: "Species- and state-appropriate edible chicken offal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record edible organs and other edible offal separately from chicken meat because they are outside the reference-product identity. Distinguish chilled, frozen, and other states where relevant."
+          amount:
+            expression: "measured saleable edible offal by product and disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_stream_records
+              source_ids:
+                - unsd-cpc-v3-21121
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: other_coproducts
+          role: "Other marketable slaughter co-products"
+          name: "Material- and destination-specific co-product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record blood, feet, heads, feathers, fat, skin, and other material as separate product outputs only when they meet the applicable product definition and have a documented use or market destination."
+          amount:
+            expression: "measured dispatched mass by co-product type and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_stream_records
+              source_ids:
+                - ifc-poultry-processing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: inedible_organic_waste
+          role: "Condemned and inedible organic material"
+          name: "Risk-class- and treatment-specific poultry-processing waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dead-on-arrival birds, condemned carcasses or parts, intestinal contents, solids, and other inedible material by risk class and destination. Do not combine these streams with saleable co-products."
+          amount:
+            expression: "measured mass sent to each on-site or off-site treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_stream_records
+              source_ids:
+                - ifc-poultry-processing-ehs-2007
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: process_wastewater
+          role: "Process wastewater"
+          name: "Destination- and treatment-state-appropriate poultry-processing wastewater flow"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record process wastewater leaving the included operations or the on-site treatment boundary. Keep separately discharged non-contact cooling water and stormwater distinct."
+          amount:
+            expression: "metered wastewater discharge by treatment route, reconciled with the site water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids:
+                - ec-bat-slaughterhouses-2023
+                - ifc-poultry-processing-ehs-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "1.45"
+                upper: "6.30"
+                unit: "m3"
+                basis: "per 1,000 kg cold chicken carcass on the source basis; compare only after documenting conversion from the PCR reference-product basis"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - ec-bat-slaughterhouses-2023
+      elementary:
+        - row_id: refrigerant_emissions
+          role: "Direct refrigerant releases"
+          name: "Refrigerant-specific emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant released directly to air from systems serving included chilling and cold storage. Do not treat make-up refrigerant as both an input and an emission without a documented stock balance."
+          amount:
+            expression: "measured leak or charge-balance loss attributable to the included route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-bat-slaughterhouses-2023
+            ranges: []
+        - row_id: onsite_combustion_emissions
+          role: "Direct on-site combustion emissions"
+          name: "Pollutant- and compartment-specific elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg pollutant"
+          description: "Record measured direct emissions from included on-site combustion individually. When calculated rather than measured, the produced dataset must identify the fuel record, factor source, oxidation convention, and pollutant-specific formula."
+          amount:
+            expression: "site emission measurement, or a separately cited calculation from measured fuel use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - ec-bat-slaughterhouses-2023
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_subdivision
+    applies_to: "Separately metered operations and outputs"
+    rule: "Avoid allocation first by subdividing the process and assigning inputs, wastes, and emissions directly to chilling, cutting, packaging, wastewater treatment, or by-product operations when records support that distinction."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rule_system_expansion
+    applies_to: "Multi-functional output systems"
+    rule: "If the declared study goal permits system expansion and a representative substituted function is demonstrable, model and disclose the expanded system consistently. Do not apply an avoided-product credit merely because a residue has a possible use."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rule_physical
+    applies_to: "Shared slaughter burdens after subdivision is exhausted"
+    rule: "When system expansion is not used, prefer a relevant, quantified physical relationship that reflects how shared burdens arise. Document the selected relationship, included output streams, measurement period, and why it represents the process."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rule_other_relationship
+    applies_to: "Shared burdens without a defensible physical relationship"
+    rule: "If a physical relationship is not defensible, use another documented relationship such as site-specific economic value at the co-product split point. Report prices, currency, period, zero-value streams, and sensitivity to material price changes."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rule_waste_status
+    applies_to: "Condemned or inedible outputs"
+    rule: "Treat an output as waste unless its legal status, quality, purchaser or user, and actual destination demonstrate a product function. Waste treatment burdens remain with the system that generates the waste unless the selected method and study goal justify another treatment."
+    source_ids:
+      - ifc-poultry-processing-ehs-2007
+      - codex-cxc-58-2005
+  - rule_id: allocation_rule_closure
+    applies_to: "All reference and co-product outputs"
+    rule: "The allocation model must include reference meat, edible offal, blood, feet, feathers, fat, skin, other marketed streams, and waste status as applicable; allocation fractions for partitioned burdens must sum to 1 within rounding tolerance."
+    source_ids:
+      - ec-bat-slaughterhouses-2023
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_live_bird_receipt
+      process_id: "slaughter_chill_gate"
+      flow_role: "accepted live chickens"
+      record_type: "receiving scale, bird-count, supplier, mortality, and inspection records"
+      raw_fields: "lot_id; supplier_id; farm_origin; arrival_time; gross_vehicle_mass; tare_mass; net_live_mass; bird_count; dead_on_arrival_count; rejected_mass; accepted_mass; inspection_disposition"
+      collection_method: "calibrated weighbridge or platform scale linked to receiving and inspection records"
+      unit: "kg; item"
+      frequency: "each incoming lot"
+      temporal_coverage: "all lots in reporting period"
+      site_scope: "all suppliers and receiving lines feeding the declared product"
+      aggregation_rule: "sum accepted live mass and counts; keep rejected and dead-on-arrival streams separate"
+      quality_evidence: "calibration certificate; lot log; inspection record; reconciliation to slaughter schedule"
+    - protocol_id: cp_product_output_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "reference chicken meat"
+      record_type: "product scale, temperature, drainage, grading, and dispatch records"
+      raw_fields: "lot_id; product_form; bone_status; skin_status; chilling_method; pre_chill_mass; post_drain_mass; packaging_tare; net_product_mass; product_temperature; temperature_limit; disposition"
+      collection_method: "calibrated product scale and calibrated temperature device under the lot sampling plan"
+      unit: "kg; °C"
+      frequency: "each production lot and dispatch lot"
+      temporal_coverage: "all conforming production in reporting period"
+      site_scope: "all lines, chillers, cutting rooms, and dispatch points in scope"
+      aggregation_rule: "sum net conforming mass after tare; retain rejected, reworked, frozen, and downgraded product separately"
+      quality_evidence: "scale and thermometer calibration; lot traceability; temperature log; inspection and release record"
+    - protocol_id: cp_energy_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "electricity and process heat"
+      record_type: "submeter, main meter, fuel invoice, steam meter, and operating log"
+      raw_fields: "meter_id; opening_reading; closing_reading; electricity_kWh; fuel_quantity; fuel_unit; heating_value_basis; steam_or_heat_kWh; included_area; allocation_driver; downtime"
+      collection_method: "direct submetering preferred; reconcile allocated records to site totals and invoices"
+      unit: "kWh plus native fuel unit"
+      frequency: "daily or shift; monthly invoice reconciliation"
+      temporal_coverage: "representative continuous period, normally at least 12 months or a complete seasonal campaign"
+      site_scope: "all included slaughter, chilling, cold holding, optional processing, and on-site treatment equipment"
+      aggregation_rule: "sum by carrier; convert to kWh; allocate shared systems with documented driver; reconcile to site total"
+      quality_evidence: "meter calibration; invoices; conversion factors; operating-hour and refrigeration-load records"
+    - protocol_id: cp_water_wastewater_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "supplied water and wastewater"
+      record_type: "water meters, wastewater flow meters, production logs, and water-balance records"
+      raw_fields: "supply_meter_readings; non_contact_cooling_water; stormwater; process_water; wastewater_volume; discharge_route; pre_treatment_status; product_mass; carcass_basis_mass"
+      collection_method: "direct meters at supply and discharge; engineering balance only for documented gaps"
+      unit: "m3"
+      frequency: "daily or shift; monthly reconciliation"
+      temporal_coverage: "same period as production and energy records"
+      site_scope: "all included water uses and discharge points"
+      aggregation_rule: "sum process water and wastewater separately; exclude separately discharged cooling water and stormwater; reconcile unexplained balance"
+      quality_evidence: "meter calibration; water flow diagram; meter map; discharge and treatment records"
+    - protocol_id: cp_consumables_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "cleaning and disinfection agents"
+      record_type: "stock issue, purchase, concentration, and cleaning schedule records"
+      raw_fields: "product_name; active_ingredient; concentration; issued_mass; returned_mass; dilution_ratio; application_area; lot_id"
+      collection_method: "inventory reconciliation linked to sanitation records"
+      unit: "kg product; kg active ingredient"
+      frequency: "each issue; monthly reconciliation"
+      temporal_coverage: "same reporting period as production"
+      site_scope: "all included cleaning and sanitation areas"
+      aggregation_rule: "sum net issue by product and active ingredient; exclude unrelated facility use"
+      quality_evidence: "invoices; safety data sheet; stock ledger; sanitation log"
+    - protocol_id: cp_packaging_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "primary packaging"
+      record_type: "bill of materials, stock issue, scrap, and packed-output records"
+      raw_fields: "material; item_mass; items_issued; returned_items; scrap_mass; reusable_loss; packed_product_mass"
+      collection_method: "mass-per-item verification plus inventory reconciliation"
+      unit: "kg"
+      frequency: "each packaging run; monthly reconciliation"
+      temporal_coverage: "all packed lots in reporting period"
+      site_scope: "all declared primary packaging lines"
+      aggregation_rule: "aggregate by material; include attributable scrap; exclude returnable assets except measured losses"
+      quality_evidence: "supplier specification; sample weighing; stock ledger; scrap record"
+    - protocol_id: cp_output_stream_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "edible co-products, marketable by-products, and organic waste"
+      record_type: "dedicated scale, container, dispatch, inspection, and treatment records"
+      raw_fields: "stream_id; material_name; edible_status; risk_class; measured_mass; destination; product_or_waste_status; buyer_or_treatment_provider; lot_id"
+      collection_method: "weigh each stream or use verified container tare and gross mass"
+      unit: "kg"
+      frequency: "each container, batch, or dispatch"
+      temporal_coverage: "all output streams in reporting period"
+      site_scope: "all evisceration, cutting, sorting, storage, and by-product areas"
+      aggregation_rule: "sum by material, status, and destination; prohibit unexplained netting between products and wastes"
+      quality_evidence: "scale calibration; inspection disposition; dispatch ticket; treatment receipt; buyer record"
+    - protocol_id: cp_refrigerant_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "refrigerant make-up and direct loss"
+      record_type: "refrigeration service, charge, recovery, and leak records"
+      raw_fields: "refrigerant_identity; opening_charge; additions; recoveries; closing_charge; leak_event; system_id; served_areas; operating_hours"
+      collection_method: "service records and charge balance; direct leak measurement where available"
+      unit: "kg"
+      frequency: "every service or leak event; annual reconciliation"
+      temporal_coverage: "complete reporting year or declared campaign with annualized disclosure"
+      site_scope: "all refrigeration systems serving included operations"
+      aggregation_rule: "additions minus recovery and documented stock change; allocate shared systems by documented engineering driver"
+      quality_evidence: "technician report; purchase and recovery record; leak-test record; equipment register"
+    - protocol_id: cp_direct_emission_records
+      process_id: "slaughter_chill_gate"
+      flow_role: "on-site combustion emissions"
+      record_type: "stack test, continuous monitor, fuel, and operating records"
+      raw_fields: "source_id; pollutant; measured_concentration; gas_flow; operating_time; emitted_mass; fuel_quantity; factor_reference"
+      collection_method: "direct measurement preferred; calculated values require separately cited pollutant factors"
+      unit: "kg pollutant; source units"
+      frequency: "per permit and operating plan"
+      temporal_coverage: "representative normal and material abnormal operation"
+      site_scope: "all included on-site combustion sources"
+      aggregation_rule: "sum measured mass by pollutant and compartment; keep calculated results distinct"
+      quality_evidence: "accredited test report; monitor QA; fuel invoice; factor source and formula"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory flow"
+      rule: "normalized amount = reporting-period flow amount / reporting-period net conforming reference-product mass × 1,000"
+      inputs:
+        - "collected flow amount"
+        - "net product mass"
+      output: "flow amount per 1,000 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_live_to_product_yield
+      applies_to: "Live birds and reference product"
+      rule: "yield = net conforming reference-product mass / accepted net live mass; report separately by product form and route"
+      inputs:
+        - "accepted live mass"
+        - "net product mass"
+      output: "kg reference product per kg accepted live weight"
+      source_ids:
+        - ifc-poultry-processing-ehs-2007
+    - id: calc_energy_intensity
+      applies_to: "Electricity and process heat"
+      rule: "convert each carrier to kWh on the declared basis, sum only after conversion, and divide by net product mass; additionally calculate the source-compatible cold-carcass basis for BAT comparison when available"
+      inputs:
+        - electricity
+        - fuels
+        - "steam or heat"
+        - "heating values"
+        - "net product mass"
+        - "cold carcass mass"
+      output: "kWh per 1,000 kg reference product and, when available, kWh per tonne cold carcass"
+      source_ids:
+        - ec-bat-slaughterhouses-2023
+    - id: calc_water_balance
+      applies_to: "Water and wastewater"
+      rule: "supplied process water = process wastewater + water retained in product or by-products + evaporation + exported moisture + documented losses, within stated uncertainty"
+      inputs:
+        - supply
+        - wastewater
+        - uptake
+        - outputs
+        - "evaporation estimate"
+      output: "reconciled water balance and unexplained difference"
+      source_ids:
+        - ec-bat-slaughterhouses-2023
+        - ifc-poultry-processing-ehs-2007
+    - id: calc_chilling_uptake
+      applies_to: "Water-chilled product"
+      rule: "uptake fraction = (post-drain product mass − comparable pre-chill product mass) / comparable pre-chill product mass"
+      inputs:
+        - "paired pre-chill and post-drain masses"
+      output: "kg retained water per kg pre-chill product"
+      source_ids:
+        - ifc-poultry-processing-ehs-2007
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration systems"
+      rule: "refrigerant loss = opening charge + additions − recovered refrigerant − closing charge, adjusted for documented transfers"
+      inputs:
+        - "charge and service records"
+      output: "kg refrigerant emitted by identity"
+      source_ids:
+        - ec-bat-slaughterhouses-2023
+    - id: calc_mass_balance
+      applies_to: "Slaughter route"
+      rule: "compare accepted live mass and other material inputs with reference meat, co-products, wastes, retained water change, and documented stock changes; explain the residual rather than forcing closure"
+      inputs:
+        - "all material inputs and outputs"
+        - "stock changes"
+        - "moisture or uptake"
+      output: "mass-balance residual and relative closure"
+      source_ids:
+        - mass-balance-identity
+        - ifc-poultry-processing-ehs-2007
+    - id: calc_allocation_fractions
+      applies_to: "Shared burdens"
+      rule: "allocation fraction for each co-product = selected allocation quantity for that co-product / sum of selected allocation quantities for all product outputs; fractions must sum to 1 within rounding tolerance"
+      inputs:
+        - "direct assignments"
+        - "product masses or other physical driver"
+        - "or documented market values"
+      output: "allocation fraction and allocated burden by output"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Reference product and incoming birds"
+      requirement: "Preserve lot-level linkage from supplier and accepted birds through inspection, chilling, product form, temperature release, and plant-gate dispatch."
+      evidence: "receiving, inspection, production, grading, temperature, and dispatch records"
+    - id: dq_measurement_control
+      applies_to: "Mass, temperature, water, energy, and flow records"
+      requirement: "Use calibrated or verified devices appropriate to the measured range; retain calibration status, reading frequency, missing-data treatment, and reconciliation results."
+      evidence: "calibration certificates; meter map; device logs; reconciliation report"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground reporting period"
+      requirement: "Use at least 12 consecutive months when seasonal throughput or refrigeration loads are material; a shorter complete campaign must state season, product mix, and limitation."
+      evidence: "reporting-period declaration; throughput and operating calendar"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Cover every included shift, line, product form, optional operation, co-product, waste route, and material abnormal event. Quantify data coverage and disclose exclusions rather than silently applying zero."
+      evidence: "completeness matrix; production reconciliation; incident and downtime log"
+    - id: dq_stream_status
+      applies_to: "Co-products and wastes"
+      requirement: "Substantiate edible, saleable, waste, risk-class, and destination status independently for each output stream."
+      evidence: "inspection disposition; legal classification; contracts; dispatch tickets; treatment receipts"
+    - id: dq_source_basis
+      applies_to: "External QA ranges"
+      requirement: "Preserve the original source denominator and compare a foreground value only after documenting any conversion between live-bird, cold-carcass, and net reference-product bases."
+      evidence: "calculation sheet; source citation; mass and yield records"
+    - id: dq_geography_technology
+      applies_to: "Background datasets"
+      requirement: "Match electricity voltage and geography, fuel and heat technology, water supply, packaging material, refrigerant identity, and treatment route to the foreground plant."
+      evidence: "background dataset metadata and selection rationale"
+validation_rules:
+  - rule_id: validation_rule_identity
+    applies_to: "Product category"
+    rule: "Fail if the reference output is live chicken, frozen chicken meat, edible offal, rendered fat, or a prepared/preserved chicken product, or if the declared product is not edible chicken meat in a fresh or chilled state."
+    source_ids:
+      - unsd-cpc-v3-21121
+  - rule_id: validation_rule_reference_flow
+    applies_to: "Functional unit and reference object"
+    rule: "Require exactly 1 kg net reference product linked to product flow 562d85c5-f2c0-4a72-b866-5b3587bf4f29, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_rule_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Fail completeness when any required qualifier is absent, including product form, bone and skin status, chilling method, gate temperature, net-mass and drainage convention, packaging state, geography, period, or included optional operations."
+    source_ids:
+      - codex-cxc-58-2005
+      - ifc-poultry-processing-ehs-2007
+  - rule_id: validation_rule_boundary
+    applies_to: "Foreground process map"
+    rule: "Require the complete declared slaughter-and-chilling route and explicit upstream datasets for live birds and other supplied inputs. Reject double counting of farming or feed burdens in both the live-bird dataset and slaughter foreground."
+    source_ids:
+      - ifc-poultry-processing-ehs-2007
+      - codex-cxc-58-2005
+  - rule_id: validation_rule_temperature
+    applies_to: "Chilled product release"
+    rule: "Require measured product-temperature evidence and the applicable limit. Flag values above 4 °C against the default IFC guideline unless the dataset documents a competent-authority or customer specification and disposition."
+    source_ids:
+      - ifc-poultry-processing-ehs-2007
+      - codex-cxc-58-2005
+  - rule_id: validation_rule_streams
+    applies_to: "Products, co-products, wastes, and wastewater"
+    rule: "Require separate amounts and destinations for reference meat, edible offal, other marketed by-products, condemned or inedible material, and wastewater; reject unexplained netting or routing of solids into wastewater."
+    source_ids:
+      - ifc-poultry-processing-ehs-2007
+      - ec-bat-slaughterhouses-2023
+  - rule_id: validation_rule_allocation
+    applies_to: "Multi-functional burdens"
+    rule: "Require direct attribution before allocation, a documented reason for the selected allocation relationship, a complete output set, and allocation fractions summing to 1 within ±0.001."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_rule_mass_balance
+    applies_to: "Material inventory"
+    rule: "Require a documented mass-balance residual. Investigate a relative residual greater than 5% of accepted live mass; do not force closure by assigning the residual to the reference product or wastewater."
+    source_ids:
+      - mass-balance-identity
+      - ifc-poultry-processing-ehs-2007
+  - rule_id: validation_rule_energy_qa
+    applies_to: "Total net energy"
+    rule: "When a source-compatible cold-carcass basis is available, compare total net energy with the EU BAT screening interval of 170–490 kWh per tonne cold chicken carcass. Treat an outlier as a review trigger, not an automatic replacement value, and explain boundary or technology differences."
+    source_ids:
+      - ec-bat-slaughterhouses-2023
+  - rule_id: validation_rule_wastewater_qa
+    applies_to: "Wastewater discharge"
+    rule: "When a source-compatible cold-carcass basis is available, compare wastewater discharge with 1.45–6.30 m3 per tonne cold chicken carcass. Treat an outlier as a review trigger and preserve separately discharged cooling water and stormwater distinctions."
+    source_ids:
+      - ec-bat-slaughterhouses-2023
+  - rule_id: validation_rule_evidence
+    applies_to: "Foreground package"
+    rule: "Require source records, collection protocols, calculation inputs, calibration or reconciliation evidence, and explicit disclosure of missing or estimated fields. Reasoned-estimate ranges in this PCR are replaceable authoring aids and must not override collected foreground values."
+    source_ids:
+      - ec-bat-slaughterhouses-2023
+published_dataset_profile:
+  dataset_role: "Foreground production dataset that may be published as a secondary_dataset or background_dataset after review"
+  downstream_use: "Construction of chicken-meat product systems, food-product footprints, supply-chain LCAs, process datasets, and lifecycle models requiring fresh or chilled chicken meat at a declared plant gate"
+  allowed_use: "Use for the declared chicken product form, geography, technology, chilling route, packaging state, reporting period, and allocation method; adapt only with documented representativeness checks"
+  excluded_use: "Frozen or further-prepared chicken products; live-chicken farming; edible offal as the reference product; retail, cooking, consumption, or packaging end of life; comparative claims across unlike product forms or allocation methods without harmonization"
+  required_metadata: "Canonical PCR id; product and flow UUID; all reference-flow qualifiers; plant geography and technology; gate and boundary; reporting period; data coverage; product temperature specification; optional operations; upstream datasets; co-product and waste destinations; allocation method; source ids; review status"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; calibration status; missing-data treatment; yield and mass-balance residual; water balance; energy and wastewater source-basis comparisons; refrigerant method; allocation sensitivity; temporal, geographical, and technological limitations; all replaceable provisional estimates"
+  update_trigger: "Material change in product form, chilling or packaging technology, plant boundary, supplier or geography, reporting period, throughput, energy or water system, refrigerant, treatment route, legal temperature or hygiene requirement, co-product market, allocation relationship, Tiangong identity reference, or stronger source evidence"
+data_sources:
+  - id: "unsd-cpc-v3-21121"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Explanatory Notes*, subclass 21121, 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-10)"
+    used_for: "Product identity; inclusion of fresh or chilled chicken meat; exclusion of frozen chicken meat and edible chicken offal"
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, *Code of Hygienic Practice for Meat*, CXC 58-2005, https://workspace.fao.org/sites/codex/Standards/CXC%2058-2005/CXC_058e.pdf (retrieved 2026-08-10)"
+    used_for: "Post-mortem inspection; hygienic process control; rapid chilling; temperature monitoring; cold-chain continuity; separation and handling rules"
+  - id: "ifc-poultry-processing-ehs-2007"
+    type: "official_guidance"
+    reference: "International Finance Corporation, World Bank Group, *Environmental, Health, and Safety Guidelines for Poultry Processing*, 30 April 2007, https://www.ifc.org/content/dam/ifc/doc/2000/2007-poultry-processing-ehs-guidelines-en.pdf (retrieved 2026-08-10)"
+    used_for: "Poultry-processing process map; 4 °C chilling guidance; water, energy, wastewater, by-product, and waste inventory requirements; cross-installation water-use screening range"
+  - id: "ec-bat-slaughterhouses-2023"
+    type: "official_guidance"
+    reference: "European Commission, Commission Implementing Decision (EU) 2023/2749 establishing BAT conclusions for slaughterhouses, 11 December 2023, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32023D2749 (retrieved 2026-08-10)"
+    used_for: "Input-output inventory and monitoring; refrigeration and treatment boundary; chicken-slaughter total-energy and wastewater-discharge QA ranges"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, Annex I section 4.5, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-10)"
+    used_for: "General multi-functionality hierarchy: subdivision or system expansion, physical allocation, then another documented relationship"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass and declared reference-flow normalization identity; no external numerical factor"
+    used_for: "Reference normalization, material balance, and allocation closure calculations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bb8e699e45a23a5e20cc8a260fe80b27c97cbc02a4e9bfe143236237f39ac323"
+  generated_content_sha256: "sha256:a9ecfe78f8d234837936e9b7baacca997857908df53c4891c3d128f0eaaba3b4"

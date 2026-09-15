@@ -1,10 +1,1315 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21673"
-  title: "Oil of olive residues"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.oil-of-olive-residues"
+  classification_refs: "CPC 3.0: 21673, Oil of olive residues"
+  covered_products: "Crude olive-pomace oil; refined olive-pomace oil; olive-pomace oil composed of refined olive-pomace oil and virgin olive oil"
+  excluded_products: "Virgin olive oil; refined olive oil produced directly from olives; olive pomace as feedstock; exhausted olive pomace; re-esterified oil; mixtures with other kinds of oil; chemically modified oil"
+  representative_product: "Refined olive-pomace oil from dried olive pomace and recovered technical-hexane extraction"
+  production_route: "Olive-pomace receipt; drying; solvent extraction; solvent distillation and recovery; chemical refining when required; blending when declared; bulk storage or conditional consumer packaging"
+  market_state: "Declared crude, refined, or blended grade at the production-plant gate, in bulk or in a declared package"
+functional_unit:
+  what: "Oil obtained from olive pomace for further refining, technical use, food manufacture, or direct consumption as permitted for the declared grade"
+  how_much: "1 kg"
+  how_well: "Conforming to the declared crude, refined, or blended olive-pomace-oil grade and its applicable composition, quality, residual-solvent, moisture, impurity, and packaging requirements"
+  how_long_or_cycle: "One production batch delivered at the declared factory gate; no service life is assigned"
+  reference_flow_link: "Reference amount and Tiangong product flow below"
+system_boundary:
+  rules:
+    - rule_id: boundary_received_pomace_to_gate
+      applies_to: "foreground production"
+      rule: "Start with olive pomace received at the extractor gate and include drying, extraction, solvent recovery, refining required for the declared grade, blending when applicable, storage, loading, and packaging when the declared gate includes it."
+      source_ids:
+        - alonso-farinas-olive-pomace-oil-lca-2020
+        - fao-who-cxc-36-1987-2024
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link olive pomace, electricity, each fuel, water, each chemical, each packaging component, and treatment of each exported waste to geographically and temporally representative upstream datasets; do not hide them in combined utility or packaging exchanges."
+      source_ids:
+        - eu-environmental-footprint-2021-2279
+    - rule_id: boundary_direct_emissions
+      applies_to: "foreground emissions"
+      rule: "Include separately measured or calculated technical-hexane loss and each combustion emission that crosses the environment boundary."
+      source_ids:
+        - alonso-farinas-olive-pomace-oil-lca-2020
+    - rule_id: boundary_capital_goods
+      applies_to: "infrastructure"
+      rule: "Exclude construction and decommissioning only when the study declares that omission and demonstrates it is immaterial for the intended use; otherwise include them consistently."
+      source_ids:
+        - alonso-farinas-olive-pomace-oil-lca-2020
+        - eu-environmental-footprint-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "received_olive_pomace_at_extractor_gate"
+  starting_condition_role: "disclosed product input with upstream production and transport supplied by linked datasets"
+  product_classification_scope: "CPC 3.0 subclass 21673, Oil of olive residues"
+  recursive_input_rule: "An input already in CPC 21673, such as refined olive-pomace oil entering blending or finished oil entering storage or packaging, remains an explicit product input and links to its preceding foreground dataset; do not re-expand that preceding production inside the consuming process."
+  upstream_dataset_requirement: "Link olive-pomace production and inbound transport separately and disclose origin mill, two-phase or three-phase origin when known, received mass, moisture, and transport distance."
+  disclosure: "Declare product grade, starting pomace condition, solvent or physical extraction route, drying fuel, refining and blending status, allocation choice, packaging state, geography, reference period, and all excluded stages."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Oil of olive residues"
+    uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "commercial grade"
+    - "crude or refined status"
+    - "solvent or other physical extraction route"
+    - "refining method"
+    - "blend composition when applicable"
+    - "edible or technical use"
+    - "moisture basis"
+    - "package state"
+    - geography
+    - "production period"
+    - "declared gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference flow as net oil mass at the declared gate; container and pallet mass are separate exchanges."
+  - id: oil_grade_basis
+    applies_to: "product identity and conformance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Declare whether the mass is crude olive-pomace oil, refined olive-pomace oil, or the permitted blend; do not combine grades in one reference flow without a mass-weighted blend record."
+  - id: solution_mass_basis
+    applies_to: "sodium hydroxide solution"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record formulated solution mass and concentration; convert to active sodium hydroxide only in a separately reported calculation field."
+  - id: moisture_basis_consistency
+    applies_to: "olive pomace and extracted pomace"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass and moisture or dry-matter fraction for each batch so pomace inputs, fuel use, residues, and oil yield remain comparable."
+process_map:
+  - id: integrated_pomace_oil_production
+    name: "Integrated pomace drying, oil extraction, solvent recovery, and grade-specific refining"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground production"
+    quantitative_reference: "1 kg declared oil-of-olive-residues output"
+  - id: grade_specific_blending
+    name: "Blending refined olive-pomace oil with virgin olive oil"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a declared olive-pomace-oil blend grade."
+    role: "foreground formulation"
+    quantitative_reference: "1 kg blended olive-pomace oil"
+  - id: bulk_storage_and_loading
+    name: "Bulk storage and loading"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground storage and dispatch"
+    quantitative_reference: "1 kg oil delivered at the declared bulk or packaging gate"
+  - id: consumer_packaging
+    name: "Consumer packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared gate is packaged product rather than bulk oil."
+    role: "foreground packaging"
+    quantitative_reference: "1 kg net packaged oil"
+process_inventory:
+  - id: integrated_pomace_oil_production
+    label: "Integrated pomace drying, oil extraction, solvent recovery, and grade-specific refining"
+    inputs:
+      product:
+        - row_id: integrated_received_olive_pomace
+          role: "Received olive pomace feedstock"
+          name: "Olive pomace, olive mill solid residue"
+          flow_type: "product"
+          flow_ref:
+            uuid: "95c56835-2417-4ffa-8375-d0df138fd887"
+          property_unit: "Mass / kg"
+          description: "Record the wet olive pomace crossing the extractor gate, including its moisture and origin condition."
+          amount:
+            expression: "measured received wet mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_grid_electricity
+          role: "Purchased electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity entering the integrated production process."
+          amount:
+            expression: "metered purchased electricity minus separately metered exported electricity; do not net electricity against fuel"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_natural_gas
+          role: "Natural gas used as drying fuel"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when it is the actual drying fuel; the extracted-pomace fuel route is a separate card."
+          amount:
+            expression: "metered or invoiced natural-gas volume used for the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output for the natural-gas drying route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_extracted_pomace_fuel
+          role: "Extracted olive pomace used as drying fuel"
+          name: "Extracted olive pomace"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of extracted olive pomace combusted on site when biomass replaces natural gas."
+          amount:
+            expression: "measured extracted-pomace mass charged to the dryer combustion unit"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output for the extracted-pomace drying route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_diesel
+          role: "Diesel used for extraction heat"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record diesel only when the installed extraction route uses it for process heat."
+          amount:
+            expression: "measured or invoiced diesel mass attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record process water entering extraction and chemical refining; tank-rinse water in storage is separate."
+          amount:
+            expression: "metered or mass-equivalent process-water input attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_technical_hexane
+          role: "Technical hexane makeup"
+          name: "Technical hexane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh technical hexane crossing the boundary; recovered solvent recirculated inside the process is not counted again."
+          amount:
+            expression: "purchased makeup hexane assigned to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - fao-who-cxs-33-1981-2024
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_sodium_hydroxide_solution
+          role: "Sodium hydroxide solution for chemical refining"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the formulated caustic-soda solution only when chemical neutralization is performed; disclose concentration."
+          amount:
+            expression: "measured solution mass and concentration charged to neutralization"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg refined olive-pomace oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: integrated_oil_output
+          role: "Declared oil of olive residues output"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of the declared crude or refined grade leaving integrated production."
+          amount:
+            expression: "measured net product mass at the process gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - fao-who-cxs-33-1981-2024
+                - ioc-trade-standard-2026
+            ranges: []
+        - row_id: integrated_exhausted_pomace_output
+          role: "Exported extracted olive pomace"
+          name: "Extracted olive pomace"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only the extracted pomace that leaves the foreground system after subtracting the measured mass combusted on site."
+          amount:
+            expression: "measured exported mass after internal fuel use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+      waste:
+        - row_id: integrated_soap_stock_waste
+          role: "Soap stock sent to treatment"
+          name: "Soap stock from olive-pomace-oil refining"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record soap stock from chemical neutralization as a waste output unless reviewed evidence supports a separately marketed co-product."
+          amount:
+            expression: "measured mass sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg refined olive-pomace oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_wastewater
+          role: "Refinery wastewater sent to treatment"
+          name: "Wastewater from olive-pomace-oil refining"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater as one aqueous waste stream; do not combine it with soap stock or solid pomace."
+          amount:
+            expression: "metered discharge volume sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_biomass_ash
+          role: "Biomass combustion ash"
+          name: "Ash from extracted olive-pomace combustion"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record ash only for the extracted-pomace fuel route and link its actual treatment or beneficial-use dataset."
+          amount:
+            expression: "measured ash mass leaving the combustion unit"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output for the extracted-pomace fuel route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+      elementary:
+        - row_id: integrated_hexane_air
+          role: "Technical hexane emitted to air"
+          name: "Hexane emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fugitive and point-source technical-hexane loss to air after recovered solvent has been recirculated."
+          amount:
+            expression: "measured emission or documented solvent mass-balance loss"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_fossil_co2_air
+          role: "Fossil carbon dioxide emitted to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide from the actual fuel route separately from biogenic carbon dioxide."
+          amount:
+            expression: "calculate from measured fuel consumption and a documented combustion factor, or use verified stack measurement"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_methane_air
+          role: "Methane emitted to air"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record methane from foreground fuel combustion as a separate elementary emission."
+          amount:
+            expression: "calculate from measured fuel consumption and a documented combustion factor, or use verified stack measurement"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+        - row_id: integrated_n2o_air
+          role: "Dinitrogen monoxide emitted to air"
+          name: "Dinitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record dinitrogen monoxide from foreground fuel combustion as a separate elementary emission."
+          amount:
+            expression: "calculate from measured fuel consumption and a documented combustion factor, or use verified stack measurement"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg declared oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_integrated_batch_inventory
+              source_ids:
+                - alonso-farinas-olive-pomace-oil-lca-2020
+            ranges: []
+  - id: grade_specific_blending
+    label: "Blending refined olive-pomace oil with virgin olive oil"
+    inputs:
+      product:
+        - row_id: blend_refined_pomace_oil
+          role: "Refined olive-pomace oil entering blending"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record the mass of refined olive-pomace oil transferred from the preceding process dataset."
+          amount:
+            expression: "measured batch input mass with grade declared as refined olive-pomace oil"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg blended olive-pomace oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_batch_inventory
+              source_ids:
+                - fao-who-cxs-33-1981-2024
+                - ioc-trade-standard-2026
+            ranges: []
+        - row_id: blend_virgin_olive_oil
+          role: "Virgin olive oil entering blending"
+          name: "Virgin olive oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record virgin olive oil as its own product input and retain its grade and supplier dataset."
+          amount:
+            expression: "measured batch input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg blended olive-pomace oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_batch_inventory
+              source_ids:
+                - fao-who-cxs-33-1981-2024
+                - ioc-trade-standard-2026
+            ranges: []
+        - row_id: blend_electricity
+          role: "Electricity used for blending"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by pumps, mixing, and controls."
+          amount:
+            expression: "metered blending electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg blended olive-pomace oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_batch_inventory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: blend_oil_output
+          role: "Blended olive-pomace oil"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of the declared olive-pomace-oil blend."
+          amount:
+            expression: "measured blended product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg blended olive-pomace oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_batch_inventory
+              source_ids:
+                - fao-who-cxs-33-1981-2024
+                - ioc-trade-standard-2026
+            ranges: []
+      waste:
+        - row_id: blend_offspec_oil
+          role: "Off-specification blended oil"
+          name: "Off-specification olive-pomace oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected blended oil sent to the declared rework or treatment route."
+          amount:
+            expression: "measured rejected mass leaving the blending process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted blended oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_batch_inventory
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: bulk_storage_and_loading
+    label: "Bulk storage and loading"
+    inputs:
+      product:
+        - row_id: storage_finished_oil_input
+          role: "Finished oil entering bulk storage"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record finished oil received from integrated production or blending."
+          amount:
+            expression: "measured transferred mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+        - row_id: storage_electricity
+          role: "Electricity used for storage and loading"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by pumps, instrumentation, and any electric trace heating."
+          amount:
+            expression: "metered storage and loading electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+        - row_id: storage_hot_water
+          role: "Hot water used for tank heating"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record delivered hot-water heat only when hot-water coils are used; steam is a separate alternative card."
+          amount:
+            expression: "metered delivered thermal energy from hot water"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+        - row_id: storage_steam
+          role: "Low-pressure steam used for tank heating"
+          name: "Steam, low pressure"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record delivered steam heat only when steam coils or tracing are used; hot water is a separate alternative card."
+          amount:
+            expression: "metered delivered steam energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+        - row_id: storage_rinse_water
+          role: "Fresh water used for tank rinsing"
+          name: "Fresh water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh-water rinsing separately from production-process water."
+          amount:
+            expression: "metered rinse-water input assigned to the storage campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: storage_oil_output
+          role: "Oil delivered at the bulk or packaging gate"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record the net oil mass dispatched to bulk delivery or the packaging process."
+          amount:
+            expression: "measured dispatched net oil mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+      waste:
+        - row_id: storage_rinse_wastewater
+          role: "Tank-rinse wastewater"
+          name: "Wastewater from edible-oil tank rinsing"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the aqueous rinse stream sent to the declared treatment route."
+          amount:
+            expression: "measured discharge volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg oil delivered from storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bulk_storage_loading_inventory
+              source_ids:
+                - fao-who-cxc-36-1987-2024
+            ranges: []
+      elementary:
+        []
+  - id: consumer_packaging
+    label: "Consumer packaging"
+    inputs:
+      product:
+        - row_id: packaging_bulk_oil_input
+          role: "Bulk oil entering packaging"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record the net oil mass transferred from bulk storage."
+          amount:
+            expression: "measured net oil input to the filling line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity used for packaging"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by filling, capping, labelling, conveying, and pallet wrapping."
+          amount:
+            expression: "metered packaging-line electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_glass_bottle
+          role: "Glass bottle"
+          name: "Glass bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record glass bottle mass only for a glass-bottle format."
+          amount:
+            expression: "purchased bottle mass less separately recorded unused returnable stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids:
+                - eu-olive-oil-marketing-2022-2104
+            ranges: []
+        - row_id: packaging_pet_bottle
+          role: "Polyethylene terephthalate bottle"
+          name: "Polyethylene terephthalate bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record PET bottle mass only for a PET-bottle format."
+          amount:
+            expression: "purchased bottle mass less separately recorded unused returnable stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids:
+                - eu-olive-oil-marketing-2022-2104
+            ranges: []
+        - row_id: packaging_pp_closure
+          role: "Polypropylene tamper-evident closure"
+          name: "Polypropylene tamper-evident closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the closure mass separately from the bottle."
+          amount:
+            expression: "purchased closure mass consumed by accepted and rejected packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids:
+                - eu-olive-oil-marketing-2022-2104
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper label"
+          name: "Paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record paper-label mass separately from the container and closure."
+          amount:
+            expression: "issued label mass consumed by accepted and rejected packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids:
+                - eu-olive-oil-marketing-2022-2104
+            ranges: []
+        - row_id: packaging_corrugated_carton
+          role: "Corrugated fibreboard carton"
+          name: "Corrugated fibreboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated carton mass separately from primary packaging."
+          amount:
+            expression: "issued carton mass consumed by accepted and rejected cases"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_wood_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the allocated mass of non-returned wooden pallets; disclose the reuse count for reusable pallets."
+          amount:
+            expression: "pallet mass divided by verified reuse count and allocated to dispatched packaged oil"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_ldpe_stretch_film
+          role: "Low-density polyethylene stretch film"
+          name: "Low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pallet stretch-film mass separately from cartons and primary packaging."
+          amount:
+            expression: "issued film mass consumed by dispatched pallets"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaging_oil_output
+          role: "Packaged oil of olive residues"
+          name: "Oil of olive residues"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a398f8c0-8c39-4924-ae53-bb901e1eac90"
+          property_unit: "Mass / kg"
+          description: "Record net oil mass only; packaging mass remains in the separate input cards."
+          amount:
+            expression: "measured accepted net fill mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids:
+                - eu-olive-oil-marketing-2022-2104
+            ranges: []
+      waste:
+        - row_id: packaging_waste_glass
+          role: "Waste glass from bottle breakage"
+          name: "Waste glass"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or broken glass separately from every other packaging waste."
+          amount:
+            expression: "measured glass waste leaving the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_waste_pet
+          role: "Waste polyethylene terephthalate"
+          name: "Waste polyethylene terephthalate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected PET bottle material separately from every other packaging waste."
+          amount:
+            expression: "measured PET waste leaving the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_waste_pp
+          role: "Waste polypropylene"
+          name: "Waste polypropylene"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected closure material separately from every other packaging waste."
+          amount:
+            expression: "measured polypropylene waste leaving the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_waste_paper
+          role: "Waste paper labels"
+          name: "Waste paper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected paper labels separately from every other packaging waste."
+          amount:
+            expression: "measured paper-label waste leaving the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_waste_paperboard
+          role: "Waste corrugated paperboard"
+          name: "Waste corrugated paperboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected corrugated carton material separately from every other packaging waste."
+          amount:
+            expression: "measured corrugated-paperboard waste leaving the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_waste_ldpe
+          role: "Waste low-density polyethylene"
+          name: "Waste low-density polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record stretch-film waste separately from every other packaging waste."
+          amount:
+            expression: "measured LDPE film waste leaving the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+        - row_id: packaging_offspec_oil
+          role: "Off-specification packaged oil"
+          name: "Off-specification olive-pomace oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected oil drained from nonconforming packages and its declared rework or treatment route."
+          amount:
+            expression: "measured rejected oil mass leaving the packaging process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted packaged oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_run_inventory
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "separately metered processes and batches"
+    rule: "Avoid allocation by subdividing drying, extraction, refining, blending, storage, and packaging records wherever direct metering or batch records permit."
+    source_ids:
+      - eu-environmental-footprint-2021-2279
+  - rule_id: allocation_internal_pomace_fuel
+    applies_to: "extracted pomace combusted on site"
+    rule: "Treat measured extracted pomace burned in the dryer as an internal product input and subtract it from exported extracted-pomace output; do not credit it again as exported fuel."
+    source_ids:
+      - alonso-farinas-olive-pomace-oil-lca-2020
+  - rule_id: allocation_exported_co_products
+    applies_to: "exported extracted olive pomace and other marketable outputs"
+    rule: "If subdivision cannot isolate burdens, apply a documented physical relationship that reflects the process function; use another relationship only after explaining why subdivision, system expansion, and physical allocation are not feasible."
+    source_ids:
+      - eu-environmental-footprint-2021-2279
+  - rule_id: allocation_soap_stock
+    applies_to: "soap stock"
+    rule: "Treat soap stock as waste unless reviewed evidence demonstrates a marketable product and the foreground records support co-product treatment."
+    source_ids:
+      - alonso-farinas-olive-pomace-oil-lca-2020
+  - rule_id: allocation_disclosure
+    applies_to: "all multifunctional processes"
+    rule: "Report output masses, internal use, exported quantities, chosen allocation method, factors, prices or physical parameters, reference period, and sensitivity result."
+    source_ids:
+      - eu-environmental-footprint-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_integrated_batch_inventory
+      process_id: "integrated_pomace_oil_production"
+      flow_role: "all integrated production exchanges"
+      record_type: "batch production record and meter ledger"
+      raw_fields: "batch id; input and output masses; pomace moisture; electricity; each fuel; water; hexane purchased and recovered; sodium hydroxide solution mass and concentration; wastewater; each waste; each direct emission; product grade"
+      collection_method: "calibrated scales and meters, invoices, solvent mass balance, laboratory records, and verified emission calculation"
+      unit: "row-specific"
+      frequency: "per batch with monthly reconciliation"
+      temporal_coverage: "at least 12 representative months or the full shorter campaign"
+      site_scope: "all foreground drying, extraction, recovery, and refining equipment"
+      aggregation_rule: "sum exchange records, reconcile mass and solvent balances, and divide by conforming oil mass"
+      quality_evidence: "calibration records; invoices; laboratory results; meter reconciliation; documented emission factors"
+    - protocol_id: cp_blending_batch_inventory
+      process_id: "grade_specific_blending"
+      flow_role: "all blending exchanges"
+      record_type: "blend batch sheet"
+      raw_fields: "batch id; refined olive-pomace oil mass; virgin olive oil mass and grade; electricity; accepted output; rejected oil"
+      collection_method: "calibrated batch scales, tank gauges, and electricity meter"
+      unit: "row-specific"
+      frequency: "per blend batch"
+      temporal_coverage: "at least 12 representative months or the full shorter campaign"
+      site_scope: "all foreground blending equipment"
+      aggregation_rule: "sum batch exchanges and divide by accepted blended-oil mass"
+      quality_evidence: "scale calibration; supplier certificate; blend formula; mass-balance closure"
+    - protocol_id: cp_bulk_storage_loading_inventory
+      process_id: "bulk_storage_and_loading"
+      flow_role: "all storage and loading exchanges"
+      record_type: "tank and dispatch log"
+      raw_fields: "tank id; product grade; opening and closing mass; electricity; hot-water energy; steam energy; rinse water; dispatched mass; rinse wastewater; cleaning inspection"
+      collection_method: "calibrated tank gauge or weighbridge, utility meters, and cleaning log"
+      unit: "row-specific"
+      frequency: "per tank campaign and dispatch"
+      temporal_coverage: "at least 12 representative months or the full shorter campaign"
+      site_scope: "all foreground tanks, pumps, heating, and loading equipment"
+      aggregation_rule: "reconcile opening stock plus receipts minus closing stock and losses, then divide utilities by dispatched oil mass"
+      quality_evidence: "calibration; temperature log; cleaning inspection; previous-cargo declaration where relevant"
+    - protocol_id: cp_packaging_run_inventory
+      process_id: "consumer_packaging"
+      flow_role: "all packaging exchanges"
+      record_type: "packaging bill of materials and run reconciliation"
+      raw_fields: "run id; net oil input and output; electricity; mass of each container, closure, label, carton, pallet, and film; each material-specific scrap; rejected oil; pallet reuse count"
+      collection_method: "purchase and issue records, component specifications, line meter, reject log, and net-fill checks"
+      unit: "row-specific"
+      frequency: "per packaging run with monthly reconciliation"
+      temporal_coverage: "at least 12 representative months or the full shorter campaign"
+      site_scope: "all foreground filling, capping, labelling, case packing, and palletizing equipment"
+      aggregation_rule: "reconcile each component separately and divide by accepted net packaged-oil mass"
+      quality_evidence: "supplier specifications; count-to-mass conversion; meter calibration; reject log; net-fill verification"
+  calculation_rules:
+    - id: normalize_exchange_to_reference_flow
+      applies_to: "every inventory exchange"
+      rule: "normalized amount = exchange amount attributable to the product / conforming declared oil mass"
+      inputs:
+        - "row-specific exchange record"
+        - "conforming oil mass"
+      output: "row-specific amount per 1 kg reference flow"
+      source_ids:
+        - eu-environmental-footprint-2021-2279
+    - id: pomace_dry_matter
+      applies_to: "received and extracted pomace"
+      rule: "dry matter = wet mass × (1 − moisture mass fraction)"
+      inputs:
+        - "wet mass"
+        - "moisture mass fraction"
+      output: "kg dry matter"
+      source_ids:
+        - alonso-farinas-olive-pomace-oil-lca-2020
+    - id: solvent_loss_to_air
+      applies_to: "technical hexane"
+      rule: "hexane loss = opening solvent inventory + purchases − closing inventory − documented solvent in products and wastes; reconcile measured vent capture separately"
+      inputs:
+        - "solvent inventory"
+        - purchases
+        - recovery
+        - "product and waste tests"
+      output: "kg technical hexane loss to air"
+      source_ids:
+        - alonso-farinas-olive-pomace-oil-lca-2020
+    - id: exported_pomace_balance
+      applies_to: "extracted olive pomace"
+      rule: "exported extracted pomace = total extracted pomace produced − extracted pomace combusted on site − other measured internal use"
+      inputs:
+        - "total extracted-pomace output"
+        - "internal fuel mass"
+        - "other internal use"
+      output: "kg exported extracted olive pomace"
+      source_ids:
+        - alonso-farinas-olive-pomace-oil-lca-2020
+    - id: blend_mass_balance
+      applies_to: "olive-pomace-oil blend"
+      rule: "accepted blend output + rejected oil + measured losses = refined olive-pomace oil input + virgin olive oil input"
+      inputs:
+        - "both oil inputs"
+        - "accepted output"
+        - "rejected output"
+        - "measured loss"
+      output: "batch mass-balance closure and component mass fractions"
+      source_ids:
+        - fao-who-cxs-33-1981-2024
+        - ioc-trade-standard-2026
+    - id: packaging_component_mass
+      applies_to: "each packaging component"
+      rule: "component mass per kg oil = issued component count × verified unit mass / accepted net packaged-oil mass; reusable pallet mass is divided by verified reuse count"
+      inputs:
+        - "issued count"
+        - "unit mass"
+        - "net oil mass"
+        - "reuse count when applicable"
+      output: "kg of the specific component per kg net oil"
+      source_ids:
+        - eu-environmental-footprint-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain grade-specific laboratory certificates and declarations demonstrating CPC 21673 identity and distinguishing crude, refined, and blended olive-pomace oil from olive oil and re-esterified or other-oil mixtures."
+      evidence: "product specification; laboratory results; fao-who-cxs-33-1981-2024; ioc-trade-standard-2026"
+    - id: dq_temporal_coverage
+      applies_to: "foreground inventory"
+      requirement: "Use at least 12 representative months unless the campaign is shorter; disclose campaign dates, seasonality, downtime, and missing-data treatment."
+      evidence: "production calendar; meter coverage; reconciliation report; eu-environmental-footprint-2021-2279"
+    - id: dq_mass_balance
+      applies_to: "pomace, oil, solvent, and waste records"
+      requirement: "Close wet and dry pomace balances, oil-grade balances, solvent balance, and packaging-component reconciliation; investigate material residuals rather than forcing closure."
+      evidence: "signed balance sheets; moisture tests; tank and scale calibration"
+    - id: dq_atomic_exchanges
+      applies_to: "all inventory rows"
+      requirement: "Every electricity, hot-water, steam, natural-gas, diesel, chemical, packaging component, waste stream, and elementary emission actually used must be represented by its own atomic exchange. Any additional cleaning chemical or packaging component must be added as another row before conformance."
+      evidence: "row-id audit; purchase ledger; bill of materials; waste manifest"
+    - id: dq_storage_integrity
+      applies_to: "bulk storage and loading"
+      requirement: "Retain tank cleanliness, dryness, material compatibility, temperature, previous-cargo, and loading inspection records, and minimize air contact and overheating."
+      evidence: "inspection reports; temperature logs; previous-cargo declarations; fao-who-cxc-36-1987-2024"
+    - id: dq_background_links
+      applies_to: "upstream and treatment datasets"
+      requirement: "Match geography, technology, reference period, product grade, fuel route, packaging material, and waste-treatment route; disclose proxies and their sensitivity."
+      evidence: "dataset metadata and data-quality assessment; eu-environmental-footprint-2021-2279"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The product flow UUID, Mass property UUID, Units of mass UUID, kg unit, CPC 21673 coordinate, declared product grade, and full product semantics must all match."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - fao-who-cxs-33-1981-2024
+      - ioc-trade-standard-2026
+  - rule_id: validate_grade_and_route
+    applies_to: "product dataset"
+    rule: "Reject a dataset that omits crude/refined/blended grade, solvent or physical extraction route, refining status, blend composition when applicable, intended use, or gate."
+    source_ids:
+      - fao-who-cxs-33-1981-2024
+      - ioc-trade-standard-2026
+  - rule_id: validate_mass_and_moisture
+    applies_to: "production inventory"
+    rule: "Require measured oil output, wet pomace mass, pomace moisture or dry matter, extracted-pomace output, internal fuel use, and an investigated mass-balance residual."
+    source_ids:
+      - alonso-farinas-olive-pomace-oil-lca-2020
+  - rule_id: validate_solvent
+    applies_to: "solvent extraction route"
+    rule: "Require technical-hexane purchase, recovery, inventory, and loss records; reject halogenated-solvent use for a conforming edible product and apply the applicable residual-solvent quality checks."
+    source_ids:
+      - fao-who-cxs-33-1981-2024
+      - alonso-farinas-olive-pomace-oil-lca-2020
+  - rule_id: validate_atomic_inventory
+    applies_to: "all process inventories"
+    rule: "Reject any selected flow that is a plural collection, combined carrier, combined packaging label, combined waste label, or unresolved selector instruction; every actual exchange must be a separate row."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "multifunctional processes"
+    rule: "Require subdivision evidence or the documented allocation hierarchy, factors, co-product output quantities, internal use, and sensitivity result; reject double credit for extracted pomace used as on-site fuel."
+    source_ids:
+      - eu-environmental-footprint-2021-2279
+      - alonso-farinas-olive-pomace-oil-lca-2020
+  - rule_id: validate_storage_and_packaging
+    applies_to: "declared bulk or packaged gate"
+    rule: "Require storage inspection and temperature records; for packaged product require a component-level bill of materials and jurisdiction-specific package and labelling conformance."
+    source_ids:
+      - fao-who-cxc-36-1987-2024
+      - eu-olive-oil-marketing-2022-2104
+  - rule_id: validate_single_case_evidence
+    applies_to: "literature case evidence"
+    rule: "Treat the Alonso-Fariñas case only as non-constraining process and calculation context. Do not derive an amount range from one publication, one facility case, or two scenarios within that same case; foreground quantities require collected or independently calculated evidence."
+    source_ids:
+      - alonso-farinas-olive-pomace-oil-lca-2020
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Foreground or background modelling of crude, refined, or blended oil of olive residues with matching grade, route, geography, period, allocation, package state, and gate"
+  excluded_use: "Virgin or refined olive oil made directly from olives; olive pomace feedstock; exhausted pomace; re-esterified or chemically modified oil; undeclared mixtures; unmatched extraction or refining routes"
+  required_metadata: "reference-flow UUIDs; CPC coordinate; product grade; intended use; extraction solvent or physical treatment; drying fuel; refining and blending status; blend fractions; pomace origin and moisture; allocation method; packaging state; geography; reference period; gate"
+  required_quality_disclosure: "foreground coverage; calibration; mass, dry-matter, solvent, and blend balances; actual utility and packaging rows; direct-emission method; waste treatment; treatment of non-constraining literature cases; proxy datasets; data-quality assessment; unresolved UUIDs"
+  update_trigger: "Change in product standard, classification scope, extraction solvent or technology, drying fuel, refining or blending route, allocation method, package format, material yield, emission control, geography, or representative foreground evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "CPC 21673 title and hierarchy"
+  - id: "fao-who-cxs-33-1981-2024"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, CXS 33-1981, Standard for Olive Oils and Olive-Pomace Oils, revised 2024 and reformatted 2026, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+33-1981%2FCXS_033e.pdf"
+    used_for: "product definition, grade identity, quality, contaminants, naming, and analysis requirements"
+  - id: "ioc-trade-standard-2026"
+    type: "standard"
+    reference: "International Olive Council, COI/T.15/NC No. 3/Rev. 22, Trade Standard Applying to Olive Oils and Olive Pomace Oils, June 2026, https://www.internationaloliveoil.org/wp-content/uploads/2026/07/COI-T.15NC-No.-3Rev.-22-_TRADE-STANDARD-REV-22_EN.pdf"
+    used_for: "current international-trade designations, crude/refined/blended distinctions, and quality criteria"
+  - id: "alonso-farinas-olive-pomace-oil-lca-2020"
+    type: "literature"
+    reference: "Alonso-Fariñas et al., Environmental Assessment of Olive Mill Solid Waste Valorization via Anaerobic Digestion Versus Olive Pomace Oil Extraction, Processes 8(5), 626, 2020, https://doi.org/10.3390/pr8050626"
+    used_for: "drying, solvent extraction and recovery, chemical refining, inventory-flow identification, route-specific fuel cases, wastewater, and direct-emission context; one non-constraining case, not an amount-range source"
+  - id: "eu-environmental-footprint-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, Official Journal L 471, 30 December 2021, http://data.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "system boundary, primary-data quality, allocation hierarchy, packaging inventory, and proxy disclosure"
+  - id: "fao-who-cxc-36-1987-2024"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, CXC 36-1987, Code of Practice for the Storage and Transport of Edible Fats and Oils in Bulk, revised 2024, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXC+36-1987%2FCXC_036e.pdf"
+    used_for: "storage boundary, tank condition, cleaning, heating, loading, temperature, and previous-cargo records"
+  - id: "eu-olive-oil-marketing-2022-2104"
+    type: "official_guidance"
+    reference: "Commission Delegated Regulation (EU) 2022/2104 on marketing standards for olive oil, consolidated 10 June 2024, http://data.europa.eu/eli/reg_del/2022/2104/2024-06-10"
+    used_for: "EU grade characteristics, final-consumer package capacity and first-opening system, legal name, and storage labelling"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:99cbf8422197618365fe499858454288a90bc28ba63f620cce74b32e3135782f"
+  generated_content_sha256: "sha256:88d8bbe78bfd6b3d71b13064e5dd244096df81eeb22f025a39f1e72a0e9bbdd3"

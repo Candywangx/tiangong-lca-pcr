@@ -1,10 +1,1205 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "27160"
-  title: "Tarpaulins, sails for boats etc., awnings, sunblinds, tents and camping goods (including pneumatic mattresses)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.tarpaulins-sails-for-boats-etc-awnings-sunblinds-tents-and-camping-goods-including-pneu-4d2f13b5"
+  classification_refs: "CPC 3.0: 27160, exact"
+  covered_products: "Finished textile tarpaulins; sails; awnings; sunblinds; tents; textile camping goods; textile-bodied pneumatic mattresses classified in CPC 27160"
+  excluded_products: "Fabric sold by length; apparel; parachutes; sleeping bags and other CPC 27180 stuffed articles; stand-alone hardware; repair services; non-textile inflatable products outside CPC 27160; transport and use-stage services"
+  representative_product: "Net finished CPC 27160 article at the reporting manufacturer's factory gate"
+  production_route: "Purchased or in-house formed textile substrate; conditional pretreatment, coating, lamination, printing or functional finishing; cutting; sewing, adhesive bonding or thermal welding; component assembly; inspection; packaging and dispatch preparation"
+  market_state: "Accepted finished article, dry unless the product specification defines another conditioning state, excluding detachable packaging"
+functional_unit:
+  what: "A finished tarpaulin, sail, awning, sunblind, tent, camping good, or textile-bodied pneumatic mattress conforming to the declared product specification"
+  how_much: "1 kg net finished product"
+  how_well: "Meets the declared subtype, dimensions or size class, textile composition, coating or lamination system, joining route, functional finish, included-component specification, and quality acceptance criteria"
+  how_long_or_cycle: "One accepted production lot at the factory gate; service life is declared for downstream use but is not used to change the mass reference"
+  reference_flow_link: "final_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground product system"
+      rule: "Include all manufacturer-controlled operations from the declared received-material condition through accepted finished product at the factory gate, including internally managed rejects, waste, waste water, and direct air emissions."
+      source_ids:
+        - iso-14044-2006
+        - eu-textiles-bat-2022
+    - rule_id: boundary_route_disclosure
+      applies_to: "Conditional textile operations"
+      rule: "Include in-house fabric production, pretreatment, coating, lamination, printing, finishing, drying or curing when performed; otherwise represent the purchased treated textile with an upstream dataset and declare the exclusion from foreground."
+      source_ids:
+        - eu-textiles-bat-2022
+    - rule_id: boundary_packaging
+      applies_to: "Dispatch preparation"
+      rule: "Inventory packaging materials and packaging scrap but exclude detachable packaging from the 1 kg reference-product mass."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_no_recursive_double_count
+      applies_to: "Purchased CPC 27160 intermediate"
+      rule: "Model the supplied intermediate once at the receiving boundary and link its upstream dataset; do not recreate the same upstream production inside the receiving foreground process."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Received yarn, textile substrate, coating or finishing chemicals, components, packaging, and utilities at the reporting manufacturer's controlled boundary; any in-house upstream textile operation is additionally declared"
+  starting_condition_role: "Foreground production starting point for a made-up textile article"
+  product_classification_scope: "CPC 3.0 code 27160 only, constrained by the declared subtype and product specification"
+  recursive_input_rule: "A purchased intermediate already classified in CPC 27160 is recorded once as a supplied product input with an upstream dataset; its production is not recursively recreated inside the receiving process"
+  upstream_dataset_requirement: "Require supplier- or geography-appropriate upstream datasets for purchased yarn, fabric, coating polymer, finishing chemical, adhesive, thread, closures, metal or polymer components, packaging, water, electricity, and fuel"
+  disclosure: "Declare which fabric formation, pretreatment, coating, lamination, finishing, cutting, joining, assembly, waste treatment, and packaging operations are onsite, outsourced, or absent, and disclose all cut-offs and shared-facility allocation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Tarpaulins, sails for boats etc., awnings, sunblinds, tents and camping goods (including pneumatic mattresses)"
+    uuid: "176ee965-23e5-444c-8b6c-9457334cae4c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype"
+    - "product model or specification"
+    - "net finished mass"
+    - "dimensions or size class"
+    - "textile fibre composition"
+    - "textile construction"
+    - "coating or lamination polymer and mass share"
+    - "functional finishing treatment"
+    - "joining route"
+    - "included poles"
+    - stakes
+    - valves
+    - "closures and fittings"
+    - "conditioning state"
+    - "manufacturing geography"
+    - "production period"
+    - "factory-gate point"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net accepted finished article. Exclude detachable packaging but include all components supplied as part of the article."
+  - id: material_mass_basis
+    applies_to: "Textile substrates, polymers, thread, adhesives, closures, poles, stakes, product and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain reporting-period gross and net masses and normalize only after reconciliation to accepted product output. State moisture or conditioning basis where it affects mass."
+  - id: coating_mass_basis
+    applies_to: "Applied coating, laminate, adhesive and finishing chemicals"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record as-supplied mass and, when used for interpretation, separately calculate dry solids or polymer mass from supplier or measured solids content without replacing the as-supplied record."
+  - id: energy_measurement
+    applies_to: "Electricity and fuel"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuel"
+    rule: "Preserve metered or invoiced units and conversion factors. Allocate shared meters only by a documented physical driver linked to the applicable process."
+  - id: water_measurement
+    applies_to: "Process water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve the measured unit. Convert volume to mass only with a declared density and temperature basis."
+process_map:
+  - id: textile_formation_preparation
+    name: "Textile substrate formation and preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when yarn conversion, weaving, knitting, washing, desizing or another substrate-preparation operation is controlled by the reporting manufacturer."
+    role: "Foreground intermediate production"
+    quantitative_reference: "Per kg prepared textile transferred to the next controlled operation and ultimately per 1 kg accepted product"
+  - id: coating_lamination_finishing
+    name: "Coating, lamination and functional finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when coating, lamination, printing, waterproofing, flame-retardant finishing, drying or curing is controlled by the reporting manufacturer."
+    role: "Foreground functional treatment"
+    quantitative_reference: "Per kg finished textile transferred to assembly and ultimately per 1 kg accepted product"
+  - id: cutting_joining_assembly
+    name: "Cutting, joining and component assembly"
+    inclusion: "required"
+    inclusion_condition: "Always include the manufacturer-controlled conversion of textile panels and components into the declared article."
+    role: "Foreground article manufacture"
+    quantitative_reference: "Per 1 kg assembled article transferred to inspection"
+  - id: inspection_packaging_dispatch
+    name: "Inspection, packaging and factory-gate dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include final acceptance; include packaging when used for factory-gate dispatch."
+    role: "Foreground final product production"
+    quantitative_reference: "Exactly 1 kg net accepted finished article"
+process_inventory:
+  - id: textile_formation_preparation
+    label: "Textile substrate formation and preparation"
+    inputs:
+      product:
+        - row_id: tf_polyester_yarn
+          role: "Polyester filament yarn"
+          name: "Polyester filament yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyester filament yarn is recorded only when it is physically converted into the declared textile substrate within the foreground boundary."
+          amount:
+            expression: "measured mass issued to the process during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: tf_polyamide_yarn
+          role: "Polyamide filament yarn"
+          name: "Polyamide filament yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyamide filament yarn is recorded as a separate exchange for polyamide or nylon substrate routes."
+          amount:
+            expression: "measured mass issued to the process during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: tf_cotton_yarn
+          role: "Cotton yarn"
+          name: "Cotton yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cotton yarn is recorded separately when a cotton or cotton-blend substrate is formed onsite."
+          amount:
+            expression: "measured mass issued to the process during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: tf_electricity
+          role: "Low-voltage electricity"
+          name: "Alternating-current electricity, low voltage, consumption mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by weaving, preparation, material handling and associated controls is recorded from the applicable meter or invoice."
+          amount:
+            expression: "metered electricity attributable to the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: tf_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Supplied water used for in-house washing, desizing or other wet preparation is recorded separately from water embedded in purchased chemicals."
+          amount:
+            expression: "metered or batch-recorded supplied water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tf_prepared_textile
+          role: "Prepared textile substrate"
+          name: "Prepared woven textile substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The prepared woven textile transferred to the next controlled operation is recorded as a foreground intermediate and reconciled with yarn inputs and scrap."
+          amount:
+            expression: "measured dry or declared conditioned mass transferred"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        - row_id: tf_textile_scrap
+          role: "Textile production scrap"
+          name: "Textile production scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Yarn and fabric scrap leaving the preparation process is measured as a distinct waste stream and is not netted from material input."
+          amount:
+            expression: "measured mass transferred to reuse, recycling, treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: tf_pretreatment_wastewater
+          role: "Textile pretreatment wastewater"
+          name: "Textile pretreatment wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater leaving onsite washing or pretreatment for internal or external treatment is recorded as one route-specific waste stream."
+          amount:
+            expression: "metered discharge mass or volume converted with a declared density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+  - id: coating_lamination_finishing
+    label: "Coating, lamination and functional finishing"
+    inputs:
+      product:
+        - row_id: cf_prepared_textile
+          role: "Prepared textile substrate"
+          name: "Prepared woven textile substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The textile substrate entering coating, lamination or finishing is recorded at its actual conditioning state."
+          amount:
+            expression: "measured mass charged to the treatment line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_pvc_resin
+          role: "Polyvinyl chloride resin"
+          name: "Polyvinyl chloride resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "PVC resin is recorded only for a declared PVC coating or film-lamination route and excludes plasticizer and other additives, which require separate cards if used."
+          amount:
+            expression: "measured as-supplied resin mass issued to the route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_polyurethane_resin
+          role: "Polyurethane coating resin"
+          name: "Polyurethane coating resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyurethane coating resin is recorded only for a declared polyurethane coating or lamination route and is not combined with solvents, catalysts, or cross-linkers."
+          amount:
+            expression: "measured as-supplied resin mass issued to the route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_synthetic_rubber_latex
+          role: "Synthetic rubber latex"
+          name: "Synthetic rubber latex"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Synthetic rubber latex is recorded only for a declared rubberized textile route and must identify the polymer chemistry in the product specification."
+          amount:
+            expression: "measured as-supplied latex mass issued to the route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water used in coating preparation, washing, rinsing or finishing is recorded from route-specific meters or batch records."
+          amount:
+            expression: "metered or batch-recorded supplied water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_electricity
+          role: "Low-voltage electricity"
+          name: "Alternating-current electricity, low voltage, consumption mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by coating, lamination, finishing, pumps, ventilation, drying controls and abatement is recorded separately from thermal fuel."
+          amount:
+            expression: "metered electricity attributable to the route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Natural gas combusted for direct or indirect drying and curing is recorded only when used by the declared route."
+          amount:
+            expression: "metered or invoiced fuel converted with the supplier net calorific value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cf_finished_textile
+          role: "Coated or laminated textile substrate"
+          name: "Coated or laminated textile substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The treated textile transferred to cutting and assembly is recorded with coating or laminate chemistry, dry add-on, and conditioning state."
+          amount:
+            expression: "measured finished-textile mass transferred"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        - row_id: cf_spent_coating_paste
+          role: "Spent textile coating paste"
+          name: "Spent textile coating paste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Unused or spent coating paste sent to recovery, treatment or disposal is recorded without combining it with wastewater."
+          amount:
+            expression: "measured mass removed from the route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_coating_wastewater
+          role: "Textile coating wastewater"
+          name: "Textile coating wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater or separately collected liquid from coating and finishing is recorded at the point it leaves the process for treatment."
+          amount:
+            expression: "metered discharge mass or volume converted with a declared density"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        - row_id: cf_tvoc_air
+          role: "Total volatile organic carbon to air"
+          name: "Total volatile organic carbon to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "TVOC emitted from coating, lamination, drying, curing or finishing is recorded when the route uses organic compounds and monitoring identifies the emission."
+          amount:
+            expression: "measured emission mass or calculated mass from monitored concentration and exhaust flow"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emission_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_formaldehyde_air
+          role: "Formaldehyde to air"
+          name: "Formaldehyde to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Formaldehyde emitted from applicable coating, printing, lamination, finishing or thermal treatment is recorded as a separate substance-specific exchange."
+          amount:
+            expression: "measured emission mass or calculated mass from monitored concentration and exhaust flow"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emission_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: cf_ammonia_air
+          role: "Ammonia to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia emitted from applicable coating, printing, finishing or thermal treatment is recorded independently from TVOC and formaldehyde."
+          amount:
+            expression: "measured emission mass or calculated mass from monitored concentration and exhaust flow"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished textile output and reconciled to 1 kg accepted product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emission_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+  - id: cutting_joining_assembly
+    label: "Cutting, joining and component assembly"
+    inputs:
+      product:
+        - row_id: as_finished_textile
+          role: "Finished textile substrate"
+          name: "Finished textile substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The actual finished textile entering panel cutting is recorded with its composition, coating or laminate, basis mass, and supplier or internal batch identity."
+          amount:
+            expression: "measured mass issued to cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+        - row_id: as_sewing_thread
+          role: "Polyester sewing thread"
+          name: "Polyester sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyester sewing thread is recorded only for sewn seams and is not combined with zippers, webbing or other notions."
+          amount:
+            expression: "measured issue mass or spool-stock change reconciled to production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+        - row_id: as_adhesive
+          role: "Polyurethane adhesive"
+          name: "Polyurethane adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyurethane adhesive is recorded only for an adhesive-bonding route; other adhesive chemistries require separate cards."
+          amount:
+            expression: "measured as-supplied adhesive mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: as_zipper
+          role: "Polyester coil zipper"
+          name: "Polyester coil zipper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A polyester coil zipper supplied as part of the finished article is recorded as its own component exchange."
+          amount:
+            expression: "measured component mass issued to accepted production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_records
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+        - row_id: as_aluminium_pole
+          role: "Aluminium alloy tent pole"
+          name: "Aluminium alloy tent pole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "An aluminium alloy tent pole is recorded only when supplied with the declared product and must not stand for other frames or fittings."
+          amount:
+            expression: "measured component mass issued to accepted production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_records
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+        - row_id: as_steel_fastener
+          role: "Steel tent stake"
+          name: "Steel tent stake"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A steel tent stake is recorded separately when it is included with the declared tent or camping product."
+          amount:
+            expression: "measured component mass issued to accepted production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_records
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+        - row_id: as_electricity
+          role: "Low-voltage electricity"
+          name: "Alternating-current electricity, low voltage, consumption mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by cutting, sewing, welding, adhesive curing, ventilation and assembly equipment is metered separately where possible."
+          amount:
+            expression: "metered electricity attributable to cutting, joining and assembly"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: as_assembled_product
+          role: "Assembled CPC 27160 textile article"
+          name: "Assembled CPC 27160 textile article"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The assembled article transferred to final inspection is recorded before detachable dispatch packaging is added."
+          amount:
+            expression: "measured net assembled mass transferred to inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: as_textile_offcuts
+          role: "Textile cutting offcuts"
+          name: "Textile cutting offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Textile offcuts are recorded as a separate waste stream by substrate and treatment route in supporting records."
+          amount:
+            expression: "measured mass sent to reuse, recycling, treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: as_adhesive_waste
+          role: "Cured polyurethane adhesive waste"
+          name: "Cured polyurethane adhesive waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cured polyurethane adhesive waste is recorded only for the polyurethane adhesive route and excludes uncured hazardous residues."
+          amount:
+            expression: "measured mass transferred to treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg assembled article output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+  - id: inspection_packaging_dispatch
+    label: "Inspection, packaging and factory-gate dispatch preparation"
+    inputs:
+      product:
+        - row_id: pk_assembled_product
+          role: "Assembled CPC 27160 textile article"
+          name: "Assembled CPC 27160 textile article"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The assembled article entering final inspection is recorded at net mass before detachable packaging."
+          amount:
+            expression: "measured net mass entering final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+        - row_id: pk_corrugated_box
+          role: "Corrugated board box"
+          name: "Corrugated board box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A corrugated board box used for factory-gate dispatch is inventoried separately and excluded from reference-product mass."
+          amount:
+            expression: "measured packaging mass issued to accepted production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+        - row_id: pk_polyethylene_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LDPE film used for wrapping or bagging is recorded independently from the corrugated box."
+          amount:
+            expression: "measured packaging-film mass issued to accepted production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+        - row_id: pk_electricity
+          role: "Low-voltage electricity"
+          name: "Alternating-current electricity, low voltage, consumption mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by inspection, leak or strength testing, folding, packing and dispatch preparation is recorded from the applicable meter."
+          amount:
+            expression: "metered electricity attributable to final inspection and packing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product_output
+          role: "Accepted finished CPC 27160 article"
+          name: "Tarpaulins, sails for boats etc., awnings, sunblinds, tents and camping goods (including pneumatic mattresses)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "176ee965-23e5-444c-8b6c-9457334cae4c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg in Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The quantitative reference is the accepted net finished article at the factory gate, excluding detachable packaging and including all components supplied as part of the article."
+          amount:
+            expression: "exactly 1 kg accepted net finished product after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unstats-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: pk_rejected_product
+          role: "Rejected CPC 27160 textile article"
+          name: "Rejected CPC 27160 textile article"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A finished article rejected during final inspection is recorded separately from cutting scrap and may not be netted from accepted output."
+          amount:
+            expression: "measured net mass rejected and transferred to rework, recovery, treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - iso-14048-2002
+            ranges: []
+        - row_id: pk_packaging_scrap
+          role: "Corrugated board packaging scrap"
+          name: "Corrugated board packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Corrugated board damaged or trimmed during packing is recorded as a separate waste stream."
+          amount:
+            expression: "measured mass transferred to reuse, recycling, treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - iso-14048-2002
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Multi-output or shared operations"
+    rule: "First avoid allocation through process subdivision or by using process-specific meters, material issues and production records."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable shared utilities or operations"
+    rule: "When subdivision is not practicable, use a documented physical relationship that reflects the driver of resource use or emissions, such as machine time, treated textile mass, exhaust flow, or metered energy."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+  - rule_id: allocation_economic_fallback
+    applies_to: "Saleable secondary outputs without a defensible physical relationship"
+    rule: "Use economic allocation only as a disclosed fallback with reporting-period prices, currency, geography, price date and sensitivity analysis."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_waste_no_credit
+    applies_to: "Textile offcuts, coating waste, wastewater, rejected articles and packaging scrap"
+    rule: "Report generated waste gross at the foreground boundary. Do not subtract an avoided-product or recycling credit inside the foreground inventory unless the downstream modelling convention is explicitly declared and applied consistently."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "textile_formation_preparation_coating_lamination_finishing_cutting_joining_assembly"
+      flow_role: "Yarn, textile and polymer material input"
+      record_type: "Weighbridge, scale, warehouse issue and stock record"
+      raw_fields: "material identity; supplier; batch; opening stock; receipts; issues; returns; closing stock; measured mass; conditioning basis"
+      collection_method: "Calibrated scale plus stock reconciliation"
+      unit: "kg"
+      frequency: "Per batch with monthly reconciliation"
+      temporal_coverage: "At least one representative production year or the full campaign for campaign production"
+      site_scope: "All controlled production lines in the dataset"
+      aggregation_rule: "Sum net issues by exact material identity; reconcile opening plus receipts minus returns and closing stock; divide by accepted reference-product mass"
+      quality_evidence: "Calibration record; stock reconciliation; supplier specification; exception log"
+    - protocol_id: cp_chemical_records
+      process_id: "coating_lamination_finishing_cutting_joining_assembly"
+      flow_role: "Coating resin, latex and adhesive input"
+      record_type: "Batch recipe and chemical issue record"
+      raw_fields: "chemical identity; formulation; batch; as-supplied mass; solids content; returned amount; retained waste"
+      collection_method: "Calibrated batch scale and signed recipe record"
+      unit: "kg"
+      frequency: "Per batch"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every applicable coating, lamination, finishing or bonding line"
+      aggregation_rule: "Sum as-supplied net use by exact chemical; retain solids calculation separately; normalize by accepted reference-product mass"
+      quality_evidence: "Scale calibration; safety or technical data sheet; recipe approval; mass reconciliation"
+    - protocol_id: cp_component_records
+      process_id: "cutting_joining_assembly"
+      flow_role: "Closure, pole and stake input"
+      record_type: "Bill of materials, issue count and sample mass"
+      raw_fields: "component identity; specification; count issued; count returned; sample mass; batch"
+      collection_method: "Count reconciliation with calibrated sample weighing or direct total weighing"
+      unit: "kg"
+      frequency: "Per production lot"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All assembly lines and outsourced controlled assembly included in the dataset"
+      aggregation_rule: "Convert counts only from measured representative component mass; reconcile issues, returns and rejects; normalize by accepted reference-product mass"
+      quality_evidence: "Approved bill of materials; scale calibration; sampling record; supplier specification"
+    - protocol_id: cp_utility_records
+      process_id: "textile_formation_preparation_coating_lamination_finishing_cutting_joining_assembly_inspection_packaging_dispatch"
+      flow_role: "Electricity, fuel and supplied water"
+      record_type: "Meter, invoice and production-time record"
+      raw_fields: "meter id; opening reading; closing reading; unit; fuel calorific value; process runtime; production mass"
+      collection_method: "Direct submeter preferred; otherwise documented shared-meter allocation"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Meter interval or invoice period, reconciled monthly"
+      temporal_coverage: "At least one representative production year or the full campaign"
+      site_scope: "All controlled facilities and relevant shared utilities"
+      aggregation_rule: "Difference readings; subtract documented non-production use; allocate shared quantities by physical driver; normalize by accepted reference-product mass"
+      quality_evidence: "Meter calibration; invoice; fuel certificate; allocation worksheet; anomaly investigation"
+    - protocol_id: cp_output_mass
+      process_id: "textile_formation_preparation_coating_lamination_finishing_cutting_joining_assembly_inspection_packaging_dispatch"
+      flow_role: "Intermediate and accepted product output"
+      record_type: "Calibrated scale, production and quality record"
+      raw_fields: "batch; product subtype; gross mass; tare; net mass; accepted mass; rejected mass; conditioning state"
+      collection_method: "Calibrated weighing linked to production and quality disposition"
+      unit: "kg"
+      frequency: "Per batch or lot"
+      temporal_coverage: "Same period as all inputs and outputs"
+      site_scope: "Every included production line"
+      aggregation_rule: "Sum accepted net output by subtype; retain rejected and rework quantities separately; use accepted net mass as normalization denominator"
+      quality_evidence: "Scale calibration; lot genealogy; quality release; mass-balance reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "inspection_packaging_dispatch"
+      flow_role: "Dispatch packaging input"
+      record_type: "Packaging issue, count and sample-mass record"
+      raw_fields: "packaging identity; count; sample mass; issues; returns; damaged units"
+      collection_method: "Direct weighing or count times measured unit mass"
+      unit: "kg"
+      frequency: "Per lot with monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All dispatch packing included in the dataset"
+      aggregation_rule: "Sum packaging net use by exact material and normalize by accepted product mass; do not include in reference-product mass"
+      quality_evidence: "Bill of materials; scale calibration; stock reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "textile_formation_preparation_coating_lamination_finishing_cutting_joining_assembly_inspection_packaging_dispatch"
+      flow_role: "Specific solid or paste waste output"
+      record_type: "Container weighing, transfer note and treatment record"
+      raw_fields: "waste identity; source process; container tare; gross mass; destination; treatment route; hazardous status"
+      collection_method: "Calibrated weighing at generation or dispatch, reconciled to transfer documentation"
+      unit: "kg"
+      frequency: "Per container or dispatch"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All included processes and controlled waste storage"
+      aggregation_rule: "Sum net waste by exact identity and route; keep rework, recycling, treatment and disposal destinations separate; normalize by accepted product mass"
+      quality_evidence: "Scale calibration; transfer note; waste code; contractor receipt; mass reconciliation"
+    - protocol_id: cp_wastewater_records
+      process_id: "textile_formation_preparation_coating_lamination_finishing"
+      flow_role: "Route-specific wastewater output"
+      record_type: "Flow meter and wastewater monitoring record"
+      raw_fields: "stream identity; flow; pH; temperature; concentration; sampling time; treatment route"
+      collection_method: "Continuous or batch flow measurement with representative sampling"
+      unit: "kg; m3"
+      frequency: "Continuous or per discharge with periodic composition monitoring"
+      temporal_coverage: "Same period as product output and sufficient to cover recipe variability"
+      site_scope: "Each relevant discharge point before stream mixing where practicable"
+      aggregation_rule: "Sum route-specific discharge; calculate pollutant mass only from aligned flow and concentration records; normalize by accepted product mass"
+      quality_evidence: "Meter and laboratory QA; sampling plan; chain of custody; treatment record"
+    - protocol_id: cp_air_emission_records
+      process_id: "coating_lamination_finishing"
+      flow_role: "Substance-specific direct air emission"
+      record_type: "Stack or capture-system monitoring record"
+      raw_fields: "substance; emission point; concentration; exhaust flow; operating time; method; below-detection treatment"
+      collection_method: "Direct measurement using the applicable documented method; align monitoring with production"
+      unit: "kg"
+      frequency: "Monitoring frequency set by permit and route relevance; operating time recorded continuously"
+      temporal_coverage: "Same period as product output and representative of recipes and operating states"
+      site_scope: "Every relevant controlled and diffuse source included in the dataset"
+      aggregation_rule: "Calculate each substance mass separately from aligned concentration, flow and operating time; normalize by accepted product mass"
+      quality_evidence: "Laboratory report; instrument calibration; method; emission-point map; operating log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every non-reference amount"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period accepted net product mass"
+      inputs:
+        - "Exchange total from its collection protocol"
+        - "accepted net product mass from cp_output_mass"
+      output: "Amount per 1 kg accepted reference product"
+      source_ids:
+        - iso-14044-2006
+        - iso-14048-2002
+    - id: calc_material_balance
+      applies_to: "Each included process"
+      rule: "input mass = transferred product mass + separately recorded waste mass + measured emissions + documented stock change, with any residual investigated rather than forced to zero"
+      inputs:
+        - "Material receipts"
+        - "intermediate outputs"
+        - "waste records"
+        - "emission records"
+        - "opening and closing work in progress"
+      output: "Process mass-balance reconciliation and residual"
+      source_ids:
+        - eu-textiles-bat-2022
+        - iso-14048-2002
+    - id: calc_count_to_mass
+      applies_to: "Poles, stakes, zippers and other counted components"
+      rule: "component mass = accepted component count × measured representative unit mass, with sampling uncertainty retained"
+      inputs:
+        - "Count record"
+        - "calibrated unit-mass sample"
+        - "returns and rejects"
+      output: "Component input mass"
+      source_ids:
+        - iso-14048-2002
+    - id: calc_air_emission_mass
+      applies_to: "Each monitored air substance"
+      rule: "emitted mass = aligned concentration × dry or wet exhaust flow on the same basis × operating time; apply unit and standard-condition conversions explicitly"
+      inputs:
+        - "Substance concentration"
+        - "exhaust flow"
+        - "operating time"
+        - "measurement-basis metadata"
+      output: "Substance-specific emitted mass"
+      source_ids:
+        - eu-textiles-bat-2022
+    - id: calc_shared_utility
+      applies_to: "Shared water, electricity or fuel meter"
+      rule: "allocated quantity = shared-meter quantity × documented physical driver fraction; the driver must reflect causal use and fractions must sum to one"
+      inputs:
+        - "Shared reading"
+        - "process runtime"
+        - "treated mass or other physical driver"
+      output: "Process-specific utility amount"
+      source_ids:
+        - iso-14044-2006
+        - eu-textiles-bat-2022
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and every inventory row"
+      requirement: "Retain exact product subtype, material or substance identity, route applicability, flow type, property, unit, and Tiangong UUID review status. Do not substitute a collection label or neighboring classification flow."
+      evidence: "Product specification; bill of materials; direct-read evidence retained outside PCR content; unstats-cpc-3-0-2025"
+    - id: dq_temporal
+      applies_to: "All foreground records"
+      requirement: "Use one internally consistent period covering representative operation, seasonal or recipe variability, maintenance and abnormal exclusions. Disclose partial-year or campaign coverage."
+      evidence: "Meter periods; production calendar; lot genealogy; maintenance and exception log"
+    - id: dq_geography_technology
+      applies_to: "Materials, utilities and processes"
+      requirement: "Match suppliers, electricity geography and voltage, fuel supply, textile construction, coating chemistry, joining technology, abatement and waste routes to the represented facility."
+      evidence: "Supplier records; process map; equipment list; utility contracts; treatment records"
+    - id: dq_completeness
+      applies_to: "Input/output inventory"
+      requirement: "Reconcile materials, water, energy, wastewater, waste and relevant direct emissions by process. Investigate missing or residual quantities and disclose approved cut-offs."
+      evidence: "Input/output inventory; material balance; water balance; energy records; waste and emission records; eu-textiles-bat-2022"
+    - id: dq_measurement
+      applies_to: "Measured quantities"
+      requirement: "Retain meter or scale identity, calibration status, unit, reading interval, sampling method, detection-limit treatment and calculation workbook."
+      evidence: "Calibration certificates; laboratory QA; invoices; signed batch sheets; iso-14048-2002"
+    - id: dq_no_ai_quantities
+      applies_to: "Inventory amounts and ranges"
+      requirement: "Do not use AI-generated or reasoned-estimate quantities or ranges for this candidate PCR. Missing quantities remain foreground collection requirements."
+      evidence: "Collection protocol coverage and reviewer confirmation"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require Product flow UUID 176ee965-23e5-444c-8b6c-9457334cae4c, exact CPC 27160 semantics, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, kg, amount 1, and all required qualifiers."
+    source_ids:
+      - unstats-cpc-3-0-2025
+  - rule_id: validate_reference_mass
+    applies_to: "Accepted product"
+    rule: "Require net finished mass to exclude detachable packaging and include all components delivered as part of the article; reconcile gross packed mass separately when recorded."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_route_coverage
+    applies_to: "Process map"
+    rule: "Fail when an onsite or controlled fabric, pretreatment, coating, lamination, finishing, curing, joining, assembly or waste-treatment operation is omitted, or when an absent operation lacks a purchased upstream dataset and disclosure."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_atomic_flows
+    applies_to: "Process inventory"
+    rule: "Require every card to contain one concrete exchange. Reject combined utilities, materials, packaging, wastes, emissions, selectors, or unresolved collection labels."
+    source_ids: []
+  - rule_id: validate_uuid_gate
+    applies_to: "UUID-bearing rows"
+    rule: "Accept a Tiangong UUID only after hybrid search and public state-100 direct read confirm exact semantics, flow type, property and unit support; otherwise require the row-specific unresolved entry in manifest review metadata."
+    source_ids: []
+  - rule_id: validate_foreground_evidence
+    applies_to: "Non-reference quantities"
+    rule: "Require a collection record for every referenced protocol and forbid AI-generated or reasoned-estimate amounts and ranges."
+    source_ids:
+      - iso-14048-2002
+      - eu-textiles-bat-2022
+  - rule_id: validate_mass_balance
+    applies_to: "Each included process"
+    rule: "Require reconciled inputs, transferred output, waste, measured emissions and stock change; investigate and disclose residuals without silently assigning them to product."
+    source_ids:
+      - eu-textiles-bat-2022
+      - iso-14048-2002
+  - rule_id: validate_emission_specificity
+    applies_to: "Direct emissions and wastewater"
+    rule: "Require substance-specific elementary emissions and route-specific wastewater; reject a combined air-emission or wastewater-pollutant selector."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_bilingual_alignment
+    applies_to: "English and Chinese PCR"
+    rule: "Require identical ordered rule ids, process ids, row ids, UUIDs, controlled vocabulary tokens, source ids and numeric values in both language renderings."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production data package for a specified CPC 27160 finished article"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product-specific process or lifecyclemodel construction when subtype, specification, material system, included components, route, geography, technology, period and factory-gate boundary match"
+  excluded_use: "Unqualified average for all CPC 27160 products; textile fabric production outside the declared route; non-textile inflatable goods; use-phase durability claims; end-of-life scenarios; direct substitution for a different subtype, coating system or component configuration"
+  required_metadata: "PCR id and version; CPC 27160; product subtype and specification; reference-flow qualifiers; facility geography; reporting period; production volume; included and outsourced operations; bill of materials; coating and finish chemistry; joining route; allocation; cut-offs; upstream dataset references; UUID review status"
+  required_quality_disclosure: "Record coverage; calibration and sampling status; mass-, water- and energy-balance residuals; shared-meter allocation; wastewater and air monitoring coverage; missing UUIDs; excluded abnormal operation; data gaps and limitations"
+  update_trigger: "Change in product subtype or specification, textile construction, coating or finish chemistry, component bill, joining technology, facility geography, energy or water system, abatement, waste route, allocation method, reference identity, or a material shift in production performance"
+data_sources:
+  - id: "unstats-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 explanatory notes, code 27160, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact product-category scope and classification identity"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "European Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry. https://eur-lex.europa.eu/eli/dec_impl/2022/2508"
+    used_for: "Textile process decomposition; input/output inventories; water, energy, chemical, waste, wastewater and air-emission records; coating, lamination and finishing controls"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, confirmed current in 2022. https://www.iso.org/standard/38498.html"
+    used_for: "Goal and scope, life-cycle inventory, allocation, reporting and review principles"
+  - id: "iso-14048-2002"
+    type: "standard"
+    reference: "ISO/TS 14048:2002, Environmental management — Life cycle assessment — Data documentation format, confirmed current in 2025. https://www.iso.org/standard/29872.html"
+    used_for: "Transparent and unambiguous data collection, calculation, quality and documentation records"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6b8077bc806dc03da5f55e66eefd37c0b9af75e9db6340009b63fad821a39715"
+  generated_content_sha256: "sha256:42dc0eaeafdd6fcf46c39979fe988bc7556103aae1171786b5399ecc355c5346"

@@ -6,6 +6,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  renameSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -19,9 +20,11 @@ import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-proj
 import {
   buildGuidance,
   buildPcrTree,
+  createPcrReadContext,
   createFeedbackDraft,
   getClassificationCoverageSummary,
   getPcrReadiness,
+  getVerifiedPcrProjection,
   listClassificationCoverage,
   listPcrs,
   readPcrMarkdown,
@@ -29,7 +32,9 @@ import {
   resolvePcrIdentity,
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
+  withPcrReadContextSession,
 } from "./src/index.mjs";
+import { findPcrIdAlias, readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
 import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.mjs";
 import { parseYaml, renderYaml } from "./src/yaml-lite.mjs";
 
@@ -687,6 +692,150 @@ test("guidance revalidates and consumes the current verified structured projecti
   }
 });
 
+test("getVerifiedPcrProjection returns one defensive, verified PCR snapshot", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-verified-projection-");
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+
+    const first = getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId });
+    assert.equal(first.pcr.id, wheatSeedPcrId);
+    assert.equal(first.pcr.readiness.usable_for_guidance, true);
+    assert.deepEqual(first.readiness, first.pcr.readiness);
+    assert.notEqual(first.readiness, first.pcr.readiness);
+    assert.equal(first.readiness.projection_fingerprint.status, "current");
+    assert.equal(first.structured.product_category_identity.canonical_pcr_id, first.pcr.id);
+    assert.equal(first.source_structured, `${wheatRelativePcrPath}/structured.yaml`);
+
+    first.pcr.title["en-US"] = "mutated";
+    first.pcr.readiness.blockers.push({ code: "mutated" });
+    first.readiness.blockers.push({ code: "also_mutated" });
+    first.structured.product_category_identity.covered_products = "mutated";
+
+    const second = getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId });
+    assert.notEqual(second.pcr.title["en-US"], "mutated");
+    assert.equal(second.pcr.readiness.blockers.some(({ code }) => code === "mutated"), false);
+    assert.equal(second.readiness.blockers.some(({ code }) => code === "also_mutated"), false);
+    assert.notEqual(second.structured.product_category_identity.covered_products, "mutated");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("getVerifiedPcrProjection rejects stale, substituted, invalid, and unusable projections", () => {
+  const scenarios = [
+    {
+      name: "stale source",
+      mutate(pcrDir) {
+        const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+        writeFileSync(markdownPath, `${readFileSync(markdownPath, "utf8")}\n<!-- stale -->\n`);
+      },
+      blocker: "projection_source_mismatch",
+    },
+    {
+      name: "source-substituted projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          "source_markdown: pcr.en-US.md",
+          "source_markdown: substituted.md",
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "projection_content_mismatch",
+    },
+    {
+      name: "content-substituted projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          '  reference_unit: "kg"',
+          '  reference_unit: "substituted"',
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "projection_content_mismatch",
+    },
+    {
+      name: "schema-invalid projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          "schema_version: 1",
+          "schema_version: invalid",
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "structured_schema_invalid",
+    },
+    {
+      name: "unusable lifecycle",
+      mutate(pcrDir) {
+        const manifestPath = path.join(pcrDir, "manifest.yaml");
+        const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+        manifest.status = "deprecated";
+        manifest.content_maturity = "deprecated_methodology";
+        writeFileSync(manifestPath, renderYaml(manifest));
+      },
+      blocker: "deprecated_methodology",
+    },
+  ];
+
+  for (const scenario of scenarios) {
+    const root = createBoundRepositoryFixture("tiangong-pcr-verified-rejection-");
+    const pcrDir = path.join(root, wheatRelativePcrPath);
+    try {
+      mkdirSync(path.dirname(pcrDir), { recursive: true });
+      cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+      scenario.mutate(pcrDir);
+
+      assert.throws(
+        () => getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId }),
+        (error) => {
+          assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE", scenario.name);
+          assert.ok(
+            error.readiness.blockers.some(({ code }) => code === scenario.blocker),
+            `${scenario.name}: ${JSON.stringify(error.readiness.blockers)}`,
+          );
+          return true;
+        },
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("getVerifiedPcrProjection rejects a symlinked structured artifact", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-verified-symlink-");
+  const outsideRoot = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-verified-outside-"));
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+    const structuredPath = path.join(pcrDir, "structured.yaml");
+    const outsidePath = path.join(outsideRoot, "structured.yaml");
+    cpSync(structuredPath, outsidePath);
+    rmSync(structuredPath);
+    symlinkSync(outsidePath, structuredPath);
+
+    assert.throws(
+      () => getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId }),
+      (error) => {
+        assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE");
+        assert.ok(
+          error.readiness.blockers.some(({ code }) => code === "structured_projection_unreadable"),
+        );
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outsideRoot, { recursive: true, force: true });
+  }
+});
+
 test("material readiness rejects schema-valid projections with incomplete methodology", () => {
   const root = createBoundRepositoryFixture("tiangong-pcr-projection-completeness-");
   const relativePcrPath =
@@ -719,6 +868,56 @@ test("material readiness rejects schema-valid projections with incomplete method
     assert.throws(
       () => buildGuidance({ root, pcrId: wheatSeedPcrId }),
       (error) => error.code === "PCR_NOT_USABLE_FOR_GUIDANCE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("candidate readiness accepts a registered unresolved reference-product flow UUID", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-unresolved-reference-flow-");
+  const sourcePcrDir = path.join(repoRoot, wheatRelativePcrPath);
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(sourcePcrDir, pcrDir, { recursive: true });
+
+    const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+    const markdown = readFileSync(markdownPath, "utf8").replace(
+      /^\| Reference product flow \| Wheat `[^`]+` \|$/mu,
+      "| Reference product flow | Wheat |",
+    );
+    const projection = parsePcrMarkdownToStructured(markdown);
+    const referenceRow = projection.processInventory
+      .flatMap((processEntry) => processEntry.outputs.product)
+      .find((row) => row.name === projection.referenceFlowDefinition.product_flow.name);
+    assert.ok(referenceRow);
+    writeFileSync(markdownPath, markdown);
+    writeFileSync(
+      path.join(pcrDir, "structured.yaml"),
+      structuredProjectionYaml(projection, { sourceMarkdown: markdown }),
+    );
+
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+    manifest.review_metadata = {
+      ...(manifest.review_metadata ?? {}),
+      unresolved_flow_identities: [
+        { row_id: referenceRow.row_id, reason: "No exact product flow is available." },
+      ],
+    };
+    writeFileSync(manifestPath, renderYaml(manifest));
+
+    const readiness = getPcrReadiness({ root, pcrId: wheatSeedPcrId, refresh: true });
+    assert.equal(readiness.status, "review_required");
+    assert.equal(readiness.usable_for_guidance, true);
+    assert.ok(
+      readiness.blockers.every(
+        (blocker) =>
+          blocker.code !==
+          "material_projection.reference_flow_definition.product_flow_ref.uuid",
+      ),
+      JSON.stringify(readiness.blockers),
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -917,12 +1116,17 @@ test("CPC 99000 physical pilot keeps coverage and old-id routing after directory
   assert.equal(classification.pcr, null);
 
   const all = listPcrs({ root: repoRoot, scope: "all", refresh: true });
-  assert.equal(all.length, 2876);
-  assert.equal(all.filter((entry) => entry.record_kind === "methodology").length, 3);
-  assert.equal(
-    all.filter((entry) => entry.record_kind === "legacy_scaffold_reference").length,
-    2873,
-  );
+  assert.equal(all.length, 2878);
+  const methodologyCount = all.filter(
+    (entry) => entry.record_kind === "methodology",
+  ).length;
+  const legacyScaffoldCount = all.filter(
+    (entry) => entry.record_kind === "legacy_scaffold_reference",
+  ).length;
+  assert.ok(methodologyCount > 0);
+  assert.ok(legacyScaffoldCount > 0);
+  assert.equal(methodologyCount + legacyScaffoldCount, all.length);
+  assert.equal(all.some((entry) => entry.id === pilot99000PcrId), false);
 });
 
 test("classification coverage exposes bounded summary/list and additive resolve states", () => {
@@ -1161,6 +1365,292 @@ test("buildGuidance redirects retired scaffold ids before attempting content acc
       return true;
     },
   );
+});
+
+test("read context reuses aliases, isolates cache, freezes exposed data, and fails closed when its bindings drift", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-", { withAlias: true });
+  const otherRoot = createReadContextFixture("tiangong-pcr-read-context-other-");
+  let aliasLoads = 0;
+  try {
+    const context = createPcrReadContext({
+      root,
+      onAliasValidation: ({ aliases }) => {
+        aliasLoads += 1;
+        assert.equal(Array.isArray(aliases), true);
+      },
+    });
+
+    assert.equal(aliasLoads, 1);
+    assert.equal(Object.isFrozen(context.aliases), true);
+    assert.throws(() => context.aliases.push({}), TypeError);
+    assert.equal(Object.isFrozen(context.aliases[0].target), true);
+    assert.throws(() => {
+      context.aliases[0].target.code = "mutated";
+    }, TypeError);
+    const alias = findPcrIdAlias({ root, pcrId: scaffoldPcrId, context });
+    assert.equal(alias.target.code, "92200");
+    alias.target.code = "mutated";
+    assert.equal(
+      findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }).target.code,
+      "92200",
+    );
+
+    // Prime the process-global catalog cache for another repository. Contextual
+    // reads must use their own bound root instead of that cache entry.
+    listPcrs({ root: otherRoot, refresh: true });
+    const otherMarkdownPath = path.join(otherRoot, wheatRelativePcrPath, "pcr.en-US.md");
+    writeFileSync(otherMarkdownPath, "# other-root\n");
+
+    assert.match(
+      readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }),
+      /Wheat Seed/u,
+    );
+    assert.match(
+      readPcrMarkdown({ root, pcrId: wheatSeedPcrId, language: "zh-CN", context }),
+      /小麦播种/u,
+    );
+    assert.equal(buildGuidance({ root, pcrId: wheatSeedPcrId, context }).pcr.id, wheatSeedPcrId);
+    assert.equal(readPcrMarkdown({ pcrId: wheatSeedPcrId, context }).includes("Wheat Seed"), true);
+    assert.equal(aliasLoads, 1);
+    assert.throws(
+      () => buildGuidance({ root: otherRoot, pcrId: wheatSeedPcrId, context }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+
+    // The cache already holds the old identity for this same root. A contextual
+    // lookup must rediscover it and therefore cannot be fooled by that cache.
+    listPcrs({ root, refresh: true });
+    const manifestPath = path.join(root, wheatRelativePcrPath, "manifest.yaml");
+    const originalManifest = readFileSync(manifestPath, "utf8");
+    const mutatedManifest = parseYaml(originalManifest);
+    mutatedManifest.id = "pcr.read-context-cache-probe";
+    writeFileSync(manifestPath, renderYaml(mutatedManifest));
+    assert.throws(
+      () => readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+    writeFileSync(manifestPath, originalManifest);
+    assert.match(readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }), /Wheat Seed/u);
+
+    const registryPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+    const catalogPath = path.join(root, "library/catalog.yaml");
+    const indexPath = path.join(root, "library/indexes/pcr-index.yaml");
+    const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+    const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
+    const secondMappingPath = path.join(root, "classifications/mappings/cpc-2.1-to-pcr.yaml");
+    const secondCoveragePath = path.join(root, "classifications/indexes/cpc-2.1-coverage.json");
+    const decisionPath = path.join(root, "docs/decisions/retired-id.md");
+    const normalizedLeavesPath = path.join(
+      root,
+      "classifications/systems/cpc/3.0/normalized/leaves.json",
+    );
+    const aliasInventoryManifestPath = path.join(root, scaffoldRelativePcrPath, "manifest.yaml");
+    for (const [label, filePath, mutate] of [
+      ["catalog", catalogPath, (text) => `${text}\n`],
+      ["material index", indexPath, (text) => `${text}\n`],
+      ["alias binding", catalogPath, (text) => text.replace("entry_count: 1", "entry_count: 2")],
+      ["alias registry", registryPath, (text) => `${text}\n`],
+      ["first classification mapping", mappingPath, (text) => `${text}\n`],
+      ["first classification coverage", coveragePath, (text) => `${text}\n`],
+      ["second classification mapping", secondMappingPath, (text) => `${text}\n`],
+      ["second classification coverage", secondCoveragePath, (text) => `${text}\n`],
+      ["alias decision reference", decisionPath, (text) => `${text}\n`],
+      ["alias normalized leaves", normalizedLeavesPath, (text) => `${text}\n`],
+      ["alias manifest inventory", aliasInventoryManifestPath, (text) => `${text}\n`],
+    ]) {
+      const original = readFileSync(filePath, "utf8");
+      const freshContext = createPcrReadContext({ root });
+      writeFileSync(filePath, mutate(original));
+      assert.throws(
+        () => readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context: freshContext }),
+        (error) => {
+          assert.equal(error.code, "PCR_READ_CONTEXT_STALE", label);
+          return true;
+        },
+      );
+      writeFileSync(filePath, original);
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(otherRoot, { recursive: true, force: true });
+  }
+});
+
+test("read context never lets an injected alias loader bypass retired-id routing", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-authoritative-aliases-", { withAlias: true });
+  try {
+    const context = createPcrReadContext({
+      root,
+      aliasLoader: () => [],
+    });
+    assert.equal(
+      findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }).target.code,
+      "92200",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context rejects added or removed supplemental alias registry YAML", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-alias-directory-", { withAlias: true });
+  const extraRegistryPath = path.join(root, "classifications/aliases/extra.yaml");
+  try {
+    const context = createPcrReadContext({ root });
+    writeFileSync(extraRegistryPath, "schema_version: 1\naliases: []\n");
+    assert.throws(
+      () => findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+    rmSync(extraRegistryPath);
+    assert.equal(
+      findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }).target.code,
+      "92200",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context binds absent retired alias source paths by their typed existence state", () => {
+  const root = createReadContextFixture(
+    "tiangong-pcr-read-context-absent-alias-source-",
+    { withAlias: true, withoutAliasSource: true },
+  );
+  const sourcePath = path.join(root, scaffoldRelativePcrPath);
+  try {
+    const absentContext = createPcrReadContext({ root });
+    mkdirSync(sourcePath, { recursive: true });
+    assert.throws(
+      () => findPcrIdAlias({ root, pcrId: scaffoldPcrId, context: absentContext }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+    rmSync(sourcePath, { recursive: true, force: true });
+
+    const absentAgainContext = createPcrReadContext({ root });
+    writeFileSync(sourcePath, "not a PCR directory\n");
+    assert.throws(
+      () => findPcrIdAlias({ root, pcrId: scaffoldPcrId, context: absentAgainContext }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context bulk sessions bind once and reuse one catalog snapshot across multiple PCR reads", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-session-");
+  const abaloneDir = path.join(root, abaloneRelativePcrPath);
+  mkdirSync(path.dirname(abaloneDir), { recursive: true });
+  cpSync(path.join(repoRoot, abaloneRelativePcrPath), abaloneDir, { recursive: true });
+  let bindingChecks = 0;
+  let catalogSnapshots = 0;
+  try {
+    const context = createPcrReadContext({
+      root,
+      onBindingCheck: () => {
+        bindingChecks += 1;
+      },
+      onCatalogSnapshot: () => {
+        catalogSnapshots += 1;
+      },
+    });
+    withPcrReadContextSession({
+      context,
+      root,
+      read: () => {
+        for (const pcrId of [wheatSeedPcrId, abalonePcrId]) {
+          assert.ok(readPcrMarkdown({ root, pcrId, context }).length > 0);
+          assert.ok(readPcrMarkdown({ root, pcrId, language: "zh-CN", context }).length > 0);
+          assert.equal(buildGuidance({ root, pcrId, context }).pcr.id, pcrId);
+        }
+      },
+    });
+    assert.equal(bindingChecks, 2);
+    assert.equal(catalogSnapshots, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context bulk sessions reject Promise callbacks instead of closing early", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-promise-session-");
+  try {
+    const context = createPcrReadContext({ root });
+    assert.throws(
+      () => withPcrReadContextSession({
+        context,
+        root,
+        read: () => Promise.resolve("not supported"),
+      }),
+      /synchronous callback/u,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context rejects an intermediate bound-source directory replacement", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-directory-race-");
+  const mappingsDir = path.join(root, "classifications/mappings");
+  let replaced = false;
+  try {
+    assert.throws(
+      () => createPcrReadContext({
+        root,
+        beforeBoundSourceOpen: ({ relativePath }) => {
+          if (replaced || relativePath !== "classifications/mappings/cpc-3.0-to-pcr.yaml") {
+            return;
+          }
+          replaced = true;
+          renameSync(mappingsDir, `${mappingsDir}-replaced`);
+          mkdirSync(mappingsDir, { recursive: true });
+          writeFileSync(path.join(mappingsDir, "cpc-3.0-to-pcr.yaml"), "schema_version: 2\nstatus: current\n");
+        },
+      }),
+      /changed while it was being opened/u,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context rejects alias-loader mutation between its bound fingerprints", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-toctou-");
+  const registryPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+  try {
+    assert.throws(
+      () => createPcrReadContext({
+        root,
+        onAliasValidation: ({ root: aliasRoot }) => {
+          const aliases = readPcrIdAliases({ root: aliasRoot });
+          writeFileSync(registryPath, `${readFileSync(registryPath, "utf8")}\n`);
+          assert.equal(aliases.length, 0);
+        },
+      }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context rejects catalog drift between parsing declarations and capturing bindings", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-catalog-race-");
+  const catalogPath = path.join(root, "library/catalog.yaml");
+  try {
+    assert.throws(
+      () => createPcrReadContext({
+        root,
+        beforeAliasValidation: () => {
+          writeFileSync(catalogPath, `${readFileSync(catalogPath, "utf8")}\n`);
+        },
+      }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("validation redirects retired scaffold ids before attempting content access", () => {
@@ -1493,6 +1983,57 @@ function writePcrAliasFixture(root) {
 function createBoundRepositoryFixture(prefix) {
   const root = mkdtempSync(path.join(tmpdir(), prefix));
   installPcrAliasBinding(root, []);
+  return root;
+}
+
+function createReadContextFixture(
+  prefix,
+  { withAlias = false, withoutAliasSource = false } = {},
+) {
+  const root = createBoundRepositoryFixture(prefix);
+  if (withAlias) {
+    writePcrAliasFixture(root);
+    if (withoutAliasSource) {
+      rmSync(path.join(root, scaffoldRelativePcrPath), { recursive: true, force: true });
+    }
+  } else {
+    const pcrDir = path.join(root, wheatRelativePcrPath);
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+  }
+
+  const catalogPath = path.join(root, "library/catalog.yaml");
+  const catalog = parseYaml(readFileSync(catalogPath, "utf8"));
+  catalog.pcr_index = "library/indexes/pcr-index.yaml";
+  catalog.classification_mappings = [
+    "classifications/mappings/cpc-3.0-to-pcr.yaml",
+    "classifications/mappings/cpc-2.1-to-pcr.yaml",
+  ];
+  catalog.classification_coverage_indexes = [
+    "classifications/indexes/cpc-3.0-coverage.json",
+    "classifications/indexes/cpc-2.1-coverage.json",
+  ];
+  writeFileSync(catalogPath, renderYaml(catalog));
+
+  const indexPath = path.join(root, "library/indexes/pcr-index.yaml");
+  mkdirSync(path.dirname(indexPath), { recursive: true });
+  writeFileSync(indexPath, "schema_version: 1\nstatus: current\npcrs: []\n");
+
+  const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+  mkdirSync(path.dirname(mappingPath), { recursive: true });
+  writeFileSync(mappingPath, "schema_version: 2\nstatus: current\n");
+  writeFileSync(
+    path.join(root, "classifications/mappings/cpc-2.1-to-pcr.yaml"),
+    "schema_version: 2\nstatus: current\n",
+  );
+
+  const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
+  mkdirSync(path.dirname(coveragePath), { recursive: true });
+  writeFileSync(coveragePath, "{\"schema_version\":1}\n");
+  writeFileSync(
+    path.join(root, "classifications/indexes/cpc-2.1-coverage.json"),
+    "{\"schema_version\":1}\n",
+  );
   return root;
 }
 

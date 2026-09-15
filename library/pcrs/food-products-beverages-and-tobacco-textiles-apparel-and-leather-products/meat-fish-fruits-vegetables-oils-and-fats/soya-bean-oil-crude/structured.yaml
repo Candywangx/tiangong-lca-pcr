@@ -1,10 +1,909 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21611"
-  title: "Soya bean oil, crude"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.soya-bean-oil-crude"
+  classification_refs: "CPC 3.0: 21611 — Soya bean oil, crude"
+  covered_products: "Crude soya bean oil derived from seeds of *Glycine max* by mechanical pressing, solvent extraction, or a declared combined route; oil may be settled, filtered, cooled, stored, or water-degummed only when the degumming status is explicitly declared and no refining claim is made"
+  excluded_products: "Refined soya bean oil; oils from other botanical sources; oil/hexane miscella; hydrogenated, interesterified, re-esterified, or otherwise chemically modified oils; used cooking oil; biodiesel; consumer-ready formulations"
+  representative_product: "Desolventized crude soya bean oil from conventional hexane extraction, at extraction-plant gate"
+  production_route: "Soya bean receiving and preparation, extraction, solvent and meal desolventizing where applicable, solvent recovery, crude-oil cooling, storage, and loadout; mechanical or combined routes require explicit declaration"
+  market_state: "Bulk crude/unrefined oil at plant gate, intended for subsequent refining or other declared industrial use"
+functional_unit:
+  what: "Crude soya bean oil supplied at the extraction-plant gate as an unrefined feedstock for subsequent processing"
+  how_much: "1 kg net mass, excluding packaging"
+  how_well: "Derived from soya beans; crude/unrefined; desolventized for a solvent route; extraction route, degumming status, and product specification declared"
+  how_long_or_cycle: "One production lot or accounting-period output; storage duration and conditions before loadout declared"
+  reference_flow_link: "crude_soya_bean_oil_at_plant_gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground crude-oil production"
+      rule: "Include receiving and storage, cleaning, preparation, extraction, desolventizing, solvent recovery, crude-oil finishing and storage, co-product handling inside the plant, utilities, wastes, wastewater, and direct releases up to crude-oil loadout."
+      source_ids:
+        - us-epa-ap42-9-11-1-1995
+    - rule_id: boundary_refining_exclusion
+      applies_to: "Downstream oil treatment"
+      rule: "Exclude alkali neutralization, bleaching, deodorization, and finished refined-oil production. If these occur at the same site, meter or subdivide them and assign only pre-refining burdens to this PCR."
+      source_ids:
+        - unsd-cpc-3-2025
+        - us-epa-ap42-9-11-1-1995
+    - rule_id: boundary_solvent_route
+      applies_to: "Solvent extraction route"
+      rule: "Include solvent make-up, storage changes, recovery, vents and leaks, residual solvent leaving in oil or meal when measured, wastewater-related losses, and control equipment. Do not treat recovered internal solvent as a new external input."
+      source_ids:
+        - us-epa-ap42-9-11-1-1995
+    - rule_id: boundary_upstream_linking
+      applies_to: "Purchased inputs"
+      rule: "Keep upstream production outside the foreground gate while linking each material, energy, water, and service input to an appropriate upstream dataset; disclose missing or proxy datasets."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_route_specificity
+      applies_to: "Mechanical, solvent, or combined route"
+      rule: "Declare one route and include only operations actually performed. Solvent-only rows are not zero-filled for a mechanical route; they are marked not applicable with route evidence."
+      source_ids:
+        - us-epa-ap42-9-11-1-1995
+boundary_abstraction:
+  declared_starting_condition: "Soya beans weighed at receipt into the extraction plant, with origin, grade, moisture, foreign matter, damaged-seed basis, and any prior off-site conditioning disclosed"
+  starting_condition_role: "Foreground gate input; upstream cultivation and delivery burdens are linked through separate supplier or background datasets"
+  product_classification_scope: "Crude soya bean oil only; CPC 3.0 code 21611 is classification context and does not broaden the product to refined or chemically modified oil"
+  recursive_input_rule: "Any crude soya bean oil used as rework, blend stock, or transferred intermediate is recorded as an upstream product input with quantity, source, and prior burden; do not recursively reconstruct its production inside the same foreground package"
+  upstream_dataset_requirement: "Link soya bean production and delivery, electricity, fuels or purchased heat, water, solvent manufacture, auxiliary materials, nitrogen, and treatment services using geography-, time-, and technology-appropriate datasets"
+  disclosure: "Declare extraction route, plant geography, accounting period, soybean moisture basis, solvent system and recovery controls, degumming status, storage boundary, co-product handling, allocation method, excluded operations, and every temporary default"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Soya bean oil, crude"
+    uuid: "6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "extraction route"
+    - "soya bean origin and grade"
+    - "received moisture and foreign-matter basis"
+    - "plant geography"
+    - "crude/unrefined state"
+    - "desolventizing status"
+    - "degumming status"
+    - "solvent identity and recovery configuration when applicable"
+    - "storage duration"
+    - "allocation method"
+    - "temporal coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference crude soya bean oil"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net oil mass at the plant-gate transfer point after desolventizing and before downstream refining; exclude packaging and normalize all inventory amounts to 1 kg reference product."
+  - id: soybean_mass_basis
+    applies_to: "Received soya beans, prepared flakes, hulls, meal, and rejects"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve measured as-received masses and moisture; when a dry or clean basis is used, retain the original measurement and document the moisture, foreign-matter, and conversion equation."
+  - id: solvent_inventory_basis
+    applies_to: "Fresh, recovered, stored, exported, and lost extraction solvent"
+    required_property_ref:
+      name: "Mass or volume with measured density"
+      uuid: ""
+    required_unit: "kg preferred; L allowed with density and temperature"
+    rule: "Keep fresh make-up solvent separate from internal recovered solvent. Convert volume to mass only with batch- or period-representative density and temperature; never count the full circulating solvent as an external input."
+  - id: energy_unit_consistency
+    applies_to: "Electricity, steam, fuel, and purchased heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered unit and energy carrier. Any kWh-to-MJ or steam-to-energy conversion must state the conversion factor, steam condition, and source; do not mix energy and fuel mass."
+  - id: codex_identity_measurements
+    applies_to: "Optional crude-oil identity testing"
+    required_property_ref:
+      name: "Relative density, refractive index, saponification value, iodine value, unsaponifiable matter"
+      uuid: ""
+    required_unit: "Codex CXS 210-1999 Table A2 units"
+    rule: "When these tests are used, retain test method, temperature, sample identity, and result. The Codex ranges are identity screens, not substitutes for process mass records or a food-safety conformity decision."
+process_map:
+  - id: soybean_receiving_preparation
+    name: "Soya bean receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included from plant receipt; drying, tempering, and dehulling are included only when performed"
+    role: "Foreground preparation of received beans for extraction"
+    quantitative_reference: "kg prepared beans or flakes transferred to extraction, reconciled to 1 kg final crude oil"
+  - id: oil_extraction_recovery
+    name: "Oil extraction, desolventizing, and recovery"
+    inclusion: "required"
+    inclusion_condition: "Declare mechanical, solvent, or combined route; solvent and recovery rows apply only to a solvent route"
+    role: "Foreground separation of crude oil and co-products"
+    quantitative_reference: "kg intermediate crude oil transferred to storage, reconciled to 1 kg final crude oil"
+  - id: crude_oil_storage_loadout
+    name: "Crude-oil finishing, storage, and loadout"
+    inclusion: "required"
+    inclusion_condition: "Always included; filtration, water degumming, inerting, and heating are included when performed"
+    role: "Foreground preparation of reference product at plant gate"
+    quantitative_reference: "1 kg net crude soya bean oil at loadout"
+process_inventory:
+  - id: soybean_receiving_preparation
+    label: "Soya bean receiving and preparation"
+    inputs:
+      product:
+        - row_id: received_soya_beans
+          role: "Received soya beans"
+          name: "Soya beans, other"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all soya beans entering the extraction plant, including accepted lots and the measured basis used to determine moisture and foreign matter."
+          amount:
+            expression: "weigh received soya beans and normalize accepted input to 1 kg final crude oil"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil at plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_soybean_receipts
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "4"
+                upper: "8"
+                unit: "kg"
+                basis: "per 1 kg final crude soya bean oil"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - us-epa-ap42-9-11-1-1995
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for conveying, aspiration, cleaning, cracking, dehulling, flaking, and preparation auxiliaries."
+          amount:
+            expression: "meter or allocate electricity to preparation using a documented sub-metering rule"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: preparation_heat
+          role: "Preparation heat"
+          name: "Route-specific heat or fuel supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record fuel, purchased heat, or steam used for drying, tempering, and conditioning only when these operations occur."
+          amount:
+            expression: "meter energy by carrier and operation; mark not applicable when no thermal preparation occurs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_soya_feed
+          role: "Prepared soya bean flakes or press feed"
+          name: "Prepared soya bean flakes or press feed, internal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred to extraction as an internal product flow so process subdivision remains mass-balanced."
+          amount:
+            expression: "measured transfer mass corrected only with documented moisture conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_transfer_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: soybean_hulls
+          role: "Soya bean hulls"
+          name: "Soya bean hulls, facility market state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered hulls as a co-product when sold or used beneficially; otherwise classify them as waste with the actual treatment route."
+          amount:
+            expression: "weigh hull output by destination and retain moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      waste:
+        - row_id: cleaning_rejects
+          role: "Cleaning rejects"
+          name: "Oilseed cleaning rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record foreign material, damaged material rejected from production, and unrecovered screenings by treatment destination."
+          amount:
+            expression: "weigh or reconcile rejects from receiving and cleaning records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      elementary:
+        - row_id: preparation_particulate_releases
+          role: "Preparation particulate releases"
+          name: "Particulate matter to air, size fraction reported"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or permitted direct particulate releases from receiving, conveying, aspiration, cleaning, cracking, dehulling, drying, and flaking after controls."
+          amount:
+            expression: "use stack tests, continuous records, or a disclosed approved emission calculation for each source and control configuration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+  - id: oil_extraction_recovery
+    label: "Oil extraction, desolventizing, and recovery"
+    inputs:
+      product:
+        - row_id: prepared_soya_feed_input
+          role: "Prepared soya bean feed"
+          name: "Prepared soya bean flakes or press feed, internal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal prepared feed entering extraction and reconcile it with the preparation-process output."
+          amount:
+            expression: "equal the corresponding internal transfer output after any documented storage change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_transfer_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: hexane_makeup
+          role: "Fresh make-up extraction solvent"
+          name: "Hexane or declared extraction solvent, make-up supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For a solvent route, record purchased or externally supplied make-up solvent adjusted for opening and closing stock; do not record the total circulating solvent as input."
+          amount:
+            expression: "external receipts plus opening stock minus closing stock minus documented external transfers, converted from volume only with measured density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: extraction_electricity
+          role: "Extraction electricity"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for extractors or presses, pumps, vacuum systems, condensers, meal handling, and recovery auxiliaries."
+          amount:
+            expression: "meter or allocate electricity to the extraction and recovery line using documented sub-metering"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: extraction_steam_heat
+          role: "Extraction steam or heat"
+          name: "Steam, heat, or fuel supply by carrier"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record route-specific steam, purchased heat, or fuel used for conditioning, oil stripping, meal desolventizing and toasting, drying, and solvent recovery."
+          amount:
+            expression: "meter by carrier and steam condition; separate on-site fuel combustion from purchased heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: extraction_water
+          role: "Process and cooling water"
+          name: "Process water or cooling-water make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record make-up water crossing the plant boundary for steam generation, condensers, scrubbing, and other extraction-line uses; do not count recirculating water repeatedly."
+          amount:
+            expression: "meter make-up water by use and subtract only measured return flows that cross the same boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: intermediate_crude_oil
+          role: "Intermediate desolventized crude soya bean oil"
+          name: "Crude soya bean oil, internal transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the crude oil transferred to storage before downstream refining and reconcile it to final loadout, storage changes, samples, spills, and off-spec material."
+          amount:
+            expression: "measured transfer mass after oil desolventizing or pressing and clarification"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_transfer_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: soybean_meal_cake
+          role: "Soya bean meal or press cake"
+          name: "Soya bean meal, flakes, or press cake by declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record desolventized meal, white flakes, press cake, or other protein-rich co-product separately by market state, moisture, protein grade, and destination."
+          amount:
+            expression: "weigh each co-product stream and retain moisture and grade basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: recovered_solvent_internal
+          role: "Recovered solvent for internal reuse"
+          name: "Recovered extraction solvent, internal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered solvent as an internal loop for solvent-balance checking; it receives no upstream burden and is not added to external make-up input."
+          amount:
+            expression: "measured recovered solvent returned to the process loop"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solvent_balance_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      waste:
+        - row_id: solvent_wastewater_residues
+          role: "Solvent-bearing wastewater and oily residues"
+          name: "Facility-specific wastewater or extraction residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater, separator residues, spent scrubber materials, sludges, and oily solids by measured quantity and treatment route."
+          amount:
+            expression: "meter wastewater and weigh residues; retain solvent concentration when measured"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_waste_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      elementary:
+        - row_id: hexane_voc_release
+          role: "Direct extraction-solvent release to air"
+          name: "Hexane or declared extraction solvent to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For a solvent route, record total direct solvent loss to air from vents, leaks, storage, shutdowns, and other fugitive sources using a plant-specific period balance whenever available."
+          amount:
+            expression: "calculate from the site solvent balance and separately report measured residual solvent leaving in products or wastewater to avoid double counting"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: extraction_direct_releases
+          role: "Direct combustion and process releases"
+          name: "Each measured elementary flow to air or water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record each direct elementary flow from on-site boilers, dryers, meal coolers, vents, and control devices; purchased energy carries upstream emissions in its supplier dataset instead."
+          amount:
+            expression: "use monitored values or a disclosed approved calculation tied to fuel, stack, operating time, and control efficiency"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg intermediate crude oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+  - id: crude_oil_storage_loadout
+    label: "Crude-oil finishing, storage, and loadout"
+    inputs:
+      product:
+        - row_id: intermediate_crude_oil_input
+          role: "Intermediate crude soya bean oil"
+          name: "Crude soya bean oil, internal transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal crude-oil transfer and reconcile it with storage inventory and final loadout."
+          amount:
+            expression: "equal the extraction-process output after documented transfer loss or sampling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil at plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_loadout_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+        - row_id: storage_utilities
+          role: "Storage and loadout utilities"
+          name: "Utility or auxiliary material by actual carrier"
+          flow_type: "product"
+          property_unit: "Carrier-appropriate property and unit"
+          description: "Record electricity, heat, filtration aids, nitrogen, and water only when they cross the boundary for crude-oil storage, optional water degumming, filtration, or loadout."
+          amount:
+            expression: "meter or obtain purchase/issue records for each material; do not aggregate unlike carriers"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil at plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_loadout_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_soya_bean_oil_at_plant_gate
+          role: "Crude soya bean oil at plant gate"
+          name: "Soya bean oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output after desolventizing, cooling, declared crude-oil finishing, storage, and loadout preparation."
+          amount:
+            expression: "normalize measured net loadout mass to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_loadout_records
+              source_ids:
+                - unsd-cpc-3-2025
+                - codex-cxs-210-1999-2026
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      waste:
+        - row_id: storage_oil_waste
+          role: "Off-spec oil, filter residue, and spills"
+          name: "Crude-oil storage waste by actual treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec material, filter residue, tank bottoms, and spills that leave the product inventory, including recovery or treatment destination."
+          amount:
+            expression: "weigh or calculate from reconciled tank and incident records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil at plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_loadout_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+      elementary:
+        - row_id: storage_loadout_releases
+          role: "Storage and loadout releases"
+          name: "Facility-specific elementary flow to air or water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured direct solvent or other emissions from tanks and loadout that are not already included in the extraction-line period balance."
+          amount:
+            expression: "use tank records, monitoring, or a disclosed approved calculation; demonstrate no overlap with hexane_voc_release"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final crude soya bean oil at plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - us-epa-ap42-9-11-1-1995
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Crude oil, meal or cake, hulls, and other co-products"
+    rule: "First avoid allocation by sub-metering and subdividing receiving, preparation, extraction, meal handling, and storage operations wherever their inputs and releases can be measured separately."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical_then_other
+    applies_to: "Remaining shared burdens"
+    rule: "Where subdivision or system expansion consistent with the study goal is not feasible, allocate using a documented physical relationship that reflects the shared process. If no defensible physical relationship exists, use another relationship such as economic value and justify the choice."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_measure_before_partition
+    applies_to: "All product and co-product streams"
+    rule: "Measure oil, meal or cake, hulls, recovered saleable products, wastes, moisture, and storage changes before calculating allocation factors; allocation must not hide an omitted mass stream."
+    source_ids:
+      - iso-14044-2006
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: allocation_internal_recovery
+    applies_to: "Recovered solvent, water, heat, and internal transfers"
+    rule: "Treat closed internal recovery loops as internal flows without avoided-product credit. Record only net external inputs and direct losses at the foreground boundary."
+    source_ids:
+      - iso-14044-2006
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: allocation_sensitivity_disclosure
+    applies_to: "Comparative or public downstream studies"
+    rule: "Report the allocation basis and factors and test at least one plausible alternative for materially important co-products; disclose the influence on the crude-oil result."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_soybean_receipts
+      process_id: "soybean_receiving_preparation"
+      flow_role: "Received soya beans"
+      record_type: "Weighbridge, receiving inspection, and supplier lot records"
+      raw_fields: "lot_id; supplier; origin; receipt_time; gross_mass; tare_mass; net_mass; moisture; foreign_matter; damaged_seed_fraction; accepted_mass"
+      collection_method: "Calibrated weighbridge plus representative lot sampling"
+      unit: "kg; mass %"
+      frequency: "Every delivery"
+      temporal_coverage: "At least 12 consecutive months or all campaigns in the declared period"
+      site_scope: "All supplying lots to the represented plant"
+      aggregation_rule: "Sum accepted net mass; retain rejected mass separately; calculate weighted moisture and foreign matter"
+      quality_evidence: "Scale calibration, sample plan, laboratory results, and reconciliation to inventory"
+    - protocol_id: cp_utility_records
+      process_id: "soybean_receiving_preparation_oil_extraction_recovery"
+      flow_role: "Electricity, fuel, steam, heat, and water"
+      record_type: "Meters, invoices, boiler logs, and sub-meter records"
+      raw_fields: "carrier; meter_id; opening_reading; closing_reading; unit; steam_pressure_temperature; fuel_LHV_HHV_basis; allocation_driver; operating_hours"
+      collection_method: "Prefer calibrated sub-metering; otherwise documented engineering allocation from whole-site records"
+      unit: "kWh; MJ; kg steam; kg water; carrier-specific"
+      frequency: "Continuous or each billing period"
+      temporal_coverage: "Same period as product and co-product records"
+      site_scope: "All included equipment and on-site utility systems"
+      aggregation_rule: "Sum by carrier and process; convert only with documented factors; normalize after period reconciliation"
+      quality_evidence: "Meter calibration, invoices, boiler efficiency records, and allocation worksheet"
+    - protocol_id: cp_process_transfer_records
+      process_id: "soybean_receiving_preparation_oil_extraction_recovery"
+      flow_role: "Prepared feed and intermediate crude oil"
+      record_type: "Belt-scale, tank gauge, batch sheet, and transfer log"
+      raw_fields: "timestamp; source_process; destination_process; mass_or_volume; density; temperature; moisture; opening_stock; closing_stock; samples"
+      collection_method: "Direct measurement at internal transfer points"
+      unit: "kg preferred; L with density and temperature"
+      frequency: "Every batch or continuous totalizer"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "All internal transfers between included processes"
+      aggregation_rule: "Reconcile sending and receiving records and storage changes before normalization"
+      quality_evidence: "Calibration, batch traceability, and signed transfer reconciliation"
+    - protocol_id: cp_solvent_balance_records
+      process_id: "oil_extraction_recovery"
+      flow_role: "Fresh, recovered, stored, transferred, residual, and released solvent"
+      record_type: "Purchase records, tank gauges, flow meters, recovery meters, product/residue tests, and incident logs"
+      raw_fields: "solvent_identity; receipts; opening_stock; closing_stock; external_transfers; recovered_internal; residual_in_oil; residual_in_meal; residual_in_wastewater; measured_vent_release; spill_release"
+      collection_method: "Period material balance with measured stock change and separately measured non-air exits"
+      unit: "kg preferred; L with measured density"
+      frequency: "Each delivery and daily or batch stock; period balance monthly and annually"
+      temporal_coverage: "Full declared production period"
+      site_scope: "Entire solvent system, storage, recovery, vents, products, and wastewater"
+      aggregation_rule: "Calculate net make-up and reconcile destinations; prevent double counting of storage and vent losses"
+      quality_evidence: "Tank calibration, density and temperature records, purchase invoices, recovery-meter checks, and incident reports"
+    - protocol_id: cp_coproduct_waste_records
+      process_id: "soybean_receiving_preparation_oil_extraction_recovery"
+      flow_role: "Hulls, meal or cake, rejects, wastewater, and residues"
+      record_type: "Scales, tank meters, laboratory tests, waste manifests, and sales records"
+      raw_fields: "stream_id; quantity; moisture; grade; protein_or_oil_content_if_relevant; destination; sale_or_waste_status; treatment"
+      collection_method: "Measure each distinct stream and destination"
+      unit: "kg; kg water; m3 only with density where mass conversion is required"
+      frequency: "Every batch, shipment, or disposal"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "All co-products and wastes from included processes"
+      aggregation_rule: "Sum by stream, grade, and destination; do not net co-products against inputs"
+      quality_evidence: "Scale calibration, sales invoices, manifests, laboratory results, and mass-balance reconciliation"
+    - protocol_id: cp_storage_loadout_records
+      process_id: "crude_oil_storage_loadout"
+      flow_role: "Crude-oil storage, finishing, and reference loadout"
+      record_type: "Tank gauges, load-cell or flow-meter tickets, utility issue records, and quality tests"
+      raw_fields: "tank_id; opening_stock; closing_stock; receipts; loadout_mass; density; temperature; filtration_or_degumming_status; storage_days; nitrogen; utilities; samples; off_spec; spills"
+      collection_method: "Calibrated tank and custody-transfer measurement plus lot testing"
+      unit: "kg preferred; L with density and temperature"
+      frequency: "Every transfer and daily stock; each loadout lot"
+      temporal_coverage: "Full declared production period"
+      site_scope: "All crude-oil tanks and loadout lines in scope"
+      aggregation_rule: "Reconcile extraction transfer, stock change, loadout, samples, off-spec material, and spills; normalize net conforming loadout"
+      quality_evidence: "Calibration and custody-transfer tickets, tank reconciliation, batch genealogy, and laboratory reports"
+    - protocol_id: cp_direct_release_records
+      process_id: "soybean_receiving_preparation_oil_extraction_recovery_crude_oil_storage_loadout"
+      flow_role: "Direct elementary releases"
+      record_type: "Stack tests, continuous monitoring, solvent balance, permit calculations, wastewater tests, and incident logs"
+      raw_fields: "source_id; pollutant; method; concentration; flow_rate; operating_time; control_device; control_efficiency; discharge_quantity; incident_quantity"
+      collection_method: "Source-specific monitoring or disclosed approved calculation"
+      unit: "kg pollutant; concentration and flow supporting fields"
+      frequency: "Monitoring frequency required by method or permit; incidents when they occur"
+      temporal_coverage: "Same period as activity data"
+      site_scope: "Every included vent, stack, discharge, tank, and fugitive source"
+      aggregation_rule: "Calculate each elementary flow separately and reconcile solvent releases to the solvent balance"
+      quality_evidence: "Method reference, calibration, detection limit, control operating log, and reviewer trace"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized amount = reconciled period quantity / reconciled net kg of conforming crude soya bean oil loaded out"
+      inputs:
+        - "Period flow quantity"
+        - "net reference-product loadout"
+      output: "Amount per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_soybean_dry_clean_basis
+      applies_to: "Soya bean inputs and solid co-products"
+      rule: "dry clean mass = as-received mass × (1 − moisture fraction − separately measured foreign-matter fraction); retain the as-received value and avoid subtracting overlapping fractions"
+      inputs:
+        - "As-received mass"
+        - moisture
+        - "foreign matter"
+        - "sampling basis"
+      output: "Dry clean mass with conversion audit trail"
+      source_ids:
+        - us-epa-ap42-9-11-1-1995
+    - id: calc_solvent_makeup_balance
+      applies_to: "Solvent route"
+      rule: "net external make-up = external receipts + opening stock − closing stock − documented external transfers; reconcile net make-up to air loss, residuals in products and wastewater, spills, and unexplained difference"
+      inputs:
+        - "Solvent receipts"
+        - stocks
+        - transfers
+        - "residual tests"
+        - releases
+        - "and incidents"
+      output: "Net make-up and destination balance per period and per kg oil"
+      source_ids:
+        - us-epa-ap42-9-11-1-1995
+    - id: calc_hexane_temporary_screen
+      applies_to: "Solvent route with missing plant-specific balance"
+      rule: "The AP-42 3.3 L/Mg raw-soybean factor is a D-rated temporary screening default only. Convert it using documented density and measured soybean throughput, label the result as temporary, and replace it before comparative or publication-grade use."
+      inputs:
+        - "Raw-soybean throughput"
+        - "3.3 L/Mg screening factor"
+        - "representative density"
+      output: "Explicitly flagged temporary total-loss screen"
+      source_ids:
+        - us-epa-ap42-9-11-1-1995
+    - id: calc_process_mass_balance
+      applies_to: "Each process and full foreground system"
+      rule: "reconcile measured inputs = products + co-products + wastes + releases + stock change + documented measurement difference on consistent moisture and solvent bases"
+      inputs:
+        - "All mass flows"
+        - stocks
+        - moisture
+        - "and residual-solvent records"
+      output: "Balance closure and unexplained difference"
+      source_ids:
+        - iso-14044-2006
+        - us-epa-ap42-9-11-1-1995
+    - id: calc_allocation_factors
+      applies_to: "Shared process burdens"
+      rule: "allocation factor for output i = declared allocation quantity or value for i / sum of the same basis over all co-products; factors must sum to 1 within rounding tolerance"
+      inputs:
+        - "Measured co-product quantities"
+        - "chosen physical relation or values"
+        - "and declared period"
+      output: "Allocation factors and sensitivity case"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_reference_identity
+      applies_to: "Reference product"
+      requirement: "Verify the product-flow UUID, Product flow type, Mass reference property, CPC 21611 classification, crude/unrefined state, and separation from CPC 21612 refined oil."
+      evidence: "Tiangong flow readback, batch specification, and classification record"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground activity"
+      requirement: "Use at least 12 consecutive months or all campaigns in the declared period; explain shutdowns, start-ups, atypical lots, and partial-year extrapolation."
+      evidence: "Production calendar, meter coverage, purchase records, and loadout ledger"
+    - id: dq_technology_route
+      applies_to: "Extraction and recovery"
+      requirement: "Declare mechanical, solvent, or combined route, solvent identity, recovery and control equipment, meal-desolventizing route, optional degumming, and actual included operations."
+      evidence: "Process flow diagram, equipment list, operating procedure, and source-specific records"
+    - id: dq_mass_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile soya beans, oil, meal or cake, hulls, rejects, wastes, solvent, wastewater, stock changes, and direct releases; disclose unexplained differences and omitted streams."
+      evidence: "Signed mass-balance worksheet and variance investigation"
+    - id: dq_primary_over_default
+      applies_to: "Important inputs and releases"
+      requirement: "Prefer calibrated measurements and period records. Any AP-42 or other default must be identified as temporary, quality-rated, and replaced when plant-specific records become available."
+      evidence: "Meter and calibration evidence, invoices, tests, and explicit default register"
+    - id: dq_geographic_supplier_fit
+      applies_to: "Upstream datasets"
+      requirement: "Match the plant, soybean origin, electricity market, fuels, solvent, water, and treatment services to the represented geography and period or disclose proxies."
+      evidence: "Supplier metadata, dataset geography and year, and proxy justification"
+    - id: dq_allocation_transparency
+      applies_to: "Co-product burdens"
+      requirement: "Retain pre-allocation inventory, co-product measurements, chosen hierarchy step, factors, rationale, and sensitivity result."
+      evidence: "Allocation workbook and reviewer sign-off"
+    - id: dq_test_method_traceability
+      applies_to: "Crude-oil identity screens"
+      requirement: "For Codex-related property screens, retain test method, temperature, units, sample and lot identity, laboratory, detection limits, and result."
+      evidence: "Laboratory certificate and sampling chain of custody"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The reference output must be 1 kg net Soya bean oil, crude 6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3 using Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_scope_and_route
+    applies_to: "Product and process boundary"
+    rule: "Confirm soya bean origin, crude/unrefined state, declared extraction route, desolventizing and degumming status, and absence or subdivision of alkali refining, bleaching, deodorization, and other refined-oil operations."
+    source_ids:
+      - unsd-cpc-3-2025
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: validate_process_coverage
+    applies_to: "Process map"
+    rule: "Receiving and preparation, route-specific extraction and recovery, crude-oil storage and loadout, utilities, co-product handling, wastes, wastewater, and direct releases must be represented or explicitly not applicable with evidence."
+    source_ids:
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: validate_solvent_balance
+    applies_to: "Solvent route"
+    rule: "Check net make-up, stock change, internal recovery, residual solvent in products and wastewater when measured, direct air loss, spills, and unexplained difference; reject double counting of circulating recovered solvent."
+    source_ids:
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: validate_mass_and_allocation
+    applies_to: "Full foreground system"
+    rule: "Require a documented mass balance, measured co-product streams, allocation factors summing to 1 within declared rounding tolerance, and preservation of the unallocated inventory."
+    source_ids:
+      - iso-14044-2006
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: validate_codex_crude_oil_screen
+    applies_to: "Optional identity-test results"
+    rule: "When Codex Table A2 tests are used, screen ordinary crude soyabean oil against relative density 0.919–0.925 at 20 °C, refractive index 1.466–1.470 at 40 °C, saponification value 189–195 mg KOH/g oil, iodine value 124–139, and unsaponifiable matter no more than 15 g/kg. Any result outside the screen requires investigation and disclosure; the screen is not a food-safety certification."
+    source_ids:
+      - codex-cxs-210-1999-2026
+  - rule_id: validate_temporary_defaults
+    applies_to: "Publication and comparative use"
+    rule: "Identify every temporary factor or proxy. A result using the AP-42 D-rated 3.3 L/Mg soybean hexane-loss default fails publication-grade completeness until replaced by a plant-specific period balance or explicitly accepted by review for a limited use."
+    source_ids:
+      - us-epa-ap42-9-11-1-1995
+      - iso-14044-2006
+  - rule_id: validate_bilingual_and_period_alignment
+    applies_to: "Dataset package"
+    rule: "Confirm that qualifiers, period totals, calculations, allocation basis, and source identifiers are internally consistent and that no process amount is normalized to a different oil output period."
+    source_ids:
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for crude soya bean oil at extraction-plant gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Gate-to-gate oilseed-processing studies; cradle-to-gate models when upstream soya bean and utility datasets are linked; downstream refined-oil models using crude oil as an input; scenario analysis with disclosed route and allocation"
+  excluded_use: "Representation of refined soya bean oil or consumer-ready edible oil; food-safety certification; undisclosed substitution for another vegetable oil; public comparative assertions when temporary defaults, unresolved identity, material balance gaps, or unreviewed allocation choices remain"
+  required_metadata: "PCR id; reference UUID and unit support; plant geography; period; soybean origin, grade, moisture, and foreign matter; extraction route; solvent and recovery system; degumming status; storage duration; process coverage; co-product grades and destinations; allocation basis and factors; upstream dataset identities"
+  required_quality_disclosure: "Meter and scale coverage; calibration; sampling and laboratory methods; mass- and solvent-balance closure; stock changes; direct-release method; missing streams; proxy datasets; temporary defaults and quality ratings; allocation sensitivity; Codex identity-screen results when used"
+  update_trigger: "Material change in soybean supply, extraction or recovery technology, energy system, solvent, emission control, degumming or storage practice, co-product market or allocation relation, plant geography, product specification, source standard, UUID support, or a temporary default being replaced by foreground evidence"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure dated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-10)"
+    used_for: "CPC 21611 identity, crude/refined category distinction, and classification scope"
+  - id: "codex-cxs-210-1999-2026"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, CXS 210-1999, Standard for Named Vegetable Oils, current 2026 publication, https://openknowledge.fao.org/handle/20.500.14283/cd9108en (retrieved 2026-08-10)"
+    used_for: "Botanical soya bean oil identity and optional crude-oil composition and physical-property screening ranges"
+  - id: "us-epa-ap42-9-11-1-1995"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 9.11.1 Vegetable Oil Processing and its background report, Supplement A, November 1995: final section https://www.epa.gov/sites/default/files/2020-10/documents/c9s11-1.pdf; background report https://www.epa.gov/sites/default/files/2020-10/documents/b9s11-1.pdf (retrieved 2026-08-10)"
+    used_for: "Soybean-processing decomposition, crude/refined boundary, solvent recovery, co-products, particulate and hexane releases, plant-specific solvent balance, source oil-content and residual-oil observations used only to infer the temporary soybean-input QA guardrail, and the D-rated temporary hexane-loss screen"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, confirmed current in 2022, https://www.iso.org/standard/38498.html (retrieved 2026-08-10)"
+    used_for: "System-boundary consistency, allocation hierarchy, transparency, data quality, sensitivity, and reporting rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b8b6e7b68e0a6639235e2d6d9b9f024a18d9e6271005723dcfd8b229634fd09b"
+  generated_content_sha256: "sha256:08a09ac2294a0469b0265bce14702a7fb44f917b037f626b0c00bd23126e1b18"

@@ -1,10 +1,2891 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22241"
-  title: "Butter and other fats and oils derived from milk of cattle"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.butter-and-other-fats-and-oils-derived-from-milk-of-cattle"
+  classification_refs: "CPC 3.0 22241, exact classification context"
+  covered_products: "Butter from cattle milk; butterfat; fractionated butterfat; anhydrous milkfat; anhydrous butter oil; butter oil; ghee; cattle-milk dairy-fat spread when no non-milk fat is present"
+  excluded_products: "Milkfat from non-cattle animals; margarine; vegetable/dairy-fat blends; cream as the final product; buttermilk as the final product; formulated foods containing butter or milkfat"
+  representative_product: "Finished anhydrous milkfat derived from cattle milk, at the processor gate"
+  production_route: "Received cattle milk or cream to butter by cream preparation, pasteurization, optional culture ripening, churning, working and optional salting; or received cream or butter to concentrated milkfat by fat concentration, phase separation and moisture removal; followed by filling or packaging and storage"
+  market_state: "Saleable bulk or packaged product at the dairy processor gate, with product form, milkfat and moisture specification, salt or culture status, packaging state, geography, technology and reference period declared"
+functional_unit:
+  what: "Saleable butter or other milkfat product derived exclusively from cattle milk and produced by the declared route"
+  how_much: "1 kg net product mass at the processor gate"
+  how_well: "Conforming to the declared product specification; butter shall meet the applicable CXS 279-1971 identity and composition, while anhydrous milkfat, milkfat, butter oil or ghee shall meet the applicable CXS 280-1973 identity and composition"
+  how_long_or_cycle: "One completed production batch or continuous production campaign represented over the declared reference period; no service life is assigned"
+  reference_flow_link: "The quantitative reference is the net saleable product output from product_packaging_and_storage; the exact product form is a required qualifier because the selected Tiangong flow represents anhydrous milkfat"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_selection
+      applies_to: "Foreground process selection"
+      rule: "Include reception and preparation, exactly one applicable product-formation route, and filling or packaging and storage. Exclude a listed operation only with evidence that it is upstream, not used, or outside the declared product specification."
+      source_ids:
+        - tetrapak-butter-handbook
+        - tetrapak-amf-handbook
+    - rule_id: boundary_upstream_linkage
+      applies_to: "Received milk, cream or butter"
+      rule: "Link received dairy material and other purchased inputs to upstream datasets; do not treat them as burden-free. If cattle farming, milk collection or cream separation is within the reporting organization but outside the foreground unit process, retain it as a linked upstream process."
+      source_ids:
+        - fao-idf-dairy-lca-2010
+    - rule_id: boundary_on_site_completeness
+      applies_to: "Dairy processing plant"
+      rule: "Include on-site electricity, fuels or purchased thermal energy, refrigeration, water, cleaning and sanitation, ingredients, product and co-product outputs, product losses, wastewater and solid waste associated with included operations."
+      source_ids:
+        - fao-idf-dairy-lca-2010
+        - codex-cxc-57-2004
+        - tetrapak-dairy-effluent
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Processor-gate dataset"
+      rule: "Exclude distribution beyond the processor gate, retail, consumer storage and use, and end-of-life unless the study explicitly expands the boundary and reports those modules separately."
+      source_ids:
+        - fao-idf-dairy-lca-2010
+    - rule_id: boundary_cutoff_disclosure
+      applies_to: "Inventory completeness"
+      rule: "Do not omit a known mass or energy flow solely because it lacks a UUID or secondary dataset. Record the amount, state the identity gap, and disclose any justified cut-off and its effect on mass, energy and environmental completeness."
+      source_ids:
+        - fao-idf-dairy-lca-2010
+boundary_abstraction:
+  declared_starting_condition: "Cattle milk, cattle-milk cream, or cattle-milk butter received at the processor gate with mass, milkfat content, origin, prior treatment, temperature and upstream dataset reference declared"
+  starting_condition_role: "Foreground processing input; upstream dairy farming, milk collection, cream production or butter production remains represented by linked upstream datasets unless physically operated within the reporting site"
+  product_classification_scope: "Cattle-milk butter and milkfat products only; route selection must distinguish ordinary butter from concentrated milkfat products"
+  recursive_input_rule: "A received butter or milkfat input in this same category is recorded as a technosphere product input with its own upstream dataset and declared product form; its upstream production is not recreated inside the current foreground process unless the site actually performs it"
+  upstream_dataset_requirement: "Provide geographically and temporally representative datasets for cattle milk, cream, butter, electricity, thermal-energy carriers, water treatment, ingredients, packaging and transport that cross the selected boundary"
+  disclosure: "Declare the starting material, included on-site operations, route, co-product treatment, allocation factors, recycled loops, cut-offs, packaging state, storage conditions, geography, reference period and any excluded capital goods or downstream stages"
+reference_flow_definition:
+  reference_amount: "1 kg net saleable product"
+  product_flow_ref:
+    name: "Anhydrous milk fat"
+    uuid: "7f8eef6e-3ea0-4f74-bf72-c6f95af2c3fc"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "cattle-milk origin"
+    - "milkfat fraction and moisture specification"
+    - "salted or unsalted status"
+    - "cultured or sweet-cream status when applicable"
+    - "manufacturing route"
+    - "bulk or packaged state"
+    - "packaging material and net mass"
+    - geography
+    - technology
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net saleable product mass excluding packaging and normalize every reported foreground amount to exactly 1 kg of the declared product form."
+  - id: milkfat_and_moisture_basis
+    applies_to: "Product identity and yield checks"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% m/m"
+    rule: "Report milkfat, water and milk-solids-not-fat on a mass basis using representative product testing; apply the limits for the declared CXS 279 or CXS 280 product and retain the test method and lot result."
+  - id: energy_carrier_accounting
+    applies_to: "Electricity, fuels, steam and refrigeration"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered carrier and unit; convert only with a disclosed factor, avoid double counting purchased steam and its generating fuel, and normalize energy to the same net product mass."
+  - id: water_and_wastewater_accounting
+    applies_to: "Process water, cleaning water and wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Record measured volume with temperature or density assumptions when converted to mass; recycled water shall be separately identified and shall not be counted again as fresh intake."
+process_map:
+  - id: reception_and_cream_preparation
+    name: "Reception and cream preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; separation is conditional when whole cattle milk rather than cream is received"
+    role: "Foreground material reception, storage, separation when applicable, pasteurization and temperature preparation"
+    quantitative_reference: "kg prepared cream or declared dairy-fat feed transferred to product formation"
+  - id: butter_manufacture
+    name: "Butter manufacture by churning and working"
+    inclusion: "conditional"
+    inclusion_condition: "Include for ordinary butter, cultured butter, salted butter or butterfat made through cream churning"
+    role: "Foreground butter formation and buttermilk separation"
+    quantitative_reference: "kg unpacked butter or butterfat transferred to finishing"
+  - id: concentrated_milkfat_manufacture
+    name: "Concentrated milkfat manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Include for anhydrous milkfat, milkfat, anhydrous butter oil, butter oil or ghee"
+    role: "Foreground fat concentration, phase separation and moisture removal from cream or butter"
+    quantitative_reference: "kg unpacked concentrated milkfat transferred to finishing"
+  - id: product_packaging_and_storage
+    name: "Product filling, packaging and storage"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging material is conditional for unpackaged bulk transfer"
+    role: "Foreground finishing to saleable processor-gate product"
+    quantitative_reference: "1 kg net saleable declared product"
+process_inventory:
+  - id: reception_and_cream_preparation
+    label: "Reception and cream preparation"
+    inputs:
+      product:
+        - row_id: cattle_milk_received
+          role: "Received cattle milk"
+          name: "Cattle milk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cattle milk accepted at the processor gate is recorded independently from cream and butter."
+          amount:
+            expression: "Measured accepted cattle-milk mass for the receipt batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_material_receipt
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: cattle_milk_cream_received
+          role: "Received cattle-milk cream"
+          name: "Cattle-milk cream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cattle-milk cream accepted at the processor gate is recorded as its own dairy input."
+          amount:
+            expression: "Measured accepted cattle-milk cream mass for the receipt batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_material_receipt
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: cattle_milk_butter_received
+          role: "Received cattle-milk butter"
+          name: "Cattle-milk butter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Received cattle-milk butter is conditional on a rework or concentrated-milkfat route and is not merged with milk or cream."
+          amount:
+            expression: "Measured accepted cattle-milk butter mass when this input is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dairy_material_receipt
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: reception_electricity
+          role: "Reception electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for reception, pumping, separation, pasteurization support and cooling is recorded for this stage."
+          amount:
+            expression: "Measured or sub-meter allocated electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: reception_purchased_steam
+          role: "Reception purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used in preparation is metered separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to reception and cream preparation when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: reception_purchased_hot_water
+          role: "Reception purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water is recorded with supply conditions and kept distinct from steam."
+          amount:
+            expression: "Measured purchased hot water assigned to this stage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: reception_natural_gas
+          role: "Reception natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas combusted for preparation heat is recorded separately from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas use with the documented calorific value when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: reception_diesel
+          role: "Reception diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated preparation equipment or heat generation is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: reception_lpg
+          role: "Reception LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used for preparation heat is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: reception_process_water
+          role: "Reception process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water for preparation and cooling make-up is measured separately from internally recycled water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to this stage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+            ranges: []
+        - row_id: reception_r717_makeup
+          role: "Reception R-717 refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant make-up is conditional on an R-717 system and is balanced separately from R-134a."
+          amount:
+            expression: "Calculated net R-717 make-up assigned to this stage from stock and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: reception_r134a_makeup
+          role: "Reception R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant make-up is conditional on equipment using that substance and is balanced separately from R-717."
+          amount:
+            expression: "Calculated net R-134a make-up assigned to this stage from stock and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: reception_sodium_hydroxide_cip
+          role: "Reception sodium hydroxide CIP solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Sodium hydroxide cleaning solution used by the reception and preparation line is recorded separately from acid and disinfectant."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: reception_nitric_acid_cip
+          role: "Reception nitric acid CIP solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Nitric acid cleaning solution is recorded as a distinct CIP chemical."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: reception_peracetic_acid_cip
+          role: "Reception peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Peracetic acid disinfectant is recorded separately from both alkaline and acid cleaners."
+          amount:
+            expression: "Measured issued disinfectant minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_cattle_milk_cream
+          role: "Prepared cattle-milk cream"
+          name: "Prepared cattle-milk cream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared cattle-milk cream transferred to product formation is measured as a single intermediate product."
+          amount:
+            expression: "Measured transfer mass reconciled with stock, receipts, rejects and losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - fao-dairy-accounting
+            ranges: []
+        - row_id: prepared_cattle_milk_butter
+          role: "Prepared cattle-milk butter"
+          name: "Prepared cattle-milk butter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared cattle-milk butter transferred to the concentrated-milkfat route is recorded independently from cream."
+          amount:
+            expression: "Measured transfer mass when the butter-feed route is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - fao-dairy-accounting
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: separated_cattle_skim_milk
+          role: "Separated cattle skim milk"
+          name: "Cattle skim milk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Skim milk separated when whole cattle milk is received is measured as a distinct co-product."
+          amount:
+            expression: "Measured skim-milk mass transferred to its documented product destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - fao-idf-dairy-lca-2010
+                - fao-dairy-accounting
+            ranges: []
+      waste:
+        - row_id: rejected_cattle_milk
+          role: "Rejected cattle milk"
+          name: "Rejected cattle milk"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected cattle milk is weighed separately from rejected cream, butter and wastewater."
+          amount:
+            expression: "Measured rejected cattle-milk mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: rejected_cattle_milk_cream
+          role: "Rejected cattle-milk cream"
+          name: "Rejected cattle-milk cream"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected cattle-milk cream is recorded as its own waste flow."
+          amount:
+            expression: "Measured rejected cream mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: rejected_cattle_milk_butter
+          role: "Rejected cattle-milk butter"
+          name: "Rejected cattle-milk butter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected cattle-milk butter is recorded separately when the butter-feed route is used."
+          amount:
+            expression: "Measured rejected butter mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: reception_wastewater
+          role: "Reception and cream-preparation wastewater"
+          name: "Dairy reception and cream-preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater leaving reception and cream preparation is measured independently from product rejects and solid residue."
+          amount:
+            expression: "Measured discharge adjusted for documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: reception_filter_residue
+          role: "Reception filter residue"
+          name: "Dairy reception filter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Solids removed by reception or cream-preparation filtration are weighed as one specific solid waste."
+          amount:
+            expression: "Measured filter-residue mass sent to the documented treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_mass_balance
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+      elementary:
+        - row_id: reception_carbon_dioxide_air
+          role: "Reception fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from on-site fuel combustion assigned to this stage is reported separately."
+          amount:
+            expression: "Calculated from each measured fuel quantity and a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: reception_nitrogen_oxides_air
+          role: "Reception nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Direct nitrogen oxides from included combustion equipment are recorded as their own air emission."
+          amount:
+            expression: "Measured or calculated from fuel and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: reception_sulfur_dioxide_air
+          role: "Reception sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct sulfur dioxide from included fuel combustion is recorded separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from fuel sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: reception_pm25_air
+          role: "Reception fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from included combustion is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from equipment-specific operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: reception_r717_air
+          role: "Reception R-717 emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-717 assigned to reception and cream preparation is reported independently."
+          amount:
+            expression: "Calculated unrecovered R-717 from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: reception_r134a_air
+          role: "Reception R-134a emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-134a assigned to this stage is reported independently from R-717."
+          amount:
+            expression: "Calculated unrecovered R-134a from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared dairy-fat feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+  - id: butter_manufacture
+    label: "Butter manufacture by churning and working"
+    inputs:
+      product:
+        - row_id: butter_cream_input
+          role: "Prepared cattle-milk cream input"
+          name: "Prepared cattle-milk cream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared cattle-milk cream entering the churn or continuous buttermaker is recorded by batch."
+          amount:
+            expression: "Measured cream mass charged to butter manufacture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - fao-dairy-accounting
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: butter_starter_culture
+          role: "Butter starter culture"
+          name: "Lactic acid starter culture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Starter culture is conditional on cultured butter and is recorded separately from salt, water and color."
+          amount:
+            expression: "Measured culture mass issued to the batch minus documented return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxs-279-1971
+            ranges: []
+        - row_id: butter_sodium_chloride
+          role: "Butter sodium chloride"
+          name: "Sodium chloride, food grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade sodium chloride is conditional on salted butter and is measured independently from other ingredients."
+          amount:
+            expression: "Measured salt mass issued to the batch minus documented return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxs-279-1971
+            ranges: []
+        - row_id: butter_formulation_water
+          role: "Butter formulation water"
+          name: "Potable formulation water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Potable water intentionally incorporated into the formulation is measured separately from process and CIP water."
+          amount:
+            expression: "Measured formulation-water mass added to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxs-279-1971
+                - codex-cxc-57-2004
+            ranges: []
+        - row_id: butter_beta_carotene
+          role: "Butter beta-carotene color preparation"
+          name: "Beta-carotene color preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "A beta-carotene color preparation is recorded only when used and is not combined with culture or salt."
+          amount:
+            expression: "Measured color-preparation mass issued to the batch minus documented return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxs-279-1971
+            ranges: []
+        - row_id: butter_electricity
+          role: "Butter-route electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for ripening, churning, working, pumping and controls is recorded for the butter route."
+          amount:
+            expression: "Measured or sub-meter allocated butter-route electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: butter_purchased_steam
+          role: "Butter-route purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam is recorded separately from hot water and directly combusted fuels."
+          amount:
+            expression: "Measured purchased steam assigned to the butter route when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: butter_purchased_hot_water
+          role: "Butter-route purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water is recorded with supply conditions as a separate carrier."
+          amount:
+            expression: "Measured purchased hot water assigned to the butter route when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: butter_natural_gas
+          role: "Butter-route natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas combusted for butter-route heat is recorded separately from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas use with documented calorific value when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: butter_diesel
+          role: "Butter-route diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by included butter-route equipment or heat generation is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled butter-route diesel use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: butter_lpg
+          role: "Butter-route LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used for butter-route heat is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled butter-route LPG use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: butter_process_water
+          role: "Butter-route process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water used for butter washing or line operation is measured separately from formulation water and CIP chemicals."
+          amount:
+            expression: "Measured butter-route process-water intake when used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: butter_r717_makeup
+          role: "Butter-route R-717 refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-717 make-up is conditional on ammonia refrigeration serving the butter route."
+          amount:
+            expression: "Calculated net R-717 make-up assigned to the butter route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: butter_r134a_makeup
+          role: "Butter-route R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a make-up is conditional on equipment using that substance and is balanced separately from R-717."
+          amount:
+            expression: "Calculated net R-134a make-up assigned to the butter route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: butter_sodium_hydroxide_cip
+          role: "Butter-route sodium hydroxide CIP solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Sodium hydroxide cleaning solution used on the butter line is recorded separately."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: butter_nitric_acid_cip
+          role: "Butter-route nitric acid CIP solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Nitric acid cleaning solution used on the butter line is recorded independently from alkaline cleaner."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: butter_peracetic_acid_cip
+          role: "Butter-route peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Peracetic acid disinfectant is recorded separately from both CIP cleaners."
+          amount:
+            expression: "Measured issued disinfectant minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpacked_cattle_milk_butter
+          role: "Unpacked cattle-milk butter"
+          name: "Cattle-milk butter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming unpacked cattle-milk butter is measured after churning, drainage and working."
+          amount:
+            expression: "Measured unpacked butter mass passing the declared specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per butter production campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxs-279-1971
+                - fao-dairy-accounting
+            ranges: []
+        - row_id: unpacked_cattle_milk_butterfat
+          role: "Unpacked cattle-milk butterfat"
+          name: "Cattle-milk butterfat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Butterfat produced by the declared churning route is recorded separately from ordinary butter."
+          amount:
+            expression: "Measured unpacked butterfat mass passing the declared specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per butter production campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - codex-cxs-279-1971
+                - fao-dairy-accounting
+            ranges: []
+        - row_id: buttermilk_coproduct
+          role: "Buttermilk co-product"
+          name: "Buttermilk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Buttermilk with documented product status is weighed as a specific co-product."
+          amount:
+            expression: "Measured buttermilk mass transferred to its documented product destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - fao-dairy-accounting
+                - tetrapak-butter-handbook
+            ranges: []
+      waste:
+        - row_id: butter_wastewater
+          role: "Butter-manufacturing wastewater"
+          name: "Butter-manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from butter washing, cleaning and product-contact loss is measured separately from solid waste."
+          amount:
+            expression: "Measured discharge adjusted for documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: offspec_butter_waste
+          role: "Off-spec cattle-milk butter waste"
+          name: "Off-spec cattle-milk butter waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec butter leaving the process under a waste-management obligation is weighed independently from buttermilk."
+          amount:
+            expression: "Measured off-spec butter mass sent to the documented treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: butter_filter_residue
+          role: "Butter filter residue"
+          name: "Butter product-contact filter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Product-contact solids removed from the butter line are recorded as a distinct solid waste."
+          amount:
+            expression: "Measured filter-residue mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_butter_batch
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+      elementary:
+        - row_id: butter_carbon_dioxide_air
+          role: "Butter-route fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from fuel combustion assigned to the butter route is reported separately."
+          amount:
+            expression: "Calculated from each measured fuel quantity and a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: butter_nitrogen_oxides_air
+          role: "Butter-route nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from included butter-route combustion are recorded as their own air exchange."
+          amount:
+            expression: "Measured or calculated from fuel and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: butter_sulfur_dioxide_air
+          role: "Butter-route sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from included fuel combustion is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from fuel sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: butter_pm25_air
+          role: "Butter-route fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from included butter-route combustion is reported by size."
+          amount:
+            expression: "Measured or calculated from equipment-specific operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: butter_r717_air
+          role: "Butter-route R-717 emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-717 assigned to the butter route is reported independently."
+          amount:
+            expression: "Calculated unrecovered R-717 from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: butter_r134a_air
+          role: "Butter-route R-134a emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-134a assigned to the butter route is reported independently from R-717."
+          amount:
+            expression: "Calculated unrecovered R-134a from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked butter-route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+  - id: concentrated_milkfat_manufacture
+    label: "Concentrated milkfat manufacture"
+    inputs:
+      product:
+        - row_id: concentrated_cream_input
+          role: "Cattle-milk cream input"
+          name: "Cattle-milk cream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cattle-milk cream charged to concentration is measured independently from butter feed."
+          amount:
+            expression: "Measured cream mass charged to the concentration campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxs-280-1973
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_butter_input
+          role: "Cattle-milk butter input"
+          name: "Cattle-milk butter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cattle-milk butter charged to concentration is recorded as its own feed flow."
+          amount:
+            expression: "Measured butter mass charged to the concentration campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxs-280-1973
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_electricity
+          role: "Concentration-route electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for separation, concentration, vacuum, pumping and controls is recorded for this route."
+          amount:
+            expression: "Measured or sub-meter allocated concentration-route electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_purchased_steam
+          role: "Concentration-route purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam is recorded separately from hot water and directly combusted fuels."
+          amount:
+            expression: "Measured purchased steam assigned to concentration when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_purchased_hot_water
+          role: "Concentration-route purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water is recorded with supply conditions as a separate carrier."
+          amount:
+            expression: "Measured purchased hot water assigned to concentration when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_natural_gas
+          role: "Concentration-route natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas combusted for concentration heat is recorded separately from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas use with documented calorific value when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_diesel
+          role: "Concentration-route diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by included concentration equipment or heat generation is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: concentrated_lpg
+          role: "Concentration-route LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used for concentration heat is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: concentrated_process_water
+          role: "Concentration-route process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water used in concentration is measured separately from cleaning chemicals and condensate."
+          amount:
+            expression: "Measured process-water intake assigned to concentration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_diatomaceous_earth
+          role: "Concentration filter aid"
+          name: "Diatomaceous earth filter aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diatomaceous earth used for polishing filtration is conditional and is recorded separately from CIP chemicals."
+          amount:
+            expression: "Measured filter-aid mass issued to the concentration campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_r717_makeup
+          role: "Concentration-route R-717 refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-717 make-up is conditional on ammonia refrigeration serving concentration."
+          amount:
+            expression: "Calculated net R-717 make-up assigned to concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: concentrated_r134a_makeup
+          role: "Concentration-route R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a make-up is conditional on equipment using that substance and is balanced separately from R-717."
+          amount:
+            expression: "Calculated net R-134a make-up assigned to concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: concentrated_sodium_hydroxide_cip
+          role: "Concentration sodium hydroxide CIP solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Sodium hydroxide cleaning solution used on the concentration line is recorded separately."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: concentrated_nitric_acid_cip
+          role: "Concentration nitric acid CIP solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Nitric acid cleaning solution is recorded independently from alkaline cleaner."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: concentrated_peracetic_acid_cip
+          role: "Concentration peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Peracetic acid disinfectant is recorded separately from both CIP cleaners."
+          amount:
+            expression: "Measured issued disinfectant minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpacked_anhydrous_milkfat
+          role: "Unpacked anhydrous milkfat"
+          name: "Anhydrous milk fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anhydrous milkfat passing the declared CXS 280 specification is measured before filling."
+          amount:
+            expression: "Measured unpacked anhydrous-milkfat mass passing the declared specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per concentration campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: unpacked_butter_oil
+          role: "Unpacked butter oil"
+          name: "Cattle-milk butter oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Butter oil produced by the concentration route is recorded independently from anhydrous milkfat and ghee."
+          amount:
+            expression: "Measured unpacked butter-oil mass passing the declared specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per concentration campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxs-280-1973
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: unpacked_ghee
+          role: "Unpacked ghee"
+          name: "Ghee from cattle milk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ghee produced from cattle milk is recorded as a separate product form."
+          amount:
+            expression: "Measured unpacked ghee mass passing the declared specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per concentration campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxs-280-1973
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: separated_nonfat_cattle_milk_phase
+          role: "Separated non-fat cattle-milk phase"
+          name: "Separated non-fat cattle-milk phase"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A separated non-fat milk phase with documented product status is measured independently from condensate and wastewater."
+          amount:
+            expression: "Measured separated non-fat phase sent to its documented product destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - codex-cxs-280-1973
+                - tetrapak-amf-handbook
+            ranges: []
+      waste:
+        - row_id: concentration_condensate
+          role: "Milkfat-concentration condensate"
+          name: "Milkfat-concentration condensate"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Condensate recovered from moisture removal is measured separately from cleaning wastewater."
+          amount:
+            expression: "Measured condensate sent to the documented reuse or treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: concentrated_wastewater
+          role: "Concentrated-milkfat wastewater"
+          name: "Concentrated-milkfat processing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from concentration and line cleaning is measured as a distinct liquid waste."
+          amount:
+            expression: "Measured discharge adjusted for documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - tetrapak-amf-handbook
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: concentrated_filter_residue
+          role: "Concentrated-milkfat filter residue"
+          name: "Spent diatomaceous-earth filter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent filter aid and retained solids are weighed as one specific filter-residue waste."
+          amount:
+            expression: "Measured filter-residue mass sent to the documented treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - tetrapak-amf-handbook
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: offspec_concentrated_milkfat_waste
+          role: "Off-spec concentrated milkfat waste"
+          name: "Off-spec concentrated milkfat waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec concentrated milkfat leaving under a waste-management obligation is weighed independently."
+          amount:
+            expression: "Measured off-spec milkfat mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentrated_milkfat_batch
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+      elementary:
+        - row_id: concentrated_carbon_dioxide_air
+          role: "Concentration fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from fuel combustion assigned to concentration is reported separately."
+          amount:
+            expression: "Calculated from each measured fuel quantity and a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: concentrated_nitrogen_oxides_air
+          role: "Concentration nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from included combustion are recorded as their own air exchange."
+          amount:
+            expression: "Measured or calculated from fuel and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: concentrated_sulfur_dioxide_air
+          role: "Concentration sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from included combustion is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from fuel sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: concentrated_pm25_air
+          role: "Concentration fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from included combustion is reported by size."
+          amount:
+            expression: "Measured or calculated from equipment-specific operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: concentrated_r717_air
+          role: "Concentration R-717 emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-717 assigned to concentration is reported independently."
+          amount:
+            expression: "Calculated unrecovered R-717 from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: concentrated_r134a_air
+          role: "Concentration R-134a emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-134a assigned to concentration is reported independently from R-717."
+          amount:
+            expression: "Calculated unrecovered R-134a from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg unpacked concentrated milkfat product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+  - id: product_packaging_and_storage
+    label: "Product filling, packaging and storage"
+    inputs:
+      product:
+        - row_id: unpacked_cattle_milk_butter_input
+          role: "Unpacked cattle-milk butter input"
+          name: "Cattle-milk butter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Unpacked cattle-milk butter entering filling is recorded independently from concentrated milkfat forms."
+          amount:
+            expression: "Measured unpacked butter mass received for filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxs-279-1971
+                - fao-dairy-accounting
+            ranges: []
+        - row_id: unpacked_anhydrous_milkfat_input
+          role: "Unpacked anhydrous milkfat input"
+          name: "Anhydrous milk fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Unpacked anhydrous milkfat entering filling is recorded as its own product input."
+          amount:
+            expression: "Measured unpacked anhydrous-milkfat mass received for filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: unpacked_butter_oil_input
+          role: "Unpacked butter-oil input"
+          name: "Cattle-milk butter oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Unpacked cattle-milk butter oil is recorded separately from anhydrous milkfat and ghee."
+          amount:
+            expression: "Measured unpacked butter-oil mass received for filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: unpacked_ghee_input
+          role: "Unpacked ghee input"
+          name: "Ghee from cattle milk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Unpacked cattle-milk ghee is recorded as a separate input product form."
+          amount:
+            expression: "Measured unpacked ghee mass received for filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+        - row_id: aluminium_foil_wrapper
+          role: "Aluminium foil wrapper"
+          name: "Aluminium foil butter wrapper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium foil used for the declared pack is recorded independently from paperboard and plastics."
+          amount:
+            expression: "Issued aluminium-foil mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - fao-idf-dairy-lca-2010
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: paperboard_carton
+          role: "Paperboard carton"
+          name: "Bleached paperboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paperboard cartons are measured as their own packaging exchange."
+          amount:
+            expression: "Issued paperboard-carton mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - fao-idf-dairy-lca-2010
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: ldpe_packaging_film
+          role: "LDPE packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene film is recorded separately from rigid plastic packaging."
+          amount:
+            expression: "Issued LDPE-film mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - fao-idf-dairy-lca-2010
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: hdpe_packaging_pail
+          role: "HDPE packaging pail"
+          name: "High-density polyethylene packaging pail"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "High-density polyethylene pails are recorded as one rigid packaging component when used."
+          amount:
+            expression: "Issued HDPE-pail mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - fao-idf-dairy-lca-2010
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: steel_packaging_drum
+          role: "Steel packaging drum"
+          name: "Steel packaging drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel drums used for bulk milkfat are recorded independently from polymer pails."
+          amount:
+            expression: "Issued steel-drum mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - fao-idf-dairy-lca-2010
+                - tetrapak-amf-handbook
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging and storage electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for filling, sealing, handling and cold storage is recorded for this stage."
+          amount:
+            expression: "Measured or time-and-throughput allocated electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: packaging_purchased_steam
+          role: "Packaging purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used in filling or sanitation is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to this stage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: packaging_purchased_hot_water
+          role: "Packaging purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water is recorded with supply conditions as a distinct carrier."
+          amount:
+            expression: "Measured purchased hot water assigned to this stage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - tetrapak-butter-handbook
+            ranges: []
+        - row_id: packaging_natural_gas
+          role: "Packaging natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas combusted for filling or storage support is recorded separately from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas use with documented calorific value when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_diesel
+          role: "Packaging diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated handling or standby equipment is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_lpg
+          role: "Packaging LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by included filling or storage equipment is recorded independently."
+          amount:
+            expression: "Stock-reconciled LPG use when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_process_water
+          role: "Packaging process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water used in filling and storage-area operations is recorded separately from CIP chemicals."
+          amount:
+            expression: "Measured process-water intake assigned to this stage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxc-57-2004
+            ranges: []
+        - row_id: packaging_r717_makeup
+          role: "Packaging and storage R-717 refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-717 make-up is conditional on ammonia refrigeration serving product storage."
+          amount:
+            expression: "Calculated net R-717 make-up assigned to packaging and storage"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_r134a_makeup
+          role: "Packaging and storage R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a make-up is conditional on equipment using that substance and is balanced separately from R-717."
+          amount:
+            expression: "Calculated net R-134a make-up assigned to packaging and storage"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_sodium_hydroxide_cip
+          role: "Packaging sodium hydroxide CIP solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Sodium hydroxide cleaning solution used on the filling line is recorded separately."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: packaging_nitric_acid_cip
+          role: "Packaging nitric acid CIP solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Nitric acid cleaning solution is recorded independently from alkaline cleaner."
+          amount:
+            expression: "Measured issued solution minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: packaging_peracetic_acid_cip
+          role: "Packaging peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Peracetic acid disinfectant is recorded separately from both CIP cleaners."
+          amount:
+            expression: "Measured issued disinfectant minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxc-57-2004
+                - tetrapak-dairy-effluent
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Net saleable anhydrous milkfat reference product"
+          name: "Anhydrous milk fat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7f8eef6e-3ea0-4f74-bf72-c6f95af2c3fc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the verified reference product flow at the processor gate, measured net of packaging."
+          amount:
+            expression: "Exactly 1 kg net conforming saleable product, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - codex-cxs-280-1973
+            ranges: []
+      waste:
+        - row_id: offspec_packaged_butter_waste
+          role: "Off-spec packaged butter waste"
+          name: "Off-spec packaged cattle-milk butter waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec packaged butter leaving under a waste-management obligation is weighed separately from milkfat products."
+          amount:
+            expression: "Measured off-spec packaged butter mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: offspec_packaged_anhydrous_milkfat_waste
+          role: "Off-spec packaged anhydrous milkfat waste"
+          name: "Off-spec packaged anhydrous milkfat waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec packaged anhydrous milkfat is recorded as its own waste flow."
+          amount:
+            expression: "Measured off-spec anhydrous-milkfat mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: offspec_packaged_butter_oil_waste
+          role: "Off-spec packaged butter-oil waste"
+          name: "Off-spec packaged cattle-milk butter-oil waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec packaged butter oil is recorded separately from other product losses."
+          amount:
+            expression: "Measured off-spec butter-oil mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: offspec_packaged_ghee_waste
+          role: "Off-spec packaged ghee waste"
+          name: "Off-spec packaged cattle-milk ghee waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec packaged ghee is recorded as a distinct product-loss waste."
+          amount:
+            expression: "Measured off-spec ghee mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: waste_aluminium_foil
+          role: "Waste aluminium foil"
+          name: "Waste aluminium foil butter wrapper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded aluminium foil is weighed independently from paperboard and plastic packaging waste."
+          amount:
+            expression: "Measured discarded aluminium-foil mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: waste_paperboard_carton
+          role: "Waste paperboard carton"
+          name: "Waste bleached paperboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded paperboard cartons are recorded as their own packaging waste."
+          amount:
+            expression: "Measured discarded paperboard-carton mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: waste_ldpe_packaging_film
+          role: "Waste LDPE packaging film"
+          name: "Waste low-density polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded LDPE film is weighed independently from rigid plastic packaging waste."
+          amount:
+            expression: "Measured discarded LDPE-film mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: waste_hdpe_packaging_pail
+          role: "Waste HDPE packaging pail"
+          name: "Waste high-density polyethylene packaging pail"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded HDPE pails are recorded separately from film and metal drums."
+          amount:
+            expression: "Measured discarded HDPE-pail mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: waste_steel_packaging_drum
+          role: "Waste steel packaging drum"
+          name: "Waste steel packaging drum"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded steel drums are recorded as a distinct metal packaging waste."
+          amount:
+            expression: "Measured discarded steel-drum mass sent to the documented route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+        - row_id: packaging_storage_wastewater
+          role: "Packaging and storage wastewater"
+          name: "Milkfat filling-line wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from filling-line cleaning is measured separately from product and packaging losses."
+          amount:
+            expression: "Measured discharge adjusted for documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_storage
+              source_ids:
+                - tetrapak-dairy-effluent
+            ranges: []
+      elementary:
+        - row_id: packaging_carbon_dioxide_air
+          role: "Packaging fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from fuel combustion assigned to packaging and storage is reported separately."
+          amount:
+            expression: "Calculated from each measured fuel quantity and a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_nitrogen_oxides_air
+          role: "Packaging nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from included combustion are recorded as their own air exchange."
+          amount:
+            expression: "Measured or calculated from fuel and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: packaging_sulfur_dioxide_air
+          role: "Packaging sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from included combustion is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from fuel sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pm25_air
+          role: "Packaging fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from included combustion is reported by size."
+          amount:
+            expression: "Measured or calculated from equipment-specific operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_utilities
+              source_ids: []
+            ranges: []
+        - row_id: packaging_r717_air
+          role: "Packaging and storage R-717 emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-717 assigned to packaging and storage is reported independently."
+          amount:
+            expression: "Calculated unrecovered R-717 from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+        - row_id: packaging_r134a_air
+          role: "Packaging and storage R-134a emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-134a assigned to packaging and storage is reported independently from R-717."
+          amount:
+            expression: "Calculated unrecovered R-134a from the substance-specific stock balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-idf-dairy-lca-2010
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Multi-product dairy processing"
+    rule: "First subdivide reception, cream preparation, butter manufacture, concentrated milkfat manufacture and packaging using process meters, batch records and transfer measurements so directly attributable inputs and outputs are assigned without allocation."
+    source_ids:
+      - fao-idf-dairy-lca-2010
+      - fao-dairy-accounting
+  - rule_id: allocation_internal_recycle
+    applies_to: "Rework and recycled water or product"
+    rule: "Keep internally recycled material inside the system and record only net external inputs and outputs; do not assign an avoided-product credit to internal recycle."
+    source_ids:
+      - fao-dairy-accounting
+      - tetrapak-dairy-effluent
+  - rule_id: allocation_buttermilk_and_nonfat_coproducts
+    applies_to: "Buttermilk and separated non-fat phases with product status"
+    rule: "After subdivision, allocate only residual shared burdens among saleable co-products. Use the governing programme method when one exists; otherwise apply a documented physical relation that reflects the production relationship, and test an economic alternative when the choice is material. Report quantities, factor basis, prices or composition data, reference period and sensitivity."
+    source_ids:
+      - fao-idf-dairy-lca-2010
+  - rule_id: allocation_waste_boundary
+    applies_to: "Wastewater, off-spec material and residues"
+    rule: "A material is a co-product only when it has a documented beneficial use and product status. Otherwise model its treatment as waste and do not use revenue alone to erase treatment burdens."
+    source_ids:
+      - tetrapak-dairy-effluent
+  - rule_id: allocation_upstream_consistency
+    applies_to: "Upstream cattle-milk or cream datasets"
+    rule: "Preserve the allocation method and co-product boundary disclosed by upstream dairy datasets; do not reallocate upstream burdens inside this foreground dataset without complete underlying inventory and an explicit sensitivity case."
+    source_ids:
+      - fao-idf-dairy-lca-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_dairy_material_receipt
+      process_id: "reception_and_cream_preparation"
+      flow_role: "Cattle milk; cattle-milk cream; cattle-milk butter"
+      record_type: "Weighbridge, calibrated tank or mass-flow record plus certificate of analysis"
+      raw_fields: "timestamp; supplier and origin; exact material identity; gross and tare or meter mass; milkfat; water or total solids; temperature; acceptance status; upstream dataset id"
+      collection_method: "Record cattle milk, cattle-milk cream and cattle-milk butter as three separate receipt series and reconcile each accepted quantity to storage movement"
+      unit: "kg and % m/m"
+      frequency: "Each receipt"
+      temporal_coverage: "At least one representative 12-month period or all campaigns in a shorter disclosed seasonal production period"
+      site_scope: "Every included site and material source"
+      aggregation_rule: "Sum each exact material separately; mass-weight composition within, but never across, material identities; retain each rejected material separately"
+      quality_evidence: "Meter calibration; supplier certificate; laboratory result; intake and tank reconciliation"
+    - protocol_id: cp_process_utilities
+      process_id: "reception_and_cream_preparation"
+      flow_role: "Electricity; purchased steam; purchased hot water; natural gas; diesel; LPG; carbon dioxide; nitrogen oxides; sulfur dioxide; PM2.5"
+      record_type: "Sub-meter, invoice, fuel stock, operating log and emission measurement or calculation record"
+      raw_fields: "process_id; exact energy or emission identity; meter start and end or stock movement; quantity; unit; fuel net calorific value when used; steam condition when used; operating time; line throughput; allocation driver; emission factor or measurement basis when used"
+      collection_method: "Record electricity, purchased steam, purchased hot water, natural gas, diesel and LPG separately by process; record carbon dioxide, nitrogen oxides, sulfur dioxide and PM2.5 as four separate air-emission series"
+      unit: "kWh, MJ, kg fuel, kg steam or kg emission"
+      frequency: "Each batch or at least monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included process line and shared utility centre"
+      aggregation_rule: "Convert each energy identity separately; subtract exports; allocate only residual shared use; calculate each named emission separately; normalize to conforming output"
+      quality_evidence: "Meter calibration; invoice; stock reconciliation; conversion source; allocation worksheet; emission measurement or factor record"
+    - protocol_id: cp_water_and_wastewater
+      process_id: "reception_and_cream_preparation"
+      flow_role: "Process water; sodium hydroxide; nitric acid; peracetic acid; wastewater"
+      record_type: "Water and effluent meter, chemical issue record and treatment log"
+      raw_fields: "process_id; exact exchange identity; intake or issue; internal recycle; discharge; quantity; unit; concentration for each CIP chemical; sampling point; destination"
+      collection_method: "Record process water, sodium hydroxide, nitric acid, peracetic acid and wastewater as five separate series for every included process"
+      unit: "kg or m3"
+      frequency: "Daily or per campaign"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Entire included dairy site with process allocation"
+      aggregation_rule: "Keep each water or chemical identity and each process wastewater separate; do not double count recycle; allocate a shared discharge only by measured volume or documented load driver"
+      quality_evidence: "Meter calibration; chemical issue reconciliation; water balance; laboratory report; treatment operator record"
+    - protocol_id: cp_process_mass_balance
+      process_id: "reception_and_cream_preparation"
+      flow_role: "Prepared cattle-milk cream; prepared cattle-milk butter; cattle skim milk; rejected cattle milk; rejected cattle-milk cream; rejected cattle-milk butter; filter residue"
+      record_type: "Tank, batch and transfer records"
+      raw_fields: "exact exchange identity; opening stock; receipt; transfer mass; closing stock; reject mass; residue mass; milkfat; moisture"
+      collection_method: "Reconcile each named material independently for every campaign and for monthly totals"
+      unit: "kg and % m/m"
+      frequency: "Each transfer and campaign"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Each included site and line"
+      aggregation_rule: "Preserve separate balances for prepared cream, prepared butter, skim milk, each rejected dairy material and filter residue; investigate rather than merge unexplained loss"
+      quality_evidence: "Calibrated meters; signed batch record; reconciliation residual and investigation"
+    - protocol_id: cp_butter_batch
+      process_id: "butter_manufacture"
+      flow_role: "Cattle-milk cream; starter culture; sodium chloride; formulation water; beta-carotene; cattle-milk butter; cattle-milk butterfat; buttermilk; off-spec butter; filter residue"
+      record_type: "Churn or continuous-line batch record, ingredient issue record and laboratory result"
+      raw_fields: "exact exchange identity; input mass; batch start and end; product or co-product mass; milkfat; moisture; reject or residue mass"
+      collection_method: "Record each named butter input and output separately for every batch or continuous campaign and retain composition tests"
+      unit: "kg and % m/m"
+      frequency: "Each batch or campaign"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every butter line"
+      aggregation_rule: "Reconcile total mass and milkfat while preserving one series per named input, product, co-product, waste and residue"
+      quality_evidence: "Calibrated meters and scales; ingredient certificate; composition method; release record; mass and fat closure"
+    - protocol_id: cp_concentrated_milkfat_batch
+      process_id: "concentrated_milkfat_manufacture"
+      flow_role: "Cattle-milk cream; cattle-milk butter; diatomaceous earth; anhydrous milkfat; butter oil; ghee; non-fat cattle-milk phase; condensate; wastewater; filter residue; off-spec concentrated milkfat"
+      record_type: "Campaign flowmeter, tank, evaporator or separator record, filter-aid issue record and product laboratory result"
+      raw_fields: "exact exchange identity; input mass and composition; product mass, milkfat and water; separated phase mass; condensate; reject; residue; operating time"
+      collection_method: "Record every named input and output separately for each campaign and laboratory release lot"
+      unit: "kg and % m/m"
+      frequency: "Each campaign or lot"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every concentration line"
+      aggregation_rule: "Reconcile total mass and milkfat while keeping anhydrous milkfat, butter oil, ghee, non-fat phase, condensate, wastewater, filter residue and reject as separate series"
+      quality_evidence: "Flowmeter and scale calibration; laboratory result; campaign log; issue record; mass and fat closure"
+    - protocol_id: cp_packaging_and_storage
+      process_id: "product_packaging_and_storage"
+      flow_role: "Unpacked butter; unpacked anhydrous milkfat; unpacked butter oil; unpacked ghee; aluminium foil; paperboard; LDPE film; HDPE pail; steel drum; released reference product; each off-spec product; each packaging waste"
+      record_type: "Filler counter or scale, packaging issue log, warehouse and reject record"
+      raw_fields: "exact product or packaging identity; unpacked input; packed net output; issued packaging mass; unused return; waste mass; reject mass; rework; storage time and temperature"
+      collection_method: "Record each named product, packaging input, off-spec product and packaging waste as a separate series and reconcile each production lot to released warehouse quantity"
+      unit: "kg product, kg packaging, hours and degrees Celsius"
+      frequency: "Each lot"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included filling line and on-site store"
+      aggregation_rule: "Net product excludes packaging; calculate consumption and waste separately for aluminium foil, paperboard, LDPE film, HDPE pail and steel drum; keep each product form separate"
+      quality_evidence: "Scale calibration; packaging specification; batch release; warehouse movement and waste disposition"
+    - protocol_id: cp_refrigerant_records
+      process_id: "product_packaging_and_storage"
+      flow_role: "R717 make-up; R717 emission; R134a make-up; R134a emission"
+      record_type: "Maintenance and refrigerant stock record"
+      raw_fields: "exact refrigerant; equipment; opening stock; purchase; recharge; recovery; closing stock; unrecovered loss; service area; process_id; period"
+      collection_method: "Calculate R717 and R134a make-up separately and calculate unrecovered R717 and R134a emissions separately from reconciled stocks and service events"
+      unit: "kg of the named refrigerant"
+      frequency: "Each service event and annual reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All refrigeration serving included processes"
+      aggregation_rule: "Keep one series per refrigerant and per make-up or emission direction; allocate shared equipment only by documented cooling load or operating-time driver"
+      quality_evidence: "Technician record; purchase and recovery certificate; stock reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground inventory"
+      rule: "normalized amount = period amount / net conforming saleable product mass; packaging mass is excluded from the denominator"
+      inputs:
+        - "period flow amount"
+        - "released net product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - fao-dairy-accounting
+    - id: calc_mass_balance
+      applies_to: "Each process and route"
+      rule: "opening stock + external inputs + internal transfers in = closing stock + product outputs + co-products + wastes + internal transfers out + quantified losses; report the residual and measurement uncertainty"
+      inputs:
+        - stock
+        - input
+        - output
+        - transfer
+        - "reject and loss records"
+      output: "process mass-balance residual"
+      source_ids:
+        - fao-dairy-accounting
+    - id: calc_milkfat_balance
+      applies_to: "Reception, butter and concentrated milkfat routes"
+      rule: "sum(input mass × input milkfat fraction) = sum(output mass × output milkfat fraction) + measured fat in waste and loss; report unexplained residual"
+      inputs:
+        - "mass and milkfat test results for all material streams"
+      output: "milkfat-balance residual"
+      source_ids:
+        - codex-cxs-279-1971
+        - codex-cxs-280-1973
+        - fao-dairy-accounting
+    - id: calc_energy_conversion
+      applies_to: "Fuels, steam and purchased heat"
+      rule: "convert each measured carrier with its disclosed lower or higher heating value or enthalpy convention; never mix conventions within the reported series and never count both steam and its generating fuel"
+      inputs:
+        - "carrier quantity"
+        - "calorific value or steam enthalpy"
+        - "efficiency only when converting delivered to useful heat"
+      output: "MJ or kWh by carrier and process"
+      source_ids:
+        - fao-idf-dairy-lca-2010
+    - id: calc_coproduct_allocation
+      applies_to: "Residual shared burdens after subdivision"
+      rule: "allocated burden to product i = residual shared burden × declared allocation factor i; factors shall sum to 1 across co-products and a material alternative allocation shall be reported as sensitivity"
+      inputs:
+        - "residual shared burden"
+        - "product quantities"
+        - "physical relation or economic values"
+        - "reference period"
+      output: "allocated residual burden and sensitivity result"
+      source_ids:
+        - fao-idf-dairy-lca-2010
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference flow and incoming dairy material"
+      requirement: "Demonstrate cattle-milk origin, product form and applicable CXS 279 or CXS 280 composition for each represented product lot; do not use the anhydrous-milkfat UUID for ordinary butter without a form-specific identity resolution."
+      evidence: "Product specification; supplier declaration; lot release; milkfat and moisture tests; selected Tiangong UUID"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground records"
+      requirement: "Use a representative continuous 12-month period where production is year-round; a shorter period is allowed only when it covers the full declared seasonal campaign and seasonality is disclosed."
+      evidence: "Meter and batch date coverage; production calendar; gap register"
+    - id: dq_geographic_and_technical_scope
+      applies_to: "Site and upstream datasets"
+      requirement: "Match the actual country or region, cattle-milk supply and manufacturing technology; disclose proxies and assess material mismatch."
+      evidence: "Site metadata; supplier origin; equipment and route records; dataset geography and technology"
+    - id: dq_completeness
+      applies_to: "Mass, milkfat, energy, water and waste inventories"
+      requirement: "Reconcile process mass and milkfat balances, all utility meters and waste destinations; investigate unexplained residuals instead of forcing closure."
+      evidence: "Signed balance worksheets; meter reconciliation; residual explanation; waste transfer evidence"
+    - id: dq_hygiene_and_measurement_controls
+      applies_to: "Product-contact water, ingredients and process control"
+      requirement: "Retain evidence that water and ingredients meet specifications and that hygienic control measures, monitoring and corrective actions are validated for the declared route."
+      evidence: "Potable-water tests; ingredient certificates; HACCP or equivalent records; calibration and corrective-action logs"
+    - id: dq_allocation_transparency
+      applies_to: "Multi-product operations"
+      requirement: "Report subdivision, residual shared burdens, allocation method, factors, data year and sensitivity; upstream allocations remain separately disclosed."
+      evidence: "Process map; sub-meter evidence; allocation workbook; price or composition evidence; sensitivity result"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "Reference flow"
+    rule: "The dataset shall declare one covered product form, cattle-milk origin and all required qualifiers. The UUID 7f8eef6e-3ea0-4f74-bf72-c6f95af2c3fc is accepted only for anhydrous-milkfat or explicitly equivalent concentrated forms; ordinary butter requires a form-specific resolved UUID."
+    source_ids:
+      - codex-cxs-279-1971
+      - codex-cxs-280-1973
+  - rule_id: validation_reference_amount
+    applies_to: "Quantitative reference"
+    rule: "The net reference output shall equal exactly 1 kg on Mass property 93a60a56-a3c8-11da-a746-0800200b9a66 in kg from unit group 93a60a57-a4c8-11da-a746-0800200c9a66, excluding packaging."
+    source_ids: []
+  - rule_id: validation_product_composition
+    applies_to: "Finished product"
+    rule: "Butter shall have at least 80% m/m milkfat, no more than 16% m/m water and no more than 2% m/m milk solids-not-fat. Anhydrous milkfat or anhydrous butter oil shall have at least 99.8% m/m milkfat and no more than 0.1% m/m water; other CXS 280 forms shall satisfy their applicable declared limits."
+    source_ids:
+      - codex-cxs-279-1971
+      - codex-cxs-280-1973
+  - rule_id: validation_process_selection
+    applies_to: "Process map"
+    rule: "reception_and_cream_preparation and product_packaging_and_storage shall be included, and at least one of butter_manufacture or concentrated_milkfat_manufacture shall be included consistently with the declared product form."
+    source_ids:
+      - tetrapak-butter-handbook
+      - tetrapak-amf-handbook
+  - rule_id: validation_mass_and_fat_closure
+    applies_to: "Foreground process records"
+    rule: "Each included process shall report mass-balance and milkfat-balance residuals with measurement uncertainty and an explanation for material residuals; balance closure shall not be fabricated by inserting an unmeasured loss."
+    source_ids:
+      - fao-dairy-accounting
+  - rule_id: validation_inventory_coverage
+    applies_to: "Foreground inventory"
+    rule: "Require one atomic exchange card for each used or generated identity: cattle milk, cattle-milk cream, cattle-milk butter, process water, each named ingredient or processing aid, each CIP chemical, electricity, purchased steam, purchased hot water, natural gas, diesel, LPG, R717 make-up, R134a make-up, each named product and co-product, wastewater, each solid or packaging waste, carbon dioxide, nitrogen oxides, sulfur dioxide, PM2.5, R717 emission and R134a emission. A selector or combined flow name shall fail validation; a genuinely absent exchange shall be documented as non-applicable rather than represented by an aggregate card."
+    source_ids:
+      - fao-idf-dairy-lca-2010
+      - codex-cxc-57-2004
+      - tetrapak-dairy-effluent
+  - rule_id: validation_collection_links
+    applies_to: "Collected and calculated inventory rows"
+    rule: "Every row with collected_record or calculated_from_collection evidence shall reference an implemented collection protocol, and every calculated row shall identify its calculation rule or reproducible worksheet."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "Co-products and shared operations"
+    rule: "Direct burdens shall be subdivided before allocation; residual allocation factors shall sum to 1, use one disclosed basis across the reporting period and include a sensitivity result when the method materially affects the product result."
+    source_ids:
+      - fao-idf-dairy-lca-2010
+  - rule_id: validation_no_double_counting
+    applies_to: "Utilities, recycle and upstream processes"
+    rule: "Verify that purchased steam and boiler fuel, recycled water and fresh water, rework and new input, refrigerant loss assignments, and upstream dairy production are each counted once."
+    source_ids:
+      - fao-idf-dairy-lca-2010
+      - fao-dairy-accounting
+published_dataset_profile:
+  dataset_role: "Site-specific foreground data package for a declared cattle-milk butter or milkfat product, publishable as a unit process or aggregated gate-to-gate dataset after review"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Attributional product LCA, supply-chain modelling, verified processor-gate comparison of like product forms, hotspot analysis and downstream food-system models when geography, technology, allocation and product specification are compatible"
+  excluded_use: "Comparative assertions between unlike butter and concentrated-milkfat forms; nutrition or food-safety certification; claims outside the represented geography or period without representativeness review; consequential market modelling without an explicit reformulation"
+  required_metadata: "PCR id and version state; product form and Tiangong flow identity; cattle-milk origin; CXS product specification; plant and geography; technology and route; reference period; system boundary; upstream datasets; allocation method and factors; packaging and storage state; data owners and review status"
+  required_quality_disclosure: "Primary-data coverage; meter and test methods; mass and milkfat residuals; missing-flow UUIDs; proxy datasets; temporal, geographic and technology limitations; cut-offs; co-product sensitivity; uncertainty and reviewer findings"
+  update_trigger: "Product-form or route change; supplier or cattle-milk origin change; material change in milkfat or moisture specification, energy system, packaging, co-product use or allocation; new form-specific Tiangong flow identity; reference data expiry; more representative 12-month foreground records; corrected mass or milkfat closure"
+data_sources:
+  - id: "codex-cxs-279-1971"
+    type: "standard"
+    reference: "Codex Alimentarius Commission. CXS 279-1971, Standard for Butter, adopted 1971, amended through 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B279-1971%252FCXS_279e.pdf. Retrieved 2026-08-10."
+    used_for: "Butter identity, permitted ingredients, composition and product-quality validation"
+  - id: "codex-cxs-280-1973"
+    type: "standard"
+    reference: "Codex Alimentarius Commission. CXS 280-1973, Standard for Milkfat Products, adopted 1973, amended through 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B280-1973%252FCXS_280e.pdf. Retrieved 2026-08-10."
+    used_for: "Anhydrous milkfat, milkfat, butter-oil and ghee identity, composition and validation"
+  - id: "codex-cxc-57-2004"
+    type: "standard"
+    reference: "Codex Alimentarius Commission. CXC 57-2004, Code of Hygienic Practice for Milk and Milk Products, revised 2009. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B57-2004%252FCXC_057e.pdf. Retrieved 2026-08-10."
+    used_for: "Validated hygiene controls, ingredient specifications, potable and recycled water controls, quality evidence"
+  - id: "fao-idf-dairy-lca-2010"
+    type: "official_guidance"
+    reference: "FAO. 2010. Greenhouse Gas Emissions from the Dairy Sector: A Life Cycle Assessment. https://www.fao.org/4/k7930e/k7930e00.pdf. Retrieved 2026-08-10."
+    used_for: "Dairy supply-chain boundary, functional-unit context, inventory completeness, co-product allocation and sensitivity"
+  - id: "fao-dairy-accounting"
+    type: "official_guidance"
+    reference: "FAO. Guideline for Dairy Accounting, Butter Section. https://www.fao.org/4/x6523e/X6523E01.htm. Retrieved 2026-08-10."
+    used_for: "Cream-ripening, churning and packaging record structure; batch quantities, butter and buttermilk yield and mass reconciliation"
+  - id: "tetrapak-butter-handbook"
+    type: "handbook"
+    reference: "Tetra Pak. Dairy Processing Handbook, Butter. https://dairyprocessinghandbook.tetrapak.com/chapter/butter. Retrieved 2026-08-10."
+    used_for: "Butter process decomposition: cream preparation, pasteurization, ripening, churning, working, salting, packaging and cold storage"
+  - id: "tetrapak-amf-handbook"
+    type: "handbook"
+    reference: "Tetra Pak. Dairy Processing Handbook, Anhydrous Milk Fat and Butter Oil. https://dairyprocessinghandbook.tetrapak.com/chapter/anhydrous-milk-fat-amf-and-butter-oil. Retrieved 2026-08-10."
+    used_for: "Concentrated-milkfat route decomposition from cream or reworked butter, phase separation and moisture removal"
+  - id: "tetrapak-dairy-effluent"
+    type: "handbook"
+    reference: "Tetra Pak. Dairy Processing Handbook, Dairy Effluent. https://dairyprocessinghandbook.tetrapak.com/chapter/dairy-effluent. Retrieved 2026-08-10."
+    used_for: "Product-loss prevention, segregation of butter and cream residues, wastewater and waste destination records"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:18cc5650c011f6bf3cc9d9dcee898fe7ed2802614f0d7b3f27394624f847a994"
+  generated_content_sha256: "sha256:c8e5d7a71ff1b616e873b27230a4be7cbceeb4d4253e6e2ba9d79f8216fc81cb"

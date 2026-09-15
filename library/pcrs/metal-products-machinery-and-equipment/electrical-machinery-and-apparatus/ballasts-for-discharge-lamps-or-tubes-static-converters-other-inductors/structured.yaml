@@ -1,10 +1,934 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46122"
-  title: "Ballasts for discharge lamps or tubes; static converters; other inductors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.ballasts-for-discharge-lamps-or-tubes-static-converters-other-inductors"
+  classification_refs: "CPC 3.0: 46122, Ballasts for discharge lamps or tubes; static converters; other inductors (exact)"
+  covered_products: "Finished static converters, rectifiers, inverters, bidirectional PCS, chargers, stabilized power supplies, electronic or electromagnetic ballasts for discharge lamps or tubes, and other finished inductors"
+  excluded_products: "Finished transformers; rotating converters; motors and generators; batteries; complete lamps and luminaires; switching/protection apparatus without a primary power-conversion function; parts sold separately"
+  representative_product: "A declared finished product model belonging to exactly one product subtype; no category-wide default design or photovoltaic-inverter proxy"
+  production_route: "Product-specific combination of electronic assembly, magnetic-component manufacture, mechanical and thermal integration, final assembly, testing, and packaging"
+  market_state: "Finished, conformity-tested product at the manufacturing plant gate, excluding distribution, installation, use, maintenance, and end-of-life treatment"
+functional_unit:
+  what: "Finished ballast, static converter, or inductor of one declared subtype and model/family at the manufacturing plant gate"
+  how_much: "1 kg net product mass, excluding external packaging and separately sold accessories"
+  how_well: "Saleable and conformity-tested, with declared rated electrical interfaces, power or current/inductance basis, efficiency or loss metric, isolation, cooling, and expected service life"
+  how_long_or_cycle: "One production reporting period normalized to conforming output; expected service life is a required product qualifier but is not embedded in the 1 kg factory-gate amount"
+  reference_flow_link: "Product mass is the manufacturing reference; any downstream service functional unit shall link product quantity, load profile, efficiency/losses, maintenance, and service life explicitly"
+system_boundary:
+  rules:
+    - rule_id: sb_manufacturing_inputs
+      applies_to: "factory-gate production"
+      rule: "Include upstream production and supplier transport of materials, components and subassemblies, plant transformation and assembly, product testing, and primary/secondary packaging; purchased items shall link to upstream datasets."
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+    - rule_id: sb_sensitive_components
+      applies_to: "electronics and magnetics"
+      rule: "Do not cut off printed circuit boards, power semiconductors/modules, copper or aluminium conductors, magnetic cores, capacitors, cooling hardware, or other environmentally influential components solely because their mass share is small."
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+    - rule_id: sb_subtype_specificity
+      applies_to: "product family and proxy modelling"
+      rule: "A single photovoltaic inverter, ballast, charger or inductor shall not represent another subtype or the whole category without demonstrated homogeneous-family criteria and documented scaling/sensitivity evidence."
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+        - iec-62477-1-2022
+        - iec-62909-1-2025
+        - iec-61683-1999
+        - iec-61347-2-12-2024
+    - rule_id: sb_use_stage_separate
+      applies_to: "downstream life-cycle models"
+      rule: "Exclude operational conversion losses from the foreground manufacturing process; model them downstream from subtype-specific efficiency/loss maps, direction, duty profile, auxiliary power and declared service life."
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+    - rule_id: sb_end_of_life_separate
+      applies_to: "downstream life-cycle models"
+      rule: "Exclude end-of-life treatment and recycling credits from factory-gate production; model deinstallation, collection, depollution, separation, recovery and disposal as separate scenarios."
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+boundary_abstraction:
+  declared_starting_condition: "Materials, components and subassemblies accepted at the reporting manufacturing site, with supplier identity, mass and upstream dataset linkage retained"
+  starting_condition_role: "Foreground manufacturing begins at receiving; upstream production and supplier transport remain represented through linked product inputs"
+  product_classification_scope: "Semantic scope of finished ballasts, static converters and other inductors; CPC 3.0 code 46122 is a classification reference and does not erase subtype distinctions"
+  recursive_input_rule: "A purchased input that itself belongs to this category remains an explicit product input with subtype, mass and upstream dataset; it shall not be relabelled as the reference output or recursively expanded without a stopping rule"
+  upstream_dataset_requirement: "Use supplier-specific datasets where available; otherwise use technology-, geography- and time-representative datasets. Critical electronics, magnetic materials, conductors, thermal hardware and packaging require explicit coverage or a disclosed data gap"
+  disclosure: "Declare subtype, model/family, plant geography/year, production route, process inclusion decisions, BOM coverage, supplier-data coverage, rated interfaces, performance test basis, isolation, cooling, expected service life and any proxy/scaling rule"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Ballasts for discharge lamps or tubes, static converters, other inductors"
+    uuid: "2753fd9b-d904-40b2-9cae-4642fd5fc5fc"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype"
+    - "model or homogeneous-family identifier"
+    - "rated power and whether active or apparent"
+    - "or rated current and inductance for a passive inductor"
+    - "input and output voltage ranges"
+    - "AC/DC type and frequency for every port"
+    - "number of phases for every AC port"
+    - "power-conversion direction"
+    - "efficiency or loss metric with load points"
+    - "test method"
+    - temperature
+    - "and auxiliary-power treatment"
+    - "galvanic-isolation topology"
+    - "cooling method and included coolant"
+    - "net mass"
+    - "included controls"
+    - firmware
+    - "cables and auxiliaries"
+    - "expected service life with operating profile and evidence"
+    - "applicable product standard"
+    - "manufacturing geography and reference year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and material/waste flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass and all mass inventory consistently; exclude packaging from the 1 kg reference product and record packaging separately."
+  - id: rated_power_basis
+    applies_to: "converters, chargers and ballasts"
+    required_property_ref:
+      name: "Active power or apparent power, as declared"
+      uuid: ""
+    required_unit: "W, kW, VA or kVA"
+    rule: "State whether the rating is input, output, active, apparent, continuous, peak, or lamp power; do not convert among ratings without the declared power factor, duty and duration."
+  - id: inductor_rating_basis
+    applies_to: "passive inductors"
+    required_property_ref:
+      name: "Inductance and rated current, plus loss metric"
+      uuid: ""
+    required_unit: "H and A, with Hz and W where applicable"
+    rule: "Declare inductance, current, test frequency, temperature and core-loss or winding-loss basis; use not applicable for conversion efficiency only when an equivalent loss metric is supplied."
+  - id: electrical_interfaces
+    applies_to: "every electrical port"
+    required_property_ref:
+      name: "Voltage, current type, frequency and phase count"
+      uuid: ""
+    required_unit: "V; Hz; dimensionless phase count"
+    rule: "Record input/output voltage range, AC or DC, frequency for AC, phase count, and conversion direction separately for each port."
+  - id: efficiency_and_losses
+    applies_to: "converter, charger, PCS and ballast performance"
+    required_property_ref:
+      name: "Dimensionless efficiency and electrical energy/power loss"
+      uuid: ""
+    required_unit: "% and W or kWh"
+    rule: "Calculate efficiency from paired input/output measurements at declared operating points; state direction, load fraction, voltage, power factor where relevant, ambient/coolant temperature, standby/no-load mode, and inclusion of auxiliaries. Use subtype-specific methods rather than a universal efficiency curve."
+  - id: service_life
+    applies_to: "downstream-use linkage"
+    required_property_ref:
+      name: "Time or operating cycles"
+      uuid: ""
+    required_unit: "years, h or cycles"
+    rule: "Declare expected service life, operating hours or cycles, load profile, ambient conditions, maintenance assumptions and evidence; do not use an uncited category-wide lifetime default."
+  - id: production_normalization
+    applies_to: "foreground inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg per kg reference product"
+    rule: "Normalize reporting-period inputs, outputs, wastes and emissions to conforming net output after allocation and rework reconciliation."
+process_map:
+  - id: electronic_assembly
+    name: "Electronic and power-stage assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include for products containing mounted printed circuit boards, power semiconductors, control electronics or electronic ignition/control stages"
+    role: "Builds controlled electronic and power-conversion subassemblies"
+    quantitative_reference: "kg accepted electronic assembly per kg conforming final product"
+  - id: magnetic_component_assembly
+    name: "Magnetic-component and winding assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include for inductors, electromagnetic ballasts, and products with in-house wound/core magnetic components"
+    role: "Produces wound/core assemblies and captures conductor, core, insulation and impregnation burdens"
+    quantitative_reference: "kg accepted magnetic assembly per kg conforming final product"
+  - id: mechanical_thermal_integration
+    name: "Mechanical, insulation and thermal integration"
+    inclusion: "required"
+    inclusion_condition: "Include the actual enclosure, busbar, heatsink, fan, pump, liquid loop, insulation or potting route; zero-flow declarations require evidence that a feature is absent"
+    role: "Integrates electrical subassemblies with mechanical protection, insulation and cooling"
+    quantitative_reference: "kg integrated unit per kg conforming final product"
+  - id: final_test_packaging
+    name: "Final assembly, configuration, testing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include"
+    role: "Produces the saleable factory-gate reference product and records test energy, rejects, rework and packaging"
+    quantitative_reference: "1 kg conforming net reference product"
+process_inventory:
+  - id: electronic_assembly
+    label: "Electronic and power-stage assembly"
+    inputs:
+      product:
+        - row_id: electronic_components
+          role: "Electronic boards, power semiconductors and components"
+          name: "Electronic boards, power semiconductors and components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased printed circuit boards, power modules/semiconductors, capacitors, sensors, controllers and other mounted components by supplier part family and mass; do not infer a universal bill of materials."
+          amount:
+            expression: "measured accepted input mass from BOM, receiving and inventory records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted electronic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - pep-ecopassport-pcr-ed4-2021
+            ranges: []
+        - row_id: electronic_consumables
+          role: "Assembly consumables"
+          name: "Electronic assembly consumables"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record solder, flux, adhesives, conformal coating, cleaning agents and process gases that cross the process boundary."
+          amount:
+            expression: "issued quantity minus documented return to stock"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted electronic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - pep-ecopassport-pcr-ed4-2021
+            ranges: []
+        - row_id: electronic_assembly_electricity
+          role: "Electricity for electronic assembly"
+          name: "Electricity, plant supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for mounting, soldering, curing, coating, cleaning and local extraction."
+          amount:
+            expression: "submetered electricity or allocated meter total under calc_shared_resource_allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted electronic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: electronic_waste
+          role: "Electronic rejects, solder dross and spent consumables"
+          name: "Electronic manufacturing waste, declared fraction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each treatment-relevant waste fraction separately when composition or destination differs."
+          amount:
+            expression: "measured waste leaving the process, net of documented same-process rework return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted electronic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: electronic_direct_emissions
+          role: "Direct assembly emissions"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or permit-calculated VOC, particulate or other direct releases from soldering, coating and cleaning; absence shall be documented rather than represented by an assumed zero."
+          amount:
+            expression: "measured or permit-method release assigned to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted electronic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: electronic_assembly_output
+          role: "Accepted electronic assembly"
+          name: "Accepted electronic and power-stage assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted subassembly mass transferred to integration, including incorporated consumables."
+          amount:
+            expression: "measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted electronic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_rework
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: magnetic_component_assembly
+    label: "Magnetic-component and winding assembly"
+    inputs:
+      product:
+        - row_id: magnetic_materials
+          role: "Conductors, magnetic cores and insulation"
+          name: "Magnetic-component materials by declared material family"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record copper or aluminium winding conductor, ferrite/steel/powder cores, bobbins, insulation, varnish, resin and potting materials separately where upstream datasets differ."
+          amount:
+            expression: "measured accepted input mass from BOM and inventory records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted magnetic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - pep-ecopassport-pcr-ed4-2021
+            ranges: []
+        - row_id: magnetic_assembly_electricity
+          role: "Electricity for winding and curing"
+          name: "Electricity, plant supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record winding, core assembly, impregnation, curing and local ventilation electricity."
+          amount:
+            expression: "submetered electricity or allocated meter total under calc_shared_resource_allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted magnetic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: magnetic_waste
+          role: "Conductor, core and insulation waste"
+          name: "Magnetic-component manufacturing waste, declared fraction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated metal, core, resin and insulation waste by destination."
+          amount:
+            expression: "measured waste leaving the process, net of documented same-process reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted magnetic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: magnetic_direct_emissions
+          role: "Impregnation and curing emissions"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record substance-specific direct emissions when varnish, resin, solvents or thermal treatment are used."
+          amount:
+            expression: "measured or permit-method release assigned to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted magnetic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: magnetic_assembly_output
+          role: "Accepted magnetic assembly"
+          name: "Accepted magnetic component assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted winding/core assembly mass transferred to integration."
+          amount:
+            expression: "measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted magnetic assembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_rework
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: mechanical_thermal_integration
+    label: "Mechanical, insulation and thermal integration"
+    inputs:
+      product:
+        - row_id: mechanical_thermal_components
+          role: "Mechanical, insulation and cooling components"
+          name: "Mechanical, electrical-interface, insulation and cooling components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record enclosures, frames, busbars, terminals, connectors, heatsinks, fans, pumps, heat exchangers, thermal interface materials, insulation and potting by mass and supplier dataset. Cooling liquids are included only when supplied with the product."
+          amount:
+            expression: "measured accepted input mass from BOM and receiving records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg integrated unit output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - pep-ecopassport-pcr-ed4-2021
+            ranges: []
+        - row_id: declared_subassemblies
+          role: "Electronic and magnetic subassemblies"
+          name: "Declared electronic or magnetic subassembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record in-house or purchased electronic and magnetic subassemblies as separate inputs; a purchased same-category assembly follows the recursive input rule."
+          amount:
+            expression: "measured transferred or purchased mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg integrated unit output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+        - row_id: integration_electricity
+          role: "Integration electricity"
+          name: "Electricity, plant supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record forming, fastening, welding, potting, curing and thermal-system charging electricity."
+          amount:
+            expression: "submetered electricity or allocated meter total under calc_shared_resource_allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg integrated unit output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: integration_waste
+          role: "Integration scrap and spent coolant"
+          name: "Integration waste, declared fraction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record metal/plastic offcuts, insulation or potting waste, and spent coolant or cleaning liquid separately by treatment route."
+          amount:
+            expression: "measured waste leaving the process, net of documented rework/reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg integrated unit output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: integration_direct_emissions
+          role: "Direct integration emissions"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct substance-specific releases from welding, coating, potting, curing, coolant charging or cleaning when present."
+          amount:
+            expression: "measured or permit-method release assigned to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg integrated unit output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: integrated_unit_output
+          role: "Integrated unit ready for final test"
+          name: "Integrated ballast, converter or inductor unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted integrated unit mass before final configuration, test and packaging."
+          amount:
+            expression: "measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg integrated unit output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_rework
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: final_test_packaging
+    label: "Final assembly, configuration, testing and packaging"
+    inputs:
+      product:
+        - row_id: final_stage_components
+          role: "Integrated units and purchased final-stage parts"
+          name: "Integrated units and final-stage components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record integrated units plus purchased controls, displays, cables, connectors, labels, firmware-bearing modules and other included auxiliaries."
+          amount:
+            expression: "measured input mass from production orders and BOM records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+        - row_id: test_electricity
+          role: "Test and burn-in electricity"
+          name: "Electricity, plant supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record gross test/burn-in input electricity and any exported or recovered test electricity separately. Do not net test energy without both meters."
+          amount:
+            expression: "measured test-system input less no undocumented credits; exported/recovered electricity is a separate output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials by material family"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary and secondary packaging, labels and manuals separately from the net reference-product mass."
+          amount:
+            expression: "measured packaging issued to conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pep-ecopassport-pcr-ed4-2021
+            ranges: []
+      waste:
+        - row_id: final_stage_waste
+          role: "Test rejects and packaging waste"
+          name: "Final-stage waste, declared fraction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record nonconforming units, replaced parts and packaging waste by rework or treatment destination."
+          amount:
+            expression: "measured waste leaving the process, excluding documented rework returned to a named process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_rework
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: test_direct_emissions
+          role: "Direct test releases"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record coolant, refrigerant, gas or other direct releases caused by testing; document non-applicability when the test route has no direct release mechanism."
+          amount:
+            expression: "measured release assigned to final testing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming factory-gate reference product"
+          name: "Ballasts for discharge lamps or tubes, static converters, other inductors"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2753fd9b-d904-40b2-9cae-4642fd5fc5fc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only products that passed the declared final acceptance test. Product mass excludes external packaging."
+          amount:
+            expression: "fixed normalization output of 1 kg conforming net product"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_output_and_rework
+              source_ids: []
+            ranges: []
+        - row_id: recovered_test_electricity
+          role: "Exported or recovered test electricity"
+          name: "Electricity exported from product testing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity exported from bidirectional testing only when separately metered and demonstrably used outside the test loop."
+          amount:
+            expression: "separately metered export; zero is not assumed when no meter exists"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid_by_subdivision
+    applies_to: "separable products, lines and process steps"
+    rule: "Prefer product-specific BOMs, meters, production orders and process subdivision so allocation is avoided."
+    source_ids:
+      - pep-ecopassport-pcr-ed4-2021
+  - rule_id: alloc_shared_resources
+    applies_to: "shared utilities and line-level inputs"
+    rule: "When subdivision is not possible, allocate by a measured causal driver such as machine time, test energy, material throughput or production time. Mass or item count may be used only when it best represents resource use; disclose the choice and test sensitivity for materially different power ranges or subtypes."
+    source_ids:
+      - pep-ecopassport-pcr-ed4-2021
+  - rule_id: alloc_rework_and_scrap
+    applies_to: "rejects, rework and recovered material"
+    rule: "Assign rework energy and material losses to the originating product/process. Credit internal reuse only through the measured quantity returned to the same system; keep sold scrap and treatment flows visible."
+    source_ids:
+      - pep-ecopassport-pcr-ed4-2021
+  - rule_id: alloc_exported_test_energy
+    applies_to: "bidirectional or regenerative product testing"
+    rule: "Keep gross test electricity input and separately metered export as distinct flows; do not offset input with nominal power, simulated export or unmetered recovery."
+    source_ids: []
+  - rule_id: alloc_recycling_separate
+    applies_to: "recycling and recovery"
+    rule: "Do not subtract potential end-of-life recycling benefits from factory-gate production; report any downstream benefit/load beyond the system boundary separately."
+    source_ids:
+      - pep-ecopassport-pcr-ed4-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_materials
+      process_id: "all_applicable_processes"
+      flow_role: "materials, components, subassemblies and final-stage parts"
+      record_type: "BOM, purchase/receiving and inventory records"
+      raw_fields: "part id; material family; supplier; accepted quantity; unit mass; incorporated quantity; upstream dataset id; same-category subtype"
+      collection_method: "reconcile released BOM with receiving and production issue/return records"
+      unit: "kg"
+      frequency: "each model revision and monthly reconciliation"
+      temporal_coverage: "same reporting period as production output"
+      site_scope: "every included manufacturing site and supplier route"
+      aggregation_rule: "accepted input minus documented return, mapped to product/process and normalized by accepted output"
+      quality_evidence: "approved BOM revision; calibrated scale record where weighed; supplier declaration; inventory reconciliation"
+    - protocol_id: cp_process_energy
+      process_id: "all_applicable_processes"
+      flow_role: "electricity, fuel, heat and recovered test electricity"
+      record_type: "submeters, equipment logs and invoices"
+      raw_fields: "meter id; start/end reading; energy carrier; process; product family; operating time; exported energy meter"
+      collection_method: "prefer dedicated meters; otherwise allocate a reconciled facility total by a causal driver"
+      unit: "kWh or MJ"
+      frequency: "continuous/monthly, and per test campaign where applicable"
+      temporal_coverage: "at least 12 representative months or a justified complete production campaign"
+      site_scope: "every included manufacturing site"
+      aggregation_rule: "gross consumption and export remain separate; normalize after allocation"
+      quality_evidence: "meter calibration; invoice reconciliation; downtime and shared-load log"
+    - protocol_id: cp_waste_and_emissions
+      process_id: "all_applicable_processes"
+      flow_role: "waste and direct elementary emissions"
+      record_type: "waste tickets, manifests, stack/fugitive measurements and permit calculations"
+      raw_fields: "substance/material; mass; compartment; treatment destination; measurement method; process; date"
+      collection_method: "weigh waste and use substance-specific monitored or approved calculation methods for direct releases"
+      unit: "kg"
+      frequency: "each shipment and required monitoring interval"
+      temporal_coverage: "same reporting period as production output"
+      site_scope: "every included manufacturing site"
+      aggregation_rule: "sum by process, fraction/substance and destination; subtract only documented same-process reuse"
+      quality_evidence: "scale tickets; transporter/treatment records; laboratory/monitoring reports; method and detection limit"
+    - protocol_id: cp_output_and_rework
+      process_id: "all_applicable_processes"
+      flow_role: "accepted output, rejects and rework"
+      record_type: "production orders, test records and scales"
+      raw_fields: "model; subtype; gross output; accepted output; net mass; reject mass; rework destination; test disposition"
+      collection_method: "reconcile serial/lot acceptance records with weighed output and rework movements"
+      unit: "kg"
+      frequency: "each batch/lot; monthly reconciliation"
+      temporal_coverage: "same reporting period as inputs"
+      site_scope: "every included manufacturing site"
+      aggregation_rule: "accepted net output is denominator; rework stays attached to the originating process"
+      quality_evidence: "final acceptance report; scale calibration; lot genealogy; rework closure"
+    - protocol_id: cp_packaging
+      process_id: "final_test_packaging"
+      flow_role: "primary/secondary packaging, labels and manuals"
+      record_type: "packaging BOM and issue records"
+      raw_fields: "packaging part id; material; recycled content if evidenced; issued mass; return/waste mass"
+      collection_method: "reconcile packaging BOM with issued and wasted quantities"
+      unit: "kg"
+      frequency: "each packaging design revision and monthly"
+      temporal_coverage: "same reporting period as production output"
+      site_scope: "every included packaging site"
+      aggregation_rule: "packaging per accepted net product mass, separate from reference-product mass"
+      quality_evidence: "approved packaging specification; supplier mass data; issue reconciliation"
+    - protocol_id: cp_product_performance
+      process_id: "final_test_packaging"
+      flow_role: "rated interfaces, efficiency/losses, isolation and cooling"
+      record_type: "nameplate/specification, type/routine tests and calibration records"
+      raw_fields: "subtype; model; input/output voltage; AC/DC; frequency; phases; direction; rated power/current/inductance; load point; input/output power; auxiliaries; temperature; isolation; cooling"
+      collection_method: "use applicable product standard or fully disclosed test procedure; preserve raw paired measurements"
+      unit: "V, A, Hz, W, VA, H, %, °C"
+      frequency: "each model/type test and production routine-test plan"
+      temporal_coverage: "current model revision"
+      site_scope: "each declared product family and test facility"
+      aggregation_rule: "calculate only like-for-like operating points; retain direction and auxiliary boundary"
+      quality_evidence: "accredited/type-test report where available; procedure revision; instrument calibration; pass/fail record"
+    - protocol_id: cp_service_life_evidence
+      process_id: "published_dataset_metadata"
+      flow_role: "expected service life and maintenance profile"
+      record_type: "reliability test, field-return, warranty or engineering-life records"
+      raw_fields: "life metric; operating profile; load; temperature; humidity; cooling maintenance; failure criterion; sample size; confidence; source period"
+      collection_method: "choose the model-relevant evidence hierarchy and document extrapolation"
+      unit: "years, h or cycles"
+      frequency: "each model revision or evidence update"
+      temporal_coverage: "evidence period stated explicitly"
+      site_scope: "target market/use conditions"
+      aggregation_rule: "report declared value with operating and maintenance conditions; no category-wide default"
+      quality_evidence: "test/field study, warranty analysis, engineering sign-off and uncertainty disclosure"
+  calculation_rules:
+    - id: calc_inventory_normalization
+      applies_to: "every foreground inventory row"
+      rule: "normalized amount = allocated reporting-period amount / conforming net reference-product mass"
+      inputs:
+        - "allocated input/output/waste/emission"
+        - "conforming net mass from cp_output_and_rework"
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_efficiency
+      applies_to: "converter, charger, PCS or electronic ballast operating point"
+      rule: "efficiency = measured useful output power / measured input power; calculate separately by direction and operating point and disclose auxiliary-power inclusion"
+      inputs:
+        - "paired input/output power"
+        - direction
+        - load
+        - voltage
+        - frequency
+        - phase
+        - "temperature and auxiliary boundary from cp_product_performance"
+      output: "dimensionless efficiency (%) plus loss power (W)"
+      source_ids:
+        - iec-61683-1999
+        - eu-2019-1782
+    - id: calc_mass_balance
+      applies_to: "each manufacturing process and total foreground"
+      rule: "balance gap = mass inputs - product outputs - waste outputs - measured direct mass emissions - documented stock change; investigate rather than force-close material gaps"
+      inputs:
+        - "BOM/receiving mass"
+        - "output/rework"
+        - "waste and direct-emission records"
+      output: "process and total mass-balance gap with explanation"
+      source_ids: []
+    - id: calc_shared_resource_allocation
+      applies_to: "shared utilities and line inputs"
+      rule: "allocated amount = measured shared total × declared causal-driver share; shares shall sum to 1 for the allocation pool"
+      inputs:
+        - "shared meter/invoice total and product-specific causal driver"
+      output: "product/process allocated amount"
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+    - id: calc_family_scaling
+      applies_to: "homogeneous product family only"
+      rule: "apply a reviewed equation or interpolation derived from representative products; validate high, low and median/sales-representative cases and disclose sensitive parameters"
+      inputs:
+        - "product LCAs"
+        - mass
+        - "power range"
+        - "component architecture"
+        - losses
+        - "cooling and lifetime"
+      output: "product-specific inventory with uncertainty/sensitivity evidence"
+      source_ids:
+        - pep-ecopassport-pcr-ed4-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "All required qualifiers and exact product subtype/model or homogeneous-family scope are complete."
+      evidence: "product specification, nameplate, classification and test procedure"
+    - id: dq_bom_coverage
+      applies_to: "material/component inputs"
+      requirement: "BOM coverage reconciles to net product mass and explicitly covers influential electronics, conductors, magnetic cores, cooling hardware, insulation/potting and packaging or discloses a quantified gap."
+      evidence: "BOM reconciliation and calc_mass_balance"
+    - id: dq_temporal_site
+      applies_to: "foreground records"
+      requirement: "Inputs, outputs, energy, waste and emissions cover the same representative period and all sites in scope; partial periods and site exclusions are quantified."
+      evidence: "dated records, production schedule and site list"
+    - id: dq_upstream_data
+      applies_to: "purchased inputs"
+      requirement: "Upstream datasets are supplier-specific where available and otherwise technology-, geography- and time-representative; proxy choices and same-category inputs are disclosed."
+      evidence: "supplier declarations, dataset metadata and proxy review"
+    - id: dq_performance
+      applies_to: "efficiency/loss and electrical qualifiers"
+      requirement: "Test method, operating point, direction, temperature, instrument calibration and auxiliary boundary are retained; a subtype-specific result is not generalized without evidence."
+      evidence: "raw test data and cp_product_performance records"
+    - id: dq_service_life
+      applies_to: "downstream-use linkage"
+      requirement: "Service-life claim states operating/maintenance conditions, evidence type, sample basis and uncertainty; absence of evidence is disclosed rather than replaced with a default."
+      evidence: "cp_service_life_evidence record"
+    - id: dq_completeness
+      applies_to: "modelled inventory"
+      requirement: "All assessable flows are included or a flow-specific exclusion is justified; cut-off is not used to hide high-impact or hazardous materials/components."
+      evidence: "completeness checklist, contribution screening and source-backed justification"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference output is exactly 1 kg of flow 2753fd9b-d904-40b2-9cae-4642fd5fc5fc, using Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids: []
+  - rule_id: val_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Product subtype, rated power or inductor rating, input/output voltage, current type, phases, efficiency/loss test basis, isolation, cooling and expected service life are declared or explicitly marked not applicable with an equivalent relevant property."
+    source_ids:
+      - iec-62477-1-2022
+      - iec-62909-1-2025
+      - iec-61683-1999
+      - iec-61347-2-12-2024
+      - eu-2019-1782
+  - rule_id: val_process_route
+    applies_to: "process map"
+    rule: "All required processes and each applicable conditional process are included; every exclusion has product-specific evidence."
+    source_ids: []
+  - rule_id: val_no_cross_subtype_proxy
+    applies_to: "representative and proxy data"
+    rule: "A photovoltaic inverter or any other single subtype is not used to represent the entire category; family scaling satisfies homogeneous-function, standard, technology and sensitivity requirements."
+    source_ids:
+      - pep-ecopassport-pcr-ed4-2021
+  - rule_id: val_mass_and_rework
+    applies_to: "foreground inventory"
+    rule: "Product, waste, direct-emission and rework records reconcile under calc_mass_balance; unexplained gaps are findings, not forced adjustments."
+    source_ids: []
+  - rule_id: val_energy_and_efficiency
+    applies_to: "manufacturing and performance data"
+    rule: "Manufacturing/test electricity is separate from operational conversion losses; efficiency/loss results preserve direction, load point, electrical interfaces, temperature and auxiliary boundary."
+    source_ids:
+      - iec-61683-1999
+      - eu-2019-1782
+  - rule_id: val_upstream_and_recursive_inputs
+    applies_to: "purchased components and subassemblies"
+    rule: "Each material purchased input has an upstream dataset or disclosed gap, and every same-category input remains visible with subtype and stopping rule."
+    source_ids:
+      - pep-ecopassport-pcr-ed4-2021
+  - rule_id: val_sources_and_collection
+    applies_to: "all constrained values and rules"
+    rule: "Every collected/calculated row links to a collection protocol and every non-default external method constraint cites a listed source id; no uncited numeric default or legal threshold is introduced."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset when representativeness and review support reuse outside the reporting organization"
+  downstream_use: "Foreground data-package production and factory-gate process publication; downstream process or lifecyclemodel construction for product systems using the declared ballast, converter, charger, PCS or inductor"
+  allowed_use: "Product-specific or reviewed homogeneous-family manufacturing modelling with explicit subtype/performance qualifiers; downstream use-stage modelling with separately supplied duty, efficiency/loss and service-life scenarios"
+  excluded_use: "Category-wide default from a single photovoltaic inverter or other subtype; legal-compliance claims; substitution among unlike converter/ballast/inductor functions; operational loss modelling from factory test energy; product comparison without equivalent function and service"
+  required_metadata: "PCR id/version; product subtype/model/family; CPC reference; plant geography/year; production route; rated electrical interfaces and power/current/inductance basis; conversion direction; efficiency/loss test basis; isolation; cooling; service life; net mass; packaging mass; included auxiliaries/firmware; allocation; BOM/upstream coverage; data sources"
+  required_quality_disclosure: "primary-data share; BOM and mass-balance coverage; metering/allocation basis; supplier dataset representativeness; process exclusions; direct-emission and waste coverage; performance-test evidence; service-life evidence and uncertainty; proxy/scaling limits; review state"
+  update_trigger: "Product subtype or main function changes; rated power/interface, topology, isolation or cooling changes materially; BOM or supplier route changes; firmware changes operating losses; efficiency or service-life evidence changes; production site/technology changes; applicable standard/regulation or upstream dataset is revised"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Ver. 3.0 Explanatory Notes*, updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-08)"
+    used_for: "CPC 46122 identity and its placement under electrical transformers, static converters and inductors"
+  - id: "pep-ecopassport-pcr-ed4-2021"
+    type: "standard"
+    reference: "PEP ecopassport Program, *Product Category Rules for Electrical, Electronic and HVAC-R Products*, edition 4, 6 September 2021, https://pep-ecopassport.org/site/wp-content/uploads/2026/06/PCR-4-ed4-EN-2021-09-06-PCR-edition-4.pdf (retrieved 2026-08-08)"
+    used_for: "Life-cycle boundary, manufacturing inputs and packaging, allocation, cut-off safeguards, homogeneous-family extrapolation, performance/lifetime disclosure and end-of-life separation"
+  - id: "iec-62477-1-2022"
+    type: "standard"
+    reference: "IEC 62477-1:2022, *Safety requirements for power electronic converter systems and equipment - Part 1: General*, https://webstore.iec.ch/en/publication/28936 (retrieved 2026-08-08)"
+    used_for: "General PECS scope and differentiation of adjustable-speed drives, UPS, stabilized DC supplies and bidirectional converters"
+  - id: "iec-62909-1-2025"
+    type: "standard"
+    reference: "IEC 62909-1:2025, *Bi-directional grid-connected power converters - Part 1: General and safety requirements*, https://webstore.iec.ch/en/publication/69114 (retrieved 2026-08-08)"
+    used_for: "Bidirectional PCS identity and explicit separation from UPS, photovoltaic and EV-charging product standards"
+  - id: "iec-61683-1999"
+    type: "standard"
+    reference: "IEC 61683:1999, *Photovoltaic systems - Power conditioners - Procedure for measuring efficiency*, https://webstore.iec.ch/en/publication/5720 (retrieved 2026-08-08)"
+    used_for: "Conditional efficiency measurement method for photovoltaic power conditioners only"
+  - id: "iec-61347-2-12-2024"
+    type: "standard"
+    reference: "IEC 61347-2-12:2024, *Controlgear for electric light sources - Safety - Part 2-12: Particular requirements - DC or AC supplied electronic controlgear for discharge lamps (excluding fluorescent lamps)*, https://webstore.iec.ch/en/publication/64710 (retrieved 2026-08-08)"
+    used_for: "Electronic discharge-lamp controlgear subtype identity and electrical-supply distinction"
+  - id: "eu-2019-1782"
+    type: "standard"
+    reference: "European Commission, Commission Regulation (EU) 2019/1782 laying down ecodesign requirements for external power supplies, https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32019R1782 (retrieved 2026-08-08)"
+    used_for: "Conditional external-power-supply input/output declarations, load-point efficiency and no-load reporting; not a category-wide threshold"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d7aeb15d95e4a71bbc28259cad08dcb3c3d5c46fdc98b932bbd83243ebfa5fb7"
+  generated_content_sha256: "sha256:47d71b3366eccfc36fa01667b377f43a1942fecf3fc1d03db87371125bc69bca"

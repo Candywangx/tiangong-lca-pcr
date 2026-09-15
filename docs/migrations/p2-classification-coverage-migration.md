@@ -20,7 +20,7 @@ checkPaths:
   - library/pcrs/**
   - builder/**
   - packages/**
-lastReviewedAt: 2026-07-14
+lastReviewedAt: 2026-07-24
 lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ---
 
@@ -150,9 +150,14 @@ legacy scaffold；不能用已经演化的当前 template 代替历史字节证�
 - material catalog、mapping 和三个 material fingerprint 不变；
 - 全仓校验通过。
 
-当前结果：PCR 目录 2,877 -> 2,876，surviving legacy 2,874 -> 2,873；material 仍为 3，accepted mapping
+Pilot 完成时的结果：PCR 目录 2,877 -> 2,876，surviving legacy 2,874 -> 2,873；material 仍为 3，accepted mapping
 仍为 3，alias 仍为 2,874，coverage 仍为 3 mapped / 2,874 unmapped / 0 unknown。CPC `99000` 是
 known-unmapped，旧 id 返回 coverage redirect。
+
+截至 2026-07-24，后续 create workflow 已将 CPC `21111` 和 `02211` 对应的 legacy scaffold 依次提升为
+canonical material PCR。物理目录总数仍为 2,876；当前为 5 material、2,871 surviving legacy、
+5 accepted mapping、2,872 alias，以及 5 mapped / 2,872 unmapped / 0 unknown coverage。这些提升不是
+Phase 3 的删除操作，也不改变上述 `99000` pilot 的历史基线。
 
 下一 pilot 候选是 CPC `98000` Domestic services；必须独立审计、验证和提交，以便完整回滚目录与审计
 记录。不得因为 `99000` 成功而自动删除 `98000`。

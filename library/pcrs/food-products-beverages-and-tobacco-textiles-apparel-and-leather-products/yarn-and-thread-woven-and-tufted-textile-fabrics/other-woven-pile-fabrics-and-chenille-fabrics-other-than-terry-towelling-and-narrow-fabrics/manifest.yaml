@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.other-woven-pile-fabrics-and-chenille-fabrics-other-than-terry-towelling-and-narrow-fabrics
 title:
   en-US: "Other woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics)"
-  zh-CN: null
-status: scaffold
+  zh-CN: "其他机织绒头织物及绳绒织物（毛巾织物和狭幅毛圈织物除外）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,83 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "26830"
     title: "Other woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics)"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  reference_identity_gate:
+    searched_at_utc: "2026-08-12T16:21:40Z"
+    search_method: "flow-hybrid-search, exact category query"
+    selected_flow_uuid: "91e48617-c5a4-423e-870d-696c311f7b05"
+    direct_read_state_code: 100
+    verified_flow_type: "Product flow"
+    verified_classification: "CPC 26830"
+    verified_reference_property: "Mass"
+    verified_reference_unit: "kg"
+    decision: accepted_exact
+  identity_review:
+    accepted:
+      - row_ids:
+          - final_reference_product_output
+        flow_uuid: "91e48617-c5a4-423e-870d-696c311f7b05"
+        reason: "direct readback confirmed exact product name, CPC 26830, Product flow, Mass, and public state 100"
+      - row_ids:
+          - wet_process_water_input
+        flow_uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+        reason: "direct readback confirmed Process Water, Product flow, Mass, and public state 100"
+      - row_ids:
+          - wet_process_sodium_hydroxide_input
+        flow_uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+        reason: "direct readback confirmed industrial-grade solid Sodium hydroxide, Product flow, Mass, and public state 100"
+      - row_ids:
+          - wet_process_hydrogen_peroxide_input
+        flow_uuid: "f151f740-6c3a-42b9-abed-e44220792750"
+        reason: "direct readback confirmed Hydrogen peroxide solution, 50% in water, Product flow, Mass, and public state 100"
+      - row_ids:
+          - wet_process_steam_heat_input
+        flow_uuid: "fcf9e128-688f-42f0-9dca-85d2319cfac5"
+        reason: "direct readback confirmed Process heat from steam, Product flow, Gross calorific value, and public state 100"
+    unresolved:
+      - row_id: ground_warp_yarn_input
+        reason: "hybrid search returned sizing agent and unrelated machinery; no yarn identity preserving ground-warp role and declared fibre composition"
+      - row_id: effect_yarn_input
+        reason: "hybrid search returned a combined gimped/chenille/loop-wale yarn category or fabric candidates; none preserved one declared effect-yarn identity and CPC 26830 composition"
+      - row_id: weft_yarn_input
+        reason: "hybrid search returned generic, cotton, or man-made yarn categories; none preserved the declared CPC 26830 material composition"
+      - row_id: weaving_electricity_input
+        reason: "hybrid search returned transformation service or generic alternating current; no exact purchased electricity flow with compatible service identity"
+      - row_id: unfinished_pile_fabric_output
+        reason: "hybrid search returned generic greige textile fabric or man-made-fibre CPC 26820 fabric; both are semantically broader or outside CPC 26830"
+      - row_id: weaving_yarn_waste_output
+        reason: "hybrid search returned different polymer, fibre-fabric, cord-thread, or unrelated waste identities"
+      - row_id: weaving_fabric_offcuts_output
+        reason: "hybrid search returned generic offcut or aggregate textile solid waste without woven-pile/chenille material identity"
+      - row_id: wet_process_unfinished_fabric_input
+        reason: "same rejected candidates as unfinished_pile_fabric_output"
+      - row_id: wet_process_electricity_input
+        reason: "same rejected candidates as weaving_electricity_input"
+      - row_id: wet_finished_fabric_output
+        reason: "hybrid search returned a man-made-fibre CPC 26820 fabric, not the CPC 26830 other-material category"
+      - row_id: wet_process_wastewater_output
+        reason: "hybrid search returned generic wastewater or textile wastewater to water; neither preserved the declared transfer-to-treatment destination"
+      - row_id: final_unfinished_fabric_input
+        reason: "same rejected candidates as unfinished_pile_fabric_output"
+      - row_id: final_wet_finished_fabric_input
+        reason: "same rejected candidates as wet_finished_fabric_output"
+      - row_id: final_finishing_electricity_input
+        reason: "same rejected candidates as weaving_electricity_input"
+      - row_id: final_rejected_fabric_output
+        reason: "hybrid search returned generic offcut or aggregate textile solid waste without CPC 26830 fabric identity"

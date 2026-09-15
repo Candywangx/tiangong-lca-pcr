@@ -2,6 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   closeSync,
   existsSync,
+  fchmodSync,
   fstatSync,
   fsyncSync,
   linkSync,
@@ -192,6 +193,7 @@ function createExclusiveFile(target, content, { mode = 0o600 } = {}) {
         | fsConstants.O_NOFOLLOW,
       mode,
     );
+    fchmodSync(descriptor, mode);
     const bytes = Buffer.isBuffer(content) ? content : Buffer.from(String(content));
     let offset = 0;
     while (offset < bytes.length) {

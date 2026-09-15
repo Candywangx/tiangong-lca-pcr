@@ -1,6 +1,7 @@
 ---
-lastReviewedAt: 2026-09-13
-lastReviewedCommit: da2301271085ca4db71804ea458d898deaa59cd5
+lastReviewedAt: 2026-09-15
+lastReviewedCommit: 1be27716d6f1fab0abeec6e64d73deaebba3844b
+lastReviewedNote: "Reviewed PCR PR #9 CLI dispatch and consumption changes: the new check command leaves publish/revise/recover dispatch, immutable release snapshots, bilingual hashes and publication gates unchanged."
 title: PCR Library Release Policy
 docType: contract
 scope: repo

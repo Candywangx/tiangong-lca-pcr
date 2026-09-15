@@ -1,10 +1,897 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21523"
-  title: "Tallow"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.tallow"
+  classification_refs: "CPC 3.0: 21523 Tallow (exact)"
+  covered_products: "Rendered fat from cattle, buffalo, sheep, or goats; greaves fat; oleo stock; edible, feed, or technical grade when explicitly declared"
+  excluded_products: "Unrendered animal fat; rendered pig or poultry fat; fish and marine oils; oleo-oil; tallow oil and separately traded fractions; vegetable tallow; downstream oleochemicals and fuels; untraceable mixed-species averages"
+  representative_product: "Rendered tallow from one declared species group, separated from water and solids and delivered at the rendering or refining facility gate"
+  production_route: "Receipt and preparation of declared fatty material; thermal rendering or melting; phase separation and filtration; conditional purification or refining; storage and dispatch"
+  market_state: "Bulk or packaged tallow at factory gate, with species, subtype, grade, intended use, refining status, physical state, and quality specification declared"
+functional_unit:
+  what: "Supply tallow of the declared species, subtype, grade, intended use, and rendering/refining route at the factory gate"
+  how_much: "1 kg net mass of conforming tallow"
+  how_well: "Meets the declared purchaser, regulatory, or product specification; an edible-tallow claim additionally follows the applicable CXS 211-1999 product definition and food-safety requirements"
+  how_long_or_cycle: "One dispatch lot at the facility gate; no storage life or downstream service is credited"
+  reference_flow_link: "tallow_at_factory_gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_rendering_gate_to_gate
+      applies_to: "foreground_rendering_system"
+      rule: "Include receipt/preparation, rendering or melting, fat/water/solids separation, filtration, required purification or refining, internal transfers, storage, dispatch, cleaning, utilities, direct emissions, residues, wastewater, and on-site treatment attributable to the declared product."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - eu-pef-2021
+    - rule_id: boundary_upstream_traceability
+      applies_to: "raw_fatty_material"
+      rule: "Link upstream husbandry, slaughter, collection, and inbound-logistics datasets by declared species and material grade; do not assign zero upstream burden merely because the material is called a by-product."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_edible_claim
+      applies_to: "edible_tallow"
+      rule: "Apply the CXS 211-1999 edible-tallow definition only to eligible bovine and/or sheep raw material and retain evidence of fitness for human consumption; disclose refining and labelling status."
+      source_ids:
+        - codex-cxs-211-1999
+    - rule_id: boundary_fdm_bat_applicability
+      applies_to: "regulatory_method_selection"
+      rule: "Do not use the EU Food, Drink and Milk BAT conclusions as a rendering/fat-melting process benchmark: their scope explicitly excludes primary products from animal by-products such as rendering and fat melting. Use the applicable local permit and animal-by-product requirements instead."
+      source_ids:
+        - eu-fdm-bat-2019
+    - rule_id: boundary_no_silent_cutoff
+      applies_to: "foreground_inventory"
+      rule: "Record all known foreground inputs and outputs. Any goal-specific cut-off must be explicitly justified, quantified, and reported; a PEF-conformant study follows the PEF cut-off rule and limitations reporting."
+      source_ids:
+        - eu-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Fatty material received at the rendering facility, identified by animal species or traceable species shares, source establishment and lot, grade/eligibility, preservation condition, and mass basis"
+  starting_condition_role: "Foreground gate-in input; upstream animal husbandry, slaughter, collection, and inbound logistics remain linked upstream processes rather than disappearing at the gate"
+  product_classification_scope: "Rendered animal fats within the semantic scope of CPC 3.0 subclass 21523, independent of any classification tree as canonical identity"
+  recursive_input_rule: "Purchased tallow or another CPC 21523 product used as an input is recorded as a distinct upstream product flow with its own conforming dataset; it is not recursively re-rendered into the same foreground record or treated as burden-free feedstock"
+  upstream_dataset_requirement: "Provide species- and grade-specific upstream datasets for raw fatty material and other purchased inputs, including the declared slaughterhouse/rendering allocation status and inbound logistics. PEF-based studies must apply the applicable species-specific animal-husbandry and slaughterhouse rules rather than a cross-species average"
+  disclosure: "Declare included unit processes, species/subtype/grade/use, raw-material source and eligibility, rendering and refining technology, allocation, recycled or recovered energy, wastewater and air treatment, packaging, excluded processes, cut-offs, data gaps, and any boundary extension"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Tallow"
+    uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "animal species or traceable species shares"
+    - "product subtype"
+    - grade
+    - "intended use"
+    - "raw-material eligibility"
+    - "rendering technology"
+    - "refining or modification steps"
+    - "physical state and temperature at weighing"
+    - "moisture/volatile-matter and insoluble-impurity basis"
+    - "quality specification"
+    - "geographic and temporal scope"
+    - "packaging state"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product at dispatch"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated net mass at the declared dispatch temperature and physical state. Exclude pallets, containers, and other packaging from the reference amount; report tare determination and any stock correction."
+  - id: product_condition_basis
+    applies_to: "Reference product quality and yield"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State whether mass is as-dispatched or corrected for moisture/volatile matter or insoluble impurities. Do not apply an unreported correction or compare yields on different bases."
+  - id: species_mass_separation
+    applies_to: "Raw material, intermediate stocks, and output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each animal species separately from receipt through burden assignment. If a physical blend is marketed, retain species-specific masses and calculate only the declared lot-weighted result."
+  - id: energy_unit_consistency
+    applies_to: "Purchased electricity, fuels, steam, and recovered energy"
+    required_property_ref:
+      name: "Energy or fuel mass/volume"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as metered"
+    rule: "Preserve the meter or invoice unit, state heating-value and steam-property conventions where conversion is needed, and normalize only after conversion factors are documented."
+  - id: water_mass_volume_conversion
+    applies_to: "Process and cleaning water"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Preserve measured volume or mass. If converted, record water density and measurement temperature or use a documented facility convention."
+process_map:
+  - id: raw_material_receipt
+    name: "Raw-material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Identify, weigh, segregate, store, trim, and size-reduce eligible fatty material"
+    quantitative_reference: "Per mass of prepared rendering feed"
+  - id: thermal_rendering
+    name: "Thermal rendering and phase separation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Release fat and separate rendered fat from water and solids"
+    quantitative_reference: "Per mass of crude rendered tallow"
+  - id: tallow_conditioning
+    name: "Tallow purification, refining, or modification"
+    inclusion: "conditional"
+    inclusion_condition: "Include every washing, drying, neutralisation, bleaching, deodorisation, fractionation, hydrogenation, or other conditioning step used for the declared product"
+    role: "Produce the declared grade and specification"
+    quantitative_reference: "Per mass of conditioned tallow"
+  - id: storage_dispatch
+    name: "Product storage and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Store, maintain condition, weigh, package if applicable, and transfer conforming product at the factory gate"
+    quantitative_reference: "1 kg net tallow at factory gate"
+process_inventory:
+  - id: raw_material_receipt
+    label: "Raw-material receipt and preparation"
+    inputs:
+      product:
+        - row_id: raw_fatty_material
+          role: "Species- and grade-specific fatty material"
+          name: "Declared raw fatty material by species and subtype"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every incoming lot of bovine, buffalo, sheep, or goat fatty material, greaves-fat feed, or oleo-stock feed separately. The record establishes eligibility and connects the foreground to its upstream burden."
+          amount:
+            expression: "Calibrated net receipt mass, corrected only for documented stock transfers or rejected material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material_lots
+              source_ids:
+                - unsd-cpc-3-0-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_rendering_feed
+          role: "Prepared rendering feed"
+          name: "Prepared fatty material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the species-segregated material transferred to the rendering equipment after documented preparation losses."
+          amount:
+            expression: "Measured transfer mass or calculated receipt mass minus separately measured rejects and inventory change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receipt_rejects
+          role: "Rejected or ineligible source material"
+          name: "Rejected animal-derived material, route-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record material rejected during inspection, trimming, or preparation and its actual treatment route; do not net it silently from the receipt record."
+          amount:
+            expression: "Measured rejected mass by reason and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: thermal_rendering
+    label: "Thermal rendering and phase separation"
+    inputs:
+      product:
+        - row_id: rendering_feed_input
+          role: "Prepared fatty material"
+          name: "Prepared fatty material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared feed transferred from receipt by species, lot, and grade."
+          amount:
+            expression: "Measured or reconciled transfer mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: rendering_thermal_energy
+          role: "Thermal energy supplied to rendering"
+          name: "Steam, fuel, or recovered heat, route-specific"
+          flow_type: "product"
+          property_unit: "Energy or fuel mass/volume / metered unit"
+          description: "Record purchased steam, fuel, or separately metered recovered heat used by the rendering operation. Recovered energy must retain its source and allocation treatment."
+          amount:
+            expression: "Metered use, invoice allocation supported by operating hours, or documented energy balance"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: rendering_electricity
+          role: "Electricity supplied to rendering and separation"
+          name: "Electricity, market or supplier-specific as documented"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for size reduction, cooking, presses, decanters, centrifuges, pumps, filtration, and attributable controls."
+          amount:
+            expression: "Submetered consumption or documented facility-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: rendering_water
+          role: "Rendering and cleaning water"
+          name: "Water supply by source and treatment"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water that enters the process or attributable cleaning system, segregated by source and use. A dry-rendering route may legitimately report no process water but must still record cleaning water."
+          amount:
+            expression: "Metered or reconciled water supplied to rendering and attributable cleaning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_cleaning
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_tallow_output
+          role: "Crude rendered tallow"
+          name: "Tallow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rendered fat leaving primary phase separation, before any declared downstream conditioning."
+          amount:
+            expression: "Measured net mass, reconciled with tank inventory change and sampling losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per rendering batch or reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: rendering_coproducts
+          role: "Separated edible or marketable solids"
+          name: "Route-specific rendering co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record greaves, proteinaceous solids, bones, or other marketable outputs separately by legal category, grade, mass, destination, and value. Do not combine marketable products with wastes."
+          amount:
+            expression: "Measured output mass by co-product and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rendering_wastewater
+          role: "Rendering wastewater or separated aqueous phase"
+          name: "Wastewater, route- and treatment-specific"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the aqueous phase and cleaning wastewater at the point it enters on-site treatment or leaves the facility, including its treatment destination and relevant pollutant load data."
+          amount:
+            expression: "Metered or water-balance-derived volume; pollutant loads use measured concentration and flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_waste
+              source_ids: []
+            ranges: []
+        - row_id: rendering_residues
+          role: "Non-marketable rendering residues"
+          name: "Rendering residue or treatment waste, route-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record solids, sludge, screenings, and off-specification material by legal status and actual treatment route."
+          amount:
+            expression: "Measured mass or documented container/hauler record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: rendering_air_emissions
+          role: "Direct air emissions from rendering and on-site combustion"
+          name: "Individual elementary flows to air selected for each reported substance"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated direct releases from rendering, odour-control equipment, boilers, and other included combustion. Do not duplicate emissions already represented by a purchased-energy dataset."
+          amount:
+            expression: "Direct measurement or calculation from collected activity data using a disclosed source-backed factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_waste
+              source_ids: []
+            ranges: []
+  - id: tallow_conditioning
+    label: "Tallow purification, refining, or modification"
+    inputs:
+      product:
+        - row_id: conditioning_feed
+          role: "Crude tallow sent to conditioning"
+          name: "Tallow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record crude tallow entering each included purification, refining, or modification route without mixing species or grades in the inventory record."
+          amount:
+            expression: "Measured transfer mass and tank inventory reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conditioned tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_inputs
+          role: "Conditioning utilities and process aids"
+          name: "Actual utility or process-aid product"
+          flow_type: "product"
+          property_unit: "Applicable mass, volume, or energy property / recorded unit"
+          description: "Record water, electricity, heat, acids, alkalis, bleaching media, filter aids, antioxidants, catalysts, hydrogen, and other inputs individually when used; the row is instantiated once per actual input."
+          amount:
+            expression: "Meter, batch sheet, invoice, dosing log, or stock-change record"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conditioned tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_tallow_output
+          role: "Conditioned or refined tallow"
+          name: "Tallow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the tallow leaving the last included conditioning step and state every applied refinement or modification."
+          amount:
+            expression: "Measured net mass reconciled with inventory and conditioning losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per conditioning batch or reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - codex-cxs-211-1999
+            ranges: []
+      waste:
+        - row_id: conditioning_waste
+          role: "Conditioning residues and wastewater"
+          name: "Actual conditioning waste or wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or Volume / kg or m3"
+          description: "Record soapstock, spent media, sludge, wastewater, off-specification fractions, and other residues individually by mass or volume and treatment route."
+          amount:
+            expression: "Measured or reconciled quantity by waste type and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conditioned tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: conditioning_direct_emissions
+          role: "Direct conditioning emissions"
+          name: "Individual elementary flow selected for the emitted substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct air or water releases from included conditioning and treatment steps as individual elementary flows."
+          amount:
+            expression: "Direct measurement or calculation from collected activity data with a disclosed source-backed factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conditioned tallow output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_waste
+              source_ids: []
+            ranges: []
+  - id: storage_dispatch
+    label: "Product storage and dispatch"
+    inputs:
+      product:
+        - row_id: dispatch_feed
+          role: "Tallow transferred to product storage"
+          name: "Tallow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record crude or conditioned tallow entering product storage, matching the declared product route."
+          amount:
+            expression: "Measured transfer mass and tank inventory reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_and_quality
+              source_ids: []
+            ranges: []
+        - row_id: storage_dispatch_inputs
+          role: "Storage energy and dispatch packaging"
+          name: "Actual energy carrier, gas, or packaging product"
+          flow_type: "product"
+          property_unit: "Applicable mass, volume, or energy property / recorded unit"
+          description: "Record tank heating, pumping, loading electricity, inert gas, and packaging separately when used. Bulk reusable transport containers are modelled according to the study's documented reuse convention."
+          amount:
+            expression: "Meter, invoice, packaging issue, or documented reuse record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_and_quality
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tallow_at_factory_gate
+          role: "Tallow at factory gate"
+          name: "Tallow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product in the declared dispatch condition. Product identity and quality qualifiers must match the lot and the intended use."
+          amount:
+            expression: "1 kg calibrated net dispatch mass, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: storage_dispatch_waste
+          role: "Storage losses, off-specification product, and packaging waste"
+          name: "Actual waste flow by material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record actual tank bottoms, spills recovered as waste, rejected product, and packaging waste separately with their destinations."
+          amount:
+            expression: "Measured quantity, inventory reconciliation, or documented waste-transfer record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_and_quality
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: storage_dispatch_emissions
+          role: "Direct storage and loading releases"
+          name: "Individual elementary flow selected for the emitted substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record actual direct releases from storage, heating, loading, spills, and on-site controls when they cross the environmental boundary."
+          amount:
+            expression: "Direct measurement or calculation from collected activity data with a disclosed source-backed factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tallow at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_waste
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "multifunctional_foreground_processes"
+    rule: "First subdivide directly attributable receipt, rendering, conditioning, storage, treatment, energy, water, and emission records by product, species, grade, and process. Use system expansion only when the additional function and substituted product can be modelled and justified for the study goal."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_species_specific_upstream
+    applies_to: "husbandry_slaughter_and_rendering_burdens"
+    rule: "Keep cattle, buffalo, sheep, and goat upstream burdens separate. For PEF-based cattle, sheep, or goat studies, apply the applicable PEF animal-husbandry and slaughterhouse rules for that species group; do not calculate an unconditional cross-species average. Buffalo or other cases outside an explicit PEF default require a justified, source-backed or foreground allocation method."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_remaining_coproducts
+    applies_to: "non_subdividable_rendering_and_conditioning_flows"
+    rule: "If subdivision or justified system expansion cannot resolve a multifunctional flow, use a relevant physical relationship only when it represents the function. Otherwise use economic allocation with contemporaneous output masses and market values at the same process gate and period, and disclose why higher-priority approaches were rejected."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_waste_status
+    applies_to: "residues_and_recovered_outputs"
+    rule: "Determine product, co-product, by-product, residue, or waste status from actual legal status, market transaction, and destination. Do not remove burdens by relabelling a valuable output as waste, and include burdens of on-site waste management in the producing system unless a governing method explicitly requires another treatment."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_physical_blend
+    applies_to: "marketed_mixed_species_tallow"
+    rule: "A marketed blend may be represented only from separately modelled species inventories using collected lot masses: blend burden equals the sum of each species-specific burden multiplied by its actual mass share. Report the shares and source datasets; do not use a generic equal-share or category-average blend."
+    source_ids: []
+  - rule_id: allocation_recovered_energy
+    applies_to: "energy_recovery"
+    rule: "Report exported or internally recovered energy separately, prevent double counting between avoided purchases and co-product credits, and apply the study's declared multifunctionality method consistently."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_material_lots
+      process_id: "raw_material_receipt"
+      flow_role: "Raw fatty material identity and receipt"
+      record_type: "Lot receipt, supplier declaration, weighbridge record, and eligibility record"
+      raw_fields: "date/time; supplier and source facility; lot id; species; species share if a physical blend; tissue/material subtype; legal category; grade; intended use; slaughter/fitness evidence when applicable; preservation state; gross, tare, and net mass; rejected mass; inbound route"
+      collection_method: "Calibrated weighing linked to lot inspection and supplier documentation"
+      unit: "kg and declared condition"
+      frequency: "Each receipt lot"
+      temporal_coverage: "All lots in the representative production period"
+      site_scope: "Each source facility and rendering site"
+      aggregation_rule: "Sum accepted net mass by species, subtype, grade, and route; never aggregate unidentified species"
+      quality_evidence: "Calibration record; lot traceability; supplier declaration; food-safety or legal eligibility evidence where applicable"
+    - protocol_id: cp_energy_records
+      process_id: "thermal_rendering"
+      flow_role: "Electricity, fuel, steam, and recovered heat"
+      record_type: "Meter, invoice, fuel stock, steam record, and operating log"
+      raw_fields: "meter id; opening/closing reading; fuel quantity; electricity; steam mass/pressure/temperature; recovered heat source; process operating hours; allocation driver; conversion factor and source"
+      collection_method: "Submetering preferred; otherwise reconciled facility meter or invoice with documented allocation"
+      unit: "kWh, MJ, kg, m3"
+      frequency: "Each batch, shift, or meter interval"
+      temporal_coverage: "Representative production period including shutdown/start-up treatment"
+      site_scope: "Each included process and site"
+      aggregation_rule: "Convert with documented factors, subtract separately metered non-process use, and normalize to process output"
+      quality_evidence: "Meter calibration; invoice reconciliation; fuel/steam specification; allocation worksheet"
+    - protocol_id: cp_water_and_cleaning
+      process_id: "thermal_rendering"
+      flow_role: "Process and cleaning water"
+      record_type: "Water meter, cleaning log, and chemical dosing record"
+      raw_fields: "source; meter readings; process use; cleaning use; recirculation; discharge route; cleaning agent and dose"
+      collection_method: "Metered by use where practical; otherwise water balance with documented allocation"
+      unit: "m3, kg"
+      frequency: "Each batch, cleaning event, or meter interval"
+      temporal_coverage: "Representative production period"
+      site_scope: "Each rendering, conditioning, and cleaning system"
+      aggregation_rule: "Sum by source and use; keep recirculated water separate from fresh withdrawal"
+      quality_evidence: "Meter calibration; cleaning log; water balance closure"
+    - protocol_id: cp_mass_balance
+      process_id: "thermal_rendering"
+      flow_role: "Materials, products, co-products, rejects, residues, and stock"
+      record_type: "Batch sheet, tank gauge, weighbridge, laboratory sample, and inventory record"
+      raw_fields: "opening/closing stock; receipts/transfers; species; grade; crude and conditioned tallow; co-product masses; wastewater/aqueous phase; residues; sampling and spill losses"
+      collection_method: "Direct weighing or calibrated tank measurement with reconciled stock change"
+      unit: "kg and m3 where applicable"
+      frequency: "Each batch or continuous-production reconciliation period"
+      temporal_coverage: "Representative production period"
+      site_scope: "Each process, species, grade, and site"
+      aggregation_rule: "Inputs plus opening stock equal outputs plus closing stock and recorded losses within a declared site-specific tolerance"
+      quality_evidence: "Scale/tank calibration; signed batch records; reconciliation report and investigation of deviations"
+    - protocol_id: cp_conditioning_records
+      process_id: "tallow_conditioning"
+      flow_role: "Conditioning inputs and route"
+      record_type: "Batch recipe, dosing log, meter, and stock record"
+      raw_fields: "conditioning step; temperature/time where relevant; water; heat; electricity; acid/alkali; bleaching/filter media; catalyst or hydrogen; additives; input/output mass; residues"
+      collection_method: "Batch records and calibrated dosing or utility measurement"
+      unit: "kg, m3, kWh, MJ"
+      frequency: "Each conditioning batch or meter interval"
+      temporal_coverage: "All included conditioning campaigns"
+      site_scope: "Each declared technology and site"
+      aggregation_rule: "Aggregate only identical species, grade, route, and product specification"
+      quality_evidence: "Batch authorization; meter/dosing calibration; material specification; route traceability"
+    - protocol_id: cp_direct_emissions_and_waste
+      process_id: "thermal_rendering"
+      flow_role: "Direct air/water emissions and waste destinations"
+      record_type: "Stack/vent measurement, wastewater sample and flow, emission calculation, waste transfer, and treatment record"
+      raw_fields: "substance; compartment; point; flow; concentration; sampling time; activity data; factor and source; waste type; legal status; mass/volume; destination; on-site treatment"
+      collection_method: "Direct measurement where required; otherwise calculation from collected activity using a disclosed source-backed factor"
+      unit: "kg, m3, concentration unit"
+      frequency: "At permit/monitoring frequency and for each waste transfer"
+      temporal_coverage: "Representative production period, including abnormal events disclosed separately"
+      site_scope: "Every included emission point and treatment route"
+      aggregation_rule: "Calculate loads from matched flow and concentration periods; sum by substance and compartment; normalize after treatment boundary is fixed"
+      quality_evidence: "Laboratory accreditation/QA; sampling plan; monitor calibration; factor source; waste manifest; permit record"
+    - protocol_id: cp_dispatch_and_quality
+      process_id: "storage_dispatch"
+      flow_role: "Product mass, condition, quality, and packaging"
+      record_type: "Tank record, dispatch weigh ticket, certificate of analysis, packaging issue, and product release"
+      raw_fields: "lot id; species/subtype; grade/use; route; refining status; temperature/state; gross/tare/net mass; packaging; moisture/volatile matter; insoluble impurities; applicable quality tests; specification; release decision"
+      collection_method: "Calibrated net weighing linked to lot release and laboratory record"
+      unit: "kg and test-specific units"
+      frequency: "Each dispatch lot"
+      temporal_coverage: "All dispatched lots in the representative production period"
+      site_scope: "Each product, storage system, and site"
+      aggregation_rule: "Sum only conforming net mass on the declared condition basis; keep off-specification product separate"
+      quality_evidence: "Scale calibration; certificate of analysis; specification and release approval; traceability to input lots"
+    - protocol_id: cp_allocation_records
+      process_id: "thermal_rendering"
+      flow_role: "Allocation and co-product evidence"
+      record_type: "Output mass, sales record, market evidence, and allocation worksheet"
+      raw_fields: "output identity; species; grade; legal status; mass; price; currency; market and date; destination; directly attributable inputs; allocation method; justification; factor"
+      collection_method: "Reconcile production and sales records at the same process gate and period"
+      unit: "kg, currency/kg, dimensionless factor"
+      frequency: "Each reporting period and material method change"
+      temporal_coverage: "Same period as inventory data"
+      site_scope: "Each multifunctional process and site"
+      aggregation_rule: "Apply subdivision first; calculate any economic shares from matched output masses and contemporaneous values; retain species-specific factors"
+      quality_evidence: "Sales/invoice evidence; mass reconciliation; approved method rationale; sensitivity result where required"
+  calculation_rules:
+    - id: calc_reference_net_mass
+      applies_to: "Dispatch lot"
+      rule: "Net reference mass = gross dispatch mass - tare mass - excluded packaging mass; apply a stock correction only when the measurement boundary requires it and retain the reconciliation"
+      inputs:
+        - "gross mass"
+        - tare
+        - "packaging mass"
+        - "stock correction"
+      output: "kg tallow at declared dispatch condition"
+      source_ids: []
+    - id: calc_normalized_inventory
+      applies_to: "Each inventory row"
+      rule: "Normalized amount = included-period row quantity / conforming reference-product net mass from the same period and scope"
+      inputs:
+        - "row quantity"
+        - "conforming net tallow mass"
+      output: "row amount per 1 kg tallow"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_material_balance
+      applies_to: "Each material process"
+      rule: "Balance difference = inputs + opening stock - outputs - closing stock - separately recorded losses; compare with the site's declared measurement-uncertainty tolerance and investigate exceedance"
+      inputs:
+        - "all material transfers"
+        - stocks
+        - losses
+      output: "reconciled mass balance and deviation"
+      source_ids: []
+    - id: calc_emission_load
+      applies_to: "Direct measured emission"
+      rule: "Emission load = matched concentration x matched flow, with unit and moisture/standard-condition conversions documented; calculated emissions instead use collected activity x disclosed source-backed factor"
+      inputs:
+        - "concentration and flow"
+        - "or activity and factor"
+      output: "kg substance by compartment"
+      source_ids: []
+    - id: calc_economic_allocation
+      applies_to: "Remaining non-subdividable multifunctional burden"
+      rule: "Economic share for output i = (mass_i x contemporaneous gate price_i) / sum(mass_j x gate price_j); apply only after higher-priority options are rejected and keep species groups separate"
+      inputs:
+        - "output masses"
+        - "matched prices"
+        - "directly attributable burdens"
+      output: "allocation shares and allocated inventory"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_traceable_species_blend
+      applies_to: "Marketed physical blend"
+      rule: "Blend inventory per kg = sum(actual mass share_s x species-specific inventory_s); shares must sum to one after rounding reconciliation"
+      inputs:
+        - "actual species masses and species-specific inventories"
+      output: "declared lot-weighted blend inventory"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference flow and raw material"
+      requirement: "Species, subtype, grade, intended use, raw-material eligibility, route, refining status, physical state, and specification must be traceable from receipt through dispatch."
+      evidence: "Lot genealogy, supplier declarations, batch records, and product release record"
+    - id: dq_measurement
+      applies_to: "Mass, energy, water, and direct emissions"
+      requirement: "Use calibrated or verified instruments where available; document meter coverage, estimation method, unit conversions, uncertainty, and reconciliation."
+      evidence: "Calibration certificates, meter map, invoices, laboratory QA, and calculation workbook"
+    - id: dq_temporal
+      applies_to: "Foreground reporting period"
+      requirement: "Cover a representative operating period and disclose dates, seasonality, campaigns, start-up/shutdown treatment, abnormal events, and missing intervals."
+      evidence: "Production calendar, operating log, and completeness assessment"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Include all known product, co-product, waste, utility, and direct elementary flows for included processes; list and justify any exclusions or data gaps."
+      evidence: "Process-flow diagram, input/output register, mass/energy/water reconciliation, and limitations register"
+    - id: dq_species_separation
+      applies_to: "Upstream and foreground aggregation"
+      requirement: "Preserve species-specific masses, upstream datasets, and allocation. A mixed-species marketed lot requires actual shares and separately modelled components."
+      evidence: "Lot records, species declarations, allocation worksheet, and blend calculation"
+    - id: dq_allocation
+      applies_to: "Multifunctional processes"
+      requirement: "Demonstrate subdivision of attributable flows first and retain matched mass, price, market, time, and rationale for any remaining allocation."
+      evidence: "Process-level meters/records, co-product sales evidence, method decision, and sensitivity analysis where required"
+    - id: dq_source_scope
+      applies_to: "External methods and standards"
+      requirement: "Apply each source only within its scope. In particular, do not treat CXS 211 as defining all CPC 21523 products or EU FDM BAT as a rendering/fat-melting benchmark."
+      evidence: "Source applicability matrix and dataset methodological notes"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "The reference product UUID must be 74260d26-09ba-4d24-93bd-c7687c2f2511, the Mass property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, the unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and the reference amount 1 kg net tallow."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset_metadata"
+    rule: "Reject an incomplete package when species or traceable shares, subtype, grade, intended use, route, refining status, physical state/temperature, quality basis, packaging state, or allocation method is missing."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxs-211-1999
+  - rule_id: validate_scope_exclusions
+    applies_to: "product_identity"
+    rule: "Reject pig fat, poultry fat, fish or marine oils, unrendered fat, oleo-oil, tallow oil/fractions, vegetable tallow, downstream oleochemicals/fuels, and untraceable mixtures as reference products under this PCR."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxs-329-2017
+  - rule_id: validate_edible_tallow_claim
+    applies_to: "edible_tallow"
+    rule: "An edible-tallow claim must identify eligible bovine and/or sheep material fit for human consumption and disclose any refining; other species or grades must use their applicable specification without claiming automatic CXS 211 coverage."
+    source_ids:
+      - codex-cxs-211-1999
+  - rule_id: validate_species_no_unconditional_average
+    applies_to: "inventory_and_allocation"
+    rule: "Fail validation when different species are pooled without actual lot shares, separate upstream inventories, and the traceable blend calculation, or when one species allocation factor is applied indiscriminately to another species."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_process_route
+    applies_to: "process_inventory"
+    rule: "The inventory must include all required processes and every conditioning step actually used; it must not include a generic refining route for an unrefined product or omit treatment and direct releases inside the declared boundary."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_mass_reconciliation
+    applies_to: "material_inventory"
+    rule: "Inputs, outputs, stock change, and separately recorded losses must reconcile within a declared, evidence-based site tolerance; missing co-products, wastewater, or residues make the check inconclusive rather than zero."
+    source_ids: []
+  - rule_id: validate_allocation_hierarchy
+    applies_to: "multifunctional_processes"
+    rule: "Verify subdivision first, then justified system expansion or a relevant physical relation, and only then another relationship such as economic allocation; verify consistent gates, periods, species, and output status."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_emissions_and_waste
+    applies_to: "direct_environmental_flows"
+    rule: "Confirm that direct air/water emissions and waste quantities use measured records or collected activity with disclosed source-backed factors and that on-site treatment is neither omitted nor double counted."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_source_applicability
+    applies_to: "method_sources"
+    rule: "Flag any use of EU FDM BAT rendering or fat-melting values as unsupported because that decision excludes primary animal-by-product rendering and fat melting from its scope."
+    source_ids:
+      - eu-fdm-bat-2019
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for a declared tallow product and route"
+  downstream_use: "May be published as a secondary_dataset or background_dataset for studies needing species-, grade-, route-, geography-, and time-matched factory-gate tallow"
+  allowed_use: "Use for the declared species/subtype/grade/use and rendering/refining route, with compatible upstream slaughter/allocation modelling and explicit quality basis"
+  excluded_use: "Generic proxy across animal species, edible and non-edible grades, materially different refining routes, untraceable mixtures, pig/poultry/marine/vegetable fats, or downstream oleochemical/fuel production without an explicit model extension"
+  required_metadata: "PCR id and version; product-flow UUID; species or actual species shares; subtype; grade and intended use; raw-material eligibility; facility geography; technology and refining steps; reference condition; reporting period; allocation method/factors; upstream dataset identities; packaging; data sources; cut-offs and limitations"
+  required_quality_disclosure: "Meter and laboratory coverage; calibration; mass/energy/water reconciliation; temporal and site coverage; species traceability; allocation evidence; direct-emission method; missing flow UUIDs or data; source applicability; uncertainty and any inconclusive validation checks"
+  update_trigger: "Change in animal species or shares, raw-material eligibility or source, product grade/use/specification, rendering or refining technology, facility boundary, energy/water/emission treatment, co-product market or allocation method, upstream dataset, regulation/standard, or a material data-quality finding"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Explanatory Notes*, subclass 21523 Tallow, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
+    used_for: "Category inclusions and exclusions; distinction from unrendered, pig, poultry, marine, fractionated, and vegetable fats"
+  - id: "codex-cxs-211-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, *Standard for Named Animal Fats (CXS 211-1999)*, amended through 2024, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pl/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B211-1999%252FCXS_211e.pdf (retrieved 2026-08-12)"
+    used_for: "Edible bovine/sheep tallow and oleo-stock scope, raw-material fitness, refined-product disclosure, quality-basis context"
+  - id: "codex-cxs-329-2017"
+    type: "standard"
+    reference: "Codex Alimentarius, *Standard for Fish Oils (CXS 329-2017)*, amended through 2024, https://workspace.fao.org/sites/codex/Standards/CXS%20329-2017/CXS_329e.pdf (retrieved 2026-08-12)"
+    used_for: "Confirms fish and shellfish oils as a separate product family excluded from this PCR"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-12)"
+    used_for: "Functional unit, boundary, company-specific inventory, cut-off disclosure, multifunctionality hierarchy, and species-specific animal/slaughterhouse allocation rules"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "European Commission, Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-12)"
+    used_for: "Applicability screen: explicitly excludes primary animal-by-product rendering and fat melting, preventing misuse of its sector values"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:eff2a4614bb42ae3eff795dd9fac62efae624ed90340c50b41c28c4c95f2e709"
+  generated_content_sha256: "sha256:e69ea796fa51d3cf40520df41395303612c58a8f2e019bd144bc1956afbe86ff"

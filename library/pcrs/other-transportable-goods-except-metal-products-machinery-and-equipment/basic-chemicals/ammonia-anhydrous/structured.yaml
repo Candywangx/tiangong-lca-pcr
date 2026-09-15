@@ -1,10 +1,1170 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34651"
-  title: "Ammonia, anhydrous"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.ammonia-anhydrous"
+  classification_refs: "CPC 3.0: 34651 - Ammonia, anhydrous"
+  covered_products: "Anhydrous ammonia, including refrigerated or pressurized liquefied ammonia, with declared grade, purity, water content, and plant-gate state"
+  excluded_products: "Ammonia in aqueous solution; ammonium hydroxide; ammonia-containing mixtures; downstream fertilizers and chemicals; recovered dilute ammonia unless upgraded to the declared anhydrous specification"
+  representative_product: "Marketable anhydrous ammonia, NH3, as a liquefied or pressurized product at the producing plant gate"
+  production_route: "Declared Haber-Bosch synthesis route with route-specific hydrogen or synthesis-gas production, purification, synthesis loop, product condensation, and storage; no route is assumed by default"
+  market_state: "Finished product at plant gate, with delivery state, storage temperature, storage pressure, purity, and water content declared"
+functional_unit:
+  what: "Anhydrous ammonia product at the producing plant gate"
+  how_much: "1 kg NH3 on a 100% NH3-equivalent mass basis"
+  how_well: "Product qualifies as anhydrous ammonia under the declared grade or specification; actual purity and water content are reported and aqueous ammonia is excluded"
+  how_long_or_cycle: "One reporting period representative of the declared plant, route, and operating campaign"
+  reference_flow_link: "Net saleable anhydrous ammonia leaving final conditioning and entering plant-gate storage or loading"
+system_boundary:
+  rules:
+    - rule_id: route_complete_boundary
+      applies_to: "foreground_system_boundary"
+      rule: "Include route-defining feedstock or hydrogen production, air or nitrogen supply, synthesis-gas purification where applicable, ammonia synthesis, condensation, refrigeration, storage, and plant-gate loading."
+      source_ids:
+        - iea-ammonia-roadmap-2021
+        - us-epa-ap42-ammonia
+    - rule_id: feedstock_energy_separation
+      applies_to: "foreground_system_boundary"
+      rule: "Distinguish feedstock used non-energetically from fuel, steam, and electricity used for process energy, while preserving complete energy and carbon balances."
+      source_ids:
+        - us-epa-ghgrp-ammonia-tsd-2009
+        - eu-cbam-2023-1773
+    - rule_id: upstream_methane_boundary
+      applies_to: "hydrocarbon_supply"
+      rule: "Include or explicitly link upstream methane supply-chain emissions for natural gas, biogas, or other methane-containing feedstocks; disclose data source, geography, period, and whether measured or modelled."
+      source_ids:
+        - iea-ammonia-roadmap-2021
+    - rule_id: hydrogen_route_boundary
+      applies_to: "hydrogen_supply"
+      rule: "Identify whether hydrogen is produced on site or supplied separately and identify steam reforming, gasification, electrolysis, chlor-alkali, biomass, or other production route; separately supplied hydrogen carries its own upstream inventory."
+      source_ids:
+        - iea-ammonia-roadmap-2021
+        - eu-cbam-2023-1773
+    - rule_id: carbon_capture_boundary
+      applies_to: "carbon_dioxide_handling"
+      rule: "Report CO2 generated, separated, captured, vented, used, transported, injected, and demonstrably stored as separate quantities; do not treat separation, sale, utilization, or temporary binding as permanent storage without the corresponding boundary and evidence."
+      source_ids:
+        - us-epa-ghgrp-ammonia-tsd-2009
+        - eu-cbam-2023-1773
+    - rule_id: storage_loading_boundary
+      applies_to: "product_conditioning_and_storage"
+      rule: "Include refrigeration or compression, inventory change, storage losses, boil-off recovery, vents, flares, and loading operations up to the declared plant gate; downstream distribution and use are excluded unless added as a separate scenario."
+      source_ids:
+        - cdc-niosh-ammonia
+boundary_abstraction:
+  declared_starting_condition: "Extraction or production of route-defining feedstock, hydrogen, electricity, fuels, water, and other material inputs, represented by foreground records or traceable upstream datasets"
+  starting_condition_role: "Cradle-to-plant-gate starting condition for route comparison and foreground package production"
+  product_classification_scope: "CPC 3.0 code 34651 only; aqueous ammonia under CPC 34652 and downstream ammonia derivatives are outside scope"
+  recursive_input_rule: "If anhydrous ammonia from the same category enters blending, conditioning, or storage, record it as a technosphere input with a separate upstream dataset and do not recreate its upstream production inside the receiving process."
+  upstream_dataset_requirement: "Route-specific datasets must represent feedstock or hydrogen production, electricity and fuels, upstream methane where hydrocarbon supply is used, and carbon-capture transport and storage where a storage claim is made."
+  disclosure: "Declare route, hydrogen source, energy supply, upstream methane treatment, capture boundary, allocation, and storage conditions; never label an undeclared or single-route result as generic anhydrous ammonia."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Ammonia, anhydrous"
+    uuid: "a0e3299b-9484-4ec3-89d3-cd1e2d6c2225"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product grade or specification"
+    - "NH3 purity"
+    - "water content"
+    - "physical state"
+    - "production route"
+    - "hydrogen source and production route"
+    - "fossil or biogenic feedstock"
+    - "plant and geography"
+    - "reporting period"
+    - "electricity and thermal-energy supply"
+    - "upstream methane boundary and data source"
+    - "carbon capture point"
+    - "gross capture"
+    - disposition
+    - transport
+    - "storage and permanence boundary"
+    - "co-products and allocation method"
+    - "storage temperature"
+    - "storage pressure"
+    - "plant-gate condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net saleable anhydrous-ammonia mass at the plant gate and normalize all inventory results to 1 kg NH3 equivalent."
+  - id: purity_correction
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calculate NH3-equivalent mass as gross product mass multiplied by measured NH3 mass fraction; retain gross mass, purity, water content, sampling method, and test result."
+  - id: energy_separation
+    applies_to: "feedstock and energy inputs"
+    required_property_ref:
+      name: "Declared property appropriate to each input"
+      uuid: ""
+    required_unit: "kg, MJ, or kWh"
+    rule: "Record feedstock used as a hydrogen or carbon source separately from fuel and electricity used as energy; do not combine non-energy and energy use into one undocumented amount."
+  - id: storage_condition
+    applies_to: "final conditioning and storage"
+    required_property_ref:
+      name: "Mass and operating condition"
+      uuid: ""
+    required_unit: "kg, deg C, and absolute or gauge pressure with basis"
+    rule: "Report time-weighted storage temperature and pressure, pressure basis, inventory change, loading losses, and boil-off or vent recovery consistently for the reporting period."
+process_map:
+  - id: hydrogen_syngas_supply
+    name: "Hydrogen or synthesis-gas supply"
+    inclusion: "required"
+    inclusion_condition: "Select the actual on-site or supplied hydrogen route; unused alternatives are not included."
+    role: "Provides route-specific hydrogen-bearing feed and its upstream burdens."
+    quantitative_reference: "per 1 kg NH3-equivalent final product"
+  - id: gas_conditioning
+    name: "Synthesis-gas conditioning and nitrogen integration"
+    inclusion: "required"
+    inclusion_condition: "Apply purification steps appropriate to the declared feed route; supplied-pure-hydrogen routes may omit inapplicable reforming cleanup but still document nitrogen supply."
+    role: "Produces synthesis gas meeting the ammonia-loop specification and separates CO2 or other impurities."
+    quantitative_reference: "per 1 kg NH3-equivalent final product"
+  - id: ammonia_synthesis
+    name: "Ammonia synthesis loop"
+    inclusion: "required"
+    inclusion_condition: "Always included."
+    role: "Compresses, reacts, circulates, condenses, and purges the nitrogen-hydrogen loop."
+    quantitative_reference: "per 1 kg NH3-equivalent final product"
+  - id: product_conditioning_storage
+    name: "Product conditioning, storage, and loading"
+    inclusion: "required"
+    inclusion_condition: "Always included to the declared plant gate."
+    role: "Delivers saleable anhydrous ammonia under declared purity, temperature, and pressure conditions."
+    quantitative_reference: "per 1 kg NH3-equivalent final product"
+  - id: carbon_handling
+    name: "CO2 utilization, transport, and storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when separated CO2 leaves the core plant for use, export, transport, injection, storage, or a capture-related claim."
+    role: "Closes the carbon balance and supports only evidenced capture or storage claims."
+    quantitative_reference: "per 1 kg NH3-equivalent final product"
+process_inventory:
+  - id: hydrogen_syngas_supply
+    label: "Hydrogen or synthesis-gas supply"
+    inputs:
+      product:
+        - row_id: route_feedstock_hydrogen
+          role: "Route-defining feedstock or supplied hydrogen"
+          name: "Declared natural gas, biogas, coal, petroleum-derived feedstock, biomass, water for electrolysis, or supplied hydrogen"
+          flow_type: "product"
+          property_unit: "Mass or energy content / kg or MJ, and hydrogen mass / kg where supplied"
+          description: "Record every feedstock that supplies hydrogen or carbon to the route, or separately supplied hydrogen, without combining unlike sources."
+          amount:
+            expression: "measured custody-transfer or production records, segregated by feedstock and hydrogen route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_materials
+              source_ids:
+                - iea-ammonia-roadmap-2021
+                - eu-cbam-2023-1773
+            ranges: []
+        - row_id: route_energy
+          role: "Process electricity and thermal energy"
+          name: "Route-specific electricity, fuel, and steam supplies"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; fuel mass or volume retained with conversion basis"
+          description: "Record electricity, fuels, imported steam, and exported energy separately from non-energy feedstock."
+          amount:
+            expression: "metered consumption minus evidenced export, with each carrier reported separately"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-epa-ghgrp-ammonia-tsd-2009
+                - eu-cbam-2023-1773
+            ranges: []
+      waste:
+        - row_id: route_treatment_waste
+          role: "Spent catalysts, sorbents, and treatment residues"
+          name: "Declared spent catalyst, sorbent, slag, ash, or treatment residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record route-specific solid and liquid residues when they leave the foreground system for treatment or recovery."
+          amount:
+            expression: "weighed shipment or inventory-change records by waste type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+      elementary:
+        - row_id: upstream_methane
+          role: "Upstream methane emissions"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Represent methane emitted across the declared hydrocarbon supply chain; keep measured supplier evidence distinct from modelled upstream datasets."
+          amount:
+            expression: "supplier-specific upstream inventory or calculated route inventory linked to feedstock quantity, geography, period, and source"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_upstream_methane
+              source_ids:
+                - iea-ammonia-roadmap-2021
+            ranges: []
+    outputs:
+      product:
+        - row_id: hydrogen_bearing_feed
+          role: "Hydrogen-bearing feed to conditioning"
+          name: "Route-specific hydrogen or raw synthesis gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Report hydrogen or raw synthesis gas transferred to conditioning with composition and pressure basis."
+          amount:
+            expression: "measured transfer quantity with dry-gas composition and hydrogen content"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per process output transferred to gas conditioning"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_syngas_transfer
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: route_direct_ghg
+          role: "Direct route greenhouse-gas emissions"
+          name: "Declared direct greenhouse-gas emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated CO2, CH4, and N2O emissions from feedstock conversion and fuel combustion as separate elementary flows."
+          amount:
+            expression: "stack or continuous monitoring, carbon balance, or approved calculation by gas and source"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ghgrp-ammonia-tsd-2009
+            ranges: []
+  - id: gas_conditioning
+    label: "Synthesis-gas conditioning and nitrogen integration"
+    inputs:
+      product:
+        - row_id: conditioning_feed
+          role: "Hydrogen-bearing feed"
+          name: "Route-specific hydrogen or raw synthesis gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive the declared raw synthesis gas or hydrogen stream and retain its composition and upstream dataset link."
+          amount:
+            expression: "transferred amount reconciled to the upstream process output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per process output of conditioned synthesis gas"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_syngas_transfer
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+        - row_id: nitrogen_supply
+          role: "Air or nitrogen supply"
+          name: "Air or nitrogen for ammonia synthesis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the nitrogen source, air-separation route where applicable, and associated energy or upstream dataset."
+          amount:
+            expression: "measured flow and composition or mass balance from synthesis-loop records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_syngas_transfer
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+      waste:
+        - row_id: conditioning_waste
+          role: "Conditioning residues and process condensate"
+          name: "Declared conditioning waste or wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record spent sorbents, treatment residues, and process condensate by destination, including recovery or wastewater treatment."
+          amount:
+            expression: "measured discharge, shipment, or inventory-change record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_syngas
+          role: "Conditioned synthesis gas"
+          name: "Conditioned synthesis gas for ammonia synthesis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Report the nitrogen-hydrogen feed transferred to the synthesis loop with composition and impurity specification."
+          amount:
+            expression: "measured flow or reconciled dry-gas mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per process output transferred to ammonia synthesis"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_syngas_transfer
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+        - row_id: separated_co2
+          role: "Separated carbon dioxide"
+          name: "Separated carbon dioxide stream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Keep physical CO2 separation distinct from subsequent capture, utilization, transport, storage, or venting."
+          amount:
+            expression: "metered stream or carbon balance with composition, pressure, and moisture basis"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_carbon_capture
+              source_ids:
+                - us-epa-ghgrp-ammonia-tsd-2009
+                - eu-cbam-2023-1773
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: conditioning_vents
+          role: "Conditioning vents"
+          name: "Declared conditioning emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record CO2, CO, methane, ammonia, and other reported pollutants released during regeneration, stripping, or purification."
+          amount:
+            expression: "monitoring result or source-specific calculation by pollutant and emission point"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-ammonia
+                - us-epa-ghgrp-ammonia-tsd-2009
+            ranges: []
+  - id: ammonia_synthesis
+    label: "Ammonia synthesis loop"
+    inputs:
+      product:
+        - row_id: synthesis_feed
+          role: "Conditioned nitrogen-hydrogen feed"
+          name: "Conditioned synthesis gas for ammonia synthesis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record feed composition, recycle basis, and make-up gas separately so loop recycle is not double-counted as an external input."
+          amount:
+            expression: "make-up gas entering the loop, reconciled to composition and production records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent synthesis output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_synthesis_operations
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+        - row_id: synthesis_energy
+          role: "Synthesis-loop energy and cooling"
+          name: "Electricity, steam, fuel, and cooling utility supplied to the synthesis loop"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record compression, circulation, heating, cooling, and refrigeration energy by carrier without netting undocumented exports."
+          amount:
+            expression: "metered carrier-specific consumption allocated to the synthesis loop"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent synthesis output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - iea-ammonia-roadmap-2021
+            ranges: []
+      waste:
+        - row_id: synthesis_catalyst_waste
+          role: "Synthesis-loop spent catalyst"
+          name: "Spent ammonia-synthesis catalyst"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record catalyst replacement and destination over a representative operating period."
+          amount:
+            expression: "replacement mass normalized over production during the catalyst service interval"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent synthesis output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_ammonia
+          role: "Crude anhydrous ammonia"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a0e3299b-9484-4ec3-89d3-cd1e2d6c2225"
+          property_unit: "Mass / kg"
+          description: "Transfer condensed ammonia to final conditioning with production mass, purity, and water content."
+          amount:
+            expression: "measured condensed-ammonia mass corrected using the measured NH3 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per process output of crude anhydrous ammonia"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids:
+                - iso-7105-1985
+            ranges: []
+        - row_id: purge_recovery
+          role: "Recovered purge gas or exported energy"
+          name: "Declared recovered purge gas, hydrogen, fuel gas, or exported energy"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg or MJ"
+          description: "Record recovered purge gas, hydrogen, fuel gas, or exported steam as separate co-product flows when they leave the process boundary."
+          amount:
+            expression: "measured export with composition or energy content and destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent synthesis output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coproducts
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: synthesis_emissions
+          role: "Synthesis-loop vents and fugitives"
+          name: "Declared synthesis-loop emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record ammonia, hydrogen, methane, and other reportable releases from purge, vent, flare, seals, and relief events."
+          amount:
+            expression: "monitoring, event log, flare calculation, or reconciled mass balance by pollutant"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent synthesis output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-ammonia
+            ranges: []
+  - id: product_conditioning_storage
+    label: "Product conditioning, storage, and loading"
+    inputs:
+      product:
+        - row_id: conditioning_ammonia_input
+          role: "Crude anhydrous ammonia input"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a0e3299b-9484-4ec3-89d3-cd1e2d6c2225"
+          property_unit: "Mass / kg"
+          description: "Treat upstream anhydrous ammonia as a recursive same-category input and link its upstream dataset rather than duplicating production."
+          amount:
+            expression: "measured transfer from synthesis reconciled to storage inventory change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - cdc-niosh-ammonia
+            ranges: []
+        - row_id: storage_energy
+          role: "Refrigeration, compression, and loading energy"
+          name: "Electricity, fuel, steam, or cooling utility for conditioning and storage"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record energy used to maintain declared storage pressure and temperature and to load the plant-gate product."
+          amount:
+            expression: "metered consumption assigned to the storage and loading system"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - cdc-niosh-ammonia
+            ranges: []
+      waste:
+        - row_id: storage_waste
+          role: "Storage and loading wastewater or treatment waste"
+          name: "Declared storage or loading waste"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record contaminated water, maintenance waste, and recovered material sent to treatment or recovery."
+          amount:
+            expression: "measured discharge or shipment by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - cdc-niosh-ammonia
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Saleable anhydrous ammonia"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a0e3299b-9484-4ec3-89d3-cd1e2d6c2225"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after quality verification and inventory reconciliation at the declared plant gate."
+          amount:
+            expression: "1 kg NH3 equivalent calculated from net saleable mass and measured NH3 mass fraction"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg NH3-equivalent reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - iso-7103-1982
+                - iso-7105-1985
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: storage_losses
+          role: "Storage, loading, and relief losses"
+          name: "Ammonia emission to air and other declared storage release"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record routine and non-routine ammonia releases, recovered boil-off, flare outcomes, and inventory discrepancies separately."
+          amount:
+            expression: "measured release plus event-based calculation, reconciled to opening inventory, receipts, production, deliveries, recovery, and closing inventory"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_operations
+              source_ids:
+                - cdc-niosh-ammonia
+            ranges: []
+  - id: carbon_handling
+    label: "CO2 utilization, transport, and storage"
+    inputs:
+      product:
+        - row_id: captured_co2_input
+          role: "Separated carbon dioxide input"
+          name: "Separated carbon dioxide stream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive the metered separated CO2 stream with composition and chain-of-custody evidence."
+          amount:
+            expression: "metered transfer reconciled to the conditioning-process output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_capture
+              source_ids:
+                - us-epa-ghgrp-ammonia-tsd-2009
+                - eu-cbam-2023-1773
+            ranges: []
+        - row_id: capture_energy
+          role: "Capture, compression, transport, and storage energy"
+          name: "Electricity, fuel, heat, solvent, and transport service for CO2 handling"
+          flow_type: "product"
+          property_unit: "Energy, mass, or transport service / kWh, MJ, kg, or tkm"
+          description: "Record all energy and materials used after CO2 separation for the claimed disposition."
+          amount:
+            expression: "metered or invoice-based quantity assigned to the handled CO2 stream"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_carbon_capture
+              source_ids:
+                - eu-cbam-2023-1773
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: co2_for_use
+          role: "Carbon dioxide delivered for use"
+          name: "Carbon dioxide delivered for declared use"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Report CO2 delivered to another product system as an exported co-product; do not automatically equate utilization with permanent storage."
+          amount:
+            expression: "custody-transfer mass with recipient and intended use"
+            value_mode: "foreground_record"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_capture
+              source_ids:
+                - us-epa-ghgrp-ammonia-tsd-2009
+                - eu-cbam-2023-1773
+            ranges: []
+        - row_id: co2_stored
+          role: "Carbon dioxide delivered to permanent storage"
+          name: "Carbon dioxide delivered to permanent geological storage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Report only CO2 with traceable transport, injection, and permanence evidence as delivered to permanent storage."
+          amount:
+            expression: "verified injected mass minus documented leakage or reversal within the selected method boundary"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_carbon_capture
+              source_ids:
+                - eu-cbam-2023-1773
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: co2_vented
+          role: "Carbon dioxide vented or lost"
+          name: "Carbon dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record uncaptured, bypassed, vented, transport-loss, and storage-loss CO2 as emissions within the applicable boundary."
+          amount:
+            expression: "carbon balance of generated CO2 minus measured exported, used, and stored streams, reconciled with direct monitoring"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg NH3-equivalent final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_carbon_capture
+              source_ids:
+                - us-epa-ghgrp-ammonia-tsd-2009
+                - eu-cbam-2023-1773
+            ranges: []
+allocation_rules:
+  - rule_id: subdivision_first
+    applies_to: "foreground_burden_allocation"
+    rule: "Subdivide route steps and meter dedicated inputs before allocating shared utilities or emissions; internal recycle is not a co-product and must not receive burden."
+    source_ids:
+      - eu-cbam-2023-1773
+  - rule_id: oxygen_coproduct
+    applies_to: "electrolysis_or_air_separation"
+    rule: "If oxygen is vented, assign no avoided-product credit. If oxygen is sold or used outside the modelled step, report its amount and apply the declared method consistently without assuming zero-burden hydrogen or nitrogen."
+    source_ids:
+      - eu-cbam-2023-1773
+  - rule_id: energy_export
+    applies_to: "purge_gas_and_energy_recovery"
+    rule: "Prefer system subdivision for purge-gas recovery and steam or electricity export; if allocation remains necessary, use a documented physical relationship before economic allocation and report sensitivity to the selected basis."
+    source_ids:
+      - us-epa-ap42-ammonia
+  - rule_id: carbon_dioxide_coproduct
+    applies_to: "separated_carbon_dioxide"
+    rule: "Report generated, separated, vented, used, exported, and stored CO2 before any credit or deduction. A sale or utilization credit must follow the selected study method and cannot be represented as permanent storage without permanence evidence."
+    source_ids:
+      - us-epa-ghgrp-ammonia-tsd-2009
+      - eu-cbam-2023-1773
+  - rule_id: allocation_closure
+    applies_to: "all_multi_output_processes"
+    rule: "Report unallocated totals, allocation keys, recipients, allocated results, and a closure check; do not use an allocation rule to conceal route, capture, or energy data gaps."
+    source_ids:
+      - eu-cbam-2023-1773
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_route_materials
+      process_id: "hydrogen_syngas_supply"
+      flow_role: "route feedstock and supplied hydrogen"
+      record_type: "meter, invoice, supplier certificate, composition test"
+      raw_fields: "material id; source; mass; energy content; carbon content; hydrogen content; route; opening and closing stock"
+      collection_method: "calibrated custody-transfer meter or reconciled inventory"
+      unit: "kg, m3, or MJ with conversion basis"
+      frequency: "batch and monthly"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "all route-defining supply to the declared plant"
+      aggregation_rule: "sum receipts plus opening stock minus closing stock, segregated by source and energetic or non-energetic use"
+      quality_evidence: "calibration, invoice, laboratory certificate, and reconciliation record"
+    - protocol_id: cp_energy_records
+      process_id: "all_processes"
+      flow_role: "electricity, fuels, steam, cooling, and exported energy"
+      record_type: "meter, fuel ticket, invoice, utility balance"
+      raw_fields: "carrier; meter id; quantity; unit; conversion factor; import; export; process assignment"
+      collection_method: "calibrated meter and energy balance"
+      unit: "kWh or MJ"
+      frequency: "hourly to monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included plant units"
+      aggregation_rule: "sum by carrier and process; report gross imports and exports before net result"
+      quality_evidence: "meter calibration, invoices, and energy-balance closure"
+    - protocol_id: cp_upstream_methane
+      process_id: "hydrogen_syngas_supply"
+      flow_role: "hydrocarbon upstream methane"
+      record_type: "supplier inventory or route model"
+      raw_fields: "feedstock source; geography; period; quantity; methane stages; emission factor or measured loss; uncertainty"
+      collection_method: "supplier-specific data preferred; otherwise traceable route model"
+      unit: "kg CH4 and kg feedstock or MJ"
+      frequency: "supplier period, at least annual"
+      temporal_coverage: "period aligned or temporally adjusted"
+      site_scope: "all hydrocarbon feedstock suppliers"
+      aggregation_rule: "quantity-weighted supplier result; do not mix measured and modelled results without disclosure"
+      quality_evidence: "supplier assurance, model version, source citation, and uncertainty"
+    - protocol_id: cp_syngas_transfer
+      process_id: "hydrogen_syngas_supply_gas_conditioning"
+      flow_role: "hydrogen, raw syngas, nitrogen, and conditioned syngas"
+      record_type: "flow meter and composition analysis"
+      raw_fields: "dry and wet flow; H2; N2; CO; CO2; CH4; water; pressure; temperature"
+      collection_method: "calibrated flow measurement and gas analysis"
+      unit: "kg or Nm3 with reference conditions"
+      frequency: "continuous or shift"
+      temporal_coverage: "representative operating campaign and annual reconciliation"
+      site_scope: "all transfer points between route steps"
+      aggregation_rule: "convert to a common dry-gas basis and reconcile H, N, and C balances"
+      quality_evidence: "analyzer calibration, reference conditions, and balance closure"
+    - protocol_id: cp_synthesis_operations
+      process_id: "ammonia_synthesis"
+      flow_role: "make-up gas, recycle, purge, and ammonia production"
+      record_type: "distributed control system and production log"
+      raw_fields: "make-up flow; recycle flow; purge flow; composition; pressure; temperature; catalyst period; condensed NH3"
+      collection_method: "continuous process instrumentation"
+      unit: "kg, Nm3, deg C, and pressure with basis"
+      frequency: "continuous"
+      temporal_coverage: "complete reporting period with outages disclosed"
+      site_scope: "synthesis loop and associated refrigeration"
+      aggregation_rule: "external input excludes internal recycle; aggregate production-weighted operating periods"
+      quality_evidence: "instrument calibration, outage log, and synthesis-loop balance"
+    - protocol_id: cp_product_quality
+      process_id: "ammonia_synthesis_product_conditioning_storage"
+      flow_role: "NH3 purity and water content"
+      record_type: "representative product sample and laboratory result"
+      raw_fields: "sample id; lot or tank; sampling time; sampling method; NH3 fraction; water; oil or other grade parameters"
+      collection_method: "declared safe sampling procedure and validated analytical method"
+      unit: "mass fraction, mg/kg, or declared grade unit"
+      frequency: "each lot, tank, or statistically justified campaign"
+      temporal_coverage: "same lots and period as reported product"
+      site_scope: "all saleable product represented by the dataset"
+      aggregation_rule: "mass-weighted result; retain out-of-spec dispositions separately"
+      quality_evidence: "chain of custody, method identifier, laboratory QA, and repeatability"
+    - protocol_id: cp_product_output
+      process_id: "product_conditioning_storage"
+      flow_role: "net saleable product and inventory"
+      record_type: "custody meter, weighbridge, tank gauge, and sales record"
+      raw_fields: "gross product mass; deliveries; returns; opening and closing inventory; purity; temperature; pressure"
+      collection_method: "calibrated mass measurement with inventory reconciliation"
+      unit: "kg"
+      frequency: "batch and monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all product tanks and loading points"
+      aggregation_rule: "net saleable mass multiplied by measured NH3 mass fraction"
+      quality_evidence: "calibration, sales reconciliation, and tank inventory closure"
+    - protocol_id: cp_direct_emissions
+      process_id: "all_processes"
+      flow_role: "stack, vent, flare, fugitive, and wastewater emissions"
+      record_type: "continuous monitor, stack test, leak survey, event log, or calculation"
+      raw_fields: "source id; pollutant; concentration; flow; duration; event; recovery; flare efficiency; method"
+      collection_method: "source-appropriate monitoring or documented mass balance"
+      unit: "kg pollutant"
+      frequency: "continuous, event, or test campaign"
+      temporal_coverage: "complete reporting period including start-up and shutdown"
+      site_scope: "every included emission point"
+      aggregation_rule: "calculate by pollutant and source, then sum without double counting routed streams"
+      quality_evidence: "monitor QA, test report, leak survey, event log, and calculation sheet"
+    - protocol_id: cp_carbon_capture
+      process_id: "gas_conditioning_carbon_handling"
+      flow_role: "generated, separated, captured, used, transported, stored, and vented CO2"
+      record_type: "meter, carbon balance, custody transfer, transport and injection record"
+      raw_fields: "stream mass; carbon content; capture point; destination; transport loss; injected mass; leakage; permanence evidence"
+      collection_method: "metering and chain-of-custody reconciliation"
+      unit: "kg CO2"
+      frequency: "continuous and shipment"
+      temporal_coverage: "complete reporting period and applicable storage monitoring period"
+      site_scope: "all CO2 streams connected to ammonia production"
+      aggregation_rule: "generated equals emitted plus exported for use plus stored plus inventory change and documented losses"
+      quality_evidence: "meter calibration, recipient record, injection verification, and balance closure"
+    - protocol_id: cp_coproducts
+      process_id: "all_multi_output_processes"
+      flow_role: "oxygen, purge gas, hydrogen, steam, electricity, and CO2 co-products"
+      record_type: "meter, invoice, and use record"
+      raw_fields: "product; quantity; quality; energy content; destination; internal or external use; allocation key"
+      collection_method: "calibrated measurement and transaction record"
+      unit: "kg, MJ, or kWh"
+      frequency: "batch and monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all material co-products and exports"
+      aggregation_rule: "report gross quantities before allocation and reconcile internal use"
+      quality_evidence: "meter calibration, invoice, destination evidence, and allocation worksheet"
+    - protocol_id: cp_storage_operations
+      process_id: "product_conditioning_storage"
+      flow_role: "storage conditions, inventory change, loading, and releases"
+      record_type: "tank gauge, temperature and pressure historian, loading log, relief and maintenance log"
+      raw_fields: "tank id; opening and closing mass; temperature; pressure; pressure basis; receipts; deliveries; recovered boil-off; vents; relief events"
+      collection_method: "calibrated tank instrumentation and event reconciliation"
+      unit: "kg, deg C, and pressure with basis"
+      frequency: "continuous and event"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all ammonia storage and loading equipment"
+      aggregation_rule: "mass balance by tank and total system; report routine and non-routine losses separately"
+      quality_evidence: "gauge calibration, historian completeness, and signed event records"
+    - protocol_id: cp_waste_records
+      process_id: "all_processes"
+      flow_role: "wastewater and solid or liquid waste"
+      record_type: "discharge meter, manifest, laboratory analysis, and inventory"
+      raw_fields: "waste id; mass or volume; composition; hazard status; destination; recovery or treatment"
+      collection_method: "measured discharge or weighed shipment"
+      unit: "kg or m3"
+      frequency: "shipment and monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included process areas"
+      aggregation_rule: "sum by waste type and destination; reconcile stored waste inventory"
+      quality_evidence: "manifest, analysis, treatment receipt, and inventory closure"
+  calculation_rules:
+    - id: calc_nh3_equivalent
+      applies_to: "reference product"
+      rule: "NH3-equivalent mass = net saleable gross mass x measured NH3 mass fraction. Do not apply this formula to aqueous ammonia as a way to include it in this PCR."
+      inputs:
+        - "gross saleable mass"
+        - "NH3 mass fraction"
+        - returns
+        - "inventory change"
+      output: "kg NH3 equivalent"
+      source_ids:
+        - iso-7103-1982
+        - iso-7105-1985
+    - id: calc_route_material_balance
+      applies_to: "hydrogen and synthesis route"
+      rule: "Reconcile feedstock, hydrogen, nitrogen, carbon, and ammonia across route steps on consistent dry or wet bases; internal recycle is excluded from external input totals."
+      inputs:
+        - "route-material records"
+        - "syngas composition"
+        - "synthesis records"
+        - "product output"
+      output: "route-specific material balance and closure"
+      source_ids:
+        - us-epa-ap42-ammonia
+        - us-epa-ghgrp-ammonia-tsd-2009
+    - id: calc_energy_by_role
+      applies_to: "feedstock and energy"
+      rule: "Convert each carrier with a declared factor and separately total non-energy feedstock, fuel, electricity, imported heat, and exported energy."
+      inputs:
+        - "energy meters"
+        - "feedstock records"
+        - "conversion factors"
+        - exports
+      output: "carrier-specific and role-specific energy inventory"
+      source_ids:
+        - us-epa-ghgrp-ammonia-tsd-2009
+        - eu-cbam-2023-1773
+    - id: calc_upstream_methane
+      applies_to: "hydrocarbon supply"
+      rule: "Upstream methane = sum over suppliers of feedstock activity multiplied by the supplier-specific measured loss or traceable model factor; preserve supplier, geography, period, and uncertainty."
+      inputs:
+        - "feedstock quantity"
+        - "supplier methane result or model factor"
+      output: "kg CH4 per reference flow"
+      source_ids:
+        - iea-ammonia-roadmap-2021
+    - id: calc_direct_emissions
+      applies_to: "direct plant emissions"
+      rule: "Calculate each pollutant by monitored concentration and gas flow or by a documented carbon or mass balance; keep process and combustion CO2 distinguishable."
+      inputs:
+        - monitoring
+        - "stack tests"
+        - "fuel and feedstock carbon"
+        - "event logs"
+      output: "kg pollutant per reference flow"
+      source_ids:
+        - us-epa-ap42-ammonia
+        - us-epa-ghgrp-ammonia-tsd-2009
+    - id: calc_capture_balance
+      applies_to: "carbon dioxide handling"
+      rule: "Generated CO2 = vented or emitted CO2 + CO2 exported for use + CO2 delivered to verified storage + inventory change + documented handling losses. Separation alone is not storage."
+      inputs:
+        - generated
+        - separated
+        - exported
+        - used
+        - injected
+        - leaked
+        - vented
+        - "and inventory records"
+      output: "carbon-capture balance and disposition shares"
+      source_ids:
+        - us-epa-ghgrp-ammonia-tsd-2009
+        - eu-cbam-2023-1773
+    - id: calc_allocation_closure
+      applies_to: "multi-output processes"
+      rule: "Allocated burdens across ammonia and co-products must equal the unallocated process total for every inventory row after subdivision and internal-use reconciliation."
+      inputs:
+        - "unallocated inventory"
+        - "co-product quantities"
+        - "allocation keys"
+      output: "allocated inventory and closure difference"
+      source_ids:
+        - eu-cbam-2023-1773
+    - id: calc_storage_balance
+      applies_to: "product conditioning and storage"
+      rule: "Opening inventory + receipts + production = deliveries + closing inventory + recovered exports + measured releases + unexplained difference; investigate rather than silently allocate unexplained difference."
+      inputs:
+        - "tank inventory"
+        - receipts
+        - production
+        - deliveries
+        - recovery
+        - "release logs"
+      output: "storage mass balance and loss quantity"
+      source_ids:
+        - cdc-niosh-ammonia
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate that the represented product is anhydrous ammonia and not aqueous ammonia; report grade, purity, water content, physical state, and test method."
+      evidence: "product specification, representative sample, and laboratory result"
+    - id: dq_route_identity
+      applies_to: "whole dataset"
+      requirement: "Identify the hydrogen and synthesis-gas production route, feedstock, technology, plant, geography, period, and whether route steps are on site or supplied."
+      evidence: "process diagram, supplier records, and route declaration"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground records"
+      requirement: "Use one coherent reporting period, disclose outages, start-up, shutdown, abnormal events, and material differences between supplier and plant periods."
+      evidence: "production log, meter coverage, event log, and temporal adjustment record"
+    - id: dq_completeness
+      applies_to: "all included processes"
+      requirement: "Demonstrate material, energy, nitrogen, carbon, capture, storage, waste, and emission balance closure; explain exclusions and unresolved differences."
+      evidence: "signed balance worksheets and completeness review"
+    - id: dq_upstream_methane
+      applies_to: "hydrocarbon routes"
+      requirement: "Disclose whether upstream methane is supplier-measured or modelled and report source, geography, year, stages, and uncertainty."
+      evidence: "supplier assurance or traceable model documentation"
+    - id: dq_capture_claim
+      applies_to: "capture-related datasets"
+      requirement: "A capture or low-carbon claim requires stream-level CO2 balance, capture point, disposition, transport, injection, storage, leakage, and permanence evidence appropriate to the selected method."
+      evidence: "metering, custody transfer, injection verification, monitoring, and method statement"
+    - id: dq_allocation
+      applies_to: "multi-output processes"
+      requirement: "Preserve pre-allocation totals, co-product quantities, allocation basis, recipients, sensitivity, and mathematical closure."
+      evidence: "allocation worksheet and co-product records"
+    - id: dq_storage_conditions
+      applies_to: "final product"
+      requirement: "Report time-weighted temperature and pressure, pressure basis, inventory change, routine loss, abnormal release, recovery, and loading condition."
+      evidence: "tank historian, calibration, and event reconciliation"
+validation_rules:
+  - rule_id: validate_product_not_aqueous
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a data package that represents aqueous ammonia, ammonium hydroxide, or a solution merely normalized to NH3 content; the physical product must meet the declared anhydrous-ammonia specification."
+    source_ids:
+      - unsd-cpc-v3-2025
+      - iso-7105-1985
+  - rule_id: validate_reference_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require the selected product flow UUID, Mass flow-property UUID, Units of mass unit-group UUID, kg reference unit, and 1 kg NH3-equivalent amount to match this PCR."
+    source_ids:
+      - unsd-cpc-v3-2025
+  - rule_id: validate_required_qualifiers
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject an incomplete reference flow when any required qualifier for purity, route, hydrogen source, energy, upstream methane, capture, allocation, or storage condition is missing."
+    source_ids:
+      - iea-ammonia-roadmap-2021
+      - cdc-niosh-ammonia
+  - rule_id: validate_route_consistency
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require all included processes, inputs, emissions, and upstream datasets to agree with the declared route; unused alternative routes must not be blended into a generic result."
+    source_ids:
+      - iea-ammonia-roadmap-2021
+      - eu-cbam-2023-1773
+  - rule_id: validate_mass_energy_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require documented material, nitrogen, hydrogen, carbon, product-storage, and carrier-specific energy closure; internal recycle and energy export must not be double counted."
+    source_ids:
+      - us-epa-ap42-ammonia
+      - us-epa-ghgrp-ammonia-tsd-2009
+  - rule_id: validate_upstream_methane
+    applies_to: "foreground_dataset_conformance"
+    rule: "Hydrocarbon routes must include or link an upstream methane result with feedstock source, geography, period, method, and uncertainty."
+    source_ids:
+      - iea-ammonia-roadmap-2021
+  - rule_id: validate_capture_disposition
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require generated, separated, captured, vented, used, transported, injected, stored, leaked, and inventory-change CO2 fields to close; do not accept separation or sale alone as permanent storage."
+    source_ids:
+      - us-epa-ghgrp-ammonia-tsd-2009
+      - eu-cbam-2023-1773
+  - rule_id: validate_allocation_closure
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require pre-allocation totals, co-product quantities, allocation keys, recipients, sensitivity where material, and zero unexplained allocation difference."
+    source_ids:
+      - eu-cbam-2023-1773
+  - rule_id: validate_storage_conditions
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require storage temperature, pressure, pressure basis, inventory change, loading loss, recovery, and abnormal-event treatment to be present and mutually consistent."
+    source_ids:
+      - cdc-niosh-ammonia
+  - rule_id: validate_low_carbon_claim
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a low-carbon, renewable, blue, green, or equivalent claim unless the declared hydrogen, electricity, feedstock, methane, capture, allocation, and storage evidence supports the exact route represented."
+    source_ids:
+      - iea-ammonia-roadmap-2021
+      - eu-cbam-2023-1773
+published_dataset_profile:
+  dataset_role: "Route-specific foreground production dataset for marketable anhydrous ammonia at the producing plant gate"
+  downstream_use: "May be used as a secondary_dataset or background_dataset for fertilizer, chemical, refrigeration, fuel, hydrogen-carrier, process, or lifecyclemodel studies when qualifiers match"
+  allowed_use: "Route-, geography-, period-, grade-, capture-, allocation-, and storage-matched plant-gate modelling; transparent scenario comparison after harmonizing boundaries"
+  excluded_use: "Aqueous ammonia; universal ammonia average without route disclosure; automatic substitution among fossil, electrolysis, captured-carbon, or other routes; unsupported low-carbon claim; downstream transport or use without added processes"
+  required_metadata: "canonical PCR id; product flow UUID; grade; purity; water content; route; hydrogen source; feedstock; plant; geography; period; technology; electricity and heat supply; upstream methane method; capture disposition; co-products; allocation; storage temperature and pressure; plant-gate condition"
+  required_quality_disclosure: "primary-data share; meter and laboratory coverage; temporal and geographic representativeness; material, energy, nitrogen and carbon closure; uncertainty; missing data; supplier data quality; capture permanence evidence; abnormal-event treatment"
+  update_trigger: "Change in product grade, route, hydrogen source, feedstock, major technology, energy supply, upstream methane data, capture disposition, allocation, storage regime, plant boundary, or reporting period"
+data_sources:
+  - id: "unsd-cpc-v3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Explanatory Notes, code 34651, updated 2025-06-30, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-08)"
+    used_for: "Product-category identity and exclusion of the adjacent aqueous-ammonia category"
+  - id: "iea-ammonia-roadmap-2021"
+    type: "official_guidance"
+    reference: "International Energy Agency, Ammonia Technology Roadmap, 2021, https://www.iea.org/reports/ammonia-technology-roadmap (retrieved 2026-08-08)"
+    used_for: "Route differentiation, hydrogen sources, energy significance, carbon capture, and cross-industry context"
+  - id: "us-epa-ap42-ammonia"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Final Background Document for Synthetic Ammonia, Section 8.1, https://www.epa.gov/sites/production/files/2020-09/documents/b08s01_1.pdf (retrieved 2026-08-08)"
+    used_for: "Process decomposition, synthesis loop, purification, vents, condensate, and emissions inventory structure"
+  - id: "us-epa-ghgrp-ammonia-tsd-2009"
+    type: "official_guidance"
+    reference: "U.S. EPA, Technical Support Document for Ammonia: Proposed Rule for Mandatory Reporting of Greenhouse Gases, 2009, https://www.epa.gov/sites/production/files/2015-02/documents/ti_g-tsd_ammonia_epa_1-22-09.pdf (retrieved 2026-08-08)"
+    used_for: "Feedstock and combustion separation, carbon balance, process CO2, and captured-CO2 treatment"
+  - id: "eu-cbam-2023-1773"
+    type: "standard"
+    reference: "Commission Implementing Regulation (EU) 2023/1773, Annex III, Sections 3.6-3.7, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1773 (retrieved 2026-08-08)"
+    used_for: "Route-specific ammonia boundary, separately supplied hydrogen, energy and feedstock treatment, co-product allocation, and CO2 disposition"
+  - id: "iso-7103-1982"
+    type: "standard"
+    reference: "ISO 7103:1982, Liquefied anhydrous ammonia for industrial use - Sampling - Taking a laboratory sample, https://www.iso.org/standard/13688.html (retrieved 2026-08-08)"
+    used_for: "Product sampling and quality-evidence protocol"
+  - id: "iso-7105-1985"
+    type: "standard"
+    reference: "ISO 7105:1985, Liquefied anhydrous ammonia for industrial use - Determination of water content - Karl Fischer method, https://www.iso.org/standard/13690.html (retrieved 2026-08-08)"
+    used_for: "Water-content measurement and anhydrous-product quality disclosure"
+  - id: "cdc-niosh-ammonia"
+    type: "official_guidance"
+    reference: "U.S. CDC/NIOSH, Pocket Guide to Chemical Hazards - Ammonia, https://www.cdc.gov/niosh/npg/npgd0028.html (retrieved 2026-08-08)"
+    used_for: "Physical state, liquefied compressed storage, temperature and pressure disclosure, and release pathways"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8d7e56135667477da889359868ae93a36586dc4a6a9163e60f61abe023f5d323"
+  generated_content_sha256: "sha256:a47e5e695cbe3df6365acc26321582eff25e193ddc164e2ee427a2cab8a5bd7c"

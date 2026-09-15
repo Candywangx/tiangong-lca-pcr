@@ -1,10 +1,756 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "27994"
-  title: "Woven fabrics of metal thread or metallized yarn n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.woven-fabrics-of-metal-thread-or-metallized-yarn-n-e-c"
+  classification_refs: "CPC 3.0:27994 (exact)"
+  covered_products: "Woven fabrics made with metal thread or metallized yarn, including mixed constructions where that yarn gives the fabric its defining metallic character, n.e.c."
+  excluded_products: "Metallized yarn sold without weaving; ordinary non-metallic woven fabrics; knitted or nonwoven fabric; coated or impregnated fabric classified elsewhere; made-up articles and apparel"
+  representative_product: "Inspected finished woven fabric containing metal thread or metallized yarn, supplied as a roll at the factory gate"
+  production_route: "Yarn receipt and preparation; optional sizing; weaving; optional pretreatment or finishing; inspection; roll making and packaging"
+  market_state: "Finished manufactured fabric roll at plant gate, with composition and finish declared"
+functional_unit:
+  what: "Provide woven fabric whose defining construction uses metal thread or metallized yarn"
+  how_much: "1 kg net mass of saleable finished fabric"
+  how_well: "Meets the declared weave, fibre and metal composition, mass per area, width, finish, and quality grade"
+  how_long_or_cycle: "One production batch through release at the factory gate; no use-phase service life is asserted"
+  reference_flow_link: "Net saleable mass after final inspection and before transport beyond the plant gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include yarn receipt and preparation, optional sizing, weaving, optional on-site pretreatment or finishing, inspection, roll making, packaging, on-site waste handling, and on-site wastewater handling up to the transfer point."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - ec-pef-method-2021
+    - rule_id: boundary_purchased_inputs
+      applies_to: "purchased_product_inputs"
+      rule: "Represent metal thread, metallized yarn, other yarn, chemicals, energy, water, and packaging with separate upstream datasets matched to the declared supply and geography."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_direct_releases
+      applies_to: "elementary_exchanges"
+      rule: "Record direct releases to air and water only when measured or calculated from site records using a documented method; do not infer releases from purchased-input quantities."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - ec-pef-method-2021
+    - rule_id: boundary_optional_operations
+      applies_to: "route_specific_operations"
+      rule: "Mark sizing, wet pretreatment, dyeing, printing, coating, and finishing not applicable when absent; when present, disclose the exact operation and record each chemical, utility, waste, wastewater, and measured direct release separately."
+      source_ids:
+        - jrc-textiles-bref-2023
+boundary_abstraction:
+  declared_starting_condition: "Metal thread, metallized yarn, and any other yarn accepted at the reporting plant with supplier identity, composition, moisture convention, and mass recorded"
+  starting_condition_role: "Purchased product inputs linked to upstream datasets; their production is outside the foreground boundary"
+  product_classification_scope: "CPC 3.0 subclass 27994 only"
+  recursive_input_rule: "A purchased fabric already meeting the same CPC 27994 product boundary remains a separately quantified product input linked to an upstream dataset; its manufacture is not re-expanded in the receiving process"
+  upstream_dataset_requirement: "Use supplier-specific datasets where available; otherwise select documented background datasets matching material construction, metal or coating, geography, technology, and reference mass"
+  disclosure: "Declare whether metal enters as metal thread, metal-coated substrate, metallized film yarn, or another construction; disclose other fibres, preparation, wet processing, finish, rejects, and packaging"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Woven fabrics of metal thread or metallized yarn n.e.c."
+    uuid: "fc1c034a-6087-48d4-93ec-a57b94919068"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "metal-thread or metallized-yarn type and mass fraction"
+    - "other fibre composition"
+    - "weave construction"
+    - "finished width"
+    - "mass per unit area"
+    - "finish or treatment"
+    - colour
+    - "quality grade"
+    - "production geography"
+    - "reporting period"
+    - "packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net saleable fabric mass after final inspection; exclude core, wrap, pallet, and other packaging."
+  - id: composition_mass_balance
+    applies_to: "batch composition"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile metal thread, metallized yarn, other yarn, retained finishing agents, products, rejects, and wastes on one dry-mass convention; disclose any moisture correction."
+  - id: area_conversion
+    applies_to: "fabric area"
+    required_property_ref:
+      name: "Mass and area"
+      uuid: ""
+    required_unit: "kg and m2"
+    rule: "When records are area-based, retain measured length, finished width, and mass per unit area and document the conversion to kg reference product."
+  - id: energy_conversion
+    applies_to: "purchased energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Retain metered units and conversion factors; do not combine electricity, compressed air, heat, and fuels into one exchange."
+process_map:
+  - id: yarn_preparation_weaving
+    name: "Yarn preparation and weaving"
+    inclusion: "required"
+    inclusion_condition: "Always include for fabric manufactured at the reporting site"
+    role: "Convert declared yarn inputs into unfinished woven fabric"
+    quantitative_reference: "Per measured unfinished fabric output and normalized to 1 kg saleable final fabric"
+  - id: wet_finishing
+    name: "Wet pretreatment and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when washing, desizing, scouring, bleaching, dyeing, printing, coating, or other wet finishing occurs on site"
+    role: "Produce the declared finished fabric state"
+    quantitative_reference: "Per measured finished fabric output and normalized to 1 kg saleable final fabric"
+  - id: inspection_packaging
+    name: "Inspection, roll making, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include through factory-gate release"
+    role: "Establish saleable output and packaging state"
+    quantitative_reference: "Per 1 kg net saleable finished fabric"
+process_inventory:
+  - id: yarn_preparation_weaving
+    label: "Yarn preparation and weaving"
+    inputs:
+      product:
+        - row_id: metal_thread_input
+          role: "Metal thread input"
+          name: "Metal thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metal thread when it is physically fed to the preparation or weaving route."
+          amount:
+            expression: "measured accepted dry mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per measured unfinished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - un-cpc-3-0-27994-2025
+            ranges: []
+        - row_id: metallized_yarn_input
+          role: "Metallized yarn input"
+          name: "Metallized yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metallized yarn separately from solid metal thread and other yarn."
+          amount:
+            expression: "measured accepted dry mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per measured unfinished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - un-cpc-3-0-27994-2025
+            ranges: []
+        - row_id: modified_starch_size_input
+          role: "Modified starch sizing agent"
+          name: "Modified starch sizing agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exchange only when modified starch size is applied on site; other sizing substances require their own atomic rows."
+          amount:
+            expression: "measured issued mass minus documented return, when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per measured sized warp output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: weaving_electricity_input
+          role: "Weaving electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by preparation, sizing, weaving, and local extraction assigned to the batch."
+          amount:
+            expression: "metered or submetered consumption; otherwise documented allocation from the site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured unfinished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: weaving_compressed_air_input
+          role: "Weaving compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record compressed air when used by the selected loom or preparation equipment; do not merge it with electricity."
+          amount:
+            expression: "metered delivered volume at declared pressure, or documented engineering allocation from compressor records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per measured unfinished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: woven_grey_fabric_output
+          role: "Unfinished woven fabric"
+          name: "Woven fabric of metal thread or metallized yarn, unfinished"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the inspected mass transferred from weaving to finishing or final inspection."
+          amount:
+            expression: "measured dry mass transferred out of weaving"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per weaving batch and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: loom_waste_output
+          role: "Loom waste"
+          name: "Loom waste containing metal thread or metallized yarn"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record yarn ends, loom waste, and weaving rejects with the same declared material composition; segregated materially different wastes require separate rows."
+          amount:
+            expression: "measured mass by waste destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per weaving batch and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      elementary:
+        - row_id: weaving_particulate_output
+          role: "Weaving particulate release"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record a particulate release only when the size fraction and receiving air compartment are identified by measurement or a documented calculation."
+          amount:
+            expression: "measured or calculated site release assigned to the batch; omit when no identified elementary exchange exists"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per weaving batch and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+  - id: wet_finishing
+    label: "Wet pretreatment and finishing"
+    inputs:
+      product:
+        - row_id: unfinished_fabric_input
+          role: "Unfinished fabric input"
+          name: "Woven fabric of metal thread or metallized yarn, unfinished"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the unfinished fabric entering an on-site wet route."
+          amount:
+            expression: "measured dry mass accepted by the finishing batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per measured finished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_water_input
+          role: "Finishing water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record process water entering washing, desizing, scouring, bleaching, dyeing, printing, or finishing."
+          amount:
+            expression: "metered or batch-recorded water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured finished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide input"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when used in the declared finishing recipe; record other chemicals in separate atomic rows."
+          amount:
+            expression: "measured active-substance mass charged to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per measured finished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: hydrogen_peroxide_input
+          role: "Hydrogen peroxide input"
+          name: "Hydrogen peroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hydrogen peroxide only when used in the declared finishing recipe."
+          amount:
+            expression: "measured active-substance mass charged to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per measured finished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_electricity_input
+          role: "Finishing electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity assigned to the wet-finishing batch."
+          amount:
+            expression: "metered or submetered consumption; otherwise documented allocation from the site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured finished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: finishing_natural_gas_input
+          role: "Finishing natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas only when directly consumed for the declared finishing route; purchased steam or other fuels require separate rows."
+          amount:
+            expression: "metered fuel energy on a declared calorific-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured finished fabric output and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_fabric_output
+          role: "Finished fabric"
+          name: "Woven fabric of metal thread or metallized yarn, finished"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record finished fabric transferred to final inspection."
+          amount:
+            expression: "measured dry mass released from finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: finishing_wastewater_output
+          role: "Finishing wastewater"
+          name: "Textile finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater transferred to on-site treatment, external treatment, or direct discharge as the applicable waste flow; identified waterborne elementary releases are separate exchanges."
+          amount:
+            expression: "metered or batch-balanced wastewater volume by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per finishing batch and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: inspection_packaging
+    label: "Inspection, roll making, and packaging"
+    inputs:
+      product:
+        - row_id: finished_fabric_pack_input
+          role: "Finished fabric for inspection"
+          name: "Woven fabric of metal thread or metallized yarn, finished"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record finished or unfinished-as-sold fabric entering final inspection."
+          amount:
+            expression: "measured mass entering final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per final inspection batch and normalized to 1 kg saleable final fabric"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_packaging_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: inspection_electricity_input
+          role: "Inspection electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for inspection, roll making, and packaging assigned to released product."
+          amount:
+            expression: "metered consumption or documented allocation from the site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_packaging_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: paperboard_core_input
+          role: "Paperboard core"
+          name: "Paperboard core"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the paperboard core separately from wrap, pallet, and other packaging components."
+          amount:
+            expression: "measured or purchase-record mass assigned to released rolls"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_packaging_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: polyethylene_film_input
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene protective film separately from every other packaging component."
+          amount:
+            expression: "measured or purchase-record mass assigned to released rolls"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_packaging_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Saleable woven fabric"
+          name: "Woven fabrics of metal thread or metallized yarn n.e.c."
+          flow_type: "product"
+          flow_ref:
+            uuid: "fc1c034a-6087-48d4-93ec-a57b94919068"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net saleable product without packaging; this is the reference exchange."
+          amount:
+            expression: "measured net saleable mass normalized to 1 kg reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_packaging_records
+              source_ids:
+                - un-cpc-3-0-27994-2025
+            ranges: []
+      waste:
+        - row_id: fabric_offcuts_output
+          role: "Fabric offcuts and final rejects"
+          name: "Offcuts of metal-thread or metallized-yarn woven fabric"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record offcuts and final rejects that share the declared fabric composition; other compositions require separate rows."
+          amount:
+            expression: "measured mass by waste destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per final inspection batch and normalized to 1 kg saleable final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_packaging_records
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "shared foreground operations"
+    rule: "First subdivide meters, batches, production lines, and waste records so that fabric-specific inputs and outputs are directly assigned."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_physical_when_unavoidable
+    applies_to: "inseparable multi-product operations"
+    rule: "When subdivision is not practicable, use a documented physical relation that reflects the causal use of the shared operation, such as machine time combined with measured power, treated mass, or wastewater volume."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_no_unjustified_credit
+    applies_to: "wastes and recoverable material"
+    rule: "Record each waste destination and any revenue or recovered-product status; do not apply an avoided-burden credit inside the foreground inventory without the declared downstream method and consistent system model."
+    source_ids:
+      - ec-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_weaving_batch_records
+      process_id: "yarn_preparation_weaving"
+      flow_role: "all yarn, sizing, electricity, compressed-air, product, waste, and measured release rows"
+      record_type: "batch record; meter; issue-return log; scale ticket; waste ticket; test report"
+      raw_fields: "batch_id; product_code; yarn identities; composition; opening and closing meter readings; issued and returned material; output mass; waste mass and destination; release method"
+      collection_method: "reconcile timestamped production, meter, stock, scale, and waste records to the batch"
+      unit: "native recorded unit and kg-normalized result"
+      frequency: "each batch; meters at least monthly"
+      temporal_coverage: "representative continuous 12 months or all batches in the declared shorter period"
+      site_scope: "all equipment and utilities serving the declared foreground route"
+      aggregation_rule: "subtract documented returns; allocate shared meters only by disclosed causal driver; normalize by net saleable mass"
+      quality_evidence: "meter calibration; scale calibration; purchase and stock reconciliation; signed batch release; waste transfer record"
+    - protocol_id: cp_finishing_batch_records
+      process_id: "wet_finishing"
+      flow_role: "unfinished fabric, water, each chemical, electricity, fuel, finished fabric, wastewater, and measured release rows"
+      record_type: "recipe; batch record; meter; laboratory report; wastewater log"
+      raw_fields: "batch_id; fabric mass; chemical identity and concentration; charged mass; water; energy; fuel; output mass; wastewater volume; destination; measured pollutant result"
+      collection_method: "reconcile recipe, meter, laboratory, and transfer records to each route and batch"
+      unit: "native recorded unit and kg-normalized result"
+      frequency: "each batch; continuous or daily utilities"
+      temporal_coverage: "representative continuous 12 months or all batches in the declared shorter period"
+      site_scope: "all on-site wet operations and treatment serving the declared product"
+      aggregation_rule: "convert solution charges to active substance; retain water and wastewater separately; normalize by released product mass"
+      quality_evidence: "calibrated meters; recipe authorization; laboratory method; treatment and discharge records"
+    - protocol_id: cp_release_packaging_records
+      process_id: "inspection_packaging"
+      flow_role: "inspected fabric, electricity, each packaging component, reference product, and reject rows"
+      record_type: "inspection record; roll ticket; scale record; packaging issue record; meter"
+      raw_fields: "roll_id; batch_id; net fabric mass; width; length; mass per area; quality grade; packaging component and mass; reject mass and destination"
+      collection_method: "reconcile roll release, calibrated weighing, packaging issue, and rejection records"
+      unit: "kg; m; m2; g/m2; kWh"
+      frequency: "each released roll and batch"
+      temporal_coverage: "all releases in the reporting period"
+      site_scope: "final inspection, roll making, and packaging at the reporting site"
+      aggregation_rule: "sum released net mass separately from packaging; normalize all assigned exchanges to 1 kg net released fabric"
+      quality_evidence: "calibration records; signed quality release; packaging stock reconciliation; reject disposition"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "reference product"
+      rule: "Sum measured released roll gross mass minus separately measured core and packaging mass; prefer direct net fabric weighing when available."
+      inputs:
+        - "roll mass"
+        - "core mass"
+        - "packaging mass"
+      output: "kg net saleable fabric"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_area_to_mass
+      applies_to: "area-based fabric records"
+      rule: "Fabric mass equals measured length multiplied by finished width and measured mass per unit area; reconcile with scale mass and retain the discrepancy."
+      inputs:
+        - length
+        - width
+        - "mass per unit area"
+        - "scale mass"
+      output: "kg fabric and reconciliation difference"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_active_chemical
+      applies_to: "chemical solution inputs"
+      rule: "Active-substance mass equals charged solution mass multiplied by the documented active concentration."
+      inputs:
+        - "solution mass"
+        - "active concentration"
+      output: "kg active substance"
+      source_ids:
+        - jrc-textiles-bref-2023
+    - id: calc_batch_normalization
+      applies_to: "all foreground exchanges"
+      rule: "Divide each batch-assigned exchange by net saleable fabric mass from that batch; exclude nonconforming output from the denominator and record it as waste."
+      inputs:
+        - "assigned exchange"
+        - "net saleable mass"
+      output: "exchange per 1 kg reference product"
+      source_ids:
+        - ec-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and material identity"
+      requirement: "Preserve supplier and lot identity, metal or coating identity, yarn construction, other-fibre composition, weave, width, mass per area, and finish."
+      evidence: "supplier specification; incoming inspection; bill of materials; laboratory or quality report"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Prefer a continuous 12-month period covering normal variability; disclose shorter periods, shutdowns, trials, abnormal batches, and seasonality."
+      evidence: "dated meter exports; production calendar; batch register"
+    - id: dq_completeness
+      applies_to: "mass, energy, water, chemicals, wastes, and releases"
+      requirement: "Reconcile all declared processes and explicitly mark every conditional process or atomic exchange present, absent, or outside the site boundary."
+      evidence: "mass balance; utility reconciliation; chemical inventory; waste and wastewater register"
+    - id: dq_technology_geography
+      applies_to: "linked upstream datasets"
+      requirement: "Match yarn construction, metal or metallization route, electricity geography, water supply, fuel, chemicals, and packaging technology; document every proxy."
+      evidence: "supplier dataset; dataset metadata; proxy justification"
+    - id: dq_measurement
+      applies_to: "meters and calculations"
+      requirement: "Retain raw readings, units, calibration status, allocation driver, conversion factor, and calculation version."
+      evidence: "calibration certificate; meter log; calculation workbook or machine-readable record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference product"
+    rule: "Confirm the selected reference flow UUID, Product flow type, exact CPC 27994 classification, Mass property UUID, kg unit, and all required product qualifiers."
+    source_ids:
+      - un-cpc-3-0-27994-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Reject combined or selector flows; every electricity supply, compressed-air supply, fuel, chemical, packaging component, waste, wastewater, and elementary release shall be a separate exchange with route applicability stated."
+    source_ids:
+      - ec-pef-method-2021
+      - jrc-textiles-bref-2023
+  - rule_id: validate_mass_balance
+    applies_to: "foreground batches"
+    rule: "Reconcile input materials with saleable product, intermediate transfers, retained material, waste, and measured releases on the declared moisture basis; investigate and disclose unexplained differences."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_route_completeness
+    applies_to: "optional operations"
+    rule: "Confirm that sizing and each wet-finishing operation are either represented with their atomic inputs and outputs or explicitly marked not applicable."
+    source_ids:
+      - jrc-textiles-bref-2023
+  - rule_id: validate_evidence
+    applies_to: "all reported values"
+    rule: "Reject AI-generated amounts and unsupported default ranges; values shall come from foreground records or documented calculations, and every proxy or allocation shall be disclosed."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_bilingual_alignment
+    applies_to: "PCR application"
+    rule: "Confirm that English and Chinese machine identifiers, row order, UUIDs, controlled tokens, and normative rule ids are identical."
+    source_ids:
+      - ec-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for woven fabrics of metal thread or metallized yarn n.e.c. at the factory gate"
+  downstream_use: "secondary_dataset; background_dataset; input to process and lifecyclemodel projections"
+  allowed_use: "Studies whose product scope, composition, technology, geography, period, finish, allocation, and packaging state match the dataset or are transparently adapted"
+  excluded_use: "Metallized yarn production alone; ordinary non-metallic fabric; knitted or nonwoven fabric; apparel; undisclosed proxy use; comparative claims without method-consistent review"
+  required_metadata: "PCR id and version; CPC 27994; reference flow UUID; geography; period; metal or metallized-yarn construction and fraction; other fibres; weave; width; mass per area; finish; route; allocation; waste and wastewater destinations; packaging state; source and dataset versions"
+  required_quality_disclosure: "Primary-data coverage; meter and scale status; mass-balance result; missing flows; UUID gaps; proxy datasets; allocation shares; exclusions; uncertainty and limitations"
+  update_trigger: "Material change in product construction, loom or finishing technology, energy or water supply, chemical recipe, waste treatment, allocation, site geography, data period, source method, or Tiangong identity"
+data_sources:
+  - id: "un-cpc-3-0-27994-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 27994, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact product-category scope and distinction from adjacent CPC subclasses"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, EUR 31316 EN, 2023. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf"
+    used_for: "Textile fibre and yarn preparation, sizing, pretreatment, dyeing, printing, finishing, water and energy use, chemicals, wastewater, and direct-release data needs"
+  - id: "ec-pef-method-2021"
+    type: "standard"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on Environmental Footprint methods, Annex I Product Environmental Footprint method. ELI: http://data.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "Life-cycle inventory completeness, company-specific data, allocation hierarchy, data quality, documentation, and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:37ce53a84385a4e4feab6ea4ecd5f302d5e1dd8a434aaa2a3648fc7d1379b15b"
+  generated_content_sha256: "sha256:f236217b7e7e86897b0ee181affd8236dd1618ba35a1d3fbc5a0dce806ccbf70"

@@ -1,10 +1,941 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41114"
-  title: "Ferro-nickel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.ferro-nickel"
+  classification_refs: "CPC 3.0 41114 Ferro-nickel (exact)"
+  covered_products: "Marketable ferro-nickel alloy in ingot, piece, shot, or granulated form, with declared chemical composition and production route"
+  excluded_products: "Refined nickel; nickel matte; nickel oxide sinter; generic nickel alloys; separately marketed nickel pig iron; downstream steel/foundry products; slag, dust, wastewater, and nickel-bearing wastes"
+  representative_product: "Primary-route ferro-nickel produced from lateritic nickel ore by feed preparation, rotary-kiln pretreatment, electric-furnace smelting, refining, and casting or granulation"
+  production_route: "Primary laterite RKEF; eligible secondary nickel-bearing-residue pretreatment and electric smelting; route must be declared"
+  market_state: "Finished alloy at producing plant gate, as-delivered mass and declared composition"
+functional_unit:
+  what: "Ferro-nickel alloy classified as CPC 3.0 41114"
+  how_much: "1,000 kg as-delivered ferro-nickel at the producing plant gate"
+  how_well: "Declared nickel mass fraction, iron balance and specified impurities; declared product form; representative of the stated route, facility, geography, and reference period"
+  how_long_or_cycle: "One production campaign or commercial lot, aggregated over a representative reporting period"
+  reference_flow_link: "TianGong product flow 0e9b30a3-8769-480e-a8ff-e7f1aa3f752f (Ferronickel / 镍铁; product flow; CPC 41114; state code 100)"
+system_boundary:
+  rules:
+    - rule_id: boundary_starting_condition
+      applies_to: "All datasets"
+      rule: "Begin at site receipt of nickel-bearing feed and other purchased inputs; include on-site extraction or beneficiation only when operated by the reporting organization and explicitly declared."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+        - bartzas-komnitsas-ferronickel-lca-2015
+    - rule_id: boundary_unit_processes
+      applies_to: "Foreground system"
+      rule: "Include feed preparation, applicable thermal pretreatment, electric smelting, refining, finishing, abatement, utilities, and internal material handling."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - rule_id: boundary_upstream
+      applies_to: "Purchased inputs"
+      rule: "Link each purchased input and transport service to an upstream dataset; omission requires documented materiality evidence and must not conceal hazardous or toxic releases."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_emissions_residues
+      applies_to: "All foreground processes"
+      rule: "Include direct stack and fugitive emissions, wastewater, slag, dust, spent refractories, and other residues; state whether each residue is recycled, recovered, sold, treated, or disposed."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+        - bartzas-komnitsas-ferronickel-lca-2015
+    - rule_id: boundary_transport
+      applies_to: "Inbound and internal transport"
+      rule: "Include material inbound transport and material internal transport where separately metered or material; disclose excluded minor transport."
+      source_ids:
+        - bartzas-komnitsas-ferronickel-lca-2015
+boundary_abstraction:
+  declared_starting_condition: "Nickel-bearing ore, concentrate, calcine, residue, or other eligible feed received at the reporting facility, together with purchased energy, reductants, fluxes, electrodes, oxygen, water, and auxiliaries"
+  starting_condition_role: "Upstream product inputs to the ferro-nickel foreground system"
+  product_classification_scope: "Output must remain a marketable CPC 3.0 41114 ferro-nickel alloy"
+  recursive_input_rule: "Ferro-nickel used as an input is recorded as a visible product input and linked to an upstream dataset; do not recursively expand another ferro-nickel production system inside the same foreground package"
+  upstream_dataset_requirement: "Provide geographically and technologically appropriate upstream datasets for every purchased feed, energy carrier, material, water supply, and transport service crossing the boundary"
+  disclosure: "Declare route, integrated upstream operations, exclusions, cut-offs, internal recycle loops, residue fate, allocation, geography, and reference period"
+reference_flow_definition:
+  reference_amount: "1000 kg"
+  product_flow_ref:
+    name: "Ferronickel / 镍铁"
+    uuid: "0e9b30a3-8769-480e-a8ff-e7f1aa3f752f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Nickel mass fraction and analytical basis"
+    - "declared impurities or specification"
+    - "product form"
+    - "primary or secondary production route"
+    - "nickel-bearing feed type and recycled-feed share"
+    - "wet/dry/as-delivered mass basis"
+    - "facility and geography"
+    - "reference period"
+    - "allocation choices"
+    - "residue and recycle fate"
+    - "plant-gate location"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_reference_product
+    applies_to: "Finished ferro-nickel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Determine calibrated as-delivered mass at the declared gate; normalize the accepted lot or campaign total to 1,000 kg."
+  - id: measure_feed_mass
+    applies_to: "Nickel-bearing feeds, reductants, fluxes, electrodes, auxiliaries, slags, dusts, and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet mass and, where moisture is material, dry mass and moisture fraction; retain conversion records."
+  - id: measure_composition
+    applies_to: "Ferro-nickel and nickel-bearing feeds"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg or % by mass"
+    rule: "Use representative lot sampling and chemical analysis; state whether results are wet, dry, or as-delivered."
+  - id: measure_electricity
+    applies_to: "Purchased and self-generated electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Meter by process or allocate from a reconciled site meter using the allocation rules in Section 7."
+  - id: measure_fuels
+    applies_to: "Fuels and reductants with energy content"
+    required_property_ref:
+      name: "Mass and net calorific value"
+      uuid: ""
+    required_unit: "kg and MJ/kg"
+    rule: "Record mass by carrier and use supplier- or batch-specific net calorific value where combustion energy is calculated."
+  - id: measure_water
+    applies_to: "Intake, recirculated water, and discharge"
+    required_property_ref:
+      name: "Volume or mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Keep intake, internal recirculation, evaporation, and discharge separate; do not count recirculated water as repeated external input."
+  - id: measure_direct_emissions
+    applies_to: "Stack, fugitive air, water, and soil releases"
+    required_property_ref:
+      name: "Pollutant mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Prefer calibrated continuous monitoring or representative tests; reconcile calculated emissions with activity data and abatement operation."
+process_map:
+  - id: feed_preparation
+    name: "Feed receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "All routes"
+    role: "Receive, sample, dry or condition, blend, and prepare nickel-bearing feed and recycle materials"
+    quantitative_reference: "Prepared feed sent to the next route step"
+  - id: thermal_pretreatment
+    name: "Kiln or equivalent thermal pretreatment"
+    inclusion: "conditional"
+    inclusion_condition: "Primary laterite RKEF and secondary routes using roasting or calcination"
+    role: "Dry, dehydrate, calcine, pre-reduce, or decontaminate feed before smelting"
+    quantitative_reference: "Prepared calcine or thermally treated feed"
+  - id: electric_smelting
+    name: "Electric-furnace reduction and smelting"
+    inclusion: "required"
+    inclusion_condition: "All covered routes"
+    role: "Reduce and melt feed, separate crude alloy from slag, and capture furnace off-gas solids"
+    quantitative_reference: "Crude ferro-nickel sent to refining"
+  - id: refining_finishing
+    name: "Refining, casting, and granulation"
+    inclusion: "required"
+    inclusion_condition: "All covered routes"
+    role: "Adjust composition, remove impurities, cast or granulate, cool, sample, and dispatch"
+    quantitative_reference: "1,000 kg finished ferro-nickel at plant gate"
+process_inventory:
+  - id: feed_preparation
+    label: "Feed receipt and preparation"
+    inputs:
+      product:
+        - row_id: nickel_bearing_feed
+          role: "Nickel-bearing feed"
+          name: "Select the semantically matching TianGong product or waste flow for each feed; no feed UUID is prescribed by this candidate PCR."
+          flow_type: "product"
+          property_unit: "Mass / kg; composition as kg/kg or % by mass"
+          description: "Record each ore, concentrate, calcine, residue, or recycled nickel-bearing feed separately. Measure receipt mass, moisture, nickel content, origin, and waste/product status."
+          amount:
+            expression: "Collected receipt mass corrected to the declared wet or dry basis and normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_receipt
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "10000"
+                upper: "40000"
+                unit: "kg"
+                basis: "1,000 kg finished ferro-nickel; primary laterite route only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: feed_preparation_energy_auxiliaries
+          role: "Feed-preparation energy and auxiliaries"
+          name: "Select a route-, geography-, and carrier-specific TianGong flow for every material or energy input."
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; mass / kg; water / m3"
+          description: "Record electricity, thermal fuels, binders, water, and other preparation auxiliaries as separate carrier- or material-specific exchanges."
+          amount:
+            expression: "Metered or purchase-reconciled amount for feed preparation, normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_materials
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_feed
+          role: "Prepared nickel-bearing feed"
+          name: "Internal product flow defined by the foreground model."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass, moisture, and nickel content transferred to thermal pretreatment or directly to electric smelting."
+          amount:
+            expression: "Weighed or mass-balance-derived transfer amount."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feed_receipt
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: feed_preparation_rejects
+          role: "Preparation rejects and captured solids"
+          name: "Select destination-specific waste or recovered-product flows; keep hazardous status explicit."
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejects, spilled material, and captured dust by destination; subtract only material demonstrably returned inside the same accounting period through the internal-recycle rule."
+          amount:
+            expression: "Weighed removal plus stock-change reconciliation, normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_fate
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: feed_preparation_emissions
+          role: "Direct preparation emissions"
+          name: "Select pollutant- and compartment-specific TianGong elementary flows."
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated particulate and other direct releases from drying, handling, and storage after abatement; do not substitute captured dust for emitted particulate."
+          amount:
+            expression: "Monitoring result or emission calculation for the reporting period, normalized to the reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+  - id: thermal_pretreatment
+    label: "Kiln or equivalent thermal pretreatment"
+    inputs:
+      product:
+        - row_id: pretreatment_feed
+          role: "Prepared feed to pretreatment"
+          name: "Internal prepared-feed flow defined by the foreground model."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared feed entering the kiln, roaster, dryer, or equivalent unit, including internally recycled pelletized dust."
+          amount:
+            expression: "Weighed transfer or reconciled mass balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_pretreatment
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: pretreatment_fuels_reductants
+          role: "Pretreatment fuels and reductants"
+          name: "Select carrier- and geography-specific TianGong product flows."
+          flow_type: "product"
+          property_unit: "Mass / kg; energy / MJ or kWh"
+          description: "Record each coal, coke, fuel, reductant, electricity, and binder input separately; distinguish fuel use from material carbon retained in intermediates."
+          amount:
+            expression: "Metered, weighed, or purchase-reconciled amount normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_materials
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "500"
+                upper: "8000"
+                unit: "kg"
+                basis: "1,000 kg finished ferro-nickel; all carbonaceous fuels and reductants combined"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_feed
+          role: "Calcine or thermally treated feed"
+          name: "Internal intermediate product flow defined by the foreground model."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record mass, moisture, and where available degree of calcination or pre-reduction at transfer to smelting."
+          amount:
+            expression: "Weighed transfer or reconciled dry-mass balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_pretreatment
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: captured_pretreatment_dust
+          role: "Captured pretreatment dust"
+          name: "Select destination-specific waste or recovered-product flows."
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured dust before recycle, recovery, or disposal and state its final fate."
+          amount:
+            expression: "Weighed collection plus stock-change reconciliation, reported gross and net of documented internal return."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_fate
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg"
+                basis: "1,000 kg finished ferro-nickel before internal recycle"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: pretreatment_emissions
+          role: "Direct pretreatment emissions"
+          name: "Select pollutant- and compartment-specific TianGong elementary flows."
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific stack and fugitive releases, including particulate, nickel-bearing particulate, sulfur oxides, nitrogen oxides, carbon monoxide, and greenhouse gases where applicable."
+          amount:
+            expression: "Monitoring or source-specific calculation after abatement, normalized to the reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+  - id: electric_smelting
+    label: "Electric-furnace reduction and smelting"
+    inputs:
+      product:
+        - row_id: smelting_feed
+          role: "Smelting feed"
+          name: "Internal intermediate flow defined by the foreground model."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record treated primary feed or eligible secondary feed entering each electric furnace, with mass and composition."
+          amount:
+            expression: "Weighed transfer or reconciled mass balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electric_smelting
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: smelting_electricity
+          role: "Smelting electricity"
+          name: "Select a geography- and voltage-specific TianGong electricity product flow."
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record furnace and directly attributable auxiliary electricity using the geographically appropriate supply mix."
+          amount:
+            expression: "Metered furnace electricity plus attributable auxiliaries, normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_materials
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "5000"
+                upper: "20000"
+                unit: "kWh"
+                basis: "1,000 kg finished ferro-nickel; disclose included auxiliaries"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smelting_materials
+          role: "Smelting reductants, electrodes, and fluxes"
+          name: "Select material-specific TianGong product flows."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every reductant, consumable electrode, flux, and refractory addition separately by material identity."
+          amount:
+            expression: "Weighed issue or stock-reconciled consumption normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_materials
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "20"
+                upper: "100"
+                unit: "kg"
+                basis: "1,000 kg finished ferro-nickel; consumable electrodes only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_ferronickel
+          role: "Crude ferro-nickel"
+          name: "Internal crude-alloy product flow defined by the foreground model."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record tapped crude alloy mass and nickel composition before refining."
+          amount:
+            expression: "Weighed or calculated from tap mass and representative composition."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electric_smelting
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: smelting_residues
+          role: "Electric-furnace slag and captured dust"
+          name: "Select residue- and destination-specific waste or recovered-product flows."
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slag and captured dust as separate flows with composition and final fate; do not classify them as co-products solely because they leave the site."
+          amount:
+            expression: "Weighed or volume-and-density-derived mass, reconciled with stocks and internal recycle."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_fate
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "10000"
+                upper: "30000"
+                unit: "kg"
+                basis: "1,000 kg finished ferro-nickel; slag before external recovery or disposal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: smelting_emissions
+          role: "Direct smelting emissions"
+          name: "Select pollutant- and compartment-specific TianGong elementary flows."
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific stack and fugitive releases after abatement, including metal-bearing particulate, carbon monoxide, sulfur oxides, and greenhouse gases where applicable."
+          amount:
+            expression: "Monitoring result or source-specific mass-balance calculation normalized to the reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+  - id: refining_finishing
+    label: "Refining, casting, and granulation"
+    inputs:
+      product:
+        - row_id: refining_inputs
+          role: "Crude alloy and refining auxiliaries"
+          name: "Use the internal crude-alloy flow and select material-, energy-, and geography-specific TianGong flows for purchased inputs."
+          flow_type: "product"
+          property_unit: "Mass / kg; energy / kWh or MJ; water / m3"
+          description: "Record crude ferro-nickel, oxygen, fluxes, energy carriers, water, and other refining or finishing materials as separate exchanges."
+          amount:
+            expression: "Metered, weighed, or stock-reconciled amounts normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_finishing
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_ferronickel
+          role: "Finished ferro-nickel"
+          name: "Ferronickel / 镍铁"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0e9b30a3-8769-480e-a8ff-e7f1aa3f752f"
+          property_unit: "Mass — 93a60a56-a3c8-11da-a746-0800200b9a66 / kg — unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Normalize the accepted, sampled commercial product to the reference amount and retain the unnormalized production total in the foreground records."
+          amount:
+            expression: "Set to 1,000 kg after normalization of the accepted plant-gate product total."
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+                - iso-6501-2020
+            ranges: []
+      waste:
+        - row_id: refining_residues
+          role: "Refining slag, dust, wastewater, and spent materials"
+          name: "Select residue-, treatment-, and destination-specific TianGong waste or recovered-product flows."
+          flow_type: "waste"
+          property_unit: "Mass / kg; wastewater / m3 or kg"
+          description: "Record each residue separately with composition, waste status, treatment, recovery, and final destination."
+          amount:
+            expression: "Weighed, metered, or reconciled amount normalized to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_fate
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - bartzas-komnitsas-ferronickel-lca-2015
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg"
+                basis: "1,000 kg finished ferro-nickel before external recovery or disposal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refining_emissions
+          role: "Direct refining and finishing emissions"
+          name: "Select pollutant- and compartment-specific TianGong elementary flows."
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific air and water releases from refining, casting, granulation, cooling, and abatement after subtracting captured material."
+          amount:
+            expression: "Monitoring result, wastewater analysis, or source-specific calculation normalized to the reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg finished ferro-nickel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_water_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "Shared operations and utilities"
+    rule: "First avoid allocation by subdividing meters, production campaigns, furnaces, and treatment lines or by expanding the system where a defensible substituted function is demonstrated."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable shared burdens"
+    rule: "If subdivision or system expansion is not feasible, allocate using a documented physical causal relationship such as separately measured energy demand, dry feed mass, or nickel mass throughput; justify the chosen driver."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_other
+    applies_to: "No defensible physical relationship"
+    rule: "Use another documented relationship, such as economic value, only after showing why physical causality is unavailable; disclose prices, averaging period, and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_recycled_dust
+    applies_to: "Internal dust, slag, and metal recycle"
+    rule: "Treat material returned within the same foreground system and accounting period as an internal loop: report gross generation and return, but do not create an external avoided-product credit."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: allocation_waste_status
+    applies_to: "Slag, dust, residues, and secondary feed"
+    rule: "Determine waste versus product status from the applicable jurisdiction and actual transaction. A residue leaving the site does not become a co-product without a demonstrated function, market, and quality specification; record treatment burdens consistently."
+    source_ids:
+      - eu-pef-method-2021
+      - bartzas-komnitsas-ferronickel-lca-2015
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feed_receipt
+      process_id: "feed_preparation"
+      flow_role: "Nickel-bearing feeds and prepared feed"
+      record_type: "Weighbridge, sampler, laboratory, stock ledger"
+      raw_fields: "Gross/net mass; moisture; Ni, Fe and impurity content; origin; waste status; stock change"
+      collection_method: "Calibrated weighing plus representative lot sampling and chemical analysis"
+      unit: "kg; % mass"
+      frequency: "Each lot, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive representative months unless campaign production is justified"
+      site_scope: "All production lines in declared facility scope"
+      aggregation_rule: "Mass-weight composition and reconcile opening/closing stocks"
+      quality_evidence: "Calibration certificates, sampling plan, laboratory QA/QC, stock reconciliation"
+    - protocol_id: cp_energy_materials
+      process_id: "all_applicable_processes"
+      flow_role: "Electricity, fuels, reductants, electrodes, fluxes, auxiliaries"
+      record_type: "Meters, invoices, issue records, stock ledger"
+      raw_fields: "Quantity; carrier/material identity; meter; calorific value; stock change"
+      collection_method: "Process meter where available; otherwise reconciled allocation from site total"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Continuous or each issue, aggregated monthly"
+      temporal_coverage: "Same period as production denominator"
+      site_scope: "Declared production lines plus attributable utilities"
+      aggregation_rule: "Sum by carrier and subtract documented non-production use"
+      quality_evidence: "Meter calibration, invoice reconciliation, allocation worksheet"
+    - protocol_id: cp_thermal_pretreatment
+      process_id: "thermal_pretreatment"
+      flow_role: "Feed, calcine, dust, energy, operating state"
+      record_type: "Belt scales, batch logs, laboratory, control system"
+      raw_fields: "Input/output mass; moisture; temperature; composition; operating hours"
+      collection_method: "Metered transfer and reconciled dry-mass balance"
+      unit: "kg; °C; h"
+      frequency: "Each batch or continuous shift record"
+      temporal_coverage: "Same period as production denominator"
+      site_scope: "Every included kiln, roaster, or dryer"
+      aggregation_rule: "Aggregate by unit and route; retain outages and bypasses"
+      quality_evidence: "Instrument calibration, lab results, mass-balance closure"
+    - protocol_id: cp_electric_smelting
+      process_id: "electric_smelting"
+      flow_role: "Furnace feed, electricity, crude alloy, slag"
+      record_type: "Furnace meters, tap records, laboratory, stock ledger"
+      raw_fields: "Feed mass/composition; kWh; tap mass/composition; slag mass; operating hours"
+      collection_method: "Metered electricity, weighed or calculated taps, representative sampling"
+      unit: "kg; kWh; % mass"
+      frequency: "Each heat or shift"
+      temporal_coverage: "Same period as production denominator"
+      site_scope: "Every included electric furnace"
+      aggregation_rule: "Aggregate by furnace and route; reconcile Ni and dry mass"
+      quality_evidence: "Meter calibration, heat logs, laboratory QA/QC, balance closure"
+    - protocol_id: cp_refining_finishing
+      process_id: "refining_finishing"
+      flow_role: "Crude alloy, auxiliaries, finished product"
+      record_type: "Heat/lot logs, scales, laboratory, utility meters"
+      raw_fields: "Input/output mass; Ni and impurities; product form; rejected product; energy/water"
+      collection_method: "Calibrated weighing, representative lot sampling, and direct metering"
+      unit: "kg; % mass; kWh; m3"
+      frequency: "Each heat or lot"
+      temporal_coverage: "Same period as production denominator"
+      site_scope: "All included refining and finishing lines"
+      aggregation_rule: "Aggregate accepted product only; track rejects and rework separately"
+      quality_evidence: "Sampling certificates, calibration, product specification, production reconciliation"
+    - protocol_id: cp_air_emissions
+      process_id: "feed_preparation_thermal_pretreatment_electric_smelting"
+      flow_role: "Direct stack and fugitive air emissions"
+      record_type: "CEMS, stack tests, abatement logs, activity data"
+      raw_fields: "Pollutant concentration; gas flow; operating time; capture efficiency; bypass events"
+      collection_method: "Continuous monitoring or representative testing; calculation only with source-specific factors"
+      unit: "kg; mg/Nm3; Nm3/h"
+      frequency: "Continuous or permit-compliant tests"
+      temporal_coverage: "Representative of reporting period and operating states"
+      site_scope: "Every material emission point and disclosed fugitive source"
+      aggregation_rule: "Integrate concentration and flow; include starts, stops, and bypasses"
+      quality_evidence: "Calibration, accredited test reports, detection limits, uncertainty, abatement uptime"
+    - protocol_id: cp_air_water_emissions
+      process_id: "refining_finishing"
+      flow_role: "Direct air and water releases"
+      record_type: "CEMS/tests, wastewater meter and analysis, abatement logs"
+      raw_fields: "Pollutant concentration; flow; operating time; discharge volume"
+      collection_method: "Monitoring and pollutant-specific mass calculation"
+      unit: "kg; mg/Nm3; mg/L; m3"
+      frequency: "Continuous or permit-compliant tests"
+      temporal_coverage: "Representative of reporting period"
+      site_scope: "All refining, casting, granulation, and wastewater outlets"
+      aggregation_rule: "Integrate concentration and flow; keep air and water compartments separate"
+      quality_evidence: "Calibration, laboratory QA/QC, detection limits, uncertainty"
+    - protocol_id: cp_residue_fate
+      process_id: "all_applicable_processes"
+      flow_role: "Slag, dust, rejects, wastewater solids, spent materials"
+      record_type: "Scales, manifests, invoices, stock ledger"
+      raw_fields: "Gross generation; internal return; external shipment; composition; destination; legal status"
+      collection_method: "Weighing or validated volume-density conversion plus stock reconciliation"
+      unit: "kg; m3"
+      frequency: "Each movement, aggregated monthly"
+      temporal_coverage: "Same period as production denominator"
+      site_scope: "Entire declared facility"
+      aggregation_rule: "Report gross, internal return, external recovery, treatment, and disposal separately"
+      quality_evidence: "Weigh tickets, manifests, receiver evidence, stock balance, classification records"
+  calculation_rules:
+    - id: calculate_normalization
+      applies_to: "All inventory exchanges"
+      rule: "normalized exchange = period exchange × 1000 / accepted ferro-nickel mass (kg)"
+      inputs:
+        - "Period exchange"
+        - "accepted plant-gate ferro-nickel mass"
+      output: "Exchange per 1,000 kg reference flow"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calculate_dry_mass
+      applies_to: "Moist feeds and residues"
+      rule: "dry mass = wet mass × (1 - moisture mass fraction); preserve wet mass and measured moisture"
+      inputs:
+        - "Wet mass"
+        - "moisture fraction"
+      output: "Dry mass and declared basis"
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - id: calculate_nickel_balance
+      applies_to: "Whole foreground system and major unit processes"
+      rule: "Reconcile nickel in feed, products, dusts, slags, stocks, wastewater, and measured releases; investigate unexplained imbalance before acceptance"
+      inputs:
+        - "Mass and nickel fraction of all relevant streams"
+        - "stock changes"
+      output: "Nickel balance and closure ratio"
+      source_ids:
+        - bartzas-komnitsas-ferronickel-lca-2015
+    - id: calculate_monitored_emission
+      applies_to: "Direct emissions"
+      rule: "pollutant mass = time-integral(concentration × standardized flow) with unit, moisture, oxygen, and reference-condition corrections documented"
+      inputs:
+        - Concentration
+        - "gas or water flow"
+        - "operating time"
+        - "correction factors"
+      output: "Pollutant mass by compartment"
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - id: calculate_internal_recycle
+      applies_to: "Dust, slag, alloy, and preparation recycle"
+      rule: "Record gross generation and gross return; external waste or product output equals gross generation plus opening stock minus internal return minus closing stock, adjusted for verified transfers"
+      inputs:
+        - Generation
+        - return
+        - "stock changes"
+        - transfers
+      output: "Net external residue plus visible internal loop"
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - id: calculate_shared_burdens
+      applies_to: "Shared utilities and treatment"
+      rule: "Apply Section 7 hierarchy and document the selected causal driver or economic relation; allocation shares must sum to one"
+      inputs:
+        - "Shared burden"
+        - "production measures"
+        - "allocation driver"
+      output: "Burden attributed to ferro-nickel"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_technology
+      applies_to: "All foreground records"
+      requirement: "Data shall represent the declared primary or secondary route, furnace technology, abatement, and product form; do not combine materially different routes without separate weighting."
+      evidence: "Process description, route share, equipment list, operating logs"
+    - id: dq_geography
+      applies_to: "Energy, transport, upstream materials, and direct emissions"
+      requirement: "Use site-specific foreground data and geographically appropriate upstream datasets; disclose proxies and grid-region mismatch."
+      evidence: "Facility location, supplier origin, dataset geography, proxy register"
+    - id: dq_time
+      applies_to: "All records"
+      requirement: "Use a common representative period, normally at least 12 consecutive months; justify shorter campaigns and identify abnormal shutdowns or start-ups."
+      evidence: "Reporting dates, production log, representativeness statement"
+    - id: dq_precision
+      applies_to: "Measured and calculated quantities"
+      requirement: "Retain calibration, sampling uncertainty, detection limits, missing-data treatment, and mass/energy balance closure; material unresolved imbalance fails validation."
+      evidence: "QA/QC files, uncertainty records, balance worksheets"
+    - id: dq_completeness
+      applies_to: "All foreground processes"
+      requirement: "Account for all material feeds, energy carriers, direct releases, slags, dusts, wastewater, and hazardous flows; any omission must be quantified and justified."
+      evidence: "Completeness checklist, site reconciliation, exclusion log"
+    - id: dq_source_identity
+      applies_to: "Linked upstream data"
+      requirement: "Record dataset UUID or durable identifier, version used in the data package, provider, geography, technology, and access date."
+      evidence: "Data-source register and exchange links"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Reference product"
+    rule: "Confirm CPC 3.0 41114, product name, product form, plant-gate state, and reference-flow UUID; reject refined nickel, matte, generic alloy, or waste-flow substitution."
+    source_ids:
+      - iso-6501-2020
+  - rule_id: validate_reference_amount
+    applies_to: "Reference flow"
+    rule: "Confirm exactly 1,000 kg after normalization, using mass property 93a60a56-a3c8-11da-a746-0800200b9a66, mass unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_composition
+    applies_to: "Product and nickel-bearing feeds"
+    rule: "Require representative sampling, declared analytical basis, nickel content, specified impurities, and lot/campaign linkage; composition without sampling evidence is incomplete."
+    source_ids:
+      - iso-8049-2016
+      - iso-8050-1988
+  - rule_id: validate_route_boundary
+    applies_to: "Dataset scope"
+    rule: "Confirm route declaration and inclusion of every applicable required/conditional process, abatement, direct releases, residues, and linked upstream inputs."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: validate_inventory_balance
+    applies_to: "Foreground inventory"
+    rule: "Reconcile product mass, dry mass, nickel, energy, stocks, and internal recycle; investigate material unexplained imbalance and values outside screening ranges rather than clipping them."
+    source_ids:
+      - bartzas-komnitsas-ferronickel-lca-2015
+  - rule_id: validate_allocation
+    applies_to: "Shared operations and outputs"
+    rule: "Confirm the allocation hierarchy was followed, shares sum to one, internal loops receive no avoided-product credit, and waste/co-product status is supported."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_data_quality
+    applies_to: "All evidence"
+    rule: "Confirm technological, geographical, temporal, precision, completeness, and source-identity evidence; disclose proxy and uncertainty limitations."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_reasoned_ranges
+    applies_to: "Candidate QA guardrails"
+    rule: "Treat reasoned-estimate ranges only as review triggers; require explanation and source-specific evidence for outliers, and never replace collected values with the range limits."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+      - bartzas-komnitsas-ferronickel-lca-2015
+published_dataset_profile:
+  dataset_role: "Foreground data package for finished ferro-nickel production at plant gate"
+  downstream_use: "Construction of TianGong process datasets and lifecyclemodel projections for cradle-to-gate alloy supply"
+  allowed_use: "Route- and site-representative ferro-nickel inventories with declared composition, geography, period, upstream links, allocation, and residue fate"
+  excluded_use: "Refined nickel, nickel matte, nickel pig iron marketed separately, generic nickel alloys, downstream steel products, or substitution of candidate screening ranges for measured data"
+  required_metadata: "PCR id; CPC code; reference-flow UUID; nickel content and analytical basis; product form; route; feed type and recycled share; facility/geography; period; allocation; gate; upstream dataset identities"
+  required_quality_disclosure: "Sampling and calibration evidence; direct-emission method; mass, nickel, and energy balance closure; exclusions; proxies; uncertainty; screening-range exceptions; waste/co-product decisions"
+  update_trigger: "Change in product specification, route, furnace or abatement technology, feed mix, allocation, facility geography, or a material inventory parameter; otherwise review at least annually"
+data_sources:
+  - id: "ec-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "Cusano, G. et al. (2017), *Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries*, EUR 28648 EN, European Commission Joint Research Centre; https://publications.jrc.ec.europa.eu/repository/handle/JRC107041; DOI: 10.2760/8224"
+    used_for: "Primary and secondary ferro-nickel process sequence, inputs, emissions, abatement, dust recycle, and site benchmark context"
+  - id: "iso-6501-2020"
+    type: "standard"
+    reference: "ISO 6501:2020, *Ferronickel — Specification and delivery requirements*; https://www.iso.org/standard/77250.html"
+    used_for: "Product forms, commercial identity, specification, and delivery context"
+  - id: "iso-8049-2016"
+    type: "standard"
+    reference: "ISO 8049:2016, *Ferronickel shot — Sampling for analysis*; https://www.iso.org/standard/65091.html"
+    used_for: "Representative sampling of shot lots for chemical analysis"
+  - id: "iso-8050-1988"
+    type: "standard"
+    reference: "ISO 8050:1988, *Ferronickel ingots or pieces — Sampling for analysis*; https://www.iso.org/standard/15065.html"
+    used_for: "Representative sampling of ingots and pieces for chemical composition"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods; http://data.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "Reference-flow normalization, allocation hierarchy, completeness, and data-quality dimensions"
+  - id: "bartzas-komnitsas-ferronickel-lca-2015"
+    type: "literature"
+    reference: "Bartzas, G. and Komnitsas, K. (2015), “Life cycle assessment of ferronickel production in Greece,” *Resources, Conservation and Recycling* 105, 113–122; DOI: 10.1016/j.resconrec.2015.10.016; https://sln.eramet.com/wp-content/uploads/sites/5/2023/09/40_LIF1.pdf"
+    used_for: "Cradle-to-gate foreground structure, mass and energy balances, primary-route site data, slag/dust handling, and data-quality evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2e4916f3f4ff8dbdd5c323b0d7612da11f496423bdec8a09f5afc607786384a2"
+  generated_content_sha256: "sha256:d79ca372b8d5953773eda86afd2da616944563fac0d406b24812f6a0b9cea616"

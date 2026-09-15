@@ -1,10 +1,2368 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23992"
-  title: "Soups and broths and preparations thereof"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.soups-and-broths-and-preparations-thereof"
+  classification_refs: "CPC 3.0: 23992, Soups and broths and preparations thereof (exact)"
+  covered_products: "Finished soups and broths and preparations thereof in ready-to-consume, chilled, frozen, condensed, concentrated, liquid, semi-liquid, paste, dried, powdered, granulated, tablet, cube, or comparable market forms"
+  excluded_products: "Infant-use or homogenized composite preparations; sauces and mixed condiments; prepared dishes not primarily identified as soup or broth; separately marketed extracts; ingredients not sold as a soup, broth, or preparation thereof"
+  representative_product: "A packaged factory-gate soup or broth product in the declared as-sold market form; the category flow is representative only at CPC 23992 level and does not imply a particular recipe, concentration, preservation route, or package"
+  production_route: "Receipt and preparation of ingredients; formulation, extraction, cooking, or blending; route-specific concentration, dehydration, thermal treatment, chilling, or freezing; filling, sealing, and packaging; cleaning, utilities, and residue management"
+  market_state: "Finished product at factory gate in its declared as-sold physical form, concentration, preservation condition, and package configuration"
+functional_unit:
+  what: "Manufacture and provision at the factory gate of a soup, broth, or preparation thereof in its declared as-sold form"
+  how_much: "1 kg net mass of conforming finished product, excluding packaging mass"
+  how_well: "Meeting the declared recipe or formulation, concentration or reconstitution instructions, physical form, preservation condition, quality specification, and applicable food requirements"
+  how_long_or_cycle: "One completed production and packaging cycle; declared shelf life is metadata and is modelled downstream when storage losses or packaging-dependent shelf life are in scope"
+  reference_flow_link: "The reference product output of filling_and_packaging, normalized to 1 kg net conforming product at factory gate"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground starts when recipe ingredients, water, packaging, energy carriers, and other supplies are received at the manufacturing site. It ends when the conforming, filled, sealed, and packaged product is ready to leave the factory gate. Include direct site operations, product and material losses, cleaning and sanitation, shared utilities, on-site wastewater or residue treatment, and direct emissions attributable to the product."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include ingredient receipt and preparation, formulation or cooking, route-specific stabilization, filling and packaging, cleaning, utilities, direct emissions, product losses, and on-site waste or wastewater handling through the factory gate."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs and services"
+      rule: "Represent production of purchased ingredients, packaging, energy, water, and off-site treatment through linked upstream datasets rather than silently excluding those burdens."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_conditionals
+      applies_to: "concentration, dehydration, chilling, freezing, thermal preservation, or aseptic processing"
+      rule: "Include every operation actually used for the declared market form and preservation route and mark non-applicable route processes explicitly."
+      source_ids:
+        - fao-who-cxs-117-1981
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_downstream_separation
+      applies_to: "distribution, retail, use, and end-of-life"
+      rule: "Exclude downstream stages from this factory-gate dataset; add them only in a clearly identified lifecycle model, including reconstitution energy and water, storage losses, and packaging end-of-life when relevant."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_no_unreported_cutoff
+      applies_to: "all foreground flows"
+      rule: "Record all known material, water, energy, product, co-product, waste, and direct elementary flows. Any omitted flow requires a quantified materiality justification and disclosure; no category-wide default cut-off is granted."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Ingredients and intermediate soup or broth preparations are received at the factory with supplier identity, mass, moisture or solids basis where material, geography, and upstream dataset references declared; packaging and utilities are received as separate inputs"
+  starting_condition_role: "Factory-gate input condition for the foreground manufacturing dataset"
+  product_classification_scope: "Finished soups, broths, and preparations thereof corresponding to the full semantic scope of CPC 3.0 subclass 23992, independently of a particular recipe or physical form"
+  recursive_input_rule: "A purchased input that is itself a soup, broth, or preparation thereof is recorded once as a technosphere product input at the actual received form and quantity; do not recursively reproduce its manufacture inside this foreground system"
+  upstream_dataset_requirement: "Every purchased ingredient, same-category intermediate, packaging material, fuel, electricity supply, water supply, and off-site treatment service requires a geographically and technologically appropriate upstream dataset or a disclosed proxy"
+  disclosure: "Declare product form, recipe family, concentration or reconstitution basis, preservation route, storage condition, packaging configuration, facility geography, production period, process inclusions, exclusions, and all proxy or allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg net finished product as sold"
+  product_flow_ref:
+    name: "Soups and broths and preparations thereof"
+    uuid: "6cd389be-4748-4401-96a4-ecdc07c041a3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product identity or recipe family"
+    - liquid
+    - concentrated
+    - frozen
+    - dehydrated
+    - cube
+    - powder
+    - "or other market form"
+    - "net mass"
+    - "solids or moisture basis where relevant"
+    - "concentration factor or preparation/reconstitution instructions where relevant"
+    - "principal ingredient basis"
+    - "preservation route"
+    - "storage condition"
+    - "package format and packaging mass"
+    - geography
+    - technology
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1 kg net conforming product as sold at factory gate. Exclude primary, secondary, and tertiary packaging mass from the reference amount and report packaging separately."
+  - id: ingredient_mass_basis
+    applies_to: "Recipe ingredients, process water, intermediates, and product losses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass as received and disclose dry matter, moisture, concentration, or solids content wherever it changes mass balance or comparability."
+  - id: reconstitution_basis
+    applies_to: "Concentrated or dehydrated products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg prepared product per kg as-sold product"
+    rule: "Calculate prepared mass using the manufacturer's declared preparation or reconstitution instructions. Keep the 1 kg as-sold reference result and report the prepared-product conversion as additional metadata."
+  - id: packaging_mass_separation
+    applies_to: "Packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each packaging material and component by mass per 1 kg net product; do not include packaging in product net mass."
+  - id: energy_carrier_consistency
+    applies_to: "Electricity, fuels, steam, heating, cooling, refrigeration, compressed air, and vacuum"
+    required_property_ref:
+      name: "Energy content or service property of the selected real flow"
+      uuid: ""
+    required_unit: "kWh, MJ, kg steam, or documented service unit"
+    rule: "Preserve the unit and property of the selected upstream flow, document conversions and heating-value basis, and do not combine thermal and electrical energy without separate carrier records."
+  - id: water_use_and_discharge
+    applies_to: "Ingredient water, process water, cleaning water, cooling water, and wastewater"
+    required_property_ref:
+      name: "Volume or mass property of the selected real flow"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Distinguish water incorporated into product from washing, cleaning, cooling, boiler, and other technical uses; distinguish withdrawal, recirculation, consumption, and discharge and document density conversions."
+process_map:
+  - id: ingredient_preparation
+    name: "Ingredient receipt, storage, preparation, and batching"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Receives, stores, washes, trims, cuts, mills, dissolves, thaws, and doses recipe materials as applicable"
+    quantitative_reference: "kg prepared formulation or batched ingredients"
+  - id: cooking_and_blending
+    name: "Extraction, cooking, formulation, and blending"
+    inclusion: "required"
+    inclusion_condition: "Always; select the operations actually used"
+    role: "Produces the formulated soup or broth base from prepared ingredients and recipe water"
+    quantitative_reference: "kg cooked or blended bulk base"
+  - id: route_stabilization
+    name: "Concentration, dehydration, thermal stabilization, chilling, or freezing"
+    inclusion: "conditional"
+    inclusion_condition: "Include every stabilization operation used to create the declared market form and preservation condition"
+    role: "Establishes concentration, moisture, microbial stability, and storage state"
+    quantitative_reference: "kg stabilized bulk product"
+  - id: filling_and_packaging
+    name: "Filling, sealing, inspection, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produces conforming packaged product at the factory gate"
+    quantitative_reference: "1 kg net conforming finished product"
+  - id: cleaning_utilities_and_residues
+    name: "Cleaning, shared utilities, wastewater, and residue management"
+    inclusion: "required"
+    inclusion_condition: "Always; disaggregate material cross-cutting services where possible"
+    role: "Supplies cleaning and utilities and records site wastes and direct emissions"
+    quantitative_reference: "Services and residues allocated to 1 kg net conforming product"
+process_inventory:
+  - id: ingredient_preparation
+    label: "Ingredient receipt, storage, preparation, and batching"
+    inputs:
+      product:
+        - row_id: recipe_ingredients
+          role: "Recipe ingredients received"
+          name: "Product-specific Tiangong flow for each actual ingredient; use a documented proxy only when no adequate real flow exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every ingredient by actual product identity and received mass, including meat, poultry, fish, vegetables, pulses, cereals, starches, fats, salt, seasonings, extracts, hydrolysates, additives, and returned same-category intermediate where used. Do not replace the recipe with a single generic food input."
+          amount:
+            expression: "measured received mass corrected for returns and inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_batch_materials
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+                - fao-who-cxs-117-1981
+            ranges: []
+        - row_id: ingredient_preparation_water
+          role: "Ingredient and preparation water"
+          name: "Potable or process water flow matching the facility supply"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record potable water incorporated into the formulation or used to wash, soak, dissolve, thaw, or transfer ingredients. Separate incorporated water from water discharged after preparation."
+          amount:
+            expression: "metered or batch-recorded water supplied to ingredient preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_water
+              source_ids:
+                - fao-who-cxs-117-1981
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_formulation
+          role: "Prepared ingredients or formulation"
+          name: "Product-specific prepared soup or broth formulation intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass transferred to cooking or blending, with moisture or solids content where needed to close the product mass balance."
+          amount:
+            expression: "measured transfer mass from batch, tank, or line records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_batch_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: ingredient_residue_vegetable
+          role: "Vegetable trimming residues"
+          name: "Vegetable preparation residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record vegetable trimming residues separately by material identity and actual destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented ingredient-preparation mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_batch_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ingredient_residue_animal
+          role: "Animal-tissue preparation residues"
+          name: "Animal-tissue food residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record animal-tissue preparation residues separately by material identity and actual destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented ingredient-preparation mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_batch_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ingredient_residue_screenings
+          role: "Screenings and filter solids"
+          name: "Food-processing screenings or filter-residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record screenings and filter solids separately by material identity and actual destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented ingredient-preparation mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_batch_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ingredient_residue_offspec
+          role: "Spilled or off-specification ingredients"
+          name: "Ingredient-specific food-residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spilled or off-specification ingredients separately by material identity and actual destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented ingredient-preparation mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_batch_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ingredient_preparation_wastewater
+          role: "Ingredient preparation wastewater"
+          name: "Wastewater flow matching the receiving treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record wastewater from washing, soaking, thawing, and preparation before any on-site treatment, with separately measured high-strength streams where available."
+          amount:
+            expression: "metered discharge or calculated water balance for ingredient preparation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared formulation leaving ingredient_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_water
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: cooking_and_blending
+    label: "Extraction, cooking, formulation, and blending"
+    inputs:
+      product:
+        - row_id: prepared_formulation_input
+          role: "Prepared formulation input"
+          name: "Same product-specific intermediate used for prepared_formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual prepared ingredient or formulation mass entering cooking, extraction, dissolution, or blending."
+          amount:
+            expression: "measured transfer mass into the cooking or blending line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - fao-who-cxs-117-1981
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_recipe_water
+          role: "Recipe water added during cooking or blending"
+          name: "Potable or process water flow matching the facility supply"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record water intentionally incorporated during extraction, cooking, dilution, dissolution, or formulation, separately from cleaning and utility water."
+          amount:
+            expression: "metered or batch-recorded water addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - fao-who-cxs-117-1981
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_electricity
+          role: "Purchased electricity for cooking and blending"
+          name: "Purchased electricity supply matching the facility voltage level and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record grid or supplier electricity used by extraction, cooking, mixing, homogenizing, and pumping equipment."
+          amount:
+            expression: "dedicated meter reading or allocation from measured equipment demand and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_steam
+          role: "Purchased steam for cooking and blending"
+          name: "Purchased steam supply matching the declared steam conditions"
+          flow_type: "product"
+          property_unit: "Energy or Mass / MJ or kg steam"
+          description: "Record imported steam separately from fuels burned on site, retaining pressure, temperature, and condensate-return conditions."
+          amount:
+            expression: "steam meter reading corrected for declared conditions and documented condensate return"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_hot_water
+          role: "Purchased hot water for cooking and blending"
+          name: "Purchased hot-water supply matching the declared supply and return temperatures"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record imported hot water used as a heat carrier; do not combine it with recipe water or cleaning water."
+          amount:
+            expression: "heat-meter reading or measured mass multiplied by documented temperature difference and heat capacity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_natural_gas
+          role: "Natural gas for cooking and blending"
+          name: "Natural gas supply matching the facility geography and pressure level"
+          flow_type: "product"
+          property_unit: "Energy or Volume / MJ lower heating value or Nm3"
+          description: "Record natural gas burned in equipment serving cooking and blending, separately from other fuels."
+          amount:
+            expression: "fuel meter reading with documented lower heating value and standard-condition conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_lpg
+          role: "Liquefied petroleum gas for cooking and blending"
+          name: "Liquefied petroleum gas supply matching the facility market"
+          flow_type: "product"
+          property_unit: "Mass or Energy / kg or MJ lower heating value"
+          description: "Record LPG burned in cooking and blending equipment as a distinct carrier."
+          amount:
+            expression: "measured delivery or tank inventory balance with documented lower heating value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_diesel
+          role: "Diesel for cooking and blending"
+          name: "Diesel fuel supply matching the facility market"
+          flow_type: "product"
+          property_unit: "Mass or Energy / kg or MJ lower heating value"
+          description: "Record diesel used by included thermal or mobile equipment serving cooking and blending, separately from other fuels."
+          amount:
+            expression: "measured issue or tank inventory balance with documented density and lower heating value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_soup_base
+          role: "Cooked or blended soup or broth base"
+          name: "Product-specific bulk soup, broth, or preparation intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass and declared solids or moisture state of the bulk base transferred to stabilization or directly to filling."
+          amount:
+            expression: "measured good-product transfer mass after cooking or blending"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - fao-who-cxs-117-1981
+            ranges: []
+      waste:
+        - row_id: cooking_residue_bones
+          role: "Bones from cooking or extraction"
+          name: "Bone food-residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record bones from cooking or extraction separately by actual material identity and destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented cooking-batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_residue_spent_solids
+          role: "Spent vegetable and ingredient solids"
+          name: "Spent food-solid residue waste flow matching the principal material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent vegetable and ingredient solids separately by actual material identity and destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented cooking-batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_residue_filter_solids
+          role: "Cooking filter residues"
+          name: "Food-processing filter-residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record cooking filter residues separately by actual material identity and destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented cooking-batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_residue_offspec_product
+          role: "Off-specification bulk soup or broth"
+          name: "Soup or broth product-residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification bulk soup or broth separately by actual material identity and destination before recovery or treatment."
+          amount:
+            expression: "measured residue or difference from a documented cooking-batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_batch
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: cooking_emission_co2_fossil
+          role: "Fossil carbon dioxide from cooking"
+          name: "Carbon dioxide, fossil"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil CO2 released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_emission_co2_biogenic
+          role: "Biogenic carbon dioxide from cooking"
+          name: "Carbon dioxide, biogenic"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct biogenic CO2 released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_emission_ch4
+          role: "Methane from cooking combustion"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct CH4 released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_emission_n2o
+          role: "Nitrous oxide from cooking combustion"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct N2O released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_emission_nox
+          role: "Nitrogen oxides from cooking combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct NOx released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_emission_so2
+          role: "Sulphur dioxide from cooking combustion"
+          name: "Sulphur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct SO2 released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cooking_emission_pm
+          role: "Particulate matter from cooking combustion"
+          name: "Particulate matter to air at the measured size fraction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct particulate matter released from included cooking fuel combustion; upstream supply emissions remain in fuel datasets."
+          amount:
+            expression: "measured emission or collected fuel use multiplied by a documented pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk soup or broth base output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooking_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+  - id: route_stabilization
+    label: "Concentration, dehydration, thermal stabilization, chilling, or freezing"
+    inputs:
+      product:
+        - row_id: stabilization_bulk_input
+          role: "Bulk soup or broth base for stabilization"
+          name: "Same product-specific intermediate used for bulk_soup_base"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the bulk product entering each actual concentration, dehydration, pasteurization, sterilization, aseptic, chilling, or freezing step. Skip operations not used by the declared route."
+          amount:
+            expression: "measured input mass to each included stabilization operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stabilization_batch
+              source_ids:
+                - fao-who-cxs-117-1981
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_electricity
+          role: "Stabilization electricity"
+          name: "Purchased electricity supply matching the facility voltage level and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by concentration, dehydration, thermal-treatment, chilling, or freezing equipment."
+          amount:
+            expression: "route submeter reading or allocation from measured equipment demand and operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_steam
+          role: "Stabilization steam"
+          name: "Purchased steam supply matching the declared steam conditions"
+          flow_type: "product"
+          property_unit: "Energy or Mass / MJ or kg steam"
+          description: "Record purchased steam used by evaporators, dryers, pasteurizers, sterilizers, or post-treatment equipment."
+          amount:
+            expression: "steam meter reading corrected for declared conditions and condensate return"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_natural_gas
+          role: "Stabilization natural gas"
+          name: "Natural gas supply matching the facility geography and pressure level"
+          flow_type: "product"
+          property_unit: "Energy or Volume / MJ lower heating value or Nm3"
+          description: "Record natural gas burned by included stabilization equipment separately from other fuels and purchased heat."
+          amount:
+            expression: "fuel meter reading with documented lower heating value and standard-condition conversion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_cooling_water
+          role: "Stabilization cooling water"
+          name: "Process-water supply matching the facility source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh cooling-water make-up supplied to the stabilization route; recirculated water is tracked separately and not counted repeatedly."
+          amount:
+            expression: "make-up meter reading after separating recirculation and blowdown"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_r717_makeup
+          role: "Ammonia refrigerant make-up"
+          name: "Ammonia (R717) refrigerant product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record R717 (ammonia) refrigerant charged to replace losses from included chilling or freezing systems."
+          amount:
+            expression: "service-log make-up mass allocated to the represented route; do not record the circulating charge as consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_r404a_makeup
+          role: "R404A refrigerant make-up"
+          name: "R404A refrigerant product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record R404A refrigerant charged to replace losses from included chilling or freezing systems."
+          amount:
+            expression: "service-log make-up mass allocated to the represented route; do not record the circulating charge as consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stabilized_bulk_product
+          role: "Stabilized bulk product"
+          name: "Product-specific stabilized soup, broth, or preparation intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass, physical form, concentration or solids content, temperature or frozen state where relevant, and preservation route of product released to filling."
+          amount:
+            expression: "measured conforming transfer mass from stabilization to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stabilization_batch
+              source_ids:
+                - fao-who-cxs-117-1981
+            ranges: []
+      waste:
+        - row_id: stabilization_condensate
+          role: "Stabilization condensate"
+          name: "Process condensate flow"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record stabilization condensate separately by recovery or treatment destination and before any netting."
+          amount:
+            expression: "measured condensate quantity before any recovery or discharge"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_wastewater
+          role: "Stabilization wastewater"
+          name: "Wastewater flow matching the receiving treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record stabilization wastewater separately by recovery or treatment destination and before any netting."
+          amount:
+            expression: "metered discharge or stabilization water balance after separating condensate"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_rejected_product
+          role: "Rejected stabilized product"
+          name: "Soup or broth product-residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected stabilized product separately by recovery or treatment destination and before any netting."
+          amount:
+            expression: "measured rejected product before rework, recovery, or treatment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: stabilization_emission_co2_fossil
+          role: "Fossil carbon dioxide from stabilization"
+          name: "Carbon dioxide, fossil"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil CO2 released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_co2_biogenic
+          role: "Biogenic carbon dioxide from stabilization"
+          name: "Carbon dioxide, biogenic"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct biogenic CO2 released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_ch4
+          role: "Methane from stabilization combustion"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct CH4 released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_n2o
+          role: "Nitrous oxide from stabilization combustion"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct N2O released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_nox
+          role: "Nitrogen oxides from stabilization combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct NOx released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_so2
+          role: "Sulphur dioxide from stabilization combustion"
+          name: "Sulphur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct SO2 released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_pm
+          role: "Particulate matter from stabilization combustion"
+          name: "Particulate matter to air at the measured size fraction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct particulate matter released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_r717
+          role: "Ammonia refrigerant emission"
+          name: "Ammonia (R717) to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct R717 refrigerant released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: stabilization_emission_r404a
+          role: "R404A refrigerant emission"
+          name: "R404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct R404A refrigerant released from included stabilization equipment; upstream supply emissions remain in carrier datasets."
+          amount:
+            expression: "measured release or collected activity multiplied by a documented substance-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg stabilized bulk product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stabilization_residues
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+  - id: filling_and_packaging
+    label: "Filling, sealing, inspection, and packaging"
+    inputs:
+      product:
+        - row_id: filling_bulk_input
+          role: "Bulk product supplied to filling"
+          name: "Product-specific bulk soup, broth, or preparation intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured conforming bulk product mass entering filling, whether it bypasses a separate stabilization step or arrives from it."
+          amount:
+            expression: "measured mass entering the filler"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_steel
+          role: "Tinplate or steel packaging"
+          name: "Tinplate or steel packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record tinplate or other steel cans, lids, and closures; keep aluminium components out of this row."
+          amount:
+            expression: "verified steel component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_aluminium
+          role: "Aluminium packaging"
+          name: "Aluminium packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aluminium cans, lids, foils, or laminate layers separately from steel and plastics."
+          amount:
+            expression: "verified aluminium component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_glass
+          role: "Glass packaging"
+          name: "Container-glass packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record glass jars or bottles without combining their metal, plastic, or paper closures and labels."
+          amount:
+            expression: "verified glass container mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_pet
+          role: "PET packaging"
+          name: "Polyethylene terephthalate packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene terephthalate containers, trays, or layers as a separate polymer row."
+          amount:
+            expression: "verified PET component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_pp
+          role: "Polypropylene packaging"
+          name: "Polypropylene packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene tubs, trays, closures, films, or laminate layers as a separate polymer row."
+          amount:
+            expression: "verified PP component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_pe
+          role: "Polyethylene packaging"
+          name: "Polyethylene packaging product flow matching the declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene films, pouches, closures, or laminate layers separately from PET and polypropylene."
+          amount:
+            expression: "verified PE component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_paperboard
+          role: "Paperboard packaging"
+          name: "Paperboard packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record folding cartons, sleeves, and paperboard components separately from corrugated cases and labels."
+          amount:
+            expression: "verified paperboard component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_corrugated_board
+          role: "Corrugated-board packaging"
+          name: "Corrugated-board packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated shipping cases, dividers, and pads separately from paperboard cartons."
+          amount:
+            expression: "verified corrugated component mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper labels"
+          name: "Paper label product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record paper labels separately from containers, cartons, and plastic labels."
+          amount:
+            expression: "verified label mass multiplied by units consumed, including measured start-up and reject losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_wood_pallet
+          role: "Wooden pallets"
+          name: "Wooden pallet product flow"
+          flow_type: "product"
+          property_unit: "Mass or Item / kg or pallet"
+          description: "Record the consumed or allocated share of wooden pallets; reusable pallet trips and losses shall be disclosed."
+          amount:
+            expression: "pallet mass or item count multiplied by the documented loss or trip-allocation share"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Filling and packaging electricity"
+          name: "Purchased electricity supply matching the facility voltage level and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by fillers, seamers, cappers, inspection, coding, conveying, and packaging equipment."
+          amount:
+            expression: "line meter reading or allocation from measured demand and operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_steam
+          role: "Post-fill treatment steam"
+          name: "Purchased steam supply matching the declared steam conditions"
+          flow_type: "product"
+          property_unit: "Energy or Mass / MJ or kg steam"
+          description: "Record purchased steam used by retorts or other post-fill heat treatment separately from line electricity."
+          amount:
+            expression: "steam meter reading corrected for declared conditions and condensate return"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_cooling_water
+          role: "Filling-line cooling water"
+          name: "Process-water supply matching the facility source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh cooling-water make-up used after filling or retorting, excluding recirculated water counted within the loop."
+          amount:
+            expression: "make-up meter reading after separating recirculation and blowdown"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_natural_gas
+          role: "Natural gas for post-fill treatment"
+          name: "Natural gas supply matching the facility geography and pressure level"
+          flow_type: "product"
+          property_unit: "Energy or Volume / MJ lower heating value or Nm3"
+          description: "Record natural gas burned by equipment dedicated to filling-line or post-fill treatment."
+          amount:
+            expression: "fuel meter reading with documented lower heating value and standard-condition conversion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_energy
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_product
+          role: "Conforming soup, broth, or preparation thereof"
+          name: "Soups and broths and preparations thereof , or a reviewed more specific real product flow under the replacement rule in Section 3"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cd389be-4748-4401-96a4-ecdc07c041a3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference. Record only conforming net product in its declared as-sold form; use the category-level reference UUID unless a reviewed, more product-specific public Tiangong flow is available."
+          amount:
+            expression: "exactly 1 kg net conforming finished product after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net finished product as sold at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+            ranges: []
+      waste:
+        - row_id: filling_product_losses
+          role: "Product rejects and filling losses"
+          name: "Product-specific food residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record start-up, changeover, overfill, underfill, spill, seal-failure, inspection-reject, and returned bulk product quantities and actual destinations."
+          amount:
+            expression: "measured reject and loss mass before any recovery credit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_steel
+          role: "Steel packaging waste"
+          name: "steel packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected steel packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_aluminium
+          role: "Aluminium packaging waste"
+          name: "aluminium packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected aluminium packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_glass
+          role: "Glass packaging waste"
+          name: "waste container-glass flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected glass packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_pet
+          role: "PET packaging waste"
+          name: "waste polyethylene terephthalate packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected pet packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_pp
+          role: "Polypropylene packaging waste"
+          name: "waste polypropylene packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected polypropylene packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_pe
+          role: "Polyethylene packaging waste"
+          name: "waste polyethylene packaging flow matching the declared grade"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected polyethylene packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_paperboard
+          role: "Paperboard packaging waste"
+          name: "waste paperboard packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected paperboard packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_corrugated_board
+          role: "Corrugated-board packaging waste"
+          name: "waste corrugated-board packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected corrugated-board packaging waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_paper_label
+          role: "Paper-label waste"
+          name: "waste paper-label flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected paper-label waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_wood_pallet
+          role: "Wooden-pallet waste"
+          name: "waste wooden-pallet flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the damaged, trimmed, misprinted, unsealed, or otherwise rejected wooden-pallet waste separately from other packaging materials and by treatment destination."
+          amount:
+            expression: "material issued minus material incorporated in conforming output and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_utilities_and_residues
+    label: "Cleaning, shared utilities, wastewater, and residue management"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning water"
+          name: "Process-water supply matching the facility source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh water used for manual cleaning, cleaning-in-place, and sanitation; keep recovered and recirculated solution separate."
+          amount:
+            expression: "metered make-up water or validated CIP recipe water multiplied by completed cycles"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cleaning_sodium_hydroxide
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide product flow matching delivered concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide supplied to cleaning and CIP systems as delivered product and active-substance mass."
+          amount:
+            expression: "dosing record or purchase-and-inventory balance, with concentration conversion retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cleaning_nitric_acid
+          role: "Nitric acid cleaning agent"
+          name: "Nitric acid product flow matching delivered concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record nitric acid supplied to cleaning and CIP systems separately from other acids."
+          amount:
+            expression: "dosing record or purchase-and-inventory balance, with concentration conversion retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cleaning_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid product flow matching delivered concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peracetic acid disinfectant separately from detergents, alkalis, and other disinfectants."
+          amount:
+            expression: "dosing record or purchase-and-inventory balance, with concentration conversion retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cleaning_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite product flow matching delivered concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hypochlorite disinfectant separately from other cleaning chemicals."
+          amount:
+            expression: "dosing record or purchase-and-inventory balance, with available-chlorine conversion retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_materials
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: shared_electricity
+          role: "Residual shared electricity"
+          name: "Purchased electricity supply matching the facility voltage level and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record only electricity not directly assigned to another process, after reconciling site and submeters."
+          amount:
+            expression: "measured residual electricity allocated with a documented causal physical driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: shared_steam
+          role: "Residual shared steam"
+          name: "Purchased steam supply matching the declared steam conditions"
+          flow_type: "product"
+          property_unit: "Energy or Mass / MJ or kg steam"
+          description: "Record only purchased steam not directly assigned to another process."
+          amount:
+            expression: "measured residual steam allocated causally, with steam conditions and condensate return retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: shared_natural_gas
+          role: "Residual shared natural gas"
+          name: "Natural gas supply matching the facility geography and pressure level"
+          flow_type: "product"
+          property_unit: "Energy or Volume / MJ lower heating value or Nm3"
+          description: "Record only natural gas not directly assigned to another process or boiler output."
+          amount:
+            expression: "measured residual fuel allocated causally with lower heating value retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: shared_diesel
+          role: "Residual shared diesel"
+          name: "Diesel fuel supply matching the facility market"
+          flow_type: "product"
+          property_unit: "Mass or Energy / kg or MJ lower heating value"
+          description: "Record diesel used by shared included equipment separately from other fuels."
+          amount:
+            expression: "measured issue or inventory balance allocated causally with density and lower heating value retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: shared_lpg
+          role: "Residual shared LPG"
+          name: "Liquefied petroleum gas supply matching the facility market"
+          flow_type: "product"
+          property_unit: "Mass or Energy / kg or MJ lower heating value"
+          description: "Record LPG used by shared included equipment separately from other fuels."
+          amount:
+            expression: "measured issue or inventory balance allocated causally with lower heating value retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: shared_compressed_air
+          role: "Shared compressed air"
+          name: "Compressed-air utility service at the declared pressure"
+          flow_type: "product"
+          property_unit: "Volume or service energy / Nm3 or kWh"
+          description: "Record compressed-air service used by included operations and not already assigned to a process."
+          amount:
+            expression: "submetered quantity or compressor electricity allocated from measured air demand"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: shared_refrigeration_electricity
+          role: "Shared refrigeration electricity"
+          name: "Purchased electricity supply matching the facility voltage level and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for shared cold stores and refrigeration systems not assigned to stabilization or filling."
+          amount:
+            expression: "refrigeration submeter reading allocated by measured cooling load or justified temperature-time-volume driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shared_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: site_residue_inputs
+          role: "Waste and wastewater received for on-site management"
+          name: "Same waste or wastewater flow used at the originating process"
+          flow_type: "product"
+          property_unit: "Mass / kg or Volume / m3"
+          description: "Record each foreground waste or wastewater stream transferred into on-site treatment without double counting the upstream process output."
+          amount:
+            expression: "measured transfer quantity reconciled to originating-process records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_coproducts
+          role: "Recovered material or energy exported"
+          name: "Product-specific recovered material or energy flow"
+          flow_type: "product"
+          property_unit: "Flow-specific property and unit"
+          description: "Record any recovered product, animal-feed material, biogas, heat, electricity, or other useful co-product leaving the system before applying allocation or substitution."
+          amount:
+            expression: "measured exported quantity without avoided-burden netting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: site_waste_outputs
+          role: "Wastewater and solid residues leaving the site"
+          name: "Waste-specific flow matching the off-site treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg or Volume / m3"
+          description: "Record treated or untreated wastewater, sludge, food residues, used cleaning solution, and other wastes by destination and treatment route. Do not treat sale or recycling as disappearance."
+          amount:
+            expression: "measured dispatch or discharge quantity reconciled with treatment mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_waste
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: site_direct_emissions
+          role: "Direct utility and treatment emissions"
+          name: "Pollutant-specific elementary flow matching monitored or calculated release"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific emissions to air, water, or soil from boilers, refrigerant losses, wastewater treatment, and other on-site utilities or residue management."
+          amount:
+            expression: "measured release or calculation from collected activity data and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "multifunctional processes and shared lines"
+    rule: "Avoid allocation where practicable by process subdivision, separate meters, batch records, or system expansion. Keep soup or broth production physically distinguishable from other products."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_causal_physical
+    applies_to: "shared utilities, cleaning, storage, and treatment"
+    rule: "When subdivision is not practicable, allocate using a documented causal physical driver such as equipment operating time, metered demand, cleanable surface and cycle count, wastewater load, or product mass only when mass is demonstrably causal."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_coproducts
+    applies_to: "recovered food material, feed material, extracts, biogas, heat, or other co-products"
+    rule: "Record gross co-product quantities first. Apply a relevant, quantifiable physical relationship when it represents causality; use economic allocation only when subdivision, system expansion, and a defensible physical relationship are not feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_disclosure
+    applies_to: "economic allocation"
+    rule: "If economic allocation is used, disclose the market, price basis, currency, averaging period, co-product condition and point of sale, factors, and sensitivity to price variation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_no_credit
+    applies_to: "wastes sent to recycling, energy recovery, feed use, treatment, or disposal"
+    rule: "Do not silently subtract an avoided burden. Record the physical waste output and treatment or recovery route; any substitution or recycling credit belongs to an explicitly documented expanded-system or lifecycle-model method."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ingredient_batch_materials
+      process_id: "ingredient_preparation"
+      flow_role: "ingredients, prepared formulation, and residues"
+      record_type: "batch tickets, receiving records, inventory, scales, formulation system"
+      raw_fields: "material identity; supplier; lot; opening and closing inventory; received, returned, transferred, and residue mass; moisture or solids where material"
+      collection_method: "calibrated scales and reconciled inventory or formulation records"
+      unit: "kg and mass fraction"
+      frequency: "each lot and batch"
+      temporal_coverage: "representative continuous 12 months or complete declared campaign"
+      site_scope: "all included lines and facilities"
+      aggregation_rule: "sum by material and destination, reconcile each batch, then divide by qualifying output"
+      quality_evidence: "scale calibration, lot traceability, formulation revision, and mass-balance reconciliation"
+    - protocol_id: cp_ingredient_water
+      process_id: "ingredient_preparation"
+      flow_role: "preparation water and wastewater"
+      record_type: "meters, tank records, recipes, and discharge records"
+      raw_fields: "water source; meter start/end; recipe addition; recirculation; discharge; density conversion"
+      collection_method: "dedicated meter where available, otherwise validated water balance"
+      unit: "m3 and kg"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "same period as product output"
+      site_scope: "all preparation operations"
+      aggregation_rule: "separate incorporated, recirculated, consumed, and discharged water before normalization"
+      quality_evidence: "meter calibration and balance reconciliation"
+    - protocol_id: cp_cooking_batch
+      process_id: "cooking_and_blending"
+      flow_role: "formulation input, recipe water, bulk output, and residues"
+      record_type: "batch historian, recipe system, tank scales, transfer meters"
+      raw_fields: "batch id; input masses; water addition; output mass; solids or moisture; rejects; rework"
+      collection_method: "calibrated batch measurement and transfer reconciliation"
+      unit: "kg and mass fraction"
+      frequency: "each batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included cooking, extraction, and blending lines"
+      aggregation_rule: "reconcile input, output, evaporation, and residue by batch; aggregate qualifying batches"
+      quality_evidence: "instrument calibration, approved recipe, batch release, and mass balance"
+    - protocol_id: cp_cooking_energy
+      process_id: "cooking_and_blending"
+      flow_role: "cooking and blending energy"
+      record_type: "electricity, fuel, steam, and heat meters; equipment runtime"
+      raw_fields: "carrier; meter start/end; steam condition; equipment power; runtime; production mass"
+      collection_method: "direct process meter or validated engineering calculation from measured operation"
+      unit: "kWh, MJ, kg steam, or carrier unit"
+      frequency: "continuous or each batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included equipment"
+      aggregation_rule: "subtract non-production baseload where evidenced and allocate by causal demand"
+      quality_evidence: "meter calibration, energy conversion sheet, and operating log"
+    - protocol_id: cp_cooking_emissions
+      process_id: "cooking_and_blending"
+      flow_role: "direct cooking emissions"
+      record_type: "emissions monitoring, fuel analysis, fuel records, and approved factors"
+      raw_fields: "pollutant; measured concentration and flow or fuel quantity; factor; oxidation basis; operating time"
+      collection_method: "direct measurement preferred; otherwise activity data multiplied by documented factor"
+      unit: "kg pollutant"
+      frequency: "monitoring interval or each fuel period"
+      temporal_coverage: "same period as product output"
+      site_scope: "all direct-emission sources in scope"
+      aggregation_rule: "sum pollutant mass and normalize to bulk output"
+      quality_evidence: "monitoring QA, laboratory result, factor provenance, and calculation record"
+    - protocol_id: cp_stabilization_batch
+      process_id: "route_stabilization"
+      flow_role: "bulk input and stabilized output"
+      record_type: "batch historian, mass meters, moisture or solids tests, temperature records"
+      raw_fields: "route; input/output mass; solids; moisture; concentration; time; temperature; release status"
+      collection_method: "calibrated measurement and quality-control test"
+      unit: "kg, mass fraction, °C, and time"
+      frequency: "each batch or production run"
+      temporal_coverage: "same period as product output"
+      site_scope: "every included stabilization line"
+      aggregation_rule: "reconcile each included operation and aggregate only released output"
+      quality_evidence: "calibration, laboratory method, route record, and release record"
+    - protocol_id: cp_stabilization_energy
+      process_id: "route_stabilization"
+      flow_role: "energy, refrigerants, and auxiliaries"
+      record_type: "meters, equipment historian, refrigerant log, and purchase records"
+      raw_fields: "carrier; meter start/end; runtime; make-up; leakage; output mass"
+      collection_method: "direct metering or validated equipment calculation"
+      unit: "flow-specific unit"
+      frequency: "continuous, each run, or each make-up event"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included stabilization equipment"
+      aggregation_rule: "aggregate separately by carrier and route before normalization"
+      quality_evidence: "meter calibration, service records, and engineering calculation"
+    - protocol_id: cp_stabilization_residues
+      process_id: "route_stabilization"
+      flow_role: "condensate, wastewater, rejects, and direct emissions"
+      record_type: "meters, waste tickets, mass balance, and emissions records"
+      raw_fields: "stream identity; quantity; recovery; destination; pollutant; factor or measurement"
+      collection_method: "direct measurement or documented mass/activity balance"
+      unit: "kg, m3, or kg pollutant"
+      frequency: "each run or dispatch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included stabilization operations"
+      aggregation_rule: "report gross recovery and loss streams separately; normalize to released output"
+      quality_evidence: "reconciliation, waste receipt, monitoring QA, and factor provenance"
+    - protocol_id: cp_packaging_materials
+      process_id: "filling_and_packaging"
+      flow_role: "packaging incorporated and lost"
+      record_type: "packaging specification, bills of material, counts, weights, inventory, and reject logs"
+      raw_fields: "component; material; unit mass; units issued, returned, incorporated, and rejected"
+      collection_method: "verified component weighing and line counts or inventory balance"
+      unit: "kg and count"
+      frequency: "each packaging batch or format"
+      temporal_coverage: "same period as product output"
+      site_scope: "all primary, secondary, and tertiary packaging"
+      aggregation_rule: "calculate incorporated and loss mass separately by material and component"
+      quality_evidence: "approved specification, scale calibration, inventory reconciliation, and reject log"
+    - protocol_id: cp_packaging_energy
+      process_id: "filling_and_packaging"
+      flow_role: "filling, retort, cooling, inspection, and packaging energy"
+      record_type: "line meters and equipment historian"
+      raw_fields: "carrier; meter start/end; demand; runtime; line output"
+      collection_method: "direct line meter or validated engineering calculation"
+      unit: "kWh, MJ, kg steam, or carrier unit"
+      frequency: "continuous or each production run"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included filling and packaging equipment"
+      aggregation_rule: "allocate by measured causal demand; separate post-fill treatment"
+      quality_evidence: "meter calibration and production log"
+    - protocol_id: cp_final_product
+      process_id: "filling_and_packaging"
+      flow_role: "bulk input, conforming product, and product rejects"
+      record_type: "filler mass meter, checkweigher, batch release, reject and rework logs"
+      raw_fields: "bulk input; unit net mass; units released; rejects; rework; product form; lot"
+      collection_method: "calibrated mass measurement and released-unit count"
+      unit: "kg and count"
+      frequency: "each lot and batch"
+      temporal_coverage: "same period as all other records"
+      site_scope: "all included product formats and lines"
+      aggregation_rule: "conforming net mass equals released units times verified net mass; report rejects before rework netting"
+      quality_evidence: "checkweigher verification, release record, traceability, and mass balance"
+    - protocol_id: cp_cleaning_materials
+      process_id: "cleaning_utilities_and_residues"
+      flow_role: "cleaning water and agents"
+      record_type: "CIP historian, meters, chemical dosing, purchases, and inventory"
+      raw_fields: "cycle; equipment; water; chemical concentration; solution recovery; discharge"
+      collection_method: "direct meter/dosing records or validated recipe times cycles"
+      unit: "m3, kg, and concentration"
+      frequency: "each cleaning cycle"
+      temporal_coverage: "same period as product output"
+      site_scope: "all product-contact and allocated non-contact cleaning"
+      aggregation_rule: "sum by chemical and water use, subtract documented recovered solution only once, allocate causally"
+      quality_evidence: "meter calibration, dosing verification, cycle completion, and inventory reconciliation"
+    - protocol_id: cp_shared_utilities
+      process_id: "cleaning_utilities_and_residues"
+      flow_role: "shared energy and utility services"
+      record_type: "site and submeter data, utility bills, runtime, and production records"
+      raw_fields: "carrier; meter start/end; submeter quantity; equipment runtime; output by line"
+      collection_method: "metering hierarchy with documented residual allocation"
+      unit: "flow-specific unit"
+      frequency: "continuous or billing interval"
+      temporal_coverage: "same period as product output"
+      site_scope: "complete facility with included and excluded users identified"
+      aggregation_rule: "direct assignment first; allocate residual only with causal physical driver"
+      quality_evidence: "meter hierarchy, bill reconciliation, allocation worksheet, and sensitivity check"
+    - protocol_id: cp_site_waste
+      process_id: "cleaning_utilities_and_residues"
+      flow_role: "waste, wastewater, recovered products, and treatment outputs"
+      record_type: "flow meters, waste manifests, weighbridge, treatment logs, and sales records"
+      raw_fields: "stream; origin; quantity; composition; treatment; destination; recovered output"
+      collection_method: "measured dispatch/discharge and treatment mass balance"
+      unit: "kg or m3"
+      frequency: "each dispatch, discharge interval, or treatment batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all on-site and off-site routes used by the foreground"
+      aggregation_rule: "reconcile origin, treatment input, recovered output, emissions, and final waste without netting"
+      quality_evidence: "manifests, receiver confirmation, meter calibration, and treatment balance"
+    - protocol_id: cp_site_emissions
+      process_id: "cleaning_utilities_and_residues"
+      flow_role: "direct utility and treatment emissions"
+      record_type: "continuous monitoring, periodic tests, fuel/refrigerant records, treatment data, and approved factors"
+      raw_fields: "source; pollutant; concentration; flow; activity; factor; operating time"
+      collection_method: "direct measurement preferred; otherwise activity data multiplied by documented factor"
+      unit: "kg pollutant"
+      frequency: "monitoring interval or activity period"
+      temporal_coverage: "same period as product output"
+      site_scope: "every direct air, water, and soil release in scope"
+      aggregation_rule: "calculate pollutant mass by source and normalize after allocation"
+      quality_evidence: "monitoring QA, laboratory result, factor provenance, and calculation record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period flow quantity / period net mass of conforming finished product"
+      inputs:
+        - "period flow quantity"
+        - "finished_product net mass"
+      output: "flow amount per 1 kg net finished product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_product_net_mass
+      applies_to: "conforming product"
+      rule: "net finished mass = sum(released units × verified net product mass per unit); packaging mass is excluded"
+      inputs:
+        - "released count"
+        - "checkweigher or declared verified net mass"
+      output: "kg conforming product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_reconstituted_mass
+      applies_to: "concentrated or dehydrated product"
+      rule: "prepared product mass = as-sold product mass + water or other preparation additions required by declared instructions; report assumptions and any density conversion"
+      inputs:
+        - "as-sold mass"
+        - "declared preparation ratio"
+        - "preparation additions"
+      output: "kg prepared product per kg as sold"
+      source_ids:
+        - fao-who-cxs-117-1981
+        - eu-pef-2021-2279
+    - id: calc_process_mass_balance
+      applies_to: "each material process"
+      rule: "input mass = conforming transfer + co-products + wastes + measured evaporation or discharge + inventory change; report closure and measurement uncertainty"
+      inputs:
+        - "batch inputs"
+        - outputs
+        - residues
+        - water
+        - "inventory change"
+      output: "reconciled process mass balance"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_packaging_mass
+      applies_to: "packaging"
+      rule: "packaging mass = sum(component unit mass × component count consumed); split incorporated packaging and losses"
+      inputs:
+        - "component weights"
+        - issued
+        - returned
+        - released
+        - "and rejected counts"
+      output: "kg by packaging material per kg product"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_energy_allocation
+      applies_to: "shared and process energy"
+      rule: "assign direct-metered demand first; allocate only residual shared demand using a documented causal physical driver; keep carriers separate"
+      inputs:
+        - "main and submeters"
+        - "runtime or demand driver"
+        - outputs
+      output: "carrier-specific energy per kg product"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-pef-2021-2279
+    - id: calc_direct_emissions
+      applies_to: "direct site emissions"
+      rule: "pollutant mass = measured concentration × measured exhaust or discharge flow × operating time, or collected activity × documented emission factor"
+      inputs:
+        - "monitoring data or activity and factor"
+      output: "kg pollutant per kg product"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and intermediates"
+      requirement: "Preserve actual recipe or product family, market form, concentration or reconstitution basis, solids or moisture where material, preservation route, storage condition, and package configuration; do not infer one variant from the category flow name."
+      evidence: "Product specification, approved recipe, label, preparation instructions, and batch release"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one representative continuous 12-month period for regular production or the complete declared campaign for seasonal or campaign production; align numerator and denominator periods and disclose abnormal shutdowns or substitutions."
+      evidence: "Dated meters, batch records, production calendar, and reconciliation"
+    - id: dq_geography_technology
+      applies_to: "foreground and upstream links"
+      requirement: "Identify facility geography and actual line technology; select upstream datasets matching source geography and technology or document proxy differences."
+      evidence: "Facility metadata, equipment list, supplier origin, and dataset metadata"
+    - id: dq_completeness
+      applies_to: "all inventory"
+      requirement: "Cover all known inputs and outputs, including water, cleaning, utilities, packaging, rejects, rework, co-products, wastes, wastewater, and direct emissions; quantify and justify any omission."
+      evidence: "Process flow diagram, mass/energy/water balances, source inventory, and omission register"
+    - id: dq_measurement
+      applies_to: "meters, scales, tests, and calculations"
+      requirement: "Retain calibration or verification status, raw readings, unit conversions, formulas, factors, and responsible source records; do not replace missing primary data with an undisclosed estimate."
+      evidence: "Calibration certificates, laboratory reports, calculation sheets, and factor references"
+    - id: dq_representativeness_precision
+      applies_to: "published dataset"
+      requirement: "Assess technological, geographical, and time-related representativeness and precision, and disclose uncertainty or sensitivity for material proxies and allocation choices."
+      evidence: "Data-quality assessment and sensitivity record following the declared method"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "product identity"
+    rule: "Confirm that the output is marketed primarily as a soup, broth, bouillon, consommé, or preparation thereof and that all required qualifiers are present. Reject silent use for sauces, non-soup prepared meals, infant preparations, or separately marketed extracts."
+    source_ids:
+      - unsd-cpc-3-0-explanatory-notes-2025
+      - fao-who-cxs-117-1981
+  - rule_id: validate_reference_uuid
+    applies_to: "reference flow"
+    rule: "Confirm the selected category flow UUID, Mass property UUID, Units of mass UUID, and kg unit, or document a reviewed replacement by a more product-specific real Tiangong flow."
+    source_ids: []
+  - rule_id: validate_reference_amount
+    applies_to: "quantitative reference"
+    rule: "Confirm that output equals exactly 1 kg net conforming product after normalization and that packaging mass is excluded from the reference amount."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_route_coverage
+    applies_to: "process map"
+    rule: "Confirm that every operation actually used for formulation, cooking or extraction, concentration or dehydration, preservation, chilling or freezing, filling, post-fill treatment, cleaning, utilities, and residue management is included or explicitly marked not applicable."
+    source_ids:
+      - fao-who-cxs-117-1981
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_reconstitution
+    applies_to: "concentrated and dehydrated products"
+    rule: "Require declared preparation instructions and verify the prepared-product conversion; prohibit comparison with ready-to-consume products on 1 kg as-sold mass alone."
+    source_ids:
+      - fao-who-cxs-117-1981
+      - eu-pef-2021-2279
+  - rule_id: validate_balances
+    applies_to: "material, water, and energy data"
+    rule: "Verify process and period balances, investigate closure outside documented measurement uncertainty, and prevent double counting of recycled water, recovered product, rework, shared utilities, waste transfers, and treatment inputs."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_allocation
+    applies_to: "shared processes and co-products"
+    rule: "Verify that subdivision was attempted first, physical allocation uses a causal relationship, and any economic allocation or substitution is fully justified and sensitivity-tested."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "foreground package"
+    rule: "Verify temporal alignment, geographic and technological representativeness, completeness, precision, source traceability, calibration evidence, proxy disclosure, and documented uncertainty."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory flow identity"
+    rule: "Fail if electricity, steam, hot water, each fuel, refrigerant, cleaning chemical, packaging material, packaging waste, or direct combustion or refrigerant emission covered by this PCR is represented by a combined carrier or material placeholder instead of a separately identifiable flow row."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground manufacturing dataset for a declared soup, broth, or preparation thereof"
+  downstream_use: "secondary_dataset; background_dataset when reviewed, representative, and sufficiently documented for the declared product, geography, technology, and period"
+  allowed_use: "Foreground package construction, product manufacturing inventories, supply-chain models, and downstream lifecycle models that preserve the declared product form, concentration, route, and system boundary"
+  excluded_use: "Direct comparison of unlike as-sold concentrations without prepared-product normalization; use as a recipe-independent proxy without qualifier disclosure; attribution to sauces, prepared meals, infant foods, or extracts outside scope; undisclosed substitution for a product-specific flow or dataset"
+  required_metadata: "PCR id and version; product and recipe family; product flow UUID; market form; net mass; solids or moisture basis where relevant; concentration or reconstitution instructions; preservation and storage condition; package components and masses; geography; technology; production period; process map; upstream dataset references; allocations; exclusions"
+  required_quality_disclosure: "Temporal, geographic, and technological representativeness; meter and scale coverage; balance closure and uncertainty; proxies; data gaps; excluded flows; allocation and substitution choices; source and calculation traceability; review status"
+  update_trigger: "Recipe or principal ingredient change; change of market form, concentration, preservation route, package, facility, or material technology; material change in energy, water, yield, waste, or emissions; new product-specific Tiangong flow; changed source requirement; representative period no longer valid"
+data_sources:
+  - id: "unsd-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0 Explanatory Notes*, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "CPC 23992 category identity and separation from adjacent product classes"
+  - id: "fao-who-cxs-117-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, *Standard for Bouillons and Consommés*, CXS 117-1981, revised 2001 and 2015, amended 2021, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pl/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+117-1981%2FCXS_117e.pdf (retrieved 2026-08-11)"
+    used_for: "Bouillon and consommé product forms, ingredients and water, ready-to-consume and reconstituted states, and qualifier requirements"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques Reference Document in the Food, Drink and Milk Industries*, JRC118627, 2019, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Food-manufacturing process decomposition; energy, water, cleaning, packaging, waste, wastewater, and direct-emission inventory requirements"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods*, Annex I Product Environmental Footprint Method, ELI http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow, system boundary, company-specific inventory, multi-functionality hierarchy, completeness, representativeness, precision, and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2682bec4786d7627d6e7ca9e52bf0c7ab70cd69a6edd050ae0e7646ecdae99f3"
+  generated_content_sha256: "sha256:452eb85695ce625fbcf642fc06512d18ba8a148d41fcdc56536ca260481225f8"

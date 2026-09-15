@@ -1,10 +1,830 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21424"
-  title: "Cashew nuts, shelled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.cashew-nuts-shelled"
+  classification_refs: "CPC 3.0: 21424, Cashew nuts, shelled (unsd-cpc-3-0-21424)"
+  covered_products: "Edible cashew kernels separated from the shell and supplied whole, broken, or in a declared kernel grade, including raw or process-conditioned kernels that have not been formulated with other food ingredients"
+  excluded_products: "Cashew nuts in shell; flavoured, coated, formulated, or snack-roasted products; cashew paste, butter, flour, oil, beverages, and non-edible shell-derived products"
+  representative_product: "Packed edible cashew kernels meeting the producer's declared commercial grade and lot specification"
+  production_route: "Received in-shell nuts -> one declared kernel-release conditioning route -> shelling and separation -> drying/peeling/grading -> packing"
+  market_state: "Factory-gate packed kernels; kernel form, grade, moisture or conditioning state, packing material, pack size, and atmosphere treatment declared"
+functional_unit:
+  what: "Production and packing of edible shelled cashew kernels with a declared kernel form and commercial quality state"
+  how_much: "1 kg net mass of packed cashew kernels, excluding transport packaging not sold with the product"
+  how_well: "Conforming to the producer's declared grade and lot specification, with defects, moisture or conditioning state, and packing condition reported"
+  how_long_or_cycle: "One identified production lot or campaign; no storage service duration is included beyond on-site processing and packing"
+  reference_flow_link: "Net conforming packed-kernel output from kernel_packing"
+system_boundary:
+  rules:
+    - rule_id: sb_01
+      applies_to: "foreground system"
+      rule: "Include receipt through packed conforming kernel at the production-site gate, including internal handling, kernel-release conditioning, shelling, separation, drying or conditioning, peeling, grading, and packing when performed for the declared lot."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_02
+      applies_to: "upstream and downstream stages"
+      rule: "Represent purchased inputs by linked upstream datasets. Exclude cultivation, off-site transport after the gate, retail, use, and end-of-life from this foreground unit process and disclose any downstream model that adds them."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_03
+      applies_to: "kernel-release conditioning"
+      rule: "Assign each lot to exactly one primary conditioning branch: steam/wet-heat, dry-heat/roasting, hot-oil, or another documented route. If a site uses multiple routes, split their records and outputs into separate unit processes or route-specific datasets; do not apply mutually exclusive branches simultaneously to one lot."
+      source_ids: []
+    - rule_id: sb_04
+      applies_to: "emissions and waste treatment"
+      rule: "Include on-site emissions and waste treatment within the gate when generated or operated on site; otherwise link the exported waste or treatment service and disclose the receiving route."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Received cashew nuts in shell, identified by supplier lot and recorded mass and moisture or conditioning state"
+  starting_condition_role: "Upstream agricultural and post-harvest production is represented by the linked input dataset; the foreground starts at production-site receipt"
+  product_classification_scope: "Edible cashew kernels within the semantic scope of CPC 3.0 subclass 21424; the CPC reference is classification context, not canonical identity"
+  recursive_input_rule: "Purchased shelled kernels or returned same-category kernels must remain explicit inputs. Reworked on-site kernels are tracked by lot and netted from gross intermediate output so the same material is not counted recursively."
+  upstream_dataset_requirement: "Link received in-shell nuts, utilities, auxiliary materials, and packaging to representative upstream datasets with geography, technology, time, and allocation compatibility disclosed"
+  disclosure: "Declare site, period, lot aggregation, input origin, conditioning route, on-site combustion, drying and peeling technology, grade, packing configuration, storage included within the gate, co-product disposition, waste treatment, allocation, and all provisional-estimate replacements"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cashew nuts, shelled"
+    uuid: "8e888f2c-671c-44bf-8607-1bde41ac66b8"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "kernel form and grade"
+    - "lot or campaign identifier"
+    - "origin and supplier-lot traceability of received nuts"
+    - "kernel-release conditioning route"
+    - "moisture or conditioning state and measurement basis"
+    - "defect and reject basis"
+    - "packing material and pack size"
+    - "vacuum or protective-atmosphere treatment"
+    - "net-mass basis"
+    - "co-product and waste disposition"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_01
+    applies_to: "reference product and all mass-balance rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net mass on the stated as-supplied basis. Exclude pallets and transport packaging from the reference amount, and report their masses as separate inputs."
+  - id: mu_02
+    applies_to: "received nuts, kernels, rejects, and residues"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain weighed mass, measurement time, and moisture or conditioning state. Do not convert between as-received and dry-matter mass unless measured moisture and the conversion formula are reported."
+  - id: mu_03
+    applies_to: "electricity, fuel, purchased heat, and generated steam"
+    required_property_ref:
+      name: "Energy appropriate to the selected flow"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the invoiced or metered energy unit and conversion factor. Do not add steam, fuel input, and derived useful heat as simultaneous energy inputs for the same route unless each represents a distinct, non-overlapping boundary crossing."
+  - id: mu_04
+    applies_to: "packaging reported by item count"
+    required_property_ref:
+      name: "Mass for inventory normalization"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert item counts to packaging mass using lot-specific item count and verified unit mass; retain both raw fields and identify primary, secondary, and transport packaging separately."
+process_map:
+  - id: kernel_release_shelling
+    name: "Kernel-release conditioning, shelling, and separation"
+    inclusion: "required"
+    inclusion_condition: "Apply one and only one declared conditioning branch to each lot; route-specific inputs not used by that branch are zero and omitted"
+    role: "foreground production"
+    quantitative_reference: "mass of separated edible kernel leaving the process"
+  - id: kernel_finishing
+    name: "Kernel drying or conditioning, peeling, and grading"
+    inclusion: "required"
+    inclusion_condition: "Include each operation actually performed; record bypassed unit operations as not applicable rather than simultaneous alternative routes"
+    role: "foreground production and quality finishing"
+    quantitative_reference: "mass of conforming graded kernel leaving the process"
+  - id: kernel_packing
+    name: "Kernel packing"
+    inclusion: "required"
+    inclusion_condition: "Include the declared pack configuration; vacuum and protective-atmosphere branches are mutually exclusive unless distinct packs are modelled separately"
+    role: "foreground packing"
+    quantitative_reference: "1 kg net packed conforming kernel"
+process_inventory:
+  - id: kernel_release_shelling
+    label: "Kernel-release conditioning, shelling, and separation"
+    inputs:
+      product:
+        - row_id: received_in_shell_nuts
+          role: "Received cashew nuts in shell"
+          name: "Cashew nuts in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Received in-shell nuts cross the foreground gate as the principal material input. Their supplier lot, origin, measured mass, and moisture or conditioning state are retained."
+          amount:
+            expression: "measured received mass assigned to the processed lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "2"
+                upper: "10"
+                unit: "kg/kg net packed kernel"
+                basis: "received in-shell nut mass per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_utilities
+          role: "Route-specific conditioning utilities"
+          name: "Site-selected energy carrier, purchased heat, or process utility"
+          flow_type: "product"
+          property_unit: "Energy / MJ, preserving original kWh or fuel-unit records and conversions"
+          description: "Record the actual electricity, fuel, purchased heat, steam, or hot oil crossing the boundary for the selected conditioning branch. Create separate inventory exchanges for distinct carriers; the normalized row is a compact role pattern and never authorizes simultaneous mutually exclusive branches."
+          amount:
+            expression: "metered, invoiced, or stock-balance use assigned only to the declared conditioning route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg separated edible kernel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ/kg separated kernel"
+                basis: "aggregate purchased energy crossing the boundary per 1 kg separated edible kernel, without double counting derived heat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_water
+          role: "Conditioning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include water only for the selected branch when it is supplied to soaking, steaming, cleaning, or other documented conditioning. A route with no water input records the row as not applicable."
+          amount:
+            expression: "measured or metered water assigned to the lot and selected route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg separated edible kernel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg separated kernel"
+                basis: "water supplied per 1 kg separated edible kernel"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_kernel_output
+          role: "Separated edible kernels"
+          name: "Cashew kernel, ungraded intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate is the weighed kernel mass transferred to finishing, before final grading and packing."
+          amount:
+            expression: "measured transfer mass reconciled to the lot mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "3"
+                unit: "kg/kg net packed kernel"
+                basis: "separated edible kernel transferred per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: shell_residue_coproduct
+          role: "Shells and testa recovered as co-product"
+          name: "Cashew shells and testa, declared co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only the measured fraction intentionally sold or supplied for a documented beneficial use. The same mass must not also appear as waste."
+          amount:
+            expression: "measured dispatched co-product mass by lot and receiving use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_disposition
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "9"
+                unit: "kg/kg net packed kernel"
+                basis: "co-product shell and testa mass per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: shell_residue_waste
+          role: "Shells and testa sent as waste"
+          name: "Cashew shells and testa waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only the measured fraction transferred to waste management. For each residue fraction, co-product and waste dispositions are mutually exclusive."
+          amount:
+            expression: "measured waste mass by lot and documented treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_disposition
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "9"
+                unit: "kg/kg net packed kernel"
+                basis: "waste shell and testa mass per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: conditioning_direct_emissions
+          role: "Route-specific direct emissions"
+          name: "Pollutant-specific elementary flow selected for the declared route"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When fuel or hot-oil systems produce emissions on site, report each elementary flow separately using a reviewed factor or direct measurement. Omit this pattern only when no direct release occurs within the foreground boundary."
+          amount:
+            expression: "measured release or actual fuel use multiplied by a disclosed, reviewed pollutant-specific factor"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg separated edible kernel output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg per pollutant/kg separated kernel"
+                basis: "each pollutant is screened separately per 1 kg separated edible kernel"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: kernel_finishing
+    label: "Kernel drying or conditioning, peeling, and grading"
+    inputs:
+      product:
+        - row_id: finishing_kernel_input
+          role: "Separated edible kernels received for finishing"
+          name: "Cashew kernel, ungraded intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the weighed transfer from shelling to avoid treating internal output as newly produced material."
+          amount:
+            expression: "measured transferred mass matched to separated_kernel_output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "3"
+                unit: "kg/kg net packed kernel"
+                basis: "finishing input per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_utilities
+          role: "Finishing utilities"
+          name: "Site-selected electricity, energy carrier, purchased heat, or material utility"
+          flow_type: "product"
+          property_unit: "Energy / MJ for energy; carrier-specific unit for non-energy utilities"
+          description: "Record electricity, fuel, purchased heat, compressed air, or other material utilities actually used for drying or conditioning, peeling, sorting, and grading. Separate distinct carriers in the implemented inventory."
+          amount:
+            expression: "metered, invoiced, or stock-balance use assigned to the finishing lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming graded kernel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "MJ/kg conforming graded kernel"
+                basis: "aggregate purchased energy crossing the boundary per 1 kg conforming graded kernel, without double counting derived energy"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: graded_kernel_output
+          role: "Conforming graded kernels"
+          name: "Cashew nuts, shelled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8e888f2c-671c-44bf-8607-1bde41ac66b8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record kernels accepted for the declared form and grade and transferred to packing."
+          amount:
+            expression: "measured accepted mass after grading"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_and_output_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "2"
+                unit: "kg/kg net packed kernel"
+                basis: "conforming graded kernel transferred per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: off_grade_kernel_coproduct
+          role: "Off-grade kernels recovered as co-product"
+          name: "Off-grade cashew kernel, declared co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured off-grade fraction as a co-product only when it is intentionally sold or transferred for a documented product use. Do not also record the same fraction as waste."
+          amount:
+            expression: "measured dispatched mass by lot and receiving use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_disposition
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net packed kernel"
+                basis: "off-grade kernel co-product per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: finishing_reject_waste
+          role: "Off-grade kernels and peelings sent as waste"
+          name: "Cashew kernel reject and peeling waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record measured rejects and peelings sent to waste treatment. Any recovered product fraction is excluded from this row and recorded under its product disposition."
+          amount:
+            expression: "measured waste mass by lot and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_disposition
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net packed kernel"
+                basis: "finishing reject and peeling waste per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: kernel_packing
+    label: "Kernel packing"
+    inputs:
+      product:
+        - row_id: packing_kernel_input
+          role: "Conforming graded kernel input"
+          name: "Cashew nuts, shelled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8e888f2c-671c-44bf-8607-1bde41ac66b8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the weighed kernel transfer into the declared packing configuration."
+          amount:
+            expression: "measured mass entering packing, reconciled with packed output and packing-stage losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_and_output_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.2"
+                unit: "kg/kg net packed kernel"
+                basis: "graded kernel entering packing per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Material-specific packaging flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material separately from verified purchase, issue, or item-count records. Transport packaging is included only when it crosses the declared factory gate with the product and is reported separately."
+          amount:
+            expression: "measured issued mass or item count multiplied by verified unit mass for each packaging layer"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg/kg net packed kernel"
+                basis: "total packaging material mass per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packing_utilities
+          role: "Packing electricity and atmosphere gas"
+          name: "Electricity and declared packing-atmosphere gas as separate implemented exchanges"
+          flow_type: "product"
+          property_unit: "Energy / MJ for electricity; Mass / kg for atmosphere gas"
+          description: "Record packing electricity and, only for the selected pack branch, vacuum-system use or protective-atmosphere gas. Vacuum and protective-atmosphere gas are not applied simultaneously unless separate pack outputs are modelled."
+          amount:
+            expression: "metered or allocated electricity and purchased gas stock balance assigned by pack output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "MJ-equivalent/kg net packed kernel"
+                basis: "separately reported packing electricity and gas normalized to 1 kg net packed conforming kernel; do not sum unlike physical flows in the implemented inventory"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_kernel_reference_output
+          role: "Packed shelled cashew kernels"
+          name: "Cashew nuts, shelled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8e888f2c-671c-44bf-8607-1bde41ac66b8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the declared reference product after net-mass verification and release against the stated lot and grade specification."
+          amount:
+            expression: "exactly 1 kg net conforming packed product for the normalized dataset"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "normalized reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - eu-pef-2021-2279
+      waste:
+        - row_id: packing_waste
+          role: "Packing rejects and packaging scrap"
+          name: "Material-specific packing waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record kernels rejected at packing and packaging material discarded on site, separated by actual material and treatment destination."
+          amount:
+            expression: "measured waste mass by material and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed conforming kernel"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_disposition
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg net packed kernel"
+                basis: "packing reject and packaging scrap mass per 1 kg net packed conforming kernel"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_01
+    applies_to: "all shared operations"
+    rule: "Prefer process subdivision, route-separated metering, and direct assignment of inputs, emissions, and wastes to lots or product grades before allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_02
+    applies_to: "shells, testa, off-grade kernels, and peelings"
+    rule: "Classify each measured fraction once as internal reuse, product/co-product, or waste according to documented disposition. Never report the same mass simultaneously as co-product and waste."
+    source_ids: []
+  - rule_id: al_03
+    applies_to: "unavoidable shared burdens with co-products"
+    rule: "Use a documented physical causal relationship when it represents the process. If no defensible physical relationship exists, use contemporaneous net economic values and disclose prices, period, geography, and sensitivity. No default allocation factor is prescribed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_04
+    applies_to: "waste and exported residues"
+    rule: "Assign on-site handling and treatment burdens to the foreground process. Do not claim avoided-product or recycling credits unless a separately declared downstream modelling method and substitution evidence are provided."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "kernel_release_shelling_kernel_finishing"
+      flow_role: "received material, internal transfers, kernels, shells, peelings, and rejects"
+      record_type: "weighbridge, calibrated scale, batch sheet"
+      raw_fields: "lot_id; route_id; timestamp; gross_mass; tare_mass; net_mass; moisture_or_conditioning_state; destination"
+      collection_method: "weigh every received lot and material transfer; reconcile transfers and stock change"
+      unit: "kg"
+      frequency: "each lot and transfer"
+      temporal_coverage: "representative production campaign covering normal route operation"
+      site_scope: "each production site and route"
+      aggregation_rule: "sum net masses by lot and route; retain opening and closing stock before normalization"
+      quality_evidence: "scale calibration; signed batch record; lot traceability; reconciliation record"
+    - protocol_id: cp_utility_records
+      process_id: "all_processes"
+      flow_role: "electricity, fuels, purchased heat, steam, water, compressed air, atmosphere gas"
+      record_type: "submeter, invoice, tank or cylinder stock balance, operating log"
+      raw_fields: "meter_start; meter_end; purchase_quantity; opening_stock; closing_stock; route_id; operating_hours; allocation_driver"
+      collection_method: "prefer route or line metering; otherwise reconcile purchases and stock and allocate with a disclosed causal driver"
+      unit: "original unit plus MJ for energy and kg for mass"
+      frequency: "meter reading each shift or lot; invoice and stock reconciliation monthly"
+      temporal_coverage: "same period as production output, covering normal operation and material start-up or shutdown events"
+      site_scope: "each site, route, and packing line"
+      aggregation_rule: "subtract closing from opening plus purchases; assign to route; convert units once; normalize to matching process output"
+      quality_evidence: "meter calibration; invoices; conversion factors; allocation worksheet"
+    - protocol_id: cp_residue_disposition
+      process_id: "all_processes"
+      flow_role: "co-products, internal reuse, rejects, waste, and treatment routes"
+      record_type: "scale ticket, dispatch note, waste manifest, internal transfer record"
+      raw_fields: "lot_id; material_type; mass; disposition_class; recipient; treatment; date"
+      collection_method: "weigh each disposition and link it to the originating lot or campaign"
+      unit: "kg"
+      frequency: "each dispatch or internal transfer"
+      temporal_coverage: "same campaign as product mass balance"
+      site_scope: "each site and receiving route"
+      aggregation_rule: "aggregate by material and mutually exclusive disposition; reconcile with mass balance"
+      quality_evidence: "scale calibration; dispatch or waste document; recipient evidence"
+    - protocol_id: cp_quality_and_output_records
+      process_id: "kernel_finishing_kernel_packing"
+      flow_role: "conforming grade, moisture or conditioning state, defects, pack release, and net output"
+      record_type: "laboratory or production quality record, packing check, calibrated scale"
+      raw_fields: "lot_id; kernel_form; grade; test_method; sample_plan; moisture_or_conditioning_result; defect_result; pack_size; net_mass; release_status"
+      collection_method: "sample and assess the lot under the declared specification; weigh released output"
+      unit: "kg plus method-specific quality units"
+      frequency: "each released lot"
+      temporal_coverage: "all lots included in the dataset period"
+      site_scope: "each site, grade, and packing configuration"
+      aggregation_rule: "retain lot results; sum released net mass only; do not merge incompatible grades or states without disclosure"
+      quality_evidence: "test method; sampling record; instrument calibration; release authorization"
+    - protocol_id: cp_packaging_records
+      process_id: "kernel_packing"
+      flow_role: "primary, secondary, and transport packaging"
+      record_type: "purchase or issue record, bill of materials, item count and unit-mass test"
+      raw_fields: "material_id; layer; item_count; unit_mass; issued_mass; returned_mass; pack_output_mass"
+      collection_method: "weigh issued material or multiply counted items by verified unit mass; reconcile returns and scrap"
+      unit: "kg"
+      frequency: "each packaging batch or production campaign"
+      temporal_coverage: "same period as packed output"
+      site_scope: "each packing configuration"
+      aggregation_rule: "issued minus returns, separated by material and layer, normalized to packed net output"
+      quality_evidence: "supplier specification; unit-mass test; issue and return record"
+    - protocol_id: cp_direct_emissions
+      process_id: "kernel_release_shelling"
+      flow_role: "on-site pollutant release from route-specific combustion or process equipment"
+      record_type: "direct measurement or calculated emission record"
+      raw_fields: "route_id; fuel_quantity; fuel_property; pollutant; factor; factor_source; control_efficiency; measured_release"
+      collection_method: "measure each release or calculate from collected fuel using a reviewed pollutant-specific factor"
+      unit: "kg per pollutant"
+      frequency: "each monitoring period or fuel batch"
+      temporal_coverage: "same period as route output"
+      site_scope: "each on-site emission source"
+      aggregation_rule: "calculate each pollutant separately; aggregate only identical elementary flows; normalize to separated kernel output"
+      quality_evidence: "monitoring report or fuel record; factor citation; calculation sheet; control record"
+  calculation_rules:
+    - id: cal_01
+      applies_to: "all inventory rows"
+      rule: "normalized amount = lot- or campaign-assigned amount / net conforming packed-kernel output; preserve the process-output basis where a row is explicitly process-normalized"
+      inputs:
+        - "assigned quantity"
+        - "net conforming packed output"
+        - "process output when applicable"
+      output: "quantity per reference flow or declared process output"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: cal_02
+      applies_to: "as-received and dry-matter reporting"
+      rule: "dry mass = as-received mass x (1 - measured moisture fraction); perform this conversion only when moisture fraction and method are available, and retain the original as-received mass"
+      inputs:
+        - "weighed mass"
+        - "measured moisture fraction"
+        - "test method"
+      output: "separately labelled dry mass and conversion record"
+      source_ids:
+        - unece-ddp-17-cashew-kernels-2023
+    - id: cal_03
+      applies_to: "route and pack alternatives"
+      rule: "keep each mutually exclusive conditioning or packing branch separate; aggregate only after weighting route-specific inventories by measured conforming output, never by adding full alternative inventories to one lot"
+      inputs:
+        - "route identifier"
+        - "branch-specific inputs and outputs"
+        - "conforming output"
+      output: "route-specific inventory and any disclosed production-weighted aggregate"
+      source_ids: []
+    - id: cal_04
+      applies_to: "packaging by count"
+      rule: "packaging mass = issued item count x verified unit mass, adjusted for returned unused items and separately measured scrap"
+      inputs:
+        - "item count"
+        - "unit mass"
+        - returns
+        - scrap
+      output: "packaging input and packing waste by material"
+      source_ids: []
+    - id: cal_05
+      applies_to: "mass balance"
+      rule: "balance difference = received material inputs - product outputs - co-product outputs - waste outputs - documented stock change; investigate rather than force an unexplained difference into a product or waste row"
+      inputs:
+        - "all measured material masses"
+        - "opening and closing stock"
+      output: "disclosed mass-balance reconciliation and unresolved difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_01
+      applies_to: "product identity"
+      requirement: "Preserve the CPC classification context, Tiangong product-flow UUID, kernel form, grade, lot, origin, moisture or conditioning state, and packing qualifiers."
+      evidence: "product specification; unsd-cpc-3-0-21424; unece-ddp-17-cashew-kernels-2023"
+    - id: dq_02
+      applies_to: "representativeness"
+      requirement: "Cover normal operation for each declared site, technology, conditioning route, grade, and pack configuration; disclose excluded lots, disruptions, start-ups, shutdowns, and seasonal limitations."
+      evidence: "production schedule; route register; completeness statement; eu-pef-2021-2279"
+    - id: dq_03
+      applies_to: "measurements and calculations"
+      requirement: "Use calibrated mass measurements, retain original utility units and conversion factors, document allocation drivers, and keep raw records traceable to normalized rows."
+      evidence: "calibration records; invoices; batch sheets; calculation and allocation workbooks"
+    - id: dq_04
+      applies_to: "provisional ranges"
+      requirement: "Treat every reasoned_estimate range as conditional candidate QA guidance, not as a default LCI amount. Replace it when the first complete representative campaign, reviewed supplier data, or source-backed range for the same route and basis becomes available."
+      evidence: "replacement log; reviewed foreground dataset or external source record"
+    - id: dq_05
+      applies_to: "completeness"
+      requirement: "Reconcile product, co-product, waste, and stock-change masses and document all exclusions, missing meters, proxy datasets, unquantified emissions, and data gaps."
+      evidence: "mass-balance report; data-gap register; eu-pef-2021-2279"
+validation_rules:
+  - rule_id: val_01
+    applies_to: "reference flow"
+    rule: "Confirm that the reference output is exactly 1 kg net packed conforming kernel and uses product-flow UUID 8e888f2c-671c-44bf-8607-1bde41ac66b8, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids: []
+  - rule_id: val_02
+    applies_to: "product and lot metadata"
+    rule: "Reject an incomplete data package when any required qualifier is missing or when product scope includes in-shell nuts or a formulated or further-processed excluded product."
+    source_ids:
+      - unsd-cpc-3-0-21424
+      - unece-ddp-17-cashew-kernels-2023
+  - rule_id: val_03
+    applies_to: "route exclusivity"
+    rule: "Confirm one primary kernel-release conditioning route per lot and one packing-atmosphere branch per pack output. When alternatives occur, require separate route records or production-weighted aggregation; reject simultaneous full-route inventories for one lot."
+    source_ids: []
+  - rule_id: val_04
+    applies_to: "co-product and waste disposition"
+    rule: "Confirm that every residue mass has one disposition and that no shell, testa, peeling, reject, or off-grade kernel mass is counted both as product/co-product and waste."
+    source_ids: []
+  - rule_id: val_05
+    applies_to: "inventory evidence"
+    rule: "Confirm collection-protocol linkage for collected and calculated rows, source identifiers for external or method evidence, original-unit retention, route-specific normalization, and disclosure of all substituted datasets and allocation choices."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_06
+    applies_to: "provisional estimates"
+    rule: "Flag every reasoned_estimate as candidate-only and verify its stated replacement trigger. Do not accept such a range as a publication-critical allowed range without explicit methodology review and source-backed replacement or documented acceptance."
+    source_ids: []
+  - rule_id: val_07
+    applies_to: "mass balance and completeness"
+    rule: "Confirm reconciliation of received nuts, kernels, co-products, wastes, and stock change; report the unexplained difference and all skipped checks rather than silently balancing it."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground unit-process data package for shelled cashew-kernel production and packing; eligible for publication as a secondary_dataset or background_dataset only after review"
+  downstream_use: "Construction of TianGong process records and lifecyclemodel systems requiring a factory-gate shelled-cashew-kernel input"
+  allowed_use: "Route-, site-, period-, grade-, and pack-specific gate-to-gate modelling with representative upstream datasets linked for received nuts, utilities, auxiliary materials, and packaging"
+  excluded_use: "Agricultural production, post-gate distribution, retail, consumption, or end-of-life without added datasets; formulated or further-processed cashew foods; combining mutually exclusive full routes; using provisional ranges as unqualified default LCI amounts"
+  required_metadata: "canonical PCR id; CPC context; Tiangong flow UUIDs; site and period; supplier-lot origin; conditioning route; kernel form and grade; moisture or conditioning state and test basis; defect and reject basis; pack material, size, and atmosphere; co-product and waste dispositions; allocation; upstream dataset references"
+  required_quality_disclosure: "lot coverage and exclusions; calibration; mass-balance difference; utility allocation; on-site emissions; representativeness; data gaps; proxy datasets; provisional estimates and replacement status; source and method versions"
+  update_trigger: "Material change in supplier origin, product specification, route, equipment, utility mix, yield or reject pattern, residue disposition, allocation, pack configuration, measurement method, dataset representativeness, or availability of evidence that replaces a provisional range"
+data_sources:
+  - id: "unsd-cpc-3-0-21424"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC), Version 3.0, subclass 21424, “Cashew nuts, shelled”"
+    used_for: "Classification context and category label only"
+  - id: "unece-ddp-17-cashew-kernels-2023"
+    type: "standard"
+    reference: "UNECE Standard DDP-17 concerning the marketing and commercial quality control of cashew kernels, current WP.7 listing (2023)"
+    used_for: "Kernel identity and quality, measurement, and packing qualifiers; not LCI default amounts"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods to measure and communicate life-cycle environmental performance"
+    used_for: "Boundary, inventory, allocation, data-quality, normalization, and disclosure method framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2cdd70dce2e27e2d3b0e4ba5b006b1d1e5cc3f70a9f4c28034f0b0e9581a058f"
+  generated_content_sha256: "sha256:bd4b51dcddb747918bd60f908758c2aa17cd8872019d7b450e0c0f1161fee034"

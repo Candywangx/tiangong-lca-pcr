@@ -1,10 +1,781 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41233"
-  title: "Flat-rolled products of silicon-electrical steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-silicon-electrical-steel"
+  classification_refs: "CPC 3.0: 41233, Flat-rolled products of silicon-electrical steel (exact scope context; mapping acceptance is governed outside this PCR)"
+  covered_products: "GOES and NOES flat products supplied as coils, strip, or sheets; fully processed or semi-processed material; coated or uncoated material when the actual supply state is declared"
+  excluded_products: "Ordinary non-alloy, other alloy, stainless, and high-speed flat steel; electrical-steel scrap; fabricated laminations and cores; complete electrical equipment"
+  representative_product: "One kilogram of saleable flat-rolled silicon-electrical steel at the producer gate, including any integral coating supplied with the product"
+  production_route: "Declared site-specific route from metallic charge or purchased semi-finished electrical-steel substrate through all on-site steelmaking, casting, rolling, annealing, texture control, coating, finishing, and internal recovery steps that apply; BOF, EAF, purchased-slab/hot-band, thin-strip, GOES, and NOES route distinctions shall not be averaged without production weights"
+  market_state: "Dry saleable coil, strip, or sheet at the producer gate in the declared semi-processed or fully processed condition, packaged where packaging is included in the reported gate"
+functional_unit:
+  what: "Saleable flat-rolled silicon-electrical steel at the producer gate"
+  how_much: "1 kg net product mass, including integral surface coating and excluding reusable transport equipment"
+  how_well: "Conforming to the declared grade or specification and its magnetic, geometric, tolerance, technological, and coating requirements"
+  how_long_or_cycle: "One completed production and dispatch batch; no use-life function is asserted by this cradle-to-gate declared unit"
+  reference_flow_link: "The reference output of electrical_steel_finishing shall equal the saleable mass used to normalize every included process"
+system_boundary:
+  rules:
+    - rule_id: sb_cradle_to_gate
+      applies_to: "product system"
+      rule: "Include raw-material and energy supply, inbound transport, every applicable on-site steelmaking and finishing operation, ancillary utilities, internal transport, recovery, wastewater and waste treatment, and emissions through the producer gate."
+      source_ids:
+        - worldsteel-lci-methodology
+        - iso-20915-2018
+    - rule_id: sb_route_specificity
+      applies_to: "route selection"
+      rule: "Include only operations actually used, but do not omit route-defining casting, hot rolling, cold rolling, decarburization, annealing, texture control, coating, or domain-refining steps when they are part of the declared product. A mixed dataset shall use documented production-mass weights."
+      source_ids:
+        - ec-fmp-bref-2022
+        - doe-grid-supply-chain-2022
+        - mehdi-et-al-2024
+    - rule_id: sb_recursive_product_input
+      applies_to: "purchased same-category input"
+      rule: "Preserve a non-overlapping supplier gate and link the upstream product dataset; reject a model that counts the same electrical-steel production both as purchased input and foreground production."
+      source_ids:
+        - worldsteel-lci-methodology
+    - rule_id: sb_downstream_exclusion
+      applies_to: "downstream manufacture and use"
+      rule: "Exclude customer slitting, blanking, lamination stacking, core assembly, equipment manufacture, use, and end of life unless a separately declared extended system boundary is reported outside this cradle-to-gate result."
+      source_ids:
+        - worldsteel-lci-methodology
+        - iec-60404-8-4-2022
+        - iec-60404-8-7-2020
+boundary_abstraction:
+  declared_starting_condition: "Identify the earliest foreground-controlled material state: metallic charge entering steelmaking, purchased cast slab, purchased hot band, or another verified semi-finished electrical-steel substrate."
+  starting_condition_role: "Foreground data-collection start; it does not remove the requirement to link cradle-to-gate upstream datasets for purchased materials, energy, fuels, alloys, coatings, and transport."
+  product_classification_scope: "Flat-rolled silicon-electrical steel only; route and grade variants remain within the category only when the required qualifiers are explicit."
+  recursive_input_rule: "A purchased input already in this product category shall be recorded as an upstream product input with its own non-overlapping gate and dataset identifier; do not unfold it into this foreground chain or count its production twice."
+  upstream_dataset_requirement: "Link geographically and technologically representative upstream datasets for all purchased metallic charge, ferroalloys, slab or hot band, energy carriers, process chemicals, coating materials, water supply, transport, and treatment services."
+  disclosure: "Declare the starting condition, excluded on-site steps, supplier gates, BOF/EAF or other route, purchased-substrate share, GOES/NOES share, semi-/fully processed share, coating and domain-refining steps, internal scrap loops, and whether end-of-life recycling is reported separately."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Flat-rolled products of silicon-electrical steel"
+    uuid: "8863bbb7-7bc4-4ff1-ab21-4a01addf2ad4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "orientation class (GOES or NOES)"
+    - "semi-processed or fully processed supply condition"
+    - "grade and governing specification"
+    - "nominal thickness and width"
+    - coil
+    - strip
+    - "or sheet form"
+    - "coating type and coating mass or uncoated declaration"
+    - "magnetic test basis and guaranteed loss/induction class where applicable"
+    - "steelmaking route"
+    - "casting and rolling route"
+    - "final annealing and decarburization route"
+    - "domain-refined status for GOES"
+    - "production site and geography"
+    - "reporting period"
+    - "factory-gate definition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and all normalized inventory results"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured net saleable product mass. Include an integral insulation or surface coating supplied on the electrical steel; exclude pallets, reels, and reusable transport equipment and disclose any non-reusable packaging reported separately."
+  - id: mass_conversion
+    applies_to: "source records reported in tonnes or megagrams"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert 1 t or 1 Mg to 1,000 kg before normalization and retain the original unit and conversion record."
+  - id: magnetic_quality_not_mass_conversion
+    applies_to: "grade-specific magnetic declarations"
+    required_property_ref:
+      name: "declared test result and test condition"
+      uuid: ""
+    required_unit: "declared source unit"
+    rule: "Magnetic loss, induction, permeability, frequency, and polarization or field strength are required product qualifiers and quality evidence; they shall not be converted into or used as a substitute for reference mass."
+  - id: coating_mass_consistency
+    applies_to: "coated reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "The reference product mass and yield calculation shall use the same convention for integral coating mass; the convention and coating measurement basis shall be disclosed."
+process_map:
+  - id: steelmaking_and_casting
+    name: "Electrical-steel melt preparation and casting"
+    inclusion: "conditional"
+    inclusion_condition: "Required when these operations are controlled by the reporting site; otherwise purchased slab, thin strip, or hot band enters with a linked upstream dataset."
+    role: "Foreground production of composition-controlled semi-finished electrical steel"
+    quantitative_reference: "kg cast slab, strip, or hot band leaving the process"
+  - id: hot_rolling_and_surface_preparation
+    name: "Hot rolling and surface preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Required for conventional slab or hot-band routes; a direct or thin-strip route shall document the replaced operation."
+    role: "Thickness reduction, scale removal, and hot-band preparation"
+    quantitative_reference: "kg prepared hot band leaving the process"
+  - id: cold_rolling_and_annealing
+    name: "Cold rolling, decarburization, and annealing"
+    inclusion: "conditional"
+    inclusion_condition: "Required when used for the declared GOES/NOES grade or supply condition; omitted only with a documented alternative route or a product sold before these steps."
+    role: "Gauge reduction and magnetic microstructure development"
+    quantitative_reference: "kg cold-rolled or annealed electrical steel leaving the process"
+  - id: electrical_steel_finishing
+    name: "Grade-specific finishing, coating, inspection, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always required; non-applicable coating or domain-refining operations are declared as absent rather than silently omitted."
+    role: "Establish the declared market state and reference output"
+    quantitative_reference: "1 kg saleable reference product"
+process_inventory:
+  - id: steelmaking_and_casting
+    label: "Electrical-steel melt preparation and casting"
+    inputs:
+      product:
+        - row_id: metallic_charge_and_alloys
+          role: "Metallic charge, silicon-bearing alloy additions, and refining materials"
+          name: "Declared metallic charge, ferroalloys, and refining materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all purchased ore-based iron units, DRI/HBI, pig iron, scrap, ferroalloys, silicon-bearing additions, lime, and refining materials that cross the selected starting gate. Keep internal scrap returned within the same system identifiable and separate from externally purchased scrap."
+          amount:
+            expression: "measured receipts or batch-charge records allocated to conforming cast electrical-steel output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg cast electrical-steel slab, strip, or hot band output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_casting_records
+              source_ids:
+                - worldsteel-lci-methodology
+            ranges: []
+        - row_id: steelmaking_energy_utilities
+          role: "Purchased energy carriers and utilities"
+          name: "Declared electricity, fuel, gas, steam, and utility products"
+          flow_type: "product"
+          property_unit: "Energy or mass or volume / source unit retained and converted by documented factors"
+          description: "Record metered electricity, fuels, oxygen, nitrogen, argon, steam, and other externally supplied utilities used by included steelmaking, secondary metallurgy, casting, and ancillary services."
+          amount:
+            expression: "metered use plus documented shared-utility allocation to conforming cast output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cast electrical-steel slab, strip, or hot band output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_casting_records
+              source_ids:
+                - worldsteel-lci-methodology
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cast_electrical_steel_intermediate
+          role: "Composition-controlled electrical-steel slab, strip, or hot band"
+          name: "Composition-controlled electrical-steel slab, thin strip, or hot band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record measured conforming output transferred to rolling and keep its heat or cast identifier linked to composition and route records."
+          amount:
+            expression: "measured conforming transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per process output batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_casting_records
+              source_ids:
+                - doe-grid-supply-chain-2022
+                - mehdi-et-al-2024
+            ranges: []
+      waste:
+        - row_id: steelmaking_residues
+          role: "Slag, dust, sludge, and nonconforming metal outputs"
+          name: "Declared slag, dust, sludge, or nonconforming metal flow by destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each recovered co-product and waste separately by measured mass, destination, and internal-return status; do not combine saleable slag, returned metal, hazardous dust, and disposed sludge into one unqualified amount."
+          amount:
+            expression: "measured output by residue type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cast electrical-steel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_casting_records
+              source_ids:
+                - worldsteel-lci-methodology
+            ranges: []
+      elementary:
+        - row_id: steelmaking_direct_emissions
+          role: "Direct emissions from steelmaking and casting"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or permit-calculated emissions to air, water, and soil at the most specific available process level, including the monitored greenhouse-gas, acidifying, particulate, metal, and wastewater parameters relevant to the site."
+          amount:
+            expression: "monitored or calculation-protocol result assigned to included production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cast electrical-steel output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_steelmaking_casting_records
+              source_ids:
+                - worldsteel-lci-methodology
+            ranges: []
+  - id: hot_rolling_and_surface_preparation
+    label: "Hot rolling and surface preparation"
+    inputs:
+      product:
+        - row_id: hot_rolling_substrate
+          role: "Electrical-steel slab or direct-cast strip input"
+          name: "Electrical-steel slab, direct-cast strip, or declared hot-band substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass and identity of the composition-controlled substrate entering reheating, rolling, descaling, and surface preparation."
+          amount:
+            expression: "measured charged mass net of material not entering this process"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg prepared hot-band output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_rolling_records
+              source_ids:
+                - ec-fmp-bref-2022
+                - mehdi-et-al-2024
+            ranges: []
+        - row_id: hot_rolling_operating_inputs
+          role: "Hot-rolling energy, water, and surface-treatment inputs"
+          name: "Declared fuel, electricity, water, and surface-treatment products"
+          flow_type: "product"
+          property_unit: "Energy or mass or volume / source unit retained and converted by documented factors"
+          description: "Record metered reheating fuels, electricity, cooling and descaling water, and any pickling or surface-preparation chemicals used within the declared process boundary."
+          amount:
+            expression: "metered or invoice-backed consumption assigned to prepared hot-band output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared hot-band output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_rolling_records
+              source_ids:
+                - ec-fmp-bref-2022
+                - worldsteel-lci-methodology
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_hot_band
+          role: "Prepared electrical-steel hot band"
+          name: "Prepared electrical-steel hot band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming hot-band mass transferred to cold processing or sold at the declared intermediate supply condition."
+          amount:
+            expression: "measured conforming transfer or sale mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per process output batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_rolling_records
+              source_ids:
+                - ec-fmp-bref-2022
+                - mehdi-et-al-2024
+            ranges: []
+      waste:
+        - row_id: hot_rolling_residues
+          role: "Scale, edge trim, pickling residues, and rejected hot band"
+          name: "Declared hot-rolling residue by type and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record scale, trim, spent treatment residues, and rejected hot band separately, including internal recycling and external treatment destinations."
+          amount:
+            expression: "measured residue mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared hot-band output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_rolling_records
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+  - id: cold_rolling_and_annealing
+    label: "Cold rolling, decarburization, and annealing"
+    inputs:
+      product:
+        - row_id: cold_processing_substrate
+          role: "Prepared hot-band input"
+          name: "Prepared electrical-steel hot band"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the identified hot-band mass entering each cold-reduction and annealing route, retaining the heat, coil, orientation class, and grade-family link."
+          amount:
+            expression: "measured input coil mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg cold-processed electrical-steel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_processing_records
+              source_ids:
+                - mehdi-et-al-2024
+            ranges: []
+        - row_id: cold_processing_operating_inputs
+          role: "Cold-processing energy, water, gases, and chemicals"
+          name: "Declared electricity, fuel, process gas, water, lubricant, cleaning, and annealing products"
+          flow_type: "product"
+          property_unit: "Energy or mass or volume / source unit retained and converted by documented factors"
+          description: "Record metered electricity, annealing and decarburization fuels or gases, cooling water, rolling lubricants, cleaning agents, pickling agents, and annealing separators actually used by the declared route."
+          amount:
+            expression: "metered, batch-issued, or invoice-backed use assigned to conforming output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg cold-processed electrical-steel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_processing_records
+              source_ids:
+                - ec-fmp-bref-2022
+                - mehdi-et-al-2024
+                - doe-grid-supply-chain-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_processed_electrical_steel
+          role: "Cold-rolled or annealed electrical steel"
+          name: "Cold-rolled or annealed electrical steel in the declared supply condition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming output after the declared cold-reduction, decarburization, primary/intermediate/final annealing, and texture-development sequence, with omitted steps explicitly marked not applicable."
+          amount:
+            expression: "measured conforming output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per process output batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_processing_records
+              source_ids:
+                - iec-60404-8-4-2022
+                - iec-60404-8-7-2020
+                - mehdi-et-al-2024
+            ranges: []
+      waste:
+        - row_id: cold_processing_residues
+          role: "Cold-rolling trim, rejects, spent liquids, and treatment residues"
+          name: "Declared cold-processing residue by type and destination"
+          flow_type: "waste"
+          property_unit: "Mass or volume / source unit"
+          description: "Record metal trim and rejects separately from spent pickle liquor, lubricant, sludge, and other treatment residues, including recovery or disposal destination."
+          amount:
+            expression: "measured residue quantity by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cold-processed electrical-steel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_processing_records
+              source_ids:
+                - ec-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: cold_processing_direct_emissions
+          role: "Direct emissions from cold processing and annealing"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record monitored or protocol-calculated furnace, acid-treatment, coating-preparation, wastewater, and other direct emissions by substance and environmental compartment."
+          amount:
+            expression: "monitored or calculation-protocol result assigned to included production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cold-processed electrical-steel output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_processing_records
+              source_ids:
+                - ec-fmp-bref-2022
+                - worldsteel-lci-methodology
+            ranges: []
+  - id: electrical_steel_finishing
+    label: "Grade-specific finishing, coating, inspection, and dispatch"
+    inputs:
+      product:
+        - row_id: finishing_substrate
+          role: "Electrical-steel substrate entering final finishing"
+          name: "Electrical steel in the declared pre-finishing condition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the identified substrate entering grade-specific final annealing, insulation coating, domain refinement, skin pass, slitting, inspection, and packaging as applicable."
+          amount:
+            expression: "measured input coil, strip, or sheet mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_dispatch_records
+              source_ids:
+                - iec-60404-8-4-2022
+                - iec-60404-8-7-2020
+                - doe-grid-supply-chain-2022
+            ranges: []
+        - row_id: finishing_operating_inputs
+          role: "Coating, domain-refining, finishing energy, and packaging inputs"
+          name: "Declared coating, energy, finishing consumable, and packaging products"
+          flow_type: "product"
+          property_unit: "Energy, mass, area, or volume / source unit retained and converted by documented factors"
+          description: "Record the actual insulation-coating components, annealing or curing energy, domain-refining energy and consumables, finishing agents, and non-reusable packaging. Mark each non-applicable route element explicitly rather than assigning zero without explanation."
+          amount:
+            expression: "metered or batch-issued amount assigned to saleable product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_dispatch_records
+              source_ids:
+                - iec-60404-8-4-2022
+                - iec-60404-8-7-2020
+                - doe-grid-supply-chain-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Saleable flat-rolled silicon-electrical steel"
+          name: "Flat-rolled products of silicon-electrical steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8863bbb7-7bc4-4ff1-ab21-4a01addf2ad4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net saleable mass at the declared factory gate after required magnetic, geometric, coating, and surface-quality acceptance checks."
+          amount:
+            expression: "fixed reference amount of 1 kg after normalization from measured saleable output"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - worldsteel-lci-methodology
+                - iec-60404-8-4-2022
+                - iec-60404-8-7-2020
+            ranges: []
+      waste:
+        - row_id: finishing_residues
+          role: "Finishing trim, coating waste, rejects, and packaging waste"
+          name: "Declared finishing residue by type and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record metal trim and rejected product separately from coating waste, treatment residues, and packaging waste, with internal return, recycling, and disposal destinations."
+          amount:
+            expression: "measured residue mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_dispatch_records
+              source_ids:
+                - doe-grid-supply-chain-2022
+            ranges: []
+      elementary:
+        - row_id: finishing_direct_emissions
+          role: "Direct emissions from finishing and coating"
+          name: "Declared elementary emission by substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record monitored or protocol-calculated furnace, coating-line, wastewater, and other direct emissions by substance and compartment."
+          amount:
+            expression: "monitored or calculation-protocol result assigned to saleable output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_dispatch_records
+              source_ids:
+                - ec-fmp-bref-2022
+                - worldsteel-lci-methodology
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_avoid_by_subdivision
+    applies_to: "all multi-output foreground operations"
+    rule: "First avoid allocation by metering and subdividing steelmaking, rolling, annealing, coating, and recovery operations wherever separate process records are available."
+    source_ids:
+      - iso-20915-2018
+      - worldsteel-lci-methodology
+  - rule_id: alloc_recovered_coproducts
+    applies_to: "useful slag, process gases, recovered chemicals, and other co-products"
+    rule: "When a recovered co-product displaces an external function, apply transparent system expansion consistent with the selected steel LCI method and report the substituted product, amount, substitution ratio, and sensitivity; do not apply an undocumented credit."
+    source_ids:
+      - worldsteel-lci-methodology
+  - rule_id: alloc_residual_multioutput
+    applies_to: "inseparable residual multi-output operation"
+    rule: "If subdivision and justified system expansion are not feasible, select a physical relationship that reflects the causal production process; otherwise use another justified relationship and disclose the method, factors, affected flows, and sensitivity."
+    source_ids:
+      - iso-20915-2018
+  - rule_id: alloc_scrap_transparency
+    applies_to: "internal, pre-consumer, and post-consumer ferrous scrap"
+    rule: "Distinguish internal returns from purchased pre-consumer and post-consumer scrap. Report any end-of-life recycling burden or credit separately from the cradle-to-gate result and prevent double counting with downstream models."
+    source_ids:
+      - worldsteel-lci-methodology
+      - iso-20915-2018
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_steelmaking_casting_records
+      process_id: "steelmaking_and_casting"
+      flow_role: "all input, output, residue, and direct-emission rows"
+      record_type: "weighbridge, batch/heat, meter, laboratory, emissions-monitoring, and disposition records"
+      raw_fields: "heat_id; route; charge and alloy quantities; utility meter values; cast output; composition; residue type/mass/destination; emission substance/value/method"
+      collection_method: "reconcile production, purchasing, meter, laboratory, and environmental records to heat/cast campaigns"
+      unit: "source units, normalized to kg reference product"
+      frequency: "each heat/batch or continuous meter; monthly reconciliation"
+      temporal_coverage: "representative reporting year; shorter period of at least six months requires justification"
+      site_scope: "all included steelmaking, casting, ancillary, recovery, and treatment units"
+      aggregation_rule: "sum by route and grade family, reconcile mass, then divide by conforming saleable mass linked downstream"
+      quality_evidence: "calibrated instruments; invoices; laboratory certificates; meter coverage; environmental calculation protocol; reconciliation sign-off"
+    - protocol_id: cp_hot_rolling_records
+      process_id: "hot_rolling_and_surface_preparation"
+      flow_role: "substrate, operating inputs, prepared hot band, and residues"
+      record_type: "coil/slab tracking, furnace and utility meters, chemical issue, water, weighbridge, and waste records"
+      raw_fields: "heat_id; slab_id; input_mass; fuel; electricity; water; chemical; hot_band_mass; scale; trim; reject; residue_destination"
+      collection_method: "link slab/hot-band identifiers through reheating, rolling, descaling, pickling, and transfer"
+      unit: "source units, normalized to kg prepared hot band and reference product"
+      frequency: "each coil/campaign; monthly reconciliation"
+      temporal_coverage: "representative reporting year; shorter period requires justification"
+      site_scope: "all included hot-rolling and surface-preparation lines"
+      aggregation_rule: "sum matched inputs/outputs by route and divide by conforming output mass"
+      quality_evidence: "calibrated scales/meters; coil genealogy; material balance; waste transfer records"
+    - protocol_id: cp_cold_processing_records
+      process_id: "cold_rolling_and_annealing"
+      flow_role: "substrate, operating inputs, cold-processed output, residues, and emissions"
+      record_type: "coil genealogy, rolling/annealing logs, utility meters, process-gas and chemical issues, quality tests, and environmental records"
+      raw_fields: "coil_id; orientation_class; grade; input/output_mass; pass_sequence; anneal/decarburize route; electricity; fuel; gas; water; lubricant; chemical; residue; emission"
+      collection_method: "link every cold-reduction and heat-treatment campaign to conforming product and monitored releases"
+      unit: "source units, normalized to kg cold-processed output and reference product"
+      frequency: "each coil/campaign; continuous meters with monthly reconciliation"
+      temporal_coverage: "representative reporting year; route-specific campaigns shall cover normal operation"
+      site_scope: "all included cold mills, annealing/decarburization, cleaning, and treatment units"
+      aggregation_rule: "aggregate separately by GOES/NOES, supply condition, and materially distinct route before any weighted mix"
+      quality_evidence: "coil traceability; calibrated meters; laboratory/magnetic test records; treatment records; mass balance"
+    - protocol_id: cp_finishing_dispatch_records
+      process_id: "electrical_steel_finishing"
+      flow_role: "finishing substrate, coating/domain-refining/packaging inputs, reference product, residues, and emissions"
+      record_type: "coil/sheet tracking, coating and furnace records, domain-refining logs, quality certificates, scales, meters, packaging and waste records"
+      raw_fields: "coil_id; grade/specification; thickness; width; orientation_class; supply_condition; coating_type/mass; domain_refined; magnetic_test_basis/result; input_mass; saleable_mass; utility/consumable; reject/residue/destination"
+      collection_method: "reconcile final operations and acceptance tests to invoiced saleable mass at the declared gate"
+      unit: "source units, normalized to kg saleable reference product"
+      frequency: "each coil/lot; monthly reconciliation"
+      temporal_coverage: "representative reporting year and all declared product families"
+      site_scope: "all included final annealing, coating, domain refinement, inspection, slitting, packaging, and dispatch operations"
+      aggregation_rule: "sum accepted saleable mass and linked burdens by qualified product family; production-mass-weight only compatible families"
+      quality_evidence: "calibrated scales/meters; coating and magnetic test certificates; batch genealogy; invoice and dispatch reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every included inventory row"
+      rule: "normalized amount = amount assigned to included production / net saleable reference-product mass at the declared gate"
+      inputs:
+        - "assigned foreground amount"
+        - "saleable mass using the section 4 convention"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - worldsteel-lci-methodology
+    - id: calc_production_weighted_mix
+      applies_to: "multi-route, multi-site, or multi-grade-family dataset"
+      rule: "mixed amount = sum(amount_i × saleable_mass_i) / sum(saleable_mass_i); retain each component and weight"
+      inputs:
+        - "route/site/product-family results and net saleable masses"
+      output: "production-mass-weighted result with disclosed coverage"
+      source_ids:
+        - worldsteel-lci-methodology
+    - id: calc_process_mass_balance
+      applies_to: "each foreground process and linked chain"
+      rule: "reconcile identified mass inputs = product + co-product + waste + emission outputs + documented stock change; investigate rather than force-close material gaps"
+      inputs:
+        - "measured material inputs/outputs"
+        - emissions
+        - "and opening/closing stocks"
+      output: "process mass-balance statement and unresolved difference"
+      source_ids:
+        - worldsteel-lci-methodology
+    - id: calc_coating_mass
+      applies_to: "coated product"
+      rule: "integral coating mass shall be measured or calculated from verified coated area and coating mass per area, and the result shall use the same convention as reference product mass"
+      inputs:
+        - "coated area"
+        - "coating mass per area or direct mass measurement"
+        - "saleable product mass"
+      output: "coating mass and coating mass fraction"
+      source_ids:
+        - iec-60404-8-4-2022
+        - iec-60404-8-7-2020
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain grade/specification, orientation class, supply condition, dimensions, coating, magnetic-test basis, and acceptance certificate linked to each represented product family."
+      evidence: "coil/lot genealogy and conformity or inspection certificate; iec-60404-8-4-2022; iec-60404-8-7-2020"
+    - id: dq_route_coverage
+      applies_to: "process chain"
+      requirement: "Demonstrate that each applicable steelmaking, casting, rolling, annealing, texture-control, coating, recovery, utility, and treatment step is included or explicitly outside the foreground gate with an upstream dataset."
+      evidence: "route diagram, process list, supplier-gate records, and worldsteel-lci-methodology"
+    - id: dq_temporal_geographic
+      applies_to: "foreground and upstream data"
+      requirement: "Prefer one representative year of site data; justify shorter periods of at least six months and use geography- and technology-representative energy and material datasets."
+      evidence: "reporting-period reconciliation and dataset metadata; worldsteel-lci-methodology"
+    - id: dq_meter_and_allocation
+      applies_to: "shared utilities and multi-output processes"
+      requirement: "Document meter coverage, calibration, subdivision, allocation or substitution factors, and sensitivity for material shared burdens."
+      evidence: "calibration records, meter map, calculation workbook, and allocation evidence"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Account for known material, energy, water, emissions, wastes, co-products, ancillary utilities, internal transport, and treatment flows; document cut-offs and unresolved mass-balance differences."
+      evidence: "completeness checklist, environmental reports, mass balance, and worldsteel-lci-methodology"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow 8863bbb7-7bc4-4ff1-ab21-4a01addf2ad4, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, reference unit kg, and a normalized amount of 1."
+    source_ids:
+      - worldsteel-lci-methodology
+  - rule_id: val_required_qualifiers
+    applies_to: "dataset metadata and reference product"
+    rule: "Fail completeness when any required qualifier in section 3 is absent, internally inconsistent, or not tied to the represented production mass."
+    source_ids:
+      - iec-60404-8-4-2022
+      - iec-60404-8-7-2020
+  - rule_id: val_boundary_route
+    applies_to: "process inventory"
+    rule: "Require every route-applicable process in section 6 or a documented replacement/purchased-input gate; reject silent omission of grade-specific annealing, texture control, coating, or domain refinement."
+    source_ids:
+      - ec-fmp-bref-2022
+      - doe-grid-supply-chain-2022
+      - mehdi-et-al-2024
+  - rule_id: val_mass_and_yield
+    applies_to: "each process and full chain"
+    rule: "Require input/output/stock-change reconciliation, a documented disposition for trim, scale, scrap, rejects, coating residues, and sludge, and an explanation for unresolved differences."
+    source_ids:
+      - worldsteel-lci-methodology
+  - rule_id: val_route_aggregation
+    applies_to: "mixed dataset"
+    rule: "Require explicit production-mass weights and separate component results for materially different steelmaking routes, GOES/NOES families, semi-/fully processed states, and finishing routes."
+    source_ids:
+      - worldsteel-lci-methodology
+  - rule_id: val_allocation_recycling
+    applies_to: "co-products and scrap"
+    rule: "Require the selected allocation/system-expansion method, substitution facts, scrap categories, and end-of-life burden or credit to be disclosed; reject double counting between the cradle-to-gate result and downstream recycling."
+    source_ids:
+      - iso-20915-2018
+      - worldsteel-lci-methodology
+  - rule_id: val_data_period_quality
+    applies_to: "foreground package"
+    rule: "Require reporting-period coverage, site scope, meter/calibration evidence, product genealogy, source-unit retention, conversion records, and disclosure of data gaps and estimates."
+    source_ids:
+      - worldsteel-lci-methodology
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset representing cradle-to-gate production of a declared flat-rolled silicon-electrical steel product family"
+  downstream_use: "LCA process and lifecycle-model inputs for transformers, motors, generators, magnetic components, electrical equipment, and material supply chains when the required product and route qualifiers match"
+  allowed_use: "Mass-based cradle-to-gate inventory, supplier or production-mix modelling, hotspot analysis, and downstream product studies with compatible geography, time, grade, supply condition, and allocation conventions"
+  excluded_use: "Direct comparative claims between electrical-steel grades or routes without equivalent function, magnetic performance, system boundary, data quality, and critical review; use as a dataset for fabricated laminations, cores, or complete equipment without added downstream processes"
+  required_metadata: "PCR id and version; product flow UUID; grade/specification; GOES/NOES class; semi-/fully processed condition; dimensions; coating and domain-refined status; magnetic test basis; steelmaking/casting/rolling/annealing route; site/geography; reporting period; factory gate; upstream dataset identities; allocation and recycling method; net saleable production mass"
+  required_quality_disclosure: "Primary-data share; meter and coil/heat genealogy coverage; temporal and geographic representativeness; mass-balance status; product-family and route weights; cut-offs; estimates; allocation/substitution factors; upstream data age; review status"
+  update_trigger: "Material change in grade or supply scope, production route, purchased-substrate share, annealing/coating/domain-refining technology, site or energy mix, allocation/recycling method, source standards, or representative data period; otherwise review at least when the site dataset exceeds the selected data-age policy"
+data_sources:
+  - id: "iso-20915-2018"
+    type: "standard"
+    reference: "ISO 20915:2018, Life cycle inventory calculation methodology for steel products. https://www.iso.org/standard/69447.html (retrieved 2026-08-09)"
+    used_for: "Steel-product functional/declared unit, boundary, scrap, co-product, and reporting principles"
+  - id: "worldsteel-lci-methodology"
+    type: "method_factor"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report. https://worldsteel.org/wp-content/uploads/Life-cycle-inventory-methodology-report.pdf (retrieved 2026-08-09)"
+    used_for: "One-kilogram factory-gate declared unit, cradle-to-gate boundary, route weighting, data collection, co-product system expansion, scrap, emissions, and quality rules"
+  - id: "ec-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, 2022. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-12/FMP%20BREF_Final%20Version.pdf (retrieved 2026-08-09)"
+    used_for: "Hot rolling, descaling, pickling, cold rolling, annealing, finishing, surface treatment, emissions, and residue process decomposition"
+  - id: "iec-60404-8-4-2022"
+    type: "standard"
+    reference: "IEC 60404-8-4:2022, Cold-rolled non-oriented electrical steel strip and sheet delivered in the fully-processed state. https://webstore.iec.ch/en/publication/65821 (retrieved 2026-08-09)"
+    used_for: "NOES scope, fully processed/final-annealed supply condition, grades, magnetic/geometric/technological requirements, and inspection qualifiers"
+  - id: "iec-60404-8-7-2020"
+    type: "standard"
+    reference: "IEC 60404-8-7:2020, Cold-rolled grain-oriented electrical steel strip and sheet delivered in the fully processed state. https://webstore.iec.ch/en/publication/63884 (retrieved 2026-08-09)"
+    used_for: "GOES scope, final-annealed supply condition, conventional/high-permeability/domain-refined classes, dimensions, and inspection qualifiers"
+  - id: "doe-grid-supply-chain-2022"
+    type: "official_guidance"
+    reference: "U.S. Department of Energy, Electric Grid Supply Chain Deep Dive Assessment, 2022. https://www.energy.gov/sites/default/files/2024-12/Electric%2520Grid%2520Supply%2520Chain%2520Report%2520-%2520Final%5B1%5D.pdf (retrieved 2026-08-09)"
+    used_for: "GOES-specific melt/cast, hot rolling, trimming, annealing/pickling, cold rolling, orientation, coating, and domain-refining process distinctions"
+  - id: "mehdi-et-al-2024"
+    type: "literature"
+    reference: "Mehdi, M. et al., Manufacturing of non-grain-oriented electrical steels: review, International Journal of Advanced Manufacturing Technology (2024). https://doi.org/10.1007/s00170-024-13837-9"
+    used_for: "GOES/NOES identity distinction and route-dependent casting, hot rolling, cold rolling, decarburization, annealing, texture, and skin-pass process structure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:dbf41c860e71f4ad40424d8091f14f0c8413ce276f21f1600124362af3e054a3"
+  generated_content_sha256: "sha256:c145ccb559addb3e4fa46ea58ee3561ff86819d05e90375bc82d2b35eda8bd1f"

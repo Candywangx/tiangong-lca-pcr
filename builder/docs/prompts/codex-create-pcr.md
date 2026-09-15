@@ -12,6 +12,11 @@ Then read only the tool notes, contracts, methods, and vocab files required by t
 
 Work rules:
 
+- Before each external evidence need, execute the shared-materials workflow in `builder/docs/tools/shared-materials.md`:
+  query by product/process/need, read bounded fragments, assess applicability, supplement gaps with existing tools,
+  then register acquired originals and reusable fragments. Local candidates and prior PCR citations do not establish
+  evidence coverage; retain original verification, independent-source and counterevidence checks.
+
 - Edit canonical `pcr.en-US.md` first.
 - Keep `pcr.zh-CN.md` aligned.
 - Regenerate `structured.yaml` through the builder CLI.

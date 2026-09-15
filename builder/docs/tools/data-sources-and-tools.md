@@ -54,6 +54,12 @@ Prefer sources in this order when multiple sources are available:
 
 ## Tooling
 
+Before using external evidence tools, execute the query → bounded read → applicability/gap check → supplement →
+register loop in [Shared materials](shared-materials.md). `npm run pcr:materials` discovers production-side sources
+across worktrees. Goal author dispatch runs the initial product query and supplies the shared directory; individual
+authors refine by process and evidence need. Existing valid originals and extraction can be reused, but source
+independence, original verification, contrary evidence and product/basis compatibility remain required.
+
 Useful production tools include:
 
 - Tiangong LCA CLI for database UUID lookup

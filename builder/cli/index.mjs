@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { checkPcr, PCR_CHECK_HELP } from "../lib/pcr-check.mjs";
 import { init } from "../lib/builder-operations.mjs";
 import { importCpc } from "../lib/cpc-scaffold.mjs";
 import { lint } from "../lib/lint-rules.mjs";
@@ -12,6 +13,10 @@ import {
 } from "../lib/manifest-lifecycle.mjs";
 
 const COMMAND_OPTIONS = Object.freeze({
+  check: Object.freeze({
+    values: ["root", "pcr", "workspace", "format"],
+    booleans: ["help"],
+  }),
   init: Object.freeze({
     values: ["root", "sample-pcr", "pcr-id", "title-en", "title-zh-CN"],
     booleans: ["help"],
@@ -124,6 +129,7 @@ function printHelp() {
 
 Usage:
   node builder/cli/index.mjs init [--root <path>] [--sample-pcr <domain/path/slug>]
+  node builder/cli/index.mjs check --pcr <PCR directory> [--workspace current|revision] [--format human|json]
   node builder/cli/index.mjs lint [--root <path>]
   node builder/cli/index.mjs import-cpc --source <csv> [--classification-version 3.0] [--legacy-scaffolds]
   node builder/cli/index.mjs scaffold-cpc --legacy-scaffolds --source <csv>  # compatibility alias
@@ -179,6 +185,18 @@ function runCommand(command, options) {
   if (!command || command === "help" || command === "--help") {
     return { messages: [printHelp()], exitCode: 0 };
   }
+  if (command === "check") {
+    if (options.help === true) return { messages: [PCR_CHECK_HELP], exitCode: 0 };
+    if (options.format && !["human", "json"].includes(options.format)) {
+      throw Object.assign(new Error("--format must be human or json."), { code: "PCR_CHECK_FORMAT_INVALID" });
+    }
+    const result = checkPcr(options);
+    return {
+      messages: [options.format === "json" ? JSON.stringify(result, null, 2)
+        : `PASS ${result.pcr_path} (${result.workspace}): measurement checks complete.\n${result.warnings.join("\n")}`],
+      exitCode: 0,
+    };
+  }
   if (options.help === true && command !== "import-cpc" && command !== "scaffold-cpc") {
     return { messages: [printHelp()], exitCode: 0 };
   }
@@ -229,7 +247,11 @@ function main(argv) {
     }
     process.exitCode = exitCode;
   } catch (error) {
-    process.stderr.write(`${error.message}\n`);
+    if (argv[0] === "check" && (argv.includes("--format=json") || argv.some((arg, i) => arg === "--format" && argv[i + 1] === "json"))) {
+      process.stderr.write(`${JSON.stringify({ ok: false, error: {
+        code: error.code ?? "PCR_CHECK_ARGUMENT_INVALID", message: error.message, details: error.details ?? null,
+      } })}\n`);
+    } else process.stderr.write(`${error.message}\n`);
     process.exitCode = 1;
   }
 }

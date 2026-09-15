@@ -1,10 +1,1702 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26130"
-  title: "Wool, degreased or carbonized, not carded or combed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.wool-degreased-or-carbonized-not-carded-or-combed"
+  classification_refs: "CPC 3.0: 26130, Wool, degreased or carbonized, not carded or combed"
+  covered_products: "Loose sheep-wool fibre sold after aqueous degreasing/scouring; loose sheep-wool fibre sold after a declared carbonizing route; both not carded or combed"
+  excluded_products: "Greasy/raw unscoured wool; non-sheep animal hair; wool/synthetic blends; wool noils or waste; carded or combed wool; tops, slivers, yarn and fabric; dyed, bleached or mothproofed products unless those treatments are reported in a separate dataset"
+  representative_product: "Saleable loose scoured sheep wool on the degreased_route; this is narrower than the full category and is the verified Tiangong identity representative"
+  production_route: "Route-conditioned: degreased_route = opening/de-dusting, aqueous scouring, rinsing, mechanical dewatering and drying; carbonized_route = scoured-wool input plus declared loose-fibre acid impregnation, hydroextraction, drying/baking, mechanical removal, neutralization/rinsing and final drying"
+  market_state: "At the preparation-facility gate, loose, saleable, not carded or combed, with measured moisture and declared route, fibre-diameter class, residual grease and vegetable-matter specification"
+functional_unit:
+  what: "Preparation of loose sheep-wool fibre suitable for subsequent spinning preparation, after declared degreasing or loose-fibre carbonizing and before carding or combing"
+  how_much: "1 kg net dry mass of saleable output at the preparation-facility gate"
+  how_well: "Meets the producer's declared moisture, residual grease, vegetable-matter and quality specifications; route and wool-fineness class are stated; no carding or combing is included"
+  how_long_or_cycle: "One completed production batch or campaign; no use-life duration applies"
+  reference_flow_link: "One reference flow per dataset. The verified Scoured Wool row represents the degreased route; a carbonized-route dataset uses it only with the mandatory narrower-identity limitation disclosure."
+system_boundary:
+  rules:
+    - rule_id: boundary_route_modules
+      applies_to: "foreground_process_selection"
+      rule: "Include only the route modules actually operated. A degreased dataset includes aqueous scouring and drying; an integrated carbonized dataset includes scouring and carbonizing; a carbonizing-only dataset begins with an upstream scoured-wool input."
+      source_ids:
+        - eu-txt-bref-2023
+    - rule_id: boundary_scouring_recovery
+      applies_to: "aqueous_scouring"
+      rule: "Include opening/de-dusting when performed, all scouring/rinsing bowls, mechanical dewatering, drying, grease and dirt separation, internal water recycle, wastewater sent to treatment, recovered wool grease, sludge/dirt, and direct on-site energy emissions."
+      source_ids:
+        - eu-txt-bref-2023
+        - eu-txt-bat-2022-2508
+    - rule_id: boundary_carbonising
+      applies_to: "loose_fibre_carbonising"
+      rule: "When the carbonized route applies, include acid preparation and impregnation, hydroextraction, drying and baking, crushing/removal of carbonized vegetable particles, neutralization/rinsing, final drying, acidic wastewater and dust/residue management."
+      source_ids:
+        - eu-txt-bref-2023
+    - rule_id: boundary_excluded_steps
+      applies_to: "downstream_and_nonproduct_operations"
+      rule: "Exclude sheep husbandry, carding, combing, spinning, dyeing, bleaching, mothproofing, fabric carbonizing, packaging beyond the facility's saleable-output gate, and downstream textile manufacture; represent any included exception as a separately identified process."
+      source_ids:
+        - un-cpc-30-2025
+        - eu-txt-bref-2023
+boundary_abstraction:
+  declared_starting_condition: "Route-dependent: received greasy/raw sheep wool for a degreasing or integrated carbonized route; received scoured/degreased loose sheep wool for a carbonizing-only route"
+  starting_condition_role: "Foreground gate input whose mass, moisture, wool-fineness class, contamination state and supplier identity anchor the route inventory"
+  product_classification_scope: "Loose sheep wool after degreasing or loose-fibre carbonizing, not carded or combed; excludes non-sheep hair, blends and later textile transformations"
+  recursive_input_rule: "Purchased scoured wool entering a carbonizing-only facility remains a same-category technosphere input. Link one upstream degreased-wool dataset and stop recursive expansion at that link; do not replace the upstream burden with the carbonizing dataset itself."
+  upstream_dataset_requirement: "Supply chain datasets are required for greasy/raw wool production, purchased scoured wool, chemicals, water, energy carriers, transport when included by study scope, and off-site waste or wastewater treatment. The upstream scoured-wool dataset shall be route- and fibre-type compatible."
+  disclosure: "State route, facility configuration, geographic and temporal coverage, whether scouring and carbonizing are integrated, incoming and outgoing moisture basis, wool-fineness class, recovery/recycling configuration, wastewater destination, excluded treatment steps, and the narrower Scoured Wool UUID limitation for carbonized output."
+reference_flow_definition:
+  reference_amount: "1 kg net dry mass"
+  product_flow_ref:
+    name: "Scoured Wool"
+    uuid: "1f286780-8831-47b4-88dd-582d6b7f8947"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "route (degreased_route or carbonized_route)"
+    - "sheep-wool fibre-diameter class"
+    - "pure-wool status"
+    - "incoming material state"
+    - "output moisture basis and method"
+    - "residual grease specification"
+    - "vegetable-matter specification"
+    - "not-carded-or-combed state"
+    - "carbonizing chemistry when applicable"
+    - "carbonized-flow UUID limitation when applicable"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "Reference product and all mass-normalized results"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference amount as net dry mass. Measure gross/net output mass and moisture for the same batch; retain the moisture method and convert using dry_mass = wet_mass × (1 - moisture_mass_fraction). Do not mix as-delivered and dry-mass denominators."
+  - id: mass_unit_conversion
+    applies_to: "All material inputs, products, by-products and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve source records in their original units and convert to kg with documented factors; tonne-based indicators use 1 t = 1,000 kg."
+  - id: water_accounting
+    applies_to: "Scouring, rinsing, neutralization and cleaning water"
+    required_property_ref:
+      name: "Volume or mass, as metered"
+      uuid: ""
+    required_unit: "L or m3, with conversion stated"
+    rule: "Separate gross intake, internally recycled water and discharged wastewater. Net freshwater consumption equals gross intake minus water returned from an external system, not internal recirculation; report internal reuse separately."
+  - id: energy_accounting
+    applies_to: "Electricity, steam, direct fuel and recovered heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ and kWh, with conversion stated"
+    rule: "Record purchased electricity, fuels and steam separately. Do not add recovered internal heat as purchased energy; disclose direct versus indirect heating and convert to MJ only after preserving carrier-specific records."
+  - id: chemical_solution_basis
+    applies_to: "Detergent, alkali, mineral acid and neutralizing agents"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg active substance and kg solution"
+    rule: "Record both delivered solution mass and concentration; calculate active-substance mass. Never average sulphuric-acid, gaseous-HCl, aluminium-chloride, sodium-acetate and ammonia routes."
+process_map:
+  - id: aqueous_scouring_and_drying
+    name: "Opening, aqueous scouring, recovery, dewatering and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Required for degreased_route and for an integrated carbonized_route starting from greasy/raw wool; excluded from a carbonizing-only facility dataset that starts with purchased scoured wool"
+    role: "Foreground degreasing and conditioning"
+    quantitative_reference: "1 kg net dry saleable scoured-wool output from this process"
+  - id: loose_fibre_carbonising
+    name: "Loose-fibre carbonizing, neutralization, rinsing and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Required only for carbonized_route; excluded for degreased_route"
+    role: "Foreground removal of vegetable matter from scoured loose wool"
+    quantitative_reference: "1 kg net dry saleable carbonized-wool output from this process"
+process_inventory:
+  - id: aqueous_scouring_and_drying
+    label: "Opening, aqueous scouring, recovery, dewatering and drying"
+    inputs:
+      product:
+        - row_id: raw_wool_input
+          role: "Received greasy/raw sheep wool"
+          name: "Shorn wool, greasy, including fleece-washed shorn wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bc0047e4-c6e8-4758-b86e-887af8a1f176"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the purchased or transferred greasy/raw sheep wool entering the foreground route, including moisture, fineness class, contamination state and supplier lot."
+          amount:
+            expression: "measured net dry mass by input lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_moisture
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "5.0"
+                unit: "kg dry incoming wool/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_water_input
+          role: "Gross water supplied to scouring, rinsing and cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; retain raw metered L or m3 and measured density"
+          description: "Record gross metered water by batch or campaign before internal recycle is subtracted; maintain a separate internal-recycle record."
+          amount:
+            expression: "metered gross fresh-water volume × measured water density, less separately metered internal recycle; retain the original volume record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "100"
+                unit: "L/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_alcohol_ethoxylate_detergent
+          role: "Alcohol ethoxylate scouring detergent, active substance"
+          name: "Alcohol ethoxylate scouring detergent, active substance"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record the active alcohol ethoxylate detergent separately from water in the delivered formulation and from every builder or auxiliary."
+          amount:
+            expression: "delivered formulation mass × verified active mass fraction"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.10"
+                unit: "kg active detergent/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_sodium_carbonate
+          role: "Sodium carbonate scouring builder, active substance"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5462c2da-d3dd-41f0-a78f-51024d2d1a69"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg Na2CO3 active substance"
+          description: "Record sodium carbonate separately from detergent. Omit this row when no sodium carbonate is used; another builder requires its own atomic row."
+          amount:
+            expression: "delivered product mass × verified sodium carbonate mass fraction"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg sodium carbonate/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_electricity
+          role: "Purchased electricity for scouring and drying"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Meter purchased electricity for opening, pumps, squeeze presses, centrifuges, controls and electrically driven drying equipment."
+          amount:
+            expression: "metered electricity attributable to the route; shared use requires documented equipment or operating-hour allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_use
+              source_ids:
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "5"
+                unit: "kWh/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_natural_gas
+          role: "Natural gas combusted on site for scouring and drying"
+          name: "Natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78279a0e-8c85-421e-a1aa-2281166ee11f"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66 / MJ"
+          description: "Record natural gas separately from electricity and purchased steam; its direct emissions are reported as pollutant-specific elementary rows."
+          amount:
+            expression: "metered gas × documented gross-calorific-value conversion factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_use
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_purchased_steam
+          role: "Purchased steam for indirect scouring and drying heat"
+          name: "heat, steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74d07391-d5e4-4beb-bd80-4fe9a7617cf1"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66 / MJ; retain kg steam, pressure and enthalpy in raw records"
+          description: "Record imported steam separately; do not combine it with gas or internally recovered heat."
+          amount:
+            expression: "measured steam mass × documented delivered-enthalpy factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: scoured_wool_output
+          role: "Saleable scoured wool"
+          name: "Scoured Wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1f286780-8831-47b4-88dd-582d6b7f8947"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net dry saleable output after final mechanical dewatering and drying, before carding or combing."
+          amount:
+            expression: "fixed reference output after dry-mass normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net dry saleable scoured-wool process output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_batch_mass_moisture
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg dry output"
+                basis: "PCR reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-2006
+        - row_id: recovered_wool_grease
+          role: "Recovered wool grease"
+          name: "Recovered wool grease, saleable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable recovered grease separately from sludge or acid-cracked grease. Apply the fibre-class performance check only to the matching coarse or extra-/super-fine class."
+          amount:
+            expression: "measured net mass transferred to sale or beneficial use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg recovered grease/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: spent_scouring_liquor
+          role: "Spent scouring liquor sent to treatment"
+          name: "Spent wool-scouring liquor"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; each pollutant load / kg in its own elementary or treatment record"
+          description: "Record the post-recovery scouring liquor purge separately from rinse and equipment-cleaning wastewater."
+          amount:
+            expression: "metered purge volume; calculate each pollutant load from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "L/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_rinse_wastewater
+          role: "Scouring-line rinse wastewater sent to treatment"
+          name: "Wool-scouring rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; each pollutant load / kg in its own elementary or treatment record"
+          description: "Record rinse-bowl purge after internal recycle separately from spent scouring liquor."
+          amount:
+            expression: "metered rinse purge volume; calculate each pollutant load from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "L/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_cleaning_wastewater
+          role: "Scouring-equipment cleaning wastewater sent to treatment"
+          name: "Wool-scouring equipment-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; each pollutant load / kg in its own elementary or treatment record"
+          description: "Record cleaning wastewater separately when it is metered or sampled as a distinct stream."
+          amount:
+            expression: "metered cleaning discharge; calculate each pollutant load from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "L/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: opening_dirt_waste
+          role: "Dirt removed during opening and de-dusting"
+          name: "Dirt removed from greasy wool"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record soil and dirt removed before scouring separately from sand and vegetable matter."
+          amount:
+            expression: "measured collection mass × measured dry-solids fraction; if mixed at collection, determine the dirt fraction by the declared sampling method"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg dry dirt/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: opening_sand_waste
+          role: "Sand removed during opening and de-dusting"
+          name: "Sand removed from greasy wool"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record sand removed before scouring as a separate waste flow."
+          amount:
+            expression: "measured collection mass × measured dry-solids and sand fractions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg dry sand/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: opening_vegetable_matter_waste
+          role: "Vegetable matter removed during opening and de-dusting"
+          name: "Vegetable matter removed from greasy wool"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record burrs, seeds and other vegetable matter removed before scouring separately from soil and sand."
+          amount:
+            expression: "measured collection mass × measured dry-solids and vegetable-matter fractions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg dry vegetable matter/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_dirt_sludge
+          role: "Dirt-separation sludge from scouring liquor"
+          name: "Wool-scouring dirt-separation sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record settled, centrifuged or hydrocyclone dirt sludge separately from recoverable grease and final wastewater-treatment sludge."
+          amount:
+            expression: "measured wet sludge mass × measured dry-solids fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg dry sludge/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_wwt_sludge
+          role: "Wastewater-treatment sludge from scouring effluent"
+          name: "Wool-scouring wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record sludge produced by on-site wastewater treatment independently from process dirt sludge."
+          amount:
+            expression: "measured wet sludge mass × measured dry-solids fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg dry sludge/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: non_saleable_wool_grease
+          role: "Non-saleable wool grease sent to treatment"
+          name: "Non-saleable wool grease"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record grease that is not transferred as a co-product, including acid-cracked grease, as its own waste stream."
+          amount:
+            expression: "measured net mass dispatched to the documented treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg waste grease/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: scouring_fossil_co2_to_air
+          role: "Fossil carbon dioxide from scouring-line combustion"
+          name: "carbon dioxide (fossil), emissions to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg CO2"
+          description: "Report fossil carbon dioxide separately for fuel combusted inside the scouring foreground boundary."
+          amount:
+            expression: "measured release or measured fuel use × documented fuel-specific CO2 factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg CO2/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_nox_to_air
+          role: "Nitrogen oxides from scouring-line combustion"
+          name: "Nitrogen oxides, expressed as nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent on the stated factor basis"
+          description: "Report nitrogen oxides as the basis specified by the measurement or factor, without combining them with other pollutants."
+          amount:
+            expression: "measured release or measured fuel use × documented equipment- and fuel-specific NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg NO2-equivalent/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: scouring_so2_to_air
+          role: "Sulphur dioxide from scouring-line combustion"
+          name: "Sulphur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg SO2"
+          description: "Report sulphur dioxide independently and omit the row only when fuel sulphur and monitoring evidence demonstrate no material release."
+          amount:
+            expression: "measured release or measured fuel use × documented fuel-sulphur-specific SO2 factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable scoured-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg SO2/kg dry scoured output"
+                basis: "per 1 kg net dry saleable scoured-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: loose_fibre_carbonising
+    label: "Loose-fibre carbonizing, neutralization, rinsing and drying"
+    inputs:
+      product:
+        - row_id: scoured_wool_input
+          role: "Scoured wool entering carbonizing"
+          name: "Scoured Wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1f286780-8831-47b4-88dd-582d6b7f8947"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use measured scoured loose-wool input. For a carbonizing-only facility, link a separate upstream degreased-wool dataset and do not recurse to this carbonizing dataset."
+          amount:
+            expression: "measured net dry mass by input lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_moisture
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "2.0"
+                unit: "kg dry scoured input/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_sulphuric_acid
+          role: "Sulphuric acid for loose-wool carbonizing"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg H2SO4 active substance"
+          description: "Record sulphuric acid as active H2SO4 separately from formulation water and every alternative acid route."
+          amount:
+            expression: "delivered sulphuric-acid solution mass × verified H2SO4 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.50"
+                unit: "kg H2SO4/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_hydrogen_chloride
+          role: "Gaseous hydrogen chloride for loose-wool carbonizing"
+          name: "hydrogen chloride gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19a304-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg HCl"
+          description: "Record gaseous hydrogen chloride independently; do not convert it into or average it with sulphuric acid."
+          amount:
+            expression: "measured cylinder, tank or dosing-system mass transferred to the carbonizing batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg HCl/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_aluminium_chloride
+          role: "Aluminium chloride for loose-wool carbonizing"
+          name: "Aluminium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg declared AlCl3 basis"
+          description: "Record aluminium chloride independently; retain grade and hydration state because the delivered mass and active basis depend on them."
+          amount:
+            expression: "delivered product mass × verified active fraction on the declared hydration basis"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg AlCl3 basis/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_detergent
+          role: "Non-ionic carbonizing detergent, active substance"
+          name: "Non-ionic carbonizing detergent, active substance"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance and kg solution"
+          description: "Include only when added to the carbonizing liquor; identify the formulation and active concentration."
+          amount:
+            expression: "measured issue from dosing or batch records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg active detergent/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_sodium_acetate
+          role: "Sodium acetate for carbonized-wool neutralization"
+          name: "Sodium acetate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4f6e8d2-1c9b-4d5e-8f7a-2b3c4d5e6f7a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg sodium acetate active substance"
+          description: "Record sodium acetate separately and retain grade, hydration state and final-pH evidence."
+          amount:
+            expression: "delivered product mass × verified active fraction on the declared hydration basis"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg sodium acetate basis/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_ammonia
+          role: "Ammonia for carbonized-wool neutralization"
+          name: "Ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f5325a9a-4bdc-46ea-b878-b88700767ddd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg NH3 active substance"
+          description: "Record ammonia separately as active NH3, including concentration when supplied as aqueous ammonia."
+          amount:
+            expression: "delivered ammonia solution or gas mass × verified NH3 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg NH3/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_water_input
+          role: "Water for acid preparation, neutralization, rinsing and cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; retain raw metered L or m3 and measured density"
+          description: "Record gross intake and internal recycle separately for the carbonizing line."
+          amount:
+            expression: "metered gross fresh-water volume × measured water density, less separately metered internal recycle; retain the original volume record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "100"
+                unit: "L/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_electricity
+          role: "Purchased electricity for loose-wool carbonizing"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Meter electricity for liquor handling, hydroextraction, crushing, dust control, neutralization and electrically driven drying equipment."
+          amount:
+            expression: "metered electricity attributable to carbonized batches; shared use requires documented equipment or operating-hour allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "10"
+                unit: "kWh/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_natural_gas
+          role: "Natural gas combusted on site for carbonizing heat"
+          name: "Natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78279a0e-8c85-421e-a1aa-2281166ee11f"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66 / MJ"
+          description: "Record natural gas separately for acid-concentration drying, baking and final drying; direct pollutants are reported in individual elementary-flow rows."
+          amount:
+            expression: "metered gas × documented gross-calorific-value conversion factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "75"
+                unit: "MJ/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_purchased_steam
+          role: "Purchased steam for carbonizing heat"
+          name: "heat, steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74d07391-d5e4-4beb-bd80-4fe9a7617cf1"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66 / MJ; retain kg steam, pressure and enthalpy in raw records"
+          description: "Record imported steam separately from gas and internal heat recovery."
+          amount:
+            expression: "measured steam mass × documented delivered-enthalpy factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_use
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "75"
+                unit: "MJ/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: carbonized_wool_output
+          role: "Saleable carbonized loose wool using the narrower verified identity"
+          name: "Scoured Wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1f286780-8831-47b4-88dd-582d6b7f8947"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net dry saleable output after neutralization, rinsing and final drying. The selected Tiangong row names scoured wool and is not carbonized-specific; retain the limitation in metadata."
+          amount:
+            expression: "fixed reference output after dry-mass normalization, with carbonized_route and identity limitation declared"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net dry saleable carbonized-wool process output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_batch_mass_moisture
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg dry output"
+                basis: "PCR reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-2006
+      waste:
+        - row_id: carbonised_vegetable_particles
+          role: "Carbonized vegetable particles removed mechanically"
+          name: "Carbonized vegetable particles from wool"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Measure mechanically removed carbonized vegetable particles separately from captured airborne dust and rejected wool fibre."
+          amount:
+            expression: "measured collection or dispatch mass adjusted for moisture"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg dry particles/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_captured_dust
+          role: "Dust captured by carbonizing-line abatement"
+          name: "Captured carbonizing dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record dry dust removed from filters, cyclones or other abatement separately from released particulate matter."
+          amount:
+            expression: "measured collection or dispatch mass adjusted for moisture"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg dry dust/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_rejected_wool
+          role: "Wool fibre rejected during carbonizing"
+          name: "Rejected carbonized wool fibre"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry mass"
+          description: "Record non-saleable wool fibre rejects independently from vegetable particles and dust."
+          amount:
+            expression: "measured reject mass adjusted for moisture"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_byproducts_and_waste
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg dry rejected wool/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_spent_sulphuric_acid_liquor
+          role: "Spent sulphuric-acid carbonizing liquor sent to treatment"
+          name: "Spent sulphuric-acid carbonizing liquor"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; active H2SO4 and each pollutant load / kg"
+          description: "Record unrecovered sulphuric-acid liquor separately from neutralization and rinse wastewater."
+          amount:
+            expression: "metered sulphuric-acid purge volume; calculate active H2SO4 and pollutant loads from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "L/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_spent_aluminium_chloride_liquor
+          role: "Spent aluminium-chloride carbonizing liquor sent to treatment"
+          name: "Spent aluminium-chloride carbonizing liquor"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; aluminium chloride and each pollutant load / kg"
+          description: "Record unrecovered aluminium-chloride liquor independently from sulphuric-acid, neutralization and rinse streams."
+          amount:
+            expression: "metered aluminium-chloride purge volume; calculate aluminium chloride and pollutant loads from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "L/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_neutralisation_wastewater
+          role: "Carbonizing neutralization wastewater sent to treatment"
+          name: "Carbonizing neutralization wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; each dissolved substance and pollutant load / kg"
+          description: "Record neutralization discharge separately and retain the actual acid/neutralizer combination and final pH."
+          amount:
+            expression: "metered discharge volume; calculate each load from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "L/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_rinse_wastewater
+          role: "Carbonizing rinse wastewater sent to treatment"
+          name: "Carbonized-wool rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; each pollutant load / kg in its own elementary or treatment record"
+          description: "Record post-neutralization rinse discharge separately; equipment cleaning requires its own row if separately measured and material."
+          amount:
+            expression: "metered rinse discharge; calculate each pollutant load from matched concentration and volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - eu-txt-bref-2023
+                - eu-txt-bat-2022-2508
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "L/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: carbonising_dust_to_air
+          role: "Dust released after carbonizing and crushing"
+          name: "Dust, total, to air from carbonizing and crushing"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure controlled exhaust or calculate captured-versus-released dust for drying, baking, crushing and residue handling; do not combine captured waste with air emissions."
+          amount:
+            expression: "measured stack release or documented mass-balance calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg dust/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_fossil_co2_to_air
+          role: "Fossil carbon dioxide from carbonizing-line combustion"
+          name: "carbon dioxide (fossil), emissions to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg CO2"
+          description: "Report fossil carbon dioxide separately for fuel combusted inside the carbonizing foreground boundary."
+          amount:
+            expression: "measured release or measured fuel use × documented fuel-specific CO2 factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "8"
+                unit: "kg CO2/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_nox_to_air
+          role: "Nitrogen oxides from carbonizing-line combustion"
+          name: "Nitrogen oxides, expressed as nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent on the stated factor basis"
+          description: "Report nitrogen oxides independently on the stated measurement or factor basis."
+          amount:
+            expression: "measured release or measured fuel use × documented equipment- and fuel-specific NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg NO2-equivalent/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carbonising_so2_to_air
+          role: "Sulphur dioxide from carbonizing-line combustion"
+          name: "Sulphur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg SO2"
+          description: "Report sulphur dioxide independently and omit the row only when fuel sulphur and monitoring evidence demonstrate no material release."
+          amount:
+            expression: "measured release or measured fuel use × documented fuel-sulphur-specific SO2 factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable carbonized-wool process output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_and_fuel_emissions
+              source_ids:
+                - eu-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg SO2/kg dry carbonized output"
+                basis: "per 1 kg net dry saleable carbonized-wool process output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "integrated_and_shared_operations"
+    rule: "Avoid allocation first by submetering and subdividing scouring, recovery, carbonizing, wastewater treatment and shared utilities. If subdivision is not feasible, document whether system expansion is appropriate before applying allocation."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: allocation_recovered_grease
+    applies_to: "recovered_wool_grease"
+    rule: "Treat saleable recovered wool grease as a co-product, not as negative waste. Prefer direct measurement and subdivision of recovery operations. If residual shared burdens require allocation, use a documented physical relationship that reflects the operation; use economic allocation only when no defensible physical relationship exists and report a sensitivity case."
+    source_ids:
+      - eu-txt-bref-2023
+      - eu-pef-2021-2279
+  - rule_id: allocation_residues
+    applies_to: "dirt_sludge_dust_and_wastewater"
+    rule: "Assign handling and treatment burdens to the wool route that generated each residue. Do not give avoided-burden credit for composting, recycling, grease sale or other recovery unless the study applies an explicit, consistently documented system-expansion or substitution method."
+    source_ids:
+      - eu-txt-bat-2022-2508
+      - eu-pef-2021-2279
+  - rule_id: allocation_route_separation
+    applies_to: "multiple_wool_routes_and_fineness_classes"
+    rule: "Use production records to separate degreased and carbonized routes and wool-fineness classes. When a disclosed production-weighted mix is required, calculate from route-specific dry outputs and inventories; do not use an unweighted category average."
+    source_ids:
+      - eu-txt-bref-2023
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_mass_moisture
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Incoming wool and saleable output mass, moisture and quality"
+      record_type: "Weighbridge, calibrated scale and laboratory moisture/quality records"
+      raw_fields: "lot_id; route; fibre_diameter_class; gross_mass; tare_mass; moisture_fraction; residual_grease; vegetable_matter; saleable_status"
+      collection_method: "Weigh each input and output lot; sample moisture and quality with the declared site or contractual method; reconcile transfers between route modules"
+      unit: "kg wet; kg dry; mass fraction; µm where reported"
+      frequency: "Every lot or batch"
+      temporal_coverage: "At least three consecutive representative production periods and the reporting year"
+      site_scope: "Every facility and route in the dataset"
+      aggregation_rule: "Convert each lot to dry mass, aggregate by route and fineness class, and divide only by matching saleable dry output"
+      quality_evidence: "Scale calibration; sampling plan; laboratory method; rejected-lot log; mass reconciliation"
+    - protocol_id: cp_water_balance
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Gross water, internal recycle and wastewater volume"
+      record_type: "Flow meters, tank changes and verified utility records"
+      raw_fields: "meter_id; opening_reading; closing_reading; recycle_volume; purge_volume; cleaning_volume; route; batch_id"
+      collection_method: "Meter key process locations; distinguish gross intake, internal recycle and discharge"
+      unit: "L or m3"
+      frequency: "Continuous or each batch; aggregate monthly"
+      temporal_coverage: "Full reporting year or complete representative campaign"
+      site_scope: "Each line and shared-water system"
+      aggregation_rule: "Allocate shared water by measured run time and verified flow only when direct batch metering is unavailable; report gross, recycle and discharge separately"
+      quality_evidence: "Meter calibration; water flow diagram; water mass balance; reconciliation to utility invoice"
+    - protocol_id: cp_chemical_use
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Detergent, builder, acid and neutralizing-agent use"
+      record_type: "Dosing logs, batch sheets, tank inventory and purchase reconciliation"
+      raw_fields: "chemical_id; supplier; formulation; concentration; opening_stock; receipts; closing_stock; dose; route; batch_id"
+      collection_method: "Record delivered solution and active concentration; reconcile automated dosing and stock movement"
+      unit: "kg solution; kg active substance"
+      frequency: "Every batch; monthly reconciliation"
+      temporal_coverage: "Full reporting year or complete representative campaign"
+      site_scope: "Each line, chemical and route"
+      aggregation_rule: "Calculate active mass per matching dry output; keep chemical alternatives separate"
+      quality_evidence: "Calibrated dosing system; supplier SDS/specification; stock reconciliation; deviation log"
+    - protocol_id: cp_energy_use
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Electricity, fuel, steam and recovered heat"
+      record_type: "Submeters, fuel meters, invoices and equipment logs"
+      raw_fields: "carrier; meter_id; opening_reading; closing_reading; heating_mode; recovered_heat; run_time; route"
+      collection_method: "Prefer line or equipment metering; allocate shared utility only with documented engineering drivers"
+      unit: "kWh; MJ; kg steam; carrier unit"
+      frequency: "Continuous or each batch; aggregate monthly"
+      temporal_coverage: "Full reporting year or complete representative campaign"
+      site_scope: "Each facility, line and route"
+      aggregation_rule: "Preserve carriers; subtract no internal recovered heat from gross carrier records; report recovery separately"
+      quality_evidence: "Meter calibration; invoice reconciliation; allocation workbook; operating-hour log"
+    - protocol_id: cp_byproducts_and_waste
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Recovered grease, dirt, sludge, carbonized particles, dust and rejects"
+      record_type: "Calibrated scales, dispatch notes and dry-solids tests"
+      raw_fields: "stream_id; route; gross_mass; tare_mass; moisture_or_dry_solids; destination; sale_or_waste_status; batch_id"
+      collection_method: "Weigh each dispatch or container and determine moisture/dry solids for variable wet residues"
+      unit: "kg wet; kg dry"
+      frequency: "Every dispatch; aggregate monthly"
+      temporal_coverage: "Full reporting year or complete representative campaign"
+      site_scope: "Each facility, route and destination"
+      aggregation_rule: "Aggregate saleable by-products separately from wastes and normalize dry mass to matching output"
+      quality_evidence: "Scale calibration; dispatch note; destination certificate; dry-solids result"
+    - protocol_id: cp_wastewater_monitoring
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Wastewater volume and pollutant loads"
+      record_type: "Flow-proportional monitoring and laboratory analysis at key locations"
+      raw_fields: "stream_id; route; volume; pH; temperature; conductivity; COD_or_TOC; TSS; relevant_chemicals; sample_time; destination"
+      collection_method: "Monitor key locations and calculate load as concentration × matched discharge volume; identify pre-treatment and final-treatment points"
+      unit: "m3; mg/L; kg pollutant"
+      frequency: "Flow continuously where material; laboratory frequency based on permit and process variability"
+      temporal_coverage: "Full reporting year or complete representative campaign"
+      site_scope: "Each material wastewater stream and final discharge/transfer point"
+      aggregation_rule: "Sum measured loads by route; allocate shared final treatment with pre-treatment loads and volume, documenting the method"
+      quality_evidence: "Meter calibration; chain of custody; accredited laboratory result; sampling plan; treatment transfer record"
+    - protocol_id: cp_air_and_fuel_emissions
+      process_id: "aqueous_scouring_and_drying_loose_fibre_carbonising"
+      flow_role: "Direct combustion pollutants and carbonizing dust"
+      record_type: "Stack testing, continuous monitors, fuel records, captured-dust mass balance and approved factors"
+      raw_fields: "source_id; pollutant; concentration; flow; operating_time; fuel_use; factor; captured_dust; released_dust; route"
+      collection_method: "Prefer direct measurement where required; otherwise calculate from measured fuel use and a cited jurisdiction-appropriate factor"
+      unit: "kg pollutant; mg/Nm3; Nm3; kg fuel"
+      frequency: "Permit frequency and each representative operating condition"
+      temporal_coverage: "Full reporting year or complete representative campaign"
+      site_scope: "Each direct emission point and route"
+      aggregation_rule: "Calculate pollutant-specific mass, never aggregate pollutants for published inventory; separate captured waste from released emissions"
+      quality_evidence: "Stack-test report; monitor calibration; factor reference; fuel reconciliation; dust-control maintenance log"
+  calculation_rules:
+    - id: calc_dry_mass
+      applies_to: "All wool inputs and outputs"
+      rule: "dry_mass_kg = net_wet_mass_kg × (1 - moisture_mass_fraction); use matched sample and weighing period."
+      inputs:
+        - net_wet_mass_kg
+        - moisture_mass_fraction
+      output: "dry_mass_kg"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_route_yield
+      applies_to: "Each route and fibre class"
+      rule: "dry_yield = saleable_output_dry_kg / matched_input_wool_dry_kg; report rejects and residues separately and do not mix routes or fineness classes."
+      inputs:
+        - saleable_output_dry_kg
+        - matched_input_wool_dry_kg
+      output: "dry_yield"
+      source_ids:
+        - eu-txt-bref-2023
+    - id: calc_normalized_inventory
+      applies_to: "Each foreground inventory row"
+      rule: "normalized_amount = matched_period_amount / matched_saleable_output_dry_kg; keep original unit and conversion factor in evidence."
+      inputs:
+        - matched_period_amount
+        - matched_saleable_output_dry_kg
+        - conversion_factor
+      output: "amount per kg dry reference output"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_water_balance
+      applies_to: "Each route"
+      rule: "Report gross intake, internal recycle and discharge separately; water_balance_difference = gross_intake - discharge - water_in_product_or_residue - measured_other_losses, with evaporation disclosed rather than forced to zero."
+      inputs:
+        - gross_intake
+        - recycle_volume
+        - discharge
+        - water_in_product_or_residue
+        - measured_other_losses
+      output: "route water balance and reconciliation difference"
+      source_ids:
+        - eu-txt-bat-2022-2508
+    - id: calc_grease_recovery_rate
+      applies_to: "Aqueous scouring by wool-fineness class"
+      rule: "grease_recovery_rate = recovered_saleable_grease_kg / raw_wool_input_t. Compare only matching classes: coarse wool typically above 35 µm uses 10-15 kg/t; extra-/super-fine wool typically below 20 µm uses 50-60 kg/t. For 20-35 µm or mixed/unknown classes, collect and report the rate without applying either interval."
+      inputs:
+        - recovered_saleable_grease_kg
+        - raw_wool_input_t
+        - fibre_diameter_class
+      output: "kg recovered grease/t raw wool"
+      source_ids:
+        - eu-txt-bat-2022-2508
+    - id: calc_carbonising_conditions
+      applies_to: "Sulphuric-acid loose-fibre carbonizing"
+      rule: "Record bath acid concentration, retained acid and water after hydroextraction, drying temperature, baking temperature and final pH. The BREF typical description is 6-9% mineral-acid solution, 5-7.5% sulphuric acid and 50-65% water retained after pressing/centrifugation, drying at 65-90 °C, baking at 105-130 °C and final pH 6; values outside these are flagged for explanation, not automatically overwritten."
+      inputs:
+        - bath_acid_percent
+        - retained_acid_percent
+        - retained_water_percent
+        - drying_temperature
+        - baking_temperature
+        - final_pH
+      output: "disclosed carbonizing-condition record and QA flag"
+      source_ids:
+        - eu-txt-bref-2023
+    - id: calc_wastewater_load
+      applies_to: "Each wastewater stream"
+      rule: "load_kg = concentration_mg_per_L × discharge_volume_L / 1,000,000; sum only matched samples and volumes and state interpolation."
+      inputs:
+        - concentration_mg_per_L
+        - discharge_volume_L
+      output: "kg pollutant by stream and route"
+      source_ids:
+        - eu-txt-bat-2022-2508
+    - id: calc_mass_reconciliation
+      applies_to: "Each route"
+      rule: "Reconcile dry wool input with saleable dry wool, recovered grease, dry residues, rejects and sampled losses. Investigate and disclose material imbalance; do not use a balancing flow to conceal missing records."
+      inputs:
+        - dry_wool_input
+        - saleable_dry_output
+        - recovered_grease
+        - dry_residues
+        - rejects
+        - measured_losses
+      output: "mass-balance difference and explanation"
+      source_ids:
+        - iso-14044-2006
+        - eu-txt-bref-2023
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "Dataset identity"
+      requirement: "Declare one route or a documented production-weighted mix, the process modules included, pure-sheep-wool status, fibre-diameter class and not-carded-or-combed state."
+      evidence: "Product specification, process flow diagram, lot records and route-production totals"
+    - id: dq_reference_uuid_limit
+      applies_to: "Reference flow"
+      requirement: "Use the verified Scoured Wool UUID. For carbonized output, state that it is a narrower degreased-route representative and no carbonized-specific UUID was verified."
+      evidence: "Reference-flow metadata and manifest review limitation"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground data"
+      requirement: "Cover a full reporting year where available; otherwise cover at least three consecutive representative production periods and disclose seasonality, shutdowns, abnormal conditions and exclusions."
+      evidence: "Production calendar, meter coverage and exception log"
+    - id: dq_mass_and_moisture
+      applies_to: "Wool and solid streams"
+      requirement: "Use calibrated weighing and matched moisture or dry-solids results; do not mix wet and dry masses. Complete route-level mass reconciliation."
+      evidence: "Calibration certificates, sampling records, laboratory results and reconciliation workbook"
+    - id: dq_water_energy_chemicals
+      applies_to: "Major resource inputs"
+      requirement: "Reconcile meters and dosing records to invoices or stock movement; preserve carrier and chemical identities and disclose shared-utility allocation."
+      evidence: "Meter calibration, invoices, stock reconciliation and allocation workbook"
+    - id: dq_emissions_wastewater
+      applies_to: "Direct releases and transfers"
+      requirement: "Use pollutant-specific records and matched flows; retain sampling location, method, laboratory, detection-limit treatment and wastewater destination."
+      evidence: "Monitoring plan, chain of custody, analytical reports, permit records and transfer notes"
+    - id: dq_estimate_replacement
+      applies_to: "All reasoned_estimate ranges"
+      requirement: "Use reasoned ranges only to flag records for review. Never populate missing foreground values from them. Replace them after three consecutive representative periods, after material process change, or before publication-critical comparison."
+      evidence: "Range replacement log, reviewed site statistics or stronger external evidence"
+    - id: dq_source_applicability
+      applies_to: "External evidence"
+      requirement: "Document whether each BREF/BAT statement is descriptive, typical or normative and whether installation scale and route match; do not turn a typical process description into an emission limit."
+      evidence: "Source applicability note and reviewer approval"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Fail when the reference product UUID, mass-property UUID, unit-group UUID or kg unit differs from this PCR. For carbonized_route, also fail when the narrower-identity limitation is absent."
+    source_ids:
+      - un-cpc-30-2025
+  - rule_id: validate_route_process_set
+    applies_to: "process_map_and_inventory"
+    rule: "Fail when the declared route and included modules conflict: degreased requires scouring; integrated carbonized requires scouring plus carbonizing; carbonizing-only requires carbonizing and one upstream scoured-wool dataset."
+    source_ids:
+      - eu-txt-bref-2023
+  - rule_id: validate_scope_qualifiers
+    applies_to: "product_identity"
+    rule: "Fail when route, sheep-wool fineness class, pure-wool status, incoming state, output moisture basis, residual grease/vegetable-matter specification or not-carded-or-combed state is missing; reject blends and downstream forms from this PCR."
+    source_ids:
+      - un-cpc-30-2025
+      - eu-txt-bref-2023
+  - rule_id: validate_no_unconditional_average
+    applies_to: "aggregation"
+    rule: "Fail when degreased and carbonized routes, different carbonizing chemistries, pure wool and blends, or coarse/fine wool are averaged without route-specific records, production weights and an explicit mixed-product scope."
+    source_ids:
+      - eu-txt-bref-2023
+  - rule_id: validate_grease_recovery_conditioning
+    applies_to: "recovered_wool_grease"
+    rule: "Apply the 10-15 kg/t raw wool screen only to coarse wool typically above 35 µm and 50-60 kg/t only to extra-/super-fine wool typically below 20 µm. For other or mixed classes, report foreground rate without either screen. Flag outliers for explanation; do not replace observations."
+    source_ids:
+      - eu-txt-bat-2022-2508
+  - rule_id: validate_carbonising_conditions
+    applies_to: "sulphuric_acid_carbonising"
+    rule: "Require measured bath/retained-acid conditions, drying and baking temperatures, neutralizing agent and final pH. Flag departures from the BREF typical condition ranges for route evidence and product-quality review; do not automatically fail a documented alternative technology."
+    source_ids:
+      - eu-txt-bref-2023
+  - rule_id: validate_recovery_and_water_disclosure
+    applies_to: "aqueous_scouring"
+    rule: "Require gross water, recycle, discharge, recovered grease, dirt/sludge and wastewater destination. Flag absent grease recovery or water recycle for BAT applicability review rather than silently assuming zero."
+    source_ids:
+      - eu-txt-bat-2022-2508
+  - rule_id: validate_foreground_completeness
+    applies_to: "all_foreground_rows"
+    rule: "Fail when a collected/calculated row lacks a collection protocol, matched temporal coverage, normalization basis or supporting record. Treat missing values as incomplete; never fill them from a reasoned_estimate range."
+    source_ids:
+      - eu-txt-bat-2022-2508
+      - iso-14044-2006
+  - rule_id: validate_mass_balance
+    applies_to: "each_route"
+    rule: "Fail when wet and dry bases are mixed. Flag material dry-mass imbalance for investigation and require an explanation for unresolved difference; prohibit undisclosed balancing flows."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_allocation
+    applies_to: "multifunctional_operations"
+    rule: "Fail when co-product or shared-treatment allocation is undisclosed or when economic allocation is used without first documenting subdivision/system-expansion and physical-relationship assessment."
+    source_ids:
+      - eu-pef-2021-2279
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate wool-preparation dataset for a declared degreased or carbonized route"
+  downstream_use: "secondary_dataset; background_dataset after methodology and translation review and only within the disclosed route, fibre class, technology, geography and period"
+  allowed_use: "LCA foreground packages and downstream process/lifecyclemodel projections requiring loose degreased or carbonized sheep wool before carding or combing; route-specific comparison when primary records are complete"
+  excluded_use: "Greasy/raw wool, non-sheep animal hair, blends, noils/waste, carded/combed wool, tops, yarn, fabric, farm-gate wool production, fabric carbonizing, or an exact carbonized-wool UUID claim"
+  required_metadata: "PCR id and version state; Tiangong UUIDs; route and included modules; facility and geography; reporting period; fibre-diameter class; pure-wool status; incoming state; dry-mass/moisture method; residual grease and vegetable-matter specification; carbonizing chemistry and conditions; water/recovery configuration; wastewater and waste destinations; allocation; upstream datasets; carbonized identity limitation"
+  required_quality_disclosure: "Foreground-versus-calculated data share; meter and sampling coverage; mass/water reconciliations; route-specific yield; grease recovery rate and applicable fibre-class screen; reasoned-estimate flags and replacement status; exclusions, allocations, data gaps, abnormal operation and source applicability"
+  update_trigger: "New verified carbonized-wool product-flow UUID; material change in route, fibre mix, chemicals, recovery or treatment; three representative periods sufficient to replace provisional screens; new official BAT/BREF or classification revision; monitoring or mass-balance failure; reviewer acceptance or rejection of the candidate methodology"
+data_sources:
+  - id: "un-cpc-30-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, code 26130, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
+    used_for: "Official category identity and distinction from carded/combed wool and neighbouring natural-fibre products"
+  - id: "eu-txt-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Textiles Industry, EUR 31392 EN, JRC131874, DOI 10.2760/355887, Sections 2.3.1, 2.6.2.1.1 and 4.2, https://publications.jrc.ec.europa.eu/repository/handle/JRC131874 (retrieved 2026-08-12)"
+    used_for: "Scouring and loose-fibre carbonizing process decomposition, route alternatives, typical carbonizing conditions, recovery configurations, emissions and resource-efficiency context"
+  - id: "eu-txt-bat-2022-2508"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 of 9 December 2022 establishing BAT conclusions for the textiles industry, ELI http://data.europa.eu/eli/dec_impl/2022/2508/oj (retrieved 2026-08-12)"
+    used_for: "Input/output inventories, water/energy/material monitoring, wastewater monitoring, wool-grease recovery and water-recycle requirements, fibre-class-conditioned grease-recovery performance levels"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of Environmental Footprint methods, ELI http://data.europa.eu/eli/reco/2021/2279/oj, allocation decision hierarchy (retrieved 2026-08-12)"
+    used_for: "Subdivision/system-expansion-first allocation hierarchy and physical-relationship allocation rule"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines, confirmed 2022, https://www.iso.org/standard/38498.html (retrieved 2026-08-12)"
+    used_for: "LCI consistency, transparent allocation, normalization, documentation and data-quality framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:31669fe8744367d6ab9c88fc52bba2969377aebff3f313e50e191a5a85dbaeba"
+  generated_content_sha256: "sha256:e8f200e536926768c18cafadc6349e0cefd4a702b3c686fc4d2cd62e391be20a"

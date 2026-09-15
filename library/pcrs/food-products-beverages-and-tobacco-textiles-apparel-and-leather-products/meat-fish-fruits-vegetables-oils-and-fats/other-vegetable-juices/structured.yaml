@@ -1,10 +1,1009 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21329"
-  title: "Other vegetable juices"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-vegetable-juices"
+  classification_refs: "CPC 3.0: 21329 Other vegetable juices"
+  covered_products: "Direct-expressed, pulp-containing, clarified, blended, reconstituted, refrigerated, frozen, aseptic, or shelf-stable juice from edible vegetables other than tomato"
+  excluded_products: "Tomato juice; fruit juice; non-juice vegetable beverages and nectars; smoothies, soups, and sauces; fermented alcoholic beverages; isolated vegetable by-products"
+  representative_product: "Packaged, stabilized other vegetable juice at the manufacturing plant gate"
+  production_route: "Receiving and preparation; extraction and separation; optional formulation, concentration, or reconstitution; stabilization; filling, packaging operations, and controlled storage"
+  market_state: "Finished liquid juice, declared as refrigerated, frozen, aseptic shelf-stable, or otherwise shelf-stable, with packaging state disclosed"
+functional_unit:
+  what: "Other vegetable juice that meets the declared formulation, safety treatment, quality specification, and market state"
+  how_much: "1 kg net finished juice, excluding the mass of sales and transport packaging"
+  how_well: "Conforming saleable juice with declared vegetable species or blend, soluble-solids or composition specification, pulp or clarification state, concentration or reconstitution route, pathogen-control status, and storage class"
+  how_long_or_cycle: "At the plant gate for one production batch; declared shelf life and storage temperature are product qualifiers, not an extension of the reference amount"
+  reference_flow_link: "One kilogram of the declared finished other vegetable juice represented by the Tiangong product flow below"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground manufacture"
+      rule: "Include all directly controlled operations from receipt of vegetables or juice intermediates through conforming finished juice at the plant gate, including cleaning, utilities, losses, wastewater, and controlled storage."
+      source_ids:
+        - eu-fdm-bat-2019
+        - codex-cxc-1-1969
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Link vegetables, concentrates, ingredients, packaging, electricity, fuels, steam, water supply, cleaning chemicals, and off-site waste treatment to appropriate upstream datasets without recreating those suppliers inside the foreground boundary."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_conditional_routes
+      applies_to: "Concentration, reconstitution, pathogen control, cold storage, and on-site wastewater treatment"
+      rule: "Include each conditional operation when performed by the reporting site and disclose excluded operations that are transferred to another facility."
+      source_ids:
+        - ecfr-21-cfr-120
+        - fda-juice-haccp-guidance
+        - eu-fdm-bat-2019
+    - rule_id: boundary_food_safety_controls
+      applies_to: "Juice safety controls"
+      rule: "Record sanitation, hazard-control, monitoring, and validated stabilization operations that materially consume inputs, energy, or generate losses. Apply jurisdiction-specific legal requirements and identify the governing regime."
+      source_ids:
+        - ecfr-21-cfr-120
+        - codex-cxc-1-1969
+    - rule_id: boundary_exclusions
+      applies_to: "Distribution and downstream life cycle"
+      rule: "Exclude distribution, retail refrigeration, consumer use, and packaging end-of-life from the default foreground dataset; include them only in a separately declared downstream lifecycle model."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Vegetables, direct juice, puree used as juice, or vegetable juice concentrate received at the manufacturing site with supplier identity, mass, composition or soluble-solids basis, and acceptance status recorded"
+  starting_condition_role: "Entry point for foreground manufacturing; cultivation and manufacture of purchased juice intermediates remain upstream"
+  product_classification_scope: "Other vegetable juices excluding tomato juice and fruit juices; mixed products require explicit classification and predominant product identity"
+  recursive_input_rule: "Purchased other vegetable juice or concentrate remains a visible same-category product input with quantity and supplier dataset reference. Do not recursively expand it as if manufactured by the reporting site."
+  upstream_dataset_requirement: "Use geographically and technologically representative upstream datasets for vegetables, purchased juice or concentrate, water, packaging, energy carriers, processing aids, cleaning chemicals, and off-site treatment"
+  disclosure: "Declare vegetable species and blend, origin, received form, concentration or reconstitution route, soluble-solids or composition specification, yield basis, stabilization method, storage class, packaging scope, allocation method, site coverage, reference period, and material exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg net finished juice"
+  product_flow_ref:
+    name: "Other vegetable juices"
+    uuid: "641392fd-b293-4355-affa-b1b8c936698c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "vegetable species and blend shares"
+    - "direct-expressed or from-concentrate route"
+    - "concentration factor or reconstitution ratio"
+    - "soluble solids or declared composition basis"
+    - "pulp or clarification state"
+    - heat
+    - UV
+    - high-pressure
+    - "or other pathogen-control route"
+    - refrigerated
+    - frozen
+    - aseptic
+    - "or shelf-stable market state"
+    - "packaging format and whether packaging is included in system scope"
+    - "production geography and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all reported foreground amounts to 1 kg net finished juice. Exclude packaging mass from the reference amount and report packaging as separate product inputs when packaging is in scope."
+  - id: volume_to_mass
+    applies_to: "Juice records reported by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass using a batch- or product-specific density measured at a stated temperature; retain measured volume, density, temperature, and calculation. Do not assume water density."
+  - id: concentrate_reconstitution
+    applies_to: "Concentrated or reconstituted routes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record concentrate mass, added water, recovered aroma or pulp, soluble-solids basis, and concentration or reconstitution ratio separately; do not treat added water as vegetable input."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, fuels, steam, heat, and refrigeration"
+    required_property_ref:
+      name: "Carrier-specific energy property"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg of fuel"
+    rule: "Preserve each purchased energy carrier as a separate input. Convert only for the reported site-total energy intensity and retain original carrier quantities and conversion factors."
+  - id: wastewater_volume
+    applies_to: "Process wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Report wastewater at the point it leaves the foreground process or enters on-site treatment. Keep separately discharged non-contact cooling water and stormwater distinct."
+process_map:
+  - id: receiving_preparation
+    name: "Receiving, sorting, washing, and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground raw-material acceptance and preparation"
+    quantitative_reference: "Mass of accepted vegetables or received juice intermediate"
+  - id: extraction_formulation_stabilization
+    name: "Extraction, separation, formulation, and stabilization"
+    inclusion: "required"
+    inclusion_condition: "Always; individual unit operations depend on the declared route"
+    role: "Foreground conversion to stabilized juice"
+    quantitative_reference: "Mass of stabilized juice before final filling"
+  - id: filling_storage
+    name: "Filling, packaging operations, and controlled storage"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging production is upstream if packaging is in scope"
+    role: "Foreground completion of the marketable product"
+    quantitative_reference: "1 kg net finished juice"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when wastewater is treated within the reporting site's operational control"
+    role: "Foreground environmental control"
+    quantitative_reference: "Volume of wastewater entering treatment"
+process_inventory:
+  - id: receiving_preparation
+    label: "Receiving, sorting, washing, and preparation"
+    inputs:
+      product:
+        - row_id: received_vegetable_material
+          role: "Vegetables or vegetable juice intermediates received"
+          name: "Vegetable raw material or vegetable juice intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each vegetable species, direct juice, puree used as juice, or concentrate separately so source, received form, composition, and upstream dataset remain traceable."
+          amount:
+            expression: "Weighed accepted input plus separately recorded rejected input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished other vegetable juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "20"
+                unit: "kg/kg net finished juice"
+                basis: "received vegetable material per kg net finished juice across high-yield and low-yield routes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Washing and preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record metered water entering washing, fluming, trimming, and preparation. Separate recirculated internal water from fresh supplied water."
+          amount:
+            expression: "Fresh make-up water measured at the preparation process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 hl net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "m3/hl net finished juice"
+                basis: "fresh preparation water per hectolitre of finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_vegetable_material
+          role: "Prepared vegetable material"
+          name: "Prepared vegetable material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate accepted prepared material transferred to extraction from measured receipts and preparation rejects."
+          amount:
+            expression: "accepted received material minus measured preparation rejects and stock change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Sorting and preparation rejects"
+          name: "Vegetable preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record soil-bearing rejects, spoiled vegetables, trimming residues, and foreign material by destination and by-product or waste status."
+          amount:
+            expression: "weighed quantity by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_and_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "19"
+                unit: "kg/kg net finished juice"
+                basis: "preparation rejects per kg net finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record water leaving preparation to sewer, off-site treatment, reuse outside the process, or on-site wastewater treatment."
+          amount:
+            expression: "metered discharge or water-balance calculation by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 hl net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: extraction_formulation_stabilization
+    label: "Extraction, separation, formulation, and stabilization"
+    inputs:
+      product:
+        - row_id: prepared_material_input
+          role: "Prepared vegetables"
+          name: "Prepared vegetable material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the prepared vegetable material from the preceding process without adding upstream burdens again."
+          amount:
+            expression: "matched transfer from prepared_vegetable_material"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: purchased_juice_intermediate
+          role: "Purchased vegetable juice, puree, or concentrate"
+          name: "Vegetable juice intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when the route uses purchased juice, puree as juice, or concentrate. Record vegetable identity, supplier, soluble-solids basis, and whether the intermediate has already received a validated safety treatment."
+          amount:
+            expression: "weighed purchased intermediate entering the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids: []
+            ranges: []
+        - row_id: formulation_water
+          role: "Formulation or reconstitution water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include water incorporated into the product or used for reconstitution separately from cleaning and washing water."
+          amount:
+            expression: "metered or weighed water incorporated into the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net finished juice"
+                basis: "water incorporated into finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_aids
+          role: "Processing aids and permitted ingredients"
+          name: "Processing aid or permitted ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record enzymes, clarifying or filtration aids, acids, salts, preservatives, recovered aroma or pulp, and other ingredients separately when used; disclose whether retained in product, recovered, or discharged."
+          amount:
+            expression: "issue records or batch formulation quantities by substance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg net finished juice"
+                basis: "total processing aids and added ingredients per kg net finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_electricity
+          role: "Purchased electricity"
+          name: "Electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / MWh"
+          description: "Record metered electricity for extraction, pumps, separation, homogenization, concentration, stabilization, cleaning, and directly controlled auxiliary equipment. Allocate shared meters with a documented operating-hour or submeter rule."
+          amount:
+            expression: "metered electricity allocated to the foreground production batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 hl net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.035"
+                unit: "MWh/hl net finished juice"
+                basis: "purchased electricity before combination with thermal energy"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_thermal_energy
+          role: "Fuels, steam, or purchased heat"
+          name: "Fuel, steam, or purchased heat by carrier"
+          flow_type: "product"
+          property_unit: "Energy / MWh"
+          description: "Record each thermal energy carrier separately and retain delivered energy, fuel mass, lower or higher heating value convention, boiler efficiency treatment, and supplier dataset."
+          amount:
+            expression: "metered or calculated delivered thermal energy allocated to the batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 hl net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.035"
+                unit: "MWh/hl net finished juice"
+                basis: "delivered thermal energy before combination with electricity"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stabilized_juice
+          role: "Stabilized juice transferred to filling"
+          name: "Stabilized other vegetable juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the mass transferred to filling from calibrated tank or filler records and retain the declared stabilization route, critical parameters, deviations, and rework."
+          amount:
+            expression: "calibrated transfer mass after formulation and stabilization, adjusted for rework and stock change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - ecfr-21-cfr-120
+                - fda-juice-haccp-guidance
+            ranges: []
+      waste:
+        - row_id: extraction_residues
+          role: "Extraction pomace and separation residues"
+          name: "Vegetable juice extraction residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record pomace, pulp removal, filtration cake, spent filter media, and out-of-spec juice separately by destination and economic status."
+          amount:
+            expression: "weighed residue or mass-balance calculation by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_and_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "19"
+                unit: "kg/kg net finished juice"
+                basis: "extraction and separation residues per kg net finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_wastewater
+          role: "Processing and cleaning wastewater"
+          name: "Process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record extraction, formulation, stabilization, cleaning-in-place, and non-product water that leaves the process. Keep internal reuse and separately discharged non-contact cooling water distinct."
+          amount:
+            expression: "metered discharge or complete water-balance calculation by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 hl net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.08"
+                upper: "0.20"
+                unit: "m3/hl products"
+                basis: "yearly average specific wastewater discharge for soft drinks and nectar or juice made from processed fruit and vegetables; use as contextual comparison only when route and facility are comparable"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019
+      elementary:
+        - row_id: direct_air_emissions
+          role: "Direct process emissions to air"
+          name: "Substance-specific elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct combustion emissions, refrigerant losses, and other measured site emissions only when they cross the environment boundary and are not already represented inside a purchased energy dataset."
+          amount:
+            expression: "measured release or source-backed calculation from foreground fuel and equipment records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: filling_storage
+    label: "Filling, packaging operations, and controlled storage"
+    inputs:
+      product:
+        - row_id: stabilized_juice_input
+          role: "Stabilized juice input"
+          name: "Stabilized other vegetable juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer stabilized juice from the preceding process and record filling losses and rework explicitly."
+          amount:
+            expression: "matched transfer from stabilized_juice"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_inputs
+          role: "Primary, secondary, and transport packaging"
+          name: "Packaging material by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include packaging materials when packaging is in system scope, but never include their mass in the 1 kg reference product. Record each material and recycled-content specification separately."
+          amount:
+            expression: "issued packaging minus returned unused packaging, divided by conforming net juice mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net finished juice"
+                basis: "all packaging materials included in scope per kg net finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming other vegetable juice"
+          name: "Other vegetable juices"
+          flow_type: "product"
+          flow_ref:
+            uuid: "641392fd-b293-4355-affa-b1b8c936698c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference. Product mass is net juice only; packaging remains a separate input."
+          amount:
+            expression: "exactly 1 kg conforming net finished juice"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: filling_and_packaging_waste
+          role: "Filling loss, off-spec juice, and packaging scrap"
+          name: "Filling loss or packaging waste by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record juice loss, rejected filled units, start-up and shutdown loss, and packaging scrap separately by recovery, rework, by-product, recycling, or disposal destination."
+          amount:
+            expression: "weighed or counted loss converted with measured unit mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_and_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net finished juice"
+                basis: "filling loss, off-spec product, and packaging scrap per kg net finished juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_inputs
+          role: "Wastewater-treatment chemicals and energy"
+          name: "Wastewater-treatment input by substance or energy carrier"
+          flow_type: "product"
+          property_unit: "Carrier-specific property and unit"
+          description: "Include chemicals, electricity, fuels, and other purchased inputs when on-site treatment is controlled by the reporting facility. Record them by carrier or substance in the dataset implementation."
+          amount:
+            expression: "metered or issue-record quantity allocated to treated foreground wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 foreground wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: wastewater_to_treatment
+          role: "Foreground wastewater received for treatment"
+          name: "Process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Transfer the volume and characteristics of wastewater from preparation and processing without double counting."
+          amount:
+            expression: "matched transfer from preparation and processing wastewater rows"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_treatment_residues
+          role: "Wastewater-treatment sludge and screenings"
+          name: "Wastewater-treatment residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge, screenings, and recovered material by mass, dry matter where available, and destination."
+          amount:
+            expression: "weighed wet mass with dry-matter measurement where relevant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 foreground wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: treated_effluent
+          role: "Treated effluent to receiving environment"
+          name: "Substance-specific elementary flow to water"
+          flow_type: "elementary"
+          property_unit: "Volume / m3 and pollutant mass / kg"
+          description: "Record treated effluent volume and substance-specific loads at the actual discharge point; do not represent sewer-bound wastewater as an elementary flow."
+          amount:
+            expression: "flow-proportional measured discharge and monitored concentration or load"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Separately measurable products, batches, and unit operations"
+    rule: "First avoid allocation by subdividing processes, using batch-specific records, or expanding metering so independently caused burdens remain with the responsible product."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_residues
+    applies_to: "Pomace, recovered pulp, concentrates, and other valuable outputs"
+    rule: "Classify each output as product, by-product, or waste according to the declared market and regulatory context. If burdens remain shared after subdivision, use a documented physical relationship that reflects causation; use economic allocation only when a defensible physical relationship is unavailable."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_treatment
+    applies_to: "Waste treatment, recycling, and energy recovery"
+    rule: "Keep treatment burdens inside the foreground boundary when treatment is site-controlled. Apply recycling, recovery, or avoided-product credits only in the downstream lifecycle model under a disclosed method; do not subtract an undocumented credit from the foreground inventory."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rework
+    applies_to: "Internal juice rework and internal water recirculation"
+    rule: "Treat internal rework and recirculation as internal transfers. Count only net external inputs, final outputs, losses, and emissions, while retaining gross records needed to demonstrate the mass and water balances."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: allocation_shared_utilities
+    applies_to: "Shared meters, cleaning, storage, and wastewater systems"
+    rule: "Allocate shared utilities using submetered use where available; otherwise use documented operating time, throughput, or another causal engineering driver and disclose the driver and sensitivity."
+    source_ids:
+      - iso-14044-2006
+      - eu-fdm-bat-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "receiving_preparation"
+      flow_role: "Vegetables and juice intermediates"
+      record_type: "Weighbridge, receiving, supplier, and acceptance records"
+      raw_fields: "species or blend, supplier, origin, received form, batch id, gross mass, tare, accepted mass, rejected mass, soluble solids or composition, treatment status"
+      collection_method: "Calibrated scale plus receiving inspection and supplier documentation"
+      unit: "kg"
+      frequency: "Each receipt"
+      temporal_coverage: "At least 12 representative months or the full seasonal campaign"
+      site_scope: "All sites and receipts in dataset scope"
+      aggregation_rule: "Sum accepted and rejected mass by material and batch; reconcile opening and closing stock"
+      quality_evidence: "Calibration records, supplier specification, acceptance record, and stock reconciliation"
+    - protocol_id: cp_water_and_wastewater
+      process_id: "receiving_preparation"
+      flow_role: "Fresh water, reused water, and wastewater"
+      record_type: "Meter, batch log, and discharge record"
+      raw_fields: "meter id, opening and closing reading, source, use area, reuse transfer, discharge destination, flow, pH, temperature"
+      collection_method: "Calibrated meter; if calculated, complete water balance with documented uncertainty"
+      unit: "m3"
+      frequency: "Continuous or each batch with monthly reconciliation"
+      temporal_coverage: "Same period as production"
+      site_scope: "All water uses and discharges in foreground scope"
+      aggregation_rule: "Fresh inflow minus net product incorporation, evaporation, stock change, and separately metered transfers; report streams separately"
+      quality_evidence: "Meter calibration, reconciliation residual, and discharge monitoring record"
+    - protocol_id: cp_formulation_records
+      process_id: "extraction_formulation_stabilization"
+      flow_role: "Formulation water, ingredients, and processing aids"
+      record_type: "Approved formula, issue record, and batch sheet"
+      raw_fields: "batch id, material id, lot, issued mass, returned mass, water mass, concentration factor, soluble solids, recovered aroma or pulp"
+      collection_method: "Weighed issue and return records linked to approved formulation"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Full dataset reference period"
+      site_scope: "All formulations in product scope"
+      aggregation_rule: "Net issued quantity divided by conforming net juice mass"
+      quality_evidence: "Scale calibration, formula approval, lot traceability, and deviation record"
+    - protocol_id: cp_energy_records
+      process_id: "extraction_formulation_stabilization"
+      flow_role: "Electricity and thermal energy"
+      record_type: "Utility meter, fuel invoice, steam or heat meter, and equipment log"
+      raw_fields: "carrier, meter id, readings, fuel mass or volume, energy content convention, steam or heat quantity, operating hours, batch allocation driver"
+      collection_method: "Submeter preferred; otherwise reconcile site meter or invoice to batch allocation"
+      unit: "kWh, MJ, MWh, or kg fuel"
+      frequency: "Continuous, shift, or monthly with batch allocation"
+      temporal_coverage: "At least 12 representative months or full seasonal campaign"
+      site_scope: "All directly controlled manufacturing, cleaning, and storage uses in scope"
+      aggregation_rule: "Preserve carriers separately; sum converted delivered energy only for the site-total comparator"
+      quality_evidence: "Meter calibration, invoice reconciliation, conversion factors, and allocation sensitivity"
+    - protocol_id: cp_batch_mass_balance
+      process_id: "extraction_formulation_stabilization"
+      flow_role: "Product transfers, yield, rework, and losses"
+      record_type: "Tank, filler, scale, batch, and stock records"
+      raw_fields: "batch id, input masses, tank levels, density and temperature if volume-based, output mass, rework, loss, opening stock, closing stock"
+      collection_method: "Calibrated mass measurement or volume converted with measured batch density"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Full dataset reference period"
+      site_scope: "All product lines and sites in scope"
+      aggregation_rule: "Inputs plus opening stock equal outputs plus closing stock, residues, wastewater product loss, and unexplained difference"
+      quality_evidence: "Instrument calibration, signed batch record, density test, and balance closure report"
+    - protocol_id: cp_residues_and_wastes
+      process_id: "filling_storage"
+      flow_role: "Rejects, pomace, off-spec juice, sludge, and packaging scrap"
+      record_type: "Scale ticket, bin count, waste manifest, and destination record"
+      raw_fields: "material, wet mass, dry matter if relevant, container count, destination, product or waste status, revenue if economically allocated"
+      collection_method: "Weigh directly; convert counts only with measured unit mass"
+      unit: "kg"
+      frequency: "Each batch or shipment"
+      temporal_coverage: "Full dataset reference period"
+      site_scope: "All residue and waste destinations in scope"
+      aggregation_rule: "Sum by material, status, and destination; subtract documented internal rework only"
+      quality_evidence: "Scale calibration, manifests, destination acceptance, and by-product classification rationale"
+    - protocol_id: cp_packaging_records
+      process_id: "filling_storage"
+      flow_role: "Packaging inputs"
+      record_type: "Bill of materials, issue and return records, and finished-unit count"
+      raw_fields: "material, format, unit mass, issued count, returned count, rejected count, filled units, recycled content"
+      collection_method: "Count multiplied by periodically verified unit mass, or direct weighing"
+      unit: "kg"
+      frequency: "Each packaging lot and batch"
+      temporal_coverage: "Full dataset reference period"
+      site_scope: "All packaging formats included in scope"
+      aggregation_rule: "Net packaging issued divided by conforming net juice mass"
+      quality_evidence: "Supplier specification, unit-mass checks, count reconciliation, and scrap record"
+    - protocol_id: cp_direct_emissions
+      process_id: "extraction_formulation_stabilization"
+      flow_role: "Direct air emissions"
+      record_type: "Fuel, equipment, refrigerant, stack, and maintenance records"
+      raw_fields: "source, substance, measured concentration or loss, flow, operating time, fuel quantity, factor, refrigerant charge and top-up"
+      collection_method: "Direct monitoring preferred; otherwise calculate from foreground activity and documented factor"
+      unit: "kg"
+      frequency: "At monitoring event and each relevant maintenance or fuel period"
+      temporal_coverage: "Same period as production"
+      site_scope: "All direct emission sources in foreground scope"
+      aggregation_rule: "Sum substance-specific releases and normalize to net finished juice"
+      quality_evidence: "Calibration, laboratory result, factor citation, maintenance log, and double-counting check"
+    - protocol_id: cp_wastewater_treatment
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "Treatment inputs, effluent, and sludge"
+      record_type: "Inlet and outlet meters, laboratory data, chemical issue, energy meter, sludge tickets"
+      raw_fields: "flow, pH, temperature, COD or TOC, BOD, total nitrogen, total phosphorus, total suspended solids, chemicals, energy, sludge mass, destination"
+      collection_method: "Flow-proportional monitoring at defined treatment and discharge points"
+      unit: "m3, kg, mg/L, and energy units"
+      frequency: "Continuous flow where available; analytes at applicable permit or BAT frequency"
+      temporal_coverage: "Full dataset reference period"
+      site_scope: "Entire on-site treatment system receiving foreground wastewater"
+      aggregation_rule: "Calculate pollutant load as concentration times flow; reconcile inlet, outlet, sludge, and bypasses"
+      quality_evidence: "Meter calibration, accredited laboratory results, permit reports, and treatment log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground rows"
+      rule: "normalized amount equals period or batch amount divided by conforming net finished juice mass in kg"
+      inputs:
+        - "collected amount"
+        - "conforming net juice mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_volume_to_mass
+      applies_to: "Volume-based product records"
+      rule: "product mass equals measured volume multiplied by product-specific density at the recorded temperature"
+      inputs:
+        - volume
+        - density
+        - temperature
+      output: "kg juice"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Each batch and dataset period"
+      rule: "total material inputs plus opening stock equal products, residues, wastewater-borne product, direct losses, closing stock, and disclosed unexplained difference"
+      inputs:
+        - "all batch material records"
+        - "stock change"
+        - residues
+        - "wastewater loss"
+      output: "mass-balance closure and residual"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_total_energy_intensity
+      applies_to: "Site electricity and thermal energy"
+      rule: "convert carriers to MWh using documented factors, sum delivered electricity and thermal energy, and divide by finished product volume in hl. Compare 0.01 to 0.035 MWh/hl only when the facility and route are comparable to the cited soft-drink and processed-fruit-or-vegetable nectar or juice scope; otherwise disclose the non-comparability."
+      inputs:
+        - "carrier quantities"
+        - "conversion factors"
+        - "finished juice volume"
+      output: "MWh/hl finished juice"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_specific_wastewater
+      applies_to: "Wastewater leaving foreground manufacture"
+      rule: "wastewater volume divided by finished product volume in hl, excluding separately discharged cooling water and stormwater"
+      inputs:
+        - "stream-specific wastewater volume"
+        - "finished juice volume"
+      output: "m3/hl finished juice"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_pollutant_load
+      applies_to: "On-site treated effluent"
+      rule: "substance load equals flow-proportional concentration multiplied by discharge volume with unit conversion"
+      inputs:
+        - "analyte concentration"
+        - "effluent volume"
+      output: "kg substance per reference product"
+      source_ids:
+        - eu-fdm-bat-2019
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and reference flow"
+      requirement: "Match the product to other vegetable juice and declare every required qualifier, product-flow UUID, net-mass basis, and packaging scope."
+      evidence: "Product specification, label or sales description, batch code, and dataset metadata"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Cover at least 12 representative months or the complete seasonal campaign and disclose shutdowns, abnormal batches, and seasonal weighting."
+      evidence: "Production calendar, batch list, utility periods, and representativeness statement"
+    - id: dq_measurement
+      applies_to: "Mass, volume, energy, water, and emissions"
+      requirement: "Use calibrated instruments or reconciled records; retain density and temperature for volume-to-mass conversions and carrier-specific conversion factors for energy."
+      evidence: "Calibration certificates, meter reconciliation, laboratory results, and calculation workbook"
+    - id: dq_completeness
+      applies_to: "Process and flow coverage"
+      requirement: "Cover every required process and every material input, product, residue, wastewater stream, direct emission, and shared utility above the declared cut-off; quantify and justify exclusions."
+      evidence: "Process flow diagram, inventory completeness checklist, mass balance, water balance, and energy reconciliation"
+    - id: dq_food_safety
+      applies_to: "Stabilization and sanitation controls"
+      requirement: "Identify the governing food-safety regime, retain hazard analysis and validated critical parameters, and record deviations and corrective actions. Where 21 CFR Part 120 applies, retain evidence of the applicable pathogen-reduction control and monitoring records."
+      evidence: "HACCP or equivalent plan, validation report, time-temperature or other critical-parameter record, SSOP record, and corrective-action log"
+    - id: dq_allocation
+      applies_to: "Multi-product and shared systems"
+      requirement: "Document subdivision attempts, classification of residues, allocation driver, quantities, and sensitivity; do not hide credits or internal transfers."
+      evidence: "Allocation worksheet, market or destination evidence, and sensitivity result"
+    - id: dq_source_currency
+      applies_to: "External benchmarks and legal controls"
+      requirement: "Check applicability and current status of cited law, guidance, and BAT documents at dataset update; never treat a contextual BAT range as a universal allowed range."
+      evidence: "Source review record and applicability statement"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference product"
+    rule: "The quantitative reference must be exactly 1 kg net conforming other vegetable juice using product flow 641392fd-b293-4355-affa-b1b8c936698c, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg; packaging mass must not be included."
+    source_ids: []
+  - rule_id: validate_product_scope
+    applies_to: "Product identity"
+    rule: "Reject the dataset when vegetable species or blend, juice route, composition or soluble-solids basis, stabilization method, storage class, or packaging scope is missing, or when the product is tomato juice, fruit juice, or a non-juice beverage."
+    source_ids:
+      - ecfr-21-cfr-120
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground boundary"
+    rule: "Every required process must have activity data, and each conditional process must be included or explicitly marked not applicable with evidence that it occurred outside the reporting site's control."
+    source_ids:
+      - eu-fdm-bat-2019
+      - codex-cxc-1-1969
+  - rule_id: validate_mass_balance
+    applies_to: "Batch and period inventory"
+    rule: "Require a documented mass-balance closure. Investigate and disclose the residual; do not force closure by changing the fixed reference output or hiding losses."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_water_energy
+    applies_to: "Water, wastewater, and energy"
+    rule: "Require stream-specific water and wastewater records and carrier-specific energy records. Calculate the cited contextual energy and wastewater indicators when comparable, and explain results outside those ranges without automatically rejecting valid non-comparable routes."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_safety_controls
+    applies_to: "Stabilization and sanitation"
+    rule: "Require the applicable hazard-control regime, validation evidence, critical limits, actual monitored values, deviations, and corrective actions. Where 21 CFR Part 120 applies, the pathogen-control process must meet the applicable validated reduction requirement; do not transplant a time-temperature schedule from another juice without product-specific validation."
+    source_ids:
+      - ecfr-21-cfr-120
+      - fda-juice-haccp-guidance
+      - codex-cxc-1-1969
+  - rule_id: validate_allocation
+    applies_to: "Co-products, residues, and shared utilities"
+    rule: "Require subdivision or a documented causal allocation method, complete residue destinations, and separate disclosure of any downstream recycling or recovery credit."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_uuid_resolution
+    applies_to: "Tiangong references"
+    rule: "The reference product, mass property, and unit-group UUIDs must match the selected Tiangong records. All additional inventory UUIDs must be selected and verified before publication; unresolved semantic flow labels remain review blockers."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Site-specific or representative foreground manufacturing dataset for other vegetable juice at the plant gate"
+  downstream_use: "secondary_dataset; background_dataset after representativeness, review, and publication requirements are met"
+  allowed_use: "Product carbon footprint and LCA studies that match the declared vegetable composition, processing route, geography, technology, packaging scope, storage class, allocation method, and reference period"
+  excluded_use: "Agricultural cultivation without linked upstream datasets; tomato or fruit juice; non-juice beverages; consumer-health comparison; nutrition claims; legal food-safety certification; routes with materially different concentration, preservation, packaging, or storage conditions without adaptation"
+  required_metadata: "PCR id and status; reference product UUID; vegetable species and blend shares; supplier or origin coverage; direct-expressed or from-concentrate route; soluble-solids or composition basis; pulp or clarification state; stabilization method and governing safety regime; market and storage state; packaging format and scope; geography; technology; site coverage; reference period; allocation method; data owner and review state"
+  required_quality_disclosure: "Primary-data share; temporal, geographic, and technological representativeness; instrument and record basis; mass-, water-, and energy-balance residuals; contextual BAT comparisons and applicability; provisional estimates retained; unresolved UUIDs; exclusions; allocation sensitivity; food-safety validation evidence; uncertainty and review limitations"
+  update_trigger: "Change in vegetable blend, supplier form, concentration or reconstitution route, yield, formulation, stabilization technology or critical parameters, packaging format, storage regime, site or utility mix, wastewater treatment, allocation method, legal requirements, or any material flow by more than 10 percent; otherwise review at least every three years"
+data_sources:
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "European Commission Implementing Decision (EU) 2019/2031, BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj, retrieved 2026-08-11"
+    used_for: "Process and emissions inventory requirements; water, energy, raw materials, residues, and wastewater monitoring; contextual 0.01-0.035 MWh/hl energy and 0.08-0.20 m3/hl wastewater indicators for comparable processed-fruit-or-vegetable nectar or juice routes"
+  - id: "ecfr-21-cfr-120"
+    type: "standard"
+    reference: "United States eCFR, Title 21 Part 120, Hazard Analysis and Critical Control Point Systems, https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-120, retrieved 2026-08-11"
+    used_for: "Juice definition covering fruits and vegetables; sanitation, hazard analysis, monitoring, validation, verification, and records where the regulation applies"
+  - id: "fda-juice-haccp-guidance"
+    type: "official_guidance"
+    reference: "U.S. FDA, Juice HACCP Hazards and Controls Guidance, First Edition, Docket 02D-0333, https://www.fda.gov/regulatory-information/search-fda-guidance-documents/guidance-industry-juice-hazard-analysis-critical-control-point-hazards-and-controls-guidance-first, retrieved 2026-08-11"
+    used_for: "Product-specific process validation, pathogen-control monitoring, and caution against transferring treatment parameters between juices"
+  - id: "codex-cxc-1-1969"
+    type: "standard"
+    reference: "FAO and WHO, General Principles of Food Hygiene, CXC 1-1969, Rome 2023, https://www.fao.org/fao-who-codexalimentarius/publications/en/, retrieved 2026-08-11"
+    used_for: "General hygiene, HACCP, process control, cross-contamination prevention, monitoring, verification, and documentation"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines, https://www.iso.org/standard/38498.html, retrieved 2026-08-11"
+    used_for: "LCA and LCI goal and scope, inventory, reporting, review, allocation hierarchy, and interpretation framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ea11d68332a2d352aab87d9d44219331a330b783cfa841b965df5284ca471fe9"
+  generated_content_sha256: "sha256:1093c4b7632df0143f94fce3c09e4ce1fda3b2b8a9f71cd55d87025e2d06a34a"

@@ -16,14 +16,26 @@ import {
   PcrClassificationCodeUnknownError,
   PcrClassificationCoverageSemanticError,
   readClassificationCoverage,
+  readClassificationCoverageSnapshot,
 } from "./classification-coverage.mjs";
 import { assertCoreContract, validateCoreContract } from "./contracts.mjs";
 import {
   inspectProjectionIntegrity,
   projectionNotRequiredState,
 } from "./projection-integrity.mjs";
-import { materialProjectionCompletenessIssues } from "./projection-completeness.mjs";
+import {
+  hasDeclaredUnresolvedReferenceProductFlow,
+  materialProjectionCompletenessIssues,
+} from "./projection-completeness.mjs";
 import { findPcrIdAlias } from "./pcr-id-aliases.mjs";
+import {
+  assertPcrReadContextFresh,
+  createPcrReadContext,
+  getPcrReadContextCatalog,
+  observePcrReadContextArtifactRead,
+  pcrReadContextAliasInputFingerprint,
+  withPcrReadContextSession,
+} from "./read-context.mjs";
 import { parseYaml } from "./yaml-lite.mjs";
 import {
   CLASSIFICATION_MAPPING_RELATION_VALUES,
@@ -33,6 +45,7 @@ import {
 } from "./generated/controlled-vocabulary.mjs";
 
 export const FEEDBACK_TYPES = FEEDBACK_TYPE_VALUES;
+export { createPcrReadContext, pcrReadContextAliasInputFingerprint, withPcrReadContextSession };
 export {
   CLASSIFICATION_COVERAGE_STATUSES,
   PcrClassificationCodeUnknownError,
@@ -45,6 +58,7 @@ export {
   hasClassificationCoverage,
   listClassificationCoverage,
   readClassificationCoverage,
+  readClassificationCoverageSnapshot,
 } from "./classification-coverage.mjs";
 export const PCR_CATALOG_SCOPES = Object.freeze(["all", "material", "legacy"]);
 export const PCR_RECORD_KINDS = Object.freeze([
@@ -523,9 +537,10 @@ function invalidCoverageResolution({ system, version, code, issue }) {
  * lookup intentionally happens before catalog lookup, including while the
  * old scaffold directory still exists during a staged migration.
  */
-export function resolvePcrIdentity({ root, pcrId }) {
+export function resolvePcrIdentity({ root, pcrId, context = null }) {
+  const readRoot = root ?? context?.root;
   const normalizedPcrId = String(pcrId);
-  const alias = findPcrIdAlias({ root, pcrId: normalizedPcrId });
+  const alias = findPcrIdAlias({ root: readRoot, pcrId: normalizedPcrId, context });
   if (alias) {
     return {
       resolution_status: "legacy_id_redirect",
@@ -538,7 +553,7 @@ export function resolvePcrIdentity({ root, pcrId }) {
     resolution_status: "canonical",
     requested_pcr_id: normalizedPcrId,
     redirect: null,
-    pcr: getCurrentPcrSnapshotUnchecked({ root, pcrId: normalizedPcrId }).pcr,
+    pcr: getCurrentPcrSnapshotUnchecked({ root: readRoot, pcrId: normalizedPcrId, context }).pcr,
   };
 }
 
@@ -566,38 +581,57 @@ function nextCommandForLegacyPcrAlias(target) {
   );
 }
 
-function throwIfLegacyPcrId({ root, pcrId }) {
-  const alias = findPcrIdAlias({ root, pcrId: String(pcrId) });
+function throwIfLegacyPcrId({ root, pcrId, context = null }) {
+  const alias = findPcrIdAlias({ root, pcrId: String(pcrId), context });
   if (alias) {
     throw new PcrLegacyIdRedirectError(alias);
   }
 }
 
-export function getPcrById({ root, pcrId, refresh = false }) {
-  return getCurrentPcrSnapshot({ root, pcrId, refresh }).pcr;
+export function getPcrById({ root, pcrId, refresh = false, context = null }) {
+  return getCurrentPcrSnapshot({ root: root ?? context?.root, pcrId, refresh, context }).pcr;
 }
 
-export function getPcrReadiness({ root, pcrId, refresh = false }) {
-  return structuredClone(getPcrById({ root, pcrId, refresh }).readiness);
+export function getPcrReadiness({ root, pcrId, refresh = false, context = null }) {
+  return structuredClone(getPcrById({ root: root ?? context?.root, pcrId, refresh, context }).readiness);
 }
 
-export function readPcrMarkdown({ root, pcrId, language = "en-US" }) {
-  const snapshot = getCurrentPcrSnapshot({ root, pcrId });
+export function readPcrMarkdown({ root, pcrId, language = "en-US", context = null }) {
+  const readRoot = root ?? context?.root;
+  const snapshot = getCurrentPcrSnapshot({ root: readRoot, pcrId, context });
   const markdownName = `pcr.${language}.md`;
-  const markdownPath = path.join(root, snapshot.pcr.path, markdownName);
+  const markdownPath = path.join(readRoot, snapshot.pcr.path, markdownName);
   const artifact = snapshot.artifacts[markdownName];
   if (!artifact?.bytes) {
-    throw new Error(`PCR Markdown not found: ${toPosix(path.relative(root, markdownPath))}`);
+    throw new Error(`PCR Markdown not found: ${toPosix(path.relative(readRoot, markdownPath))}`);
   }
   return artifact.bytes.toString("utf8");
 }
 
-export function buildGuidance({ root, pcrId }) {
-  return buildGuidanceForOperation({ root, pcrId, operation: "guidance" });
+export function buildGuidance({ root, pcrId, context = null }) {
+  return buildGuidanceForOperation({ root: root ?? context?.root, pcrId, operation: "guidance", context });
 }
 
-function buildGuidanceForOperation({ root, pcrId, operation }) {
-  const snapshot = getCurrentPcrSnapshot({ root, pcrId });
+export function getVerifiedPcrProjection({ root, pcrId, context = null }) {
+  root = root ?? context?.root;
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId, context });
+  const { pcr, structured, structuredPath } = snapshot;
+  assertPcrUsable({ pcr, operation: "guidance" });
+  if (!structured) {
+    throw new Error(
+      `PCR ${pcrId} passed readiness without a verified structured projection.`,
+    );
+  }
+  return {
+    pcr: structuredClone(pcr),
+    readiness: structuredClone(pcr.readiness),
+    source_structured: toPosix(path.relative(root, structuredPath)),
+    structured: structuredClone(structured),
+  };
+}
+
+function buildGuidanceForOperation({ root, pcrId, operation, context = null }) {
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId, context });
   const { pcr, structured, structuredPath } = snapshot;
   assertPcrUsable({ pcr, operation });
   if (!structured) {
@@ -938,24 +972,34 @@ function currentPcrEntry(root, entry) {
   return currentPcrSnapshot(root, entry).pcr;
 }
 
-function getCurrentPcrSnapshot({ root, pcrId, refresh = false }) {
-  throwIfLegacyPcrId({ root, pcrId });
-  return getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh });
+function getCurrentPcrSnapshot({ root, pcrId, refresh = false, context = null }) {
+  throwIfLegacyPcrId({ root, pcrId, context });
+  return getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh, context });
 }
 
-function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false }) {
+function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false, context = null }) {
   const normalizedRoot = path.resolve(root);
-  const entry = getPcrCatalog({ root: normalizedRoot, refresh }).find(
-    (candidate) => candidate.id === pcrId,
-  );
+  if (context) {
+    assertPcrReadContextFresh({ context, root: normalizedRoot });
+  }
+  const catalog = context
+    ? getPcrReadContextCatalog({
+      context,
+      root: normalizedRoot,
+      readCatalog: readPcrCatalog,
+    })
+    : getPcrCatalog({ root: normalizedRoot, refresh });
+  const entry = context
+    ? catalog.get(pcrId)
+    : catalog.find((candidate) => candidate.id === pcrId);
   if (!entry) {
     throw new Error(`PCR not found: ${pcrId}`);
   }
-  return currentPcrSnapshot(normalizedRoot, entry);
+  return currentPcrSnapshot(normalizedRoot, entry, context);
 }
 
-function currentPcrSnapshot(root, entry) {
-  const snapshotFiles = readConsistentSnapshotFiles({ root, entry });
+function currentPcrSnapshot(root, entry, context = null) {
+  const snapshotFiles = readConsistentSnapshotFiles({ root, entry, context });
   const pcr = pcrFromManifest({
     root,
     pcrDir: path.dirname(entry.manifestPath),
@@ -963,7 +1007,12 @@ function currentPcrSnapshot(root, entry) {
   });
   let projection;
   try {
-    projection = inspectPcrProjection({ root, pcr, artifacts: snapshotFiles.artifacts });
+    projection = inspectPcrProjection({
+      root,
+      pcr,
+      manifest: snapshotFiles.manifest,
+      artifacts: snapshotFiles.artifacts,
+    });
   } catch (error) {
     projection = failedProjectionInspection({ root, pcr, error });
   }
@@ -976,7 +1025,7 @@ function currentPcrSnapshot(root, entry) {
   return { pcr, artifacts: snapshotFiles.artifacts, ...projection };
 }
 
-function readConsistentSnapshotFiles({ root, entry }) {
+function readConsistentSnapshotFiles({ root, entry, context = null }) {
   let lastFailure = null;
   for (let attempt = 1; attempt <= CURRENT_SNAPSHOT_MAX_ATTEMPTS; attempt += 1) {
     try {
@@ -996,7 +1045,7 @@ function readConsistentSnapshotFiles({ root, entry }) {
       const artifacts = Object.fromEntries(
         Object.values(RELEASE_ARTIFACTS).map((filename) => [
           filename,
-          readOptionalCanonicalFile(path.join(locationA.pcrDir, filename)),
+          readObservedPcrArtifact({ root, context, pcrDir: locationA.pcrDir, filename }),
         ]),
       );
       const releaseFailures = releaseArtifactFailures({ manifest, artifacts });
@@ -1037,6 +1086,18 @@ function readConsistentSnapshotFiles({ root, entry }) {
     attempts: CURRENT_SNAPSHOT_MAX_ATTEMPTS,
     lastFailure,
   });
+}
+
+function readObservedPcrArtifact({ root, context, pcrDir, filename }) {
+  const artifactPath = path.join(pcrDir, filename);
+  if (context) {
+    observePcrReadContextArtifactRead({
+      context,
+      root,
+      relativePath: toPosix(path.relative(root, artifactPath)),
+    });
+  }
+  return readOptionalCanonicalFile(artifactPath);
 }
 
 function releaseArtifactFailures({ manifest, artifacts }) {
@@ -1371,7 +1432,7 @@ function pcrFromManifest({ root, pcrDir, manifest }) {
   return pcr;
 }
 
-function inspectPcrProjection({ root, pcr, artifacts }) {
+function inspectPcrProjection({ root, pcr, manifest, artifacts }) {
   const pcrDir = path.join(root, pcr.path);
   const structuredPath = path.join(pcrDir, "structured.yaml");
   const structuredArtifact = artifacts["structured.yaml"];
@@ -1491,7 +1552,11 @@ function inspectPcrProjection({ root, pcr, artifacts }) {
     structuredPath,
     structuredAvailable: true,
     completenessIssues: schemaResult.valid
-      ? materialProjectionCompletenessIssues(structured, { expectedPcrId: pcr.id })
+      ? materialProjectionCompletenessIssues(structured, {
+          expectedPcrId: pcr.id,
+          allowUnresolvedProductFlowUuid:
+            hasDeclaredUnresolvedReferenceProductFlow(structured, manifest),
+        })
       : [],
   };
 }

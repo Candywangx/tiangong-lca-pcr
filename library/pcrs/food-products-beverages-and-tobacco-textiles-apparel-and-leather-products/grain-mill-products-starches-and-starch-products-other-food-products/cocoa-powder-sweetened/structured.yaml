@@ -1,10 +1,819 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23640"
-  title: "Cocoa powder, sweetened"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.cocoa-powder-sweetened"
+  classification_refs: "CPC 3.0: 23640, Cocoa powder, sweetened"
+  covered_products: "Dry mixtures characterized by cocoa powder and sugars and sold as sweetened cocoa powder, sweetened cocoa, drinking chocolate, or an equivalent market name; fat-reduced variants when declared"
+  excluded_products: "Unsweetened cocoa powder; cocoa liquor or butter; solid chocolate and other cocoa food preparations; ready-to-drink beverages; dairy-based beverage powders not principally a cocoa-powder-and-sugar mixture"
+  representative_product: "A dry, free-flowing sweetened cocoa powder made by dosing and blending purchased cocoa powder and sugar, then screening and packing it at the manufacturing site"
+  production_route: "Receipt and storage of ingredients and packaging -> dosing -> dry mixing -> conditional conditioning or agglomeration -> screening and foreign-body control -> filling and packing"
+  market_state: "Dry, shelf-stable finished product at the manufacturing-site gate, in declared bulk or retail packaging"
+functional_unit:
+  what: "Provision of sweetened cocoa powder as a dry food ingredient or beverage-preparation mix at the manufacturing-site gate"
+  how_much: "1 kg net mass of finished sweetened cocoa powder"
+  how_well: "Conforming to the declared recipe, cocoa-powder content, moisture or solids specification, particle or dispersibility specification when applicable, and destination-market sales description; an EU product sold as drinking chocolate, sweetened cocoa, or sweetened cocoa powder contains at least 25% cocoa powder"
+  how_long_or_cycle: "One production lot delivered at the factory gate; storage after the gate and product preparation are not included"
+  reference_flow_link: "1 kg of the declared finished reference product at the factory gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground manufacturing"
+      rule: "Include ingredient receipt and storage, internal transfer, dosing, blending, conditional conditioning or agglomeration, screening and foreign-body control, filling, packing, directly attributable cleaning, onsite utility use, product losses, wastes, wastewater, and direct emissions."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased products and services"
+      rule: "Represent production of cocoa powder, sugars, other ingredients, packaging, purchased energy, water, transport included in the declared supplier gate, and external waste treatment with provider datasets rather than omitting their upstream burdens."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_intermediate_product_gate
+      applies_to: "downstream stages"
+      rule: "Treat the reference product as an intermediate product at the manufacturing-site gate; exclude downstream distribution, storage, use or preparation, and end of life unless a wider declared model adds those stages."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_omission_disclosure
+      applies_to: "inventory completeness"
+      rule: "Do not deliberately omit a flow because it is inconvenient to measure; document and justify any unavailable or immaterial flow, its expected significance, and the proxy or data-gap treatment used."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Cocoa powder, sugars, optional ingredients, packaging materials, purchased energy carriers, and water have been received at the manufacturing site with identity, mass, supplier, origin, and provider-dataset references available."
+  starting_condition_role: "Gate-to-gate manufacturing start for a dry blended intermediate food product"
+  product_classification_scope: "Sweetened cocoa powder represented by CPC 3.0 code 23640; classification is mapping context and does not replace the semantic product boundary."
+  recursive_input_rule: "If sweetened cocoa powder from the same product category is used as an input, record it once as an upstream product flow with its provider dataset; do not recursively reproduce its manufacturing inventory inside this foreground package."
+  upstream_dataset_requirement: "Link cradle-to-gate provider datasets for cocoa powder, sugars, optional ingredients, packaging materials, electricity, fuels, water, and externally treated waste; disclose supplier-specific data gaps and proxies."
+  disclosure: "Declare facility and geography, reporting period, product recipe and cocoa-powder fraction, cocoa-powder type, product moisture or solids specification, included process steps, instantization or agglomeration route, packaging format, allocation choices, omitted flows, and any deviation from this boundary."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cocoa powder, sweetened"
+    uuid: "75c1ef5f-a7df-489a-8c49-07a90f6c4d66"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cocoa-powder mass fraction"
+    - "sugar or sweetener types"
+    - "fat-reduced or conventional cocoa powder"
+    - "alkalized or non-alkalized cocoa powder"
+    - "optional ingredients and flavours"
+    - "instantized or non-instantized route"
+    - "moisture or solids specification"
+    - "packaging format"
+    - "destination market and applicable product specification"
+    - "production geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the net as-sold product mass excluding primary, secondary, and tertiary packaging; normalize all inventory results to 1 kg accepted finished product."
+  - id: ingredient_mass_basis
+    applies_to: "cocoa powder, sugars, optional ingredients, rework, and product losses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record weighed batch or campaign masses on a consistent as-received basis and declare any dry-matter or moisture correction separately."
+  - id: recipe_fraction_check
+    applies_to: "finished product composition"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Calculate each ingredient fraction from ingredient mass charged divided by accepted net product mass; distinguish fresh input from internal rework and verify the declared cocoa-powder fraction against the applicable sales specification."
+  - id: energy_unit_conversion
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Retain metered or invoiced units, document conversion factors and heating-value basis, and prevent double counting of purchased electricity, fuel, steam, or heat."
+  - id: packaging_mass_basis
+    applies_to: "primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate packaging mass by material from measured mass per packaging unit and units consumed, net of documented returned or reused packaging."
+process_map:
+  - id: ingredient_receiving
+    name: "Ingredient and packaging receiving, storage, and transfer"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Establish traceable starting masses and deliver ingredients and packaging to production"
+    quantitative_reference: "kg ingredients or packaging issued per 1 kg accepted finished product"
+  - id: dosing_blending
+    name: "Ingredient dosing and dry blending"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produce a homogeneous sweetened cocoa powder blend from the declared recipe"
+    quantitative_reference: "1 kg bulk blend transferred to finishing"
+  - id: conditioning
+    name: "Conditioning, agglomeration, or instantization"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is conditioned, agglomerated, lecithinated, dried, or otherwise treated after dry blending"
+    role: "Impart the declared dispersibility, density, moisture, or handling properties"
+    quantitative_reference: "kg conditioned powder output"
+  - id: finishing_packaging
+    name: "Screening, foreign-body control, filling, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produce accepted packed product at the factory gate and quantify losses and packaging"
+    quantitative_reference: "1 kg net accepted finished product"
+process_inventory:
+  - id: ingredient_receiving
+    label: "Ingredient and packaging receiving, storage, and transfer"
+    inputs:
+      product:
+        - row_id: cocoa_powder_input
+          role: "Purchased cocoa powder"
+          name: "Cocoa powder, not sweetened"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased conventional or fat-reduced cocoa powder is the characterizing cocoa ingredient entering the site boundary."
+          amount:
+            expression: "weighed mass issued to production, excluding internal rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished sweetened cocoa powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_materials
+              source_ids:
+                - eu-cocoa-directive-2000-36
+            ranges: []
+        - row_id: sugars_input
+          role: "Sugars and declared sweeteners"
+          name: "Sugar or declared sweetener, by type"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each sugar or other declared sweetening ingredient separately so the recipe and provider datasets remain traceable."
+          amount:
+            expression: "weighed mass issued to production, by ingredient and supplier lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished sweetened cocoa powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_materials
+              source_ids:
+                - eu-cocoa-directive-2000-36
+            ranges: []
+        - row_id: optional_ingredients_input
+          role: "Optional ingredients"
+          name: "Optional food ingredient, by substance or commercial preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include flavours, salt, emulsifiers, milk ingredients, anti-caking agents, carriers, or other recipe inputs only when present and separately disclose their identity and mass."
+          amount:
+            expression: "weighed or metered amount issued to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished sweetened cocoa powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_materials
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials_input
+          role: "Packaging materials received"
+          name: "Packaging material, by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Track primary, secondary, and tertiary packaging by material and format, including liners, labels, closures, cartons, sacks, and pallet wrap."
+          amount:
+            expression: "packaging units consumed multiplied by verified mass per unit"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished sweetened cocoa powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: materials_issued_output
+          role: "Ingredients and packaging issued to production"
+          name: "Materials issued to sweetened cocoa powder production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record transferred materials without duplicating their upstream burdens in the next process."
+          amount:
+            expression: "inventory issue mass reconciled with production receipts and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished sweetened cocoa powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe_materials
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receiving_waste_output
+          role: "Damaged or contaminated incoming material and packaging"
+          name: "Rejected ingredient or packaging waste, by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record material rejected or damaged after it crosses the site boundary, by waste type and treatment route."
+          amount:
+            expression: "weighed rejection sent to recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished sweetened cocoa powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: dosing_blending
+    label: "Ingredient dosing and dry blending"
+    inputs:
+      product:
+        - row_id: ingredients_charged_input
+          role: "Ingredients charged to the blender"
+          name: "Recipe ingredients charged to blending"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cocoa powder, sugars, optional ingredients, and separately identified internal rework charged to each batch or campaign."
+          amount:
+            expression: "sum of verified batch charge weights by ingredient; internal rework is reported separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg bulk blend output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_materials
+              source_ids: []
+            ranges: []
+        - row_id: blending_electricity_input
+          role: "Electricity for conveying, dosing, extraction, and mixing"
+          name: "Electricity, supplier or grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include electricity used by directly attributable conveying, weighing, dust extraction, and mixing equipment."
+          amount:
+            expression: "submetered use or documented allocation from equipment hours and rated or metered demand"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg bulk blend output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_utilities
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_blend_output
+          role: "Bulk sweetened cocoa powder blend"
+          name: "Bulk sweetened cocoa powder blend"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the homogeneous bulk blend transferred to conditioning or finishing before packaging."
+          amount:
+            expression: "measured transfer mass or batch mass balance after documented blend losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg bulk blend output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: blending_waste_output
+          role: "Blend spills, purge, and non-reworked off-specification powder"
+          name: "Cocoa-and-sugar powder waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate returned internal rework from material that leaves the product system as waste."
+          amount:
+            expression: "weighed mass by destination and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg bulk blend output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: blending_dust_air_output
+          role: "Uncaptured powder particulate released to air"
+          name: "Particulate matter to air, applicable size fraction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include direct particulate emissions from transfer and mixing after deducting material captured and recorded as product rework or waste."
+          amount:
+            expression: "measured emission or documented engineering calculation from control-device and operating records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg bulk blend output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: conditioning
+    label: "Conditioning, agglomeration, or instantization"
+    inputs:
+      product:
+        - row_id: conditioning_blend_input
+          role: "Bulk blend sent to conditioning"
+          name: "Bulk sweetened cocoa powder blend"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this input only when the declared route conditions, agglomerates, lecithinates, dries, or otherwise treats the blend."
+          amount:
+            expression: "measured mass fed to the conditioning step"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conditioned powder output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_inputs
+          role: "Conditioning utilities and additions"
+          name: "Conditioning input, by utility or ingredient"
+          flow_type: "product"
+          property_unit: "Energy or Mass / kWh, MJ, or kg as applicable"
+          description: "Record electricity, thermal energy, water, steam, compressed air, lecithin, or other additions separately when used."
+          amount:
+            expression: "metered utility use and weighed additions attributable to the conditioning step"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conditioned powder output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_powder_output
+          role: "Conditioned sweetened cocoa powder"
+          name: "Conditioned sweetened cocoa powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record powder released from conditioning to finishing with declared moisture, bulk density, or dispersibility properties."
+          amount:
+            expression: "measured accepted conditioned output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conditioned powder output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_quality
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: conditioning_waste_output
+          role: "Conditioning residues and wastewater"
+          name: "Conditioning residue or wastewater, by route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification solids and wastewater separately by composition and treatment route when conditioning is included."
+          amount:
+            expression: "measured or mass-balanced quantity leaving the conditioning process as waste"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conditioned powder output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: conditioning_air_output
+          role: "Direct conditioning emissions to air"
+          name: "Direct emission to air, by elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct particulates and combustion emissions from onsite thermal equipment when applicable."
+          amount:
+            expression: "measured emission or documented calculation from fuel and control-device records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conditioned powder output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: finishing_packaging
+    label: "Screening, foreign-body control, filling, and packing"
+    inputs:
+      product:
+        - row_id: bulk_powder_finishing_input
+          role: "Bulk powder sent to finishing"
+          name: "Bulk sweetened cocoa powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted bulk blend or conditioned powder entering final screening and packing."
+          amount:
+            expression: "measured mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+        - row_id: packaging_consumed_input
+          role: "Packaging consumed"
+          name: "Packaging material, by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging by material and format, distinguishing reusable or returned tertiary packaging."
+          amount:
+            expression: "packaging units consumed multiplied by verified mass per unit"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packing_electricity_input
+          role: "Finishing and packing electricity"
+          name: "Electricity, supplier or grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include electricity for screening, magnets or metal detection, conveying, extraction, filling, sealing, coding, and directly attributable packing equipment."
+          amount:
+            expression: "submetered use or documented allocation from equipment hours and rated or metered demand"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_utilities
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sweetened_cocoa_reference_output
+          role: "Accepted sweetened cocoa powder at factory gate"
+          name: "Cocoa powder, sweetened"
+          flow_type: "product"
+          flow_ref:
+            uuid: "75c1ef5f-a7df-489a-8c49-07a90f6c4d66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output after final quality release, excluding packaging mass."
+          amount:
+            expression: "fixed reference amount of 1 kg net accepted finished product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net accepted finished product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_output_quality
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finishing_waste_output
+          role: "Rejected powder and packaging waste"
+          name: "Product or packaging waste, by material and route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification powder not returned as rework and rejected packaging by material and treatment route."
+          amount:
+            expression: "weighed quantity transferred to recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: finishing_dust_air_output
+          role: "Uncaptured finishing particulate released to air"
+          name: "Particulate matter to air, applicable size fraction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include direct powder particulate released after accounting for captured powder managed as rework or waste."
+          amount:
+            expression: "measured emission or documented engineering calculation from control-device and operating records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "dedicated and shared manufacturing operations"
+    rule: "Avoid allocation by collecting separate recipe, output, waste, energy, utility, and emission records for the sweetened cocoa powder line, batch, or campaign; use system expansion only when the additional function and substituted system are explicitly modelled."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_driver
+    applies_to: "shared utilities and services"
+    rule: "When subdivision is not practicable, allocate shared burdens using a documented causal physical driver such as metered energy, equipment operating time, cleaned surface or volume, or mass throughput; justify why the driver represents resource use."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_fallback
+    applies_to: "genuine co-products with no defensible physical relationship"
+    rule: "Use economic allocation only after documenting why subdivision, system expansion, and a relevant physical relationship are not practicable; record prices, reference period, allocation factors, and a sensitivity check."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rework_and_waste
+    applies_to: "internal rework, off-specification powder, and wastes"
+    rule: "Internal rework that does not cross the product-system boundary carries no co-product credit and is tracked separately from fresh input; waste leaving the boundary is not a co-product unless a documented marketable function and the selected multifunctionality method justify otherwise."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_recipe_materials
+      process_id: "ingredient_receiving_dosing_blending"
+      flow_role: "recipe ingredients, internal rework, and materials issued"
+      record_type: "batch recipe, scale ticket, material issue, supplier lot"
+      raw_fields: "batch_id; product_code; ingredient_id; supplier_lot; gross_mass; tare_mass; net_mass; moisture_basis; rework_flag; timestamp"
+      collection_method: "calibrated scales reconciled to approved recipe and inventory issues"
+      unit: "kg"
+      frequency: "each batch or campaign"
+      temporal_coverage: "full declared production period"
+      site_scope: "all included lines and products"
+      aggregation_rule: "sum fresh input and internal rework separately; divide by accepted net reference-product output"
+      quality_evidence: "scale calibration; approved recipe; lot traceability; stock reconciliation"
+    - protocol_id: cp_energy_utilities
+      process_id: "dosing_blending_conditioning_finishing_packaging"
+      flow_role: "electricity, fuels, heat, steam, compressed air, and process water"
+      record_type: "submeter, invoice, fuel receipt, equipment runtime"
+      raw_fields: "meter_id; start_reading; end_reading; unit; fuel_quantity; heating_value_basis; equipment_hours; allocation_driver; period"
+      collection_method: "direct submetering preferred; otherwise documented engineering allocation tied to operating records"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "meter interval and monthly reconciliation"
+      temporal_coverage: "full declared production period"
+      site_scope: "all included equipment and shared services"
+      aggregation_rule: "subtract exports and unrelated loads; allocate shared use by the approved causal driver; normalize to process output and reference flow"
+      quality_evidence: "meter calibration; invoices; runtime logs; conversion-factor record"
+    - protocol_id: cp_yield_waste
+      process_id: "all_processes"
+      flow_role: "intermediate outputs, accepted product, rework, losses, and wastes"
+      record_type: "scale ticket, production report, waste manifest, stock record"
+      raw_fields: "batch_id; input_mass; intermediate_output_mass; accepted_output_mass; rework_mass; waste_mass; waste_type; destination; stock_change"
+      collection_method: "weigh outputs and wastes and reconcile batch, campaign, and reporting-period mass balance"
+      unit: "kg"
+      frequency: "each batch or waste shipment with period reconciliation"
+      temporal_coverage: "full declared production period"
+      site_scope: "all included lines and waste routes"
+      aggregation_rule: "keep internal rework inside the system; aggregate wastes by material and treatment route; report unexplained mass difference"
+      quality_evidence: "scale calibration; production release; waste transfer evidence; reconciliation sign-off"
+    - protocol_id: cp_packaging_records
+      process_id: "ingredient_receiving_finishing_packaging"
+      flow_role: "packaging material consumed"
+      record_type: "packaging bill of materials, unit-mass test, issue and return record"
+      raw_fields: "packaging_id; material; format; mass_per_unit; units_issued; units_returned; reuse_cycles; supplier_lot"
+      collection_method: "weigh representative packaging units and reconcile issues, returns, and packed units"
+      unit: "kg; item"
+      frequency: "each packaging format and production period"
+      temporal_coverage: "full declared production period"
+      site_scope: "all primary, secondary, and tertiary packaging used"
+      aggregation_rule: "net units consumed multiplied by verified mass per unit, aggregated by material and normalized to net product mass"
+      quality_evidence: "balance calibration; packaging specification; issue-return reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "dosing_blending_conditioning_finishing_packaging"
+      flow_role: "particulate and combustion emissions to air"
+      record_type: "stack or workplace extraction measurement, fuel record, control-device log, engineering calculation"
+      raw_fields: "emission_point; pollutant; concentration; gas_flow; operating_time; fuel_use; control_efficiency; calculation_method"
+      collection_method: "direct measurement where required; otherwise transparent calculation from activity and control records"
+      unit: "kg; mg/m3; Nm3; h"
+      frequency: "regulatory or facility monitoring interval"
+      temporal_coverage: "full declared production period"
+      site_scope: "all included direct emission points"
+      aggregation_rule: "calculate emitted mass for the declared period, subtracting captured material only when it is recorded as product or waste"
+      quality_evidence: "laboratory report; instrument calibration; control-device maintenance; calculation review"
+    - protocol_id: cp_output_quality
+      process_id: "conditioning_finishing_packaging"
+      flow_role: "conditioned powder and accepted reference product"
+      record_type: "certificate of analysis, release test, finished-goods record"
+      raw_fields: "lot_id; net_mass; cocoa_fraction; moisture_or_solids; fat_reduced_status; alkalization_status; particle_or_dispersibility_result; release_status"
+      collection_method: "approved laboratory or quality-control method linked to production lot"
+      unit: "kg; mass fraction; specification unit"
+      frequency: "each released lot"
+      temporal_coverage: "full declared production period"
+      site_scope: "all reference-product lots included"
+      aggregation_rule: "include only accepted net output in the denominator; production that is not released is rework or waste"
+      quality_evidence: "test method; laboratory QA; signed release; product specification"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period flow amount / reporting-period accepted net finished-product mass"
+      inputs:
+        - "collected flow amount"
+        - "accepted net output from cp_output_quality"
+      output: "flow amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_recipe_fraction
+      applies_to: "cocoa powder, sugars, and optional ingredients"
+      rule: "ingredient mass fraction = fresh ingredient mass charged / accepted net finished-product mass; report internal rework separately and do not count it as fresh upstream input"
+      inputs:
+        - cp_recipe_materials
+        - cp_output_quality
+      output: "kg ingredient/kg finished product and declared mass fraction"
+      source_ids:
+        - eu-cocoa-directive-2000-36
+    - id: calc_energy_allocation
+      applies_to: "shared energy and utility records"
+      rule: "use direct submetered quantity; otherwise multiply shared quantity by the documented causal share for the included process, then normalize to accepted output"
+      inputs:
+        - "meter or invoice quantity"
+        - "equipment hours"
+        - "metered demand"
+        - "mass throughput"
+        - "or another approved driver"
+        - "accepted output"
+      output: "kWh, MJ, kg, or m3 per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_packaging_mass
+      applies_to: "each packaging material"
+      rule: "packaging mass = (units issued - documented returned reusable units) x verified mass per unit; divide by accepted net product mass"
+      inputs:
+        - cp_packaging_records
+        - cp_output_quality
+      output: "kg packaging material/kg reference product"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "each process and reporting period"
+      rule: "unexplained mass difference = total mass inputs + opening stock - product outputs - documented rework transfer - wastes - closing stock - quantified direct mass emissions; investigate rather than silently allocate the residual"
+      inputs:
+        - recipe
+        - stock
+        - product
+        - rework
+        - waste
+        - wastewater
+        - "and emission records"
+      output: "signed mass-balance reconciliation and disclosed residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "reference product and recipe inputs"
+      requirement: "Link every included finished-product lot to the approved recipe, ingredient and packaging lots, product qualifiers, and the exact Tiangong reference-flow identity."
+      evidence: "batch genealogy; approved recipe; supplier and packaging records; dataset metadata"
+    - id: dq_primary_foreground
+      applies_to: "processes operated by the reporting facility"
+      requirement: "Use site- or company-specific measured or collected data for ingredient masses, accepted output, packaging, energy and utilities, wastes, and direct emissions; document any engineering calculation and its inputs."
+      evidence: "meters; scale records; invoices; production reports; waste manifests; calculation files; eu-pef-2021-2279"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground data"
+      requirement: "Declare start and end dates and cover a complete, representative production period including routine changeovers, cleaning, rework, and losses; disclose abnormal exclusions or campaigns."
+      evidence: "production calendar; meter coverage; batch list; downtime and cleaning logs"
+    - id: dq_completeness_reconciliation
+      applies_to: "process and site inventory"
+      requirement: "Reconcile recipe, intermediate, finished-product, rework, waste, stock-change, wastewater, and direct-emission masses and investigate unexplained differences."
+      evidence: "signed process and reporting-period mass balances"
+    - id: dq_representativeness_precision
+      applies_to: "foreground and provider datasets"
+      requirement: "Document technological, geographical, and time representativeness and precision; identify proxies and supplier-data gaps and explain their expected influence."
+      evidence: "data-quality assessment using the dimensions in eu-pef-2021-2279; provider dataset metadata"
+    - id: dq_calibration_and_review
+      applies_to: "measurements and calculated values"
+      requirement: "Retain calibration or verification status, calculation formulas, allocation drivers, unit conversions, responsible reviewer, and change history."
+      evidence: "calibration certificates; controlled calculation workbook or script; review record"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm UUID 75c1ef5f-a7df-489a-8c49-07a90f6c4d66, Product flow type, CPC 23640 classification, Mass property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, mass unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg reference unit."
+    source_ids: []
+  - rule_id: validation_category_and_recipe
+    applies_to: "product identity"
+    rule: "Verify that cocoa powder and sugars characterize the dry product, required qualifiers and recipe fractions are declared, exclusions are respected, and the applicable destination-market product specification is met; where the EU sweetened-cocoa sales name is claimed, verify at least 25% cocoa powder."
+    source_ids:
+      - eu-cocoa-directive-2000-36
+      - codex-cxs-105-1981
+  - rule_id: validation_boundary_coverage
+    applies_to: "process map and inventory"
+    rule: "Verify inclusion of every operated step from receipt through accepted packed product, conditional conditioning steps, upstream provider links, cleaning and utility use, wastes, wastewater, and direct emissions; list and justify every omitted flow."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_mass_balance
+    applies_to: "each process and reporting period"
+    rule: "Recalculate ingredient fractions, intermediate yields, accepted output, rework, waste, stock change, and direct mass emissions; flag unexplained residuals and double-counted rework."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "shared processes and multifunctionality"
+    rule: "Confirm that subdivision was attempted first and that every remaining allocation has a causal driver, complete factor set, consistent denominator, and documented fallback rationale."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_data_quality
+    applies_to: "foreground and provider data"
+    rule: "Confirm complete temporal coverage, calibration and traceability evidence, provider-dataset identity, and documented technological, geographical, time, and precision assessment; flag unresolved UUIDs and proxies."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_no_unlabelled_estimates
+    applies_to: "all amounts"
+    rule: "Reject an amount presented as measured, calculated, or source-backed when its record, formula, or cited source is absent; any future provisional estimate must use reasoned_estimate, omit a false source id, and remain replaceable."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Facility- and product-specific foreground data package or aggregated gate-to-gate dataset for production of sweetened cocoa powder at the manufacturing-site gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Ingredient supply-chain, food-manufacturing, beverage-preparation, packaging, and broader product life-cycle models that require a disclosed factory-gate sweetened cocoa powder input"
+  excluded_use: "Unsweetened cocoa powder, cocoa bean or cocoa-liquor processing, chocolate manufacture, ready-to-drink cocoa beverages, consumer preparation, distribution, or comparative claims without compatible recipes, geography, period, boundary, allocation, and review"
+  required_metadata: "PCR id and version context; Tiangong reference-flow UUID; facility and geography; reporting period; cocoa-powder and sugar fractions; cocoa type and treatment; optional ingredients; instantization or agglomeration route; moisture or solids specification; packaging format; process coverage; provider datasets; allocation methods; data owners and review status"
+  required_quality_disclosure: "Primary-data coverage; measurement and calibration evidence; mass-balance residual; allocation drivers and factors; technological, geographical, time, and precision assessment; proxy and UUID gaps; exclusions; uncertainty and review limitations"
+  update_trigger: "Recipe or cocoa-powder fraction change; new sweetener or optional ingredient; change between conventional and fat-reduced or alkalized cocoa; addition or removal of conditioning or agglomeration; material process, energy, yield, packaging, supplier, site, or regulation change; expired representativeness; resolved UUID or proxy gap"
+data_sources:
+  - id: "codex-cxs-105-1981"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 105-1981, Standard for Cocoa Powders (Cocoas) and Dry Mixtures of Cocoa and Sugars, current listing revised 2025, https://www.fao.org/fao-who-codexalimentarius/codex-texts/list-standards/en/ (retrieved 2026-08-11)"
+    used_for: "International product-category scope and validation reference for cocoa powders and dry cocoa-sugar mixtures"
+  - id: "eu-cocoa-directive-2000-36"
+    type: "standard"
+    reference: "Directive 2000/36/EC of the European Parliament and of the Council relating to cocoa and chocolate products intended for human consumption, CELEX 32000L0036, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32000L0036 (retrieved 2026-08-11)"
+    used_for: "Product definitions, cocoa-powder and sugar mixture identity, EU minimum cocoa-powder content, composition and sales-description validation"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Intermediate-product life-cycle stages, system boundary, company-specific data collection, allocation hierarchy, omission disclosure, and data-quality dimensions"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1885f0bbecfa2c4e585a207d48cea25d5ea0a7c2d7a6958801a389924b001270"
+  generated_content_sha256: "sha256:dd4c7eebe15b721924a80983033d0242a7dcf44ebbd04ed64b3d350257577e43"

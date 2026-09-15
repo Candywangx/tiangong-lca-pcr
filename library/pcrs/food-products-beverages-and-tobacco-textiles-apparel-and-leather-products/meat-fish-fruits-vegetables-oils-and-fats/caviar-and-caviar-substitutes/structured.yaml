@@ -1,10 +1,2149 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21243"
-  title: "Caviar and caviar substitutes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.caviar-and-caviar-substitutes"
+  classification_refs: "CPC 3.0: 21243, Caviar and caviar substitutes"
+  covered_products: "Granular sturgeon caviar treated with food-grade salt; salted and formulated caviar substitutes made from declared fish species such as lumpfish, cod, herring, or salmon roe; fresh, matured, pasteurized, or otherwise legally preserved packaged forms within the category"
+  excluded_products: "Fresh or frozen untreated fish roe; cooked or smoked roe outside this category; fish-roe dishes; non-fish plant or alginate analogues; upstream live-fish production as a standalone product"
+  representative_product: "Packaged salted granular fish roe represented by a sturgeon-caviar route and a lumpfish-roe caviar-substitute route"
+  production_route: "Chilled roe receipt and holding; egg separation where needed; washing and draining; salt or formulation addition; grading; filling and sealing; optional pasteurization; maturation and cold storage"
+  market_state: "Ready-to-eat packaged product at the factory gate under a declared preservation and temperature regime"
+functional_unit:
+  what: "Ready-to-eat caviar or fish-roe caviar substitute supplied in a sealed retail or wholesale container"
+  how_much: "1 kg net product mass, excluding all packaging"
+  how_well: "Conforming to the declared fish species, roe state, formulation, preservation route, food-safety specification, and market specification"
+  how_long_or_cycle: "One production lot released at the factory gate; shelf-life and storage conditions are declared attributes rather than an additional service duration"
+  reference_flow_link: "Net mass of conforming packaged product released from cold storage"
+system_boundary:
+  rules:
+    - rule_id: boundary_received_roe_to_factory_gate
+      applies_to: "foreground_system"
+      rule: "Include chilled roe receipt and holding, separation, washing, draining, formulation, grading, packaging, optional pasteurization, maturation, cold storage, sanitation, foreground wastewater and solid-waste generation, and direct emissions."
+      source_ids:
+        - codex-cxc-52-2003
+        - codex-gsfa-09-3-3
+    - rule_id: boundary_upstream_supply
+      applies_to: "upstream_inputs"
+      rule: "Link species- and route-representative upstream datasets for aquaculture or capture, fish feed where relevant, harvest, supplier slaughter and ovary extraction, ingredients, packaging, electricity, fuels, steam, water, refrigerants, and inbound transport; do not represent these burdens as zero."
+      source_ids:
+        - eu-pef-2021-2279
+        - dudu-georgescu-2024-sturgeon
+    - rule_id: boundary_optional_operations
+      applies_to: "conditional_processes"
+      rule: "Include pasteurization, repackaging, freezing, or on-site effluent treatment only when the declared product route performs that operation; otherwise document it as not applicable."
+      source_ids:
+        - codex-cxs-291-2010
+        - codex-cxc-52-2003
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream_stages"
+      rule: "Exclude distribution, retail, use, and consumer end-of-life from this factory-gate dataset; a broader study shall add them as separate processes with the declared cold-chain and packaging end-of-life scenarios."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Chilled sturgeon ovary or eggs, or species-declared non-sturgeon roe, received at the processing facility with supplier mass, temperature, origin, and lot records"
+  starting_condition_role: "Foreground gate at roe-material receipt; the upstream roe-supply dataset carries farming or capture, harvest, slaughter and ovary extraction when those occur off site"
+  product_classification_scope: "Prepared caviar and caviar substitutes corresponding to CPC 3.0 subclass 21243"
+  recursive_input_rule: "If purchased caviar or a caviar substitute is used as an input for blending or repackaging, record it as a separate product input with an upstream dataset and do not recursively rebuild it inside the same foreground process"
+  upstream_dataset_requirement: "Species, geography, production system, roe state, co-product treatment, temporal period, and supplier boundary shall be representative and disclosed; missing upstream slaughter or ovary-recovery burdens make the package incomplete"
+  disclosure: "Declare whether the starting material is an intact ovary, separated eggs, salted roe, or another intermediate; declare all prior processing, cold-chain state, supplier allocation, rejected-material treatment, and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg net product"
+  product_flow_ref:
+    name: "Caviar or caviar substitute"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product type: sturgeon caviar or caviar substitute"
+    - "fish common and scientific name"
+    - "farmed or wild origin"
+    - "ovulated or non-ovulated roe where applicable"
+    - "received roe state"
+    - "ingredient and additive formulation"
+    - "salt specification"
+    - "preservation route"
+    - "pasteurization status"
+    - "primary-container material and size"
+    - "net mass"
+    - "production lot"
+    - "storage temperature regime"
+    - "allocation method applied upstream and in the foreground"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report drained or filled net product mass excluding the primary container, closure, label, and secondary packaging."
+  - id: ingredient_mass
+    applies_to: "Roe, salt, additives, and cleaning chemicals"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each named material separately on an as-used mass basis; do not combine ingredients or additives into a formulation total."
+  - id: packaging_mass
+    applies_to: "Each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert piece counts to component mass using lot-specific tare measurements and preserve the count and tare evidence."
+  - id: water_mass
+    applies_to: "Process, packaging-cleaning, and sanitation water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use metered mass or convert metered volume using the measured or documented density and temperature basis."
+  - id: energy_separation
+    applies_to: "Electricity, purchased steam, and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve carrier-specific records and conversion factors; never aggregate electricity, steam, natural gas, and liquefied petroleum gas into one energy row."
+  - id: waste_mass_balance
+    applies_to: "Product, rejects, residues, wastewater, and sludge"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile input and output mass at lot or campaign level and disclose evaporation, retained water, unmeasured losses, and inventory closure."
+process_map:
+  - id: roe_receipt_cold_holding
+    name: "Roe receipt and cold holding"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground raw-material receipt and temperature-controlled holding"
+    quantitative_reference: "kg received roe material"
+  - id: egg_separation_washing
+    name: "Egg separation, washing, and draining"
+    inclusion: "required"
+    inclusion_condition: "Always; separation work may be zero only for verified pre-separated eggs"
+    role: "Foreground preparation"
+    quantitative_reference: "kg clean drained eggs"
+  - id: formulation_grading
+    name: "Salting, formulation, and grading"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground product formulation"
+    quantitative_reference: "kg formulated roe"
+  - id: filling_preservation
+    name: "Filling, packaging, and preservation"
+    inclusion: "required"
+    inclusion_condition: "Always; pasteurization utilities apply only to pasteurized product"
+    role: "Foreground packaging and conditional preservation"
+    quantitative_reference: "kg packaged product"
+  - id: finished_cold_storage
+    name: "Maturation and finished-product cold storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground temperature-controlled holding and release"
+    quantitative_reference: "kg conforming product released"
+  - id: sanitation_effluent
+    name: "Sanitation and effluent handling"
+    inclusion: "required"
+    inclusion_condition: "Always; sludge applies when generated on site"
+    role: "Shared foreground support process"
+    quantitative_reference: "kg reference product supported"
+process_inventory:
+  - id: roe_receipt_cold_holding
+    label: "Roe receipt and cold holding"
+    inputs:
+      product:
+        - row_id: received_sturgeon_ovary
+          role: "Received chilled sturgeon ovary"
+          name: "Chilled sturgeon ovary"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Chilled sturgeon ovary at this process boundary and quantify it using the stated amount rule: Supplier delivery mass accepted into the sturgeon-caviar route."
+          amount:
+            expression: "Supplier delivery mass accepted into the sturgeon-caviar route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-cxs-291-2010
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: received_lumpfish_roe
+          role: "Received lumpfish roe"
+          name: "Chilled or thawed lumpfish roe"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Chilled or thawed lumpfish roe at this process boundary and quantify it using the stated amount rule: Supplier delivery mass accepted into the representative substitute route."
+          amount:
+            expression: "Supplier delivery mass accepted into the representative substitute route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-gsfa-09-3-3
+            ranges: []
+        - row_id: receipt_electricity
+          role: "Receipt electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity, facility supply at this process boundary and quantify it using the stated amount rule: Metered electricity for receipt-room cooling, pumps, handling, and holding equipment."
+          amount:
+            expression: "Metered electricity for receipt-room cooling, pumps, handling, and holding equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receipt_r134a_makeup
+          role: "R-134a refrigerant make-up at receipt"
+          name: "Refrigerant R-134a"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Refrigerant R-134a at this process boundary and quantify it using the stated amount rule: Maintenance-record make-up assigned to receipt and raw-material holding equipment when R-134a is used."
+          amount:
+            expression: "Maintenance-record make-up assigned to receipt and raw-material holding equipment when R-134a is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: receipt_r404a_makeup
+          role: "R-404A refrigerant make-up at receipt"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Refrigerant R-404A at this process boundary and quantify it using the stated amount rule: Maintenance-record make-up assigned to receipt and raw-material holding equipment when R-404A is used."
+          amount:
+            expression: "Maintenance-record make-up assigned to receipt and raw-material holding equipment when R-404A is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: held_sturgeon_ovary
+          role: "Held sturgeon ovary"
+          name: "Temperature-controlled sturgeon ovary"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Temperature-controlled sturgeon ovary at this process boundary and quantify it using the stated amount rule: Accepted sturgeon ovary transferred to separation."
+          amount:
+            expression: "Accepted sturgeon ovary transferred to separation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg receipt-process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: held_lumpfish_roe
+          role: "Held lumpfish roe"
+          name: "Temperature-controlled lumpfish roe"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Temperature-controlled lumpfish roe at this process boundary and quantify it using the stated amount rule: Accepted lumpfish roe transferred to separation."
+          amount:
+            expression: "Accepted lumpfish roe transferred to separation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg receipt-process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_sturgeon_ovary
+          role: "Rejected sturgeon ovary"
+          name: "Rejected sturgeon ovary"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Rejected sturgeon ovary at this process boundary and quantify it using the stated amount rule: Weighed rejected sturgeon ovary sent to the declared treatment."
+          amount:
+            expression: "Weighed rejected sturgeon ovary sent to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: rejected_lumpfish_roe
+          role: "Rejected lumpfish roe"
+          name: "Rejected lumpfish roe"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Rejected lumpfish roe at this process boundary and quantify it using the stated amount rule: Weighed rejected lumpfish roe sent to the declared treatment."
+          amount:
+            expression: "Weighed rejected lumpfish roe sent to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: receipt_r134a_emission
+          role: "R-134a emission at receipt"
+          name: "1,1,1,2-Tetrafluoroethane (HFC-134a), to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record 1,1,1,2-Tetrafluoroethane (HFC-134a), to air at this process boundary and quantify it using the stated amount rule: Refrigerant inventory loss assigned to receipt and raw-material holding equipment."
+          amount:
+            expression: "Refrigerant inventory loss assigned to receipt and raw-material holding equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: receipt_r404a_emission
+          role: "R-404A emission at receipt"
+          name: "Refrigerant R-404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Refrigerant R-404A, to air at this process boundary and quantify it using the stated amount rule: Refrigerant inventory loss assigned to receipt and raw-material holding equipment."
+          amount:
+            expression: "Refrigerant inventory loss assigned to receipt and raw-material holding equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+  - id: egg_separation_washing
+    label: "Egg separation, washing, and draining"
+    inputs:
+      product:
+        - row_id: separation_sturgeon_ovary
+          role: "Sturgeon ovary for separation"
+          name: "Temperature-controlled sturgeon ovary"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Temperature-controlled sturgeon ovary at this process boundary and quantify it using the stated amount rule: Transfer mass entering cutting and sieving."
+          amount:
+            expression: "Transfer mass entering cutting and sieving"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: separation_lumpfish_roe
+          role: "Lumpfish roe for washing"
+          name: "Temperature-controlled lumpfish roe"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Temperature-controlled lumpfish roe at this process boundary and quantify it using the stated amount rule: Transfer mass entering washing and draining."
+          amount:
+            expression: "Transfer mass entering washing and draining"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-gsfa-09-3-3
+            ranges: []
+        - row_id: separation_water
+          role: "Separation and washing water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Potable process water at this process boundary and quantify it using the stated amount rule: Metered cold water used for ovary preparation, egg washing, and equipment rinsing assigned to this process."
+          amount:
+            expression: "Metered cold water used for ovary preparation, egg washing, and equipment rinsing assigned to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: separation_salt
+          role: "Salt used in separation water"
+          name: "Food-grade sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade sodium chloride at this process boundary and quantify it using the stated amount rule: Weighed salt added to cold wash water when that route is used."
+          amount:
+            expression: "Weighed salt added to cold wash water when that route is used"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: separation_electricity
+          role: "Separation electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity, facility supply at this process boundary and quantify it using the stated amount rule: Metered electricity for sieves, pumps, chilled-room operation, and draining equipment."
+          amount:
+            expression: "Metered electricity for sieves, pumps, chilled-room operation, and draining equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: clean_sturgeon_eggs
+          role: "Clean drained sturgeon eggs"
+          name: "Clean drained sturgeon eggs"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Clean drained sturgeon eggs at this process boundary and quantify it using the stated amount rule: Weighed eggs released to salting and grading."
+          amount:
+            expression: "Weighed eggs released to salting and grading"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: clean_lumpfish_eggs
+          role: "Clean drained lumpfish eggs"
+          name: "Clean drained lumpfish eggs"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Clean drained lumpfish eggs at this process boundary and quantify it using the stated amount rule: Weighed eggs released to formulation and grading."
+          amount:
+            expression: "Weighed eggs released to formulation and grading"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: ovarian_membrane_waste
+          role: "Ovarian membrane waste"
+          name: "Sturgeon ovarian membrane"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Sturgeon ovarian membrane at this process boundary and quantify it using the stated amount rule: Weighed connective tissue removed during cutting and sieving."
+          amount:
+            expression: "Weighed connective tissue removed during cutting and sieving"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: fatty_tissue_waste
+          role: "Fatty tissue waste"
+          name: "Sturgeon ovarian fatty tissue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Sturgeon ovarian fatty tissue at this process boundary and quantify it using the stated amount rule: Weighed fatty tissue removed from sturgeon eggs."
+          amount:
+            expression: "Weighed fatty tissue removed from sturgeon eggs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: blood_clot_waste
+          role: "Blood-clot waste"
+          name: "Fish blood clots"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Fish blood clots at this process boundary and quantify it using the stated amount rule: Weighed blood clots removed during washing and inspection."
+          amount:
+            expression: "Weighed blood clots removed during washing and inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: broken_roe_waste
+          role: "Broken roe waste"
+          name: "Broken fish eggs"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Broken fish eggs at this process boundary and quantify it using the stated amount rule: Weighed broken or quality-rejected eggs removed during separation and draining."
+          amount:
+            expression: "Weighed broken or quality-rejected eggs removed during separation and draining"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: roe_washing_wastewater
+          role: "Roe-washing wastewater"
+          name: "Roe-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Roe-processing wastewater at this process boundary and quantify it using the stated amount rule: Metered or mass-balance-calculated wastewater leaving separation and washing."
+          amount:
+            expression: "Metered or mass-balance-calculated wastewater leaving separation and washing"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg clean drained eggs"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: formulation_grading
+    label: "Salting, formulation, and grading"
+    inputs:
+      product:
+        - row_id: formulation_sturgeon_eggs
+          role: "Sturgeon eggs for formulation"
+          name: "Clean drained sturgeon eggs"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Clean drained sturgeon eggs at this process boundary and quantify it using the stated amount rule: Transfer mass entering salting and grading."
+          amount:
+            expression: "Transfer mass entering salting and grading"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: formulation_lumpfish_eggs
+          role: "Lumpfish eggs for formulation"
+          name: "Clean drained lumpfish eggs"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Clean drained lumpfish eggs at this process boundary and quantify it using the stated amount rule: Transfer mass entering substitute formulation and grading."
+          amount:
+            expression: "Transfer mass entering substitute formulation and grading"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: formulation_salt
+          role: "Formulation salt"
+          name: "Food-grade sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade sodium chloride at this process boundary and quantify it using the stated amount rule: Calibrated-scale mass added to the specific formulation lot."
+          amount:
+            expression: "Calibrated-scale mass added to the specific formulation lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - codex-cxs-291-2010
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: formulation_sodium_benzoate
+          role: "Sodium benzoate"
+          name: "Sodium benzoate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Sodium benzoate at this process boundary and quantify it using the stated amount rule: Calibrated-scale mass used only when the declared substitute formulation and applicable law permit it."
+          amount:
+            expression: "Calibrated-scale mass used only when the declared substitute formulation and applicable law permit it"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - codex-gsfa-09-3-3
+            ranges: []
+        - row_id: formulation_potassium_sorbate
+          role: "Potassium sorbate"
+          name: "Potassium sorbate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Potassium sorbate at this process boundary and quantify it using the stated amount rule: Calibrated-scale mass used only when the declared substitute formulation and applicable law permit it."
+          amount:
+            expression: "Calibrated-scale mass used only when the declared substitute formulation and applicable law permit it"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - codex-gsfa-09-3-3
+            ranges: []
+        - row_id: formulation_allura_red
+          role: "Allura Red AC"
+          name: "Allura Red AC"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Allura Red AC at this process boundary and quantify it using the stated amount rule: Calibrated-scale mass used only for a legally permitted declared substitute formulation."
+          amount:
+            expression: "Calibrated-scale mass used only for a legally permitted declared substitute formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - codex-gsfa-09-3-3
+            ranges: []
+        - row_id: formulation_brilliant_blue
+          role: "Brilliant Blue FCF"
+          name: "Brilliant Blue FCF"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Brilliant Blue FCF at this process boundary and quantify it using the stated amount rule: Calibrated-scale mass used only for a legally permitted declared substitute formulation."
+          amount:
+            expression: "Calibrated-scale mass used only for a legally permitted declared substitute formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - codex-gsfa-09-3-3
+            ranges: []
+        - row_id: formulation_electricity
+          role: "Formulation electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity, facility supply at this process boundary and quantify it using the stated amount rule: Metered electricity for chilled-room conditioning, scales, mixers, and grading equipment."
+          amount:
+            expression: "Metered electricity for chilled-room conditioning, scales, mixers, and grading equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formulated_sturgeon_caviar
+          role: "Formulated sturgeon caviar"
+          name: "Salted sturgeon caviar before filling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Salted sturgeon caviar before filling at this process boundary and quantify it using the stated amount rule: Weighed conforming formulated output transferred to filling."
+          amount:
+            expression: "Weighed conforming formulated output transferred to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: formulated_lumpfish_substitute
+          role: "Formulated lumpfish caviar substitute"
+          name: "Formulated lumpfish caviar substitute before filling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Formulated lumpfish caviar substitute before filling at this process boundary and quantify it using the stated amount rule: Weighed conforming formulated output transferred to filling."
+          amount:
+            expression: "Weighed conforming formulated output transferred to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: formulation_residue
+          role: "Formulation residue"
+          name: "Rejected formulated fish roe"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Rejected formulated fish roe at this process boundary and quantify it using the stated amount rule: Weighed spills, retained mixer residue, and quality-rejected formulated roe."
+          amount:
+            expression: "Weighed spills, retained mixer residue, and quality-rejected formulated roe"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: excess_brine
+          role: "Excess formulation brine"
+          name: "Spent sodium-chloride brine"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Spent sodium-chloride brine at this process boundary and quantify it using the stated amount rule: Weighed or mass-balance-calculated liquid drained from formulated roe."
+          amount:
+            expression: "Weighed or mass-balance-calculated liquid drained from formulated roe"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated roe"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: filling_preservation
+    label: "Filling, packaging, and preservation"
+    inputs:
+      product:
+        - row_id: packaging_sturgeon_caviar
+          role: "Sturgeon caviar for packaging"
+          name: "Salted sturgeon caviar before filling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Salted sturgeon caviar before filling at this process boundary and quantify it using the stated amount rule: Transfer mass entering the filling line."
+          amount:
+            expression: "Transfer mass entering the filling line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_lumpfish_substitute
+          role: "Lumpfish substitute for packaging"
+          name: "Formulated lumpfish caviar substitute before filling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Formulated lumpfish caviar substitute before filling at this process boundary and quantify it using the stated amount rule: Transfer mass entering the filling line."
+          amount:
+            expression: "Transfer mass entering the filling line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_steel_tin
+          role: "Lacquered steel tin"
+          name: "Food-grade lacquered steel tin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade lacquered steel tin at this process boundary and quantify it using the stated amount rule: Issued count multiplied by measured component tare mass for the steel-tin route."
+          amount:
+            expression: "Issued count multiplied by measured component tare mass for the steel-tin route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - codex-cxs-291-2010
+            ranges: []
+        - row_id: packaging_glass_jar
+          role: "Glass jar"
+          name: "Food-grade glass jar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade glass jar at this process boundary and quantify it using the stated amount rule: Issued count multiplied by measured component tare mass for the glass-jar route."
+          amount:
+            expression: "Issued count multiplied by measured component tare mass for the glass-jar route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - codex-cxs-291-2010
+            ranges: []
+        - row_id: packaging_pp_jar
+          role: "Polypropylene jar"
+          name: "Food-grade polypropylene jar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade polypropylene jar at this process boundary and quantify it using the stated amount rule: Issued count multiplied by measured component tare mass for the plastic-container route."
+          amount:
+            expression: "Issued count multiplied by measured component tare mass for the plastic-container route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - eu-caviar-aquitaine-2024
+            ranges: []
+        - row_id: packaging_steel_lid
+          role: "Steel lid"
+          name: "Food-grade coated steel lid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade coated steel lid at this process boundary and quantify it using the stated amount rule: Issued count multiplied by measured lid tare mass."
+          amount:
+            expression: "Issued count multiplied by measured lid tare mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pp_closure
+          role: "Polypropylene closure"
+          name: "Food-grade polypropylene closure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-grade polypropylene closure at this process boundary and quantify it using the stated amount rule: Issued count multiplied by measured closure tare mass for the applicable jar route."
+          amount:
+            expression: "Issued count multiplied by measured closure tare mass for the applicable jar route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper label"
+          name: "Printed paper label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Printed paper label at this process boundary and quantify it using the stated amount rule: Applied count multiplied by measured label mass."
+          amount:
+            expression: "Applied count multiplied by measured label mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_corrugated_carton
+          role: "Corrugated-board carton"
+          name: "Corrugated-board shipping carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Corrugated-board shipping carton at this process boundary and quantify it using the stated amount rule: Issued carton count multiplied by measured carton tare mass and allocated to packed units."
+          amount:
+            expression: "Issued carton count multiplied by measured carton tare mass and allocated to packed units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pe_film
+          role: "Polyethylene stretch film"
+          name: "Polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Polyethylene stretch film at this process boundary and quantify it using the stated amount rule: Roll inventory loss or direct mass issued to packed lots."
+          amount:
+            expression: "Roll inventory loss or direct mass issued to packed lots"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_water
+          role: "Packaging-cleaning water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Potable process water at this process boundary and quantify it using the stated amount rule: Metered water used to clean permitted reusable or pre-cleaned packaging components."
+          amount:
+            expression: "Metered water used to clean permitted reusable or pre-cleaned packaging components"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity, facility supply at this process boundary and quantify it using the stated amount rule: Metered electricity for filling, vacuum sealing, coding, weighing, and package handling."
+          amount:
+            expression: "Metered electricity for filling, vacuum sealing, coding, weighing, and package handling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter
+              source_ids: []
+            ranges: []
+        - row_id: pasteurization_steam
+          role: "Purchased steam for pasteurization"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased steam at this process boundary and quantify it using the stated amount rule: Metered purchased steam used only by the pasteurized route."
+          amount:
+            expression: "Metered purchased steam used only by the pasteurized route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: pasteurization_natural_gas
+          role: "Natural gas for pasteurization"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Natural gas at this process boundary and quantify it using the stated amount rule: Metered natural-gas energy used by an on-site pasteurization boiler when this route applies."
+          amount:
+            expression: "Metered natural-gas energy used by an on-site pasteurization boiler when this route applies"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_meter
+              source_ids: []
+            ranges: []
+        - row_id: pasteurization_lpg
+          role: "Liquefied petroleum gas for pasteurization"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Liquefied petroleum gas at this process boundary and quantify it using the stated amount rule: Weighed or invoiced liquefied petroleum gas used by an on-site pasteurization boiler when this route applies."
+          amount:
+            expression: "Weighed or invoiced liquefied petroleum gas used by an on-site pasteurization boiler when this route applies"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_sturgeon_caviar
+          role: "Packaged sturgeon caviar"
+          name: "Packaged sturgeon caviar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Packaged sturgeon caviar at this process boundary and quantify it using the stated amount rule: Net product mass sealed and transferred to maturation or cold storage."
+          amount:
+            expression: "Net product mass sealed and transferred to maturation or cold storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaged_lumpfish_substitute
+          role: "Packaged lumpfish caviar substitute"
+          name: "Packaged lumpfish caviar substitute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Packaged lumpfish caviar substitute at this process boundary and quantify it using the stated amount rule: Net product mass sealed and transferred to maturation or cold storage."
+          amount:
+            expression: "Net product mass sealed and transferred to maturation or cold storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_broken_glass
+          role: "Broken glass packaging"
+          name: "Waste packaging glass"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste packaging glass at this process boundary and quantify it using the stated amount rule: Weighed broken or rejected glass jars."
+          amount:
+            expression: "Weighed broken or rejected glass jars"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_steel_scrap
+          role: "Steel packaging scrap"
+          name: "Waste steel packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste steel packaging at this process boundary and quantify it using the stated amount rule: Weighed rejected tins and steel lids."
+          amount:
+            expression: "Weighed rejected tins and steel lids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pp_scrap
+          role: "Polypropylene packaging scrap"
+          name: "Waste polypropylene packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste polypropylene packaging at this process boundary and quantify it using the stated amount rule: Weighed rejected polypropylene jars and closures."
+          amount:
+            expression: "Weighed rejected polypropylene jars and closures"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_paper_waste
+          role: "Waste paper labels"
+          name: "Waste paper labels"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste paper labels at this process boundary and quantify it using the stated amount rule: Weighed or count-and-tare-calculated rejected labels."
+          amount:
+            expression: "Weighed or count-and-tare-calculated rejected labels"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_cardboard_waste
+          role: "Waste corrugated board"
+          name: "Waste corrugated board"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste corrugated board at this process boundary and quantify it using the stated amount rule: Weighed rejected or damaged cartons."
+          amount:
+            expression: "Weighed rejected or damaged cartons"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pe_film_waste
+          role: "Waste polyethylene film"
+          name: "Waste polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste polyethylene film at this process boundary and quantify it using the stated amount rule: Weighed rejected film and roll ends."
+          amount:
+            expression: "Weighed rejected film and roll ends"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: rejected_packaged_product
+          role: "Rejected packaged roe product"
+          name: "Rejected packaged fish-roe product"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Rejected packaged fish-roe product at this process boundary and quantify it using the stated amount rule: Net product mass rejected during filling, sealing, pasteurization, or package inspection."
+          amount:
+            expression: "Net product mass rejected during filling, sealing, pasteurization, or package inspection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_wastewater
+          role: "Packaging-cleaning wastewater"
+          name: "Packaging-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Packaging-cleaning wastewater at this process boundary and quantify it using the stated amount rule: Metered or mass-balance-calculated water discharged from packaging cleaning and pasteurization cooling."
+          amount:
+            expression: "Metered or mass-balance-calculated water discharged from packaging cleaning and pasteurization cooling"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: combustion_co2_fossil
+          role: "Fossil carbon dioxide from on-site fuel combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Carbon dioxide, fossil, to air at this process boundary and quantify it using the stated amount rule: Measured stack release or fuel-specific calculation from collected natural-gas or LPG use."
+          amount:
+            expression: "Measured stack release or fuel-specific calculation from collected natural-gas or LPG use"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_ch4
+          role: "Methane from on-site fuel combustion"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Methane, to air at this process boundary and quantify it using the stated amount rule: Measured stack release or fuel- and technology-specific calculation."
+          amount:
+            expression: "Measured stack release or fuel- and technology-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_n2o
+          role: "Nitrous oxide from on-site fuel combustion"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Nitrous oxide, to air at this process boundary and quantify it using the stated amount rule: Measured stack release or fuel- and technology-specific calculation."
+          amount:
+            expression: "Measured stack release or fuel- and technology-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_nox
+          role: "Nitrogen oxides from on-site fuel combustion"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Nitrogen oxides, to air at this process boundary and quantify it using the stated amount rule: Measured stack release or fuel- and technology-specific calculation."
+          amount:
+            expression: "Measured stack release or fuel- and technology-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_co
+          role: "Carbon monoxide from on-site fuel combustion"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Carbon monoxide, to air at this process boundary and quantify it using the stated amount rule: Measured stack release or fuel- and technology-specific calculation."
+          amount:
+            expression: "Measured stack release or fuel- and technology-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_particulate
+          role: "Particulate matter from on-site fuel combustion"
+          name: "Particulate matter, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Particulate matter, to air at this process boundary and quantify it using the stated amount rule: Measured stack release or fuel- and technology-specific calculation with particle-size definition disclosed."
+          amount:
+            expression: "Measured stack release or fuel- and technology-specific calculation with particle-size definition disclosed"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pasteurized packaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+  - id: finished_cold_storage
+    label: "Maturation and finished-product cold storage"
+    inputs:
+      product:
+        - row_id: storage_sturgeon_caviar
+          role: "Packaged sturgeon caviar for cold storage"
+          name: "Packaged sturgeon caviar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Packaged sturgeon caviar at this process boundary and quantify it using the stated amount rule: Net mass entering maturation and cold storage."
+          amount:
+            expression: "Net mass entering maturation and cold storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: storage_lumpfish_substitute
+          role: "Packaged lumpfish substitute for cold storage"
+          name: "Packaged lumpfish caviar substitute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Packaged lumpfish caviar substitute at this process boundary and quantify it using the stated amount rule: Net mass entering maturation and cold storage."
+          amount:
+            expression: "Net mass entering maturation and cold storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: storage_electricity
+          role: "Finished-storage electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity, facility supply at this process boundary and quantify it using the stated amount rule: Metered cold-store electricity allocated by occupied volume-time, pallet-time, or measured submetering."
+          amount:
+            expression: "Metered cold-store electricity allocated by occupied volume-time, pallet-time, or measured submetering"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_storage
+              source_ids:
+                - codex-cxs-291-2010
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: storage_r134a_makeup
+          role: "R-134a refrigerant make-up in finished storage"
+          name: "Refrigerant R-134a"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Refrigerant R-134a at this process boundary and quantify it using the stated amount rule: Maintenance-record make-up assigned to finished-product equipment when R-134a is used."
+          amount:
+            expression: "Maintenance-record make-up assigned to finished-product equipment when R-134a is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_r404a_makeup
+          role: "R-404A refrigerant make-up in finished storage"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Refrigerant R-404A at this process boundary and quantify it using the stated amount rule: Maintenance-record make-up assigned to finished-product equipment when R-404A is used."
+          amount:
+            expression: "Maintenance-record make-up assigned to finished-product equipment when R-404A is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_caviar_or_substitute
+          role: "Reference caviar or caviar substitute"
+          name: "Caviar or caviar substitute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Caviar or caviar substitute at this process boundary and quantify it using the stated amount rule: Net mass of the conforming route-specific product released from cold storage; the declared product type and fish species determine whether the exchange is sturgeon caviar or a caviar substitute."
+          amount:
+            expression: "Net mass of the conforming route-specific product released from cold storage; record exactly one declared product route per dataset"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: storage_rejected_sturgeon_caviar
+          role: "Rejected stored sturgeon caviar"
+          name: "Rejected stored sturgeon caviar"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Rejected stored sturgeon caviar at this process boundary and quantify it using the stated amount rule: Net mass rejected during maturation, storage, or release inspection."
+          amount:
+            expression: "Net mass rejected during maturation, storage, or release inspection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: storage_rejected_lumpfish_substitute
+          role: "Rejected stored lumpfish substitute"
+          name: "Rejected stored lumpfish caviar substitute"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Rejected stored lumpfish caviar substitute at this process boundary and quantify it using the stated amount rule: Net mass rejected during maturation, storage, or release inspection."
+          amount:
+            expression: "Net mass rejected during maturation, storage, or release inspection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: storage_r134a_emission
+          role: "R-134a emission in finished storage"
+          name: "1,1,1,2-Tetrafluoroethane (HFC-134a), to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record 1,1,1,2-Tetrafluoroethane (HFC-134a), to air at this process boundary and quantify it using the stated amount rule: Refrigerant inventory loss assigned to finished-product cold storage."
+          amount:
+            expression: "Refrigerant inventory loss assigned to finished-product cold storage"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_r404a_emission
+          role: "R-404A emission in finished storage"
+          name: "Refrigerant R-404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Refrigerant R-404A, to air at this process boundary and quantify it using the stated amount rule: Refrigerant inventory loss assigned to finished-product cold storage."
+          amount:
+            expression: "Refrigerant inventory loss assigned to finished-product cold storage"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+  - id: sanitation_effluent
+    label: "Sanitation and effluent handling"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Potable process water at this process boundary and quantify it using the stated amount rule: Metered water used for cleaning and sanitation and not already assigned to another process."
+          amount:
+            expression: "Metered water used for cleaning and sanitation and not already assigned to another process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Sanitation electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity, facility supply at this process boundary and quantify it using the stated amount rule: Metered electricity for cleaning pumps, foamers, and effluent handling."
+          amount:
+            expression: "Metered electricity for cleaning pumps, foamers, and effluent handling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter
+              source_ids: []
+            ranges: []
+        - row_id: sanitation_sodium_hydroxide
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Sodium hydroxide at this process boundary and quantify it using the stated amount rule: Active-ingredient mass issued for alkaline cleaning."
+          amount:
+            expression: "Active-ingredient mass issued for alkaline cleaning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_chemical
+              source_ids: []
+            ranges: []
+        - row_id: sanitation_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Sodium hypochlorite at this process boundary and quantify it using the stated amount rule: Active-ingredient mass issued when hypochlorite sanitation is used."
+          amount:
+            expression: "Active-ingredient mass issued when hypochlorite sanitation is used"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_chemical
+              source_ids: []
+            ranges: []
+        - row_id: sanitation_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Peracetic acid at this process boundary and quantify it using the stated amount rule: Active-ingredient mass issued when peracetic-acid sanitation is used."
+          amount:
+            expression: "Active-ingredient mass issued when peracetic-acid sanitation is used"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_chemical
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "Food-processing sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-processing sanitation wastewater at this process boundary and quantify it using the stated amount rule: Metered or mass-balance-calculated sanitation effluent sent to the declared treatment."
+          amount:
+            expression: "Metered or mass-balance-calculated sanitation effluent sent to the declared treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_balance
+              source_ids: []
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Food-processing wastewater sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Food-processing wastewater sludge at this process boundary and quantify it using the stated amount rule: Wet mass and solids content of sludge removed by on-site pretreatment when generated."
+          amount:
+            expression: "Wet mass and solids content of sludge removed by on-site pretreatment when generated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: chemical_container_waste
+          role: "Empty cleaning-chemical containers"
+          name: "Waste high-density polyethylene chemical container"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record Waste high-density polyethylene chemical container at this process boundary and quantify it using the stated amount rule: Weighed empty high-density polyethylene containers attributable to cleaning chemicals."
+          amount:
+            expression: "Weighed empty high-density polyethylene containers attributable to cleaning chemicals"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared_foreground_operations"
+    rule: "Avoid allocation by submetering or subdividing species, formulation, package format, pasteurization route, storage zone, sanitation campaign, and waste handling whenever separately operated or measured."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_shared_utilities
+    applies_to: "shared_utilities"
+    rule: "When subdivision is not possible, allocate electricity, water, sanitation, and cold-storage services using a documented causal physical driver such as equipment time, cleaned area, occupied volume-time, or product mass; justify the chosen driver."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_upstream_roe_supply
+    applies_to: "supplier_roe_dataset"
+    rule: "The upstream roe dataset shall disclose treatment of fish meat, heads, viscera, skin, frames or cartilage, swim bladders, and other recovered fractions. Prefer subdivision; if inseparable co-products have material market value, disclose the economic-allocation prices, reference period, geography, and sensitivity."
+    source_ids:
+      - dudu-georgescu-2024-sturgeon
+      - eu-pef-2021-2279
+  - rule_id: allocation_recycling_no_automatic_credit
+    applies_to: "wastes_and_recovered_materials"
+    rule: "Record each waste or recovered material at the foreground boundary. Do not award avoided-product or recycling credits unless the downstream substitution, quality, market, and allocation convention are explicitly modelled and disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_mass_balance
+    applies_to: "all_processes"
+    rule: "Preserve unallocated physical mass balances before applying any allocation and report allocation factors so that the foreground inventory can be reconstructed."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "all_production_processes"
+      flow_role: "Each named roe or intermediate product"
+      record_type: "Scale and lot record"
+      raw_fields: "date; lot_id; species; material_state; gross_mass; tare_mass; net_mass; destination_process"
+      collection_method: "Calibrated scale reconciled to lot movement"
+      unit: "kg"
+      frequency: "Every lot and transfer"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included lines"
+      aggregation_rule: "Sum net mass by species, route, and process; normalize only after yield reconciliation"
+      quality_evidence: "Calibration certificate; supplier lot record; transfer record"
+    - protocol_id: cp_ingredient_mass
+      process_id: "egg_separation_washing_formulation_grading"
+      flow_role: "Each named salt or additive"
+      record_type: "Batch formulation record"
+      raw_fields: "batch_id; ingredient_name; supplier_lot; gross_mass; tare_mass; net_mass; active_fraction; legal_authorization"
+      collection_method: "Calibrated scale and formulation sign-off"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All formulations"
+      aggregation_rule: "Sum active or as-used mass separately for each named ingredient"
+      quality_evidence: "Scale calibration; recipe approval; certificate of analysis"
+    - protocol_id: cp_output_mass
+      process_id: "all_production_processes"
+      flow_role: "Each named conforming product output"
+      record_type: "Release and transfer record"
+      raw_fields: "lot_id; product_name; species; package_route; gross_mass; tare_mass; net_mass; release_status"
+      collection_method: "Calibrated scale"
+      unit: "kg"
+      frequency: "Every lot"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included products"
+      aggregation_rule: "Sum released net mass by route; rejected mass remains outside the denominator"
+      quality_evidence: "Calibration certificate; release record; net-content check"
+    - protocol_id: cp_utility_meter
+      process_id: "all_production_processes"
+      flow_role: "Electricity or purchased steam"
+      record_type: "Meter or invoice"
+      raw_fields: "meter_id; carrier; start_reading; end_reading; unit; timestamp; process_assignment; downtime"
+      collection_method: "Submeter preferred; otherwise invoice reconciled to a documented driver"
+      unit: "kWh or MJ"
+      frequency: "Continuous or each invoice period"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included equipment and shared services"
+      aggregation_rule: "Difference readings, subtract documented non-PCR loads, allocate with disclosed driver"
+      quality_evidence: "Meter calibration; invoice; allocation worksheet"
+    - protocol_id: cp_water_meter
+      process_id: "egg_separation_washing_filling_preservation_sanitation_effluent"
+      flow_role: "Potable process water"
+      record_type: "Water meter"
+      raw_fields: "meter_id; start_reading; end_reading; unit; temperature; process_assignment"
+      collection_method: "Submeter or calibrated batch vessel"
+      unit: "kg or m3"
+      frequency: "Each batch or daily"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included water points"
+      aggregation_rule: "Convert volume to mass with declared density; avoid double counting between process and sanitation"
+      quality_evidence: "Meter calibration; water-quality record; conversion record"
+    - protocol_id: cp_packaging_mass
+      process_id: "filling_preservation"
+      flow_role: "Each named packaging component"
+      record_type: "Issue, count, and tare record"
+      raw_fields: "component_id; material; supplier_lot; count_issued; count_rejected; mean_tare_mass; measured_total_mass"
+      collection_method: "Count plus representative tare weighing, or direct warehouse mass"
+      unit: "kg"
+      frequency: "Each packaging lot"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All primary, closure, label, and secondary components"
+      aggregation_rule: "Calculate component mass separately and reconcile issued, packed, and rejected counts"
+      quality_evidence: "Tare sample record; specification; warehouse issue record"
+    - protocol_id: cp_fuel_meter
+      process_id: "filling_preservation"
+      flow_role: "Each named on-site fuel"
+      record_type: "Meter, tank, or invoice"
+      raw_fields: "fuel_name; quantity; unit; lower_heating_value; start_stock; receipts; end_stock; equipment"
+      collection_method: "Meter or stock balance reconciled to invoices"
+      unit: "kg, m3, or MJ"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All pasteurization boilers"
+      aggregation_rule: "Calculate use separately by fuel; preserve heating-value source"
+      quality_evidence: "Meter or tank calibration; invoice; stock reconciliation"
+    - protocol_id: cp_refrigerant_balance
+      process_id: "roe_receipt_cold_holding_finished_cold_storage"
+      flow_role: "Each named refrigerant input and emission"
+      record_type: "Refrigerant maintenance log"
+      raw_fields: "refrigerant_name; equipment_id; opening_charge; additions; recoveries; closing_charge; service_date; process_assignment"
+      collection_method: "Equipment-level inventory balance"
+      unit: "kg"
+      frequency: "Each service event and annual reconciliation"
+      temporal_coverage: "Full reporting period plus opening and closing inventories"
+      site_scope: "All included refrigeration equipment"
+      aggregation_rule: "Loss equals opening plus additions minus recovery and closing; allocate only with equipment-specific service basis"
+      quality_evidence: "Technician log; cylinder weights; equipment register"
+    - protocol_id: cp_waste_mass
+      process_id: "all_production_processes"
+      flow_role: "Each named solid, organic, packaging, sludge, or rejected-product waste"
+      record_type: "Waste scale and consignment record"
+      raw_fields: "waste_name; source_process; gross_mass; tare_mass; net_mass; moisture_or_solids; destination; treatment"
+      collection_method: "Calibrated scale or verified container count and tare"
+      unit: "kg"
+      frequency: "Each dispatch or batch"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included waste destinations"
+      aggregation_rule: "Sum each waste identity separately; do not net against co-products or recycling receipts"
+      quality_evidence: "Scale calibration; consignment note; treatment receipt"
+    - protocol_id: cp_wastewater_balance
+      process_id: "egg_separation_washing_formulation_grading_filling_preservation_sanitation_effluent"
+      flow_role: "Each named wastewater or brine stream"
+      record_type: "Effluent meter and mass balance"
+      raw_fields: "stream_name; meter_reading; batch_water_input; retained_water; sampled_solids; salinity; destination"
+      collection_method: "Effluent meter preferred; otherwise water-input mass balance"
+      unit: "kg or m3"
+      frequency: "Continuous, daily, or every batch"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included discharge points"
+      aggregation_rule: "Calculate each stream separately; reconcile to water input and disclose unmeasured evaporation or carry-over"
+      quality_evidence: "Meter calibration; laboratory result; discharge record"
+    - protocol_id: cp_cleaning_chemical
+      process_id: "sanitation_effluent"
+      flow_role: "Each named cleaner or disinfectant"
+      record_type: "Chemical issue and dilution record"
+      raw_fields: "chemical_name; concentrate_mass; active_fraction; dilution_water; application_area; batch_id"
+      collection_method: "Warehouse issue plus concentration record"
+      unit: "kg active ingredient"
+      frequency: "Each sanitation event"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included sanitation zones"
+      aggregation_rule: "Multiply concentrate mass by certified active fraction and keep each chemical separate"
+      quality_evidence: "Safety data sheet; certificate of analysis; sanitation log"
+    - protocol_id: cp_combustion_emissions
+      process_id: "filling_preservation"
+      flow_role: "Each named direct combustion emission"
+      record_type: "Stack test or calculation worksheet"
+      raw_fields: "fuel_name; fuel_use; heating_value; emission_name; factor; factor_source; control_technology; measured_concentration; flue_flow"
+      collection_method: "Validated stack measurement preferred; otherwise declared jurisdiction- or supplier-approved factor"
+      unit: "kg"
+      frequency: "Each test and monthly calculation"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included combustion units"
+      aggregation_rule: "Calculate each emission separately by fuel and unit; retain factor version and measurement basis"
+      quality_evidence: "Stack-test report; fuel analysis; factor publication; calculation review"
+    - protocol_id: cp_cold_storage
+      process_id: "finished_cold_storage"
+      flow_role: "Electricity and stored-product service"
+      record_type: "Cold-store meter and occupancy log"
+      raw_fields: "meter_reading; room_id; temperature_log; product_mass; occupied_volume; entry_time; release_time"
+      collection_method: "Submeter plus warehouse management record"
+      unit: "kWh and kg-hour or m3-hour"
+      frequency: "Continuous and every lot movement"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included cold rooms"
+      aggregation_rule: "Assign direct room loads, then allocate shared load by documented occupied volume-time or pallet-time"
+      quality_evidence: "Meter calibration; temperature logger; warehouse record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period amount attributable to the route / conforming net product mass released for that route"
+      inputs:
+        - "route-specific period amount"
+        - "released net mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_packaging_mass
+      applies_to: "packaging components"
+      rule: "component mass = packed component count × measured mean tare mass; rejected component mass is reported separately"
+      inputs:
+        - count
+        - "tare sample"
+        - "reject count"
+      output: "kg component and kg component waste"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_refrigerant_loss
+      applies_to: "refrigerant emissions"
+      rule: "loss = opening charge + additions - recovered mass - closing charge; negative or implausible balances require investigation"
+      inputs:
+        - "charge inventory"
+        - additions
+        - recoveries
+      output: "kg refrigerant emitted by named refrigerant"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_wastewater
+      applies_to: "wastewater streams"
+      rule: "discharge mass = metered discharge, or water inputs minus documented retained water and evaporation; do not merge brine with sanitation wastewater"
+      inputs:
+        - "water meter"
+        - "product mass change"
+        - "discharge meter"
+      output: "kg of each named wastewater stream"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_combustion_emission
+      applies_to: "each direct combustion emission"
+      rule: "emission = fuel use × declared fuel- and technology-specific factor, unless a validated stack result is used"
+      inputs:
+        - "fuel use"
+        - "heating value if required"
+        - "factor or stack result"
+      output: "kg of one named elementary emission"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "each production lot"
+      rule: "input mass = conforming output + each co-product or waste output + wastewater-borne or evaporated mass + documented inventory change and residual"
+      inputs:
+        - "all mass records"
+      output: "closure percentage and unresolved mass"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "roe and final product"
+      requirement: "Record common and scientific species name, farmed or wild origin, supplier, lot, ovulated status where applicable, and whether the receipt is intact ovary, separated eggs, salted roe, or another intermediate."
+      evidence: "Supplier specification; traceability record; receiving inspection"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Use a continuous period representative of normal operations and covering seasonal production, maturation, and cold-storage effects; disclose shutdowns and exceptional lots."
+      evidence: "Dated meter, batch, warehouse, and maintenance records"
+    - id: dq_completeness
+      applies_to: "all inventory"
+      requirement: "Include every material, packaging component, energy carrier, fuel, refrigerant, water stream, cleaner, waste, wastewater, sludge, and direct emission actually used or generated; zero and not-applicable values require evidence."
+      evidence: "Completeness checklist; purchase-to-use reconciliation; mass and energy balances"
+    - id: dq_route_separation
+      applies_to: "caviar and substitute routes"
+      requirement: "Keep species, formulation, package format, pasteurization, and cold-storage routes separate until a documented allocation step."
+      evidence: "Batch routing; submetering; allocation worksheet"
+    - id: dq_upstream
+      applies_to: "received roe supply"
+      requirement: "Supplier data shall include the upstream fish-production system, harvest, slaughter or egg-recovery boundary, co-products, allocation, geography, year, and transport to the foreground gate."
+      evidence: "Supplier LCI or audited primary-data questionnaire"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Maintain calibration status, units, conversion factors, sampling methods, and uncertainty or precision information for every primary measurement."
+      evidence: "Calibration certificates; sampling plan; calculation review"
+    - id: dq_waste_destination
+      applies_to: "wastes and wastewater"
+      requirement: "Record the physical identity, wet or dry basis, destination, treatment technology, and whether a material is sold, donated, recycled, rendered, treated, or disposed."
+      evidence: "Consignment note; treatment receipt; sales record"
+    - id: dq_representativeness
+      applies_to: "foreground and upstream datasets"
+      requirement: "Assess technological, geographical, time-related representativeness, precision, completeness, methodological consistency, documentation, nomenclature, and review status."
+      evidence: "Data-quality assessment and review record consistent with the EF method"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference_product"
+    rule: "Confirm that the denominator is 1 kg net conforming product excluding packaging and that every required qualifier is present."
+    source_ids:
+      - codex-cxs-291-2010
+      - codex-gsfa-09-3-3
+  - rule_id: validate_species_scope
+    applies_to: "product_identity"
+    rule: "Confirm that caviar is made from declared sturgeon eggs and that every substitute names its actual non-sturgeon fish species; reject generic or plant-based analogues from this PCR."
+    source_ids:
+      - codex-cxs-291-2010
+      - codex-gsfa-09-3-3
+      - unsd-cpc-v3-21243
+  - rule_id: validate_process_route
+    applies_to: "process_map"
+    rule: "Reconcile the facility flow diagram to receipt, separation or verified pre-separation, washing, draining, formulation, filling, preservation, maturation, cold storage, sanitation, and effluent handling; explain every omitted or added step."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Reject any selected flow that combines multiple materials, packaging components, utilities, fuels, refrigerants, wastes, wastewater streams, or emissions; each card shall represent one exchange."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_formulation
+    applies_to: "formulation"
+    rule: "Reconcile every named ingredient and additive to the approved lot formulation and applicable legal authorization; do not infer additive use from a permitted-additive list."
+    source_ids:
+      - codex-cxs-291-2010
+      - codex-gsfa-09-3-3
+  - rule_id: validate_temperature_and_preservation
+    applies_to: "cold_chain"
+    rule: "Verify lot temperature logs, preservation route, pasteurization records when applicable, maturation records, shelf-life specification, and corrective actions against the declared product specification."
+    source_ids:
+      - codex-cxs-291-2010
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_balance
+    applies_to: "each_process_and_period"
+    rule: "Require a documented mass balance for roe inputs, ingredients, conforming product, rejects, residues, brine, wastewater, sludge, and inventory change; investigate unexplained loss before release."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_upstream_completeness
+    applies_to: "received_roe"
+    rule: "Fail completeness when farming or capture, feed where relevant, harvest, supplier slaughter or egg recovery, co-products, allocation, or inbound cold-chain burdens are omitted without a declared cut-off justification."
+    source_ids:
+      - dudu-georgescu-2024-sturgeon
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "multifunctional_processes"
+    rule: "Confirm subdivision was attempted first, allocation drivers are causal and documented, upstream co-product treatment is disclosed, and results can be reconstructed before and after allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "dataset"
+    rule: "Confirm completeness, methodological consistency, technology, geography, time, precision, documentation, nomenclature, and review evidence; disclose every unresolved flow UUID and range-evidence gap."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for packaged caviar or one species-specific caviar substitute route"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product LCA, environmental-footprint studies, supply-chain inventories, process improvement, and comparative work only when species, quality, route, package, preservation, geography, allocation, and boundary are compatible"
+  excluded_use: "Claims about animal welfare, legality, food safety certification, biodiversity, nutritional superiority, or product equivalence; substitution across species or preservation routes without documented comparability; use as an upstream aquaculture dataset"
+  required_metadata: "PCR id and version; product and scientific species name; caviar or substitute status; roe origin and state; supplier boundary; formulation; additives; preservation and pasteurization status; package components; net mass; geography; technology; reporting period; cold-storage duration; allocation; cut-offs; data sources; unresolved identities"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; mass-balance closure; seasonal and capacity representativeness; upstream roe-data quality; allocation sensitivity; refrigerant method; wastewater and waste destinations; additive authorization; uncertainty and unresolved evidence"
+  update_trigger: "Change in fish species or origin, upstream production system, formulation, additive authorization, package format, pasteurization or cold-storage technology, refrigerant, energy supply, wastewater treatment, allocation, supplier boundary, or a material shift in yield or data quality"
+data_sources:
+  - id: "unsd-cpc-v3-21243"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. Central Product Classification Version 3.0, subclass 21243, “Caviar and caviar substitutes.” https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf (retrieved 2026-08-24)."
+    used_for: "Classification scope and identity"
+  - id: "codex-cxs-291-2010"
+    type: "standard"
+    reference: "Codex Alimentarius. CXS 291-2010, Standard for Sturgeon Caviar, revised 2024. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B291-2010%252FCXS_291e.pdf (retrieved 2026-08-24)."
+    used_for: "Sturgeon-caviar definition, raw material, salt, packaging, preservation, temperature control, labelling, and conformance"
+  - id: "codex-cxc-52-2003"
+    type: "official_guidance"
+    reference: "FAO and WHO. Code of Practice for Fish and Fishery Products, CXC 52-2003, 2020 edition, ISBN 978-92-4-001317-9. https://www.who.int/publications/i/item/9789240013179 (retrieved 2026-08-24)."
+    used_for: "Verified Section 20 process decomposition, sanitation, washing, ingredient handling, filling, maturation, pasteurization, cold storage, and records"
+  - id: "codex-gsfa-09-3-3"
+    type: "official_guidance"
+    reference: "Codex Alimentarius GSFA Online. Food Category 09.3.3, Salmon substitutes, caviar, and other fish roe products. https://www.fao.org/gsfaonline/foods/details.html?id=162 (retrieved 2026-08-24)."
+    used_for: "Substitute-product scope, representative species, washing, salting, formulation, colouring, preservation, packaging, and permitted-additive context"
+  - id: "eu-caviar-aquitaine-2024"
+    type: "official_guidance"
+    reference: "European Commission. Publication of an application for registration of “Caviar d’Aquitaine,” 2024/C 6592. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52024XC06592 (retrieved 2026-08-24)."
+    used_for: "Commercial production sequence, immediate primary packaging, and metal, glass, or plastic container routes"
+  - id: "dudu-georgescu-2024-sturgeon"
+    type: "literature"
+    reference: "Dudu, A.; Georgescu, S.E. “Exploring the Multifaceted Potential of Endangered Sturgeon: Caviar, Meat and By-Product Benefits.” Animals 14(16), 2425 (2024). https://doi.org/10.3390/ani14162425."
+    used_for: "Full-text verification of sturgeon production context and distinct meat, head, viscera, skin, bone or cartilage, and swim-bladder co-product or by-product identities; no quantitative range inferred"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission. Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-24)."
+    used_for: "Functional unit, system boundary, company-specific data, allocation, cut-off disclosure, data quality, validation, and life-cycle inventory rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:450c03790ec83c4e7767e41ac0d4a8918035b9214ac4c65b402ca38b4e7dbe6d"
+  generated_content_sha256: "sha256:a98a232a96787f8ee3ddb9e65dbba9f41026d77b9c6b368a3addb0af1084577a"

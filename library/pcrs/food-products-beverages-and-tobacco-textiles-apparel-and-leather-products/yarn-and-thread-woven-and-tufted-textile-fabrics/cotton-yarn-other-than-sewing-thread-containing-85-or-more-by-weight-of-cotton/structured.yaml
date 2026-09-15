@@ -1,10 +1,901 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26360"
-  title: "Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.cotton-yarn-other-than-sewing-thread-containing-85-or-more-by-weight-of-cotton"
+  classification_refs: "CPC 3.0: 26360, exact scope reference"
+  covered_products: "Greige cotton yarn other than sewing thread, containing at least 85% cotton by mass; carded or combed; single or plied where twisting is declared"
+  excluded_products: "Sewing thread; yarn below 85% cotton; continuous-filament yarn; dyed, bleached, mercerised, coated, or otherwise wet-finished yarn unless separately modelled and linked"
+  representative_product: "Quality-released greige cotton yarn wound on the declared delivery package at the spinning-mill gate"
+  production_route: "Bale opening, cleaning and blending; carding and drawing; optional combing; route-dependent roving; spinning; optional twisting; winding, conditioning, inspection and packaging"
+  market_state: "Intermediate textile product at mill gate, dry/conditioned to the declared commercial moisture basis and ready for downstream fabric production"
+functional_unit:
+  what: "Provision of greige cotton yarn suitable for downstream knitting or weaving"
+  how_much: "1 kg net cotton yarn, excluding delivery packaging"
+  how_well: "Other than sewing thread; at least 85% cotton by mass; yarn count, spinning route, carded/combed state, ply, twist, finish state, quality grade and moisture basis declared"
+  how_long_or_cycle: "One quality-released production lot at the spinning-mill gate; no use duration is assigned to this intermediate product"
+  reference_flow_link: "Exactly 1 kg of the declared reference product flow at the foreground mill gate"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_gate
+      applies_to: "foreground_system"
+      rule: "Include all on-site operations from accepted baled fibre through opening, cleaning, blending, carding, drawing, route-specific combing and roving, spinning, optional twisting, winding, conditioning, inspection and packaging."
+      source_ids:
+        - eu-jrc-txt-bref-2023
+        - eu-pef-2021-2279
+    - rule_id: sb_inputs_outputs
+      applies_to: "foreground_inventory"
+      rule: "Record all known material and energy inputs and all products, co-products, wastes and direct emissions for included processes; retain site-specific activity data for manufacturing."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_upstream_linkage
+      applies_to: "upstream_inputs"
+      rule: "Represent cultivation, ginning, non-cotton fibre production, energy supply, auxiliaries, packaging and inbound transport with linked upstream datasets; do not omit their identities from the foreground package."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_wet_processing_exclusion
+      applies_to: "product_finish"
+      rule: "Exclude dyeing, bleaching, mercerising, coating and other wet finishing from this greige-yarn foreground dataset unless separately measured, modelled and disclosed as an added process."
+      source_ids:
+        - eu-jrc-txt-bref-2023
+    - rule_id: sb_cutoff_disclosure
+      applies_to: "exclusions"
+      rule: "Apply no undocumented cut-off. Any excluded activity or flow shall be named, justified, and screened for potential significance; known fibre, electricity, auxiliaries, water, packaging, waste and direct-emission flows shall not be omitted merely for lack of a preferred dataset."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Baled cotton fibre and any permitted non-cotton staple fibre received, weighed, identified by composition and lot, and accepted at the spinning-mill gate"
+  starting_condition_role: "Foreground gate input; upstream cultivation, ginning, fibre production and inbound logistics are linked through upstream datasets"
+  product_classification_scope: "Greige cotton yarn other than sewing thread with cotton content of at least 85% by mass"
+  recursive_input_rule: "Purchased or externally reworked yarn in the same product category is recorded once as a technosphere product input with an upstream dataset; its manufacture is not recursively expanded inside this foreground package"
+  upstream_dataset_requirement: "Link each cotton, non-cotton fibre, purchased yarn, energy carrier, water, auxiliary and packaging input to a geographically and temporally appropriate upstream dataset or disclose the unresolved gap"
+  disclosure: "Declare composition, fibre origin when known, spinning route, combing and roving applicability, moisture basis, internal recycling, external rework, wet-treatment exclusions, allocation method, production period and site"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"
+    uuid: "526fe0a1-be6d-4384-b609-4ca604628ec4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cotton mass fraction"
+    - "composition and mass fraction of each non-cotton fibre"
+    - "yarn count or linear density"
+    - "spinning system"
+    - "carded or combed state"
+    - "single or plied construction"
+    - "twist direction and level where applicable"
+    - "greige finish state"
+    - "commercial moisture basis or regain convention"
+    - "recycled cotton content if any"
+    - "production geography and period"
+    - "delivery package"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference cotton yarn"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net conforming yarn, excluding delivery packaging, on the declared commercial moisture basis."
+  - id: cotton_fraction
+    applies_to: "Textile-fibre composition"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg and mass fraction"
+    rule: "Cotton mass divided by total textile-fibre mass in the reference yarn shall be at least 0.85; retain composition evidence by lot or product specification."
+  - id: common_moisture_basis
+    applies_to: "Fibre inputs, intermediate fibre and yarn, rejects, and reference output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile mass on one declared moisture basis or retain measured moisture/regain and the conversion applied; do not mix conditioned and oven-dry masses without conversion."
+  - id: fibre_mass_reconciliation
+    applies_to: "Foreground fibre transformation"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile received textile fibre with conforming yarn, recovered fibre, wastes, measured dust, samples, and inventory change within declared measurement uncertainty."
+  - id: packaging_separation
+    applies_to: "Reference product and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Exclude delivery packaging from the 1 kg reference amount and record packaging as separate inventory inputs and wastes."
+process_map:
+  - id: fibre_preparation
+    name: "Fibre opening, cleaning, blending, carding and drawing"
+    inclusion: "required"
+    inclusion_condition: "Always; combing is included only when the declared yarn is combed"
+    role: "Foreground fibre preparation"
+    quantitative_reference: "Per kg prepared sliver transferred to yarn formation"
+  - id: yarn_formation
+    name: "Roving where applicable and yarn spinning"
+    inclusion: "required"
+    inclusion_condition: "Always; roving is route-dependent and shall be declared"
+    role: "Foreground yarn formation"
+    quantitative_reference: "Per kg spun yarn transferred to winding"
+  - id: winding_packaging
+    name: "Optional twisting, winding, conditioning, inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; twisting and active conditioning are included when performed"
+    role: "Foreground product finishing and release"
+    quantitative_reference: "Per 1 kg net conforming reference yarn"
+process_inventory:
+  - id: fibre_preparation
+    label: "Fibre opening, cleaning, blending, carding and drawing"
+    inputs:
+      product:
+        - row_id: received_cotton_fibre
+          role: "Received cotton fibre"
+          name: "Cotton fibre, baled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted cotton fibre entering the foreground mill, including recovered or recycled cotton when used and declared."
+          amount:
+            expression: "measured accepted cotton-fibre mass corrected to the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_and_composition
+              source_ids:
+                - un-cpc-ver-3-2025
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.85"
+                upper: "1.50"
+                unit: "kg/kg reference yarn"
+                basis: "broad first-pass cotton input per kg conforming yarn before site yield is known"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: non_cotton_fibre
+          role: "Permitted non-cotton staple fibre"
+          name: "Declared non-cotton staple fibre"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each non-cotton fibre separately when present; the finished yarn shall still meet the cotton-content threshold."
+          amount:
+            expression: "measured accepted mass by fibre type, corrected to the common moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_and_composition
+              source_ids:
+                - un-cpc-ver-3-2025
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.30"
+                unit: "kg/kg reference yarn"
+                basis: "deliberately broad pre-review estimate that includes process loss; finished-yarn non-cotton fraction remains at most 0.15"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fibre_preparation_electricity
+          role: "Fibre-preparation electricity"
+          name: "Electricity, supplied to mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include electricity for opening, cleaning, conveying, blending, carding, drawing, optional combing, suction and room conditioning attributable to this process."
+          amount:
+            expression: "submetered use or allocated main-meter use for fibre-preparation equipment and associated services"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared sliver transferred to yarn formation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utility_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "5"
+                unit: "kWh/kg prepared sliver"
+                basis: "broad first-pass range pending site and yarn-count evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fibre_preparation_water
+          role: "Fibre-conditioning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include water added to fibre or used for room humidification when separately measurable and attributable; do not include wet pretreatment outside the declared scope."
+          amount:
+            expression: "measured make-up water less separately measured return or recovery"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared sliver transferred to yarn formation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utility_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg prepared sliver"
+                basis: "broad first-pass make-up-water estimate pending site metering and climate conditions"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_sliver
+          role: "Prepared fibre sliver transferred to yarn formation"
+          name: "Prepared textile-fibre sliver, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured internal intermediate output after the applicable fibre-preparation sequence."
+          amount:
+            expression: "measured transfer mass on the common moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared sliver transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_output_mass
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges: []
+      waste:
+        - row_id: fibre_preparation_rejects
+          role: "Fibre preparation rejects and captured trash"
+          name: "Textile-fibre preparation waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trash, short fibre, carding waste and captured material by actual destination; separately identify internally recycled, externally recovered and disposed fractions."
+          amount:
+            expression: "measured waste mass by grade and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared sliver transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg/kg prepared sliver"
+                basis: "broad mass-balance screen pending mill-specific fibre grade and recovery data"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: fibre_preparation_dust_air
+          role: "Uncaptured fibre dust to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after installed collection or abatement; captured dust belongs in the waste row."
+          amount:
+            expression: "measured emission or calculated concentration multiplied by exhaust volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared sliver transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg prepared sliver"
+                basis: "broad pre-review screen for uncaptured particulate emissions"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: yarn_formation
+    label: "Roving where applicable and yarn spinning"
+    inputs:
+      product:
+        - row_id: sliver_to_spinning
+          role: "Prepared fibre sliver"
+          name: "Prepared textile-fibre sliver, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared sliver entering the declared spinning route, including route-dependent roving transfers."
+          amount:
+            expression: "measured transfer mass on the common moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg spun yarn transferred to winding"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_output_mass
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.50"
+                unit: "kg/kg spun yarn"
+                basis: "broad first-pass mass-balance screen pending route-specific loss records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: yarn_formation_electricity
+          role: "Yarn-formation electricity"
+          name: "Electricity, supplied to mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include electricity for route-dependent roving, spinning frames or rotors, suction, drives, controls, compressed-air generation when not separately supplied, and attributable room conditioning."
+          amount:
+            expression: "submetered use or allocated main-meter use for yarn-formation equipment and associated services"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg spun yarn transferred to winding"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utility_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.2"
+                upper: "10"
+                unit: "kWh/kg spun yarn"
+                basis: "broad route- and yarn-count-sensitive first-pass estimate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: spinning_auxiliaries
+          role: "Spinning lubricants and conditioning agents"
+          name: "Spinning lubricant or conditioning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each auxiliary by product, function and mass, including spindle oils or fibre/yarn preparation agents that remain on the yarn or leave as waste or emission."
+          amount:
+            expression: "opening stock plus purchases minus closing stock and off-site returns, allocated to the product lot"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg spun yarn transferred to winding"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_auxiliary_and_packaging_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg spun yarn"
+                basis: "broad first-pass estimate; BREF confirms relevance but does not provide a cotton-yarn-specific amount range"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: spun_yarn_intermediate
+          role: "Spun yarn transferred to winding"
+          name: "Spun cotton yarn, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal yarn output after spinning and any route-specific roving operation."
+          amount:
+            expression: "measured transfer mass on the common moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg spun yarn transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_output_mass
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges: []
+      waste:
+        - row_id: spinning_waste
+          role: "Spinning waste, pneumafil and yarn breaks"
+          name: "Textile spinning waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fibre and yarn waste by grade and destination; internal returns are reported separately and are not double-counted as new fibre input."
+          amount:
+            expression: "measured waste mass by grade and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg spun yarn transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.30"
+                unit: "kg/kg spun yarn"
+                basis: "broad route-specific mass-balance screen pending foreground waste records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: yarn_formation_dust_air
+          role: "Yarn-formation particulate emissions to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after collection or abatement from spinning and suction exhausts."
+          amount:
+            expression: "measured emission or calculated concentration multiplied by exhaust volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg spun yarn transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.03"
+                unit: "kg/kg spun yarn"
+                basis: "broad pre-review screen for uncaptured particulate emissions"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: winding_packaging
+    label: "Optional twisting, winding, conditioning, inspection and packaging"
+    inputs:
+      product:
+        - row_id: spun_yarn_to_winding
+          role: "Spun yarn intermediate"
+          name: "Spun cotton yarn, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record spun yarn entering twisting where applicable and winding."
+          amount:
+            expression: "measured transfer mass on the common moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_and_output_mass
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges: []
+        - row_id: winding_packaging_electricity
+          role: "Winding and packaging electricity"
+          name: "Electricity, supplied to mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include electricity for twisting when performed, winding, suction, conditioning, inspection and packaging equipment."
+          amount:
+            expression: "submetered use or allocated main-meter use for the included operations"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utility_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "2"
+                unit: "kWh/kg reference yarn"
+                basis: "broad first-pass range pending mill-specific winding and conditioning records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: yarn_conditioning_utility
+          role: "Conditioning water or steam"
+          name: "Process water or steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include water or steam intentionally used to condition yarn when the operation is performed; retain the moisture basis needed to avoid treating added commercial moisture as fibre yield."
+          amount:
+            expression: "measured supplied mass less measured return or condensate recovery"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utility_records
+              source_ids:
+                - eu-jrc-txt-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.50"
+                unit: "kg/kg reference yarn"
+                basis: "broad first-pass supplied water-or-steam estimate; replace with route-specific metering"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: delivery_packaging
+          role: "Delivery packaging materials"
+          name: "Declared delivery packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cones, tubes, cartons, film, straps, pallets and other delivery packaging by material and fate."
+          amount:
+            expression: "measured packaging issued to the production lot minus returned reusable packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_auxiliary_and_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.20"
+                unit: "kg/kg reference yarn"
+                basis: "broad first-pass estimate pending declared package configuration and reuse records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_cotton_yarn
+          role: "Conforming cotton yarn reference product"
+          name: "Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"
+          flow_type: "product"
+          flow_ref:
+            uuid: "526fe0a1-be6d-4384-b609-4ca604628ec4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quality-released net yarn output that fulfils the functional unit and all required qualifiers."
+          amount:
+            expression: "exactly 1 kg net conforming yarn on the declared moisture basis, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "exact reference output"
+                basis_kind: "reference_flow"
+                evidence_kind: "identity_reference"
+                source_ids: []
+      waste:
+        - row_id: winding_packaging_waste
+          role: "Yarn ends, off-quality yarn and packaging waste"
+          name: "Textile yarn and packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record production yarn waste and packaging waste separately by material and destination; reworked yarn is tracked as an internal return."
+          amount:
+            expression: "measured waste mass by material, quality grade and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.15"
+                unit: "kg/kg reference yarn"
+                basis: "broad first-pass waste screen pending product and package records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "multifunctional_foreground_processes"
+    rule: "First avoid allocation by subdividing processes, using product-specific bills of material, submeters, production counters, and separately measured waste or recovered-fibre streams."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "shared_operations"
+    rule: "Where subdivision is not possible, allocate shared electricity, utilities and auxiliaries using a documented causal physical driver such as machine operating time, spindle-hours, air volume, or mass throughput."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residual
+    applies_to: "saleable_recovered_material"
+    rule: "If a recovered fibre or yarn stream leaves as a co-product, document the waste/co-product decision and first test a relevant physical relationship; if none is defensible, use contemporaneous economic value and report the prices and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_internal_recycling
+    applies_to: "internal_returns"
+    rule: "Track internally returned fibre, pneumafil, yarn ends and rework as internal loops; do not count them both as a new external input and an external co-product. Attribute collection and reprocessing burdens to the process that performs them."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_and_composition
+      process_id: "fibre_preparation"
+      flow_role: "received cotton and non-cotton fibre"
+      record_type: "weighbridge/scale tickets, goods receipt, supplier specification, lot test"
+      raw_fields: "lot_id; fibre_type; supplier; gross_mass; tare_mass; net_mass; moisture_or_regain; cotton_fraction; recycled_fraction"
+      collection_method: "Calibrated mass measurement plus composition certificate or laboratory test"
+      unit: "kg; mass fraction"
+      frequency: "Every receipt and lot"
+      temporal_coverage: "Complete representative production period, normally at least 12 consecutive months or justified campaign"
+      site_scope: "All included mills and fibre lots"
+      aggregation_rule: "Sum accepted net mass by fibre type; convert to common moisture basis; allocate to product lot by traceable issue records"
+      quality_evidence: "Scale calibration; certificates; laboratory method; rejected-lot log"
+    - protocol_id: cp_intermediate_and_output_mass
+      process_id: "fibre_preparation_yarn_formation_winding_packaging"
+      flow_role: "internal intermediates and conforming yarn"
+      record_type: "production counters, calibrated scales, lot release records"
+      raw_fields: "lot_id; process_id; input_mass; output_mass; moisture_basis; yarn_count; quality_status; timestamp"
+      collection_method: "Calibrated mass measurement at process transfer and final release"
+      unit: "kg"
+      frequency: "Each lot or shift"
+      temporal_coverage: "Same period as input and utility records"
+      site_scope: "All included production lines"
+      aggregation_rule: "Sum conforming transfers; exclude rework until released; normalize by final net reference yarn"
+      quality_evidence: "Calibration; lot genealogy; release test; stock reconciliation"
+    - protocol_id: cp_energy_and_utility_records
+      process_id: "fibre_preparation_yarn_formation_winding_packaging"
+      flow_role: "electricity, water, steam and conditioning utilities"
+      record_type: "submeters, main meters, invoices, equipment runtime"
+      raw_fields: "meter_id; opening_reading; closing_reading; unit; process_area; runtime; production_mass; allocation_driver"
+      collection_method: "Prefer submetering; otherwise reconcile main meter and allocate using documented causal driver"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Meter interval no longer than monthly; production counters by shift or lot"
+      temporal_coverage: "Same representative production period as output"
+      site_scope: "All included process areas and shared utilities"
+      aggregation_rule: "Consumption equals closing minus opening plus adjustments; subtract measured exports/recovery; allocate shared use once"
+      quality_evidence: "Meter calibration; invoices; reconciliation; allocation worksheet"
+    - protocol_id: cp_auxiliary_and_packaging_records
+      process_id: "yarn_formation_winding_packaging"
+      flow_role: "lubricants, conditioning agents and packaging"
+      record_type: "purchase, stock, issue and return records; formulation and safety data"
+      raw_fields: "product_id; function; opening_stock; purchases; closing_stock; returns; lot_issue; material; reusable_count"
+      collection_method: "Mass balance of stock and lot issues with formulation identity retained"
+      unit: "kg"
+      frequency: "Monthly and by product campaign"
+      temporal_coverage: "Same representative production period as output"
+      site_scope: "All included mills and package configurations"
+      aggregation_rule: "Opening stock plus purchases minus closing stock and returns; allocate by recorded issue or causal production driver"
+      quality_evidence: "Inventory reconciliation; supplier specification; package bill of material"
+    - protocol_id: cp_waste_and_recovery_records
+      process_id: "fibre_preparation_yarn_formation_winding_packaging"
+      flow_role: "fibre, yarn, dust and packaging waste or recovery"
+      record_type: "calibrated waste scales, transfer notes, recycler receipts, disposal manifests"
+      raw_fields: "waste_id; material; source_process; gross_mass; tare_mass; destination; internal_return; sale_status; moisture_basis"
+      collection_method: "Weigh each container or documented batch and reconcile internal returns"
+      unit: "kg"
+      frequency: "Each transfer, aggregated monthly"
+      temporal_coverage: "Same representative production period as output"
+      site_scope: "All included mills and waste destinations"
+      aggregation_rule: "Sum by material and fate; exclude internal return from external output; normalize to process output and reference yarn"
+      quality_evidence: "Scale calibration; signed transfer note; recycler/disposal evidence"
+    - protocol_id: cp_direct_emissions
+      process_id: "fibre_preparation_yarn_formation"
+      flow_role: "particulate and other direct releases"
+      record_type: "stack or workplace exhaust tests, continuous monitors, exhaust-flow records"
+      raw_fields: "source_id; pollutant; concentration; exhaust_volume; operating_hours; abatement_status; detection_limit"
+      collection_method: "Direct measurement or concentration-times-volume calculation using representative operation"
+      unit: "kg; mg/m3; m3"
+      frequency: "Permit/test frequency and after material process change"
+      temporal_coverage: "Representative operation within reporting period"
+      site_scope: "Every direct emission source in the foreground boundary"
+      aggregation_rule: "Integrate measured concentration and flow; subtract no captured mass unless separately measured; normalize to process output"
+      quality_evidence: "Laboratory accreditation; instrument calibration; sampling plan; detection-limit treatment"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground inventory rows"
+      rule: "Normalized amount = period or lot amount / net conforming reference-yarn mass from the same scope and period."
+      inputs:
+        - "Collected activity amount"
+        - "net conforming yarn mass"
+      output: "Amount per 1 kg reference yarn"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_cotton_fraction
+      applies_to: "Product composition"
+      rule: "Cotton fraction = cotton fibre mass in released yarn / total textile-fibre mass in released yarn; result shall be at least 0.85."
+      inputs:
+        - "Composition test or traceable fibre bill of material corrected for measured losses"
+      output: "Cotton mass fraction and pass/fail"
+      source_ids:
+        - un-cpc-ver-3-2025
+    - id: calc_fibre_balance
+      applies_to: "Foreground fibre system"
+      rule: "Received fibre + opening stock = conforming yarn + external recovered material + disposed waste + measured direct mass emissions + samples + closing stock; reconcile on the common moisture basis."
+      inputs:
+        - "Fibre receipts"
+        - stock
+        - output
+        - waste
+        - emissions
+        - samples
+        - "moisture data"
+      output: "Mass-balance residual and uncertainty statement"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_utility
+      applies_to: "Shared utilities"
+      rule: "Allocate only the residual shared quantity after direct submetering, using the declared causal driver; allocated totals shall equal the reconciled shared-meter total."
+      inputs:
+        - "Main and submeter records"
+        - "driver quantities"
+      output: "Utility amount by process and product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_direct_emission
+      applies_to: "Measured exhaust releases"
+      rule: "Emitted mass = representative concentration multiplied by corrected exhaust volume over operating time; report non-detect treatment and abatement state."
+      inputs:
+        - Concentration
+        - flow
+        - time
+        - "detection limit"
+      output: "kg pollutant per process output"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and inputs"
+      requirement: "Preserve UUID-bearing reference identity, product composition, yarn count, spinning route, finish and moisture qualifiers for every released product dataset."
+      evidence: "UUID references; lot specification; release record"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use one consistent representative period for inputs, utilities, production, waste and emissions; normally cover at least 12 consecutive months or justify a shorter campaign."
+      evidence: "Meter dates; production calendar; campaign rationale"
+    - id: dq_technological
+      applies_to: "Process coverage"
+      requirement: "Match records to the actual opening, carding, optional combing, drawing, roving/spinning, twisting, winding and conditioning technology used."
+      evidence: "Process flow diagram; equipment list; route declaration"
+    - id: dq_geographical
+      applies_to: "Site and upstream links"
+      requirement: "Identify each production site and choose upstream datasets representative of the disclosed geography; document proxies."
+      evidence: "Site register; supplier origin; dataset metadata"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile fibre mass and site utilities, account for all known waste destinations and direct releases, and list every excluded activity or unresolved dataset."
+      evidence: "Mass/energy reconciliation; waste manifests; emission inventory; gap log"
+    - id: dq_precision
+      applies_to: "Measurements and calculations"
+      requirement: "Retain calibration, sampling, allocation drivers, detection-limit treatment and uncertainty information sufficient to reproduce normalized values."
+      evidence: "Calibration certificates; sampling plan; calculation workbook"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference_flow"
+    rule: "The reference output shall use product flow UUID 526fe0a1-be6d-4384-b609-4ca604628ec4, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and exactly 1 kg net yarn."
+    source_ids: []
+  - rule_id: val_product_scope
+    applies_to: "product_identity"
+    rule: "Confirm the product is not sewing thread, contains at least 85% cotton by textile-fibre mass, and is greige unless separately linked wet-treatment processes are present."
+    source_ids:
+      - un-cpc-ver-3-2025
+  - rule_id: val_route_coverage
+    applies_to: "process_inventory"
+    rule: "Confirm opening/cleaning/blending, carding/drawing, spinning and winding are represented; record whether combing, roving, twisting, conditioning and packaging are applicable and included."
+    source_ids:
+      - eu-jrc-txt-bref-2023
+  - rule_id: val_mass_balance
+    applies_to: "fibre_inventory"
+    rule: "Reconcile fibre inputs, internal returns, conforming yarn, recovered material, waste, dust, samples and stock change on one moisture basis; investigate residuals outside declared measurement uncertainty."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_energy_completeness
+    applies_to: "electricity_and_utilities"
+    rule: "Reconcile submetered and allocated electricity and utilities to site totals for the same period, with no double allocation of shared services."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_allocation
+    applies_to: "multifunctionality"
+    rule: "Verify subdivision was considered first, each remaining allocation driver is causal and reproducible, and co-product or waste status plus sensitivity is disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_provisional_ranges
+    applies_to: "amount_ranges"
+    rule: "Treat every reasoned_estimate range as a replaceable candidate screening range, never as evidence that foreground data are typical or conforming."
+    source_ids: []
+  - rule_id: val_completeness_disclosure
+    applies_to: "dataset_release"
+    rule: "List checks performed, checks skipped, unresolved UUIDs, proxy datasets, exclusions, data-quality limitations and all required qualifiers before guidance or publication."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Site- and product-specific foreground manufacturing dataset for greige cotton yarn at the spinning-mill gate"
+  downstream_use: "May be linked as a secondary_dataset or background_dataset for fabric, apparel and other textile product systems after review"
+  allowed_use: "Gate-to-gate cotton-yarn manufacturing inventories and downstream models that preserve the declared composition, route, moisture and geography"
+  excluded_use: "Full cradle-to-gate claim without upstream fibre and energy datasets; sewing thread; yarn below 85% cotton; dyed, bleached, mercerised, coated or other wet-finished yarn not separately modelled"
+  required_metadata: "PCR id; product flow UUID; cotton and non-cotton composition; yarn count; spinning system; carded/combed state; ply and twist; finish; moisture basis; recycled content; site; geography; period; process coverage; allocation; packaging"
+  required_quality_disclosure: "Foreground data coverage; meter and scale reconciliation; mass-balance residual; allocation drivers; waste destinations; direct-emission method; proxy datasets; reasoned estimates; excluded and skipped checks"
+  update_trigger: "Material change in fibre composition, yarn count family, spinning technology, combing/roving route, site energy supply, auxiliary formulation, package design, allocation, production site, or representative data period"
+data_sources:
+  - id: "un-cpc-ver-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 26360, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Official product-category scope and 85% cotton threshold"
+  - id: "eu-jrc-txt-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Textiles Industry, JRC131874, January 2023. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf (retrieved 2026-08-11)"
+    used_for: "Cotton spinning process decomposition; electricity, humidification, fibre collection, auxiliaries, wastes and air-emission relevance"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Product Environmental Footprint method, 15 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32021H2279 (retrieved 2026-08-11)"
+    used_for: "System boundary, company-specific manufacturing data, allocation hierarchy, completeness, data quality and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:be1951d83639f3aba426ef39645cc3b18273396aaa92714bf6735fd00ef0ce8c"
+  generated_content_sha256: "sha256:5c21b5b87d3f229e0e6aa30f779641947d6b7f11c8d0e9311a5ddd908c6b60ca"

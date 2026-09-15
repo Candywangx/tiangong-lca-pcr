@@ -1,10 +1,620 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "27210"
-  title: "Carpets and other textile floor coverings, knotted"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.carpets-and-other-textile-floor-coverings-knotted"
+  classification_refs: "CPC 3.0:27210 — Carpets and other textile floor coverings, knotted"
+  covered_products: "Finished textile floor coverings with pile yarn individually knotted to warp yarn and secured by weft picks; declared hand-knotted rugs and carpets of wool, silk, cotton, other textile yarns, or declared blends"
+  excluded_products: "Machine-woven non-knotted carpets; tufted or flocked carpets; needle-punched, braided, hooked, or non-textile floor coverings; installation systems and underlays sold separately"
+  representative_product: "Wool-pile hand-knotted carpet with cotton warp and weft, washed, sheared, stretched, clipped, inspected, and packed"
+  production_route: "Purchased yarn receipt; yarn opening and loom preparation; manual knotting and weft insertion; washing; shearing and side binding; drying and stretching; final clipping and inspection; packing"
+  market_state: "Finished, dry, quality-accepted, packed product at the manufacturing plant gate"
+functional_unit:
+  what: "Finished knotted textile floor covering providing decorative and protective floor coverage"
+  how_much: "1 kg net dry mass of accepted carpet, excluding transport pallet and reusable transport equipment but including non-reusable sales packaging when supplied"
+  how_well: "Conforms to the declared fibre composition, knot type, knot density, dimensions, pile height, colour/design, finishing route, moisture condition, and quality acceptance criteria"
+  how_long_or_cycle: "Production through the manufacturing plant gate; service life is declared separately and is not assumed by this mass-based production reference"
+  reference_flow_link: "Output row knotted_carpet_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_integrated_route
+      applies_to: "foreground manufacturing"
+      rule: "Include receiving and issuing yarn, yarn opening, loom preparation, hand knotting and weft insertion, washing, shearing, side binding, applicable singeing, drying, stretching, final clipping, inspection, and non-reusable sales packaging controlled by the reporting site."
+      source_ids:
+        - cepc-carpet-production-process
+    - rule_id: boundary_purchased_inputs
+      applies_to: "purchased product inputs"
+      rule: "Keep purchased yarn, electricity, water, detergent, and packaging as visible product inputs and connect each accepted identity to an upstream dataset; do not absorb them into an undocumented aggregate."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_inhouse_wet_processing
+      applies_to: "in-house scouring or dyeing"
+      rule: "When scouring or dyeing is controlled by the reporting site, add it as a separate foreground process and record every actual dye, auxiliary chemical, water input, energy input, waste stream, and direct emission as its own atomic exchange; apply the textiles BAT monitoring rules."
+      source_ids:
+        - eu-textiles-bat-2022
+        - cepc-carpet-production-process
+    - rule_id: boundary_direct_releases
+      applies_to: "site-controlled releases"
+      rule: "Record every measured or calculated direct release to air, water, or soil and every transferred waste stream separately; do not replace actual pollutant identities with a combined emissions row."
+      source_ids:
+        - eu-textiles-bat-2022
+        - iso-14044-2006
+    - rule_id: boundary_exclusions
+      applies_to: "default production study"
+      rule: "Exclude capital equipment, worker commuting, product installation, use-stage cleaning, service life, and end-of-life unless the declared goal and scope explicitly include them; disclose every applied exclusion."
+      source_ids:
+        - iso-14040-2006
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased yarn and other product inputs received at the knotted-carpet manufacturing site"
+  starting_condition_role: "foreground_starting_condition"
+  product_classification_scope: "CPC 3.0 subclass 27210 only"
+  recursive_input_rule: "A purchased knotted carpet or knotted-carpet semi-product within the same category remains a separately quantified product input with its own upstream dataset; it is never recursively expanded inside the same foreground process."
+  upstream_dataset_requirement: "Every purchased material, energy carrier, water supply, treatment service, and non-reusable packaging input requires an identity-matched upstream dataset or a disclosed unresolved data gap."
+  disclosure: "Declare whether yarn is purchased dyed or dyed in-house, fibre composition, knot type and density, included finishing steps, washing chemistry, drying energy route, wastewater destination, waste treatment routes, and packaging inclusion."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Carpets and other textile floor coverings, knotted"
+    uuid: "a718c51e-66e1-40e5-bd73-00cb16f1b722"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fibre composition by mass"
+    - "pile-yarn material and dyed state"
+    - "warp and weft material"
+    - "knot type"
+    - "knot density"
+    - dimensions
+    - "pile height"
+    - "finishing and washing route"
+    - "dry-mass/moisture basis"
+    - "packaging inclusion"
+    - "production geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "accepted finished knotted carpet"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net dry carpet mass on a calibrated scale after conditioning or record the measured moisture condition; exclude reusable transport equipment and normalize all exchanges to 1 kg accepted product."
+  - id: yarn_mass
+    applies_to: "pile, warp, weft, and binding yarn inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record issued mass less returned unused yarn for each yarn identity and role; do not combine different fibre compositions or dyed states."
+  - id: water_mass
+    applies_to: "supplied process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated meter data or a documented density conversion from measured volume at the stated temperature; do not substitute wastewater volume for supplied water."
+  - id: electricity_energy
+    applies_to: "purchased alternating current"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record metered electricity for the included process route and allocate shared meters only by a documented causal driver."
+process_map:
+  - id: integrated_knotted_carpet_manufacturing
+    name: "Integrated knotted-carpet manufacture and finishing"
+    inclusion: "required"
+    inclusion_condition: "Required for every conforming dataset; add separate in-house scouring or dyeing processes when controlled by the reporting site."
+    role: "Converts declared pile, warp, and weft yarn into finished knotted carpet."
+    quantitative_reference: "1 kg accepted finished knotted carpet"
+process_inventory:
+  - id: integrated_knotted_carpet_manufacturing
+    label: "Integrated knotted-carpet manufacture and finishing"
+    inputs:
+      product:
+        - row_id: wool_pile_yarn_input
+          role: "Wool pile yarn"
+          name: "Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10c7de33-bef0-4310-98e7-734d8e2e4c9f"
+          property_unit: "Mass / kg"
+          description: "Wool yarn issued to the loom for the knotted pile crosses the process boundary as one product input. The dataset shall declare fibre content, dyed state, yarn count/ply, supplier, lot, and mass."
+          amount:
+            expression: "issued mass minus identified unused yarn returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_material_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: cotton_warp_yarn_input
+          role: "Cotton warp yarn"
+          name: "Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"
+          flow_type: "product"
+          flow_ref:
+            uuid: "526fe0a1-be6d-4384-b609-4ca604628ec4"
+          property_unit: "Mass / kg"
+          description: "Cotton yarn tensioned longitudinally on the loom is recorded separately because it forms the structural warp. The dataset shall declare cotton content, yarn count/ply, sizing state, supplier, lot, and mass."
+          amount:
+            expression: "issued warp-yarn mass minus identified unused warp yarn returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_material_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: cotton_weft_yarn_input
+          role: "Cotton weft yarn"
+          name: "Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"
+          flow_type: "product"
+          flow_ref:
+            uuid: "526fe0a1-be6d-4384-b609-4ca604628ec4"
+          property_unit: "Mass / kg"
+          description: "Cotton yarn inserted between knot rows is recorded separately as the structural weft even when it shares the same Tiangong flow identity as warp yarn. Quantity is obtained from batch issue and return records."
+          amount:
+            expression: "issued weft-yarn mass minus identified unused weft yarn returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_material_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: cotton_binding_yarn_input
+          role: "Cotton side-binding yarn"
+          name: "Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton"
+          flow_type: "product"
+          flow_ref:
+            uuid: "526fe0a1-be6d-4384-b609-4ca604628ec4"
+          property_unit: "Mass / kg"
+          description: "Cotton yarn used to bind and strengthen carpet sides is a distinct physical issue from warp and weft yarn. Record only the batch quantity consumed for side binding."
+          amount:
+            expression: "issued side-binding yarn mass minus identified unused yarn returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_material_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water for carpet washing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Supplied water used for raw washing and final washing of the carpet is recorded at the manufacturing boundary. Shared-site water is apportioned only from calibrated submeter data or a documented causal allocation."
+          amount:
+            expression: "measured supplied process-water mass attributable to carpet washing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids:
+                - eu-textiles-bat-2022
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: carpet_washing_detergent_input
+          role: "Nonionic carpet-washing detergent"
+          name: "Nonionic carpet-washing detergent, as supplied formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The actual supplied nonionic detergent formulation used to wash the carpet is one product exchange. The supplier product name and formulation identifier shall be retained; the UUID remains unresolved until that exact formulation is mapped."
+          amount:
+            expression: "weighed or invoiced detergent mass issued to carpet-washing batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_washing_chemical_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: low_voltage_electricity_input
+          role: "Low-voltage alternating current"
+          name: "Alternating current, low voltage, facility supply"
+          flow_type: "product"
+          property_unit: "Net calorific value / kWh"
+          description: "Purchased low-voltage alternating current used by loom auxiliaries, washing, shearing, clipping, lighting attributable to production, mechanical drying, stretching, and packing is one energy exchange. The delivery voltage and meter boundary shall be declared; no UUID is accepted until voltage semantics are confirmed."
+          amount:
+            expression: "metered electricity for included processes, with documented causal allocation for shared meters"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: ldpe_packaging_film_input
+          role: "Low-density polyethylene stretch film"
+          name: "Low-density polyethylene stretch film, non-reusable sales packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Non-reusable low-density polyethylene stretch film remaining with the packed carpet at the plant gate is recorded as one packaging-material exchange. The grade, recycled content, thickness, and net incorporated mass shall be declared; no generic plastic-film UUID is accepted."
+          amount:
+            expression: "net film mass incorporated into accepted packed product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: knotted_carpet_output
+          role: "Finished knotted carpet"
+          name: "Carpets and other textile floor coverings, knotted"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a718c51e-66e1-40e5-bd73-00cb16f1b722"
+          property_unit: "Mass / kg"
+          description: "The accepted finished carpet is the quantitative reference output after washing, drying, stretching, clipping, inspection, and packing. Record gross and excluded packaging masses so the net dry carpet basis is auditable."
+          amount:
+            expression: "measured accepted net dry carpet mass; normalize the data package to 1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_acceptance_records
+              source_ids:
+                - un-cpc-3-0
+                - cepc-carpet-production-process
+            ranges: []
+      waste:
+        - row_id: wool_pile_trimmings_output
+          role: "Wool pile-yarn trimmings"
+          name: "Wool pile-yarn trimmings from knotted-carpet manufacture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wool pile yarn cut away during knotting, shearing, embossing when applicable, and final clipping is recorded as one waste exchange. Keep it separate from cotton structural-yarn offcuts and disclose its treatment destination."
+          amount:
+            expression: "weighed collected wool pile trimmings by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_waste_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: cotton_yarn_offcuts_output
+          role: "Cotton warp and weft yarn offcuts"
+          name: "Cotton warp and weft yarn offcuts from knotted-carpet manufacture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cotton warp, weft, fringe, and side-binding offcuts collected during loom release and finishing are recorded as one cotton-yarn waste exchange. Do not combine them with wool pile trimmings."
+          amount:
+            expression: "weighed collected cotton yarn offcuts by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_waste_records
+              source_ids:
+                - cepc-carpet-production-process
+            ranges: []
+        - row_id: carpet_washing_wastewater_output
+          role: "Carpet-washing wastewater"
+          name: "Carpet-washing wastewater sent to declared treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater leaving raw or final carpet washing for onsite or offsite treatment is recorded as one route-specific waste exchange. Record its destination, mass or metered volume conversion, and the monitored parameters relevant to the actual washing chemistry."
+          amount:
+            expression: "measured wastewater mass or documented density conversion from metered discharge volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished knotted carpet"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_subdivide
+    applies_to: "separately measurable products, batches, and process steps"
+    rule: "Avoid allocation by separate metering, batch records, and process subdivision before applying an allocation factor."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared electricity, water, and site services"
+    rule: "Use a documented causal driver such as machine hours, metered operating time, or measured water throughput; do not use production mass when it does not represent causality."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+  - rule_id: allocation_recovered_material
+    applies_to: "yarn trimmings or other recovered material"
+    rule: "Keep recovered material as an explicit waste or co-product output according to its actual legal and operational status; do not credit avoided production inside the foreground inventory."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_unavoidable
+    applies_to: "inseparable multi-product operations"
+    rule: "If subdivision and causal allocation are not practicable, apply a disclosed physical relationship; use economic allocation only when no defensible physical relationship exists and report a sensitivity check."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_yarn_material_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "pile, warp, weft, and binding yarn inputs"
+      record_type: "stock issue/return and batch bill of materials"
+      raw_fields: "product_id; supplier; lot; fibre_content; dyed_state; yarn_count_ply; role; issued_mass; returned_mass; batch_id"
+      collection_method: "calibrated scale plus controlled stock issue and return records"
+      unit: "kg"
+      frequency: "each issue and return"
+      temporal_coverage: "all conforming batches in the reporting period"
+      site_scope: "each manufacturing site"
+      aggregation_rule: "sum issued minus returned mass by identity and role, then divide by accepted output mass"
+      quality_evidence: "scale calibration; signed stock record; supplier specification; batch reconciliation"
+    - protocol_id: cp_water_wastewater_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "process water input and carpet-washing wastewater output"
+      record_type: "meter and discharge record"
+      raw_fields: "meter_id; timestamp; batch_id; supplied_water; wastewater_volume_or_mass; temperature; density_method; destination; pH; COD_or_TOC; TSS; relevant_chemistry_parameters"
+      collection_method: "calibrated water/discharge meters and representative sampling under the applicable monitoring plan"
+      unit: "kg; m3; parameter-specific units"
+      frequency: "each batch or continuous meter total; parameters at applicable monitoring frequency"
+      temporal_coverage: "all washing operations in the reporting period"
+      site_scope: "each manufacturing site and washing line"
+      aggregation_rule: "reconcile opening/closing meter totals and allocate only with documented causal evidence"
+      quality_evidence: "meter calibration; laboratory method; sample chain of custody; discharge log"
+    - protocol_id: cp_washing_chemical_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "nonionic carpet-washing detergent"
+      record_type: "formulation issue record"
+      raw_fields: "supplier_product; formulation_id; lot; active_content; issued_mass; returned_mass; batch_id"
+      collection_method: "calibrated scale or controlled dispensing system plus supplier specification"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all washing batches in the reporting period"
+      site_scope: "each washing location"
+      aggregation_rule: "sum net issued mass by exact formulation and divide by accepted output mass"
+      quality_evidence: "scale/dispenser calibration; supplier SDS or specification; issue/return record"
+    - protocol_id: cp_energy_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "low-voltage alternating current"
+      record_type: "meter and operating record"
+      raw_fields: "meter_id; voltage_level; opening_reading; closing_reading; timestamp; process_step; machine_hours; batch_id"
+      collection_method: "calibrated submeter; shared meter requires documented causal allocation"
+      unit: "kWh"
+      frequency: "continuous or each reporting interval"
+      temporal_coverage: "representative full reporting period including seasonal drying conditions"
+      site_scope: "each manufacturing site"
+      aggregation_rule: "sum included-process electricity and divide by accepted output mass"
+      quality_evidence: "meter calibration; invoices; operating logs; allocation worksheet"
+    - protocol_id: cp_packaging_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "LDPE sales-packaging film"
+      record_type: "packaging issue and product specification"
+      raw_fields: "material_grade; supplier; recycled_content; thickness; issued_mass; returned_mass; product_batch"
+      collection_method: "calibrated scale and controlled packaging issue/return record"
+      unit: "kg"
+      frequency: "each packaging batch"
+      temporal_coverage: "all accepted product in the reporting period"
+      site_scope: "each packing location"
+      aggregation_rule: "net incorporated non-reusable film divided by accepted output mass"
+      quality_evidence: "scale calibration; supplier specification; packaging reconciliation"
+    - protocol_id: cp_solid_waste_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "wool trimmings and cotton offcuts"
+      record_type: "segregated waste weighing and transfer record"
+      raw_fields: "waste_identity; fibre_content; source_step; batch_id; gross_mass; tare_mass; destination; recovery_or_disposal_route"
+      collection_method: "segregated containers, calibrated scale, and matched transfer note"
+      unit: "kg"
+      frequency: "each container or transfer"
+      temporal_coverage: "all conforming production in the reporting period"
+      site_scope: "each manufacturing site and destination"
+      aggregation_rule: "sum net mass by exact waste identity and destination, then divide by accepted output mass"
+      quality_evidence: "scale calibration; container log; transfer note; treatment confirmation"
+    - protocol_id: cp_product_acceptance_records
+      process_id: "integrated_knotted_carpet_manufacturing"
+      flow_role: "accepted finished knotted carpet output"
+      record_type: "final inspection and weighing record"
+      raw_fields: "product_id; batch_id; fibre_composition; knot_type; knot_density; dimensions; pile_height; finishing_route; moisture_condition; net_carpet_mass; packaging_mass; acceptance_status"
+      collection_method: "calibrated scale plus documented final inspection"
+      unit: "kg"
+      frequency: "each finished carpet"
+      temporal_coverage: "all accepted carpets in the reporting period"
+      site_scope: "each manufacturing site"
+      aggregation_rule: "sum accepted net dry carpet mass; rejected product remains a separate disposition"
+      quality_evidence: "scale calibration; inspection record; product specification; rejection log"
+  calculation_rules:
+    - id: normalize_reference_mass
+      applies_to: "all foreground exchanges"
+      rule: "normalized exchange = collected exchange amount / accepted net dry carpet mass"
+      inputs:
+        - "collected exchange amount"
+        - "accepted net dry carpet mass"
+      output: "exchange per 1 kg accepted carpet"
+      source_ids:
+        - iso-14044-2006
+    - id: net_material_issue
+      applies_to: "yarn, detergent, and packaging inputs"
+      rule: "net consumed mass = issued mass - same-identity unused mass returned to controlled stock"
+      inputs:
+        - "issued mass"
+        - "returned mass"
+        - "exact material identity"
+      output: "net input mass"
+      source_ids:
+        - iso-14044-2006
+    - id: wastewater_mass_conversion
+      applies_to: "metered wastewater reported by volume"
+      rule: "wastewater mass = metered volume × documented density at the stated condition"
+      inputs:
+        - "discharge volume"
+        - density
+        - "temperature or stated condition"
+      output: "kg wastewater"
+      source_ids:
+        - eu-textiles-bat-2022
+    - id: pollutant_load
+      applies_to: "monitored wastewater parameters"
+      rule: "pollutant load = flow-proportional concentration × wastewater volume, with units converted consistently"
+      inputs:
+        - concentration
+        - "matched discharge volume"
+        - "sampling period"
+      output: "pollutant mass for a separately identified elementary flow or treatment record"
+      source_ids:
+        - eu-textiles-bat-2022
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and yarn inputs"
+      requirement: "Preserve exact product identity and required qualifiers; do not substitute woven, tufted, flocked, or generic carpet flows for CPC 27210."
+      evidence: "Tiangong state_code 100 direct read; supplier specifications; final inspection record; un-cpc-3-0"
+    - id: dq_measurement_traceability
+      applies_to: "all foreground amounts"
+      requirement: "Retain calibrated-meter, scale, invoice, stock, batch, sampling, and calculation records linking each normalized value to raw evidence."
+      evidence: "calibration certificates; invoices; signed records; calculation worksheet; iso-14044-2006"
+    - id: dq_process_completeness
+      applies_to: "site inventory"
+      requirement: "Reconcile annual or reporting-period consumption of water, energy, textile materials, process chemicals, wastewater, recovered material, and each waste type, broken down to process level as far as practicable."
+      evidence: "site reconciliation; process meters; waste transfer records; eu-textiles-bat-2022"
+    - id: dq_route_representativeness
+      applies_to: "reporting period"
+      requirement: "Cover a representative full production period or complete declared campaign, including applicable washing and drying conditions, and disclose exclusions, abnormal operation, and data gaps."
+      evidence: "production schedule; operating log; disclosed data-quality statement; iso-14044-2006"
+    - id: dq_wastewater_monitoring
+      applies_to: "in-house washing, scouring, or dyeing"
+      requirement: "Characterize relevant wastewater streams at key locations and use applicable EN, ISO, national, or equivalent scientific methods for relevant parameters."
+      evidence: "sampling plan; laboratory reports; chain of custody; eu-textiles-bat-2022"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the output is the state_code 100 Product flow for CPC 27210 with Mass and kg, and confirm all required product qualifiers are present."
+    source_ids:
+      - un-cpc-3-0
+  - rule_id: validate_atomic_inventory
+    applies_to: "every inventory row"
+    rule: "Confirm each row contains one specific exchange; reject collection labels, selector instructions, combined utilities, combined materials, combined wastes, or combined emissions."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_uuid_readback
+    applies_to: "every UUID-bearing flow"
+    rule: "Confirm each UUID by both flow-hybrid-search and Tiangong CLI state_code 100 direct read; remove or leave blank any UUID whose flow type, material/state, classification, property, unit, route, or destination is not semantically exact."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_foreground_evidence
+    applies_to: "every amount"
+    rule: "Confirm every non-reference amount is derived from the declared collection protocol and raw foreground record; reject AI estimates and undocumented default ranges."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+  - rule_id: validate_route_expansion
+    applies_to: "in-house scouring, dyeing, combustion, or wastewater treatment"
+    rule: "Confirm each controlled route is represented by a separate process and each actual chemical, energy carrier, waste, and direct emission is a separate atomic exchange."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_mass_reconciliation
+    applies_to: "accepted product, yarn inputs, and segregated textile wastes"
+    rule: "Reconcile issued and returned yarn, accepted product mass, measured textile wastes, inventory change, and documented moisture basis; investigate and disclose material discrepancies."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_allocation
+    applies_to: "shared operations"
+    rule: "Confirm subdivision was attempted first and every remaining allocation uses a documented causal or disclosed fallback basis with sensitivity where required."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_completeness_disclosure
+    applies_to: "published dataset"
+    rule: "Confirm included/excluded stages, geography, period, yarn dyed state, finishing steps, drying route, wastewater destination, waste routes, packaging basis, missing UUIDs, and data gaps are disclosed."
+    source_ids:
+      - iso-14040-2006
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "foreground production dataset for finished knotted carpet"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "LCI and LCA models needing a mass-based plant-gate dataset for a declared CPC 27210 knotted carpet route with matching qualifiers"
+  excluded_use: "Machine-woven, tufted, flocked, needle-punched, braided, hooked, or non-textile floor coverings; service-life comparisons without a separately justified functional equivalence; undisclosed extrapolation across fibre composition, knot density, finishing route, geography, or period"
+  required_metadata: "canonical PCR id; CPC reference; product and yarn qualifiers; plant geography; reporting period; technology and process route; foreground/upstream boundary; allocation; wastewater and waste destinations; reference-flow UUID/property/unit; source ids"
+  required_quality_disclosure: "raw-record coverage; measurement and calibration methods; meter allocation; moisture basis; missing or rejected UUIDs; exclusions; data gaps; abnormal operations; uncertainty and representativeness limits"
+  update_trigger: "Change in product identity, fibre composition, knotting or finishing route, yarn dyed state, washing chemistry, drying energy route, wastewater treatment, waste destination, packaging system, plant geography, or materially different reporting-period performance"
+data_sources:
+  - id: "un-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure and explanatory notes, https://unstats.un.org/unsd/classifications/Econ/CPC.cshtml (retrieved 2026-08-13)"
+    used_for: "Product-category identity and CPC 27210 scope"
+  - id: "cepc-carpet-production-process"
+    type: "official_guidance"
+    reference: "Carpet Export Promotion Council, Carpet Production Process, https://www.cepc.co.in/carpet-production-process (retrieved 2026-08-13)"
+    used_for: "Hand-knotted construction, yarn roles, washing, shearing, binding, drying, stretching, clipping, and packing process decomposition"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2508 (retrieved 2026-08-13)"
+    used_for: "Process-level material, water, energy, wastewater, waste, and emission monitoring; wet-processing and wastewater rules"
+  - id: "iso-14040-2006"
+    type: "standard"
+    reference: "ISO 14040:2006, Environmental management — Life cycle assessment — Principles and framework, https://www.iso.org/standard/37456.html (confirmed current 2022; retrieved 2026-08-13)"
+    used_for: "Goal-and-scope, boundary, interpretation, and disclosure principles"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html (confirmed current 2022; retrieved 2026-08-13)"
+    used_for: "LCI data collection, allocation, data quality, consistency, and reporting rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:37dc61da240441e099af3ca3bd89a1deca4ee1686d3188ae5af87f590bc67092"
+  generated_content_sha256: "sha256:736ce3220abc46b6c0d1f4070b235c2ac3d4398c289f498feee03c5277cdd5a3"

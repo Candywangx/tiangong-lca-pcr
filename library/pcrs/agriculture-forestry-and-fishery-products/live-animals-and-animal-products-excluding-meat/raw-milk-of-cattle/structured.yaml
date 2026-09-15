@@ -1,10 +1,1017 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "02211"
-  title: "Raw milk of cattle"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.live-animals-and-animal-products-excluding-meat.raw-milk-of-cattle"
+  classification_refs: "CPC 3.0: 02211 Raw milk of cattle (exact)"
+  covered_products: "Raw whole milk from cattle, including saleable chilled farm milk before heat treatment or dairy processing"
+  excluded_products: "Raw milk from non-cattle species; separated, standardized, pasteurized, sterilized, homogenized, concentrated, dried, fermented, flavoured, or otherwise processed milk; milk consumed entirely within the farm and not delivered as product"
+  representative_product: "Chilled raw whole cattle milk ready to leave on-farm storage"
+  production_route: "Dairy herd management, feed supply, manure management, milking, cooling, and on-farm storage to the farm gate"
+  market_state: "Unprocessed liquid raw milk at the farm gate, normally chilled and declared by measured fat and true-protein content"
+functional_unit:
+  what: "Provision of raw cattle milk ready to leave the dairy farm"
+  how_much: "1 kg fat-and-protein-corrected milk (FPCM), corrected to 4.0% fat and 3.3% true protein"
+  how_well: "Raw whole cattle milk meeting the declared farm-gate specification, with measured physical mass, fat content, true-protein content, temperature, and saleable status"
+  how_long_or_cycle: "One representative reporting year or another declared period covering seasonal variation and a stable herd production cycle"
+  reference_flow_link: "The physical raw-milk output is converted to FPCM with calc_fpcm; all inventory values are normalized to 1 kg FPCM delivered at the farm gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_farm_gate
+      applies_to: "Product system to farm gate"
+      rule: "Include dairy herd maintenance and replacements, feed and bedding supply, enteric fermentation, manure collection/storage/treatment, directly managed feed production, input energy and water, milking, cleaning, cooling, refrigerant losses, and on-farm raw-milk storage up to milk ready to leave the farm."
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+        - fao-leap-large-ruminants-2016
+    - rule_id: boundary_whole_herd
+      applies_to: "Reporting herd"
+      rule: "Represent lactating and dry cows, replacement animals, calves, culls, mortality, herd inventory change, and animal movements supporting reported milk output; do not model only lactating cows when other herd classes share burdens."
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+        - fao-leap-large-ruminants-2016
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Purchased inputs"
+      rule: "Link purchased feed, bedding, replacement animals, fuels, electricity, fertilizers, crop-protection products, cleaning agents, refrigerants, and other material inputs to geographically and technologically appropriate upstream datasets."
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+        - fao-leap-large-ruminants-2016
+    - rule_id: boundary_feed_land
+      applies_to: "Feed production and land"
+      rule: "Include directly managed feed-crop and pasture inputs, yields, soil emissions, irrigation, and relevant land-use-change treatment; for externally supplied feed, retain origin and composition records and link upstream burdens without duplicating them on farm."
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+        - fao-leap-animal-feed-2016
+    - rule_id: boundary_direct_emissions
+      applies_to: "Cattle, manure, and managed soils"
+      rule: "Calculate enteric CH4, manure-management CH4 and N2O, and relevant managed-soil emissions with methods and factors appropriate to the declared region, animal category, productivity, diet, climate, and manure system; preserve activity data and factor sources."
+      source_ids:
+        - ipcc-2019-livestock-manure
+        - fao-leap-nutrient-flows-2018
+    - rule_id: boundary_exclusions
+      applies_to: "Downstream life-cycle stages"
+      rule: "Exclude transport after the farm gate, dairy processing, packaging, distribution, retail, consumption, and end of life; disclose any study-specific extension separately from the PCR result."
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+boundary_abstraction:
+  declared_starting_condition: "A dairy production system with the reporting herd, managed land, and production assets in service at the opening of the reporting period; herd replacement burdens and inventory changes are represented through period records and annualized calculations."
+  starting_condition_role: "Establishes a reproducible farm-accounting condition for a biologically continuous dairy system without treating the opening herd as burden-free."
+  product_classification_scope: "Raw cattle milk covered by CPC 3.0 code 02211; other animal milk and processed dairy products are outside the category."
+  recursive_input_rule: "Raw cattle milk produced and used internally, including milk fed to calves, is recorded as internal use and deducted from saleable farm-gate output rather than linked as an upstream raw-milk dataset. Externally purchased raw cattle milk is a separate product input with an upstream dataset and cannot be netted against output."
+  upstream_dataset_requirement: "Every purchased feed, animal, energy carrier, material, and externally provided service crossing the boundary requires a representative upstream dataset or an explicit documented data gap; supplier-specific data are preferred when material."
+  disclosure: "Declare farm geography, production system, reporting period, herd classes and inventory change, milk sold and internal use, milk composition, feed origins, manure systems, land management, allocation factors, excluded processes, data gaps, and any non-steady operational change."
+reference_flow_definition:
+  reference_amount: "1 kg FPCM"
+  product_flow_ref:
+    name: "Raw milk of cattle"
+    uuid: "aa8aebbb-724a-417b-8372-2dccd499ce71"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cattle species"
+    - "raw and unprocessed state"
+    - "farm-gate geography"
+    - "production system"
+    - "reporting period"
+    - "farm-gate temperature"
+    - "physical milk mass"
+    - "fat percentage"
+    - "true-protein percentage"
+    - "calculated FPCM mass"
+    - "saleable milk status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference raw-milk flow and FPCM result"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record physical raw-milk mass in kg and normalize to 1 kg FPCM; volume-only records require measured density for the represented milk and temperature."
+  - id: milk_composition
+    applies_to: "Milk fat and true protein"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Use representative measured fat and true-protein percentages for the same milk mass and period; do not substitute crude protein without a disclosed, justified conversion."
+  - id: dry_matter_basis
+    applies_to: "Feed intake and bedding"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg dry matter"
+    rule: "Preserve as-fed mass and dry-matter fraction in raw records, then calculate kg dry matter; disclose any feed quantity that cannot be converted."
+  - id: liveweight_basis
+    applies_to: "Animals leaving the farm"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg live weight"
+    rule: "Use live weight at farm exit or a documented conversion; carcass mass shall not be inserted as live weight without the conversion basis."
+  - id: gas_mass_basis
+    applies_to: "Direct gaseous emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg substance"
+    rule: "Record each emitted substance separately before impact characterization; do not store CO2-equivalent values as elementary-flow masses."
+process_map:
+  - id: herd_and_feed_management
+    name: "Herd, feeding, housing, and animal management"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground herd operation and enteric-emission basis"
+    quantitative_reference: "Per 1 kg FPCM at farm gate"
+  - id: manure_management
+    name: "Manure collection, storage, treatment, and export"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground manure route and direct-emission basis"
+    quantitative_reference: "Per 1 kg FPCM at farm gate"
+  - id: on_farm_feed_production
+    name: "Directly managed feed-crop and pasture production"
+    inclusion: "conditional"
+    inclusion_condition: "Include when feed crops or pasture are managed within the reporting farm boundary; otherwise link feed upstream"
+    role: "Foreground feed and managed-soil inventory"
+    quantitative_reference: "Per 1 kg FPCM at farm gate"
+  - id: milking_cooling_storage
+    name: "Milking, cleaning, cooling, and on-farm storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground delivery of saleable raw milk"
+    quantitative_reference: "Per 1 kg FPCM at farm gate"
+process_inventory:
+  - id: herd_and_feed_management
+    label: "Herd, feeding, housing, and animal management"
+    inputs:
+      product:
+        - row_id: feed_ration
+          role: "Dairy cattle feed ration"
+          name: "Route-specific cattle feed materials"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "Record forage, concentrate, by-product feed, mineral, and additive quantities consumed by the represented herd, with origin, animal class, as-fed mass, and dry-matter fraction."
+          amount:
+            expression: "Sum feed dry matter consumed by all represented herd classes and normalize by farm-gate FPCM."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg dry matter/kg FPCM"
+                basis: "total herd feed dry matter per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: herd_resources
+          role: "Herd water and housing energy"
+          name: "Route-specific water and energy carriers"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg water, kWh, or MJ"
+          description: "Record water, electricity, and fuels for drinking, ventilation, lighting, feeding equipment, pumping, and other herd operations; keep distinct supplied flows in the concrete data package."
+          amount:
+            expression: "Metered use or invoice-reconciled site use assigned by documented physical drivers."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_herd_resource_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg water-equivalent screening quantity/kg FPCM"
+                basis: "broad screen only; concrete water and energy flows remain separate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: replacement_cattle
+          role: "Replacement cattle entering the herd"
+          name: "Live dairy cattle, route-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Record purchased or transferred replacement cattle separately from births within the represented herd."
+          amount:
+            expression: "Calculate live weight entering from animal movement and weight records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_herd_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: live_cattle_sales
+          role: "Live cattle leaving the dairy farm"
+          name: "Live cattle, route-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Record calves, culled cows, heifers, and other live cattle leaving the farm by animal class and live weight."
+          amount:
+            expression: "Calculate total live weight leaving from animal movement and weight records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_herd_records
+              source_ids: []
+            ranges: []
+        - row_id: manure_internal
+          role: "Manure transferred to manure management"
+          name: "Cattle manure, internal transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record manure transferred internally to each storage or treatment route, including bedding and dilution water."
+          amount:
+            expression: "Calculate by route from excretion, bedding, and collected dilution-water records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manure_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg FPCM"
+                basis: "manure transferred internally per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: animal_mortalities
+          role: "Animal mortalities requiring treatment"
+          name: "Animal mortality waste, route-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record animals that die within the farm boundary by class, mass, and treatment route."
+          amount:
+            expression: "Sum recorded mortality mass and normalize by FPCM."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_herd_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg FPCM"
+                basis: "mortality mass per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: enteric_methane
+          role: "Enteric methane to air"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CH4"
+          description: "Calculate CH4 from enteric fermentation for every represented cattle class using consistent activity, productivity, diet, and region-specific method parameters."
+          amount:
+            expression: "Apply calc_enteric_ch4 and normalize the period result by farm-gate FPCM."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_herd_records
+              source_ids:
+                - ipcc-2019-livestock-manure
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg CH4/kg FPCM"
+                basis: "enteric methane per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: manure_management
+    label: "Manure collection, storage, treatment, and export"
+    inputs:
+      product:
+        - row_id: manure_received
+          role: "Manure received from the represented herd"
+          name: "Cattle manure, internal transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Keep manure quantity, volatile solids, nitrogen, bedding, dilution, storage, treatment, and destination records consistent with the internal herd output."
+          amount:
+            expression: "Equal manure_internal after route disaggregation; internal transfers cancel in the aggregated system."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manure_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: exported_manure
+          role: "Exported manure or recovered product"
+          name: "Route-specific manure or recovered product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record manure, digestate, compost, separated solids, recovered nutrients, or energy products leaving the farm, with classification as residue, co-product, or waste."
+          amount:
+            expression: "Measured dispatch quantity by product and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manure_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg FPCM"
+                basis: "exported manure or recovered product per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: manure_waste
+          role: "Manure sent to waste treatment or disposal"
+          name: "Route-specific manure waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record manure classified and managed as waste, its destination, and treatment burdens retained by the dairy system."
+          amount:
+            expression: "Measured or mass-balanced waste quantity by destination."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manure_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg FPCM"
+                basis: "manure waste per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: manure_methane
+          role: "Methane from manure management to air"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CH4"
+          description: "Calculate manure CH4 by animal class, volatile solids, management system, climate, and methane conversion."
+          amount:
+            expression: "Apply calc_manure_ch4 and normalize by farm-gate FPCM."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manure_records
+              source_ids:
+                - ipcc-2019-livestock-manure
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg CH4/kg FPCM"
+                basis: "manure methane per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: manure_nitrous_oxide
+          role: "Nitrous oxide from manure management to air"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N2O"
+          description: "Calculate direct and applicable indirect N2O without double counting field-application emissions."
+          amount:
+            expression: "Apply calc_manure_n2o and normalize by farm-gate FPCM."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manure_records
+              source_ids:
+                - ipcc-2019-livestock-manure
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg N2O/kg FPCM"
+                basis: "manure nitrous oxide per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: manure_ammonia
+          role: "Ammonia losses from manure management to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Record or calculate NH3 consistently with the manure nitrogen balance and indirect N2O calculation."
+          amount:
+            expression: "Apply the declared regional method to collected manure nitrogen and management-system records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manure_records
+              source_ids:
+                - fao-leap-nutrient-flows-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg NH3/kg FPCM"
+                basis: "ammonia loss per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: on_farm_feed_production
+    label: "Directly managed feed-crop and pasture production"
+    inputs:
+      product:
+        - row_id: feed_crop_inputs
+          role: "Feed-crop production inputs"
+          name: "Route-specific feed-crop inputs"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg, kg nutrient, MJ, kWh, or kg water"
+          description: "Record seed, fertilizers and nutrient content, manure applied, crop-protection products, fuel, electricity, irrigation water, and contracted field operations separately in the concrete package."
+          amount:
+            expression: "Field-operation and purchase records reconciled to managed area and feed output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_on_farm_feed_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10000"
+                unit: "kg water-equivalent screening quantity/kg FPCM"
+                basis: "broad screen only; concrete material, nutrient, water, and energy flows remain separate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: on_farm_feed_output
+          role: "Feed dry matter supplied to the herd"
+          name: "Crop- or forage-specific cattle feed"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "Record usable crop, pasture, forage, or conserved-feed dry matter transferred to herd feeding."
+          amount:
+            expression: "Harvested or grazed dry matter available after measured field and storage losses."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_on_farm_feed_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg dry matter/kg FPCM"
+                basis: "usable on-farm feed dry matter per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        - row_id: feed_land_nitrogen_losses
+          role: "Nitrogen losses from managed feed land"
+          name: "Substance- and compartment-specific nitrogen emission"
+          flow_type: "elementary"
+          property_unit: "Mass / kg substance"
+          description: "Calculate N2O to air and record or calculate NH3 to air and nitrate to water as separate elementary flows in the concrete package, consistently with nitrogen inputs, crop uptake, grazing, and manure routing."
+          amount:
+            expression: "Apply the declared IPCC and nutrient-flow methods without double counting manure-storage emissions."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_on_farm_feed_records
+              source_ids:
+                - ipcc-2019-livestock-manure
+                - fao-leap-nutrient-flows-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg substance/kg FPCM"
+                basis: "each separately reported nitrogen-loss substance per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: milking_cooling_storage
+    label: "Milking, cleaning, cooling, and on-farm storage"
+    inputs:
+      product:
+        - row_id: milking_resources
+          role: "Milking and cooling resources"
+          name: "Route-specific electricity, water, cleaning agent, and refrigerant"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg, kWh, or MJ"
+          description: "Record electricity, fuel, water, detergents, disinfectants, and refrigerant make-up separately. Directly assign milking, cooling, and milk-storage resources to milk."
+          amount:
+            expression: "Sub-meter, dosing, service, and invoice records reconciled to site totals."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milking_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg water-equivalent screening quantity/kg FPCM"
+                basis: "broad screen only; concrete water, material, energy, and refrigerant flows remain separate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: raw_cattle_milk
+          role: "Raw cattle milk at the farm gate"
+          name: "Raw milk of cattle"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa8aebbb-724a-417b-8372-2dccd499ce71"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The final product is saleable raw whole cattle milk ready to leave on-farm storage. Physical mass and measured composition are retained alongside the FPCM-normalized result."
+          amount:
+            expression: "Calculate the physical raw-milk mass corresponding to 1 kg FPCM with calc_fpcm."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg FPCM at the farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_milk_output_records
+              source_ids:
+                - idf-dairy-carbon-footprint-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "2"
+                unit: "kg raw milk/kg FPCM"
+                basis: "physical raw-milk mass corresponding to 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: milking_wastes
+          role: "Milking wastewater and non-saleable milk"
+          name: "Route-specific wastewater or raw-milk waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater by treatment route and rejected or discarded milk separately from milk fed internally to animals."
+          amount:
+            expression: "Metered, water-balanced, or disposition-record quantity by destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milk_output_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg FPCM"
+                basis: "each separately reported waste flow per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_leakage
+          role: "Refrigerant leakage to air"
+          name: "Refrigerant emission to air, species-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant species released from milk-cooling equipment; do not replace mass emissions with CO2-equivalent values."
+          amount:
+            expression: "Equipment inventory balance or service-record loss assigned to milk cooling."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg FPCM at farm gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_milking_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg refrigerant/kg FPCM"
+                basis: "refrigerant loss per 1 kg FPCM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Separable farm activities and outputs"
+    rule: "Subdivide directly attributable activities before allocation. Assign milking, milk cooling, and milk-storage burdens entirely to milk; separately accounted animal-rearing or exported crop/energy activities do not enter the shared dairy allocation pool."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+  - rule_id: allocation_milk_live_animals
+    applies_to: "Shared dairy-herd burdens between milk and live cattle"
+    rule: "Apply the IDF 2022 biophysical net-energy method: AF_milk = (NE_L × M_FPCM) / ((NE_L × M_FPCM) + Σ(NE_G,i × M_liveweight,i)); use consistent period FPCM and live-weight sales, class-specific net energy for growth when available, and disclose every factor. The remaining fraction is assigned to live animals."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+  - rule_id: allocation_manure
+    applies_to: "Manure leaving the farm"
+    rule: "Classify manure explicitly. Treat manure with essentially no value at the boundary as a residue using cut-off; if it is a co-product, use disclosed economic allocation; if it is waste, assign its treatment burdens to the dairy system without an avoided-product credit."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+      - fao-leap-large-ruminants-2016
+  - rule_id: allocation_internal_flows
+    applies_to: "Internal milk, feed, and manure transfers"
+    rule: "Cancel internal product transfers only after preserving their quantities and characteristics. Internal raw milk fed to calves reduces saleable output; internally produced feed and manure shall not receive duplicated upstream burdens."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+      - fao-leap-large-ruminants-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_herd_records
+      process_id: "herd_and_feed_management"
+      flow_role: "Herd structure, movements, live weight, mortality, and enteric parameters"
+      record_type: "Animal register and herd-performance records"
+      raw_fields: "animal_class; head_count; entry_date; exit_date; exit_reason; live_weight; body_weight; milk_yield; feed_digestibility; gross_energy_intake"
+      collection_method: "Farm register, calibrated scales or documented weight estimation, and herd-system export"
+      unit: "head; kg live weight; kg milk; MJ/head/day"
+      frequency: "Continuous events, monthly summary"
+      temporal_coverage: "At least one representative 12-month period; longer averaging when unstable"
+      site_scope: "All cattle supporting reported milk"
+      aggregation_rule: "Reconcile opening stock + births + purchases - sales - transfers - deaths = closing stock; aggregate animal-days"
+      quality_evidence: "Register reconciliation, scale calibration or method, missing-event log, and system export"
+    - protocol_id: cp_feed_records
+      process_id: "herd_and_feed_management"
+      flow_role: "Feed ration and bedding"
+      record_type: "Purchase, mixing, inventory, grazing, and laboratory records"
+      raw_fields: "material_id; origin; animal_class; as_fed_mass; dry_matter_fraction; opening_stock; closing_stock; feed_waste; bedding_mass"
+      collection_method: "Weighbridge, invoices, mixer logs, feed analyses, grazing estimate, and stock reconciliation"
+      unit: "kg as fed; kg dry matter; % dry matter"
+      frequency: "Batch or daily, monthly summary"
+      temporal_coverage: "Same representative period as milk and herd"
+      site_scope: "All feed and bedding used by represented herd"
+      aggregation_rule: "Inputs + opening stock - closing stock - losses; convert to dry matter and normalize by FPCM"
+      quality_evidence: "Calibration, invoices, laboratory certificates, and reconciliation difference"
+    - protocol_id: cp_herd_resource_records
+      process_id: "herd_and_feed_management"
+      flow_role: "Herd water and housing energy"
+      record_type: "Meter, invoice, and equipment-operation records"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; invoice_quantity; equipment_hours; allocation_driver"
+      collection_method: "Sub-meter preferred; otherwise site reconciliation with physical allocation"
+      unit: "kg water; kWh; MJ; kg or L fuel"
+      frequency: "Monthly"
+      temporal_coverage: "Same representative period as milk"
+      site_scope: "Herd housing and service areas, excluding separately metered milking"
+      aggregation_rule: "Reconcile meters and invoices; preserve distinct carriers"
+      quality_evidence: "Meter calibration, invoices, conversion factors, and allocation worksheet"
+    - protocol_id: cp_manure_records
+      process_id: "manure_management"
+      flow_role: "Manure quantity, composition, route, treatment, export, and emissions"
+      record_type: "Manure-management and nutrient-balance records"
+      raw_fields: "animal_class; volatile_solids; nitrogen_excretion; bedding; dilution_water; management_system; climate; storage_duration; treatment; exported_mass; destination"
+      collection_method: "Records, engineering balance, manure analysis, storage measurement, and method calculation"
+      unit: "kg manure; kg volatile solids; kg N; days; kg product"
+      frequency: "Event or batch, monthly summary"
+      temporal_coverage: "Same period as herd and milk"
+      site_scope: "Every manure route for all represented herd classes"
+      aggregation_rule: "Reconcile generated, stored, treated, applied, exported, and disposed manure; calculate by route"
+      quality_evidence: "Sampling, laboratory results, storage dimensions, receipts, balance closure, and factor provenance"
+    - protocol_id: cp_on_farm_feed_records
+      process_id: "on_farm_feed_production"
+      flow_role: "Managed crop and pasture inputs, outputs, land, and nutrient losses"
+      record_type: "Field-operation, harvest, grazing, and land records"
+      raw_fields: "field_id; crop_or_pasture; area; seed; fertilizer; nutrient_content; manure_applied; crop_protection; fuel; electricity; irrigation; yield; dry_matter; residue; grazing_days; previous_land_use"
+      collection_method: "Field logs, invoices, calibrated application records, yield measurement, grazing records, and spatial evidence"
+      unit: "ha; kg; kg nutrient; MJ; kWh; kg water; kg dry matter"
+      frequency: "Each operation and harvest"
+      temporal_coverage: "Crop years supplying feed to milk period"
+      site_scope: "All directly managed feed land and included contracted operations"
+      aggregation_rule: "Allocate field inputs to harvested or grazed dry matter; retain crop, field, and year"
+      quality_evidence: "Completeness, calibration, invoices, dry-matter tests, yield reconciliation, and land evidence"
+    - protocol_id: cp_milking_records
+      process_id: "milking_cooling_storage"
+      flow_role: "Milking, cleaning, cooling, storage, water, energy, chemicals, and refrigerant"
+      record_type: "Meter, dosing, service, and cleaning-cycle records"
+      raw_fields: "electricity; fuel; water; cleaning_agent; dose; cleaning_cycles; refrigerant_type; refrigerant_added; tank_temperature"
+      collection_method: "Sub-meter, invoice, dosing logs, controller, service records, and water balance"
+      unit: "kWh; MJ; kg water; kg chemical; kg refrigerant; °C"
+      frequency: "Daily or batch, monthly reconciliation"
+      temporal_coverage: "Same period as milk output"
+      site_scope: "All parlours, milk rooms, cooling, and farm storage"
+      aggregation_rule: "Directly assign measured milking/cooling loads to milk and reconcile with site totals"
+      quality_evidence: "Calibration, invoices, dosing checks, service certificates, temperature logs, and balance closure"
+    - protocol_id: cp_milk_output_records
+      process_id: "milking_cooling_storage"
+      flow_role: "Physical milk, composition, internal use, rejected milk, wastewater, and saleable output"
+      record_type: "Tank, processor receipt, laboratory, disposition, and water-balance records"
+      raw_fields: "milk_mass; milk_volume; density; fat_percent; true_protein_percent; temperature; saleable_mass; calf_feed_mass; rejected_mass; wastewater; destination; timestamp"
+      collection_method: "Calibrated tank or weigh record linked to laboratory composition, processor receipt, and water balance"
+      unit: "kg; L; kg/L; % by mass; °C"
+      frequency: "Each pickup or batch; representative composition testing"
+      temporal_coverage: "Same period as herd and resource records, including seasonality"
+      site_scope: "All produced milk, every disposition, and related wastewater"
+      aggregation_rule: "Reconcile produced = saleable + internal use + rejected + inventory change; calculate FPCM by batch or period"
+      quality_evidence: "Tank calibration, laboratory QA, receipts, density method, and mass-balance closure"
+  calculation_rules:
+    - id: calc_fpcm
+      applies_to: "Physical raw cattle milk"
+      rule: "FPCM (kg) = milk mass (kg) × [0.1226 × fat% + 0.0776 × true protein% + 0.2534]; apply composition values as percentages, calculate at the most representative batch or period resolution, and sum before normalization."
+      inputs:
+        - milk_mass
+        - fat_percent
+        - true_protein_percent
+      output: "kg FPCM"
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+    - id: calc_saleable_milk_balance
+      applies_to: "Milk dispositions"
+      rule: "total physical milk produced = saleable farm-gate milk + internal milk use + rejected milk + closing inventory - opening inventory; investigate unexplained imbalance and normalize only saleable output."
+      inputs:
+        - total_milk
+        - saleable_milk
+        - internal_use
+        - rejected_milk
+        - opening_inventory
+        - closing_inventory
+      output: "reconciled kg physical milk and kg FPCM"
+      source_ids:
+        - mass-balance-identity
+        - idf-dairy-carbon-footprint-2022
+    - id: calc_milk_allocation
+      applies_to: "Shared dairy-herd burdens"
+      rule: "AF_milk = (NE_L × M_FPCM) / ((NE_L × M_FPCM) + Σ(NE_G,i × M_liveweight,i)); AF_live_animals = 1 - AF_milk. Use IDF class-specific net-energy values or justified values and directly assign separable activities first."
+      inputs:
+        - M_FPCM
+        - animal_class
+        - M_liveweight_i
+        - NE_L
+        - NE_G_i
+        - directly_attributable_burdens
+      output: "disclosed allocation factors and allocated shared inventory"
+      source_ids:
+        - idf-dairy-carbon-footprint-2022
+    - id: calc_enteric_ch4
+      applies_to: "All represented cattle classes"
+      rule: "Use the appropriate IPCC 2019 Refinement tier. Prefer Tier 2 when gross-energy intake, methane conversion, animal class, productivity, and diet data are available; otherwise use the most representative permitted factor and disclose the limitation."
+      inputs:
+        - animal_days
+        - animal_class
+        - "gross_energy_intake or emission_factor"
+        - methane_conversion_factor
+        - productivity
+        - diet
+      output: "kg CH4 from enteric fermentation"
+      source_ids:
+        - ipcc-2019-livestock-manure
+    - id: calc_manure_ch4
+      applies_to: "Each manure route"
+      rule: "Calculate manure CH4 from animal population, volatile-solids excretion, maximum methane-producing capacity, management-system fraction, methane conversion, and applicable recovery or oxidation terms."
+      inputs:
+        - animal_days
+        - volatile_solids
+        - manure_system_fraction
+        - B0
+        - MCF
+        - recovery
+        - oxidation
+      output: "kg CH4 from manure management"
+      source_ids:
+        - ipcc-2019-livestock-manure
+    - id: calc_manure_n2o
+      applies_to: "Each manure route"
+      rule: "Calculate direct and indirect N2O from nitrogen excretion and management-system fractions; keep volatilized and leached nitrogen consistent with NH3, nitrate, and managed-soil calculations."
+      inputs:
+        - nitrogen_excretion
+        - manure_system_fraction
+        - direct_EF
+        - volatilization_fraction
+        - leaching_fraction
+        - indirect_EF
+      output: "kg N2O from manure management"
+      source_ids:
+        - ipcc-2019-livestock-manure
+        - fao-leap-nutrient-flows-2018
+    - id: calc_inventory_normalization
+      applies_to: "All inventory rows"
+      rule: "Divide period quantities by saleable farm-gate FPCM after internal-flow cancellation and allocation; preserve totals, period, and allocation factor for audit."
+      inputs:
+        - reporting_period_amount
+        - saleable_FPCM
+        - internal_flow_flag
+        - allocation_factor
+      output: "inventory amount per 1 kg FPCM"
+      source_ids:
+        - mass-balance-identity
+        - idf-dairy-carbon-footprint-2022
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and classification"
+      requirement: "Confirm cattle species, raw/unprocessed state, CPC 02211 scope, reference-flow UUID, farm-gate location, and saleable status."
+      evidence: "Product specification, milk receipt, classification record, and TianGong identity confirmation"
+    - id: dq_temporal
+      applies_to: "All foreground records"
+      requirement: "Use a common representative period of at least 12 months unless a shorter period demonstrably covers seasonality; disclose herd expansion, contraction, disruption, drought, or other non-steady conditions."
+      evidence: "Dated herd, milk, feed, resource, field, and manure records plus representativeness statement"
+    - id: dq_completeness
+      applies_to: "Farm balances"
+      requirement: "Reconcile milk dispositions, herd movements, feed inventory, water and energy totals, manure routes, and nitrogen flows; quantify missing coverage and omit no material herd class or manure route silently."
+      evidence: "Reconciliation worksheets, closure differences, missing-data log, and corrective actions"
+    - id: dq_measurement
+      applies_to: "Metered, weighed, and laboratory data"
+      requirement: "Retain equipment identity, calibration or verification, sampling method, laboratory method, density conversion, and estimation hierarchy."
+      evidence: "Calibration certificates, laboratory QA, sampling records, invoices, and estimation rationale"
+    - id: dq_geography_technology
+      applies_to: "Upstream datasets and emission methods"
+      requirement: "Match geography, production system, feed origin, electricity, fuel, climate, manure system, and animal productivity; disclose proxies."
+      evidence: "Dataset metadata, supplier information, factor provenance, and proxy justification"
+    - id: dq_consistency
+      applies_to: "Allocation and direct-emission calculations"
+      requirement: "Use one population and period across FPCM, live-weight outputs, enteric emissions, manure emissions, and allocation; keep directly assigned burdens outside the shared allocation pool."
+      evidence: "Calculation workbook, factor version, source references, and independent formula check"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "Product identity"
+    rule: "Fail when the reference product is not cattle milk, is processed beyond raw on-farm cooling/storage, lacks the declared farm gate, or does not use the confirmed reference-flow identity."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+  - rule_id: validate_reference_flow
+    applies_to: "Functional unit and reference flow"
+    rule: "Fail when physical milk mass, fat percentage, true-protein percentage, FPCM calculation, saleable status, or normalization to exactly 1 kg FPCM is missing or inconsistent."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+  - rule_id: validate_period_herd
+    applies_to: "Temporal and herd coverage"
+    rule: "Fail when herd classes, animal movements, milk output, feed, manure, and resource records do not share a representative period or opening and closing herd inventories cannot be reconciled."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+      - fao-leap-large-ruminants-2016
+  - rule_id: validate_boundary
+    applies_to: "Boundary completeness"
+    rule: "Fail when material feed supply, directly managed feed production, enteric emissions, manure routes, managed-soil emissions, milking, cooling, water, energy, or milk losses are omitted without an applicability reason and data-gap disclosure."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+      - fao-leap-large-ruminants-2016
+  - rule_id: validate_emissions
+    applies_to: "Direct emissions"
+    rule: "Fail when enteric or manure methods omit region, cattle category, productivity, diet or feed-energy basis, manure system, climate, factor source, or calculation tier needed by the method."
+    source_ids:
+      - ipcc-2019-livestock-manure
+  - rule_id: validate_allocation
+    applies_to: "Co-products and residues"
+    rule: "Fail when directly attributable activities are allocated, live-animal outputs are omitted, IDF net-energy allocation inputs or factors are missing, manure classification is undeclared, or fractions do not sum to one within tolerance."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+      - fao-leap-large-ruminants-2016
+  - rule_id: validate_internal_flows
+    applies_to: "Internal milk, feed, and manure"
+    rule: "Fail when internal flows are omitted before reconciliation, counted as both purchased and internally produced, or left in the aggregated inventory without cancellation."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_quality_disclosure
+    applies_to: "Dataset publication readiness"
+    rule: "Fail when the package lacks geography, production system, period, herd structure, milk composition, feed origin, manure systems, allocation, source/factor versions, proxy disclosure, important QA-range exceptions, or material data gaps."
+    source_ids:
+      - idf-dairy-carbon-footprint-2022
+      - fao-leap-large-ruminants-2016
+published_dataset_profile:
+  dataset_role: "Foreground raw-cattle-milk production data package normalized to 1 kg FPCM at the farm gate"
+  downstream_use: "May be published as a secondary_dataset or background_dataset for dairy processing, food-product, agricultural, and comparative supply-chain models when scope and quality are compatible"
+  allowed_use: "Attributional farm-gate inventory, hotspot analysis within the declared farm system, supplier-specific or representative raw-milk input to downstream models, and scenario comparison using the same functional unit and allocation method"
+  excluded_use: "Direct consumer or nutrition claims; processed-milk representation; non-cattle milk; consequential market-change claims; cross-study ranking with incompatible boundaries, allocation, geography, period, or data quality; use of provisional QA ranges as default inventory"
+  required_metadata: "PCR id and version state; CPC reference; geography; farm production system; reporting period; herd classes and inventory change; raw-milk and FPCM output; fat and true-protein content; farm-gate temperature; feed origin; manure systems; land management; allocation method and factors; Tiangong identities; source and factor versions"
+  required_quality_disclosure: "Primary-data coverage by inventory group; measurement and calibration evidence; temporal, geographic, and technological representativeness; mass/energy/nitrogen balance closure; proxies and missing data; emission tier and factors; allocation sensitivity; provisional QA-range exceptions"
+  update_trigger: "Recalculate and republish when milk composition, herd productivity or structure, feed system, manure management, farm energy supply, land management, geography, reporting period, allocation method, reference identity, or a material source/factor changes enough to affect representativeness"
+data_sources:
+  - id: "idf-dairy-carbon-footprint-2022"
+    type: "standard"
+    reference: "International Dairy Federation (2022), *The IDF global Carbon Footprint standard for the dairy sector*, Bulletin 520/2022, DOI: 10.56169/FKRK7166, https://shop.fil-idf.org/products/the-idf-global-carbon-footprint-standard-for-the-dairy-sector (accessed 2026-07-24)"
+    used_for: "FPCM functional unit and formula, cradle-to-farm-gate inventory, data quality, milk/live-animal allocation, manure handling, direct assignment, and reporting"
+  - id: "fao-leap-large-ruminants-2016"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership (2016), *Environmental performance of large ruminant supply chains: Guidelines for assessment*, ISBN 978-92-5-109523-2, https://openknowledge.fao.org/handle/20.500.14283/i6494en (accessed 2026-07-24)"
+    used_for: "Large-ruminant process boundary, whole-herd coverage, feed and manure treatment, and allocation hierarchy"
+  - id: "fao-leap-animal-feed-2016"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership (2016), *Environmental performance of animal feeds supply chains: Guidelines for assessment*, https://www.fao.org/partnerships/leap/resources/publications/en (accessed 2026-07-24)"
+    used_for: "Feed origin, upstream feed datasets, directly managed feed production, and land-related inventory"
+  - id: "fao-leap-nutrient-flows-2018"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership (2018), *Nutrient flows and associated environmental impacts in livestock supply chains: Guidelines for quantitative assessment*, https://openknowledge.fao.org/handle/20.500.14283/ca1328en (accessed 2026-07-24)"
+    used_for: "Manure and managed-land nitrogen balance, ammonia, nitrate, and nutrient-flow consistency"
+  - id: "ipcc-2019-livestock-manure"
+    type: "method_factor"
+    reference: "IPCC (2019), *2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories*, Volume 4, Chapter 10: Emissions from Livestock and Manure Management, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch10_Livestock.pdf (accessed 2026-07-24)"
+    used_for: "Enteric CH4, manure CH4, manure N2O, animal categories, activity data, tiers, and factor selection"
+  - id: "ilcd-units-of-mass"
+    type: "standard"
+    reference: "European Commission Joint Research Centre, ILCD reference unit group *Units of mass*, UUID 93a60a57-a4c8-11da-a746-0800200c9a66, https://eplca.jrc.ec.europa.eu/LCDN/downloads/ILCD_Format_1.1_Documentation/ILCD_UnitGroupDataSet.html (accessed 2026-07-24)"
+    used_for: "Reference unit-group identity and kg reference unit"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to milk, feed, herd, and manure reconciliation"
+    used_for: "Internal-flow cancellation, milk disposition balance, and QA bounds"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b181117e277be6dc967752150f9ab9f540c7a8e2e6b3b0fb9792d556192c275f"
+  generated_content_sha256: "sha256:234c32f5994cb832dbabf3d7d05ef976257a6c1423f1325f184bf74133898004"

@@ -1,10 +1,1218 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21131"
-  title: "Meat of cattle, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-cattle-frozen"
+  classification_refs: "CPC 3.0:21131 Meat of cattle, frozen"
+  covered_products: "Frozen cattle carcasses, sides, quarters, bone-in cuts, boneless cuts, trimmings, and minced cattle meat"
+  excluded_products: "Fresh or chilled cattle meat; edible offal; cooked, cured, seasoned, or otherwise prepared meat; non-cattle meat; retail or food-service products beyond the declared plant gate"
+  representative_product: "Packaged frozen boneless cattle meat at the frozen-meat production plant gate"
+  production_route: "Slaughter and dressing where integrated; chilling; cutting or deboning as applicable; packaging; quick freezing; frozen storage to the declared gate"
+  market_state: "Frozen, hygienically handled, traceable by lot, packaged or otherwise protected as declared, and maintained at -18 °C or colder after thermal stabilization"
+functional_unit:
+  what: "Frozen cattle meat supplied for subsequent distribution, processing, retail, or food service"
+  how_much: "1 kg net product mass, excluding transport packaging and separately declared ice or glaze"
+  how_well: "Product identity and presentation declared; thermal centre at -18 °C or colder after stabilization; food-safety release requirements met; cold-chain condition preserved to the declared gate"
+  how_long_or_cycle: "One production lot through the declared foreground route and included frozen-storage duration"
+  reference_flow_link: "frozen_cattle_meat_reference"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_accounting
+      applies_to: "all foreground routes"
+      rule: "Include every foreground operation from the declared starting condition through released frozen cattle meat, including animal deconstruction where applicable, packaging, refrigeration, water use, wastewater handling, and within-plant transport; explicitly disclose any omitted operation and its upstream dataset."
+      source_ids:
+        - fao-leap-large-ruminants-2016
+        - codex-cxc-58-2005
+    - rule_id: boundary_quick_freezing
+      applies_to: "quick freezing and transfer to storage"
+      rule: "Include energy, refrigerant make-up and leakage, product losses, freezing release checks, and transfer to cold storage; freezing is complete only after the thermal centre reaches -18 °C or colder after stabilization."
+      source_ids:
+        - codex-cxc-8-1976-2008
+        - fao-meat-cold-store-1991
+    - rule_id: boundary_cold_storage
+      applies_to: "frozen storage before the declared gate"
+      rule: "Include storage electricity, refrigerant losses, defrost-related resources, product losses, and the actual lot storage duration; preserve the cold-chain temperature record."
+      source_ids:
+        - codex-cxc-8-1976-2008
+        - fao-meat-cold-store-1991
+    - rule_id: boundary_cutoff_disclosure
+      applies_to: "material and energy flows"
+      rule: "Do not omit a flow known to be environmentally or mass-balance significant. Any screened-out flow shall be identified with the screening basis and included in completeness and sensitivity review."
+      source_ids:
+        - fao-leap-large-ruminants-2016
+boundary_abstraction:
+  declared_starting_condition: "Slaughter-ready live cattle at the abattoir gate for an integrated route, or purchased traceable chilled cattle carcasses or meat at the receiving gate for a partial route"
+  starting_condition_role: "Primary material input whose upstream production and any omitted slaughter or chilling are represented by linked upstream datasets"
+  product_classification_scope: "Frozen cattle meat corresponding to CPC 3.0:21131; fresh or chilled cattle meat and edible offal remain outside this product identity"
+  recursive_input_rule: "If frozen cattle meat in the same category is used as an input, record it once as a traceable upstream product input with its own dataset and do not recursively recreate its already completed production stages"
+  upstream_dataset_requirement: "Link geographically and temporally representative datasets for live cattle or purchased chilled meat and for purchased electricity, fuels, water, packaging, cleaning agents, refrigerants, transport, and waste treatment"
+  disclosure: "Declare the actual starting material, included and omitted unit processes, product presentation, co-product treatment, cut-offs, storage duration, temperature-control regime, data gaps, and unresolved flow identities"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat of cattle, frozen"
+    uuid: "16e6d353-2acd-4dc3-99b3-fce9d27fbbd7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cattle species or commercial class"
+    - "product presentation (carcass / cut / trimming / minced)"
+    - "bone-in or boneless state"
+    - "net product mass basis"
+    - "packaging form"
+    - "freezing technology"
+    - "thermal-centre release temperature"
+    - "included storage duration"
+    - "production geography"
+    - "production period"
+    - "plant gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg of net frozen cattle meat as the quantitative reference; exclude pallets, reusable transport items, and separately reported packaging."
+  - id: net_product_mass
+    applies_to: "product and intermediate meat masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated scale records. State whether weights are hot carcass, chilled carcass, prepared meat, or frozen net product, and do not mix these bases without an explicit conversion."
+  - id: frozen_state_temperature
+    applies_to: "freezing release and frozen storage"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Measure the thermal-centre release temperature and record time-resolved cold-store temperatures; the product shall reach -18 °C or colder after stabilization and remain at -18 °C or colder subject only to documented applicable tolerances."
+  - id: water_mass_conversion
+    applies_to: "water inputs and wastewater outputs"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve measured volume and temperature; when converting volume to mass, record the density assumption and conversion formula."
+  - id: storage_duration
+    applies_to: "frozen storage"
+    required_property_ref:
+      name: "Time"
+      uuid: ""
+    required_unit: "day"
+    rule: "Record entry and exit timestamps by lot and calculate storage duration; storage electricity and losses shall be normalized using the same lot-time coverage."
+process_map:
+  - id: slaughter_and_dressing
+    name: "Cattle receiving, slaughter, dressing, and primary chilling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when live cattle enter the foreground; omit only when a verified purchased-carcass or chilled-meat dataset covers these operations"
+    role: "foreground primary processing"
+    quantitative_reference: "kg dressed and chilled cattle meat transferred to the next included process"
+  - id: cutting_and_packaging
+    name: "Cutting, deboning, trimming, portioning, mincing, and packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Include the operations actually used to obtain the declared product presentation and packaging form"
+    role: "foreground product preparation"
+    quantitative_reference: "kg prepared chilled cattle meat transferred to freezing"
+  - id: quick_freezing
+    name: "Quick freezing and release"
+    inclusion: "required"
+    inclusion_condition: "Always required for the frozen product identity"
+    role: "foreground state conversion"
+    quantitative_reference: "kg frozen cattle meat released at -18 °C or colder at the thermal centre"
+  - id: frozen_storage
+    name: "Frozen storage to the declared plant gate"
+    inclusion: "required"
+    inclusion_condition: "Include storage from freezing release until the declared gate; a zero-duration direct transfer shall still be recorded"
+    role: "foreground conditioning and holding"
+    quantitative_reference: "kg net frozen cattle meat at the declared gate and lot-days stored"
+process_inventory:
+  - id: slaughter_and_dressing
+    label: "Cattle receiving, slaughter, dressing, and primary chilling"
+    inputs:
+      product:
+        - row_id: live_cattle_input
+          role: "Slaughter-ready live cattle"
+          name: "Slaughter-ready live cattle (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Record accepted cattle lots and measured live weight entering the integrated abattoir route. The Tiangong product-flow UUID is unresolved and shall be selected by exact lookup before publication."
+          amount:
+            expression: "Sum accepted live-weight records for cattle attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen cattle meat reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_material_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+                - codex-cxc-58-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "1.3"
+                upper: "5.0"
+                unit: "kg live weight/kg net frozen cattle meat"
+                basis: "broad candidate-stage screen spanning carcass, bone-in, and boneless product routes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_electricity
+          role: "Electricity used in slaughter and chilling"
+          name: "Electricity, supplied at plant (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or defensibly sub-metered electricity for receiving, slaughter, dressing, chilling, pumps, compressed air, lighting, and sanitation."
+          amount:
+            expression: "Metered electricity allocated to the process and production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5.0"
+                unit: "kWh/kg dressed chilled meat"
+                basis: "broad candidate-stage facility electricity screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_water
+          role: "Water supplied to slaughter, dressing, chilling, and sanitation"
+          name: "Process water (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record incoming process and sanitation water, preserving measured volume and any conversion to mass."
+          amount:
+            expression: "Metered water entering the process during the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids:
+                - fao-leap-large-ruminants-2016
+                - codex-cxc-58-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "30"
+                unit: "kg water/kg dressed chilled meat"
+                basis: "broad candidate-stage water-use screen requiring site-data replacement"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_thermal_energy
+          role: "Fuels and thermal energy used on site"
+          name: "Fuel or thermal energy, carrier-specific (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy or mass / MJ, kWh, or kg"
+          description: "Record each fuel or purchased thermal-energy carrier separately. Direct combustion emissions shall be inventoried as substance-specific elementary flows when combustion occurs inside the foreground."
+          amount:
+            expression: "Metered or invoiced carrier quantity allocated to slaughter and primary chilling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "MJ/kg dressed chilled meat"
+                basis: "broad candidate-stage thermal-energy screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_chilled_meat_output
+          role: "Dressed and chilled cattle meat transferred for preparation or freezing"
+          name: "Dressed and chilled cattle meat (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the accepted chilled meat output from calibrated lot weights after dressing and primary chilling."
+          amount:
+            expression: "Measured chilled carcass and edible meat mass transferred to the next included process"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per production lot and per 1 kg downstream net frozen cattle meat"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_material_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "0.8"
+                unit: "kg dressed chilled meat/kg accepted live weight"
+                basis: "broad candidate-stage mass-yield screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_coproducts
+          role: "Revenue-generating slaughter co-products"
+          name: "Slaughter co-product, product-specific (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each revenue-generating hide, edible co-product, tallow, rendering material, or other product separately by mass and revenue category. Flow UUIDs remain unresolved pending exact lookup."
+          amount:
+            expression: "Measured mass of each saleable co-product by production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per production lot and per 1 kg dressed chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_material_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "4.0"
+                unit: "kg co-products/kg dressed chilled meat"
+                basis: "broad candidate-stage aggregate screen; review each co-product separately"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: slaughter_waste
+          role: "Non-revenue slaughter residuals and condemned material"
+          name: "Slaughter residual or condemned material, route-specific (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record condemned material, gut contents, screenings, and other non-revenue residuals by treatment route without recasting saleable co-products as waste."
+          amount:
+            expression: "Measured mass dispatched to each treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastes
+              source_ids:
+                - fao-leap-large-ruminants-2016
+                - codex-cxc-58-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3.0"
+                unit: "kg waste/kg dressed chilled meat"
+                basis: "broad candidate-stage residual screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_wastewater
+          role: "Wastewater sent to treatment"
+          name: "Wastewater from meat processing (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record wastewater volume or mass, treatment destination, and measured or sampled load indicators required by the selected treatment dataset."
+          amount:
+            expression: "Metered wastewater discharge plus documented unmetered streams"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastes
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "35"
+                unit: "kg wastewater/kg dressed chilled meat"
+                basis: "broad candidate-stage discharge screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: cutting_and_packaging
+    label: "Cutting, deboning, trimming, portioning, mincing, and packaging"
+    inputs:
+      product:
+        - row_id: chilled_meat_input
+          role: "Chilled cattle meat received for preparation"
+          name: "Chilled cattle meat (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record internal transfer or purchased chilled cattle meat by presentation and lot. Purchased meat requires a traceable upstream dataset covering omitted production stages."
+          amount:
+            expression: "Measured chilled meat mass accepted for the declared preparation route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared chilled meat sent to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_material_balance
+              source_ids:
+                - codex-cxc-58-2005
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "3.0"
+                unit: "kg chilled meat/kg prepared chilled meat"
+                basis: "broad candidate-stage screen spanning bone-in and boneless preparation"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_input
+          role: "Packaging materials"
+          name: "Food-contact and secondary packaging material, material-specific (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary and secondary packaging by material and mass; exclude reusable transport items from net product mass and model them separately when in scope."
+          amount:
+            expression: "Issued packaging less documented returns and unused stock, by material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared chilled meat sent to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_material_balance
+              source_ids:
+                - codex-cxc-8-1976-2008
+                - fao-meat-cold-store-1991
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.30"
+                unit: "kg packaging/kg prepared chilled meat"
+                basis: "broad candidate-stage packaging screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_electricity
+          role: "Electricity used in cutting and packaging"
+          name: "Electricity, supplied at plant (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for cutting, deboning, mincing, packaging, room cooling, compressed air, and sanitation attributable to this process."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity allocated to the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_utilities
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "3.0"
+                unit: "kWh/kg prepared chilled meat"
+                basis: "broad candidate-stage electricity screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_chilled_meat_output
+          role: "Prepared chilled cattle meat sent to freezing"
+          name: "Prepared chilled cattle meat (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net prepared meat transferred to freezing, preserving presentation, bone status, packaging form, and lot identity."
+          amount:
+            expression: "Measured accepted net meat mass transferred to freezing"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen cattle meat reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_material_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.5"
+                unit: "kg prepared chilled meat/kg net frozen cattle meat"
+                basis: "broad candidate-stage pre-freezing loss screen"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_coproducts
+          role: "Revenue-generating preparation co-products"
+          name: "Preparation co-product, product-specific (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bones, fat, trimmings, or other saleable outputs separately when they leave for another market."
+          amount:
+            expression: "Measured mass of each revenue-generating output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_material_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2.0"
+                unit: "kg co-products/kg prepared chilled meat"
+                basis: "broad candidate-stage screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: cutting_waste
+          role: "Preparation rejects and packaging waste"
+          name: "Meat-processing or packaging waste, route-specific (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-revenue meat rejects and packaging scrap separately by treatment route."
+          amount:
+            expression: "Measured waste mass dispatched to each treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_material_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg waste/kg prepared chilled meat"
+                basis: "broad candidate-stage rejection and scrap screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: quick_freezing
+    label: "Quick freezing and release"
+    inputs:
+      product:
+        - row_id: freezing_meat_input
+          role: "Prepared chilled cattle meat entering the freezer"
+          name: "Prepared chilled cattle meat (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net meat mass and temperature entering the freezing equipment by lot."
+          amount:
+            expression: "Measured input mass to the quick-freezing operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released frozen cattle meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_batch_energy
+              source_ids:
+                - codex-cxc-8-1976-2008
+                - fao-meat-cold-store-1991
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.3"
+                unit: "kg chilled meat/kg released frozen meat"
+                basis: "broad candidate-stage freezing-loss screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: freezing_electricity
+          role: "Electricity used by quick freezing"
+          name: "Electricity, supplied at plant (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record freezer, fan, pump, conveyor, defrost, and attributable auxiliary electricity during the batch or continuous production period."
+          amount:
+            expression: "Metered electricity allocated to frozen product released in the same operating period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released frozen cattle meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_batch_energy
+              source_ids:
+                - codex-cxc-8-1976-2008
+                - fao-meat-cold-store-1991
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5.0"
+                unit: "kWh/kg released frozen meat"
+                basis: "broad candidate-stage technology screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: freezing_refrigerant_makeup
+          role: "Refrigerant make-up supplied to freezer system"
+          name: "Refrigerant, substance-specific (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant species added to equipment serving quick freezing and allocate only the attributable portion."
+          amount:
+            expression: "Refrigerant additions allocated from a documented system mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released frozen cattle meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg refrigerant/kg released frozen meat"
+                basis: "deliberately broad candidate-stage leak screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_frozen_meat
+          role: "Frozen cattle meat released to storage"
+          name: "Frozen cattle meat, internal transfer (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Release only lots whose thermal-centre temperature and food-safety checks meet the declared requirements."
+          amount:
+            expression: "Measured net frozen product mass released after thermal stabilization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg released frozen cattle meat before included storage losses"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_batch_energy
+              source_ids:
+                - codex-cxc-8-1976-2008
+            ranges:
+              - role: qa_guardrail
+                lower: "0.7"
+                upper: "1.0"
+                unit: "kg released frozen meat/kg prepared chilled meat input"
+                basis: "candidate-stage mass-balance screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: freezing_waste
+          role: "Freezing rejects and product losses"
+          name: "Freezing reject or product loss, route-specific (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected product, purge, damaged packaging, and other losses by treatment route."
+          amount:
+            expression: "Measured rejected or lost mass leaving the freezing operation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released frozen cattle meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_batch_energy
+              source_ids:
+                - codex-cxc-8-1976-2008
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg waste/kg released frozen meat"
+                basis: "broad candidate-stage loss screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: freezing_refrigerant_emission
+          role: "Refrigerant emitted to air from freezer system"
+          name: "Refrigerant emitted to air, substance-specific (UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inventory each leaked refrigerant as a substance-specific elementary flow; do not use an aggregate refrigerant-emissions proxy. UUIDs remain unresolved until the specific refrigerant is known and exactly matched."
+          amount:
+            expression: "Calculated unrecovered refrigerant loss attributable to quick freezing"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released frozen cattle meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg refrigerant/kg released frozen meat"
+                basis: "deliberately broad candidate-stage leak screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: frozen_storage
+    label: "Frozen storage to the declared plant gate"
+    inputs:
+      product:
+        - row_id: stored_frozen_meat_input
+          role: "Released frozen cattle meat entering storage"
+          name: "Released frozen cattle meat, internal transfer (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lot mass, entry time, packaging form, and thermal condition at cold-store entry."
+          amount:
+            expression: "Measured net frozen meat mass accepted into storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen cattle meat at the declared gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_lot_energy_temperature
+              source_ids:
+                - codex-cxc-8-1976-2008
+                - fao-meat-cold-store-1991
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.2"
+                unit: "kg storage input/kg net frozen meat at gate"
+                basis: "broad candidate-stage storage-loss screen"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_electricity
+          role: "Electricity used in frozen storage"
+          name: "Electricity, supplied at plant (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record cold-store compressors, fans, pumps, defrost, lighting, controls, and attributable auxiliaries over the actual lot storage duration."
+          amount:
+            expression: "Time- and capacity-consistent allocation of metered cold-store electricity to stored lot mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg-month of frozen meat stored, then normalized to the actual reference-lot duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_lot_energy_temperature
+              source_ids:
+                - codex-cxc-8-1976-2008
+                - fao-meat-cold-store-1991
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "2.0"
+                unit: "kWh/(kg·month)"
+                basis: "broad candidate-stage cold-store screen"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_refrigerant_makeup
+          role: "Refrigerant make-up supplied to cold store"
+          name: "Refrigerant, substance-specific (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant species added to equipment serving frozen storage and allocate only the attributable portion."
+          amount:
+            expression: "Refrigerant additions allocated from the cold-store system mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg-month of frozen meat stored, then normalized to actual duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "kg refrigerant/(kg·month)"
+                basis: "deliberately broad candidate-stage leak screen"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_cattle_meat_reference
+          role: "Net frozen cattle meat at declared plant gate"
+          name: "Meat of cattle, frozen, reference product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This row realizes the functional unit after all included storage losses. The Tiangong product UUID is held only in the reference-flow definition and is not repeated as an inventory UUID."
+          amount:
+            expression: "exactly 1 kg net frozen cattle meat at the declared plant gate"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - codex-cxc-8-1976-2008
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "exact quantitative reference"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - codex-cxc-8-1976-2008
+      waste:
+        - row_id: storage_product_loss
+          role: "Frozen-storage product losses"
+          name: "Frozen meat storage loss, route-specific (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dehydration, damaged packs, temperature-abuse rejects, and expired lots by treatment route; do not net losses silently from the reference product."
+          amount:
+            expression: "Measured inventory loss and rejected mass during the declared storage period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen cattle meat at the declared gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_lot_energy_temperature
+              source_ids:
+                - fao-meat-cold-store-1991
+                - codex-cxc-8-1976-2008
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg loss/kg net frozen meat at gate"
+                basis: "broad candidate-stage screen; the FAO handbook reports higher evaporation risk for unpackaged meat and requires packaging and temperature history to be retained"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: storage_refrigerant_emission
+          role: "Refrigerant emitted to air from cold store"
+          name: "Refrigerant emitted to air, substance-specific (UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inventory each leaked refrigerant as a substance-specific elementary flow using the same system mass balance as refrigerant make-up."
+          amount:
+            expression: "Calculated unrecovered refrigerant loss attributable to stored lots"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg-month of frozen meat stored, then normalized to actual duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - fao-leap-large-ruminants-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "kg refrigerant/(kg·month)"
+                basis: "deliberately broad candidate-stage leak screen"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "multifunctional foreground processes"
+    rule: "First subdivide separately metered slaughter, dressing, cutting, freezing, storage, rendering, and utility operations wherever technically feasible; apply allocation only to genuinely shared burdens."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: allocation_revenue_products
+    applies_to: "meat and revenue-generating co-products"
+    rule: "When subdivision cannot resolve shared primary-processing burdens, allocate those burdens among frozen meat and all revenue-generating co-products using the revenue share for a representative period; retain quantities, prices, currency, geography, period, and calculation."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: allocation_residuals_and_waste
+    applies_to: "non-revenue residuals and waste"
+    rule: "Assign no product share to a material with no revenue at the processing gate, but retain collection, treatment, transport, and direct-emission burdens caused inside the foreground; do not classify a revenue-generating output as waste."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: allocation_shared_species
+    applies_to: "facilities processing multiple animal species"
+    rule: "Prefer species-specific metering or campaigns. If shared burdens remain, document the allocation basis using processed mass and operational differences; do not transfer burdens between species without an explicit calculation and sensitivity check."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: allocation_consistency
+    applies_to: "all allocated results"
+    rule: "Use one internally consistent allocation period and method across mass balance, utility use, waste handling, and co-product revenue; disclose sensitivity to materially different prices or methods."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_slaughter_material_balance
+      process_id: "slaughter_and_dressing"
+      flow_role: "live cattle, dressed meat, and saleable co-products"
+      record_type: "lot weight and dispatch records"
+      raw_fields: "lot_id; animal_count; live_weight; hot_carcass_weight; chilled_weight; co_product_type; co_product_mass; timestamp"
+      collection_method: "calibrated scales reconciled to production and dispatch records"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "all production days in the representative period"
+      site_scope: "each included abattoir"
+      aggregation_rule: "sum by lot and output category; reconcile opening and closing work-in-process"
+      quality_evidence: "scale calibration, lot traceability, reconciliation sign-off, and exception log"
+    - protocol_id: cp_slaughter_utilities
+      process_id: "slaughter_and_dressing"
+      flow_role: "electricity, fuels, thermal energy, and water"
+      record_type: "meter, invoice, and operating-hour records"
+      raw_fields: "meter_id; opening_reading; closing_reading; fuel_quantity; water_volume; operating_hours; production_mass; allocation_basis"
+      collection_method: "direct meters or documented sub-meter/allocation method"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "shift, day, or invoice period"
+      temporal_coverage: "representative continuous 12-month period where available"
+      site_scope: "each included facility and utility system"
+      aggregation_rule: "subtract non-production uses; allocate shared use consistently; normalize to chilled output"
+      quality_evidence: "meter calibration, invoices, allocation worksheet, and missing-data flags"
+    - protocol_id: cp_slaughter_wastes
+      process_id: "slaughter_and_dressing"
+      flow_role: "wastewater, condemned material, and non-revenue residuals"
+      record_type: "flowmeter, weighbridge, manifest, and laboratory records"
+      raw_fields: "stream_id; mass_or_volume; destination; treatment_route; COD; nitrogen; sampling_time"
+      collection_method: "metering or weighing plus representative composite sampling where treatment data require composition"
+      unit: "kg; m3; mg/L"
+      frequency: "each dispatch and scheduled sampling"
+      temporal_coverage: "same period as product and utilities"
+      site_scope: "each included discharge and waste route"
+      aggregation_rule: "aggregate by stream and route; preserve sampled loads and uncertainty"
+      quality_evidence: "meter or scale checks, laboratory report, waste manifest, and mass-balance reconciliation"
+    - protocol_id: cp_cutting_material_balance
+      process_id: "cutting_and_packaging"
+      flow_role: "chilled meat, prepared meat, packaging, co-products, and rejects"
+      record_type: "batch weights and stock issue records"
+      raw_fields: "batch_id; input_mass; output_mass; presentation; bone_state; packaging_material; packaging_mass; co_product_mass; reject_mass"
+      collection_method: "calibrated scales and inventory issue/return records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all batches in representative period"
+      site_scope: "each included cutting or packaging line"
+      aggregation_rule: "reconcile mass by batch; aggregate only like presentations"
+      quality_evidence: "calibration, batch traveller, packaging bill, and yield reconciliation"
+    - protocol_id: cp_cutting_utilities
+      process_id: "cutting_and_packaging"
+      flow_role: "cutting-room and packaging electricity"
+      record_type: "meter and operating records"
+      raw_fields: "meter_id; reading; operating_hours; line_output; allocation_basis"
+      collection_method: "sub-meter or documented engineering allocation from facility meter"
+      unit: "kWh"
+      frequency: "shift or day"
+      temporal_coverage: "same period as prepared-meat output"
+      site_scope: "each included line and shared utility"
+      aggregation_rule: "allocate shared electricity consistently and normalize to prepared output"
+      quality_evidence: "meter evidence, equipment schedule, and allocation review"
+    - protocol_id: cp_freezing_batch_energy
+      process_id: "quick_freezing"
+      flow_role: "meat input, frozen output, electricity, rejects, and release temperature"
+      record_type: "batch or continuous-run records"
+      raw_fields: "lot_id; input_mass; output_mass; electricity; start_time; end_time; inlet_temperature; thermal_centre_temperature; reject_mass"
+      collection_method: "calibrated scales, electricity meter, and calibrated product-temperature sensors"
+      unit: "kg; kWh; °C; h"
+      frequency: "each lot or continuous run"
+      temporal_coverage: "all freezing runs in representative period"
+      site_scope: "each freezer and production line"
+      aggregation_rule: "match energy and mass time windows; normalize to released frozen output"
+      quality_evidence: "meter calibration, temperature-sensor calibration, release record, and downtime log"
+    - protocol_id: cp_refrigerant_balance
+      process_id: "quick_freezing"
+      flow_role: "freezer and cold-store refrigerant make-up and emissions"
+      record_type: "refrigerant inventory and service records"
+      raw_fields: "refrigerant_species; opening_inventory; additions; recovery; transfers; closing_inventory; equipment_id; service_date"
+      collection_method: "mass balance from weighed cylinders, purchase records, and service logs"
+      unit: "kg"
+      frequency: "each service event with annual reconciliation"
+      temporal_coverage: "representative 12-month period including seasonal operation"
+      site_scope: "each refrigeration system serving included processes"
+      aggregation_rule: "calculate unrecovered loss by species and allocate using documented equipment service or load basis"
+      quality_evidence: "cylinder weights, invoices, technician logs, leak test, and reconciliation"
+    - protocol_id: cp_storage_lot_energy_temperature
+      process_id: "frozen_storage"
+      flow_role: "stored mass, duration, electricity, temperatures, losses, and release mass"
+      record_type: "warehouse management, interval meter, temperature logger, and loss records"
+      raw_fields: "lot_id; entry_mass; exit_mass; entry_time; exit_time; interval_kWh; air_temperature; product_temperature; loss_reason; loss_mass"
+      collection_method: "lot timestamps linked to interval electricity and calibrated continuous temperature loggers"
+      unit: "kg; day; kWh; °C"
+      frequency: "continuous temperature and meter intervals; each lot movement"
+      temporal_coverage: "complete declared storage period and representative annual facility period"
+      site_scope: "each included cold room and lot"
+      aggregation_rule: "calculate lot-days; allocate electricity consistently by capacity and time; reconcile losses"
+      quality_evidence: "logger and meter calibration, alarm history, stock reconciliation, and corrective-action record"
+    - protocol_id: cp_coproduct_revenue
+      process_id: "slaughter_and_dressing"
+      flow_role: "allocation shares for meat and co-products"
+      record_type: "sales and production records"
+      raw_fields: "product_id; mass; net_price; currency; market; transaction_date; excluded_fees"
+      collection_method: "audited or traceable invoices matched to production quantities"
+      unit: "kg and currency/kg"
+      frequency: "each transaction, summarized monthly"
+      temporal_coverage: "representative 12-month period aligned with inventory"
+      site_scope: "each included facility and output market"
+      aggregation_rule: "calculate revenue by product and representative revenue shares; test material price variation"
+      quality_evidence: "invoice sample, currency method, reconciliation to accounts, and sensitivity worksheet"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground amounts"
+      rule: "normalized amount = attributable lot or period amount / net frozen cattle meat mass at the declared gate"
+      inputs:
+        - "attributable amount"
+        - "net reference-product mass"
+      output: "amount per 1 kg reference flow"
+      source_ids:
+        - fao-leap-large-ruminants-2016
+    - id: calc_process_yield
+      applies_to: "slaughter, preparation, freezing, and storage"
+      rule: "process yield = accepted process output mass / accepted process input mass; report numerator and denominator states separately"
+      inputs:
+        - "accepted input mass"
+        - "accepted output mass"
+      output: "mass yield and loss fraction"
+      source_ids:
+        - fao-leap-large-ruminants-2016
+    - id: calc_water_mass
+      applies_to: "water and wastewater"
+      rule: "converted mass = measured volume × documented density at the recorded or justified temperature; preserve original volume"
+      inputs:
+        - "measured volume"
+        - density
+        - temperature
+      output: "kg water or wastewater"
+      source_ids: []
+    - id: calc_refrigerant_loss
+      applies_to: "freezing and storage refrigeration"
+      rule: "unrecovered loss by species = opening inventory + additions + inbound transfers - recovery - outbound transfers - closing inventory; negative results require investigation"
+      inputs:
+        - "inventory and service records by refrigerant species"
+      output: "kg refrigerant emitted or unresolved balance"
+      source_ids:
+        - fao-leap-large-ruminants-2016
+    - id: calc_storage_energy
+      applies_to: "frozen storage"
+      rule: "allocated storage electricity = interval electricity × documented lot allocation share; lot result = sum allocated electricity over entry-to-exit intervals"
+      inputs:
+        - "interval electricity"
+        - "lot mass"
+        - "occupied capacity"
+        - "entry and exit time"
+      output: "kWh per stored lot and kWh/(kg·month)"
+      source_ids:
+        - codex-cxc-8-1976-2008
+        - fao-meat-cold-store-1991
+    - id: calc_revenue_share
+      applies_to: "shared slaughter and preparation burdens"
+      rule: "revenue share_i = quantity_i × representative net price_i / sum(quantity_j × representative net price_j) for all revenue-generating co-products j"
+      inputs:
+        - "product quantities"
+        - "net prices"
+        - "currency and period"
+      output: "allocation share by product"
+      source_ids:
+        - fao-leap-large-ruminants-2016
+    - id: calc_mass_balance
+      applies_to: "each process and full foreground"
+      rule: "mass-balance gap = total measured inputs - total measured product outputs - total measured waste outputs - documented inventory change; investigate rather than force-close material gaps"
+      inputs:
+        - inputs
+        - outputs
+        - wastes
+        - "inventory change"
+      output: "absolute and relative mass-balance gap"
+      source_ids:
+        - fao-leap-large-ruminants-2016
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "cattle, meat, co-products, and reference product"
+      requirement: "Preserve lot linkage from declared starting material through the frozen reference product and declare presentation, bone state, packaging, route, and gate."
+      evidence: "receiving, production, warehouse, and release records linked by lot identifier"
+    - id: dq_temporal_representativeness
+      applies_to: "routine foreground data"
+      requirement: "Use a recent representative 12-month period where available, or justify a shorter campaign and disclose seasonality, downtime, and exceptional operation."
+      evidence: "dated raw records, production calendar, and representativeness statement"
+    - id: dq_measurement_control
+      applies_to: "mass, energy, water, temperature, and refrigerant data"
+      requirement: "Use calibrated instruments or traceable invoices; identify estimated intervals and the substitution method."
+      evidence: "calibration certificates, invoices, meter register, and gap log"
+    - id: dq_completeness
+      applies_to: "process and foreground mass and energy balance"
+      requirement: "Account for material inputs, meat outputs, co-products, wastes, water, wastewater, packaging, energy, refrigerants, and storage losses; explain every material balance gap and cut-off."
+      evidence: "process mass balances, utility reconciliation, cut-off register, and corrective actions"
+    - id: dq_temperature_history
+      applies_to: "freezing release and storage"
+      requirement: "Retain thermal-centre release measurement, continuous or sufficiently frequent storage temperature records, alarms, excursions, and corrective actions for the declared lot period."
+      evidence: "calibrated logger export, release record, alarm log, and disposition decision"
+    - id: dq_allocation
+      applies_to: "multifunctional processes"
+      requirement: "Retain subdivision decisions, all revenue-generating outputs, representative prices, currency treatment, allocation shares, and sensitivity to materially different prices or methods."
+      evidence: "allocation workbook, invoice evidence, and sensitivity result"
+    - id: dq_uncertainty_and_estimates
+      applies_to: "reasoned estimates, proxy data, and calculated values"
+      requirement: "Flag every estimate, retain its basis and range, quantify or qualitatively discuss uncertainty, and replace candidate-stage reasoned estimates with records or reviewed evidence before publication unless explicitly accepted."
+      evidence: "data-quality register, uncertainty statement, reviewer decision, and replacement record"
+    - id: dq_geography_and_technology
+      applies_to: "upstream and background datasets"
+      requirement: "Match facility geography, electricity market, fuel, water, treatment route, refrigerant species, freezing technology, and reference year; document every proxy."
+      evidence: "dataset metadata and proxy-justification log"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require exactly 1 kg net Meat of cattle, frozen with product UUID 16e6d353-2acd-4dc3-99b3-fce9d27fbbd7, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg; reject substitution by fresh/chilled meat or edible offal."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "reference product metadata"
+    rule: "Fail conformance when cattle class, product presentation, bone state, net mass basis, packaging form, freezing technology, release temperature, storage duration, geography, period, or gate is missing."
+    source_ids: []
+  - rule_id: validate_route_completeness
+    applies_to: "process map and upstream links"
+    rule: "Require quick freezing and frozen storage records. When live cattle enter the foreground require slaughter and dressing; when purchased chilled meat enters require a linked upstream dataset covering omitted stages."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+      - codex-cxc-58-2005
+  - rule_id: validate_frozen_state
+    applies_to: "quick freezing release and cold storage"
+    rule: "Require evidence that the thermal centre reached -18 °C or colder after stabilization and that storage maintained -18 °C or colder subject only to documented applicable tolerances; treat missing temperature evidence as inconclusive."
+    source_ids:
+      - codex-cxc-8-1976-2008
+  - rule_id: validate_mass_balance
+    applies_to: "every included process and full foreground"
+    rule: "Calculate and report mass-balance gaps; any unexplained gap outside the reviewed tolerance is an error and shall not be hidden by adjusting the reference product."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: validate_allocation
+    applies_to: "shared foreground burdens"
+    rule: "Require subdivision evidence or complete revenue allocation across all revenue-generating co-products, with no allocation share assigned to non-revenue residuals and no saleable product misclassified as waste."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: validate_refrigerants
+    applies_to: "freezing and storage refrigeration"
+    rule: "Require refrigerant species, equipment scope, inventory balance, and substance-specific elementary emissions; reject an unidentified aggregate refrigerant emission as final inventory."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+  - rule_id: validate_data_coverage
+    applies_to: "foreground records"
+    rule: "Report accepted inputs, checks performed, checks skipped, findings, and completeness; missing required process, utility, wastewater, temperature, allocation, or loss evidence makes validation inconclusive."
+    source_ids:
+      - fao-leap-large-ruminants-2016
+      - codex-cxc-8-1976-2008
+  - rule_id: validate_reasoned_estimates
+    applies_to: "all reasoned_estimate ranges"
+    rule: "Treat candidate-stage ranges only as QA guardrails, never as collected values or publication-critical allowed ranges; require replacement or explicit methodology-review acceptance before publication."
+    source_ids: []
+  - rule_id: validate_unresolved_uuids
+    applies_to: "non-reference inventory identities"
+    rule: "Before publication, resolve every used product, waste, and elementary flow to the correct Tiangong identity or document an approved identity exception; never reuse the reference-product UUID for another inventory role."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground frozen-cattle-meat production data package and its process or lifecyclemodel projection"
+  downstream_use: "secondary_dataset; background_dataset when geography, technology, allocation, and data-quality metadata are adequate for the intended model"
+  allowed_use: "Attributional LCA and inventory construction for the declared frozen cattle meat route, presentation, geography, period, gate, and storage duration"
+  excluded_use: "Fresh or chilled meat, edible offal, cooked or prepared products, non-cattle meat, undisclosed proxy routes, food-safety certification, or comparative assertions without harmonized scope and reviewed quality"
+  required_metadata: "PCR id and version; CPC reference; product qualifiers; facility geography; reference year; route and gate; included processes; upstream dataset links; storage duration; temperature regime; allocation method; cut-offs; data sources; unresolved identities; reviewer status"
+  required_quality_disclosure: "Primary-data share and coverage; instrument and invoice basis; mass-balance gaps; temperature excursions; allocation sensitivity; refrigerant balance; wastewater characterization; proxy datasets; reasoned estimates; uncertainty; limitations"
+  update_trigger: "Change in product presentation, starting condition, freezing or refrigeration technology, refrigerant species, packaging, storage duration, facility geography, energy supply, allocation economics, regulation, source evidence, or a material data-quality finding"
+data_sources:
+  - id: "fao-leap-large-ruminants-2016"
+    type: "official_guidance"
+    reference: "FAO. Environmental performance of large ruminant supply chains: Guidelines for assessment, Version 1, 2016, ISBN 978-92-5-109523-2. https://openknowledge.fao.org/handle/20.500.14283/i6494en (retrieved 2026-08-11)"
+    used_for: "Primary meat-processing boundary, material-flow accounting, energy/water/refrigerant/wastewater collection, co-product allocation, representativeness, data quality, and uncertainty"
+  - id: "codex-cxc-8-1976-2008"
+    type: "standard"
+    reference: "Codex Alimentarius. Code of Practice for the Processing and Handling of Quick Frozen Foods, CXC 8-1976, revised 2008. https://www.fao.org/input/download/standards/285/CXP_008e.pdf (retrieved 2026-08-11)"
+    used_for: "Quick-freezing definition, -18 °C thermal-centre and cold-chain condition, packaging, cold storage, temperature records, and transfer controls"
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius. Code of Hygienic Practice for Meat, CXC 58-2005. https://www.fao.org/input/download/standards/10196/CXP_058e.pdf (retrieved 2026-08-11)"
+    used_for: "Slaughter and dressing process scope, meat hygiene prerequisites, traceability, handling, chilling, sanitation, and transport controls"
+  - id: "fao-meat-cold-store-1991"
+    type: "handbook"
+    reference: "Cano-Muñoz, G. Manual on meat cold store operation and management. FAO Animal Production and Health Paper 92, 1991, ISBN 92-5-102788-9. https://www.fao.org/4/T0098E/T0098E00.htm (retrieved 2026-08-11)"
+    used_for: "Meat chilling and freezing process decomposition, packaging and frozen-storage mechanisms, cold-room operation, product losses, and temperature-history requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:65102f154b2e8f91e0f59883474aef883f4bcb1a41178852cceec113ae416b50"
+  generated_content_sha256: "sha256:a36a3f5b64d793c50a5be0ad103c7b473ae388e1143baa5a5e62f505e4d6f80d"

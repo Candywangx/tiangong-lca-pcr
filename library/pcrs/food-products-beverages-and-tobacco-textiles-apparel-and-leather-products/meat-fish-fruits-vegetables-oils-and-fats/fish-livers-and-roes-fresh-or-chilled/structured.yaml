@@ -1,10 +1,821 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21225"
-  title: "Fish livers and roes, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-livers-and-roes-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21225, exact mapping context"
+  covered_products: "Edible fish livers and edible fish roes supplied fresh or chilled, including declared liver/roe mixtures that remain within this preservation state"
+  excluded_products: "Whole fish; fish fillets or meat; frozen, salted, smoked, cooked, canned, fermented, shelf-stable or otherwise preserved liver or roe products; prepared caviar; fish oil and liver oil; non-food material"
+  representative_product: "Packed fresh or chilled edible fish livers or roes at the declared facility gate"
+  production_route: "Receipt of whole fish, viscera, or separated livers/roes; conditional separation; trimming, washing, sorting or grading; chilling and cold storage; packing and dispatch preparation"
+  market_state: "Fresh or chilled, food-grade, not frozen and not otherwise preserved"
+functional_unit:
+  what: "Provision of edible fish livers and/or roes in a declared fresh or chilled market state"
+  how_much: "1 kg net product mass, excluding packaging and free ice or meltwater"
+  how_well: "Food-grade product meeting the declared species, product-part, preservation, temperature-control, hygiene, grading and packaging specifications"
+  how_long_or_cycle: "One declared production lot through packed facility-gate release; actual cold-storage duration shall be reported"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the reference product flow"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "Foreground facility"
+      rule: "Include all operations from the declared incoming condition through packed facility-gate release, including conditional organ separation, trimming, washing, grading, chilling, cold storage, packaging, wastewater and residual handling."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_link
+      applies_to: "Incoming fish-derived material"
+      rule: "Link incoming whole fish, viscera, or separated liver/roe to an upstream dataset covering production or harvest and delivery to the declared starting point; do not treat a marketable organ as burden-free without documented waste status and allocation reasoning."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_cold_chain
+      applies_to: "Temperature-controlled handling"
+      rule: "Include ice, refrigeration energy, cold storage, refrigerant loss when applicable, and temperature-controlled handling under foreground control."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_exclusions
+      applies_to: "Capital goods and downstream stages"
+      rule: "Exclude capital goods unless required by the study method; exclude distribution after facility-gate release, retail, use, cooking and end-of-life unless the declared study scope explicitly adds them."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Whole fish, fish viscera, or already separated fish livers/roes received at the first foreground-controlled point, with preservation state and upstream ownership declared"
+  starting_condition_role: "Entry point for foreground processing; it does not erase upstream harvest, aquaculture, vessel, landing, transport, or prior-separation burdens"
+  product_classification_scope: "Edible fish livers and roes remaining fresh or chilled within CPC 3.0 subclass 21225"
+  recursive_input_rule: "When an input is already a product within this PCR category, record it as an upstream product flow with its own conforming dataset and start the foreground at the first additional transformation; do not recreate its upstream operations in the receiving process"
+  upstream_dataset_requirement: "Require traceable datasets for the incoming fish-derived material and other material or energy inputs; disclose allocation, geography, technology, time period and any data gap"
+  disclosure: "Declare incoming form, separation location, species/origin, included operations, excluded operations, temperature-control route, storage duration, allocation point and treatment of all co-products and residuals"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fish livers and roes, fresh or chilled"
+    uuid: "883637e3-14e1-4d82-bed8-5328706084ef"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species or species group"
+    - "wild-caught or aquaculture origin"
+    - liver
+    - roe
+    - "or declared mixture"
+    - "incoming material form"
+    - "separation location"
+    - "fresh or chilled state"
+    - "storage duration"
+    - "temperature-control method"
+    - "added ingredients"
+    - "packaging configuration"
+    - "facility-gate geography"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg drained or otherwise net saleable liver/roe product; exclude packaging, free ice, glaze, free liquid and meltwater from reference mass."
+  - id: intermediate_mass_balance
+    applies_to: "Material inputs and product, co-product, residual and waste outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure wet mass on a consistent basis for each lot and disclose any moisture, drainage or weighing-basis difference before mass-balance comparison."
+  - id: energy_measurement
+    applies_to: "Electricity and thermal or refrigeration energy"
+    required_property_ref:
+      name: "Energy property to be resolved"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Record metered or allocated energy by carrier and process; do not combine electricity with fuels or purchased cooling without a documented conversion and allocation basis."
+  - id: cold_storage_duration
+    applies_to: "Chilling and cold storage"
+    required_property_ref:
+      name: "Time property to be resolved"
+      uuid: ""
+    required_unit: "h or d"
+    rule: "Record lot-weighted residence time and the method used to maintain the declared chilled condition."
+process_map:
+  - id: receipt_separation
+    name: "Receipt, inspection and conditional separation"
+    inclusion: "required"
+    inclusion_condition: "Separation is included when whole fish or viscera are received; receipt and inspection always apply"
+    role: "Establish incoming condition and recover edible livers or roes"
+    quantitative_reference: "kg accepted organ material"
+  - id: washing_grading
+    name: "Trimming, washing, sorting and grading"
+    inclusion: "required"
+    inclusion_condition: "Wet washing is included only when performed; dry trimming, inspection and grading remain included"
+    role: "Prepare food-grade liver/roe material"
+    quantitative_reference: "kg cleaned organ material"
+  - id: chilling_storage
+    name: "Chilling and cold storage"
+    inclusion: "required"
+    inclusion_condition: "Applies to all products; record actual ice and/or mechanical refrigeration route"
+    role: "Maintain the declared fresh or chilled state"
+    quantitative_reference: "kg chilled organ material and lot-weighted storage time"
+  - id: packing_dispatch
+    name: "Packing and facility-gate dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Include actual primary, secondary and reusable packaging configuration"
+    role: "Produce the reference product"
+    quantitative_reference: "1 kg net packed product excluding packaging"
+process_inventory:
+  - id: receipt_separation
+    label: "Receipt, inspection and conditional separation"
+    inputs:
+      product:
+        - row_id: incoming_fish_material
+          role: "Incoming fish-derived material"
+          name: "Declared whole fish, viscera, or separated fish liver/roe flow; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual whole fish, viscera, or separated liver/roe material crossing into foreground control. The selected non-reference Tiangong flow UUID remains subject to identity review."
+          amount:
+            expression: "measured wet input mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-21225
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_organ_material
+          role: "Accepted liver or roe material"
+          name: "Accepted edible fish liver or roe intermediate; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure organ material accepted for further preparation after inspection and, where applicable, separation."
+          amount:
+            expression: "measured accepted wet mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: other_recovered_coproducts
+          role: "Other recovered co-products"
+          name: "Declared recovered fish co-product; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all separately marketed or internally used fish parts recovered at the same separation point so allocation is complete."
+          amount:
+            expression: "measured output mass by destination and lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: rejected_fish_material
+          role: "Rejected or non-food fish material"
+          name: "Declared fish residual or waste flow; UUID to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected tissues and residues by actual destination; do not net them against product output."
+          amount:
+            expression: "measured wet mass by destination and lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual_wastewater_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        []
+  - id: washing_grading
+    label: "Trimming, washing, sorting and grading"
+    inputs:
+      product:
+        - row_id: accepted_material_input
+          role: "Accepted organ material input"
+          name: "Accepted edible fish liver or roe intermediate; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted intermediate transferred from receipt and separation."
+          amount:
+            expression: "measured transferred wet mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg cleaned organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process water; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record supplied water when washing, rinsing or sanitation-related product contact occurs within this process."
+          amount:
+            expression: "metered, batch-recorded or defensibly allocated water use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg"
+                basis: "per 1 kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaned_graded_product
+          role: "Cleaned and graded liver or roe"
+          name: "Cleaned and graded edible fish liver or roe intermediate; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable intermediate after trimming, washing when used, sorting and grading."
+          amount:
+            expression: "measured wet output mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg cleaned organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: trimming_residues
+          role: "Trimming and grading residues"
+          name: "Declared organic residual or waste flow; UUID to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed membranes, damaged material and other sorting residues by destination."
+          amount:
+            expression: "measured wet mass by destination and lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cleaned organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residual_wastewater_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: process_wastewater
+          role: "Process wastewater"
+          name: "Process wastewater; UUID to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving foreground control, including measured or calculated water and product loss; retain treatment destination."
+          amount:
+            expression: "measured discharge or calculated balance from recorded water inputs and retained/product water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual_wastewater_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        []
+  - id: chilling_storage
+    label: "Chilling and cold storage"
+    inputs:
+      product:
+        - row_id: cleaned_material_input
+          role: "Cleaned organ material input"
+          name: "Cleaned and graded edible fish liver or roe intermediate; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cleaned and graded intermediate entering temperature-controlled handling."
+          amount:
+            expression: "measured transferred wet mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg chilled organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: chilling_ice
+          role: "Ice used for chilling"
+          name: "Ice; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or site-produced ice that crosses the process boundary, excluding free ice from net reference mass."
+          amount:
+            expression: "measured or batch-recorded ice supplied"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cold_chain_electricity
+          role: "Electricity for chilling and cold storage"
+          name: "Electricity, declared market and voltage; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity or a documented allocation from shared refrigeration and cold-room systems."
+          amount:
+            expression: "metered use or calculated allocation from equipment power, operating time and load share"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids:
+                - codex-cxc-52-2003
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "10"
+                unit: "kWh"
+                basis: "per 1 kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_product
+          role: "Chilled liver or roe intermediate"
+          name: "Chilled edible fish liver or roe intermediate; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record chilled product transferred to packing, with storage time and temperature-control records linked to the lot."
+          amount:
+            expression: "measured wet output mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg chilled organ material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: cold_chain_wastewater
+          role: "Meltwater and cold-room washdown"
+          name: "Wastewater; UUID to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record meltwater and applicable washdown wastewater by discharge or treatment route without including free water in product mass."
+          amount:
+            expression: "measured discharge or calculated water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residual_wastewater_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        - row_id: refrigerant_loss
+          role: "Refrigerant emitted to air"
+          name: "Declared refrigerant emission to air; UUID to be resolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record actual refrigerant type and loss allocated to this product when charge loss, servicing or leakage occurs in foreground-controlled equipment."
+          amount:
+            expression: "calculated from inventory reconciliation, service records or measured loss and documented allocation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: packing_dispatch
+    label: "Packing and facility-gate dispatch preparation"
+    inputs:
+      product:
+        - row_id: chilled_material_input
+          role: "Chilled organ material input"
+          name: "Chilled edible fish liver or roe intermediate; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record chilled material transferred from cold storage to packing."
+          amount:
+            expression: "measured transferred wet mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Declared packaging material by material and format; UUID to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material separately, including reusable packaging loss or trip allocation where applicable."
+          amount:
+            expression: "purchasing and issue records reconciled to packed lot output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Reference product output"
+          name: "Fish livers and roes, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "883637e3-14e1-4d82-bed8-5328706084ef"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The reference output is net fresh or chilled fish liver/roe product mass at facility-gate release."
+          amount:
+            expression: "exactly 1 kg net product per reference flow"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - unsd-cpc-3-0-21225
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging scrap and damaged packaging"
+          name: "Declared packaging waste flow; UUID to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packing scrap and rejected packaging separately by material and treatment route."
+          amount:
+            expression: "measured or calculated from material issues, product-packed packaging and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Shared foreground operations"
+    rule: "First avoid allocation through process subdivision, separate metering and lot-specific material and energy records wherever the relevant operations can be distinguished."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_upstream_organs
+    applies_to: "Whole-fish or viscera inputs yielding liver, roe and other outputs"
+    rule: "Carry the upstream dataset and its documented multifunctionality treatment to the separation point; include every co-product and residual, and do not assign zero burden solely because an organ was formerly treated as low value."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_other
+    applies_to: "Remaining inseparable multifunctionality"
+    rule: "When subdivision or system expansion is not applicable, use a documented physical relationship that reflects the causal relationship; if no defensible physical relationship exists, use an economic or other justified relationship and report prices, reference period and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_status
+    applies_to: "Residual and waste outputs"
+    rule: "Document legal or contractual waste status, treatment destination, credits and burdens consistently; marketable or internally used outputs shall not be silently classified as waste."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "receipt_separation_washing_grading_chilling_storage_packing_dispatch"
+      flow_role: "Incoming, intermediate, product, co-product and residual mass"
+      record_type: "Weighing and lot records"
+      raw_fields: "lot_id; species; origin; incoming_form; separation_location; gross_mass; net_mass; tare; output_mass; destination; timestamp"
+      collection_method: "Calibrated scales and reconciled production records"
+      unit: "kg"
+      frequency: "Each lot and material movement"
+      temporal_coverage: "At least one representative continuous 12-month period or the full campaign when seasonal"
+      site_scope: "Each foreground facility and relevant line"
+      aggregation_rule: "Sum by lot and normalize to net reference output; retain separate species and product forms"
+      quality_evidence: "Calibration records, tare checks, lot reconciliation and signed production records"
+    - protocol_id: cp_water_records
+      process_id: "washing_grading"
+      flow_role: "Process water"
+      record_type: "Meter or batch records"
+      raw_fields: "meter_start; meter_end; batch_volume; product_contact_use; cleaning_use; lot_id"
+      collection_method: "Submetering preferred; otherwise documented batch measurement or defensible allocation"
+      unit: "kg or m3"
+      frequency: "Each batch or daily with lot allocation"
+      temporal_coverage: "Same period as production data"
+      site_scope: "Each foreground facility and water source"
+      aggregation_rule: "Convert volume with declared density when needed, allocate by measured driver and normalize to reference output"
+      quality_evidence: "Meter calibration, invoices, allocation rationale and water-source identity"
+    - protocol_id: cp_cold_chain_records
+      process_id: "chilling_storage"
+      flow_role: "Ice, electricity, residence time and temperature control"
+      record_type: "Meter, purchase, equipment and temperature logs"
+      raw_fields: "lot_id; ice_mass; electricity_meter; equipment_power; run_time; storage_start; storage_end; temperature_record; load_share"
+      collection_method: "Metered records plus lot-linked temperature and residence-time logs"
+      unit: "kg, kWh, h or d"
+      frequency: "Per lot; energy at least daily or by operating batch"
+      temporal_coverage: "Same period as production data and covering seasonal temperature variation"
+      site_scope: "Each cold room, ice system and refrigeration system under foreground control"
+      aggregation_rule: "Allocate shared energy using measured operating time and load; normalize to net reference output"
+      quality_evidence: "Meter records, logger calibration, equipment list and allocation calculation"
+    - protocol_id: cp_packaging_records
+      process_id: "packing_dispatch"
+      flow_role: "Packaging input and packaging waste"
+      record_type: "Purchase, issue, bill-of-material and stock records"
+      raw_fields: "material; format; unit_mass; units_issued; reusable_trips; stock_change; scrap_mass; lot_id"
+      collection_method: "Weigh representative components and reconcile issues to packed lots"
+      unit: "kg"
+      frequency: "Each packaging configuration; stock reconciliation monthly"
+      temporal_coverage: "Same period as production data"
+      site_scope: "Each packing line and supplier configuration"
+      aggregation_rule: "Calculate material mass by type, apply documented reusable-trip allocation and normalize to net reference output"
+      quality_evidence: "Scale calibration, supplier specification, stock reconciliation and reusable-trip evidence"
+    - protocol_id: cp_residual_wastewater_records
+      process_id: "receipt_separation_washing_grading_chilling_storage"
+      flow_role: "Residuals, wastewater and meltwater"
+      record_type: "Weighing, discharge, treatment and balance records"
+      raw_fields: "lot_id; residual_type; wet_mass; water_input; discharge_volume; destination; treatment; solids_content"
+      collection_method: "Direct measurement preferred; otherwise documented water or mass balance"
+      unit: "kg or m3"
+      frequency: "Each lot or daily with lot allocation"
+      temporal_coverage: "Same period as production data"
+      site_scope: "Each discharge point and residual destination"
+      aggregation_rule: "Keep streams separate, convert to mass where needed, and normalize to reference output"
+      quality_evidence: "Scale or meter calibration, manifests, treatment invoices and balance closure"
+    - protocol_id: cp_refrigerant_records
+      process_id: "chilling_storage"
+      flow_role: "Refrigerant loss to air"
+      record_type: "Charge, purchase and service records"
+      raw_fields: "refrigerant_type; opening_charge; additions; recovery; closing_charge; equipment_id; service_date; allocation_driver"
+      collection_method: "Annual inventory reconciliation with service-event checks"
+      unit: "kg"
+      frequency: "Each service event and annual reconciliation"
+      temporal_coverage: "Same annual period as production data"
+      site_scope: "Each foreground-controlled refrigeration system"
+      aggregation_rule: "Calculate unrecovered loss and allocate by documented equipment service or load driver"
+      quality_evidence: "Technician records, purchase records, recovery documentation and equipment register"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "Divide the period or lot amount assigned to this product by net reference product output; keep packaging and free ice outside the denominator."
+      inputs:
+        - "Assigned flow amount"
+        - "net product kg"
+      output: "Flow amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "Each material transformation"
+      rule: "Compare wet input mass with product, co-product, residual, wastewater-carried solids and documented stock change on the same weighing basis; investigate unexplained difference."
+      inputs:
+        - "Input and output masses"
+        - "stock change"
+        - "moisture or drainage basis"
+      output: "Lot mass-balance closure and unexplained difference"
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - id: calc_shared_energy
+      applies_to: "Shared refrigeration and utilities"
+      rule: "Allocate metered shared energy using measured equipment runtime, load or another causal driver; disclose the driver and test material alternatives when allocation is influential."
+      inputs:
+        - "Metered energy"
+        - runtime
+        - load
+        - "product throughput"
+      output: "Energy assigned to the reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "Foreground refrigeration"
+      rule: "Opening charge plus additions minus recovered refrigerant minus closing charge equals unrecovered loss; allocate only the documented share serving this product."
+      inputs:
+        - "Charge inventory and service records"
+      output: "kg refrigerant emitted per reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_packaging_mass
+      applies_to: "Packaging"
+      rule: "Multiply verified component mass by units consumed, adjust for stock change and scrap, and divide reusable packaging by evidenced trips before normalization."
+      inputs:
+        - "Component mass"
+        - units
+        - "stock change"
+        - scrap
+        - trips
+      output: "kg packaging material and waste per reference product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and incoming material"
+      requirement: "Preserve species or species group, origin, organ type, incoming form, separation location, preservation state, added ingredients and packaging identity at lot level."
+      evidence: "Lot, supplier, receiving and product specification records; unsd-cpc-3-0-21225; codex-cxc-52-2003"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground data"
+      requirement: "Use a representative continuous 12-month period where production is year-round, or the complete campaign for seasonal production; explain abnormal downtime and seasonal gaps."
+      evidence: "Production calendar, meter coverage and excluded-period log; eu-pef-2021-2279"
+    - id: dq_technology_geography
+      applies_to: "Each foreground facility"
+      requirement: "Describe equipment, refrigeration technology, water source, treatment routes, facility geography and capacity utilization; do not combine materially different routes without weighted records."
+      evidence: "Equipment register, site records and weighting calculation; eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "Inventory and process map"
+      requirement: "Account for every required or triggered process and all material, energy, packaging, wastewater, refrigerant, product, co-product and residual streams; disclose omissions and cut-off application."
+      evidence: "Mass and energy reconciliation, purchase records, waste manifests and cut-off disclosure; eu-pef-2021-2279"
+    - id: dq_cold_chain
+      applies_to: "Chilling and storage"
+      requirement: "Retain lot-linked time and temperature-control evidence and identify excursions or rejected lots; never infer chilled-state compliance from product name alone."
+      evidence: "Temperature logs, residence-time records, calibration and disposition records; codex-cxc-52-2003"
+    - id: dq_allocation
+      applies_to: "Multifunctional operations"
+      requirement: "Report the allocation point, all outputs, avoided-allocation steps, selected relationship, factors, reference period and sensitivity when the choice is influential."
+      evidence: "Allocation worksheet and source records; eu-pef-2021-2279"
+    - id: dq_estimate_replacement
+      applies_to: "Provisional reasoned-estimate ranges"
+      requirement: "Treat the water, electricity, ice and packaging ranges only as QA screens; replace them with reviewed source evidence or foreground records before activation."
+      evidence: "Foreground protocol records and reviewer disposition"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "Product identity"
+    rule: "Fail when the output is not edible fish liver and/or roe in fresh or chilled state, or when excluded preservation methods or product forms are present."
+    source_ids:
+      - unsd-cpc-3-0-21225
+  - rule_id: validate_reference_flow
+    applies_to: "Reference flow"
+    rule: "Fail unless the reference output is exactly 1 kg net product using the specified product-flow, Mass-property and unit-group UUIDs and all required qualifiers are declared."
+    source_ids:
+      - unsd-cpc-3-0-21225
+  - rule_id: validate_boundary_processes
+    applies_to: "Process coverage"
+    rule: "Fail when receipt/inspection, applicable separation, preparation, chilling/cold storage, packing, wastewater/residual handling or required upstream dataset linkage is missing without a documented scope reason."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021-2279
+  - rule_id: validate_cold_chain_records
+    applies_to: "Cold chain"
+    rule: "Fail when storage duration, temperature-control method, energy or ice route, or applicable refrigerant records are absent for foreground-controlled chilling and storage."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_balance
+    applies_to: "Material flows"
+    rule: "Fail when product, co-product, residual, waste and stock-change records cannot be reconciled to incoming material on a consistent wet-mass basis or the unexplained difference is not investigated and disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "Multifunctionality"
+    rule: "Fail when a multifunctional separation or shared operation lacks avoided-allocation analysis, complete output inventory, selected allocation rationale, factors and sensitivity where material."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "Dataset production"
+    rule: "Fail when temporal, geographic, technological, completeness, calibration or source-traceability evidence required by section 8 is missing or material gaps are undisclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_reasoned_estimates
+    applies_to: "Provisional ranges"
+    rule: "Flag each retained reasoned_estimate for reviewer replacement; it shall not be represented as an industry benchmark or source-backed allowed range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production data package that may be published after review as a secondary_dataset and/or background_dataset"
+  downstream_use: "Construction of product flows, unit processes, aggregated processes and lifecyclemodel projections for fresh or chilled fish liver/roe supply"
+  allowed_use: "Studies whose product identity, starting condition, production route, geography, technology, time period, allocation and preservation state match the declared dataset"
+  excluded_use: "Frozen, salted, smoked, cooked, canned, fermented, prepared-caviar, oil, whole-fish, fish-meat, retail, cooking or consumption modelling without an explicit scope extension"
+  required_metadata: "PCR id and version; species/origin; liver/roe form; incoming condition; separation location; facility and geography; technology; reporting period; net-mass basis; cold-storage duration; temperature-control route; packaging; upstream datasets; allocation; cut-offs; data sources"
+  required_quality_disclosure: "Protocol coverage; measured versus calculated values; unresolved UUIDs; retained reasoned estimates; mass-balance closure; data gaps; allocation sensitivity; cold-chain records; representativeness and uncertainty limitations"
+  update_trigger: "Material change in species mix, origin, incoming form, separation point, process route, refrigeration system, storage duration, packaging, allocation, regulation, source evidence or foreground data quality"
+data_sources:
+  - id: "unsd-cpc-3-0-21225"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0, subclass 21225, Fish livers and roes, fresh or chilled. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/21225 (retrieved 2026-08-11)"
+    used_for: "Product-category boundary, preservation state and classification context"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, 2019 edition. https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (retrieved 2026-08-11)"
+    used_for: "Process decomposition, receiving and processing hygiene, chilling, cold storage, time/temperature control and lot-quality records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on Environmental Footprint methods. https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A02021H2279-20211230 (retrieved 2026-08-11)"
+    used_for: "Life-cycle boundary linkage, multifunctionality hierarchy, company-specific data, data quality, cut-off and reporting rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3f947b43cda41f6bd31690f0b3d79a936f682f0f46e495f2b1c8ad4588e2b462"
+  generated_content_sha256: "sha256:4029406d4bfcb961c5cf38f148a0064e04ac18170a6cd18426c72b0cc36a3bd4"

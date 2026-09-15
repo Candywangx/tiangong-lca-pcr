@@ -1,10 +1,1214 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23490"
-  title: "Bread and other bakers' wares"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.bread-and-other-bakers-wares"
+  classification_refs: "CPC 3.0: 23490, exact mapping context"
+  covered_products: "Fresh or preserved cereal-flour bread; bread buns and rolls; unleavened bread; crackers; salty or savoury biscuits; pretzels; tortillas; matzos; communion wafers; empty cachets; rice paper; other semantically equivalent CPC 23490 bakers' wares"
+  excluded_products: "CPC 23410 crispbread, rusks and toasted bread; CPC 23420 gingerbread, sweet biscuits, waffles and wafers; CPC 23430 pastry goods and cakes including pizza, pancakes and sweet rolls; CPC 23180 mixes and unbaked doughs; pasta; retail, catering and household preparation"
+  representative_product: "Marketable bread at the bakery factory gate"
+  production_route: "Ingredient receipt and dosing; mixing and dough preparation; forming; conditional fermentation or proofing; baking, drying or equivalent thermal setting; cooling; conditional slicing, finishing, packaging and controlled storage"
+  market_state: "Finished fresh, preserved, ambient, chilled or frozen product at the bakery factory gate, with packaging state declared"
+functional_unit:
+  what: "A declared bread or other baker's ware that provides its intended food, sacramental, pharmaceutical-cachet or culinary-sheet function in the stated market state"
+  how_much: "1 kg of finished, conforming product; packaging mass is excluded from the 1 kg but packaging inputs are included in the inventory when present"
+  how_well: "Conforms to the declared product subgroup, recipe or composition, dimensions or portion format, moisture basis, preservation condition and applicable commercial quality specification"
+  how_long_or_cycle: "One production lot delivered at the bakery factory gate for the declared shelf-life or storage period; no use-phase service is implied"
+  reference_flow_link: "The reference product output of finishing_packaging_and_storage, or of baking_and_cooling when no finishing, packaging or controlled storage occurs"
+system_boundary:
+  rules:
+    - rule_id: boundary_bakery_gate_to_gate
+      applies_to: "foreground production"
+      rule: "Include all bakery operations from receipt of ingredients through the conforming product at the factory gate, including cleaning and on-site utilities attributable to the product."
+      source_ids:
+        - unsd-cpc-3-0-23490
+        - federation-of-bakers-production-methods
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs and downstream treatment"
+      rule: "Represent production of purchased ingredients, packaging, utilities and fuels and treatment of exported waste or wastewater through linked upstream or treatment datasets with geography and representativeness disclosed."
+      source_ids:
+        - iso-14044-2006
+        - eu-bat-food-drink-milk-2019
+    - rule_id: boundary_conditional_operations
+      applies_to: "finishing, packaging, freezing and storage"
+      rule: "Include slicing, coating, filling, packaging, freezing, chilled storage or other finishing only when performed before the declared factory gate; record an explicit exclusion when a normally relevant operation does not occur."
+      source_ids:
+        - federation-of-bakers-production-methods
+        - eu-jrc-food-beverage-bemp-2018
+    - rule_id: boundary_same_category_rework
+      applies_to: "rework and returned intermediate product"
+      rule: "Track same-category rework as an internal loop when it remains under facility control. If purchased or transferred across the foreground boundary, record it as a product flow and prevent recursive double counting."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Ingredients, processing aids, packaging materials and utilities received at the bakery gate with supplier identity, quantity, moisture or concentration where relevant, geography and upstream dataset reference declared"
+  starting_condition_role: "Gate-to-gate bakery foreground starting point backed by receiving, invoice, inventory and meter records"
+  product_classification_scope: "Bread and other bakers' wares semantically within CPC 3.0 subclass 23490, independent of directory ancestry"
+  recursive_input_rule: "A purchased finished CPC 23490 product used as an ingredient or rework input is recorded as a product input with its own upstream dataset; its production is not recursively recreated inside this foreground unless the same facility and reporting period provide separable measured production records"
+  upstream_dataset_requirement: "Link upstream datasets for all material ingredients, processing aids, packaging, purchased energy and fuels, water supply, transport when included, and waste or wastewater treatment; disclose missing, proxy or geographically mismatched datasets"
+  disclosure: "Declare facility and sites, reporting period, product subgroup and recipe family, technology and oven route, net product moisture, preservation and packaging state, included and excluded operations, shared-utility allocation, rework treatment, waste destinations and all proxy datasets"
+reference_flow_definition:
+  reference_amount: "1 kg finished product, net of packaging"
+  product_flow_ref:
+    name: "Bread"
+    uuid: "82f5df4a-9ada-46d2-8686-b3b1265a8188"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "exact CPC 23490 product subgroup"
+    - "base cereal or flour"
+    - "recipe or formulation family"
+    - "leavened or unleavened route"
+    - "fermentation or proofing route"
+    - fresh
+    - preserved
+    - "chilled or frozen state"
+    - "net moisture basis"
+    - "edible or non-food functional use"
+    - "finishing and slicing state"
+    - "packaging format and packaging mass"
+    - "production technology"
+    - geography
+    - "lot and reference period"
+    - "declared shelf-life or storage duration"
+    - "allocation choices"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground amounts to 1 kg of conforming finished product at the declared factory-gate market state, excluding packaging mass. Record the product mass after cooling and after any declared finishing loss."
+  - id: packaging_mass_separate
+    applies_to: "packaging inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each packaging material separately. Packaging is within the inventory when used but shall not be added to the 1 kg reference product amount."
+  - id: moisture_and_bake_loss
+    applies_to: "dough, intermediate and final product masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass at each measured process state and declare moisture basis. Do not infer ingredient conversion or bake loss from nominal recipe mass when measured lot masses are available."
+  - id: energy_carriers_not_merged
+    applies_to: "electricity, fuels, steam and thermal energy"
+    required_property_ref:
+      name: "Carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ or carrier mass/volume"
+    rule: "Preserve metered carrier and unit. Convert only with a documented factor and do not merge purchased electricity, on-site fuel combustion and purchased heat into one unqualified energy total."
+  - id: production_and_loss_mass_balance
+    applies_to: "each production lot"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile ingredients and process water with finished product, saleable co-products, rework, evaporation or fermentation loss, waste and other measured outputs. Disclose the residual and investigation threshold."
+process_map:
+  - id: ingredient_and_dough_preparation
+    name: "Ingredient handling, dosing, mixing and dough preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground preparation"
+    quantitative_reference: "kg prepared dough or formed feed to the thermal process"
+  - id: baking_and_cooling
+    name: "Forming, conditional fermentation or proofing, baking or thermal setting, and cooling"
+    inclusion: "required"
+    inclusion_condition: "Always included; fermentation and proofing are zero when not used"
+    role: "Foreground conversion"
+    quantitative_reference: "kg cooled, conforming intermediate product"
+  - id: finishing_packaging_and_storage
+    name: "Slicing, other finishing, packaging and controlled storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation performed before the declared factory gate; otherwise document direct transfer from baking and cooling to the reference product"
+    role: "Foreground finishing"
+    quantitative_reference: "1 kg finished reference product"
+  - id: site_utilities_and_cleaning
+    name: "Shared utilities, sanitation and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always included, with zero amounts supported by records where no relevant shared service is consumed"
+    role: "Foreground support"
+    quantitative_reference: "Product-attributable share per 1 kg finished reference product"
+process_inventory:
+  - id: ingredient_and_dough_preparation
+    label: "Ingredient handling, dosing, mixing and dough preparation"
+    inputs:
+      product:
+        - row_id: ingredients_input
+          role: "Declared ingredients and processing aids"
+          name: "Product-specific ingredient flows selected for the declared formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every recipe ingredient and processing aid crossing the bakery gate, including flour or meal, water-bearing ingredients, salt, yeast or other leavening agent, fats, sugars, improvers, inclusions and release agents as applicable. Select the most specific TianGong product flow for each ingredient during foreground package construction."
+          amount:
+            expression: "Measured issued mass minus documented return to stores for each ingredient and lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_and_packaging_records
+              source_ids:
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "2.0"
+                unit: "kg/kg finished product"
+                basis: "total ingredients excluding formulation water per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: formulation_water
+          role: "Formulation water"
+          name: "Process water appropriate to the site supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water incorporated into the dough or batter separately from cleaning and utility water."
+          amount:
+            expression: "Metered or batch-sheet formulation water corrected for returned or discarded batch water"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water_records
+              source_ids:
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.2"
+                unit: "kg/kg finished product"
+                basis: "formulation water added per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Mixing and preparation electricity"
+          name: "Site-specific purchased or on-site electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for ingredient handling, dosing, mixing, kneading, pumps, compressed air and local temperature control where separately metered or allocated."
+          amount:
+            expression: "Meter reading or equipment runtime multiplied by measured power, less excluded loads"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kWh/kg finished product"
+                basis: "preparation electricity per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_intermediate
+          role: "Prepared dough, batter or formed intermediate"
+          name: "Prepared dough or product-specific intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass delivered to forming, fermentation, proofing or thermal processing."
+          amount:
+            expression: "Measured transfer mass, or calculated mass balance only when direct weighing is impracticable"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_yield_and_loss_records
+              source_ids:
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "0.7"
+                upper: "2.2"
+                unit: "kg/kg finished product"
+                basis: "prepared intermediate per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_waste
+          role: "Ingredient spills, expired materials and unrecoverable dough"
+          name: "Material-specific food or ingredient waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record losses by material and destination; keep hygienically reusable internal rework out of waste and disclose its loop."
+          amount:
+            expression: "Weighed waste leaving preparation, net of documented internal rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_and_loss_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg/kg finished product"
+                basis: "preparation waste per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: ingredient_dust_air
+          role: "Ingredient dust released to air"
+          name: "Substance-specific particulate or dust elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated flour and ingredient dust that crosses the air-emission boundary after capture and abatement; captured dust leaving as waste is not duplicated here."
+          amount:
+            expression: "Measured emitted mass or calculated value from air-flow and concentration records after abatement"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.01"
+                unit: "kg/kg finished product"
+                basis: "emitted ingredient dust per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: baking_and_cooling
+    label: "Forming, conditional fermentation or proofing, baking or thermal setting, and cooling"
+    inputs:
+      product:
+        - row_id: thermal_feed_intermediate
+          role: "Prepared dough, batter or formed intermediate"
+          name: "Prepared dough or product-specific intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the intermediate transferred from preparation without duplicating its upstream burden."
+          amount:
+            expression: "Equal to the recorded output of prepared_intermediate after documented transfer differences"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_yield_and_loss_records
+              source_ids:
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "0.7"
+                upper: "2.2"
+                unit: "kg/kg finished product"
+                basis: "prepared dough, batter or formed intermediate transferred per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: baking_thermal_energy
+          role: "Baking fuel or purchased heat"
+          name: "Carrier-specific fuel, steam or heat flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ, or carrier-specific mass or volume with conversion retained"
+          description: "Record each fuel or purchased-heat carrier separately, including oven, proofing, drying and heat-recovery effects."
+          amount:
+            expression: "Metered consumption or tank/invoice balance allocated to the product line"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "MJ/kg finished product"
+                basis: "oven, proofing and drying thermal energy per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: baking_electricity
+          role: "Baking, forming and cooling electricity"
+          name: "Site-specific purchased or on-site electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for dividing, moulding, proofing controls, ovens, fans, conveyors and cooling equipment."
+          amount:
+            expression: "Meter reading or equipment runtime multiplied by measured power, less excluded loads"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3.0"
+                unit: "kWh/kg finished product"
+                basis: "forming, proofing, baking and cooling electricity per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooled_bakers_ware
+          role: "Cooled conforming baker's ware before optional finishing"
+          name: "Bread"
+          flow_type: "product"
+          flow_ref:
+            uuid: "82f5df4a-9ada-46d2-8686-b3b1265a8188"
+          property_unit: "Mass / kg"
+          description: "Record product mass after baking or thermal setting and cooling, before optional slicing, packaging or controlled storage."
+          amount:
+            expression: "Weighed cooled conforming output, with moisture state and lot linkage retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output_and_quality
+              source_ids:
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.3"
+                unit: "kg/kg finished product"
+                basis: "cooled conforming intermediate before finishing per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: baking_rejects
+          role: "Off-specification, burned or dropped product"
+          name: "Product-specific bakery waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected product separately from reusable rework and state its treatment or destination."
+          amount:
+            expression: "Weighed rejects leaving the process, net of documented internal rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_and_loss_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg/kg finished product"
+                basis: "baking and cooling rejects per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_air_emissions
+          role: "Direct combustion and process emissions to air"
+          name: "Substance-specific elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record each emitted substance separately when fuel is combusted on site or monitored process emissions occur. Biogenic fermentation carbon dioxide may be reported separately when required by the study method, but shall not be confused with fossil combustion carbon dioxide."
+          amount:
+            expression: "Measured mass or calculated mass from metered carrier consumption and a documented facility or regulatory factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2.0"
+                unit: "kg emitted substance/kg finished product"
+                basis: "each separately identified direct air emission per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: finishing_packaging_and_storage
+    label: "Slicing, other finishing, packaging and controlled storage"
+    inputs:
+      product:
+        - row_id: cooled_product_input
+          role: "Cooled baker's ware transferred for finishing"
+          name: "Bread"
+          flow_type: "product"
+          flow_ref:
+            uuid: "82f5df4a-9ada-46d2-8686-b3b1265a8188"
+          property_unit: "Mass / kg"
+          description: "Record the cooled product entering optional finishing, packaging or storage."
+          amount:
+            expression: "Equal to transferred cooled_bakers_ware after documented transfer losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output_and_quality
+              source_ids:
+                - federation-of-bakers-production-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.3"
+                unit: "kg/kg finished product"
+                basis: "cooled baker's ware transferred per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Material-specific packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary and product-attributable tertiary packaging by material and measured mass."
+          amount:
+            expression: "Issued packaging mass minus returned unused packaging, reconciled to packaged units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product, packaging mass excluded from reference amount"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_and_packaging_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.30"
+                unit: "kg/kg finished product"
+                basis: "packaging material per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_storage_electricity
+          role: "Finishing, packaging and storage electricity"
+          name: "Site-specific purchased or on-site electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for slicing, coating or filling equipment, packaging lines, conveyors, metal detection and controlled or frozen storage before dispatch."
+          amount:
+            expression: "Meter reading or equipment runtime multiplied by measured power; storage electricity shall use actual storage duration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2.0"
+                unit: "kWh/kg finished product"
+                basis: "finishing, packaging and declared pre-dispatch storage per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Finished reference bread or baker's ware"
+          name: "Bread"
+          flow_type: "product"
+          flow_ref:
+            uuid: "82f5df4a-9ada-46d2-8686-b3b1265a8188"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record conforming net product mass after all included finishing and before factory-gate dispatch."
+          amount:
+            expression: "Exactly 1 kg net finished product; packaging mass excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - iso-14044-2006
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "net finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-2006
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging trim and rejected packaging"
+          name: "Material-specific packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging trim, damaged packs and unused material leaving the foreground by material and destination."
+          amount:
+            expression: "Weighed packaging waste, net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_and_loss_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg finished product"
+                basis: "packaging waste per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_rejects
+          role: "Finishing rejects and unsaleable product"
+          name: "Product-specific bakery waste or co-product flow according to verified destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slicing crumbs, trim and rejected finished units by whether they are internally reworked, sold as a co-product, donated, used as feed, digested, composted or discarded."
+          amount:
+            expression: "Weighed output by destination, excluding material returned to an internal rework loop"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yield_and_loss_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg/kg finished product"
+                basis: "finishing rejects per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_leakage
+          role: "Refrigerant leakage to air"
+          name: "Refrigerant-specific elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant emitted during controlled storage or cooling from charge reconciliation or service records. Use zero with evidence when no refrigerant system is in the foreground."
+          amount:
+            expression: "Calculated leakage from opening and closing charge, additions, recovery and documented transfers"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.01"
+                unit: "kg/kg finished product"
+                basis: "each refrigerant emitted per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: site_utilities_and_cleaning
+    label: "Shared utilities, sanitation and cleaning"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning and sanitation water"
+          name: "Process water appropriate to the site supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for wet cleaning, sanitation, rinsing and product-attributable utility services separately from formulation water."
+          amount:
+            expression: "Metered cleaning water or allocated measured site water after excluding non-production uses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5.0"
+                unit: "kg/kg finished product"
+                basis: "cleaning and sanitation water per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_chemicals
+          role: "Cleaning chemicals and consumables"
+          name: "Chemical-specific cleaning product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record detergents, disinfectants and other cleaning consumables by formulated product mass and concentration."
+          amount:
+            expression: "Issued quantity minus returns, apportioned using cleaning-event or line records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg finished product"
+                basis: "formulated cleaning product per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: shared_utility_energy
+          role: "Shared utility energy"
+          name: "Carrier-specific electricity, fuel, steam or heat flow"
+          flow_type: "product"
+          property_unit: "kWh, MJ or carrier-specific mass/volume"
+          description: "Record product-attributable energy for compressed air, ventilation, dust control, water treatment, boilers and other shared services not already assigned to a production process."
+          amount:
+            expression: "Metered shared consumption allocated by documented causal driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3.0"
+                unit: "kWh/kg finished product"
+                basis: "electricity-equivalent screening only; inventory retains original carriers per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_output
+          role: "Wastewater sent to treatment"
+          name: "Site- and treatment-specific wastewater flow"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3, with density conversion documented"
+          description: "Record wastewater quantity and, where relevant, pollutant loads by destination. Water sent to an on-site treatment process remains inside the foreground until the treatment output crosses the boundary."
+          amount:
+            expression: "Metered discharge or water balance, with recirculated water and uncontaminated segregated streams identified"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5.0"
+                unit: "kg/kg finished product"
+                basis: "wastewater leaving the foreground per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: support_waste
+          role: "Treatment residues and general production waste"
+          name: "Waste-specific flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge, spent filters, captured dust, cleaning residues and other wastes by material and verified destination."
+          amount:
+            expression: "Weighed output or documented waste-manifest quantity allocated to the reporting product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_destination_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+                - eu-jrc-food-beverage-bemp-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg/kg finished product"
+                basis: "support-process waste per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: wastewater_treatment_emissions
+          role: "On-site wastewater-treatment emissions"
+          name: "Substance- and compartment-specific elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When wastewater is treated on site, record monitored releases to water and air by substance after treatment. Do not duplicate burdens represented in an external treatment dataset."
+          amount:
+            expression: "Discharge volume multiplied by measured concentration, or direct mass-load measurement"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg emitted substance/kg finished product"
+                basis: "each separately identified treated-water emission per 1 kg finished reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "multi-product lines and shared processes"
+    rule: "First avoid allocation by metering, temporal separation, recipe or line subdivision, or another technically justified causal split. Preserve measured product-specific ingredient, yield and energy records whenever available."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_internal_rework
+    applies_to: "dough, crumbs, trim and returned same-site material"
+    rule: "Treat material returned to the same production system as an internal loop. Do not create a co-product credit or duplicate the upstream product burden; disclose quality limits and any additional reprocessing inputs."
+    source_ids:
+      - iso-14044-2006
+      - eu-jrc-food-beverage-bemp-2018
+  - rule_id: allocation_saleable_co_products
+    applies_to: "saleable crumbs, animal-feed material, recovered heat or other outputs with economic value"
+    rule: "When subdivision cannot resolve shared burdens, allocate according to a documented physical relationship that reflects the way inputs and outputs change. Use economic allocation only when no defensible physical relationship exists, and report quantities, prices, reference period and a sensitivity result."
+    source_ids:
+      - iso-14044-2006
+      - international-epd-gpi-5-0-1
+  - rule_id: allocation_waste_no_avoided_burden
+    applies_to: "outputs legally or operationally managed as waste"
+    rule: "Assign bakery operations up to the waste boundary to the reference product unless an applicable method explicitly defines another rule. Link transport and treatment burdens without assuming an avoided-product credit merely because the waste is recovered."
+    source_ids:
+      - international-epd-gpi-5-0-1
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ingredient_and_packaging_records
+      process_id: "ingredient_and_dough_preparation_finishing_packaging_and_storage"
+      flow_role: "ingredients and packaging"
+      record_type: "receiving, invoice, recipe, issue and return records"
+      raw_fields: "material id; supplier; lot; issued quantity; returned quantity; moisture or concentration; packaging material; packaged units"
+      collection_method: "Calibrated scale records reconciled with purchasing and stock movement"
+      unit: "kg"
+      frequency: "Each lot or production batch"
+      temporal_coverage: "Representative continuous 12-month period, or justified seasonal campaign"
+      site_scope: "Every included bakery and warehouse"
+      aggregation_rule: "Sum net issued mass by material and divide by conforming reference-product mass"
+      quality_evidence: "Scale calibration; stock reconciliation; supplier specification; exception log"
+    - protocol_id: cp_process_water_records
+      process_id: "ingredient_and_dough_preparation_site_utilities_and_cleaning"
+      flow_role: "formulation and cleaning water"
+      record_type: "meter and batch records"
+      raw_fields: "meter opening and closing; batch additions; return; reuse; source; density"
+      collection_method: "Read line or submeter and batch controller; allocate only unmetered shared water by documented causal driver"
+      unit: "kg or m3"
+      frequency: "Each batch and monthly meter reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included site and water source"
+      aggregation_rule: "Separate formulation, cleaning, cooling and directly abstracted water before normalization"
+      quality_evidence: "Meter calibration; water balance; reuse register"
+    - protocol_id: cp_energy_records
+      process_id: "all_processes"
+      flow_role: "electricity, fuel, steam and heat"
+      record_type: "meter, invoice, fuel and operating records"
+      raw_fields: "meter readings; invoices; tank balance; runtime; power; carrier; conversion factor; heat recovery"
+      collection_method: "Use line or equipment meters first, then a documented causal allocation from site meters"
+      unit: "kWh, MJ, kg or m3 by carrier"
+      frequency: "Continuous or each batch; monthly reconciliation"
+      temporal_coverage: "Same period as product output, covering seasonality"
+      site_scope: "Every included meter and on-site generation unit"
+      aggregation_rule: "Retain carriers separately; subtract exported energy and excluded loads; normalize by conforming product"
+      quality_evidence: "Meter calibration; invoices; runtime logs; conversion-factor source; balance check"
+    - protocol_id: cp_yield_and_loss_records
+      process_id: "all_production_processes"
+      flow_role: "intermediate yield, rework, rejects and waste"
+      record_type: "production and waste records"
+      raw_fields: "input mass; intermediate mass; conforming output; rework; reject; waste; destination; moisture"
+      collection_method: "Calibrated scales and production or waste-management records"
+      unit: "kg"
+      frequency: "Each batch or daily line total"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included product line"
+      aggregation_rule: "Reconcile mass by lot or defined campaign; internal rework is a loop, not waste"
+      quality_evidence: "Scale calibration; batch genealogy; waste tickets; residual investigation"
+    - protocol_id: cp_product_output_and_quality
+      process_id: "baking_and_cooling_finishing_packaging_and_storage"
+      flow_role: "reference product and intermediate"
+      record_type: "production and quality-release records"
+      raw_fields: "product id; subgroup; recipe; lot; net mass; moisture; temperature; quality status; packaging; storage duration"
+      collection_method: "Calibrated checkweigher or scale plus product-quality release record"
+      unit: "kg and product-specific quality units"
+      frequency: "Each lot"
+      temporal_coverage: "Same period as all foreground inputs"
+      site_scope: "Every included line and product family"
+      aggregation_rule: "Sum released net product mass only; reject or hold mass remains separate"
+      quality_evidence: "Calibration; release certificate; moisture method; traceability record"
+    - protocol_id: cp_direct_emission_records
+      process_id: "ingredient_and_dough_preparation_baking_and_cooling_finishing_packaging_and_storage"
+      flow_role: "dust, combustion, process and refrigerant emissions"
+      record_type: "monitoring, calculation and service records"
+      raw_fields: "substance; compartment; concentration; flow; runtime; fuel; factor; charge; additions; recovery"
+      collection_method: "Direct monitoring where required; otherwise calculate from collected activity and documented factor"
+      unit: "kg by substance"
+      frequency: "Monitoring or service event; at least annual reconciliation"
+      temporal_coverage: "Same period as activity data"
+      site_scope: "Every relevant stack, oven, refrigerant circuit and abatement unit"
+      aggregation_rule: "Calculate substance-specific mass; preserve biogenic and fossil carbon identities"
+      quality_evidence: "Laboratory or monitor QA; factor source; service log; abatement status"
+    - protocol_id: cp_cleaning_records
+      process_id: "site_utilities_and_cleaning"
+      flow_role: "cleaning chemicals and events"
+      record_type: "issue and sanitation records"
+      raw_fields: "chemical id; concentration; issue; return; cleaning line; duration; production allocation driver"
+      collection_method: "Chemical issue records and sanitation log linked to line or area"
+      unit: "kg formulated product and kg active substance where required"
+      frequency: "Each cleaning event"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included production and support area"
+      aggregation_rule: "Sum product-attributable consumption; keep concentration and active-substance conversion"
+      quality_evidence: "Supplier specification; issue reconciliation; sanitation completion log"
+    - protocol_id: cp_water_and_wastewater_records
+      process_id: "site_utilities_and_cleaning"
+      flow_role: "wastewater and monitored water emissions"
+      record_type: "discharge-meter, sampling and analytical records"
+      raw_fields: "discharge flow; pH; temperature; COD or TOC; BOD; nitrogen; phosphorus; suspended solids; substance concentrations; reuse"
+      collection_method: "Metered discharge and accredited or controlled sampling according to permit and process variability"
+      unit: "m3, kg and mg/L as applicable"
+      frequency: "Continuous flow; analytical frequency justified by permit and variability"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every discharge and on-site treatment unit"
+      aggregation_rule: "Flow-weight concentrations to mass loads; separate reused, uncontaminated and treated streams"
+      quality_evidence: "Meter and laboratory QA; sample plan; permit record; water balance"
+    - protocol_id: cp_waste_destination_records
+      process_id: "all_processes"
+      flow_role: "exported waste and treatment residues"
+      record_type: "waste-transfer and destination records"
+      raw_fields: "material; mass; hazardous status; transporter; destination; treatment; recovery status"
+      collection_method: "Weighbridge, container weights and waste transfer documentation"
+      unit: "kg"
+      frequency: "Each shipment; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included site and contractor"
+      aggregation_rule: "Sum by material and verified destination; do not infer avoided burden from destination label"
+      quality_evidence: "Waste manifest; contractor receipt; scale record; destination verification"
+    - protocol_id: cp_shared_allocation_records
+      process_id: "all_processes"
+      flow_role: "shared facility burdens and co-products"
+      record_type: "allocation and production records"
+      raw_fields: "shared input; driver; product output; co-product output; prices; period; subdivision evidence"
+      collection_method: "Meter, production, time, area or other causal driver linked to each product family"
+      unit: "driver-specific"
+      frequency: "Monthly and at reporting-period close"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every shared process and included product family"
+      aggregation_rule: "Apply the approved hierarchy; totals before and after allocation must reconcile"
+      quality_evidence: "Driver justification; source records; sensitivity calculation; allocation reconciliation"
+  calculation_rules:
+    - id: calc_normalized_amount
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period row quantity / reporting-period conforming net reference-product mass"
+      inputs:
+        - "Collected row quantity"
+        - "released product mass"
+      output: "Row quantity per 1 kg finished product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_net_reference_product
+      applies_to: "reference product"
+      rule: "net reference-product mass excludes all packaging and excludes rejected, held or returned product not released at the factory gate"
+      inputs:
+        - "Checkweigher or scale mass"
+        - "packaging mass"
+        - "quality-release status"
+      output: "Conforming net product mass"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_mass_balance
+      applies_to: "each lot or justified production campaign"
+      rule: "residual = total mass inputs - finished product - saleable co-products - exported waste - measured emissions - documented evaporation or fermentation loss - closing work in progress + opening work in progress"
+      inputs:
+        - Ingredient
+        - water
+        - intermediate
+        - output
+        - waste
+        - "emission and stock records"
+      output: "Absolute and percentage residual with disposition"
+      source_ids:
+        - eu-bat-food-drink-milk-2019
+        - iso-14044-2006
+    - id: calc_energy_conversion
+      applies_to: "energy carriers"
+      rule: "Convert only where needed using a documented net or gross calorific value consistent with the selected upstream dataset; retain original metered quantity and conversion basis"
+      inputs:
+        - "Carrier quantity"
+        - "calorific value"
+        - "electricity reading"
+        - "purchased heat"
+      output: "Carrier-specific energy normalized to reference product"
+      source_ids:
+        - eu-bat-food-drink-milk-2019
+    - id: calc_direct_emissions
+      applies_to: "direct air and water emissions"
+      rule: "substance mass = measured concentration × measured flow integrated over the period, or collected activity × documented factor when direct measurement is unavailable"
+      inputs:
+        - Concentration
+        - flow
+        - runtime
+        - "fuel or activity"
+        - factor
+      output: "kg emitted substance per 1 kg finished product"
+      source_ids:
+        - eu-bat-food-drink-milk-2019
+    - id: calc_shared_utility_allocation
+      applies_to: "shared utilities and cleaning"
+      rule: "Prefer direct metering; otherwise multiply shared total by a causal driver share such as equipment time, cleaned area, line throughput or measured demand, then reconcile allocated totals to the shared total"
+      inputs:
+        - "Shared total"
+        - "product-specific driver"
+        - "total driver"
+      output: "Product-attributable shared input"
+      source_ids:
+        - iso-14044-2006
+        - eu-bat-food-drink-milk-2019
+    - id: calc_co_product_allocation
+      applies_to: "unavoidable multifunctionality"
+      rule: "Apply documented physical allocation; if no defensible physical relation exists, economic share = co-product revenue / total revenue over a representative period and report sensitivity"
+      inputs:
+        - "Co-product masses"
+        - "physical driver"
+        - prices
+        - "reporting period"
+      output: "Allocated burdens and sensitivity result"
+      source_ids:
+        - iso-14044-2006
+        - international-epd-gpi-5-0-1
+  data_quality_requirements:
+    - id: dq_identity_and_traceability
+      applies_to: "product, ingredients and packaging"
+      requirement: "Maintain product subgroup, recipe family, lot, supplier and material identity from receipt through released reference product."
+      evidence: "Batch genealogy; supplier specifications; recipe and release records"
+    - id: dq_measurement_control
+      applies_to: "mass, water, energy and emissions"
+      requirement: "Use calibrated or controlled measurement systems, retain units and original readings, and document conversion factors and missing-data substitutions."
+      evidence: "Calibration certificates; meter QA; laboratory QA; conversion-factor register"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Use a continuous 12-month period that captures seasonality, or a complete justified campaign for seasonal products; align numerator and denominator periods."
+      evidence: "Reporting-period declaration; production calendar; meter and inventory timestamps"
+    - id: dq_site_and_technology_coverage
+      applies_to: "multi-site or multi-line datasets"
+      requirement: "Cover every declared site and material technology route; weight aggregation by conforming net product mass and disclose omitted sites or routes."
+      evidence: "Site list; line inventory; weighted aggregation workbook; omission justification"
+    - id: dq_completeness_and_balances
+      applies_to: "material, water and energy inventory"
+      requirement: "Reconcile ingredient/product mass, site water and purchased/on-site energy. Investigate material residuals and unassigned shared consumption rather than silently scaling them away."
+      evidence: "Mass, water and energy balances; exception log; corrective-action record"
+    - id: dq_upstream_representativeness
+      applies_to: "linked background datasets"
+      requirement: "Match ingredient or carrier identity, geography, technology and time as closely as practicable; disclose proxy datasets and material gaps."
+      evidence: "Dataset mapping table; proxy justification; source metadata"
+    - id: dq_reasoned_estimate_replacement
+      applies_to: "all provisional QA ranges in this candidate PCR"
+      requirement: "Treat every reasoned_estimate range as a non-mandatory, replaceable screening guardrail. It shall not replace foreground records or be presented as an observed industry benchmark."
+      evidence: "Range review log; foreground comparison; replacement source or reviewer acceptance"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow and product metadata"
+    rule: "Fail validation when the reference product is not a semantically included CPC 23490 ware, when the product subgroup or market state is missing, or when the reference quantity is not 1 kg net finished product excluding packaging."
+    source_ids:
+      - unsd-cpc-3-0-23490
+  - rule_id: validate_required_qualifiers
+    applies_to: "foreground data package"
+    rule: "Fail validation when any required qualifier is absent, ambiguous or inconsistent across product metadata, the reference flow and process records."
+    source_ids:
+      - unsd-cpc-3-0-23490
+      - federation-of-bakers-production-methods
+  - rule_id: validate_process_coverage
+    applies_to: "process map and inventory"
+    rule: "Require ingredient and dough preparation, baking or equivalent thermal setting and cooling, and site utilities and cleaning. Require explicit inclusion or justified exclusion of fermentation/proofing, finishing, packaging and controlled storage."
+    source_ids:
+      - federation-of-bakers-production-methods
+      - eu-jrc-food-beverage-bemp-2018
+  - rule_id: validate_mass_and_period_balance
+    applies_to: "material inventory"
+    rule: "Require numerator and denominator period alignment, product/reject/rework separation and a disclosed mass-balance residual. Flag unexplained negative amounts, duplicate rework, packaging included in reference mass or unexplained residuals above the facility's documented investigation threshold."
+    source_ids:
+      - iso-14044-2006
+      - eu-bat-food-drink-milk-2019
+  - rule_id: validate_energy_water_and_emissions
+    applies_to: "utilities and direct releases"
+    rule: "Require energy carriers to remain separately identified, formulation water to be separated from cleaning water, and on-site air or water emissions to be substance- and compartment-specific without duplication of external treatment datasets."
+    source_ids:
+      - eu-bat-food-drink-milk-2019
+  - rule_id: validate_allocation_and_proxies
+    applies_to: "shared burdens, co-products and background links"
+    rule: "Require the allocation hierarchy, causal driver, reconciliation and sensitivity where economic allocation is used; require every proxy or geographically mismatched upstream dataset to be disclosed."
+    source_ids:
+      - iso-14044-2006
+      - international-epd-gpi-5-0-1
+  - rule_id: validate_provisional_ranges
+    applies_to: "QA screening ranges"
+    rule: "A value outside a provisional reasoned_estimate range triggers investigation, not automatic rejection. Validation shall report that these broad ranges are temporary authoring estimates and shall prefer collected records and reviewed source-backed replacements."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific foreground bakery production dataset normalized to 1 kg net finished bread or other included baker's ware at the factory gate"
+  downstream_use: "secondary_dataset; background_dataset after independent methodology review, identity review and publication controls"
+  allowed_use: "Product carbon-footprint or LCA modelling of declared CPC 23490 products when geography, recipe, market state, technology, reference period, packaging and boundary are compatible"
+  excluded_use: "Direct comparison of different product functions, moisture states, shelf lives or packaging formats without equivalence review; use for excluded bakery categories; nutritional, food-safety or legal conformity claims; use of candidate QA ranges as industry benchmarks"
+  required_metadata: "Canonical PCR id and version; product subgroup; recipe family; base cereal or flour; leavening and fermentation route; market and moisture state; packaging; facility and geography; technology and oven route; reporting period; shelf life or storage duration; allocation choices; upstream dataset mapping"
+  required_quality_disclosure: "Site and line coverage; mass, water and energy balances; measurement and calibration evidence; temporal coverage; missing data; proxy datasets; rework and waste destinations; allocation sensitivity; all provisional reasoned_estimate uses and replacements"
+  update_trigger: "Recipe or product-subgroup change; greater than material change in technology, oven, fuel, energy source, preservation, packaging, site mix or allocation; new current bakery PCR/c-PCR; changed reference-flow identity; new source-backed evidence replacing provisional ranges; reporting data older than the programme's accepted representativeness period"
+data_sources:
+  - id: "unsd-cpc-3-0-23490"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 23490 Bread and other bakers' wares, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-08-10"
+    used_for: "Authoritative semantic inclusion and exclusion boundary for CPC 23490"
+  - id: "international-epd-bakery-pcr-2012-06"
+    type: "standard"
+    reference: "International EPD System, PCR 2012:06 Bakery products, version 3.0.4, expired, https://environdec.com/pcr-library/pcr2012-06, retrieved 2026-08-10"
+    used_for: "Historical bakery PCR scope and evidence that CPC 234 included CPC 2349; not used as a current mandatory programme rule"
+  - id: "international-epd-gpi-5-0-1"
+    type: "standard"
+    reference: "International EPD System, General Programme Instructions 5.0.1, https://www.environdec.com/resources/general-programme-instructions, retrieved 2026-08-10"
+    used_for: "Current programme-level allocation, data-quality transparency and EPD governance context"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including published amendments, https://www.iso.org/standard/38498.html, retrieved 2026-08-10"
+    used_for: "LCA goal and scope, inventory, allocation, reporting, review and consistency principles"
+  - id: "eu-bat-food-drink-milk-2019"
+    type: "official_guidance"
+    reference: "European Commission, Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj, retrieved 2026-08-10"
+    used_for: "Process flow sheets; inventories and monitoring of raw materials, water, energy, wastewater, waste gas and resource efficiency"
+  - id: "eu-jrc-food-beverage-bemp-2018"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Environmental Management Practice for the Food and Beverage Manufacturing Sector, JRC113418, EUR 29382 EN, DOI 10.2760/2115, https://publications.jrc.ec.europa.eu/repository/handle/JRC113418, retrieved 2026-08-10"
+    used_for: "Food-manufacturing environmental management, cleaning, energy, refrigeration, transport, food-waste prevention and bread/biscuit/cake subsector practices"
+  - id: "federation-of-bakers-production-methods"
+    type: "extension_guidance"
+    reference: "Federation of Bakers, Production methods, https://www.fob.uk.com/about-the-bread-industry/how-bread-is-made/production-methods/, retrieved 2026-08-10"
+    used_for: "Bread ingredient set and process decomposition: mixing, fermentation/proving, dividing, baking, cooling and slicing"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7959745e552614fb8a184d994110a2c1f9c83b375872061551a442bc49a1b38f"
+  generated_content_sha256: "sha256:e25d22348d86c99f73de24bd88338127b8802b9a81474c22cb45b66dc80ebde5"

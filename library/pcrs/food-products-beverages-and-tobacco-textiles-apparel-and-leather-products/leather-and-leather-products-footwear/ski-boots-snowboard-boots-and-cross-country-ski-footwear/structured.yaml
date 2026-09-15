@@ -1,10 +1,1832 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "29410"
-  title: "Ski-boots, snowboard boots and cross-country ski footwear"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.leather-and-leather-products-footwear.ski-boots-snowboard-boots-and-cross-country-ski-footwear"
+  classification_refs: "CPC 3.0: 29410, exact"
+  covered_products: "Alpine ski-boots; snowboard boots; cross-country ski footwear; hard-shell and soft-upper models within CPC 29410"
+  excluded_products: "Skating boots; general sports shoes; ordinary walking or hiking footwear; upstream material production; distribution, use, repair, and end of life"
+  representative_product: "A conforming ski-boot, snowboard boot, or cross-country ski footwear model identified by size, pair or single-article convention, net mass, construction, principal materials, sole system, closure, and intended ski discipline"
+  production_route: "Component moulding or cutting; upper and liner fabrication; stockfitting and final assembly; final inspection and sale packaging"
+  market_state: "Accepted finished footwear at the manufacturing facility gate, with sale-packaging inclusion declared"
+functional_unit:
+  what: "Provide conforming ski-boots, snowboard boots, or cross-country ski footwear at the manufacturing facility gate."
+  how_much: "1 kg accepted net finished footwear mass."
+  how_well: "Meets the declared model specification for subtype, size, construction, sole-binding interface where relevant, closure, flex or stiffness, materials, and quality acceptance."
+  how_long_or_cycle: "One completed production output event; use-stage lifetime is outside this gate-to-gate reference."
+  reference_flow_link: "The functional unit is realized by the verified CPC 29410 product flow normalized to 1 kg accepted output."
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground_model"
+      rule: "Include component moulding or cutting, upper and liner fabrication, stockfitting and final assembly, final inspection, and sale packaging performed for the declared product; keep upstream material manufacture and downstream distribution, use, and end of life outside this foreground boundary."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+        - eu-recommendation-2021-2279
+    - rule_id: boundary_product_route
+      applies_to: "all_product_subtypes"
+      rule: "Declare ski-boot, snowboard-boot, or cross-country-ski-footwear subtype and record only the hard-shell, soft-upper, liner, outsole, closure, and curing routes that actually occur."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - rule_id: boundary_atomic_inventory
+      applies_to: "all_foreground_processes"
+      rule: "Record each material, component, adhesive, chemical, energy carrier, refrigerant, packaging material, waste stream, and direct emission as a separate exchange."
+      source_ids:
+        - eu-recommendation-2021-2279
+        - afw-pefcr-v3-1-2025
+    - rule_id: boundary_step_losses
+      applies_to: "manufacturing_steps"
+      rule: "Reconcile material inputs, accepted transfers, rejects, offcuts, residues, rework, and stock change at each manufacturing step; do not substitute an uncited default loss percentage."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+        - eu-recommendation-2021-2279
+    - rule_id: boundary_direct_releases
+      applies_to: "combustion_solvent_and_refrigerant_sources"
+      rule: "Record air, water, or soil releases only from monitoring, verified mass balance, or an approved facility emissions ledger and identify the receiving compartment."
+      source_ids:
+        - eu-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Received resins, sheets, panels, leather, hardware, chemicals, components, packaging, utilities, and attributable refrigerant service records, with identity, quantity, supplier geography when available, and opening stock declared."
+  starting_condition_role: "Gate-to-gate foreground starting condition for CPC 29410 footwear manufacture."
+  product_classification_scope: "CPC 3.0 subclass 29410 only, with ski-boot, snowboard-boot, or cross-country-ski-footwear subtype declared."
+  recursive_input_rule: "If an input is already finished CPC 29410 footwear, record it once as a purchased product input with supplier dataset and do not recursively reproduce its foreground manufacture."
+  upstream_dataset_requirement: "Every received material, component, chemical, utility, refrigerant, and packaging input requires a geographically and technologically representative upstream dataset or a disclosed unresolved data gap."
+  disclosure: "Declare product subtype, pair or single convention, model and size, construction route, conditional steps, facility geography, production period, meter and stock boundaries, allocation, rework, waste destinations, direct-emission basis, and packaging inclusion."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Ski-boots, snowboard boots and cross-country ski footwear"
+    uuid: "6e39a9ed-f49c-4ddc-8869-7d4c47551bbf"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "footwear subtype"
+    - "intended ski discipline"
+    - "pair or single-article reporting convention"
+    - "reference size and size mix"
+    - "net finished mass"
+    - "shell and cuff material"
+    - "upper and liner construction"
+    - "outsole and midsole system"
+    - "closure and buckle system"
+    - "adhesive and solvent route"
+    - "component-moulding and cooling route"
+    - "facility and country"
+    - "production period"
+    - "accepted quantity"
+    - "sale-packaging inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize inventory to 1 kg accepted net finished footwear mass; record sale packaging separately and do not include it in net footwear mass."
+  - id: pair_single_conversion
+    applies_to: "Product and component records reported by pair or item"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Declare whether counts refer to a pair or one article, convert using product-specific measured average mass, and retain the count and sampling record."
+  - id: component_count_to_mass
+    applies_to: "Eyelets, buckles, outsoles, midsoles, labels, cartons, and other count records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert counts with measured or supplier-specified unit mass and retain the component specification and sample basis."
+  - id: utility_energy_measurement
+    applies_to: "Electricity, purchased steam, hot water, and natural gas"
+    required_property_ref:
+      name: "Energy or mass as stated"
+      uuid: ""
+    required_unit: "kWh; MJ; kg"
+    rule: "Preserve original meter units, conversion factors, temperatures, pressure or calorific basis, and allocation denominator; never combine energy carriers."
+  - id: refrigerant_mass_measurement
+    applies_to: "R134a replenishment and release"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use equipment-specific service records and close the refrigerant mass balance before reporting a release."
+  - id: reference_output_reconciliation
+    applies_to: "Accepted output, rejects, rework, and work in progress"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile accepted finished mass for the declared period and disclose rework and inventory change."
+process_map:
+  - id: component_manufacturing_and_cutting
+    name: "Component moulding, cutting, and preparation"
+    inclusion: "required"
+    inclusion_condition: "Record the actual hard-shell, sole, foam, textile, or leather component routes used for the declared footwear."
+    role: "Foreground component manufacture and preparation"
+    quantitative_reference: "kg accepted component output"
+  - id: upper_liner_fabrication
+    name: "Upper, liner, and closure fabrication"
+    inclusion: "required"
+    inclusion_condition: "Include sewing, eyelet or webbing installation, and bonding only when used by the declared construction."
+    role: "Foreground upper and liner fabrication"
+    quantitative_reference: "kg accepted upper-and-liner assembly"
+  - id: stockfitting_and_final_assembly
+    name: "Stockfitting and final assembly"
+    inclusion: "required"
+    inclusion_condition: "Record the actual outsole, midsole, shell, buckle, adhesive, and assembly route for the footwear subtype."
+    role: "Foreground footwear consolidation and final assembly"
+    quantitative_reference: "kg accepted assembled footwear"
+  - id: inspection_and_sale_packaging
+    name: "Final inspection and sale packaging"
+    inclusion: "required"
+    inclusion_condition: "Inspection is required; each packaging card applies only when that material leaves the facility with the product."
+    role: "Foreground completion and packaging"
+    quantitative_reference: "1 kg accepted reference product"
+process_inventory:
+  - id: component_manufacturing_and_cutting
+    label: "Component moulding, cutting, and preparation"
+    inputs:
+      product:
+        - row_id: thermoplastic_polyurethane_granulate_input
+          role: "Thermoplastic polyurethane granulate"
+          name: "Thermoplastic polyurethane granulate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Thermoplastic polyurethane granulate as one separate exchange when the declared route moulds a thermoplastic polyurethane shell, cuff, or structural part. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued mass from batch issue, return, receipt, and closing-stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: eva_foam_sheet_input
+          role: "Ethylene-vinyl acetate foam sheet"
+          name: "Ethylene-vinyl acetate foam sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Ethylene-vinyl acetate foam sheet as one separate exchange when the declared liner, padding, or midsole route uses EVA foam sheet. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued sheet mass from batch material and stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyester_woven_fabric_input
+          role: "Polyester woven fabric"
+          name: "Polyester woven fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyester woven fabric as one separate exchange when the snowboard-boot or cross-country-ski footwear upper or liner uses woven polyester. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued fabric mass from roll issue, return, and stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: finished_bovine_leather_input
+          role: "Finished bovine leather"
+          name: "Finished bovine leather"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Finished bovine leather as one separate exchange when the declared footwear upper or reinforcement uses finished bovine leather. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued leather mass from hide or sheet issue, return, and stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_component_manufacturing_input
+          role: "Electricity for component manufacturing"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when moulding, cutting, skiving, milling, pressing, or local extraction equipment uses electricity. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered electricity or calculated allocation from a component-area submeter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: purchased_steam_component_heating_input
+          role: "Purchased steam for component heating"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased steam as one separate exchange when purchased steam supplies heat to an in-scope forming or conditioning operation. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Supplier-metered steam mass converted using documented pressure and enthalpy"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: hot_water_component_heating_input
+          role: "Hot water for component heating"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Hot water as one separate exchange when hot water crosses the component-process boundary as a supplied heat-transfer medium. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered hot-water mass with supply and return temperatures retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: natural_gas_component_heating_input
+          role: "Natural gas for component heating"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Natural gas as one separate exchange when an on-site heater or oven combusts natural gas for moulding or conditioning. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered natural-gas use allocated from the documented heater or production-area meter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: r134a_refrigerant_replenishment_input
+          role: "R134a refrigerant replenishment"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record 1,1,1,2-Tetrafluoroethane as one separate exchange when component cooling equipment uses R134a and receives refrigerant during the reporting period. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured maintenance recharge assigned to the component cooling equipment and reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: moulded_tpu_shell_component_output
+          role: "Moulded thermoplastic polyurethane shell component"
+          name: "Moulded thermoplastic polyurethane ski-boot shell component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Moulded thermoplastic polyurethane ski-boot shell component as one accepted product transfer when a hard-shell ski-boot route produces accepted shell or cuff components. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "Measured accepted transfer mass of moulded shell components"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: cut_eva_liner_component_output
+          role: "Cut EVA foam liner component"
+          name: "Cut ethylene-vinyl acetate foam liner component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Cut ethylene-vinyl acetate foam liner component as one accepted product transfer when EVA foam is cut for a liner, tongue, padding, or midsole component. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "Measured accepted transfer mass of cut EVA foam liner components"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: cut_polyester_upper_panel_output
+          role: "Cut polyester upper panel"
+          name: "Cut polyester woven footwear upper panel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Cut polyester woven footwear upper panel as one accepted product transfer when woven polyester is cut into footwear upper or liner panels. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "Measured accepted transfer mass of cut polyester upper panels"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: cut_leather_upper_panel_output
+          role: "Cut bovine-leather upper panel"
+          name: "Cut bovine-leather footwear upper panel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Cut bovine-leather footwear upper panel as one accepted product transfer when finished bovine leather is cut into upper or reinforcement panels. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "Measured accepted transfer mass of cut leather upper panels"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        - row_id: tpu_moulding_scrap_output
+          role: "TPU moulding scrap"
+          name: "Thermoplastic polyurethane moulding scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Thermoplastic polyurethane moulding scrap separately when TPU moulding generates material leaving the process as waste. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed sprue, runner, purge, and rejected-part mass not internally returned to the same batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: eva_foam_offcut_output
+          role: "EVA foam offcut"
+          name: "Ethylene-vinyl acetate foam cutting offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Ethylene-vinyl acetate foam cutting offcut separately when EVA foam cutting produces segregated offcuts. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed EVA foam offcut mass from cutting records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyester_fabric_offcut_output
+          role: "Polyester fabric offcut"
+          name: "Polyester woven fabric cutting offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Polyester woven fabric cutting offcut separately when polyester panel cutting produces segregated textile offcuts. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed polyester fabric offcut mass from cutting records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: bovine_leather_offcut_output
+          role: "Bovine-leather offcut"
+          name: "Finished bovine-leather cutting offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Finished bovine-leather cutting offcut separately when leather cutting produces segregated offcuts. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed bovine-leather offcut mass from cutting records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_material_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_component_heat_output
+          role: "Fossil carbon dioxide from component heat"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Carbon dioxide, fossil, to air only when natural gas is combusted inside this process boundary and a verified emission record exists. Do not infer the release solely from the presence of an input."
+          amount:
+            expression: "Process-attributed mass from monitoring or a verified facility emissions ledger"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: nitrogen_oxides_component_heat_output
+          role: "Nitrogen oxides from component heat"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen oxides to air only when on-site component heating has pollutant-specific monitoring or permit data. Do not infer the release solely from the presence of an input."
+          amount:
+            expression: "Process-attributed mass from monitoring or a verified facility emissions ledger"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: r134a_to_air_output
+          role: "R134a released to air"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record 1,1,1,2-Tetrafluoroethane to air only when R134a equipment has measured recharge, recovery, opening charge, and closing charge records. Do not infer the release solely from the presence of an input."
+          amount:
+            expression: "Verified refrigerant mass balance for the affected equipment and reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: upper_liner_fabrication
+    label: "Upper, liner, and closure fabrication"
+    inputs:
+      product:
+        - row_id: cut_eva_liner_component_input
+          role: "Cut EVA foam liner component"
+          name: "Cut ethylene-vinyl acetate foam liner component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Cut ethylene-vinyl acetate foam liner component as one separate exchange when the declared construction uses a cut EVA liner, tongue, or padding component. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured transfer mass received by upper and liner fabrication"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: cut_polyester_upper_panel_input
+          role: "Cut polyester upper panel"
+          name: "Cut polyester woven footwear upper panel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Cut polyester woven footwear upper panel as one separate exchange when the declared upper or liner uses cut polyester panels. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured transfer mass received by upper and liner fabrication"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: cut_leather_upper_panel_input
+          role: "Cut bovine-leather upper panel"
+          name: "Cut bovine-leather footwear upper panel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Cut bovine-leather footwear upper panel as one separate exchange when the declared upper or reinforcement uses cut bovine-leather panels. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured transfer mass received by upper and liner fabrication"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: polyester_sewing_thread_input
+          role: "Polyester sewing thread"
+          name: "Polyester sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyester sewing thread as one separate exchange when polyester thread is used for the declared stitching construction. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued thread mass from cone issue, return, and closing-stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyester_webbing_input
+          role: "Polyester closure webbing"
+          name: "Polyester woven webbing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyester woven webbing as one separate exchange when polyester webbing forms a closure, pull loop, strap, or reinforcement. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued webbing mass from roll issue, return, and closing-stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: stainless_steel_eyelet_input
+          role: "Stainless steel eyelet"
+          name: "Stainless steel footwear eyelet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Stainless steel footwear eyelet as one separate exchange when the declared closure system uses stainless steel eyelets. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Issued eyelet count multiplied by measured or supplier-specified unit mass, less returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyurethane_adhesive_upper_input
+          role: "Polyurethane adhesive for upper fabrication"
+          name: "Polyurethane footwear adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyurethane footwear adhesive as one separate exchange when the upper or liner route uses polyurethane adhesive. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued adhesive mass from container issue, return, and closing-stock records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_chemical_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: ethyl_acetate_upper_input
+          role: "Ethyl acetate for upper fabrication"
+          name: "Ethyl acetate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Ethyl acetate as one separate exchange when ethyl acetate is documented as a process solvent or cleaning chemical. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued ethyl-acetate mass from container issue, return, and closing-stock records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_chemical_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_upper_liner_input
+          role: "Electricity for upper and liner fabrication"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when sewing, skiving, eyelet setting, adhesive application, ventilation, or handling uses electricity. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered electricity or calculated allocation from an upper-line submeter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_upper_liner_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_upper_liner_output
+          role: "Prepared ski-footwear upper and liner assembly"
+          name: "Prepared ski-footwear upper and liner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Prepared ski-footwear upper and liner assembly as one accepted product transfer when the upper and liner pass the declared in-process quality gate. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "Measured accepted transfer mass to final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        - row_id: polyester_sewing_thread_waste_output
+          role: "Polyester sewing-thread waste"
+          name: "Waste polyester sewing thread"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste polyester sewing thread separately when thread waste leaves the upper-line process. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed thread ends, damaged thread, and unrecoverable cone residue"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyester_webbing_offcut_output
+          role: "Polyester webbing offcut"
+          name: "Polyester woven webbing offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Polyester woven webbing offcut separately when closure-webbing cutting produces segregated offcuts. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed webbing cut-end and rejected-piece mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: stainless_steel_eyelet_scrap_output
+          role: "Stainless steel eyelet scrap"
+          name: "Stainless steel footwear eyelet scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Stainless steel footwear eyelet scrap separately when damaged or surplus eyelets leave the process as segregated metal scrap. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Rejected eyelet count multiplied by unit mass or directly weighed scrap mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyurethane_adhesive_waste_upper_output
+          role: "Polyurethane adhesive waste from upper fabrication"
+          name: "Waste polyurethane footwear adhesive"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste polyurethane footwear adhesive separately when polyurethane adhesive residue leaves the upper-line boundary. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed unused, expired, spilled, or cured adhesive transferred to waste management"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_chemical_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: ethyl_acetate_contaminated_wipe_output
+          role: "Ethyl-acetate-contaminated cleaning wipe"
+          name: "Ethyl-acetate-contaminated cleaning wipe"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Ethyl-acetate-contaminated cleaning wipe separately when ethyl-acetate cleaning generates solvent-bearing solid waste. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed contaminated wipes transferred from the process to waste storage"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_chemical_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: rejected_upper_liner_output
+          role: "Rejected upper and liner assembly"
+          name: "Rejected ski-footwear upper and liner assembly"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected ski-footwear upper and liner assembly separately when a rejected upper or liner leaves work in progress. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed rejected assembly mass not returned for rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_upper_liner_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        - row_id: ethyl_acetate_to_air_output
+          role: "Ethyl acetate released to air"
+          name: "Ethyl acetate to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Ethyl acetate to air only when the facility has monitoring or a verified ethyl-acetate mass balance. Do not infer the release solely from the presence of an input."
+          amount:
+            expression: "Measured release or verified solvent-balance loss attributed to the upper-line batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted upper-and-liner assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: stockfitting_and_final_assembly
+    label: "Stockfitting and final assembly"
+    inputs:
+      product:
+        - row_id: prepared_upper_liner_input
+          role: "Prepared ski-footwear upper and liner assembly"
+          name: "Prepared ski-footwear upper and liner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Prepared ski-footwear upper and liner assembly as one separate exchange when the accepted upper-and-liner assembly enters stockfitting or final assembly. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured transfer mass received by final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: moulded_tpu_shell_component_input
+          role: "Moulded thermoplastic polyurethane shell component"
+          name: "Moulded thermoplastic polyurethane ski-boot shell component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Moulded thermoplastic polyurethane ski-boot shell component as one separate exchange when a hard-shell ski-boot route uses moulded TPU shell or cuff components. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured shell and cuff component mass received by final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: synthetic_rubber_outsole_input
+          role: "Synthetic rubber outsole"
+          name: "Synthetic rubber ski-footwear outsole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Synthetic rubber ski-footwear outsole as one separate exchange when the declared footwear uses a synthetic-rubber outsole. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued outsole mass from count and unit-mass or direct weighment records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: eva_midsole_component_input
+          role: "EVA midsole component"
+          name: "Ethylene-vinyl acetate ski-footwear midsole component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Ethylene-vinyl acetate ski-footwear midsole component as one separate exchange when the declared construction uses an EVA midsole component. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued midsole mass from count and unit-mass or direct weighment records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: stainless_steel_buckle_input
+          role: "Stainless steel buckle"
+          name: "Stainless steel ski-boot buckle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Stainless steel ski-boot buckle as one separate exchange when the declared closure system uses a stainless steel buckle. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Issued buckle count multiplied by measured or supplier-specified unit mass, less returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyurethane_adhesive_assembly_input
+          role: "Polyurethane adhesive for final assembly"
+          name: "Polyurethane footwear adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyurethane footwear adhesive as one separate exchange when stockfitting or final assembly uses polyurethane adhesive. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Net issued adhesive mass from container issue, return, and closing-stock records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_chemical_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_final_assembly_input
+          role: "Electricity for final assembly"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when pressing, stockfitting, fastening, curing, testing, ventilation, or handling uses electricity. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered electricity or calculated allocation from a final-assembly submeter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: natural_gas_final_assembly_input
+          role: "Natural gas for final-assembly heating"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Natural gas as one separate exchange when an on-site press heater or curing oven combusts natural gas. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered natural-gas use allocated from the documented press, oven, or area meter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_ski_footwear_output
+          role: "Assembled ski footwear before packaging"
+          name: "Assembled ski footwear before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Assembled ski footwear before packaging as one accepted product transfer when the completed footwear passes the declared assembly quality gate. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "Measured accepted transfer mass to final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        - row_id: synthetic_rubber_trim_waste_output
+          role: "Synthetic rubber outsole trim waste"
+          name: "Synthetic rubber outsole trimming waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Synthetic rubber outsole trimming waste separately when outsole fitting or trimming generates segregated rubber waste. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed outsole trimming and rejected rubber-piece mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyurethane_adhesive_waste_assembly_output
+          role: "Polyurethane adhesive waste from final assembly"
+          name: "Waste polyurethane footwear adhesive"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Waste polyurethane footwear adhesive separately when polyurethane adhesive residue leaves the final-assembly boundary. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed unused, expired, spilled, or cured adhesive transferred to waste management"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_chemical_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: stainless_steel_buckle_scrap_output
+          role: "Stainless steel buckle scrap"
+          name: "Stainless steel ski-boot buckle scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Stainless steel ski-boot buckle scrap separately when damaged or surplus buckles leave final assembly as segregated metal scrap. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Rejected buckle count multiplied by unit mass or directly weighed scrap mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: rejected_footwear_assembly_output
+          role: "Rejected assembled ski footwear"
+          name: "Rejected assembled ski footwear"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected assembled ski footwear separately when a rejected boot or shoe leaves work in progress. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed rejected assembly mass not returned for rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_assembly_heat_output
+          role: "Fossil carbon dioxide from assembly heat"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Carbon dioxide, fossil, to air only when natural gas is combusted inside final assembly and a verified emission record exists. Do not infer the release solely from the presence of an input."
+          amount:
+            expression: "Process-attributed mass from monitoring or a verified facility emissions ledger"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: nitrogen_oxides_assembly_heat_output
+          role: "Nitrogen oxides from assembly heat"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen oxides to air only when on-site final-assembly heating has pollutant-specific monitoring or permit data. Do not infer the release solely from the presence of an input."
+          amount:
+            expression: "Process-attributed mass from monitoring or a verified facility emissions ledger"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted assembled footwear"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: inspection_and_sale_packaging
+    label: "Final inspection and sale packaging"
+    inputs:
+      product:
+        - row_id: assembled_ski_footwear_input
+          role: "Assembled ski footwear before packaging"
+          name: "Assembled ski footwear before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Assembled ski footwear before packaging as one separate exchange when accepted assembled footwear enters final inspection and packing. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured transfer mass entering final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: electricity_inspection_packaging_input
+          role: "Electricity for inspection and packaging"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when inspection, testing, labelling, sealing, or handling equipment uses electricity. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Metered electricity or calculated allocation from a finishing-area submeter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_utility_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: paper_tissue_input
+          role: "Paper wrapping tissue"
+          name: "Paper wrapping tissue"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Paper wrapping tissue as one separate exchange when paper tissue leaves the facility around or inside the declared product package. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Issued sheet count multiplied by measured or supplier-specified unit mass, less returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: corrugated_carton_input
+          role: "Corrugated fibreboard footwear carton"
+          name: "Corrugated fibreboard footwear carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Corrugated fibreboard footwear carton as one separate exchange when the sale or shipping carton leaves the facility with the declared footwear. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Issued carton count multiplied by measured or supplier-specified unit mass, allocated to accepted product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: paper_label_input
+          role: "Paper product label"
+          name: "Paper product label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Paper product label as one separate exchange when a paper product label or hangtag leaves the facility with the footwear. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Issued label count multiplied by measured or supplier-specified unit mass, less returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polypropylene_tape_input
+          role: "Polypropylene adhesive tape"
+          name: "Polypropylene adhesive tape"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polypropylene adhesive tape as one separate exchange when polypropylene tape seals the declared carton or sale package. The amount is obtained from the stated foreground record or calculation."
+          amount:
+            expression: "Measured roll-mass consumption or issued length multiplied by product-specific mass per length"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_reference_product_output
+          role: "Accepted ski-boots, snowboard boots and cross-country ski footwear"
+          name: "Ski-boots, snowboard boots and cross-country ski footwear"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e39a9ed-f49c-4ddc-8869-7d4c47551bbf"
+          property_unit: "Mass / kg"
+          description: "Record Ski-boots, snowboard boots and cross-country ski footwear as one accepted product transfer when the accepted factory-gate product realizes the reference flow. The amount is obtained from the stated foreground record."
+          amount:
+            expression: "1 kg accepted net finished footwear mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-29410
+            ranges: []
+      waste:
+        - row_id: rejected_finished_ski_footwear_output
+          role: "Rejected finished ski footwear"
+          name: "Rejected finished ski footwear"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected finished ski footwear separately when a finished reject leaves work in progress after final inspection. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed final-inspection reject mass not returned for rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: paper_tissue_scrap_output
+          role: "Paper wrapping-tissue scrap"
+          name: "Paper wrapping-tissue scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Paper wrapping-tissue scrap separately when paper tissue is damaged, trimmed, or unused during packing. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed damaged, trimmed, or unused tissue transferred to waste management"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: corrugated_carton_scrap_output
+          role: "Corrugated fibreboard carton scrap"
+          name: "Corrugated fibreboard carton scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Corrugated fibreboard carton scrap separately when a rejected or damaged carton leaves the packaging process. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed rejected or damaged carton mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: paper_label_scrap_output
+          role: "Paper label scrap"
+          name: "Paper product-label scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Paper product-label scrap separately when rejected or surplus paper labels leave the process. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Rejected label count multiplied by unit mass or directly weighed scrap mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polypropylene_tape_scrap_output
+          role: "Polypropylene adhesive-tape scrap"
+          name: "Polypropylene adhesive-tape scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Polypropylene adhesive-tape scrap separately when discarded tape or roll ends leave the packaging process. Retain its measured mass, composition, and treatment destination."
+          amount:
+            expression: "Weighed discarded tape and unusable roll-end mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_where_measured
+    applies_to: "shared_foreground_processes"
+    rule: "Prefer subdivision, submetering, batch records, and direct mass tracing before allocation."
+    source_ids:
+      - eu-recommendation-2021-2279
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_materials_by_batch
+    applies_to: "materials_components_chemicals_packaging"
+    rule: "Assign net issues directly to the declared product batch; where direct assignment is impossible, use a documented causal driver and disclose the share."
+    source_ids:
+      - eu-recommendation-2021-2279
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_energy_by_carrier
+    applies_to: "electricity_steam_hot_water_and_fuel"
+    rule: "Allocate every energy carrier separately using submeter readings, measured equipment demand and operating time, or another documented causal driver; never allocate a combined energy total."
+    source_ids:
+      - eu-recommendation-2021-2279
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_refrigerant
+    applies_to: "r134a_equipment"
+    rule: "Allocate refrigerant replenishment and release to the serviced equipment and production period before normalizing to accepted component output."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_waste_and_emissions
+    applies_to: "waste_and_direct_releases"
+    rule: "Segregate waste and pollutants by material or substance before allocation; use measured batch mass, verified solvent or refrigerant balance, or the generating process driver."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_no_avoided_credit
+    applies_to: "waste_sent_to_recovery"
+    rule: "Report physical waste output and destination without subtracting avoided-product credit inside this gate-to-gate foreground dataset."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_material_records
+      process_id: "component_manufacturing_and_cutting"
+      flow_role: "Component materials, accepted components, and segregated offcuts"
+      record_type: "BOM, issue, return, stock, weighment, transfer, and waste records"
+      raw_fields: "batch_id; model; size; material_id; specification; opening_stock; receipts; issued_mass; returned_mass; closing_stock; accepted_transfer_mass; offcut_mass; waste_destination"
+      collection_method: "Reconcile net material issues and weigh every accepted component and segregated waste stream"
+      unit: "kg"
+      frequency: "Each batch; summarized monthly"
+      temporal_coverage: "Representative production period, normally 12 months or the full shorter run"
+      site_scope: "All component suppliers and in-scope component operations"
+      aggregation_rule: "Sum each atomic material, transfer, and waste by batch; normalize to accepted component output"
+      quality_evidence: "Approved BOM; calibrated scales; stock reconciliation; transfer note; waste ticket"
+    - protocol_id: cp_component_utility_records
+      process_id: "component_manufacturing_and_cutting"
+      flow_role: "Electricity, purchased steam, hot water, and natural gas"
+      record_type: "Utility meters, invoices, temperature and pressure logs, and equipment records"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; pressure; supply_temperature; return_temperature; enthalpy; equipment_id; operating_time; accepted_output_mass"
+      collection_method: "Use dedicated meters where available; otherwise allocate a documented submeter total using measured equipment demand and operating time"
+      unit: "kWh; MJ; kg"
+      frequency: "Meter interval and each batch"
+      temporal_coverage: "Same period as component output"
+      site_scope: "Component moulding, cutting, conditioning, and extraction equipment only"
+      aggregation_rule: "Keep every carrier separate; convert with documented factors and normalize to accepted output"
+      quality_evidence: "Meter calibration; invoice reconciliation; equipment log; conversion worksheet"
+    - protocol_id: cp_refrigerant_records
+      process_id: "component_manufacturing_and_cutting"
+      flow_role: "R134a replenishment and release"
+      record_type: "Equipment register and refrigerant service records"
+      raw_fields: "equipment_id; refrigerant; opening_charge; recharge_mass; recovered_mass; closing_charge; disposal_mass; service_date; production_period; accepted_output_mass"
+      collection_method: "Reconcile equipment-level refrigerant mass balance from certified service records"
+      unit: "kg"
+      frequency: "Every service event and annual close"
+      temporal_coverage: "Same period as component production"
+      site_scope: "Cooling equipment serving in-scope operations"
+      aggregation_rule: "Allocate verified loss to serviced equipment and period; normalize to accepted component output"
+      quality_evidence: "Service certificate; cylinder weighment; leak-test record; equipment register"
+    - protocol_id: cp_upper_liner_batch_records
+      process_id: "upper_liner_fabrication"
+      flow_role: "Panels, foam, thread, webbing, eyelets, accepted assembly, and solid wastes"
+      record_type: "BOM, issue, return, count, unit-mass, stock, transfer, quality, and waste records"
+      raw_fields: "batch_id; model; size; component_id; issued_mass_or_count; unit_mass; returned_mass_or_count; closing_stock; accepted_output_mass; reject_mass; waste_mass; destination"
+      collection_method: "Reconcile net issues, convert counts with measured unit mass, and weigh accepted and rejected outputs"
+      unit: "kg; count"
+      frequency: "Each batch; summarized monthly"
+      temporal_coverage: "Representative production period"
+      site_scope: "All upper and liner lines in scope"
+      aggregation_rule: "Sum each atomic exchange by batch and normalize to accepted upper-and-liner output"
+      quality_evidence: "BOM; calibrated scales; count-to-mass sample; inspection disposition; waste ticket"
+    - protocol_id: cp_upper_liner_chemical_records
+      process_id: "upper_liner_fabrication"
+      flow_role: "Polyurethane adhesive, ethyl acetate, and chemical wastes"
+      record_type: "SDS, formulation, container issue, return, stock, wipe, spill, and waste records"
+      raw_fields: "batch_id; chemical_id; formulation; purity_or_solids; opening_stock; receipts; issued_mass; returned_mass; closing_stock; waste_mass; retained_solvent; destination"
+      collection_method: "Reconcile each chemical independently and weigh each chemical-bearing waste stream"
+      unit: "kg"
+      frequency: "Each formulation or production batch"
+      temporal_coverage: "Same period as upper and liner production"
+      site_scope: "Adhesive application, cleaning, curing, and local storage in scope"
+      aggregation_rule: "Calculate net issue and chemical-specific waste separately; normalize to accepted output"
+      quality_evidence: "Approved SDS; container weights; stock reconciliation; hazardous-waste manifest"
+    - protocol_id: cp_upper_liner_utility_records
+      process_id: "upper_liner_fabrication"
+      flow_role: "Upper and liner electricity"
+      record_type: "Electricity submeter and equipment operating records"
+      raw_fields: "meter_id; opening_reading; closing_reading; machine_id; measured_demand; operating_time; batch_id; accepted_output_mass"
+      collection_method: "Use submeter readings or allocate measured line electricity using equipment time and demand"
+      unit: "kWh"
+      frequency: "Meter interval and each batch"
+      temporal_coverage: "Same period as upper and liner production"
+      site_scope: "Sewing, skiving, eyelet setting, adhesive, ventilation, and handling equipment"
+      aggregation_rule: "Subtract documented non-production load and normalize causal allocation to accepted output"
+      quality_evidence: "Meter calibration; machine log; allocation worksheet"
+    - protocol_id: cp_final_assembly_batch_records
+      process_id: "stockfitting_and_final_assembly"
+      flow_role: "Uppers, shells, outsoles, midsoles, buckles, accepted footwear, and solid wastes"
+      record_type: "BOM, issue, return, count, unit-mass, transfer, inspection, rework, and waste records"
+      raw_fields: "batch_id; model; size; component_id; issued_mass_or_count; unit_mass; returned_quantity; accepted_output_mass; reject_mass; rework_mass; waste_mass; destination"
+      collection_method: "Reconcile each component, convert counts using unit mass, and weigh accepted, rejected, and reworked footwear"
+      unit: "kg; count"
+      frequency: "Each batch; summarized monthly"
+      temporal_coverage: "Representative production period"
+      site_scope: "All stockfitting and final assembly lines in scope"
+      aggregation_rule: "Sum each atomic exchange by batch and normalize to accepted assembled footwear"
+      quality_evidence: "BOM; calibrated scales; component sample weights; quality disposition; waste ticket"
+    - protocol_id: cp_final_assembly_chemical_records
+      process_id: "stockfitting_and_final_assembly"
+      flow_role: "Polyurethane adhesive and adhesive waste"
+      record_type: "SDS, formulation, container issue, return, stock, spill, and waste records"
+      raw_fields: "batch_id; chemical_id; formulation; solids; opening_stock; receipts; issued_mass; returned_mass; closing_stock; waste_mass; destination"
+      collection_method: "Reconcile adhesive independently and weigh liquid and cured waste"
+      unit: "kg"
+      frequency: "Each production batch"
+      temporal_coverage: "Same period as final assembly"
+      site_scope: "Adhesive application, curing, and local storage in scope"
+      aggregation_rule: "Calculate net adhesive issue and waste separately; normalize to accepted output"
+      quality_evidence: "Approved SDS; container weights; stock reconciliation; waste manifest"
+    - protocol_id: cp_final_assembly_utility_records
+      process_id: "stockfitting_and_final_assembly"
+      flow_role: "Final-assembly electricity and natural gas"
+      record_type: "Utility meters, oven or press logs, and production records"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; equipment_id; operating_time; batch_id; accepted_output_mass"
+      collection_method: "Use carrier-specific meters or allocate documented area totals using equipment operation"
+      unit: "kWh; MJ"
+      frequency: "Meter interval and each batch"
+      temporal_coverage: "Same period as assembled footwear"
+      site_scope: "Pressing, stockfitting, curing, testing, ventilation, and handling equipment"
+      aggregation_rule: "Keep electricity and natural gas separate; normalize each to accepted output"
+      quality_evidence: "Meter calibration; utility invoice; equipment log; allocation worksheet"
+    - protocol_id: cp_direct_emissions_records
+      process_id: "component_manufacturing_and_cutting_upper_liner_fabrication_stockfitting_and_final_assembly"
+      flow_role: "Fuel, solvent, and refrigerant releases"
+      record_type: "Stack monitoring, solvent balance, permit ledger, and refrigerant records"
+      raw_fields: "source_id; substance; compartment; concentration; gas_flow; operating_time; chemical_input; recovered_mass; waste_retention; product_retention; control_efficiency; batch_id"
+      collection_method: "Use substance-specific monitoring or a verified mass balance; do not infer unmeasured species"
+      unit: "kg"
+      frequency: "Monitoring or service interval and reporting batch"
+      temporal_coverage: "Same period as the generating process"
+      site_scope: "Only direct sources inside the declared foreground boundary"
+      aggregation_rule: "Attribute each substance separately using monitored operation or verified balance; normalize to accepted output"
+      quality_evidence: "Calibration and QA records; permit report; chemical reconciliation; service certificate"
+    - protocol_id: cp_packaging_batch_records
+      process_id: "inspection_and_sale_packaging"
+      flow_role: "Accepted footwear, packaging inputs, final rejects, and packaging scraps"
+      record_type: "Inspection, package issue and return, count-to-mass, packing, reject, and waste records"
+      raw_fields: "batch_id; model; size; pair_or_single; accepted_input_mass; reference_output_mass; reject_mass; package_material_id; issued_count_or_mass; unit_mass; returned_quantity; scrap_mass; packed_quantity"
+      collection_method: "Weigh footwear and scraps and convert packaging counts with product-specific unit mass"
+      unit: "kg; count"
+      frequency: "Each packing batch"
+      temporal_coverage: "Representative production period"
+      site_scope: "All final inspection and packing stations in scope"
+      aggregation_rule: "Reconcile accepted input to reference output, rejects, and stock change; normalize packaging to accepted net footwear mass"
+      quality_evidence: "Calibrated scales; inspection disposition; package specification; packing list; waste ticket"
+    - protocol_id: cp_packaging_utility_records
+      process_id: "inspection_and_sale_packaging"
+      flow_role: "Inspection and packaging electricity"
+      record_type: "Electricity meter and equipment operating records"
+      raw_fields: "meter_id; opening_reading; closing_reading; equipment_id; measured_demand; operating_time; batch_id; reference_output_mass"
+      collection_method: "Use a finishing-area submeter or allocate measured electricity by causal equipment activity"
+      unit: "kWh"
+      frequency: "Meter interval and each packing batch"
+      temporal_coverage: "Same period as packed production"
+      site_scope: "Inspection, testing, labelling, sealing, and packing equipment only"
+      aggregation_rule: "Subtract documented non-production load and normalize to accepted reference product"
+      quality_evidence: "Meter calibration; equipment log; allocation worksheet"
+  calculation_rules:
+    - id: calc_net_issue
+      applies_to: "materials_components_chemicals_packaging"
+      rule: "Net issue = opening stock + receipts - returns - closing stock, restricted to the declared product batch and adjusted for documented transfers."
+      inputs:
+        - Stock
+        - issue
+        - return
+        - "and transfer fields"
+      output: "kg net input per batch"
+      source_ids:
+        - eu-recommendation-2021-2279
+        - afw-pefcr-v3-1-2025
+    - id: calc_count_to_mass
+      applies_to: "eyelets_buckles_outsoles_midsoles_and_packaging"
+      rule: "Mass = issued or accepted count multiplied by product-specific measured average unit mass; retain sampling basis and uncertainty."
+      inputs:
+        - "Count and unit-mass record"
+      output: "kg exchange"
+      source_ids:
+        - eu-recommendation-2021-2279
+        - afw-pefcr-v3-1-2025
+    - id: calc_utility_allocation
+      applies_to: "shared_utility_meters"
+      rule: "Carrier amount = metered total minus documented non-production load, multiplied by the causal share from submeter, measured equipment demand and operating time, or accepted process output. Calculate each carrier separately."
+      inputs:
+        - "Meter readings"
+        - exclusions
+        - "and causal driver"
+      output: "kWh, MJ, or kg by carrier"
+      source_ids:
+        - eu-recommendation-2021-2279
+        - afw-pefcr-v3-1-2025
+    - id: calc_refrigerant_balance
+      applies_to: "r134a_equipment"
+      rule: "R134a release = opening charge + recharge - recovered mass - closing charge - documented disposal, only when the service record closes the equipment balance."
+      inputs:
+        - "Equipment charge and service fields"
+      output: "kg R134a released"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_process_mass_balance
+      applies_to: "each_manufacturing_process"
+      rule: "Reconcile material and component inputs with accepted product output, material-specific wastes, measured direct releases, rework, and inventory change; investigate rather than assign unexplained residuals."
+      inputs:
+        - "Atomic exchanges"
+        - rework
+        - "and stock fields"
+      output: "Mass-balance residual and completeness finding"
+      source_ids:
+        - eu-recommendation-2021-2279
+        - afw-pefcr-v3-1-2025
+    - id: calc_solvent_release
+      applies_to: "ethyl_acetate"
+      rule: "Ethyl acetate to air = net ethyl-acetate input - product retention - recovered solvent - liquid waste solvent - solvent retained in solid waste, only when a verified balance is available."
+      inputs:
+        - "Chemical issue"
+        - recovery
+        - retention
+        - "and waste fields"
+      output: "kg ethyl acetate to air"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_reference_normalization
+      applies_to: "all_inventory_exchanges"
+      rule: "Normalized exchange = reporting-period exchange divided by accepted net finished footwear mass; set the reference product output to exactly 1 kg."
+      inputs:
+        - "Reporting-period exchange and accepted reference output"
+      output: "Exchange per 1 kg reference product"
+      source_ids:
+        - eu-recommendation-2021-2279
+        - afw-pefcr-v3-1-2025
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference_product"
+      requirement: "Document footwear subtype, pair or single-article convention, size, net mass, intended ski discipline, construction, closure, sole system, and CPC 29410 inclusion."
+      evidence: "Product specification; BOM; classification review; reference-flow record"
+    - id: dq_bom_coverage
+      applies_to: "materials_and_components"
+      requirement: "Use product-specific BOM and component specifications; disclose every uncovered mass share and proxy without inventing composition."
+      evidence: "BOM coverage calculation; supplier specification; proxy log"
+    - id: dq_temporal_representativeness
+      applies_to: "all_foreground_records"
+      requirement: "Use records representative of the declared period, normally 12 consecutive months or the full shorter run, and disclose shutdowns, campaigns, and missing intervals."
+      evidence: "Dated meter, batch, stock, quality, service, and waste records"
+    - id: dq_geography_technology
+      applies_to: "utilities_and_upstream_datasets"
+      requirement: "Match manufacturing country, energy supply, component technology, formulation, and material specification as closely as available; disclose every substitution."
+      evidence: "Facility address; supplier geography; process technology; dataset metadata"
+    - id: dq_measurement_control
+      applies_to: "measured_quantities"
+      requirement: "Retain calibration or verification status and document conversions from count, length, area, volume, steam mass, or fuel volume to mass or energy."
+      evidence: "Calibration certificates; sample records; conversion worksheets"
+    - id: dq_atomic_completeness
+      applies_to: "inventory"
+      requirement: "Report every included material, component, chemical, energy carrier, refrigerant, packaging material, waste, and direct emission separately and document route applicability."
+      evidence: "Atomic inventory export; route matrix; manifest unresolved-flow review"
+    - id: dq_mass_balance
+      applies_to: "each_process"
+      requirement: "Investigate unexplained mass-balance residuals and disclose rework, work in progress, internal recycling, and stock treatment."
+      evidence: "Process mass-balance worksheet; corrective-action record"
+    - id: dq_uuid_resolution
+      applies_to: "tiangong_linked_flows"
+      requirement: "Use a UUID only after candidate identity confirmation and public state-100 direct read; keep unresolved non-reference identities blank with row-specific review metadata."
+      evidence: "State-100 verification record; manifest review metadata"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Require product flow 6e39a9ed-f49c-4ddc-8869-7d4c47551bbf, Product flow type, exact CPC 29410, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg reference unit."
+    source_ids:
+      - unsd-cpc-3-0-29410
+  - rule_id: validate_required_qualifiers
+    applies_to: "foreground_data_package"
+    rule: "Fail completeness when footwear subtype, pair or single-article convention, size, net mass, BOM, construction route, facility, production period, or packaging inclusion is missing."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - eu-recommendation-2021-2279
+  - rule_id: validate_atomic_flows
+    applies_to: "process_inventory"
+    rule: "Reject collection labels and combined exchanges; every material, component, chemical, energy carrier, refrigerant, packaging material, waste, and emission shall remain separate."
+    source_ids:
+      - eu-recommendation-2021-2279
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_bom_and_losses
+    applies_to: "materials_and_manufacturing_losses"
+    rule: "Require product-specific BOM, accepted transfers, material-specific offcuts, rejects, rework, stock change, and step-level loss reconciliation."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - eu-recommendation-2021-2279
+  - rule_id: validate_utilities
+    applies_to: "electricity_steam_hot_water_natural_gas"
+    rule: "Require carrier-specific meters, conversion records, boundary definitions, and allocation drivers; do not accept a combined energy amount."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - eu-recommendation-2021-2279
+  - rule_id: validate_chemicals_and_emissions
+    applies_to: "adhesive_solvent_combustion_and_refrigerant"
+    rule: "Require chemical-specific issue and waste records; direct emissions require monitoring or verified balance and cannot be inferred from input presence alone."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: validate_packaging
+    applies_to: "sale_packaging"
+    rule: "Require each included packaging material to reconcile with packing records and disclose packaging excluded from the reference product mass."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - eu-recommendation-2021-2279
+  - rule_id: validate_uuid_resolution
+    applies_to: "tiangong_references"
+    rule: "Reject any non-reference UUID that lacks both candidate identity confirmation and a public state-100 direct read; unresolved identities remain blank with row-specific manifest metadata."
+    source_ids: []
+  - rule_id: validate_translation_alignment
+    applies_to: "bilingual_pcr"
+    rule: "Require identical ordered process_id, row_id, Selected flow, controlled-token, source-id, boundary-rule, allocation-rule, and validation-rule sequences in English and Chinese."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific foreground manufacturing dataset for CPC 29410 ski-boots, snowboard boots, or cross-country ski footwear."
+  downstream_use: "secondary_dataset; background_dataset only when product identity, geography, technology, representativeness, allocation, and unresolved-flow limitations match the downstream study."
+  allowed_use: "Factory-gate LCI modelling, supplier-specific data exchange, product-footprint modelling, and downstream process or lifecycle-model projection with required qualifiers preserved."
+  excluded_use: "Representation of skating boots or general sports footwear; unqualified comparison across materially different constructions; use-stage or end-of-life claims; performance or safety certification; automatic filling of unresolved UUIDs or quantities."
+  required_metadata: "PCR id and version; subtype and ski discipline; pair or single convention; model and size; net mass; BOM and material specifications; construction route; facility and country; production period; meter and stock boundaries; allocation; rework; waste destinations; direct-emission basis; packaging inclusion; source and proxy list."
+  required_quality_disclosure: "Primary-data coverage; temporal, geographic, and technological representativeness; calibration status; mass-balance residuals; allocation shares; conditional-route omissions; unresolved Tiangong identities; upstream dataset substitutions; data gaps and uncertainty."
+  update_trigger: "Change in CPC scope, reference-flow identity, product subtype, principal material, construction or binding interface, facility, utility supply, adhesive or solvent, cooling refrigerant, packaging, allocation driver, or material foreground evidence."
+data_sources:
+  - id: "unsd-cpc-3-0-29410"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, code 29410, official structure entry and CPC_Ver_3.0_Structure_30Jun2025.csv. https://unstats.un.org/unsd/classifications/Econ"
+    used_for: "Exact scope and title for ski-boots, snowboard boots, and cross-country ski footwear"
+  - id: "eu-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Product-specific BOM and manufacturing data; LCI inputs of raw materials and energy; products, waste, and releases to air, water, and soil; completeness, quality, and transparency rules"
+  - id: "afw-pefcr-v3-1-2025"
+    type: "standard"
+    reference: "Product Environmental Footprint Category Rules for Apparel and Footwear, Version 3.1, 29 April 2025. https://pefapparelandfootwear.eu/afw_pefcr_v3-1_final/"
+    used_for: "Footwear BOM, component manufacturing, compound forming, die-cutting, sewing, stockfitting, assembly, manufacturing losses, sale packaging, electricity, allocation, and company-specific data structure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8289662073c2d6ff0a268e1204c2578264ba980d6fdbdb67ea08dd7577dafa01"
+  generated_content_sha256: "sha256:9bf02b733db6fde3f0277ab70249878ed274b5839cdd66b98967a7a016a64a60"

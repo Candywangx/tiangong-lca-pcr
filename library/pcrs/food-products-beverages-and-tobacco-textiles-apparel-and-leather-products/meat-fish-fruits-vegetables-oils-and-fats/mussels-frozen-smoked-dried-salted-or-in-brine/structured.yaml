@@ -1,10 +1,774 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21263"
-  title: "Mussels, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.mussels-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21263, exact"
+  covered_products: "Food-grade mussels, whether in shell or not, frozen, smoked, dried, salted, or in brine; smoked mussels whether or not cooked before or during smoking; food-grade mussel flours, meals, and pellets when traceable to a covered route"
+  excluded_products: "Live, fresh, or chilled mussels; otherwise prepared or preserved mussels; inedible mussel flours, meals, or pellets; dead or unfit mussels; combined preservation routes not separately reviewed"
+  representative_product: "Qualified saleable mussel product from one declared preservation route"
+  production_route: "Receipt and preparation; exactly one of freezing, smoking, drying, salting, or brining; packing and release; controlled storage when required"
+  market_state: "Finished food product at the processing-facility gate, with preservation route, shell state, and mass basis declared"
+functional_unit:
+  what: "A qualified saleable mussel food product produced through one declared covered preservation route"
+  how_much: "1 kg net mussel product on the applicable route-specific measurement basis"
+  how_well: "Meets the declared product specification and applicable food-safety release criteria, with route, shell state, edible-portion basis, and relevant composition or drainage qualifiers recorded"
+  how_long_or_cycle: "One production batch at processing-facility gate; storage duration is reported separately when controlled storage occurs"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_route
+      applies_to: "foreground processing"
+      rule: "Include receipt/preparation, the one selected preservation route, packing/release, and actual controlled storage through the declared facility gate."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021
+    - rule_id: sb_route_exclusivity
+      applies_to: "preservation alternatives"
+      rule: "Model freezing, smoking, drying, salting, and brining as mutually exclusive alternatives unless an intentionally combined product has been separately reviewed; never average route inventories."
+      source_ids:
+        - unsd-cpc-30-21263
+        - codex-cxc-52-2003
+    - rule_id: sb_upstream_completeness
+      applies_to: "upstream inputs"
+      rule: "Connect all material product and service inputs to representative upstream datasets and disclose exclusions or proxies; do not duplicate an upstream preserved-mussel process."
+      source_ids:
+        - eu-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Mussels received at the processing facility with species or mix, origin, live/raw/fresh/chilled/frozen condition, shell state, and received mass declared"
+  starting_condition_role: "Upstream product input to foreground preparation and preservation"
+  product_classification_scope: "The output is limited to the generic food-grade mussel products covered by CPC 3.0 21263 and one declared preservation route"
+  recursive_input_rule: "If a covered preserved mussel product is used as an input, record it as an upstream product flow with a compatible dataset and do not reopen its preservation inventory inside the receiving process"
+  upstream_dataset_requirement: "Require traceable upstream datasets for mussel production or harvest, received precursor, energy carriers, preservation materials, packaging, water supply, transport to the facility, and waste treatment when those systems cross the study boundary"
+  disclosure: "Declare geography, technology, reporting period, species, origin, shell state, preservation route, yield basis, mass and composition basis, packaging, storage conditions, cut-offs, proxies, allocation, and any reasoned estimates"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Mussels, frozen, smoked, dried, salted or in brine"
+    uuid: "b40a9b04-158a-4482-8c52-022d30f1a99a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - preservation_route
+    - species_or_species_mix
+    - shell_state
+    - edible_portion_basis
+    - packaging_inclusion
+    - moisture_content_if_dried
+    - salt_content_or_brine_strength_if_salted_or_in_brine
+    - glaze_presence_and_net_mass_excluding_glaze_if_frozen
+    - drained_weight_basis_if_packed_in_brine
+    - smoking_and_cooking_state_if_smoked
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg qualified saleable product, excluding packaging. Include shell mass only for a product declared and sold in shell; otherwise use edible mussel meat mass."
+  - id: frozen_net_mass
+    applies_to: "frozen route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Exclude ice glaze and packaging from the 1 kg reference mass; record glaze water and packaging separately."
+  - id: brine_drained_mass
+    applies_to: "product packed in brine"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use drained mussel product mass after the declared, reproducible drainage procedure; record packing brine separately and disclose the procedure and brine strength."
+  - id: route_composition_basis
+    applies_to: "dried, salted, brined, or smoked route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure product at release and report moisture for dried product, salt content or brine strength for salted or brined product, and smoking and cooking state for smoked product. Do not compare routes unless shell state and mass/composition basis are harmonized."
+  - id: packaging_separation
+    applies_to: "all routes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Packaging is inventoried inside production but is never counted in the 1 kg product mass."
+process_map:
+  - id: raw_material_preparation
+    name: "Raw mussel receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, washing, grading, de-shelling or trimming as applicable"
+    quantitative_reference: "kg prepared mussels"
+  - id: route_preservation
+    name: "Route-specific preservation"
+    inclusion: "required"
+    inclusion_condition: "Select exactly one of frozen, smoked, dried, salted, or brined"
+    role: "Foreground preservation"
+    quantitative_reference: "kg preserved mussels"
+  - id: packing_and_release
+    name: "Packing and release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground packing, quality release, and reference product output"
+    quantitative_reference: "1 kg saleable product"
+  - id: controlled_storage
+    name: "Controlled storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when frozen, chilled, humidity-controlled, or other active holding occurs before facility gate"
+    role: "Foreground holding"
+    quantitative_reference: "kg packed product and storage time"
+process_inventory:
+  - id: raw_material_preparation
+    label: "Raw mussel receipt and preparation"
+    inputs:
+      product:
+        - row_id: received_mussels
+          role: "Received mussels"
+          name: "Received food-grade mussels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass and declared condition of mussels entering preparation, including shell state and origin."
+          amount:
+            expression: "measured received mass normalized to prepared output and final reference product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg final reference product"
+                basis: "route-, shell-, and yield-dependent received mass per 1 kg final product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_utilities
+          role: "Preparation utilities"
+          name: "Process water and preparation energy carriers, each recorded separately"
+          flow_type: "product"
+          property_unit: "Mass / kg for water; Energy / kWh or carrier-specific unit for energy"
+          description: "Record water and energy separately by actual flow and unit for washing, conditioning, grading, de-shelling, and cleaning."
+          amount:
+            expression: "metered or invoice-derived use allocated to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared mussels"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water or kWh energy per kg prepared mussels, interpreted separately by flow"
+                basis: "broad candidate-stage utility screen; never sum unlike units"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_mussels
+          role: "Prepared mussels"
+          name: "Prepared mussels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared mussels transferred to the selected preservation route, with shell and edible-portion basis unchanged or explicitly converted."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per preparation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_losses
+          role: "Preparation rejects and effluent"
+          name: "Preparation wastes, separated by destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record shells, unsuitable mussels, solids, and wastewater as separate waste flows even when reported under this shared role."
+          amount:
+            expression: "measured or mass-balance-calculated waste by type and treatment destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared mussels"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg prepared mussels"
+                basis: "combined wet waste before separation by destination"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: route_preservation
+    label: "Route-specific preservation"
+    inputs:
+      product:
+        - row_id: preservation_feed
+          role: "Prepared mussels transferred to preservation"
+          name: "Prepared mussels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only the feed to the selected route and retain its preparation batch linkage."
+          amount:
+            expression: "measured route feed mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids: []
+            ranges: []
+        - row_id: preservation_inputs
+          role: "Route preservation inputs"
+          name: "Route-specific energy carriers and preservation materials, each recorded separately"
+          flow_type: "product"
+          property_unit: "Native flow property and unit, with energy additionally reportable in kWh"
+          description: "Record each actual input separately: refrigeration or freezing energy for frozen product; smoking fuel or medium and energy for smoked product; heat and airflow energy for dried product; salt for salted product; or salt, water, and prepared brine for brined product."
+          amount:
+            expression: "metered, purchased, or batch-formulation amount for the one selected route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved mussels"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg material or kWh energy per kg preserved mussels, interpreted separately by flow"
+                basis: "broad route-specific candidate screen; never sum unlike units or apply to an unselected route"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_mussels
+          role: "Preserved mussels"
+          name: "Route-qualified preserved mussels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record preserved output mass with the selected route and its applicable moisture, salt/brine, glaze, shell, drainage, and smoking/cooking qualifiers."
+          amount:
+            expression: "measured preserved output at route completion"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "2"
+                unit: "kg/kg prepared mussels"
+                basis: "route-dependent output-to-feed mass ratio before final packing"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preservation_wastes
+          role: "Preservation wastes"
+          name: "Route-specific preservation waste, separated by type and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent brine, wastewater, condensate, smoking residues, rejects, and off-specification product separately by actual route and destination."
+          amount:
+            expression: "measured or mass-balance-calculated route waste"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved mussels"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg preserved mussels"
+                basis: "wet route waste before separation by waste type"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_route_emissions
+          role: "Direct route emissions"
+          name: "Route-specific direct elementary emissions, each recorded separately"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated direct smoke, combustion, particulate, or refrigerant emissions only when they cross the environment boundary at the facility; do not duplicate treatment emissions already represented upstream."
+          amount:
+            expression: "measured emission or calculation from collected fuel or refrigerant records using a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved mussels"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg preserved mussels per individual elementary flow"
+                basis: "broad candidate-stage screen for onsite direct emissions"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: packing_and_release
+    label: "Packing and release"
+    inputs:
+      product:
+        - row_id: packing_feed
+          role: "Preserved mussels transferred to packing"
+          name: "Route-qualified preserved mussels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured preserved product transferred to packing under the same route and mass qualifiers."
+          amount:
+            expression: "measured packing feed mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_batch
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials, each recorded separately"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging separately by material and measured purchased or issued mass; exclude all packaging from reference product mass."
+          amount:
+            expression: "measured packaging issued minus returned usable stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_batch
+              source_ids:
+                - eu-pef-2021
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg final reference product"
+                basis: "all packaging material placed on the market per 1 kg product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Qualified saleable reference product"
+          name: "Mussels, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b40a9b04-158a-4482-8c52-022d30f1a99a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output after release checks and route-specific mass adjustment."
+          amount:
+            expression: "exactly 1 kg net qualified saleable product on the declared measurement basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: packing_waste
+          role: "Packing rejects and packaging waste"
+          name: "Packing waste, separated by material and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification product and unused or damaged packaging separately by treatment destination."
+          amount:
+            expression: "measured waste mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg final reference product"
+                basis: "combined product and packaging waste before separation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: controlled_storage
+    label: "Controlled storage"
+    inputs:
+      product:
+        - row_id: storage_feed
+          role: "Packed product entering storage"
+          name: "Packed route-qualified mussel product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packed product entering active storage and preserve its route and batch linkage."
+          amount:
+            expression: "measured mass entering controlled storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per storage lot"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_energy
+          role: "Storage energy"
+          name: "Storage energy carriers, each recorded separately"
+          flow_type: "product"
+          property_unit: "Energy / kWh or carrier-specific unit"
+          description: "Record metered refrigeration, freezing, ventilation, humidity control, or other active storage energy for the actual duration; omit this process when no active storage occurs."
+          amount:
+            expression: "metered or invoice-derived energy allocated by stored mass and time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg product"
+                basis: "active storage through the facility gate for the declared duration"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stored_product
+          role: "Stored saleable product"
+          name: "Mussels, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b40a9b04-158a-4482-8c52-022d30f1a99a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record saleable product leaving controlled storage; losses and changes in glaze, moisture, or drained mass must be reconciled before normalization to the reference flow."
+          amount:
+            expression: "measured net saleable mass leaving storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per storage lot"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: storage_refrigerant_loss
+          role: "Refrigerant loss during storage"
+          name: "Refrigerant emission to air, substance-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant loss to air only for refrigeration equipment inside the boundary, calculated from charge and service records with a disclosed substance-specific method."
+          amount:
+            expression: "calculated loss from equipment charge and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg stored product"
+                basis: "broad candidate-stage screen for onsite refrigerant loss"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "all foreground processes"
+    rule: "Avoid allocation by subdividing separately metered operations and directly assigning route-specific inputs, outputs, wastes, and emissions wherever feasible."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_residuals
+    applies_to: "shells, rejects, recovered materials, or other co-products"
+    rule: "First distinguish waste from a co-product using the applicable study rules. Assign treatment burdens to waste; for a co-product, use a documented physical causal relationship when defensible, otherwise use economic allocation and disclose prices, period, geography, and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_no_cross_route
+    applies_to: "shared equipment or utilities"
+    rule: "Allocate shared services only among products actually using them during the reporting period; never distribute burdens from an unselected preservation route to the selected route."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_preparation_batch
+      process_id: "raw_material_preparation"
+      flow_role: "received mass, utilities, prepared output, rejects and effluent"
+      record_type: "batch ticket, scale record, meter, invoice, waste manifest"
+      raw_fields: "batch_id; species; origin; received_condition; shell_state; input_mass; water; energy_by_carrier; prepared_mass; waste_by_type"
+      collection_method: "calibrated scales and meters, reconciled to batch records"
+      unit: "kg; kWh; carrier-specific unit"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "representative reporting year or disclosed campaign"
+      site_scope: "each processing facility"
+      aggregation_rule: "sum by flow and divide by conforming prepared or final output as specified"
+      quality_evidence: "calibration records, invoices, batch traceability, waste receipts"
+    - protocol_id: cp_preservation_batch
+      process_id: "route_preservation"
+      flow_role: "route feed, route inputs, preserved output, wastes and direct emissions"
+      record_type: "batch recipe, meter, scale, process log, laboratory result"
+      raw_fields: "batch_id; preservation_route; feed_mass; energy_by_carrier; water; salt; brine; smoking_medium; output_mass; moisture; salt_content; glaze_mass; drained_mass; waste; direct_emission_inputs"
+      collection_method: "route-specific metering and scales with laboratory or specification checks"
+      unit: "kg; kWh; carrier-specific unit; percent where applicable"
+      frequency: "each batch"
+      temporal_coverage: "representative reporting year with seasonal coverage"
+      site_scope: "each route at each facility"
+      aggregation_rule: "aggregate only identical declared routes and mass bases; normalize to preserved and final output"
+      quality_evidence: "calibration, recipe, meter, lab, release, and traceability records"
+    - protocol_id: cp_packing_batch
+      process_id: "packing_and_release"
+      flow_role: "preserved feed, packaging, reference product, packing waste"
+      record_type: "packing order, bill of materials, scale, release record"
+      raw_fields: "batch_id; route; feed_mass; packaging_by_material; net_product_mass; shell_state; glaze_or_drained_adjustment; rejects; release_status"
+      collection_method: "reconcile issued packaging and measured net product to released units"
+      unit: "kg"
+      frequency: "each packing batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each packing line and facility"
+      aggregation_rule: "sum conforming outputs and normalize all inputs and wastes to 1 kg reference product"
+      quality_evidence: "scale calibration, packaging specifications, release and reconciliation records"
+    - protocol_id: cp_storage_records
+      process_id: "controlled_storage"
+      flow_role: "stored mass, duration, energy, refrigerant loss"
+      record_type: "stock ledger, temperature log, meter, invoice, refrigerant service log"
+      raw_fields: "lot_id; route; mass_in; mass_out; time_in; time_out; temperature_or_humidity_setpoint; energy_by_carrier; refrigerant_type; charge; additions; recoveries"
+      collection_method: "reconcile stock-time with metered energy and equipment service records"
+      unit: "kg; hour or day; kWh; refrigerant-specific kg"
+      frequency: "continuous or each lot with monthly reconciliation"
+      temporal_coverage: "actual storage period within representative reporting year"
+      site_scope: "each controlled store and refrigeration system"
+      aggregation_rule: "allocate measured energy by a disclosed mass-time or causal driver; calculate net refrigerant loss by substance"
+      quality_evidence: "meter records, continuous logs, inventory reconciliation, service certificates"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground flows"
+      rule: "normalized flow = batch flow divided by qualified saleable product mass on the applicable route-specific reference basis"
+      inputs:
+        - "batch flow"
+        - "qualified net product mass excluding packaging"
+        - glaze
+        - "or packing brine as applicable"
+      output: "flow per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_route_yield
+      applies_to: "preparation and preservation"
+      rule: "yield = qualified output mass divided by input mussel mass, retaining route, shell state, moisture, salt/brine, glaze, and drainage basis"
+      inputs:
+        - "input mass"
+        - "output mass"
+        - qualifiers
+      output: "disclosed process yield"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_mass_reconciliation
+      applies_to: "each process and batch"
+      rule: "reconcile mass inputs, product outputs, wastes, measured water loss or gain, stock change, and unresolved difference; disclose the residual and investigation threshold"
+      inputs:
+        - "collected masses and composition adjustments"
+      output: "batch mass balance and residual"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_storage_energy
+      applies_to: "controlled storage"
+      rule: "allocated storage energy = metered store energy multiplied by the product allocation driver divided by total driver; prefer a causal mass-time or equipment-zone driver"
+      inputs:
+        - "meter energy"
+        - "product mass"
+        - "residence time"
+        - "zone or equipment data"
+      output: "storage energy per kg product"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and route"
+      requirement: "Retain species or mix, origin, route, shell state, edible-portion basis, packaging inclusion, and all applicable route-specific qualifiers."
+      evidence: "batch traceability and release specification"
+    - id: dq_measurement
+      applies_to: "mass, energy, water, materials, wastes, and emissions"
+      requirement: "Use calibrated or verified measurement systems, preserve native units, document conversions, and keep route-specific records separate."
+      evidence: "calibration, meter, invoice, scale, laboratory, and service records"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Cover a representative reporting year where available or disclose campaign dates, seasonality, shutdowns, and deviations."
+      evidence: "dated batch and operational records"
+    - id: dq_completeness
+      applies_to: "foreground and upstream links"
+      requirement: "Reconcile product and waste flows, include material utilities and packaging, link upstream and treatment datasets, and disclose exclusions, proxies, and unresolved mass-balance residuals."
+      evidence: "mass balance, data-gap register, dataset links, and reviewer record"
+    - id: dq_reasoned_estimate
+      applies_to: "all provisional ranges"
+      requirement: "Use a reasoned estimate only while direct data are unavailable; disclose its temporary status and replace it when route/site records are obtained or three representative batches are measured."
+      evidence: "estimate register and replacement review record"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product UUID b40a9b04-158a-4482-8c52-022d30f1a99a, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and exactly 1 kg qualified product."
+    source_ids:
+      - unsd-cpc-30-21263
+  - rule_id: validation_qualifiers
+    applies_to: "product metadata"
+    rule: "Fail completeness when preservation route, shell state, edible-portion basis, packaging inclusion, or any applicable moisture, salt/brine, glaze, drainage, smoking, or cooking qualifier is missing."
+    source_ids:
+      - unsd-cpc-30-21263
+      - codex-cxc-52-2003
+  - rule_id: validation_route_exclusivity
+    applies_to: "process inventory"
+    rule: "Require exactly one covered preservation route and reject cross-route averaging; flag an intentional combined route for separate methodology review."
+    source_ids:
+      - unsd-cpc-30-21263
+      - codex-cxc-52-2003
+  - rule_id: validation_mass_basis
+    applies_to: "reference product"
+    rule: "Require packaging to be excluded; require glaze exclusion for frozen product, drained product mass and disclosed drainage for brined product, and harmonized shell and composition basis before comparisons."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validation_inventory
+    applies_to: "foreground processes"
+    rule: "Require the three core processes, require controlled storage when its condition applies, reconcile measured inputs, outputs, wastes, and stock changes, and disclose residuals and upstream data gaps."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021
+  - rule_id: validation_estimates
+    applies_to: "reasoned estimates"
+    rule: "Require each reasoned estimate to remain labelled provisional with its applicability and replacement trigger; it must not silently override foreground data or become a publication-critical allowed range."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one declared mussel preservation route and facility-gate output"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Route-specific process or lifecycle modelling when geography, technology, time, shell state, mass basis, packaging, storage, allocation, and data quality are compatible"
+  excluded_use: "Generic averaging across preservation routes; comparison across unlike shell, edible-portion, moisture, salt/brine, glaze, drainage, or packaging bases; use of candidate reasoned estimates as reviewed default factors"
+  required_metadata: "PCR id; product UUID; CPC reference; species or mix; origin; facility geography; technology; reporting period; preservation route; shell state; edible-portion basis; packaging; applicable moisture, salt/brine, glaze, drainage, smoking and cooking qualifiers; storage; allocation; cut-offs; upstream datasets"
+  required_quality_disclosure: "Primary-data share; measurement and calibration evidence; temporal and route representativeness; mass-balance residuals; exclusions; proxies; allocation sensitivity; reasoned estimates and replacement status"
+  update_trigger: "New reviewed route-specific evidence; changed product specification, technology, regulation, source, UUID, or system boundary; representative foreground records replacing any reasoned estimate; material mass-balance or validation failure"
+data_sources:
+  - id: "unsd-cpc-30-21263"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC, Version 3.0, code 21263. https://unstats.un.org/unsd/classifications/Econ/Detail/EN/2100/21263 (retrieved 2026-08-11)"
+    used_for: "Exact category scope, included and excluded products, and preservation-route identity"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "FAO and WHO. 2020. Code of Practice for Fish and Fishery Products, CXC 52-2003. https://doi.org/10.4060/cb0658en (retrieved 2026-08-11)"
+    used_for: "Bivalve receiving and handling, route-specific freezing, smoking, drying, salting and brining process controls, packing, storage, hygiene, traceability, and quality records"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission. Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Reference-flow definition, system-boundary completeness, primary data, allocation hierarchy, packaging, data quality, and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0936c123128aa91af86f7df90a87e2f28feacea8ac3eb36a01eba12cbec02a71"
+  generated_content_sha256: "sha256:17958f3106368567c42cfb75bc052b507c61e7a61a0db6d89079beac874c3ece"

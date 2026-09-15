@@ -1,10 +1,1293 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21434"
-  title: "Grape juice"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.grape-juice"
+  classification_refs: "CPC 3.0: 21434 Grape juice"
+  covered_products: "Directly expressed grape juice and grape juice from concentrate; clear or cloudy; bulk or consumer packed; declared ambient, chilled, or frozen factory-gate state"
+  excluded_products: "Grape nectar; mixed-fruit juice; grape purée; grape-juice concentrate sold as the reference product; grape must for fermentation; wine and other fermented beverages; vinegar; syrup; grape-flavoured drinks"
+  representative_product: "Unfermented, fermentable single-fruit grape juice conforming to the declared route and market specification"
+  production_route: "Receipt of sound grapes, preparation, mechanical extraction, optional clarification or stabilization, preservation and filling; or receipt of grape-juice concentrate, controlled reconstitution, preservation and filling; concentration is included only when performed inside the declared foreground system"
+  market_state: "Net grape juice at the factory gate, excluding packaging mass, with route, clear/cloudy state, preservation method, packaging format, storage condition and concentrate status declared"
+functional_unit:
+  what: "Grape juice that satisfies the declared product identity, composition, safety and release specification"
+  how_much: "1 kg net grape juice, excluding packaging mass"
+  how_well: "Conforming released product with declared route, soluble-solids basis, clear/cloudy state, preservation method, packaging format and storage condition"
+  how_long_or_cycle: "One production and release cycle ending at the factory gate; no service duration is assigned to the beverage"
+  reference_flow_link: "rf_grape_juice"
+system_boundary:
+  rules:
+    - rule_id: boundary_product_identity
+      applies_to: "Product scope"
+      rule: "Include only unfermented grape juice made by a declared directly expressed or from-concentrate route. Keep nectars, mixed juices, fermented products and concentrate sold as the reference product outside this PCR."
+      source_ids:
+        - codex-cxs-247-2005
+        - eu-directive-2001-112-ec
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground processes"
+      rule: "Include receipt and preparation, juice recovery or reconstitution, all site clarification/stabilization operations, preservation, filling, in-scope storage, cleaning, utilities, wastewater generation, product losses and packaging used before the declared factory gate."
+      source_ids:
+        - codex-cxs-247-2005
+    - rule_id: boundary_route_specificity
+      applies_to: "Direct and from-concentrate routes"
+      rule: "Model only operations actually performed. If concentrate or an intermediate is purchased, link its upstream dataset and do not add a fictitious concentration step at the reconstitution site."
+      source_ids:
+        - codex-cxs-247-2005
+        - eu-directive-2001-112-ec
+    - rule_id: boundary_food_safety_controls
+      applies_to: "Safety-related operations"
+      rule: "Record the actual preservation or pathogen-control operation and its monitored parameters. Apply jurisdiction-specific HACCP and pathogen-reduction requirements only where legally or contractually applicable."
+      source_ids:
+        - codex-cxs-247-2005
+        - us-ecfr-21-cfr-120
+    - rule_id: boundary_excluded_life_cycle
+      applies_to: "Upstream and downstream stages"
+      rule: "Vineyard cultivation, off-site production of purchased inputs, distribution after the factory gate, retail, use and end-of-life require linked datasets or explicit scope extension; they are not silently absorbed into the foreground inventory."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "For directly expressed juice, sound grapes measured at the processing-facility receiving point; for juice from concentrate, grape-juice concentrate and reconstitution water measured at the reconstitution facility receiving point; identify any upstream step brought into the foreground."
+  starting_condition_role: "The declared starting material is the first foreground technosphere input; its upstream production remains represented by a linked dataset rather than being recreated inside this PCR."
+  product_classification_scope: "Single-fruit grape juice corresponding to CPC 3.0 code 21434; classification is mapping context and does not override the semantic exclusions in this PCR."
+  recursive_input_rule: "When grape juice or grape-juice concentrate enters from outside the foreground system, record it as a purchased intermediate with route, concentration, origin and supplier-dataset reference; do not recursively model it as the same foreground output."
+  upstream_dataset_requirement: "Use representative upstream datasets for grapes, purchased concentrate or juice intermediates, water, energy carriers, processing aids, cleaning materials and packaging. Disclose geography, technology, time, allocation and data-quality mismatches."
+  disclosure: "Declare route, starting material, included unit operations, outsourced operations, concentration/reconstitution steps, preservation and filling method, storage condition, product and packaging state, cut-offs, co-product destinations and excluded life-cycle stages."
+reference_flow_definition:
+  reference_amount: "1 kg net as-received grape juice at the factory gate"
+  product_flow_ref:
+    name: "Grape juice"
+    uuid: "d030caf4-ad0f-4371-8e04-b15ce67cc4fb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "directly expressed or from concentrate"
+    - "fraction from concentrate if blended"
+    - "clear or cloudy"
+    - "grape species or declared product specification"
+    - "soluble-solids or concentration basis"
+    - "preservation method"
+    - "packaging format"
+    - ambient
+    - "chilled or frozen state"
+    - "factory location"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the foreground inventory to exactly 1 kg of released net grape juice after all in-scope processing losses and before packaging mass is added."
+  - id: material_mass_state
+    applies_to: "Grapes, juice intermediates, concentrate, ingredients, processing aids, packaging, wastes and co-products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record actual mass and the measured material state. Wet mass, dry mass, concentrate mass and diluted mass shall not be mixed without a documented conversion."
+  - id: soluble_solids_separate
+    applies_to: "Juice and concentrate streams"
+    required_property_ref:
+      name: "Route-specific concentration measurement"
+      uuid: ""
+    required_unit: "declared method and unit"
+    rule: "Record soluble solids or the legally applicable concentration indicator separately from mass. Do not convert volume to mass or infer concentrate dilution from nominal labels without measured density or batch formulation evidence."
+  - id: water_mass_by_use
+    applies_to: "Ingredient, reconstitution, process and cleaning water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record water by use. Reconstitution water shall remain separate from extraction, cleaning and utility water."
+  - id: energy_carrier_preservation
+    applies_to: "Electricity, fuels, steam, heat, cooling and compressed utilities"
+    required_property_ref:
+      name: "Carrier-specific energy property"
+      uuid: ""
+    required_unit: "kWh, MJ or metered carrier unit"
+    rule: "Preserve the metered carrier and unit, document lower/higher heating value where relevant, and convert only with a stated factor. Do not combine electricity and thermal energy before impact calculation."
+  - id: packaging_mass_separate
+    applies_to: "Primary, secondary and transport packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure packaging material by type and include it when inside the declared factory-gate product system, but exclude packaging mass from the 1 kg reference amount."
+  - id: batch_mass_balance
+    applies_to: "Each route and production period"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile recorded mass inputs with product, intermediates, co-products, wastes, wastewater and measured or calculated water losses; disclose the residual and investigation threshold."
+process_map:
+  - id: grape_receipt_preparation
+    name: "Grape receipt and preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Required when fresh grapes enter the foreground system"
+    role: "Receive, inspect, sort, wash when used, destem or crush, and transfer grapes"
+    quantitative_reference: "kg grapes received and accepted"
+  - id: juice_extraction_conditioning
+    name: "Juice extraction and conditioning"
+    inclusion: "conditional"
+    inclusion_condition: "Required for directly expressed juice or when extraction occurs in the declared foreground"
+    role: "Mechanically recover juice and perform route-specific settling, clarification, filtration or stabilization"
+    quantitative_reference: "kg extracted juice intermediate"
+  - id: juice_concentration
+    name: "Juice concentration"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when concentration occurs in the declared foreground system"
+    role: "Remove water physically and recover declared concentrate and condensate streams"
+    quantitative_reference: "kg concentrate produced"
+  - id: juice_reconstitution
+    name: "Juice reconstitution"
+    inclusion: "conditional"
+    inclusion_condition: "Required when grape juice is made from purchased or foreground concentrate"
+    role: "Combine concentrate, measured water and permitted restored components to the declared specification"
+    quantitative_reference: "kg reconstituted juice"
+  - id: preservation_filling
+    name: "Preservation and filling"
+    inclusion: "required"
+    inclusion_condition: "Always required; record the actual preservation and packaging configuration"
+    role: "Apply the validated preservation step, finish, fill, close and release product"
+    quantitative_reference: "1 kg released net grape juice"
+  - id: finished_storage
+    name: "Finished-product storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when ambient, chilled or frozen storage occurs before the factory gate"
+    role: "Maintain declared storage conditions until dispatch"
+    quantitative_reference: "kg grape juice dispatched"
+process_inventory:
+  - id: grape_receipt_preparation
+    label: "Grape receipt and preparation"
+    inputs:
+      product:
+        - row_id: fresh_grapes_input
+          role: "Fresh grapes received for juice manufacture"
+          name: "Fresh grapes (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted and rejected grape lots at the facility gate, including origin, variety or species declaration, maturity or soluble-solids evidence, and measured as-received mass."
+          amount:
+            expression: "measured as-received grape mass allocated to conforming grape-juice production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg grapes/kg released grape juice"
+                basis: "broad screening interval pending route-specific foreground yield evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water_input
+          role: "Preparation and washing water"
+          name: "Process water (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record metered water used for grape washing and preparation separately from sanitation water and any reconstitution water."
+          amount:
+            expression: "measured water supplied to grape preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water/kg released grape juice"
+                basis: "broad screening interval pending metered site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity_input
+          role: "Electricity for preparation equipment"
+          name: "Electricity supplied at facility gate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh (Tiangong flow-property UUID unresolved)"
+          description: "Record metered or sub-metered electricity for receiving, conveying, washing, sorting, destemming and crushing."
+          amount:
+            expression: "measured electricity attributable to grape preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg released grape juice"
+                basis: "broad screening interval pending metered site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_grapes_output
+          role: "Prepared grapes transferred to extraction"
+          name: "Prepared grapes for extraction (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure the mass transferred after sorting and preparation and retain the link to the receiving lot."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted grapes or per 1 kg released net grape juice, with basis declared"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_rejects_output
+          role: "Rejected grapes and preparation residues"
+          name: "Rejected grapes and preparation residues (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected grapes, stems, leaves and foreign material by destination and by whether the stream is waste, internally reused material or a saleable co-product."
+          amount:
+            expression: "measured mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg released grape juice"
+                basis: "broad screening interval pending foreground sorting and destination records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater_output
+          role: "Preparation wastewater"
+          name: "Wastewater (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure wastewater sent to on-site treatment, sewer, off-site treatment or another destination; retain route and solids information when available."
+          amount:
+            expression: "measured or calculated discharge mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg wastewater/kg released grape juice"
+                basis: "broad screening interval pending site water-balance evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: juice_extraction_conditioning
+    label: "Juice extraction and conditioning"
+    inputs:
+      product:
+        - row_id: prepared_grapes_input
+          role: "Prepared grapes or grape pulp"
+          name: "Prepared grapes for extraction (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Link the measured prepared-grape transfer from the preceding process and preserve lot identity."
+          amount:
+            expression: "measured mass entering extraction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg extracted juice intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: extraction_water_input
+          role: "Extraction, clarification and cleaning water"
+          name: "Process water (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water by use and do not merge it with water used for concentrate reconstitution."
+          amount:
+            expression: "measured water supplied to extraction and conditioning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water/kg released grape juice"
+                basis: "broad screening interval pending metered site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_aids_input
+          role: "Route-specific processing aids"
+          name: "Route-specific processing aid (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each enzyme, clarifying, filtration, stabilization or other aid actually used, including concentration, lot, mass and disposition. The PCR does not assume a particular aid."
+          amount:
+            expression: "measured as-used mass of each processing aid"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg released grape juice"
+                basis: "broad screening interval; replace with aid-specific reviewed evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_electricity_input
+          role: "Electricity for extraction and conditioning"
+          name: "Electricity supplied at facility gate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh (Tiangong flow-property UUID unresolved)"
+          description: "Record electricity for pressing, pumping, settling, separation, filtration and stabilization actually performed."
+          amount:
+            expression: "measured electricity attributable to extraction and conditioning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg released grape juice"
+                basis: "broad screening interval pending metered site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: extracted_juice_output
+          role: "Extracted grape juice intermediate"
+          name: "Grape juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure intermediate juice mass and concentration after the declared extraction and conditioning steps."
+          amount:
+            expression: "measured intermediate mass with separately recorded soluble-solids or concentration result"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per extraction batch and per 1 kg released net grape juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+      waste:
+        - row_id: pomace_lees_output
+          role: "Grape pomace, lees and filtration residues"
+          name: "Grape pomace, lees and filtration residues (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each stream by measured wet or dry mass, moisture basis, composition category and actual destination. Classification as waste or co-product follows the documented destination and applicable rules."
+          amount:
+            expression: "measured mass by stream, state and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg released grape juice"
+                basis: "broad screening interval pending route-specific foreground mass balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_wastewater_output
+          role: "Extraction and conditioning wastewater"
+          name: "Wastewater (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wastewater by treatment destination and avoid double counting water retained in pomace or product."
+          amount:
+            expression: "measured or water-balance-derived discharge mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg wastewater/kg released grape juice"
+                basis: "broad screening interval pending site water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: juice_concentration
+    label: "Juice concentration"
+    inputs:
+      product:
+        - row_id: juice_feed_input
+          role: "Juice feed to concentration"
+          name: "Grape juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record feed mass and concentration immediately before concentration."
+          amount:
+            expression: "measured feed mass with measured soluble-solids or concentration result"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg concentrate produced"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: concentration_heat_input
+          role: "Thermal energy for concentration"
+          name: "Thermal energy carrier (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ (Tiangong flow-property UUID unresolved)"
+          description: "Record metered steam, fuel or heat by carrier and preserve the carrier-specific unit."
+          amount:
+            expression: "measured carrier use or calculated delivered heat from metered carrier records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg released grape juice"
+                basis: "broad screening interval pending technology-specific metering"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: grape_concentrate_output
+          role: "Grape-juice concentrate"
+          name: "Grape-juice concentrate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure concentrate mass and final concentration; record recovered aroma or components separately where relevant."
+          amount:
+            expression: "measured concentrate mass with measured concentration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per concentration batch and per 1 kg released net grape juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+                - eu-directive-2001-112-ec
+            ranges: []
+      waste:
+        - row_id: concentration_water_loss_output
+          role: "Condensate and concentration losses"
+          name: "Condensate or water loss (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record recovered condensate, discharged condensate and uncollected water loss separately when data permit."
+          amount:
+            expression: "measured condensate plus mass-balance-derived uncollected water loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg released grape juice"
+                basis: "broad screening interval pending feed and concentrate concentration measurements"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: juice_reconstitution
+    label: "Juice reconstitution"
+    inputs:
+      product:
+        - row_id: grape_concentrate_input
+          role: "Grape-juice concentrate received"
+          name: "Grape-juice concentrate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record supplier, origin, mass, concentration and linked upstream dataset for each concentrate lot."
+          amount:
+            expression: "measured concentrate mass used in each reconstitution batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+                - eu-directive-2001-112-ec
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg concentrate/kg released grape juice"
+                basis: "broad screening interval pending lot concentration and formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: reconstitution_water_input
+          role: "Reconstitution water"
+          name: "Potable reconstitution water (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water mass and the applicable chemical, microbiological and organoleptic quality evidence."
+          amount:
+            expression: "measured batch water added for reconstitution"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - codex-cxs-247-2005
+                - eu-directive-2001-112-ec
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg water/kg released grape juice"
+                basis: "broad screening interval pending concentrate composition and batch formulation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reconstituted_juice_output
+          role: "Reconstituted grape juice intermediate"
+          name: "Reconstituted grape juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure output mass and verify the route-specific product specification without assuming a fixed formulation across concentrate lots."
+          amount:
+            expression: "calculated batch mass reconciled to measured transfer mass and concentration result"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per reconstitution batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+                - eu-directive-2001-112-ec
+            ranges: []
+      waste:
+        - row_id: reconstitution_loss_output
+          role: "Reconstitution losses and wastewater"
+          name: "Reconstitution loss and wastewater (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record spills, line losses, cleaning wastewater and off-spec batches by destination."
+          amount:
+            expression: "measured or mass-balance-derived loss by destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg released grape juice"
+                basis: "broad screening interval pending batch reconciliation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: preservation_filling
+    label: "Preservation and filling"
+    inputs:
+      product:
+        - row_id: juice_before_preservation_input
+          role: "Route-specific grape juice before final preservation"
+          name: "Grape juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass, route, concentration, clear/cloudy state and transfer source of juice entering the final preservation and filling system."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per filling batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_batch_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: preservation_energy_input
+          role: "Electricity and thermal utilities for preservation and filling"
+          name: "Electricity and thermal utilities (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "carrier-specific Energy / kWh or MJ (Tiangong flow-property UUID unresolved)"
+          description: "Record electricity and each thermal carrier separately for pasteurization or other validated preservation, cooling, pumping and filling."
+          amount:
+            expression: "measured carrier-specific use attributable to preservation and filling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-ecfr-21-cfr-120
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ-equivalent screening value/kg released grape juice"
+                basis: "broad screening only; preserve carrier-specific foreground values rather than using this combined value in the inventory"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_material_input
+          role: "Packaging materials"
+          name: "Packaging material by type (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record primary, secondary and transport packaging by material, component and actual mass."
+          amount:
+            expression: "measured or bill-of-material mass by packaging material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg packaging/kg released grape juice"
+                basis: "broad screening interval pending product-specific bill of materials"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sanitation_material_input
+          role: "Cleaning and sanitation materials"
+          name: "Cleaning and sanitation material (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record cleaning water and each cleaning or sanitation chemical separately; do not treat chemical solution mass as active-ingredient mass without concentration evidence."
+          amount:
+            expression: "measured as-used material mass allocated by documented cleaning campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg as-used material/kg released grape juice"
+                basis: "broad screening interval pending cleaning-campaign records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_grape_juice_output
+          role: "Released grape juice"
+          name: "Grape juice"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d030caf4-ad0f-4371-8e04-b15ce67cc4fb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product. Record accepted net product mass after all in-scope losses and keep packaging mass separate."
+          amount:
+            expression: "exactly 1 kg net released grape juice after normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+      waste:
+        - row_id: filling_loss_wastewater_output
+          role: "Off-spec juice, filling loss and final wastewater"
+          name: "Filling loss and wastewater by destination (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record off-spec product, spills, start-up or changeover losses, packaging scrap and wastewater separately by destination."
+          amount:
+            expression: "measured or reconciled mass by stream and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net grape juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg released grape juice"
+                basis: "broad screening interval pending filling and wastewater records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: finished_storage
+    label: "Finished-product storage"
+    inputs:
+      product:
+        - row_id: stored_product_input
+          role: "Released product entering storage"
+          name: "Grape juice"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d030caf4-ad0f-4371-8e04-b15ce67cc4fb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record product mass, packaging configuration, storage temperature class and storage duration before factory-gate dispatch."
+          amount:
+            expression: "measured net product entering storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg grape juice dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_electricity_input
+          role: "Storage electricity"
+          name: "Electricity supplied at facility gate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh (Tiangong flow-property UUID unresolved)"
+          description: "Record metered or allocated electricity for chilled or frozen storage and material-handling equipment before dispatch."
+          amount:
+            expression: "measured electricity multiplied by documented storage allocation share"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg grape juice dispatched"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg grape juice dispatched"
+                basis: "broad screening interval pending temperature, duration and metered load evidence"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dispatch_ready_output
+          role: "Dispatch-ready grape juice"
+          name: "Grape juice"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d030caf4-ad0f-4371-8e04-b15ce67cc4fb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted net mass leaving storage and any storage loss before the declared factory gate."
+          amount:
+            expression: "measured dispatch mass normalized to 1 kg reference flow"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Multi-output foreground processes"
+    rule: "First avoid allocation by separately measuring and subdividing processes or by expanding the system only when the substituted function and linked dataset are explicitly justified."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_residue_status
+    applies_to: "Pomace, seeds, stems, lees, recovered aroma, concentrate by-products and off-spec juice"
+    rule: "Determine from the actual destination and applicable rules whether each output is waste, internal reuse or a co-product. Do not assign an avoided burden or co-product credit merely because a stream has a possible use."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical_then_other
+    applies_to: "Unavoidable allocation"
+    rule: "Use a documented causal physical relation where it represents the joint process. If no defensible physical relation exists, use another declared relation such as economic value with geography, period, prices, sensitivity and zero-value treatment disclosed."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_internal_recycling
+    applies_to: "Internal juice recirculation, rework, water recovery and recovered heat"
+    rule: "Keep internal loops inside the foreground process and count only net external inputs and outputs. Disclose loop losses and do not credit the same recovery twice."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_route_mix
+    applies_to: "Datasets representing more than one production route or product configuration"
+    rule: "Calculate route-specific inventories first and weight them by actual released net product mass for the declared production period. Do not average directly expressed and from-concentrate routes without route shares."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_batch_records
+      process_id: "grape_receipt_preparation_juice_extraction_conditioning_juice_reconstitution_preservation_filling"
+      flow_role: "Grapes, concentrate, processing aids and cleaning materials"
+      record_type: "Weighbridge, receiving, formulation, stock issue and lot records"
+      raw_fields: "material identity; supplier; lot; origin; route; gross/tare/net mass; concentration; moisture or active basis; timestamp; batch"
+      collection_method: "Calibrated scale or verified inventory issue reconciled to production batch"
+      unit: "kg and declared concentration basis"
+      frequency: "Each lot or batch"
+      temporal_coverage: "Entire representative production period"
+      site_scope: "Each foreground facility and outsourced operation included in scope"
+      aggregation_rule: "Sum net material by batch and route; subtract documented returns; normalize to released net product mass"
+      quality_evidence: "Scale calibration; supplier certificate where relevant; lot traceability; reconciliation sign-off"
+    - protocol_id: cp_water_records
+      process_id: "all_applicable_processes"
+      flow_role: "Ingredient, reconstitution, process, cleaning and utility water"
+      record_type: "Meter, batch formulation and quality-test records"
+      raw_fields: "meter start/end; water use; batch; source; treatment; quality result; timestamp"
+      collection_method: "Calibrated meter preferred; batch tank or engineering calculation only when documented"
+      unit: "kg or m3 with measured density/conversion"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Entire representative production period"
+      site_scope: "Each facility; separate major use and reconstitution water"
+      aggregation_rule: "Convert to mass with documented density when needed; allocate shared use by a recorded causal driver"
+      quality_evidence: "Meter calibration; water-quality result; completeness reconciliation"
+    - protocol_id: cp_energy_records
+      process_id: "all_applicable_processes"
+      flow_role: "Electricity, fuels, steam, heat, cooling and compressed utilities"
+      record_type: "Meter, sub-meter, invoice and equipment-log records"
+      raw_fields: "carrier; meter start/end; quantity; unit; heating-value basis; batch or period; equipment; allocation driver"
+      collection_method: "Direct metering preferred; documented allocation from facility meter where sub-metering is unavailable"
+      unit: "carrier unit, kWh or MJ"
+      frequency: "Continuous, batch or billing interval"
+      temporal_coverage: "Entire representative production period including seasonal operation"
+      site_scope: "Each facility and in-scope utility system"
+      aggregation_rule: "Preserve carriers; subtract unrelated loads; allocate shared utilities by metered time, mass throughput or documented engineering driver"
+      quality_evidence: "Meter calibration; invoice reconciliation; conversion-factor source; allocation review"
+    - protocol_id: cp_intermediate_batch_records
+      process_id: "grape_receipt_preparation_juice_extraction_conditioning_juice_concentration_juice_reconstitution_preservation_filling"
+      flow_role: "Prepared grapes, juice, concentrate, condensate and transfers"
+      record_type: "Batch sheet, tank level, scale, flow meter and laboratory records"
+      raw_fields: "batch; input/output mass or volume; density; soluble solids or concentration; route; tank; timestamp; recovered components"
+      collection_method: "Calibrated mass or flow measurement linked to representative sampling"
+      unit: "kg plus declared analytical unit"
+      frequency: "Each batch and transfer"
+      temporal_coverage: "Entire representative production period"
+      site_scope: "Each relevant process line"
+      aggregation_rule: "Reconcile transfers and calculate route-specific yields from measured states"
+      quality_evidence: "Calibration; sampling method; laboratory QA; batch sign-off"
+    - protocol_id: cp_residue_wastewater_records
+      process_id: "all_applicable_processes"
+      flow_role: "Rejects, pomace, lees, off-spec product, packaging scrap, wastewater and treatment outputs"
+      record_type: "Scale, container, manifest, meter, treatment and destination records"
+      raw_fields: "stream; mass or volume; density; moisture; composition; destination; waste/co-product status; date; batch"
+      collection_method: "Direct weighing or metering; documented water balance only for unmetered wastewater"
+      unit: "kg or m3 with conversion"
+      frequency: "Each shipment, batch or meter interval"
+      temporal_coverage: "Entire representative production period"
+      site_scope: "Each facility and destination"
+      aggregation_rule: "Aggregate separately by stream, state and destination; do not net co-products against inputs"
+      quality_evidence: "Scale/meter calibration; transfer document; treatment record; destination confirmation"
+    - protocol_id: cp_packaging_release_records
+      process_id: "preservation_filling"
+      flow_role: "Packaging and released product"
+      record_type: "Packaging bill of materials, filling counter, net-content, scale, QA release and rejection records"
+      raw_fields: "SKU; packaging component; material; component mass; units filled; net content; accepted/rejected quantity; batch; release status"
+      collection_method: "Verified bill of materials plus calibrated net-mass and line-count records"
+      unit: "kg and item count"
+      frequency: "Each SKU and batch"
+      temporal_coverage: "Entire representative production period"
+      site_scope: "Each filling line and product configuration"
+      aggregation_rule: "Convert counts to mass by verified component mass; normalize accepted net juice separately from packaging"
+      quality_evidence: "Scale calibration; bill-of-material revision; release certificate; reconciliation"
+    - protocol_id: cp_storage_dispatch_records
+      process_id: "finished_storage"
+      flow_role: "Stored product, storage energy, loss and dispatch"
+      record_type: "Warehouse inventory, temperature, time, meter and dispatch records"
+      raw_fields: "batch; mass; entry/exit time; temperature class; meter quantity; loss; destination"
+      collection_method: "Inventory transaction linked to monitored storage condition and meter period"
+      unit: "kg, h or day, temperature and kWh"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Entire in-scope storage period"
+      site_scope: "Each ambient, chilled or frozen zone"
+      aggregation_rule: "Allocate energy by occupied mass-time or another documented causal driver; reconcile entry, dispatch and loss"
+      quality_evidence: "Temperature log; meter evidence; inventory reconciliation; dispatch record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground rows"
+      rule: "normalized amount = route-specific amount / released net grape-juice mass; packaging mass is excluded from the denominator"
+      inputs:
+        - "measured row amount"
+        - "accepted released net product mass"
+      output: "amount per 1 kg grape juice"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_direct_route_yield
+      applies_to: "Directly expressed route"
+      rule: "yield = measured extracted or released juice mass / accepted grape mass, with material states and soluble-solids basis reported"
+      inputs:
+        - "accepted grape mass"
+        - "intermediate and product mass"
+        - "concentration results"
+      output: "route yield and reconciliation evidence"
+      source_ids:
+        - codex-cxs-247-2005
+    - id: calc_reconstitution_balance
+      applies_to: "From-concentrate route"
+      rule: "reconcile concentrate, reconstitution water, restored components and losses to measured reconstituted output; use measured lot concentration rather than a universal factor"
+      inputs:
+        - "concentrate mass and concentration"
+        - water
+        - "restored components"
+        - "output mass and concentration"
+        - losses
+      output: "reconstituted batch balance"
+      source_ids:
+        - codex-cxs-247-2005
+        - eu-directive-2001-112-ec
+    - id: calc_mass_balance
+      applies_to: "Each process and route"
+      rule: "residual = total measured mass inputs - total measured mass outputs - separately quantified transfer or water loss; report residual and signed review"
+      inputs:
+        - "input masses"
+        - "product and co-product masses"
+        - waste
+        - wastewater
+        - "measured/calculated loss"
+      output: "mass-balance residual"
+      source_ids: []
+    - id: calc_shared_utility_allocation
+      applies_to: "Shared utilities"
+      rule: "allocate only the measured shared total using a documented causal driver; preserve carrier and unit"
+      inputs:
+        - "shared meter quantity"
+        - "sub-meter data if any"
+        - "operating time"
+        - "throughput or engineering driver"
+      output: "process-specific utility amount"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_route_weighted_result
+      applies_to: "Multi-route dataset"
+      rule: "total normalized inventory = sum(route normalized inventory × route released-mass share)"
+      inputs:
+        - "route inventories"
+        - "released product mass by route"
+      output: "production-weighted dataset inventory"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_packaging_mass
+      applies_to: "Packaging"
+      rule: "packaging mass = verified component mass × accepted packed units, reconciled to issued and scrapped packaging"
+      inputs:
+        - "component mass"
+        - "accepted units"
+        - "issued material"
+        - scrap
+      output: "packaging mass per kg net juice"
+      source_ids: []
+    - id: calc_storage_energy
+      applies_to: "In-scope storage"
+      rule: "storage energy allocated to product = metered zone energy × documented product mass-time share"
+      inputs:
+        - "zone meter"
+        - "product mass"
+        - "residence time"
+        - "total occupied mass-time"
+      output: "storage electricity per kg dispatched product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Product and route"
+      requirement: "Retain product specification, route declaration, grape identity, concentrate status, clear/cloudy state, preservation method, packaging and storage state for every represented product configuration."
+      evidence: "Batch specification, label or bulk specification, formulation and release record; codex-cxs-247-2005; eu-directive-2001-112-ec"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground data"
+      requirement: "Cover a representative continuous production period or all relevant campaigns and disclose shutdowns, vintage or harvest effects, seasonal storage and exceptional batches."
+      evidence: "Dated production, meter and dispatch records with coverage statement"
+    - id: dq_mass_and_energy_measurement
+      applies_to: "Material and utility rows"
+      requirement: "Use calibrated or verified measurement where material; disclose estimated shares, conversion factors, missing intervals and allocation drivers."
+      evidence: "Calibration, invoices, meter reconciliation and uncertainty note"
+    - id: dq_route_separation
+      applies_to: "Direct, concentrated and reconstituted routes"
+      requirement: "Keep route-specific input, yield, energy, water, waste and product records separate until route weighting."
+      evidence: "Route-coded batch and production records"
+    - id: dq_completeness
+      applies_to: "All foreground processes"
+      requirement: "Include major raw materials, water by use, electricity, thermal carriers, processing aids, cleaning, packaging, residues, wastewater, losses and direct emissions or document why a category is zero or not applicable."
+      evidence: "Signed completeness checklist and process mass/energy reconciliation"
+    - id: dq_safety_and_quality_controls
+      applies_to: "Preservation and release"
+      requirement: "Retain actual monitored parameters, deviations, corrective actions and validation evidence for the applied preservation and legally applicable juice-safety controls."
+      evidence: "HACCP or equivalent plan and records when applicable; process validation; release tests; codex-cxs-247-2005; us-ecfr-21-cfr-120"
+    - id: dq_upstream_links
+      applies_to: "Purchased inputs"
+      requirement: "Record supplier, geography, technology, time, concentration basis and dataset reference for grapes, concentrate, water, energy, aids and packaging; disclose proxy use."
+      evidence: "Supplier and dataset metadata with representativeness review"
+    - id: dq_reasoned_ranges
+      applies_to: "Provisional QA guardrails"
+      requirement: "Treat every reasoned_estimate range only as a screening flag. Replace it with foreground distributions or reviewed external evidence before publication-critical use."
+      evidence: "Review record showing replacement, acceptance or removal of each provisional range"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The selected reference product must resolve to Grape juice d030caf4-ad0f-4371-8e04-b15ce67cc4fb, a public state-100 Product flow classified as CPC 21434, with Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg as the reference unit."
+    source_ids: []
+  - rule_id: validate_product_scope
+    applies_to: "Product identity"
+    rule: "Reject datasets for grape nectar, mixed juice, concentrate sold as the product, fermented products or other excluded products; require the declared direct or from-concentrate route."
+    source_ids:
+      - codex-cxs-247-2005
+      - eu-directive-2001-112-ec
+  - rule_id: validate_reference_quantity
+    applies_to: "Reference amount"
+    rule: "Confirm exactly 1 kg net released grape juice after in-scope loss, with packaging mass excluded and all required qualifiers present."
+    source_ids: []
+  - rule_id: validate_route_processes
+    applies_to: "Process map"
+    rule: "Require preservation and filling and every route-triggered conditional process; prohibit a fictitious concentration or extraction step when the corresponding intermediate is purchased."
+    source_ids:
+      - codex-cxs-247-2005
+      - eu-directive-2001-112-ec
+  - rule_id: validate_concentration_reconstitution
+    applies_to: "Concentrated and from-concentrate routes"
+    rule: "Require measured mass and concentration evidence for feed, concentrate, water, restored components, output and losses; do not accept an unsupported universal dilution factor."
+    source_ids:
+      - codex-cxs-247-2005
+      - eu-directive-2001-112-ec
+  - rule_id: validate_inventory_completeness
+    applies_to: "Foreground inventory"
+    rule: "Check grapes or concentrate, water by use, electricity, thermal carriers, processing aids, cleaning, packaging, products, residues, wastewater, losses and direct emissions; every omission must be explicitly zero, not applicable or outside scope."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Each route and process"
+    rule: "Require a disclosed mass-balance residual, investigation threshold and reviewer decision; wet, dry, concentrated and diluted states shall be traceably converted."
+    source_ids: []
+  - rule_id: validate_safety_control
+    applies_to: "Preservation and release"
+    rule: "Require actual preservation or pathogen-control parameters and release evidence. Where 21 CFR Part 120 applies, require the facility-specific hazard analysis, HACCP records and applicable pathogen-reduction evidence rather than assuming a generic treatment."
+    source_ids:
+      - codex-cxs-247-2005
+      - us-ecfr-21-cfr-120
+  - rule_id: validate_allocation
+    applies_to: "Co-products and shared processes"
+    rule: "Require output destination and waste/co-product status, allocation-avoidance review, selected allocation relation, parameters and sensitivity; reject automatic credits for possible but unverified uses."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_route_weighting
+    applies_to: "Multi-route or multi-SKU dataset"
+    rule: "Require actual released-mass shares and route-specific inventories before aggregation; packaging and storage configurations must remain traceable."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_uuid_resolution
+    applies_to: "Inventory identity"
+    rule: "The reference product and Mass support chain are resolved. Every other Tiangong inventory flow or property UUID remains unresolved until independently confirmed; no semantic candidate may be presented as an exact database identity."
+    source_ids: []
+  - rule_id: validate_provisional_ranges
+    applies_to: "QA ranges"
+    rule: "Flag values outside a provisional guardrail for review, but do not substitute the guardrail for foreground data. Publication review must replace, explicitly accept, or remove each reasoned_estimate range."
+    source_ids: []
+  - rule_id: validate_source_traceability
+    applies_to: "Evidence"
+    rule: "Every externally constrained boundary, identity, safety, quality or allocation rule must reference a listed source; web retrieval notes and Tiangong command traces must remain outside the PCR."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for grape juice at the declared factory gate"
+  downstream_use: "secondary_dataset; background_dataset after methodology review, source review and resolution or explicit acceptance of identity and quantitative gaps"
+  allowed_use: "Route- and market-state-matched LCA studies, supply-chain models and downstream products when geography, time, technology, concentration route, packaging and storage are representative"
+  excluded_use: "Grape nectar, mixed juice, concentrate as the reference product, fermented products, vineyard cultivation by itself, or another route/geography/market state without documented representativeness review"
+  required_metadata: "PCR id and version; reference-flow UUID and unit support chain; geography; production period; direct/from-concentrate route and shares; grape or concentrate origin; soluble-solids basis; clear/cloudy state; preservation method; packaging; storage condition; process coverage; allocation; upstream datasets; unresolved identities; data owners and review status"
+  required_quality_disclosure: "Foreground versus proxy shares; meter and scale coverage; route separation; concentration and mass balance; data gaps; provisional ranges; allocation choices; safety-control applicability; upstream representativeness; uncertainty and reviewer decisions"
+  update_trigger: "Change in product identity or law; route, formulation, grape or concentrate sourcing, technology, preservation, packaging or storage change; new material co-product destination; material data-quality change; resolved Tiangong UUID; replacement of provisional evidence; or expiry of the declared representative period"
+data_sources:
+  - id: "codex-cxs-247-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, General Standard for Fruit Juices and Nectars, CXS 247-2005, amended 2025, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+247-2005%2FCXS_247e.pdf (retrieved 2026-08-11)"
+    used_for: "Grape-juice identity, direct and from-concentrate routes, composition and authenticity checks, processing-aid context, hygiene and labelling-related route disclosure"
+  - id: "eu-directive-2001-112-ec"
+    type: "official_guidance"
+    reference: "Council Directive 2001/112/EC relating to fruit juices and certain similar products intended for human consumption, current EUR-Lex record, https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=celex%3A32001L0112 (retrieved 2026-08-11)"
+    used_for: "Product and route definitions, concentrate and reconstitution distinction, permitted-process and route-disclosure context for applicable EU markets"
+  - id: "us-ecfr-21-cfr-120"
+    type: "official_guidance"
+    reference: "Electronic Code of Federal Regulations, Title 21, Part 120, Hazard Analysis and Critical Control Point (HACCP) Systems, https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-120 (retrieved 2026-08-11)"
+    used_for: "Conditional US-market hazard analysis, monitoring, validation, recordkeeping and pathogen-reduction control evidence"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, confirmed current in 2022, https://www.iso.org/standard/38498.html (retrieved 2026-08-11)"
+    used_for: "LCI scope, inventory normalization, allocation hierarchy, reporting, interpretation and review framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:938d437f1dc197e226fe65fe47c984b2c2aa10a9ec47d4127d345a6f8568abf9"
+  generated_content_sha256: "sha256:3dbf306f31bb2b88acef60906caa982a788713d001511a7c709ed5dca377b8a5"

@@ -1,10 +1,397 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26440"
-  title: "Yarn (other than sewing thread) of synthetic staple fibres, containing less than 85% by weight of such fibres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.yarn-other-than-sewing-thread-of-synthetic-staple-fibres-containing-less-than-85-by-wei-6a02e796"
+  classification_refs: "CPC 3.0: 26440 (exact)"
+  covered_products: "Spun yarn other than sewing thread with a declared synthetic staple-fibre share below 85% by mass, blended with one or more declared non-synthetic co-fibres"
+  excluded_products: "Sewing thread; continuous-filament yarn; yarn with synthetic staple-fibre content of 85% or more by mass; yarn without synthetic staple fibre"
+  representative_product: "Undyed, unsized polyester-cotton staple-fibre blend yarn wound at the spinning-mill gate"
+  production_route: "Blended staple-fibre sliver; drawing; roving when used; ring or compact spinning; twisting when specified; winding"
+  market_state: "Finished spun yarn on a winding package, before weaving, knitting, dyeing, sizing, retail packaging, and transport from the spinning mill"
+functional_unit:
+  what: "Provision of conforming blended spun yarn for subsequent textile manufacture"
+  how_much: "1 kg of net yarn product"
+  how_well: "Synthetic staple-fibre share below 85% by mass, with polymer, co-fibre, yarn count, twist, moisture condition, colour/treatment state, and winding form declared"
+  how_long_or_cycle: "One accepted production lot at the spinning-mill gate"
+  reference_flow_link: "finished_blended_yarn"
+system_boundary:
+  rules:
+    - rule_id: boundary_starting_condition
+      applies_to: "Foreground process"
+      rule: "Begin at receipt of composition-declared blended staple-fibre sliver; fibre production, opening, blending, carding, and sliver formation remain upstream."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_spinning_gate
+      applies_to: "Foreground process"
+      rule: "Include drawing, roving when used, spinning, twisting when specified, winding, directly consumed electricity and lubricant, conforming yarn output, and separately measured captured fibre waste."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-textiles-bat-2022
+    - rule_id: boundary_downstream
+      applies_to: "Downstream activities"
+      rule: "Exclude dyeing, sizing, weaving, knitting, retail packaging, outbound transport, use, and end-of-life unless a broader study adds separately identified processes."
+      source_ids:
+        - jrc-textiles-bref-2023
+boundary_abstraction:
+  declared_starting_condition: "Blended staple-fibre sliver received at the spinning process, with synthetic polymer, co-fibre, blend fractions, supplier, moisture condition, and upstream dataset references declared"
+  starting_condition_role: "Foreground material input to secondary spinning"
+  product_classification_scope: "Spun yarn other than sewing thread with synthetic staple-fibre content below 85% by mass"
+  recursive_input_rule: "If conforming yarn re-enters the process, record that yarn once as a separate atomic input and do not reproduce its upstream spinning inventory inside the current foreground process."
+  upstream_dataset_requirement: "Link separate upstream datasets for fibre production and sliver preparation that match polymer, co-fibre, recycled/virgin status, geography, and time."
+  disclosure: "Disclose the starting sliver composition and conditioning state, included spinning stages, technology, any omitted stage, treatment state, gate, and whether utilities are directly metered or allocated."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Yarn (other than sewing thread) of synthetic staple fibres, containing less than 85% by weight of such fibres"
+    uuid: "914fcc34-ead6-4938-af63-b4ffa94e0a99"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "synthetic polymer"
+    - "synthetic staple-fibre mass share"
+    - "co-fibre and mass share"
+    - "yarn count"
+    - twist
+    - "spinning technology"
+    - "moisture condition"
+    - "colour/treatment state"
+    - "winding form"
+    - geography
+    - "plant gate"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference yarn and material mass rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net mass on one declared moisture/conditioning basis; tare winding packages and apply the same basis to input-output reconciliation."
+  - id: synthetic_fraction
+    applies_to: "Product composition"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Demonstrate that synthetic staple fibres contribute less than 0.85 kg per kg of total fibre mass; identify each polymer and co-fibre from supplier specification or a composition test."
+  - id: electricity_metering
+    applies_to: "Low-voltage electricity input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Preserve process-meter or allocated submeter records in kWh; document any conversion factor and retain the original meter unit."
+process_map:
+  - id: sliver_to_yarn_spinning
+    name: "Drawing, roving, spinning, twisting, and winding of blended staple-fibre yarn"
+    inclusion: "required"
+    inclusion_condition: "Always included; roving and twisting are present only when documented by the product route"
+    role: "Foreground yarn production"
+    quantitative_reference: "1 kg accepted conforming yarn output"
+process_inventory:
+  - id: sliver_to_yarn_spinning
+    label: "Drawing, roving, spinning, twisting, and winding of blended staple-fibre yarn"
+    inputs:
+      product:
+        - row_id: blended_staple_fibre_sliver
+          role: "Composition-declared blended staple-fibre sliver"
+          name: "Blended staple fibre sliver; cotton and man-made fibres blend, at plant, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0d57947b-b2f9-4a30-8a2c-7f648fd0ee55"
+          property_unit: "Mass / kg"
+          description: "This is the single incoming fibre intermediate for the representative cotton/synthetic route. Its lot composition and issued mass cross the foreground boundary at the spinning mill."
+          amount:
+            expression: "Record the issued sliver mass by production lot and normalize it to accepted conforming yarn output; do not apply a default yield."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted conforming yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sliver_mass
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: low_voltage_electricity
+          role: "Low-voltage alternating-current consumption mix"
+          name: "Alternating current; less than 1 kV; consumption mix, at user, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value / kWh"
+          description: "This card covers the one declared Chinese user-side low-voltage electricity scenario used by motors, suction and winding equipment. Electricity for any separately modelled heat treatment is not combined here."
+          amount:
+            expression: "Record process-meter electricity or a documented submeter allocation for the included stages and normalize it to accepted conforming yarn output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted conforming yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: synthetic_ester_spinning_lubricant
+          role: "Synthetic ester spinning lubricant"
+          name: "Synthetic ester spinning lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the single lubricant product applied to staple fibres or spinning equipment and attributable to the yarn lot. Its Tiangong identity remains unresolved because the retrieved POY and FDY oils are filament-yarn products."
+          amount:
+            expression: "Record lubricant issued to the included spinning stages minus measured return to stock, normalized to accepted conforming yarn output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted conforming yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lubricant_mass
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_blended_yarn
+          role: "Finished blended staple-fibre yarn"
+          name: "Yarn (other than sewing thread) of synthetic staple fibres, containing less than 85% by weight of such fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "914fcc34-ead6-4938-af63-b4ffa94e0a99"
+          property_unit: "Mass / kg"
+          description: "This is the accepted reference product after winding and quality release at the spinning-mill gate."
+          amount:
+            expression: "Record net accepted yarn mass after package tare and rejection accounting on the declared moisture basis."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass
+              source_ids:
+                - unsd-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: captured_blended_fibre_waste
+          role: "Captured polyester-cotton staple-fibre waste"
+          name: "Captured polyester-cotton staple fibre waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This is the single separately collected loose-fibre waste stream captured from the representative drawing, spinning and winding route. It excludes fabric waste and generic particulate waste."
+          amount:
+            expression: "Weigh the captured loose-fibre waste removed from the included stages by lot or reporting period and normalize it to accepted conforming yarn output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted conforming yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_waste_mass
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct_measurement
+    applies_to: "Product-specific material, energy, lubricant, and waste records"
+    rule: "Prefer lot-, machine-, or product-line measurement and assign each record directly before any allocation."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: allocation_shared_operations
+    applies_to: "Shared spinning and winding operations"
+    rule: "If direct separation is not feasible, allocate shared input and waste records by accepted product mass on the same moisture basis; disclose the allocation period, products, masses, and rationale."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: allocation_recovered_fibre
+    applies_to: "Captured fibre waste"
+    rule: "Treat captured fibre as waste unless documented end-of-waste or co-product criteria are met. If it becomes a co-product, report the physical mass split and a sensitivity result without subtracting an assumed recycling credit inside the foreground inventory."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_sliver_mass
+      process_id: "sliver_to_yarn_spinning"
+      flow_role: "Blended staple-fibre sliver input"
+      record_type: "Material issue and supplier composition records"
+      raw_fields: "lot_id; issued_mass_kg; returned_mass_kg; polymer; synthetic_fraction; co_fibre; co_fibre_fraction; moisture_basis; supplier"
+      collection_method: "Reconciled warehouse issue records and supplier specification or composition test"
+      unit: "kg"
+      frequency: "Each production lot"
+      temporal_coverage: "Dataset reporting period"
+      site_scope: "Included spinning line and product"
+      aggregation_rule: "Sum issued minus returned mass, then divide by accepted yarn mass on the same basis"
+      quality_evidence: "Calibrated scale record; lot trace; composition certificate or test"
+    - protocol_id: cp_electricity_meter
+      process_id: "sliver_to_yarn_spinning"
+      flow_role: "Low-voltage electricity input"
+      record_type: "Meter record"
+      raw_fields: "meter_id; start_reading_kWh; end_reading_kWh; included_equipment; allocation_key; downtime"
+      collection_method: "Dedicated meter preferred; otherwise documented submeter allocation"
+      unit: "kWh"
+      frequency: "Each meter interval"
+      temporal_coverage: "Dataset reporting period"
+      site_scope: "Included drawing, roving, spinning, suction and winding equipment"
+      aggregation_rule: "Net kWh divided by accepted yarn mass for the same interval"
+      quality_evidence: "Meter identifier; reading images or export; allocation worksheet"
+    - protocol_id: cp_lubricant_mass
+      process_id: "sliver_to_yarn_spinning"
+      flow_role: "Synthetic ester spinning lubricant input"
+      record_type: "Material issue record"
+      raw_fields: "product_name; safety_data_sheet; lot_id; issued_mass_kg; returned_mass_kg"
+      collection_method: "Reconciled issue and return records"
+      unit: "kg"
+      frequency: "Each issue or production lot"
+      temporal_coverage: "Dataset reporting period"
+      site_scope: "Included spinning equipment and yarn product"
+      aggregation_rule: "Sum issued minus returned mass, then divide by accepted yarn mass"
+      quality_evidence: "Issue record; return record; safety data sheet"
+    - protocol_id: cp_yarn_mass
+      process_id: "sliver_to_yarn_spinning"
+      flow_role: "Finished conforming yarn output"
+      record_type: "Production and quality release record"
+      raw_fields: "lot_id; gross_mass_kg; package_tare_kg; rejected_mass_kg; accepted_mass_kg; moisture_basis; yarn_count; twist"
+      collection_method: "Calibrated scale and quality-release system"
+      unit: "kg"
+      frequency: "Each production lot"
+      temporal_coverage: "Dataset reporting period"
+      site_scope: "Included product and spinning line"
+      aggregation_rule: "Sum accepted net yarn mass after tare and rejection accounting"
+      quality_evidence: "Scale calibration; quality-release record; lot trace"
+    - protocol_id: cp_fibre_waste_mass
+      process_id: "sliver_to_yarn_spinning"
+      flow_role: "Captured blended fibre waste output"
+      record_type: "Waste weighing record"
+      raw_fields: "lot_or_period; container_gross_mass_kg; container_tare_kg; fibre_composition; destination"
+      collection_method: "Dedicated labelled container and calibrated scale"
+      unit: "kg"
+      frequency: "Each container removal"
+      temporal_coverage: "Dataset reporting period"
+      site_scope: "Included drawing, spinning, suction and winding equipment"
+      aggregation_rule: "Sum net captured-fibre waste and divide by accepted yarn mass for the matched period"
+      quality_evidence: "Scale record; container label; waste transfer or reuse record"
+  calculation_rules:
+    - id: calc_normalize_inventory
+      applies_to: "Every foreground inventory row"
+      rule: "Divide the matched-period net flow quantity by accepted net yarn mass on the same moisture basis; retain raw quantities and period links."
+      inputs:
+        - "net flow quantity"
+        - "accepted yarn mass"
+      output: "flow quantity per kg accepted yarn"
+      source_ids:
+        - eu-textiles-bat-2022
+    - id: calc_material_reconciliation
+      applies_to: "Material inputs and outputs"
+      rule: "Compare net sliver plus net lubricant against accepted yarn plus captured fibre waste. Disclose the unreconciled difference and add separately identified atomic flows when records show another material output."
+      inputs:
+        - "sliver mass"
+        - "lubricant mass"
+        - "yarn mass"
+        - "captured fibre waste mass"
+      output: "material reconciliation and disclosed difference"
+      source_ids:
+        - eu-textiles-bat-2022
+    - id: calc_synthetic_fraction
+      applies_to: "Product composition"
+      rule: "Divide the dry or equivalently conditioned mass of synthetic staple fibre by total fibre mass using one consistent basis."
+      inputs:
+        - "synthetic staple-fibre mass"
+        - "total fibre mass"
+      output: "synthetic staple-fibre mass fraction"
+      source_ids:
+        - unsd-cpc-3-2025
+  data_quality_requirements:
+    - id: dq_identity_composition
+      applies_to: "Reference product and incoming sliver"
+      requirement: "Trace polymer, co-fibre, blend fractions and moisture basis from supplier records to each yarn lot and demonstrate synthetic staple-fibre content below 85% by mass."
+      evidence: "Supplier specification or composition test; lot trace; quality release"
+    - id: dq_process_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Cover every included stage and separately record each material, electricity, lubricant, product and waste exchange that crosses the boundary; explain any material reconciliation difference."
+      evidence: "Process flow sheet; meter map; issue records; waste records; reconciliation"
+    - id: dq_temporal_representativeness
+      applies_to: "Dataset reporting period"
+      requirement: "Use a period representative of normal production and include significant changes, downtime and atypical lots; annual monitoring records are preferred, and any shorter period shall be justified."
+      evidence: "Production calendar; BAT monitoring record; downtime log"
+    - id: dq_technology_geography
+      applies_to: "Electricity and spinning operation"
+      requirement: "Declare country, voltage level, consumption-mix scenario, spinning technology, included equipment and meter/allocation method."
+      evidence: "Meter metadata; equipment list; dataset metadata"
+    - id: dq_unresolved_uuid
+      applies_to: "Lubricant and captured fibre waste"
+      requirement: "Retain the specific atomic names and manifest review records until direct Tiangong reads confirm semantically exact public identities."
+      evidence: "Manifest unresolved-identity entries and subsequent lookup evidence"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Foreground data package"
+    rule: "Confirm exactly 1 kg net accepted yarn, the reference product UUID, Mass property UUID, Units of mass UUID, kg unit, and all required qualifiers."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_category_composition
+    applies_to: "Product identity"
+    rule: "Reject the package if the product is sewing thread, a filament yarn, lacks synthetic staple fibre, or has a synthetic staple-fibre mass fraction of 0.85 or greater."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "Process inventory"
+    rule: "Reject combined or selector flows; each exchange shall have one specific name, one direction, one flow type, one amount record and one applicable collection protocol."
+    source_ids: []
+  - rule_id: validate_material_reconciliation
+    applies_to: "Material mass balance"
+    rule: "Recalculate the matched-period material reconciliation and require the dataset to disclose and explain every difference rather than silently balancing it."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_foreground_records
+    applies_to: "Quantity evidence"
+    rule: "Reject default or AI-estimated quantities; require raw foreground records, matched temporal coverage, units, normalization and retained quality evidence for all five rows."
+    source_ids:
+      - eu-textiles-bat-2022
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for blended synthetic staple-fibre yarn at the spinning-mill gate"
+  downstream_use: "Secondary dataset and background dataset for textile products using a composition- and technology-matched yarn input"
+  allowed_use: "Product and process modelling when product composition, yarn specification, technology, geography, time and gate match or are transparently adapted"
+  excluded_use: "Sewing thread; continuous-filament yarn; yarn with at least 85% synthetic staple fibre; dyed, sized, woven or knitted product without added downstream processes; unresolved publication blockers"
+  required_metadata: "PCR id; product and input UUIDs; polymer and co-fibre fractions; yarn count; twist; moisture basis; colour/treatment state; winding form; technology; geography; voltage and electricity scenario; period; allocation; upstream dataset links"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; composition evidence; temporal coverage; allocation method; material reconciliation difference; unresolved UUID status; deviations from the representative route"
+  update_trigger: "New product formulation or technology; changed electricity scenario; material process change; new exact Tiangong identity; evidence or regulatory update; material reconciliation or validation failure"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 26440, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Product-category boundary, exclusions and synthetic-fibre mass-share validation"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, EUR 31392 EN, JRC131874, 2023, DOI 10.2760/355887. https://publications.jrc.ec.europa.eu/repository/handle/JRC131874"
+    used_for: "Yarn-manufacturing process decomposition, electricity, lubricant and captured-fibre inventory inclusion"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, 9 December 2022. http://data.europa.eu/eli/dec_impl/2022/2508/oj"
+    used_for: "Input-output inventory, process-level monitoring, synthetic/ester lubricant choice, energy and waste records"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ff0e740b611b0878d0fc44cbccc532311a1977295431834b3b5ef45d4bd1eaca"
+  generated_content_sha256: "sha256:55501e19c0c65eff82befeb70bc33666a02b38b509ff4546ede3c6f36c89a22d"

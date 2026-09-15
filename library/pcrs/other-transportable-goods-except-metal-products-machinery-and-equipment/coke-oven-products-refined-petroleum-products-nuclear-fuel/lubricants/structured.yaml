@@ -1,10 +1,768 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33380"
-  title: "Lubricants"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.lubricants"
+  classification_refs: "CPC 3.0 33380 Lubricants (narrower: this PCR is limited to liquid petroleum-derived finished lubricating oils)"
+  covered_products: "Liquid finished lubricating oils containing at least 70% by mass petroleum oils, including declared engine, gear, hydraulic, circulating, compressor, turbine, metalworking, and comparable industrial-oil families"
+  excluded_products: "Lubricating greases; predominantly synthetic, ester, silicone, or biobased lubricants; non-petroleum preparations; used or waste oils; unfinished base oils; fuels and solvents"
+  representative_product: "A market-ready petroleum-derived finished lubricating oil with declared product family, viscosity or performance grade, base-oil source, additive package, and packaging state"
+  production_route: "Receipt of petroleum base oils and additives; batch or continuous formulation and blending; conditional heating, cooling and filtration; quality control and rework; filling or bulk loading at plant"
+  market_state: "Liquid finished product at the lubricant manufacturing plant dispatch gate, either unpackaged bulk or in declared primary packaging"
+functional_unit:
+  what: "Market-ready liquid petroleum-derived finished lubricating oil at the plant dispatch gate"
+  how_much: "1 kg net lubricating oil, excluding the mass of packaging"
+  how_well: "Meets the declared product-family and performance specification and contains at least 70% by mass petroleum oils or oils obtained from bituminous materials"
+  how_long_or_cycle: "One finished production batch represented within a documented representative production period; no use-phase service is included"
+  reference_flow_link: "Net saleable lubricant mass after quality control, excluding packaging, rework returned to the same batch system, and off-spec or waste material"
+system_boundary:
+  rules:
+    - rule_id: boundary_plant_gate
+      applies_to: "foreground lubricant manufacturing"
+      rule: "Include unloading and storage under plant control, metering, blending, conditional heating or cooling, filtration, quality control, rework, filling or bulk loading, direct emissions, wastewater, and production waste through dispatch gate."
+      source_ids:
+        - api-tr-1533-2023
+        - us-epa-petroleum-refining-2005
+    - rule_id: boundary_upstream_links
+      applies_to: "received base oils, additives, utilities, and packaging"
+      rule: "Represent upstream manufacture and inbound supply with linked provider datasets; do not treat received materials as burden-free."
+      source_ids:
+        - api-tr-1533-2023
+    - rule_id: boundary_exclusions
+      applies_to: "distribution, use, and end-of-life"
+      rule: "Exclude customer logistics, lubricant use, avoided emissions, used-oil collection, re-refining, and end-of-life from this foreground package unless separately modelled and disclosed."
+      source_ids:
+        - api-tr-1533-2023
+    - rule_id: boundary_cutoff_disclosure
+      applies_to: "excluded material or energy flows"
+      rule: "Do not exclude a flow solely because its mass is small; screen environmental significance, retain regulated or hazardous releases, and disclose every exclusion and its justification."
+      source_ids:
+        - api-tr-1533-2023
+boundary_abstraction:
+  declared_starting_condition: "Saleable petroleum base oils, additive packages, cleaning materials, utilities, and packaging materials received at the lubricant plant gate, with supplier identity and incoming mass recorded"
+  starting_condition_role: "Foreground manufacturing gate; upstream production burdens are supplied by linked provider datasets"
+  product_classification_scope: "Liquid petroleum-derived finished lubricating oils within CPC 3.0 33380; excludes grease and non-petroleum-majority formulations"
+  recursive_input_rule: "Re-refined base oil or other same-category oil entering the formulation is recorded as an input with its own upstream provider dataset and declared recycled share; do not recursively apply this finished-lubricant PCR to that input"
+  upstream_dataset_requirement: "Link each material, energy carrier, electricity, steam, water, transport, and packaging input to a geographically and technologically representative provider dataset or disclose a reviewed proxy and its limitations"
+  disclosure: "Declare formulation family, petroleum and re-refined fractions, plant geography, production period, included operations, packaging format, allocation basis, upstream proxies, exclusions, and whether blending utilities are sub-metered or allocated"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Lubricating oil"
+    uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family and intended lubrication application"
+    - "liquid state"
+    - "petroleum-oil mass fraction"
+    - "base-oil group and virgin or re-refined share"
+    - "additive-package identity and mass fraction"
+    - "viscosity or performance grade and governing specification"
+    - "bulk or packaging format"
+    - "production geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground amounts to 1 kg net conforming lubricating oil at dispatch; keep packaging mass separate."
+  - id: volume_to_mass
+    applies_to: "lubricant or liquid inputs reported by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert measured volume with density for the actual product or batch and measured temperature; record density, temperature, source, and conversion."
+  - id: petroleum_fraction
+    applies_to: "formulation composition"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg"
+    rule: "Calculate petroleum-oil mass fraction from batch formulation records; it must be at least 0.70 for this PCR."
+  - id: packaging_separation
+    applies_to: "primary and transport packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report packaging by material and mass per kg net lubricant; do not include it in the reference-product mass."
+process_map:
+  - id: formulation_blending
+    name: "Formulation, blending, conditioning, and quality control"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground production of conforming bulk finished lubricating oil from received components"
+    quantitative_reference: "kg conforming blended oil transferred to dispatch"
+  - id: filling_dispatch
+    name: "Filling, packaging or bulk loading, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always included; for bulk product record loading without primary packaging"
+    role: "Delivery of net conforming reference product at the plant dispatch gate"
+    quantitative_reference: "1 kg net finished lubricating oil"
+process_inventory:
+  - id: formulation_blending
+    label: "Formulation, blending, conditioning, and quality control"
+    inputs:
+      product:
+        - row_id: petroleum_base_oils
+          role: "Petroleum base oils and petroleum-derived blending components"
+          name: "Grade-specific petroleum base oil or petroleum-derived blending component selected for the actual formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every base-oil stream entering the batch, including its supplier flow, API base-oil group where known, virgin or re-refined status, received mass, and batch assignment."
+          amount:
+            expression: "metered or weighed batch input mass attributable to conforming finished lubricant"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - unsd-cpc-3-0
+            ranges:
+              - role: allowed_range
+                lower: "0.70"
+                upper: "1.00"
+                unit: "kg/kg finished lubricant"
+                basis: "petroleum oils or oils from bituminous materials per kg formulation mass"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - unsd-cpc-3-0
+        - row_id: additive_package
+          role: "Additive package and formulation components"
+          name: "Supplier-specific additive package or formulation-component product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record additive packages and individual formulation components by supplier identity and batch mass; confidential composition may be aggregated only if mass and upstream burden remain traceable."
+          amount:
+            expression: "weighed or metered component mass charged to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - api-tr-1533-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.30"
+                unit: "kg/kg finished lubricant"
+                basis: "remaining formulation mass after the minimum petroleum-oil fraction"
+                basis_kind: "process_output"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: blending_electricity
+          role: "Purchased electricity for blending and conditioning"
+          name: "Geography- and voltage-specific purchased electricity provider"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record sub-metered electricity where available; otherwise allocate a reconciled facility meter total to batches under the allocation rules."
+          amount:
+            expression: "sub-metered or allocated electricity consumed by transfer, agitation, heating or cooling, filtration, and quality-control equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_utilities
+              source_ids:
+                - api-tr-1533-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg blended lubricant"
+                basis: "electricity used in formulation and conditioning per kg conforming process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: blending_thermal_energy
+          role: "Thermal energy, fuel, or imported steam"
+          name: "Site-specific fuel, heat, or steam provider selected for the actual utility"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record the actual energy carrier and quantity used for tank heating, component conditioning, line heating, or other thermal duties; omit the row only when records prove no thermal energy is used."
+          amount:
+            expression: "measured energy or fuel consumption, or a documented calculation from meter readings and carrier properties"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_utilities
+              source_ids:
+                - api-tr-1533-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg blended lubricant"
+                basis: "delivered thermal energy per kg conforming process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water
+          role: "Process and cleaning water"
+          name: "Site-specific water supply flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used in product-contact operations, cleaning, cooling makeup, and other attributable production uses; do not add closed-loop circulation repeatedly."
+          amount:
+            expression: "measured withdrawal or allocated attributable water use less separately recorded non-production demand"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_utilities
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg blended lubricant"
+                basis: "attributable water withdrawal per kg conforming process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: blended_lubricant
+          role: "Conforming bulk blended lubricating oil"
+          name: "Conforming unpackaged lubricating oil intermediate for the declared product family"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred after formulation, conditioning, filtration, and quality release to filling or bulk loading."
+          amount:
+            expression: "released tank or batch mass transferred to dispatch operations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output before filling losses and packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_outputs_wastes
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: unrecoverable_oily_waste
+          role: "Unrecoverable oily residues, filters, and cleaning waste"
+          name: "Site-specific waste-oil, oily-solid, spent-filter, or cleaning-waste flow selected by actual waste identity"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record oil-bearing residues that leave the foreground system for treatment; material returned as controlled rework to the same product system is not waste."
+          amount:
+            expression: "weighed shipment or inventory change reconciled to waste manifests and batch records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_outputs_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg/kg blended lubricant"
+                basis: "unrecoverable production waste per kg conforming process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_wastewater
+          role: "Process wastewater sent to treatment"
+          name: "Site-specific wastewater flow distinguished by treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving the process boundary after cleaning or other production operations and identify onsite or offsite treatment."
+          amount:
+            expression: "metered discharge or documented water balance attributable to lubricant production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_outputs_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg blended lubricant"
+                basis: "process wastewater sent to treatment per kg conforming process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_process_emissions
+          role: "Direct air, water, or soil releases from blending operations"
+          name: "Substance- and compartment-specific TianGong elementary flow selected for each reported release"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured, calculated, or permit-reported releases such as volatile organic compounds only when they cross the environment boundary; do not duplicate emissions already embedded in energy or upstream provider datasets."
+          amount:
+            expression: "measured or regulated calculation for each substance attributable to the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming blended lubricating oil transferred to dispatch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: filling_dispatch
+    label: "Filling, packaging or bulk loading, and dispatch"
+    inputs:
+      product:
+        - row_id: blended_lubricant_input
+          role: "Conforming bulk blended lubricating oil received from blending"
+          name: "Conforming unpackaged lubricating oil intermediate for the declared product family"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass entering filling or bulk-loading operations and reconcile it to the blending output."
+          amount:
+            expression: "transfer-meter or tank-inventory mass entering dispatch operations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished lubricating oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_materials
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and transport packaging"
+          name: "Material-specific packaging product flow for each actual packaging component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging by material, recycled content where known, units used, tare mass, reuse cycles, and losses; record zero primary packaging for bulk product rather than inventing a package."
+          amount:
+            expression: "purchased or issued packaging mass attributable to net finished lubricant, adjusted for reusable-container cycles"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished lubricating oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_materials
+              source_ids:
+                - api-tr-1533-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg packaging/kg net lubricant"
+                basis: "all packaging material issued per kg net reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_electricity
+          role: "Electricity for filling and dispatch"
+          name: "Geography- and voltage-specific purchased electricity provider"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, filling lines, labelling, conveyors, and attributable dispatch equipment."
+          amount:
+            expression: "sub-metered or allocated electricity consumed by dispatch operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished lubricating oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_utilities
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg net lubricant"
+                basis: "dispatch electricity per kg net reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_lubricating_oil
+          role: "Net market-ready petroleum-derived finished lubricating oil"
+          name: "Lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66628f20-9d33-4997-bd6c-6357453fa268"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output after quality release and filling or bulk loading; packaging is modelled separately."
+          amount:
+            expression: "exactly 1 kg net conforming lubricating oil"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net finished lubricating oil at dispatch gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        - row_id: dispatch_waste
+          role: "Packaging rejects and filling losses sent to treatment"
+          name: "Material- and treatment-specific waste flow selected for each actual waste stream"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected packaging and lubricant-contaminated material that is not returned as rework."
+          amount:
+            expression: "weighed or counted waste converted to mass and reconciled to packaging and lubricant issue records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished lubricating oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_outputs_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg/kg net lubricant"
+                basis: "packaging and unrecovered filling waste per kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: dispatch_emissions
+          role: "Direct releases from filling and loading"
+          name: "Substance- and compartment-specific TianGong elementary flow selected for each reported release"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record substance- and compartment-specific releases from filling or bulk loading when measured or required by a permit; do not duplicate upstream or blending emissions."
+          amount:
+            expression: "measured or regulated calculation attributable to dispatch operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished lubricating oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "batch materials, utilities, wastes, and emissions"
+    rule: "Avoid allocation by separate batch records, sub-metering, tank reconciliation, or subdivision of independently measured operations wherever practical."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared electricity, heat, steam, water, and site services"
+    rule: "When product routes have similar utility intensity, allocate reconciled shared utilities by net mass of conforming output; when intensity differs materially, use sub-metering or a documented causal engineering basis and disclose the result."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: allocation_rework
+    applies_to: "in-system rework"
+    rule: "Return controlled same-product rework to the batch mass balance without assigning a second upstream burden; material leaving the product system is recorded as product, waste, or emission according to its actual fate."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: allocation_upstream_coproducts
+    applies_to: "base oils and additive provider datasets"
+    rule: "Use the provider dataset's reviewed co-product allocation; do not reallocate upstream refinery or chemical burdens inside the lubricant blending foreground. If a provider method is unknown, disclose the limitation."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: allocation_no_unverified_credit
+    applies_to: "waste and recovered material"
+    rule: "Do not assign avoided-burden or recycling credits in this foreground process without an explicit downstream system model and consistent allocation method."
+    source_ids:
+      - api-tr-1533-2023
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_materials
+      process_id: "formulation_blending"
+      flow_role: "base oils, additives, and formulation materials"
+      record_type: "batch recipe, weigh ticket, transfer meter, tank inventory"
+      raw_fields: "batch_id; product_code; supplier_flow; material_role; base_oil_group; virgin_or_rerefined; opening_mass; received_mass; charged_mass; closing_mass; unit; density; temperature"
+      collection_method: "reconcile recipe, weigh/flow records, and tank inventory for each batch"
+      unit: "kg; L with density conversion"
+      frequency: "each batch"
+      temporal_coverage: "representative period covering at least 12 consecutive months"
+      site_scope: "all production lines and tanks serving the declared product"
+      aggregation_rule: "sum attributable material by product and divide by conforming blended output; reconcile inventory change"
+      quality_evidence: "calibrated scale or meter record, recipe authorization, supplier specification, tank reconciliation"
+    - protocol_id: cp_blending_utilities
+      process_id: "formulation_blending"
+      flow_role: "electricity, heat, steam, fuel, and water"
+      record_type: "utility meter, invoice, equipment log"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; line_or_area; operating_hours; batch_ids; allocation_basis"
+      collection_method: "use sub-metering first; otherwise reconcile site totals and apply the approved allocation rule"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "monthly and by batch where metered"
+      temporal_coverage: "same representative 12-month period"
+      site_scope: "blending, heating, cooling, filtration, laboratory, and attributable support equipment"
+      aggregation_rule: "subtract non-production demand, allocate only the reconciled remainder, and normalize to conforming output"
+      quality_evidence: "meter calibration, invoices, fuel analysis, allocation worksheet, reconciliation sign-off"
+    - protocol_id: cp_blending_outputs_wastes
+      process_id: "formulation_blending"
+      flow_role: "released product, rework, oily waste, filters, and wastewater"
+      record_type: "tank transfer, production report, waste manifest, wastewater meter"
+      raw_fields: "batch_id; released_mass; rework_returned; waste_stream; waste_mass; wastewater_volume_or_mass; treatment_route; opening_inventory; closing_inventory"
+      collection_method: "reconcile released product and all non-product outputs to material inputs"
+      unit: "kg; m3 with density conversion"
+      frequency: "each batch and each waste shipment"
+      temporal_coverage: "same representative 12-month period"
+      site_scope: "all included blending operations"
+      aggregation_rule: "aggregate by product family and treatment route; keep rework inside the balance and waste outside it"
+      quality_evidence: "signed release record, manifest, wastewater log, inventory reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "formulation_blending_filling_dispatch"
+      flow_role: "direct elementary releases"
+      record_type: "stack or fugitive measurement, permit report, emission calculation"
+      raw_fields: "substance; compartment; measurement_method; activity_data; factor; measured_amount; uncertainty; reporting_period; process_area"
+      collection_method: "use measured releases where available; otherwise use the regulated calculation method and retain inputs"
+      unit: "kg substance"
+      frequency: "measurement or permit-report frequency"
+      temporal_coverage: "same representative 12-month period"
+      site_scope: "all included emission points and process areas"
+      aggregation_rule: "sum by substance and compartment without duplicating provider-dataset emissions"
+      quality_evidence: "laboratory report, calibrated instrument, permit submission, calculation workbook"
+    - protocol_id: cp_filling_materials
+      process_id: "filling_dispatch"
+      flow_role: "bulk lubricant transfer and packaging"
+      record_type: "filling meter, tank inventory, bill of materials, purchase and issue record"
+      raw_fields: "product_code; package_type; material; unit_count; tare_mass; recycled_content; reuse_cycles; lubricant_in; lubricant_out; rejected_units"
+      collection_method: "reconcile lubricant transfer and issued packaging to saleable dispatched mass"
+      unit: "kg; item count converted to kg"
+      frequency: "each batch or dispatch lot"
+      temporal_coverage: "same representative 12-month period"
+      site_scope: "all filling lines and bulk-loading points for the product"
+      aggregation_rule: "aggregate packaging by material and divide by net dispatched lubricant; report bulk packaging as zero"
+      quality_evidence: "calibrated filler, tare test, packaging specification, issue record, dispatch record"
+    - protocol_id: cp_filling_utilities
+      process_id: "filling_dispatch"
+      flow_role: "dispatch electricity and fuel"
+      record_type: "utility meter, equipment log, fuel record"
+      raw_fields: "meter_id; carrier; readings; operating_hours; line; product_lots; allocation_basis"
+      collection_method: "sub-meter or allocate reconciled dispatch-area utility use"
+      unit: "kWh; MJ"
+      frequency: "monthly and by lot where metered"
+      temporal_coverage: "same representative 12-month period"
+      site_scope: "filling, labelling, conveying, and bulk loading"
+      aggregation_rule: "allocate by a documented causal basis or net output mass when intensities are similar"
+      quality_evidence: "meter record, invoice, allocation worksheet, supervisor approval"
+    - protocol_id: cp_filling_outputs_wastes
+      process_id: "filling_dispatch"
+      flow_role: "saleable product, filling loss, and packaging reject"
+      record_type: "dispatch record, line reconciliation, waste manifest"
+      raw_fields: "lot_id; lubricant_in; net_product_out; package_issue; package_reject; lubricant_loss; rework_return; waste_mass; treatment_route"
+      collection_method: "reconcile each lot and retain traceability to waste fate"
+      unit: "kg; item count converted to kg"
+      frequency: "each dispatch lot and waste shipment"
+      temporal_coverage: "same representative 12-month period"
+      site_scope: "all included filling and loading operations"
+      aggregation_rule: "sum saleable output and non-product outputs; do not count returned rework as waste"
+      quality_evidence: "signed dispatch record, line balance, weigh ticket, manifest"
+  calculation_rules:
+    - id: calc_normalized_amount
+      applies_to: "every foreground inventory row"
+      rule: "normalized amount = attributable amount in the representative period / net kg conforming reference product dispatched in that period"
+      inputs:
+        - "attributable row amount"
+        - "net dispatched lubricant mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_volume_to_mass
+      applies_to: "volume-based liquid records"
+      rule: "mass = measured volume × density at the recorded temperature; do not use a generic density when product-specific density is available"
+      inputs:
+        - volume
+        - density
+        - "measurement temperature"
+      output: "kg material"
+      source_ids:
+        - api-tr-1533-2023
+    - id: calc_petroleum_fraction
+      applies_to: "formulation identity"
+      rule: "petroleum fraction = mass of petroleum oils and oils from bituminous materials / total net lubricant formulation mass; result must be at least 0.70"
+      inputs:
+        - "batch formulation masses and material identities"
+      output: "kg petroleum oil/kg formulation"
+      source_ids:
+        - unsd-cpc-3-0
+        - mass-balance-identity
+    - id: calc_process_mass_balance
+      applies_to: "each process and batch family"
+      rule: "residual = total mass inputs - net product outputs - recorded rework transfers - waste outputs - measured elementary mass releases - closing inventory increase + opening inventory decrease; investigate and disclose residual"
+      inputs:
+        - material
+        - product
+        - waste
+        - emission
+        - "and inventory records"
+      output: "mass-balance residual and closure statement"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_packaging_intensity
+      applies_to: "packaged product"
+      rule: "packaging intensity by material = packaging material issued less verified reusable returns and rejects / net kg lubricant dispatched"
+      inputs:
+        - "packaging issue"
+        - return
+        - reject
+        - tare
+        - "and dispatch records"
+      output: "kg packaging material/kg net lubricant"
+      source_ids:
+        - api-tr-1533-2023
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and formulation"
+      requirement: "Preserve product code, family, application, performance or viscosity grade, liquid state, petroleum fraction, base-oil group, re-refined share, additive package, and packaging format."
+      evidence: "approved formulation, product specification, certificate of analysis, batch release"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one representative period covering at least 12 consecutive months; identify shutdowns, abnormal campaigns, and substitutions."
+      evidence: "dated records, production calendar, exception log"
+    - id: dq_measurement
+      applies_to: "mass, volume, utilities, and emissions"
+      requirement: "Use calibrated instruments or controlled invoices; document density and temperature for volume conversion and retain calculation inputs."
+      evidence: "calibration certificate, invoice, laboratory report, conversion worksheet"
+    - id: dq_completeness
+      applies_to: "foreground boundary"
+      requirement: "Reconcile all included lines, tanks, filling points, wastes, and direct releases; disclose omitted operations and quantify the potential significance where possible."
+      evidence: "site map, meter map, mass and utility balances, exclusion register"
+    - id: dq_representativeness
+      applies_to: "upstream providers and proxies"
+      requirement: "Match technology, geography, time, base-oil route, and packaging material; document every proxy and why a more representative provider was unavailable."
+      evidence: "provider metadata, proxy assessment, source review"
+    - id: dq_confidentiality
+      applies_to: "confidential formulations"
+      requirement: "Aggregation may protect trade secrets, but must preserve total mass, petroleum fraction, upstream burdens, additive-package traceability, and validation evidence."
+      evidence: "controlled confidential annex and public aggregation statement"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "product identity"
+    rule: "Fail if the product is not a liquid finished lubricating oil, if petroleum-oil fraction is below 0.70 or unsupported, or if required qualifiers are missing."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_reference_flow
+    applies_to: "quantitative reference"
+    rule: "Require exactly 1 kg net conforming Lubricating oil 66628f20-9d33-4997-bd6c-6357453fa268 with Mass 93a60a56-a3c8-11da-a746-0800200b9a66; packaging must be separate."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_process_coverage
+    applies_to: "process inventory"
+    rule: "Require both formulation_blending and filling_dispatch, including bulk loading when no primary packaging is used; fail if a plant-controlled material, utility, waste, or direct release is silently omitted."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: validate_mass_balance
+    applies_to: "formulation and dispatch"
+    rule: "Require documented process mass-balance closure, investigation of residuals against the site's approved tolerance, and disclosure of remaining residual; rework must not be double counted as product and waste."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_allocation
+    applies_to: "shared operations"
+    rule: "Require sub-metering, mass allocation for similar-intensity routes, or a documented causal basis for materially different routes; disclose the selected basis and affected flows."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: validate_temporal_completeness
+    applies_to: "foreground data period"
+    rule: "Require at least 12 consecutive months of representative foreground records or a justified shorter campaign that covers the complete production campaign and its inventory changes."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: validate_upstream_links
+    applies_to: "material and energy inputs"
+    rule: "Require a provider dataset or reviewed proxy for every non-trivial input and disclose technology, geography, time, and allocation limitations."
+    source_ids:
+      - api-tr-1533-2023
+  - rule_id: validate_no_double_count
+    applies_to: "utilities, packaging, emissions, and rework"
+    rule: "Fail when a quantity is counted in more than one process, embedded provider emissions are repeated as direct emissions, reusable packaging is counted on every cycle without adjustment, or rework receives a second production burden."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_reasoned_ranges
+    applies_to: "provisional ranges"
+    rule: "Treat every reasoned_estimate range as a screening aid only; it cannot replace foreground records and must be disclosed and replaced before publication-critical use."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for petroleum-derived finished lubricating oil at the lubricant plant dispatch gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product- and site-qualified process LCI, cradle-to-gate models with linked upstream providers, supplier footprints, and comparison only between datasets with aligned formulation scope, boundary, allocation, period, packaging treatment, and data quality"
+  excluded_use: "Lubricating grease or non-petroleum formulations; generic use-phase performance; avoided-emission claims; cradle-to-grave claims; combustion or fuel substitution; unqualified comparison across product families or performance grades"
+  required_metadata: "canonical PCR id; product family and application; liquid state; petroleum fraction; base-oil group and re-refined share; additive package; viscosity or performance grade and specification; plant geography; production period; bulk or packaging format; boundary; allocation; provider datasets; proxy list"
+  required_quality_disclosure: "foreground coverage and calibration; mass-balance residual; utility allocation; formulation confidentiality treatment; temporal, geographic, and technological representativeness; upstream proxy limitations; reasoned estimates; exclusions and cut-off decisions"
+  update_trigger: "Material formulation, base-oil route or re-refined share change; product-family or performance-specification change; plant or technology change; packaging change; allocation change; provider replacement; production period rollover; new evidence that invalidates a provisional range or boundary rule"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, CPC 33380 Lubricants, https://unstats.un.org/unsd/classifications/Econ/cpc (retrieved 2026-08-09)"
+    used_for: "classification boundary and minimum petroleum-oil share inherited from CPC group context"
+  - id: "environdec-pcr-2025-06"
+    type: "standard"
+    reference: "International EPD System, PCR 2025:06 Lubricating products, version 1.0.3, https://www.environdec.com/pcr-library/pcr_c41f1c3a-ce16-4e42-470c-08dcb7aea32c (retrieved 2026-08-09)"
+    used_for: "confirmation that a material PCR category exists for CPC 3338 lubricants; category-level scope context"
+  - id: "api-tr-1533-2023"
+    type: "official_guidance"
+    reference: "American Petroleum Institute, API Technical Report 1533, Lubricants Life Cycle Assessment and Carbon Footprinting—Methodology and Best Practice, First Edition, May 2023, https://www.api.org/-/media/files/certification/engine-oil-diesel/publications/api%20tr%201533.pdf (retrieved 2026-08-09)"
+    used_for: "declared mass unit, life-cycle boundary, allocation hierarchy, lubricant blending inventory, packaging, collection period, data hierarchy, and data quality"
+  - id: "us-epa-petroleum-refining-2005"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Appendix A—Overview of Petroleum Refining, November 2005, https://www.epa.gov/sites/production/files/documents/AppendixA_Overview_of_Petroleum_Ref.pdf (retrieved 2026-08-09)"
+    used_for: "petroleum lubricant refining and blending process decomposition and distinction between oils and greases"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass applied to each declared batch and process boundary"
+    used_for: "normalization, formulation composition, rework treatment, and process mass-balance validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:70296e1c6cb8263ade65be144cdc3dc94c2074149ad078e9f38ab2b9ede1c749"
+  generated_content_sha256: "sha256:4a162ac08f9f5f05bc174d4bee6dc76b88c378ad5414e7e4622f115dba337977"

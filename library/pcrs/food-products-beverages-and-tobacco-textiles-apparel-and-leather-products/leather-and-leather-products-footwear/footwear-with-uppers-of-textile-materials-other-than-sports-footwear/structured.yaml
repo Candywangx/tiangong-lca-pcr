@@ -1,10 +1,1068 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "29340"
-  title: "Footwear with uppers of textile materials, other than sports footwear"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.leather-and-leather-products-footwear.footwear-with-uppers-of-textile-materials-other-than-sports-footwear"
+  classification_refs: "CPC 3.0: 29340, exact"
+  covered_products: "Finished footwear with uppers of textile materials, other than sports footwear"
+  excluded_products: "Sports footwear; footwear with leather uppers; footwear with rubber or plastic uppers; protective-metal-toe footwear outside CPC 29340; orthopaedic footwear; skating boots; separately sold footwear parts"
+  representative_product: "One pair of non-sports closed-toed casual shoes with woven polyester textile uppers and cemented rubber outsoles"
+  production_route: "Textile upper cutting and sewing; bottom-component manufacture or receipt; lasting, adhesive activation, sole attachment, finishing, inspection, and packing"
+  market_state: "Conforming finished product at the footwear factory gate, before distribution"
+functional_unit:
+  what: "Provide non-sports footwear with textile-material uppers that protects the feet from the ground and meets the declared product specification"
+  how_much: "One pair of footwear defined by the product BOM and declared reference size"
+  how_well: "Conforming and in good condition for its intended non-sports use, with declared construction, size, quality specification, and durability evidence"
+  how_long_or_cycle: "One use; the product duration of service and number of uses are declared separately when the data package is used in a full life-cycle study"
+  reference_flow_link: "The reference flow is the measured mass m_pair in kg of one conforming finished pair, excluding detachable sales packaging; inventory is reported per pair and normalized per 1 kg of the same finished product"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground footwear manufacturing"
+      rule: "Include receipt and internal handling of purchased inputs, upper cutting and sewing, on-site bottom-component manufacture when applicable, lasting, cementing or other declared sole attachment, finishing, inspection, and packing through conforming product at the plant gate."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+        - oliver-footwear-manufacturing-2021
+        - unido-ilo-footwear-1982
+    - rule_id: boundary_bom_and_losses
+      applies_to: "material and component accounting"
+      rule: "Disaggregate manufacturing into declared steps and record the BOM input, manufacturing leftover, process loss, reject, and conforming output for each step; do not hide losses in a single yield factor when step data are available."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - rule_id: boundary_purchased_inputs
+      applies_to: "purchased materials and components"
+      rule: "Keep each purchased input visible as an atomic product flow and link it to an upstream dataset; on-site manufacture is included only when the activity occurs inside the reporting boundary."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+        - iso-14044-2006
+    - rule_id: boundary_exclusion_disclosure
+      applies_to: "exclusions and cut-offs"
+      rule: "Report every excluded attributable flow, the reason, and the expected effect; missing data remain disclosed gaps and are not represented as zero."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Finished materials and purchased components received, identified, and accepted at the footwear manufacturing site gate"
+  starting_condition_role: "Foreground gate-to-gate starting condition for footwear component preparation and final manufacturing"
+  product_classification_scope: "CPC 3.0 subclass 29340 only"
+  recursive_input_rule: "If a partially finished or finished CPC 29340 footwear product enters the foreground system, record it as one explicit product input, link its own upstream dataset, and do not recursively recreate the same category inside this PCR boundary."
+  upstream_dataset_requirement: "Each purchased material, component, energy carrier, packaging item, and waste-treatment service requires a geographically and technologically representative upstream dataset or a disclosed data gap."
+  disclosure: "Declare which component-making steps are on-site, which components are purchased, all contract manufacturing, the BOM and reference size, process and assembly loss treatment, energy allocation, rejected-pair fate, sales-packaging inclusion, and every excluded process."
+reference_flow_definition:
+  reference_amount: "m_pair kg, the measured mass of one conforming finished pair"
+  product_flow_ref:
+    name: "Footwear with uppers of textile materials, other than sports footwear"
+    uuid: "f6098cff-2e83-4867-ace9-6b24b50b0ccd"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CPC 29340 confirmation"
+    - "textile upper material and construction"
+    - "non-sports intended use"
+    - "open- or closed-toed style"
+    - "adult/child/infant segment"
+    - "sex or unisex size segment"
+    - "reference size"
+    - "pair mass excluding sales packaging"
+    - "sole and midsole materials"
+    - "lining material"
+    - "assembly route"
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "product quality specification"
+    - "rejected-pair treatment"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_pair_mass
+    applies_to: "conforming finished pair"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh the complete left-and-right pair after finishing and conditioning, exclude detachable sales packaging, record the reference size and scale resolution, and use the arithmetic mean of conforming measured pairs for m_pair."
+  - id: pair_mass_conversion
+    applies_to: "conversion between pair and mass reporting"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/pair"
+    rule: "Convert a per-pair inventory to a per-kg inventory by dividing every exchange by m_pair; retain m_pair, sample count, and reference size so the conversion is reversible."
+  - id: component_mass_basis
+    applies_to: "BOM materials, components, finished product, and solid waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record gross input, conforming incorporated mass, recoverable offcut, reject, and disposed mass without mixing wet and dry bases; document moisture or conditioning state when material mass can change materially."
+  - id: energy_unit_preservation
+    applies_to: "electricity and fuel inputs"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuel"
+    rule: "Preserve metered units and conversion factors. Do not combine electricity, purchased heat, steam, or fuel into one inventory exchange."
+process_map:
+  - id: upper_component_manufacturing
+    name: "Textile upper cutting, preparation, and sewing"
+    inclusion: "required"
+    inclusion_condition: "Always included for CPC 29340 footwear; contract work is represented with supplier-specific foreground data or a linked upstream process."
+    role: "foreground component manufacturing"
+    quantitative_reference: "kg stitched textile upper assembly delivered to final assembly"
+  - id: bottom_component_manufacturing
+    name: "Bottom-component forming and preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when outsole, midsole, or insole manufacture or preparation occurs at the reporting site; otherwise record the purchased components directly in final assembly."
+    role: "foreground component manufacturing"
+    quantitative_reference: "kg conforming bottom component by component type"
+  - id: final_assembly_and_packaging
+    name: "Lasting, cementing, finishing, inspection, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always included through conforming finished footwear at the plant gate."
+    role: "foreground final manufacturing"
+    quantitative_reference: "one conforming pair and its measured product mass in kg"
+process_inventory:
+  - id: upper_component_manufacturing
+    label: "Textile upper cutting, preparation, and sewing"
+    inputs:
+      product:
+        - row_id: upper_polyester_fabric_input
+          role: "Woven polyester upper fabric"
+          name: "Woven polyester fabric, dyed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dyed woven polyester fabric cut into exterior upper panels for the representative route. For another textile, add a separate atomic card using the actual fibre and fabric construction."
+          amount:
+            expression: "measured accepted mass issued to upper cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: upper_lining_fabric_input
+          role: "Polyester lining fabric"
+          name: "Polyester lining fabric, knitted"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific polyester lining fabric issued to the upper line."
+          amount:
+            expression: "measured accepted lining mass issued to cutting and sewing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: upper_sewing_thread_input
+          role: "Polyester sewing thread"
+          name: "Polyester sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sewing thread actually consumed in joining the upper and lining panels."
+          amount:
+            expression: "opening stock plus receipts minus closing stock, reconciled to the product order"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - unido-ilo-footwear-1982
+            ranges: []
+        - row_id: upper_toe_stiffener_input
+          role: "Thermoplastic polyurethane toe stiffener"
+          name: "Thermoplastic polyurethane toe stiffener"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the thermoplastic polyurethane toe puff when it is part of the declared non-protective construction; this is not a protective metal toe cap."
+          amount:
+            expression: "measured mass of accepted toe stiffeners incorporated"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - unido-ilo-footwear-1982
+            ranges: []
+        - row_id: upper_electricity_input
+          role: "Electricity for upper operations"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for cutting, edge preparation, sewing, local extraction, and directly attributable upper-line auxiliaries."
+          amount:
+            expression: "process-submeter reading, or allocated site meter reading using documented machine operating time and rated load when no submeter exists"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg stitched textile upper assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stitched_textile_upper_output
+          role: "Stitched textile upper assembly"
+          name: "Stitched textile upper assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only assemblies that pass the declared upper inspection and enter lasting."
+          amount:
+            expression: "measured conforming stitched-upper mass transferred to final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per upper-manufacturing reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - oliver-footwear-manufacturing-2021
+                - unido-ilo-footwear-1982
+            ranges: []
+      waste:
+        - row_id: upper_polyester_cutting_scrap_output
+          role: "Polyester upper cutting scrap"
+          name: "Polyester woven-fabric cutting scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Keep usable offcuts, internally reused pieces, externally recycled material, and disposed scrap distinguishable in fate records."
+          amount:
+            expression: "measured scrap from cutting the woven polyester upper fabric, by fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg stitched textile upper assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: upper_lining_cutting_scrap_output
+          role: "Polyester lining cutting scrap"
+          name: "Polyester knitted-fabric cutting scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record lining scrap separately from exterior upper-fabric scrap."
+          amount:
+            expression: "measured scrap from cutting the polyester lining fabric, by fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg stitched textile upper assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      elementary:
+        []
+  - id: bottom_component_manufacturing
+    label: "Bottom-component forming and preparation"
+    inputs:
+      product:
+        - row_id: bottom_sbr_compound_input
+          role: "Styrene-butadiene rubber compound"
+          name: "Styrene-butadiene rubber compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this flow only when the representative synthetic-rubber outsole is formed on site."
+          amount:
+            expression: "measured accepted compound charged to outsole forming"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming rubber outsole output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: bottom_eva_foam_input
+          role: "Ethylene-vinyl acetate foam sheet"
+          name: "Ethylene-vinyl acetate foam sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record EVA foam issued to midsole or insole cutting as one specific material input."
+          amount:
+            expression: "measured accepted EVA foam issued to cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming EVA bottom-component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: bottom_electricity_input
+          role: "Electricity for bottom-component operations"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for compound forming, cutting, trimming, and preparation performed within this process."
+          amount:
+            expression: "submetered process electricity or documented allocation from the site meter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming bottom-component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: bottom_natural_gas_input
+          role: "Natural gas for outsole curing heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record natural gas only when directly burned for on-site outsole curing or forming heat; do not combine it with electricity or purchased heat."
+          amount:
+            expression: "measured fuel volume converted with the recorded net calorific value and allocated to the outsole line"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming rubber outsole output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bottom_rubber_outsole_output
+          role: "Formed rubber outsole"
+          name: "Styrene-butadiene rubber outsole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming styrene-butadiene rubber outsoles transferred to final assembly."
+          amount:
+            expression: "measured conforming outsole mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per bottom-component reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - oliver-footwear-manufacturing-2021
+            ranges: []
+        - row_id: bottom_eva_midsole_output
+          role: "Cut EVA midsole"
+          name: "Ethylene-vinyl acetate foam midsole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming EVA midsoles transferred to final assembly."
+          amount:
+            expression: "measured conforming EVA midsole mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per bottom-component reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: bottom_eva_insole_output
+          role: "Cut EVA insole"
+          name: "Ethylene-vinyl acetate foam insole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming EVA insoles transferred to final assembly."
+          amount:
+            expression: "measured conforming EVA insole mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per bottom-component reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - unido-ilo-footwear-1982
+            ranges: []
+      waste:
+        - row_id: bottom_rubber_scrap_output
+          role: "Rubber outsole trimming scrap"
+          name: "Styrene-butadiene rubber trimming scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trimming and rejected SBR material separately by recycling, recovery, or disposal fate."
+          amount:
+            expression: "measured SBR trimming and reject mass by fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming rubber outsole output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: bottom_eva_scrap_output
+          role: "EVA foam cutting scrap"
+          name: "Ethylene-vinyl acetate foam cutting scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record EVA midsole and insole cutting scrap as one chemically specific waste flow, with fate split in the underlying records."
+          amount:
+            expression: "measured EVA cutting and reject mass by fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming EVA bottom-component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      elementary:
+        []
+  - id: final_assembly_and_packaging
+    label: "Lasting, cementing, finishing, inspection, and packing"
+    inputs:
+      product:
+        - row_id: assembly_stitched_upper_input
+          role: "Stitched textile upper"
+          name: "Stitched textile upper assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming stitched upper entering lasting, whether made on site or purchased."
+          amount:
+            expression: "measured accepted stitched-upper mass issued to final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_materials
+              source_ids:
+                - oliver-footwear-manufacturing-2021
+                - unido-ilo-footwear-1982
+            ranges: []
+        - row_id: assembly_rubber_outsole_input
+          role: "Rubber outsole"
+          name: "Styrene-butadiene rubber outsole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted SBR outsole issued to sole attachment."
+          amount:
+            expression: "measured accepted outsole mass issued to final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_materials
+              source_ids:
+                - oliver-footwear-manufacturing-2021
+            ranges: []
+        - row_id: assembly_eva_midsole_input
+          role: "EVA midsole"
+          name: "Ethylene-vinyl acetate foam midsole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted EVA midsole incorporated in the finished shoe."
+          amount:
+            expression: "measured accepted midsole mass issued to final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: assembly_eva_insole_input
+          role: "EVA insole"
+          name: "Ethylene-vinyl acetate foam insole"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted EVA insole incorporated in the finished shoe."
+          amount:
+            expression: "measured accepted insole mass issued to final assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_materials
+              source_ids:
+                - unido-ilo-footwear-1982
+            ranges: []
+        - row_id: assembly_pu_adhesive_input
+          role: "Polyurethane footwear adhesive"
+          name: "Polyurethane footwear adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record formulated polyurethane adhesive used for lasting or sole attachment; do not combine adhesive with cleaner, primer, or finish."
+          amount:
+            expression: "opening stock plus receipts minus closing stock and separately measured recovered adhesive, reconciled to the product order"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_assembly_materials
+              source_ids:
+                - simoes-footwear-adhesive-2024
+                - oliver-footwear-manufacturing-2021
+            ranges: []
+        - row_id: assembly_polyester_shoelace_input
+          role: "Polyester shoelace"
+          name: "Polyester shoelace"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyester laces only for laced styles; styles without laces mark this card not applicable rather than substituting another fastening component."
+          amount:
+            expression: "measured mass of accepted shoelaces incorporated"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_materials
+              source_ids:
+                - unido-ilo-footwear-1982
+            ranges: []
+        - row_id: assembly_cardboard_box_input
+          role: "Cardboard shoe box"
+          name: "Cardboard shoe box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the corrugated or solid-board shoe box separately from wrapping tissue."
+          amount:
+            expression: "measured box mass multiplied by boxes consumed, including damaged boxes"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per conforming finished pair packed for sale"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: assembly_tissue_paper_input
+          role: "Tissue wrapping paper"
+          name: "Tissue wrapping paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record tissue paper separately from the shoe box and any plastic accessory."
+          amount:
+            expression: "measured tissue mass multiplied by sheets consumed, including damaged sheets"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per conforming finished pair packed for sale"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: assembly_electricity_input
+          role: "Electricity for final assembly"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for lasting, adhesive application and activation, pressing, finishing, inspection, and packing."
+          amount:
+            expression: "process-submeter reading or documented allocation from site meter records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: assembly_cleaning_water_input
+          role: "Tap water for final cleaning"
+          name: "Tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record tap water only when water cleaning occurs inside final assembly; do not combine it with wastewater."
+          amount:
+            expression: "submetered water or batch-volume record allocated to the product order"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_footwear_output
+          role: "Finished CPC 29340 footwear"
+          name: "Footwear with uppers of textile materials, other than sports footwear"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f6098cff-2e83-4867-ace9-6b24b50b0ccd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole reference-product output. Record conforming left-and-right pairs after finishing and inspection; detachable sales packaging is not included in the product mass."
+          amount:
+            expression: "measured conforming finished-pair mass m_pair, with pair count retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "one conforming finished pair at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids:
+                - un-cpc-3-0-2025
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        - row_id: assembly_pu_adhesive_waste_output
+          role: "Cured polyurethane adhesive waste"
+          name: "Cured polyurethane adhesive waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record cured residual adhesive and rejected cured adhesive separately from liquid solvent or cleaner waste."
+          amount:
+            expression: "measured collected cured adhesive waste by treatment fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - simoes-footwear-adhesive-2024
+            ranges: []
+        - row_id: assembly_cardboard_waste_output
+          role: "Waste cardboard shoe boxes"
+          name: "Waste cardboard shoe box"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged or discarded shoe boxes before product dispatch; do not include boxes shipped with the product as waste."
+          amount:
+            expression: "measured discarded box mass by treatment fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per conforming finished pair packed for sale"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: assembly_cleaning_wastewater_output
+          role: "Final-cleaning wastewater"
+          name: "Footwear final-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater only when water cleaning occurs and the wastewater crosses the process boundary to treatment."
+          amount:
+            expression: "measured discharge volume or water-input balance corrected for documented evaporation and retention"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+      elementary:
+        - row_id: assembly_nmvoc_air_output
+          role: "Non-methane volatile organic compounds to air"
+          name: "Non-methane volatile organic compounds to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct NMVOC emissions from solvent-bearing adhesive, primer, cleaner, or finish only when those substances are used; retain substance-specific records whenever available."
+          amount:
+            expression: "stack or workplace-extraction measurement, permit inventory, or documented solvent mass balance for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished footwear output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - simoes-footwear-adhesive-2024
+                - iso-14044-2006
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "multi-product or shared foreground operations"
+    rule: "Subdivide by process line, product order, style, and reporting period whenever separate measurements exist before applying allocation."
+    source_ids:
+      - iso-14044-2006
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_process_driver
+    applies_to: "shared component and manufacturing processes"
+    rule: "Apply the PEFCR process driver when subdivision is not possible: unit allocation for sewing and final assembly, and mass allocation for die-cutting, compound forming, insole production, stockfitting, and finishing; document the denominator and all co-produced output."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_energy
+    applies_to: "shared site electricity and fuel"
+    rule: "Prefer product- or line-specific metering. Otherwise allocate measured energy by a documented causal driver such as machine operating time multiplied by measured or rated load; if only multi-site electricity data exist, use a production-mass-weighted mix and disclose the limitation."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_recycling_no_credit
+    applies_to: "manufacturing scrap sent to recovery"
+    rule: "Report the scrap mass and treatment route without assigning an avoided-burden credit inside this foreground package; any circular-footprint or substitution treatment belongs to the downstream life-cycle model and must be declared separately."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reference_product
+      process_id: "final_assembly_and_packaging"
+      flow_role: "finished reference product"
+      record_type: "scale and production record"
+      raw_fields: "product code; CPC confirmation; reference size; pair count; individual or batch pair mass; scale id; resolution; calibration date; reject count"
+      collection_method: "calibrated scale linked to the production order and final inspection release"
+      unit: "kg and pair"
+      frequency: "each measured sample or released batch"
+      temporal_coverage: "representative reporting period, normally 12 consecutive months"
+      site_scope: "each reporting footwear site"
+      aggregation_rule: "sum conforming mass and pair count; calculate mean kg/pair; exclude packaging and rejects"
+      quality_evidence: "scale calibration; inspection release; product specification; sampling record"
+    - protocol_id: cp_bom_materials
+      process_id: "upper_component_manufacturing_bottom_component_manufacturing"
+      flow_role: "specific material or component input"
+      record_type: "BOM, receipt, issue, and stock record"
+      raw_fields: "material id; chemical or fibre identity; construction; supplier; gross received mass; issued mass; returns; opening stock; closing stock; lot; product order"
+      collection_method: "reconcile BOM and product order with calibrated weighing, invoices, warehouse issues, and stock change"
+      unit: "kg"
+      frequency: "each lot and product order"
+      temporal_coverage: "same period as output, with stock reconciliation"
+      site_scope: "each site and contract facility in scope"
+      aggregation_rule: "material consumed = opening stock + receipts - closing stock - documented returns; keep each material separate"
+      quality_evidence: "supplier specification; invoice; weigh ticket; stock ledger; BOM revision"
+    - protocol_id: cp_final_assembly_materials
+      process_id: "final_assembly_and_packaging"
+      flow_role: "specific component, adhesive, or accessory input"
+      record_type: "BOM, issue, stock, and batch record"
+      raw_fields: "component id; material identity; issue quantity or mass; opening stock; receipts; closing stock; returned material; product order"
+      collection_method: "weigh representative components and reconcile counts or stock changes to the production order"
+      unit: "kg and item count"
+      frequency: "each product order, reconciled monthly"
+      temporal_coverage: "same period as finished product"
+      site_scope: "each final-assembly site"
+      aggregation_rule: "convert item counts to mass with measured component mass; calculate stock-balance consumption for adhesive; no grouping across materials"
+      quality_evidence: "BOM; batch sheet; component weigh record; adhesive stock ledger"
+    - protocol_id: cp_packaging_materials
+      process_id: "final_assembly_and_packaging"
+      flow_role: "shoe box or tissue paper input"
+      record_type: "packaging specification and issue record"
+      raw_fields: "packaging id; material; unit mass; units issued; units shipped; damaged units; product order"
+      collection_method: "weigh packaging units and reconcile issued, shipped, and damaged counts"
+      unit: "kg and item count"
+      frequency: "each packaging specification and product order"
+      temporal_coverage: "same period as packed output"
+      site_scope: "each packing site"
+      aggregation_rule: "unit mass multiplied by units consumed; keep box and tissue paper separate"
+      quality_evidence: "packaging specification; scale record; packing log"
+    - protocol_id: cp_process_energy
+      process_id: "upper_component_manufacturing_bottom_component_manufacturing_final_assembly_and_packaging"
+      flow_role: "electricity or natural-gas input"
+      record_type: "meter, invoice, and machine log"
+      raw_fields: "meter id; opening and closing reading; energy carrier; voltage or calorific value; machine id; operating time; product order; allocation denominator"
+      collection_method: "submeter first; otherwise reconcile utility invoice and allocate with documented process driver"
+      unit: "kWh or MJ"
+      frequency: "continuous meter or each shift; reconcile monthly"
+      temporal_coverage: "representative reporting period, normally 12 consecutive months"
+      site_scope: "each process line and site"
+      aggregation_rule: "subtract documented non-production use; allocate each energy carrier separately; normalize to conforming output"
+      quality_evidence: "meter calibration; invoice; machine log; allocation worksheet; electricity-supply evidence"
+    - protocol_id: cp_process_outputs
+      process_id: "upper_component_manufacturing_bottom_component_manufacturing"
+      flow_role: "conforming intermediate output"
+      record_type: "scale, transfer, and inspection record"
+      raw_fields: "intermediate id; material; batch; mass; item count; pass/fail; destination process"
+      collection_method: "weigh accepted output at process transfer and reconcile to production orders"
+      unit: "kg and item count"
+      frequency: "each batch"
+      temporal_coverage: "same period as input and waste records"
+      site_scope: "each component-making site"
+      aggregation_rule: "sum conforming transferred mass by atomic intermediate product"
+      quality_evidence: "calibrated scale; transfer ticket; inspection record"
+    - protocol_id: cp_waste_and_emissions
+      process_id: "upper_component_manufacturing_bottom_component_manufacturing_final_assembly_and_packaging"
+      flow_role: "specific solid waste or NMVOC emission"
+      record_type: "waste weigh ticket, container log, treatment receipt, measurement, permit, or solvent balance"
+      raw_fields: "waste id; chemical or material identity; mass; destination; treatment; date; product order; measured NMVOC; solvent input; retained solvent; recovered solvent"
+      collection_method: "weigh each waste stream; use measured emissions or a documented substance mass balance without combining pollutants"
+      unit: "kg"
+      frequency: "each collection or emission measurement; reconcile monthly"
+      temporal_coverage: "same period as production"
+      site_scope: "each process and site"
+      aggregation_rule: "sum by atomic waste or elementary flow and treatment fate; reconcile material balance"
+      quality_evidence: "weigh ticket; licensed treatment receipt; measurement report; permit return; mass-balance worksheet"
+    - protocol_id: cp_process_water
+      process_id: "final_assembly_and_packaging"
+      flow_role: "tap-water input or final-cleaning wastewater"
+      record_type: "water meter, batch sheet, and discharge record"
+      raw_fields: "meter id; water input; batch volume; discharge volume; evaporation; retained water; product order"
+      collection_method: "submeter or batch-volume record; reconcile input and discharge"
+      unit: "m3"
+      frequency: "each batch or monthly meter reading"
+      temporal_coverage: "same period as production"
+      site_scope: "each cleaning operation and site"
+      aggregation_rule: "allocate only water directly attributable to product cleaning; calculate wastewater from measured discharge or documented balance"
+      quality_evidence: "meter record; batch sheet; discharge record; balance check"
+  calculation_rules:
+    - id: calc_pair_mass
+      applies_to: "reference flow"
+      rule: "m_pair = conforming finished footwear mass / conforming pair count; packaging and rejected pairs are excluded."
+      inputs:
+        - "conforming mass"
+        - "conforming pair count"
+      output: "kg per pair"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - id: calc_reference_normalization
+      applies_to: "every inventory exchange"
+      rule: "normalized exchange = exchange amount / conforming finished footwear mass; report the per-pair amount by multiplying the normalized value by m_pair."
+      inputs:
+        - "exchange amount"
+        - "conforming mass"
+        - m_pair
+      output: "exchange per kg reference product and exchange per pair"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_stock_balance
+      applies_to: "thread, adhesive, and other stock-managed inputs"
+      rule: "consumption = opening stock + receipts - closing stock - documented returns - recovered material; unexplained imbalance is reported."
+      inputs:
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - returns
+        - "recovered material"
+      output: "consumed input mass"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_step_loss
+      applies_to: "each material at each manufacturing step"
+      rule: "step loss rate = (material input - conforming material output - measured recoverable stock transfer) / material input; report the mass and fate, not only the percentage."
+      inputs:
+        - "atomic material input"
+        - "conforming output"
+        - "recoverable transfer"
+        - "waste mass"
+      output: "step-specific material loss rate and mass balance"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - id: calc_energy_allocation
+      applies_to: "shared metered energy"
+      rule: "Allocate each carrier using the declared process driver; for machine-time allocation use allocated energy = shared metered energy × product machine-load-hours / total machine-load-hours."
+      inputs:
+        - "meter reading"
+        - "machine time"
+        - "measured or rated load"
+        - "product order"
+      output: "allocated kWh or MJ"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and every flow"
+      requirement: "Preserve product code, CPC 29340 decision, material or chemical identity, flow direction, unit, site, route applicability, supplier, and treatment fate. A data gap is not zero."
+      evidence: "product specification; BOM; supplier specification; flow mapping record; waste receipt"
+    - id: dq_temporal
+      applies_to: "foreground records"
+      requirement: "Use one coherent representative period, normally 12 consecutive months; disclose seasonal or campaign coverage and reconcile opening and closing stocks to that period."
+      evidence: "reporting-period statement; dated meters, invoices, stock records, and production logs"
+    - id: dq_geography_technology
+      applies_to: "site and linked datasets"
+      requirement: "Declare each manufacturing geography and technology; linked datasets must represent the actual material, electricity mix, process technology, and waste route, or the proxy limitation must be stated."
+      evidence: "site register; technology pack; electricity evidence; dataset metadata; proxy justification"
+    - id: dq_completeness
+      applies_to: "BOM, energy, water, wastes, and emissions"
+      requirement: "Reconcile atomic inputs, outputs, stock changes, process losses, rejects, and treatment destinations. Report missing exchanges and exclusions explicitly."
+      evidence: "mass-balance worksheet; production reconciliation; completeness checklist"
+    - id: dq_measurement
+      applies_to: "scales, meters, and calculations"
+      requirement: "Retain instrument identity, calibration or verification, resolution, sampling method, allocation denominator, unit conversions, and formula version."
+      evidence: "calibration certificate; meter record; sampling plan; calculation workbook"
+    - id: dq_dqr
+      applies_to: "company-specific datasets"
+      requirement: "Assess and report technological, geographical, and time representativeness and precision before aggregation, consistent with the PEFCR data-quality approach."
+      evidence: "DQR worksheet and supporting records"
+validation_rules:
+  - rule_id: validate_category
+    applies_to: "reference product identity"
+    rule: "Confirm the output has textile-material uppers, is not sports footwear, and is classified in CPC 3.0 subclass 29340; reject a package that relies only on a generic shoe label."
+    source_ids:
+      - un-cpc-3-0-2025
+  - rule_id: validate_reference_flow
+    applies_to: "functional unit and reference flow"
+    rule: "Confirm one conforming pair, its reference size, pair count, measured m_pair, Mass UUID, Units of mass UUID, kg reference unit, and the exact Tiangong product-flow UUID are present and mutually consistent."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Confirm every selected flow is one material, component, energy carrier, waste, or elementary emission; reject plural collections, combined utilities, route selectors, and an other exchange."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_process_coverage
+    applies_to: "foreground boundary"
+    rule: "Confirm upper cutting/preparation/sewing and final lasting/sole attachment/finishing/inspection/packing are represented; confirm bottom-component manufacture is either included or represented by explicit purchased-component inputs."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - oliver-footwear-manufacturing-2021
+      - unido-ilo-footwear-1982
+  - rule_id: validate_mass_balance
+    applies_to: "every material-bearing process"
+    rule: "Reconcile atomic material inputs with conforming outputs, recoverable transfers, stock change, offcuts, rejects, and other losses; investigate rather than force-close unexplained imbalance."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - iso-14044-2006
+  - rule_id: validate_energy_allocation
+    applies_to: "electricity and fuel"
+    rule: "Confirm each energy carrier is separate, meter period matches production, allocation driver is causal and reproducible, and site or supply mix evidence is retained."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_no_unsupported_range
+    applies_to: "inventory amount metadata"
+    rule: "Confirm no single case value, repeated lower/upper value, abstract-only value, or unverified estimate is represented as an empirical range; absence of sufficient compatible evidence remains a disclosed range gap."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_bilingual_identity
+    applies_to: "Chinese rendering"
+    rule: "Confirm every UUID, process id, row id, controlled token, source id, and normative rule id matches the English source, and the reference flow uses the exact Tiangong Chinese baseName."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate manufacturing data package for CPC 29340 footwear"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product-specific LCA, product carbon footprint, PEF-aligned modelling, supplier data exchange, process improvement, and downstream process or lifecyclemodel construction when the declared product, route, geography, and period match"
+  excluded_use: "Sports footwear; leather-upper or rubber/plastic-upper footwear; unsupported category averages; consumer-use or end-of-life claims; comparative assertions without a complete aligned method; use of missing data as zero"
+  required_metadata: "PCR id and version; CPC decision; product style and construction; textile upper identity; reference size and segment; pair mass; BOM; site and geography; reporting period; included and purchased processes; energy sources; allocation; waste fate; data gaps; source and dataset versions"
+  required_quality_disclosure: "DQR criteria; primary-data share; measurement and calibration evidence; sampling and temporal coverage; mass-balance residuals; allocation drivers; proxy datasets; exclusions; unresolved UUIDs; rejected-pair and scrap treatment"
+  update_trigger: "BOM, upper material, sole system, adhesive chemistry, component sourcing, assembly route, site, electricity supply, allocation method, waste treatment, reference flow identity, classification scope, or evidence contract changes materially"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. *Central Product Classification (CPC), Version 3.0, Explanatory Notes*, subclass 29340, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-20)."
+    used_for: "exact category scope and exclusions"
+  - id: "afw-pefcr-v3-1-2025"
+    type: "official_guidance"
+    reference: "Technical Secretariat of the Product Environmental Footprint Category Rules for Apparel and Footwear. *Product Environmental Footprint Category Rules: Apparel and Footwear*, Version 3.1, 29 April 2025, valid through 31 December 2027. https://pefapparelandfootwear.eu/afw_pefcr_v3-1_final/ (direct PDF verified at https://www.carbonfact.com/hubfs/A%26FW_PEFCR_v3.1.pdf; retrieved 2026-08-20)."
+    used_for: "functional unit; exact footwear subclass coverage; BOM; manufacturing boundary and process decomposition; losses; allocation; electricity; collection; DQR; packaging"
+  - id: "iso-14040-2006"
+    type: "standard"
+    reference: "ISO 14040:2006. *Environmental management — Life cycle assessment — Principles and framework*. https://www.iso.org/standard/37456.html (retrieved 2026-08-20)."
+    used_for: "LCA and LCI framework"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006. *Environmental management — Life cycle assessment — Requirements and guidelines*. https://www.iso.org/standard/38498.html (retrieved 2026-08-20)."
+    used_for: "goal and scope, inventory, allocation, data quality, reporting, and validation framework"
+  - id: "oliver-footwear-manufacturing-2021"
+    type: "literature"
+    reference: "Oliver, G., Gil, P., Gomez, J.F. et al. *Towards footwear manufacturing 4.0: shoe sole robotic grasping in assembling operations*. International Journal of Advanced Manufacturing Technology 114, 811–827 (2021). https://doi.org/10.1007/s00170-021-06697-0."
+    used_for: "peer-reviewed full-text verification of cutting, stitching, lasting/shaping, adhesive application, sole assembly, pressing, and finishing operations"
+  - id: "unido-ilo-footwear-1982"
+    type: "handbook"
+    reference: "UNIDO and ILO. *Small-scale Manufacture of Footwear*, Technical Memorandum No. 2, 1982. https://www.unido.org/publications/ot/9648584/pdf (retrieved 2026-08-20)."
+    used_for: "original full-text process sequence, component identities, lasting, cementing, finishing, inspection, and packaging"
+  - id: "simoes-footwear-adhesive-2024"
+    type: "literature"
+    reference: "Simões, C.L., Aguiar, A., Marques, A.C. et al. *Environmental assessment of an innovative adhesive for the footwear industry: road map for product development*. International Journal of Life Cycle Assessment 29, 1264–1278 (2024). https://doi.org/10.1007/s11367-024-02314-w."
+    used_for: "peer-reviewed full-text support for polyurethane adhesive as a distinct footwear-industry input and solvent-related inventory attention"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ca265156570bcc55befdfaf064b198cab766b86360efc04dd3e1d26bf7c2da3f"
+  generated_content_sha256: "sha256:db5c25612d0e1d33c2a82b3f4d0ea136b5316c89139b1973d51b83e11a93afc0"

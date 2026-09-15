@@ -1,10 +1,1621 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21681"
-  title: "Cottonseed oil, crude"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.cottonseed-oil-crude"
+  classification_refs: "CPC 3.0: 21681 — Cottonseed oil, crude"
+  covered_products: "Crude cottonseed oil obtained by mechanical pressing, prepress-solvent extraction, or direct/expander-assisted solvent extraction, before refining"
+  excluded_products: "Refined cottonseed oil; hydrogenated or otherwise chemically modified cottonseed oil; blended vegetable oil; cottonseed meal, hulls, and linters sold as the reference product"
+  representative_product: "Bulk clarified crude cottonseed oil at the oil-mill gate"
+  production_route: "Declared actual route: mechanical screw pressing; prepress followed by hexane extraction; or direct/expander-assisted hexane extraction"
+  market_state: "Unrefined bulk oil after clarification and before refining, with actual moisture, insoluble impurities, and residual solvent status disclosed"
+functional_unit:
+  what: "Production of crude cottonseed oil for downstream refining or a declared technical use"
+  how_much: "1 kg of crude cottonseed oil"
+  how_well: "Clarified but unrefined oil, measured at the oil-mill gate; the dataset shall disclose moisture, insoluble impurities, and residual solvent status rather than assume a refined-oil specification"
+  how_long_or_cycle: "One production accounting period represented by the foreground data, normally a continuous campaign or annual period"
+  reference_flow_link: "One kilogram of dispatchable crude cottonseed oil after route-specific extraction and clarification"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "foreground_start_and_end"
+      rule: "Start at cottonseed receipt from the gin and end at clarified crude cottonseed oil at the mill gate; keep cultivation, ginning, and downstream refining outside this foreground boundary unless explicitly added and disclosed."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+        - us-epa-ap42-vegetable-oil-background-1995
+    - rule_id: boundary_rule_2
+      applies_to: "route_selection"
+      rule: "Model only the declared mechanical, prepress-solvent, or direct/expander-solvent route. Solvent extraction and desolventizing are not applicable to a mechanical-only route."
+      source_ids:
+        - us-epa-ap42-vegetable-oil-background-1995
+        - zia-cottonseed-oil-review-2021
+    - rule_id: boundary_rule_3
+      applies_to: "solvent_route"
+      rule: "When hexane extraction is used, include extraction, oil/solvent evaporation and stripping, meal desolventizing, condensation and recovery, make-up solvent, wastewater containing solvent, and vented or fugitive hexane."
+      source_ids:
+        - us-epa-ap42-vegetable-oil-processing-1995
+        - eu-bat-food-drink-milk-2019
+    - rule_id: boundary_rule_4
+      applies_to: "utilities_and_treatment"
+      rule: "Include on-site steam or heat generation and on-site wastewater treatment only when operated by the reporting facility; otherwise represent purchased steam/heat and external treatment as product or waste-service inputs."
+      source_ids:
+        - eu-bat-food-drink-milk-2019
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Cottonseed received at the oil mill after ginning, with receipt mass, moisture, foreign matter, and residual lint condition declared"
+  starting_condition_role: "Gate-to-gate foreground starting input; cultivation and ginning burdens arrive through an upstream cottonseed dataset"
+  product_classification_scope: "Crude cottonseed oil only; CPC 3.0 subclass 21681 is mapping context and does not broaden the PCR to refined vegetable oils"
+  recursive_input_rule: "If crude cottonseed oil of the same category is introduced for rework or blending, record it as a separate external input with its upstream dataset and do not recursively recreate its production inside this foreground package"
+  upstream_dataset_requirement: "Link received cottonseed, purchased energy, water, hexane, cleaning agent, and other external inputs to representative upstream datasets; disclose unresolved proxies"
+  disclosure: "Declare the extraction route, included unit processes, internal transfers, on-site utilities, solvent recovery, wastewater treatment, co-product destinations, allocation method, exclusions, and any cut-offs"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cottonseed oil, crude — Tiangong UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "extraction route"
+    - direct-extraction
+    - expander
+    - "or prepress configuration"
+    - "cottonseed receipt condition and moisture basis"
+    - "product moisture and insoluble-impurity basis"
+    - "residual solvent status"
+    - geography
+    - "technology and equipment vintage"
+    - "reporting period"
+    - "co-product treatment and allocation choice"
+    - "solvent recovery configuration"
+    - "purchased versus on-site steam/heat"
+    - "wastewater-treatment boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-balance product, co-product, residue, and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the reporting-period inventory to 1 kg of clarified crude cottonseed oil. Record whether each mass is as-received, wet, dry, or solvent-bearing; do not mix bases without a documented conversion."
+  - id: internal_transfer_reconciliation
+    applies_to: "Prepared meats, pressed cake, miscella, solvent-laden meal, and intermediate crude-oil transfers"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Internal transfer rows shall reconcile between consecutive unit processes for the declared route and shall not be counted again as external inputs or outputs."
+  - id: energy_accounting
+    applies_to: "Electricity, steam, natural gas, and fuel oil"
+    required_property_ref:
+      name: "Energy or mass as metered"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve invoice or meter units. Convert only with a documented factor; for fuels report quantity, lower heating value, and whether combustion is inside the foreground boundary."
+  - id: water_accounting
+    applies_to: "Process water, boiler feed water, and wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Keep supplied water, reused water, condensate, and discharged wastewater separate. State density assumptions when converting volume to mass."
+  - id: hexane_balance
+    applies_to: "Solvent-extraction and desolventizing processes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile opening inventory, purchases, closing inventory, recovered solvent, solvent retained in products or wastewater, and measured or calculated losses; do not use a soybean factor as cottonseed evidence."
+process_map:
+  - id: seed_preparation
+    name: "Cottonseed receiving, cleaning, delinting, and dehulling"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground raw-material preparation"
+    quantitative_reference: "Received cottonseed mass"
+  - id: conditioning_flaking
+    name: "Conditioning, flaking, and cooking"
+    inclusion: "required"
+    inclusion_condition: "Always included; equipment sequence shall be declared"
+    role: "Foreground extraction preparation"
+    quantitative_reference: "Prepared cottonseed-meat mass"
+  - id: mechanical_pressing
+    name: "Mechanical pressing"
+    inclusion: "conditional"
+    inclusion_condition: "Include for mechanical-only and prepress-solvent routes"
+    role: "Foreground oil extraction"
+    quantitative_reference: "Conditioned cottonseed-meat mass"
+  - id: hexane_extraction
+    name: "Hexane extraction"
+    inclusion: "conditional"
+    inclusion_condition: "Include for prepress-solvent and direct/expander-solvent routes"
+    role: "Foreground oil extraction"
+    quantitative_reference: "Extractor feed mass"
+  - id: desolventizing_stripping
+    name: "Meal desolventizing and oil stripping"
+    inclusion: "conditional"
+    inclusion_condition: "Include whenever hexane extraction is included"
+    role: "Foreground solvent recovery"
+    quantitative_reference: "Miscella and solvent-laden meal mass"
+  - id: crude_oil_clarification
+    name: "Crude-oil clarification and storage transfer"
+    inclusion: "required"
+    inclusion_condition: "Always included for the route-specific crude-oil stream"
+    role: "Foreground finishing"
+    quantitative_reference: "Clarified crude cottonseed oil mass"
+  - id: onsite_heat_generation
+    name: "On-site steam or process-heat generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for steam or heat generated within the facility boundary"
+    role: "Foreground utility supply"
+    quantitative_reference: "Generated steam or useful heat"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when wastewater is treated within the facility boundary"
+    role: "Foreground waste treatment"
+    quantitative_reference: "Wastewater received for treatment"
+process_inventory:
+  - id: seed_preparation
+    label: "Cottonseed receiving, cleaning, delinting, and dehulling"
+    inputs:
+      product:
+        - row_id: received_cottonseed
+          role: "Cottonseed received from the gin"
+          name: "Cottonseed, other"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5ec72013-512e-4bb6-a5e6-648551f35d9d"
+          property_unit: "Mass / kg"
+          description: "Record non-planting cottonseed crossing the mill gate, including receipt moisture and foreign matter."
+          amount:
+            expression: "Net received mass from calibrated weighbridge or scale records, adjusted only for separately documented rejected loads"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seed_preparation_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+        - row_id: seed_cleaning_electricity
+          role: "Electricity for seed preparation"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by conveyors, screens, aspirators, saw delinting, hullers, beaters, and dust-control equipment."
+          amount:
+            expression: "Metered or allocated electricity for seed preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seed_preparation_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cotton_linters
+          role: "Cotton linters recovered during delinting"
+          name: "Cotton linters"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6587eccc-106f-4941-be4a-afdbe46df8b5"
+          property_unit: "Mass / kg"
+          description: "Record marketable linters separated after seed receipt as a co-product."
+          amount:
+            expression: "Measured dry or as-produced linter mass with basis declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seed_preparation_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+        - row_id: cottonseed_hulls
+          role: "Cottonseed hulls recovered during dehulling"
+          name: "Cottonseed hulls — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hulls leaving seed preparation for sale, feed use, energy use, or another declared destination."
+          amount:
+            expression: "Measured hull mass by destination and moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seed_preparation_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+      waste:
+        - row_id: seed_cleaning_rejects
+          role: "Foreign matter removed during cleaning"
+          name: "Cottonseed-cleaning rejects — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sticks, stones, metal, dirt, and non-marketable seed-cleaning rejects as one site waste stream only when managed together."
+          amount:
+            expression: "Measured reject mass sent to the declared treatment or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seed_preparation_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+            ranges: []
+      elementary:
+        - row_id: seed_dust_air
+          role: "Dust released to air from seed handling"
+          name: "Particulate matter, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated particulate matter released after installed controls from receiving, cleaning, delinting, and dehulling."
+          amount:
+            expression: "Stack measurements plus documented fugitive estimate for the seed-preparation process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+  - id: conditioning_flaking
+    label: "Conditioning, flaking, and cooking"
+    inputs:
+      product:
+        - row_id: prepared_cottonseed_meats
+          role: "Prepared cottonseed meats"
+          name: "Prepared cottonseed meats — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal kernel stream from seed preparation; reconcile this transfer without adding upstream burden twice."
+          amount:
+            expression: "Internal transfer mass from dehulling to conditioning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Electricity for conditioning and flaking"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by flaking rolls, cookers, expanders when present, drives, and controls."
+          amount:
+            expression: "Metered or allocated electricity for conditioning, flaking, cooking, and declared expansion"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: conditioning_process_water
+          role: "Process water added during conditioning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water directly added to control moisture during conditioning or cooking."
+          amount:
+            expression: "Metered or batch-record water addition, excluding recirculated condensate recorded separately"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+        - row_id: conditioning_steam
+          role: "Steam injected during conditioning"
+          name: "Steam — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or internally transferred steam only when steam conditioning or cooking is used."
+          amount:
+            expression: "Metered steam delivered to the conditioner or cooker; mark not applicable when no steam is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_cottonseed_meats
+          role: "Conditioned and flaked cottonseed meats"
+          name: "Conditioned cottonseed meats — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal prepared material sent to the declared pressing or direct-solvent route."
+          amount:
+            expression: "Internal transfer mass to pressing or extraction, including declared expander treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+                - zia-cottonseed-oil-review-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: mechanical_pressing
+    label: "Mechanical pressing"
+    inputs:
+      product:
+        - row_id: press_feed
+          role: "Conditioned meats sent to the screw press"
+          name: "Conditioned cottonseed meats — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal press feed only for mechanical-only or prepress-solvent routes."
+          amount:
+            expression: "Internal transfer mass entering the press"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pressing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+                - zia-cottonseed-oil-review-2021
+            ranges: []
+        - row_id: pressing_electricity
+          role: "Electricity for mechanical pressing"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by screw presses, feeders, pumps, and local controls."
+          amount:
+            expression: "Metered or equipment-allocated electricity for pressing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pressing_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pressed_crude_oil
+          role: "Pressed crude cottonseed oil"
+          name: "Pressed crude cottonseed oil — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the unclarified internal oil stream sent to crude-oil clarification."
+          amount:
+            expression: "Measured oil mass leaving the press and associated screening equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pressing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+        - row_id: pressed_cottonseed_cake
+          role: "Pressed cottonseed cake"
+          name: "Pressed cottonseed cake — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record press cake as a marketable co-product for a mechanical-only route or as internal extractor feed for a prepress-solvent route; do not count the same mass in both roles."
+          amount:
+            expression: "Measured press-cake mass split by destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pressing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+                - zia-cottonseed-oil-review-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: hexane_extraction
+    label: "Hexane extraction"
+    inputs:
+      product:
+        - row_id: direct_extraction_feed
+          role: "Cottonseed flakes for direct solvent extraction"
+          name: "Conditioned cottonseed meats — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conditioned flakes or expanded material only for a direct/expander-solvent route."
+          amount:
+            expression: "Internal transfer mass entering the extractor from conditioning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+                - zia-cottonseed-oil-review-2021
+            ranges: []
+        - row_id: prepress_extraction_feed
+          role: "Press cake for prepress-solvent extraction"
+          name: "Pressed cottonseed cake — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record press cake entering the extractor only for a prepress-solvent route."
+          amount:
+            expression: "Internal transfer mass entering the extractor from pressing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+                - zia-cottonseed-oil-review-2021
+            ranges: []
+        - row_id: extraction_hexane
+          role: "Make-up n-hexane"
+          name: "n-Hexane — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased n-hexane entering the closed solvent circuit; recovered solvent is an internal loop, not a new external input."
+          amount:
+            expression: "Purchases plus opening inventory minus closing inventory, reconciled with recovered solvent and losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: extraction_electricity
+          role: "Electricity for extraction and solvent circulation"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by the extractor, pumps, conveyors, and solvent-recovery auxiliaries assigned to extraction."
+          amount:
+            expression: "Metered or equipment-allocated electricity for the extraction process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cottonseed_oil_miscella
+          role: "Cottonseed oil miscella"
+          name: "Cottonseed oil miscella — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal oil-and-hexane solution transferred to evaporation and stripping."
+          amount:
+            expression: "Measured or mass-balance-calculated miscella transfer mass and composition"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+            ranges: []
+        - row_id: solvent_laden_cottonseed_meal
+          role: "Solvent-laden cottonseed meal"
+          name: "Solvent-laden cottonseed meal — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record extracted solids transferred to the desolventizer-toaster, with retained-solvent and moisture basis declared."
+          amount:
+            expression: "Measured extractor solids output and sampled solvent content"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: extraction_hexane_air
+          role: "Hexane/VOC released during extraction"
+          name: "n-Hexane, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record extractor vents and documented fugitive losses assigned to extraction."
+          amount:
+            expression: "Measured vent emissions plus equipment-leak estimate, reconciled to the site solvent balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+  - id: desolventizing_stripping
+    label: "Meal desolventizing and oil stripping"
+    inputs:
+      product:
+        - row_id: miscella_to_stripping
+          role: "Miscella sent to evaporation and stripping"
+          name: "Cottonseed oil miscella — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal miscella transferred from extraction."
+          amount:
+            expression: "Reconciled internal transfer mass and oil/hexane composition"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_desolventizing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+            ranges: []
+        - row_id: meal_to_desolventizing
+          role: "Solvent-laden meal sent to desolventizing"
+          name: "Solvent-laden cottonseed meal — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal meal transfer from extraction."
+          amount:
+            expression: "Reconciled internal transfer mass and retained-solvent content"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_desolventizing_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: desolventizing_steam
+          role: "Steam for desolventizing and stripping"
+          name: "Steam — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record direct and indirect steam used by evaporators, stripper, and desolventizer-toaster."
+          amount:
+            expression: "Metered steam delivered to desolventizing and stripping"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_desolventizing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: desolventizing_electricity
+          role: "Electricity for desolventizing and solvent recovery"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for evaporators, vacuum equipment, condensers, pumps, meal dryers, and coolers assigned to this process."
+          amount:
+            expression: "Metered or equipment-allocated electricity for desolventizing, stripping, drying, cooling, and solvent recovery"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_desolventizing_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: extracted_crude_oil
+          role: "Extracted crude cottonseed oil"
+          name: "Extracted crude cottonseed oil — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record desolventized internal crude oil transferred to clarification."
+          amount:
+            expression: "Measured stripped crude-oil mass at transfer"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_desolventizing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+            ranges: []
+        - row_id: cottonseed_meal
+          role: "Desolventized cottonseed meal"
+          name: "Cottonseed Meal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a5d3b1ef-9fde-4393-af7b-5ec33451551d"
+          property_unit: "Mass / kg"
+          description: "Record meal leaving drying and cooling as a co-product, with moisture and residual-solvent basis declared."
+          amount:
+            expression: "Measured meal mass by sale or use destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_desolventizing_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+      waste:
+        - row_id: solvent_condensate_wastewater
+          role: "Solvent-bearing condensate wastewater"
+          name: "Solvent-bearing wastewater — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aqueous condensate leaving phase separation or distillation for treatment."
+          amount:
+            expression: "Metered wastewater mass with measured hexane content"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      elementary:
+        - row_id: desolventizing_hexane_air
+          role: "Hexane/VOC released during desolventizing and recovery"
+          name: "n-Hexane, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record main-vent, meal-dryer, meal-cooler, storage, and fugitive hexane losses assigned to this process without double counting extraction losses."
+          amount:
+            expression: "Measured and calculated emissions reconciled to the site solvent balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+  - id: crude_oil_clarification
+    label: "Crude-oil clarification and storage transfer"
+    inputs:
+      product:
+        - row_id: pressed_oil_to_clarification
+          role: "Pressed crude-oil transfer"
+          name: "Pressed crude cottonseed oil — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pressed oil entering clarification only for mechanical-only or prepress-solvent routes."
+          amount:
+            expression: "Reconciled internal transfer mass from pressing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+        - row_id: extracted_oil_to_clarification
+          role: "Extracted crude-oil transfer"
+          name: "Extracted crude cottonseed oil — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record stripped oil entering clarification only for solvent routes."
+          amount:
+            expression: "Reconciled internal transfer mass from desolventizing and stripping"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+            ranges: []
+        - row_id: clarification_electricity
+          role: "Electricity for clarification and transfer"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for screens, settling or centrifugation, filtration, pumps, and storage transfer."
+          amount:
+            expression: "Metered or equipment-allocated electricity for crude-oil clarification and transfer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: clarification_process_water
+          role: "Process water for clarification equipment"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water that contacts oil or clarification equipment, excluding general sanitation water recorded separately."
+          amount:
+            expression: "Metered water entering clarification equipment or oil-contact washing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: alkaline_cleaning_agent
+          role: "Alkaline cleaning agent"
+          name: "Alkaline cleaning agent — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual purchased alkaline cleaning formulation used on oil-contact or process equipment; do not include refining alkali under this row."
+          amount:
+            expression: "Issue or purchase records allocated to the crude-oil production line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_cottonseed_oil_reference
+          role: "Clarified crude cottonseed oil"
+          name: "Cottonseed oil, crude — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the reference product after clarification and before any refining step."
+          amount:
+            expression: "1 kg reference output; reporting-period dispatchable output is normalized to this amount"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: cottonseed_oil_foots
+          role: "Cottonseed oil foots from clarification"
+          name: "Cottonseed oil foots — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separated oil-bearing fines or foots by actual destination. If a site calls this stream soapstock, disclose that local name; do not merge it with alkali-refining soapstock outside this PCR boundary."
+          amount:
+            expression: "Measured foots mass sent back to meal, recovered, sold, treated, or disposed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-background-1995
+            ranges: []
+      waste:
+        - row_id: clarification_wastewater
+          role: "Oily wastewater from clarification and cleaning"
+          name: "Oily wastewater — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving clarification and equipment cleaning for on-site or external treatment."
+          amount:
+            expression: "Metered discharge mass with destination and oil/solids content documented"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      elementary:
+        []
+  - id: onsite_heat_generation
+    label: "On-site steam or process-heat generation"
+    inputs:
+      product:
+        - row_id: natural_gas_fuel
+          role: "Natural gas burned on site"
+          name: "Natural gas — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas only when used in an on-site boiler or direct heater within the foreground boundary."
+          amount:
+            expression: "Metered fuel quantity converted with documented lower heating value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_generation_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: fuel_oil_fuel
+          role: "Fuel oil burned on site"
+          name: "Fuel oil — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fuel oil as a separate alternative fuel when actually burned; do not combine it with natural gas."
+          amount:
+            expression: "Tank or purchase records corrected for opening and closing stock"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_generation_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: boiler_feed_water
+          role: "Boiler feed water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record externally supplied make-up water entering on-site steam generation."
+          amount:
+            expression: "Metered boiler make-up water net of returned condensate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_generation_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: heat_generation_electricity
+          role: "Electricity for on-site heat generation"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record boiler-house electricity for pumps, fans, controls, and fuel handling."
+          amount:
+            expression: "Metered or equipment-allocated boiler-house electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_generation_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: generated_steam
+          role: "Steam generated on site"
+          name: "Steam — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steam transferred internally to conditioning, desolventizing, stripping, or other declared users."
+          amount:
+            expression: "Metered generated steam net of blowdown and distribution losses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_generation_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_carbon_dioxide_air
+          role: "Fossil carbon dioxide from fuel combustion"
+          name: "Carbon dioxide, fossil, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide released from on-site fuel combustion."
+          amount:
+            expression: "Direct measurement or fuel-specific calculation from collected fuel use and documented carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: carbon_monoxide_air
+          role: "Carbon monoxide from fuel combustion"
+          name: "Carbon monoxide, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record carbon monoxide released from the actual boiler or direct heater."
+          amount:
+            expression: "Measured emission or calculation from collected fuel use and a documented equipment-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: nitrogen_oxides_air
+          role: "Nitrogen oxides from fuel combustion"
+          name: "Nitrogen oxides, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen oxides released from the actual boiler or direct heater."
+          amount:
+            expression: "Measured emission or calculation from collected fuel use and a documented equipment-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: sulfur_dioxide_air
+          role: "Sulfur dioxide from fuel combustion"
+          name: "Sulfur dioxide, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide from the actual fuel sulfur content; mark not applicable only with evidence that no sulfur-bearing fuel is burned."
+          amount:
+            expression: "Measured emission or sulfur balance from collected fuel quantity and sulfur content"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: combustion_particulate_air
+          role: "Particulate matter from fuel combustion"
+          name: "Particulate matter, to air — Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter emitted after controls from the on-site boiler or direct heater."
+          amount:
+            expression: "Measured stack emission or calculation from collected fuel use and a documented equipment-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_electricity
+          role: "Electricity for wastewater treatment"
+          name: "Electricity, medium voltage — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by on-site equalisation, separation, aeration, pumping, and sludge handling."
+          amount:
+            expression: "Metered or equipment-allocated wastewater-treatment electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      waste:
+        - row_id: solvent_wastewater_to_treatment
+          role: "Solvent-bearing wastewater received for treatment"
+          name: "Solvent-bearing wastewater — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the internal wastewater transfer from solvent recovery when that route applies."
+          amount:
+            expression: "Reconciled internal transfer mass and pollutant load"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - us-epa-ap42-vegetable-oil-processing-1995
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: oily_wastewater_to_treatment
+          role: "Oily wastewater received for treatment"
+          name: "Oily wastewater — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the internal wastewater transfer from clarification and cleaning."
+          amount:
+            expression: "Reconciled internal transfer mass and pollutant load"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treated_wastewater
+          role: "Treated industrial wastewater"
+          name: "Treated industrial wastewater — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treated effluent leaving the foreground boundary, with receiving destination and monitored pollutant loads."
+          amount:
+            expression: "Metered effluent mass or volume with density basis and pollutant concentrations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Industrial wastewater-treatment sludge"
+          name: "Industrial wastewater-treatment sludge — Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dewatered or wet sludge leaving treatment, with solids basis and destination declared."
+          amount:
+            expression: "Measured sludge mass with dry-solids fraction and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude cottonseed oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-bat-food-drink-milk-2019
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "route_and_unit_processes"
+    rule: "First subdivide seed preparation, conditioning, extraction, clarification, utilities, and treatment using meters, batch records, equipment operating time, or another documented causal key. Do not allocate burdens from route steps that are not operated."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_2
+    applies_to: "residual_common_burdens"
+    rule: "For the attributional baseline, after subdivision allocate residual common foreground burdens by dry mass among crude cottonseed oil and marketable cotton linters, hulls, press cake, and meal leaving the system. Waste streams receive no co-product share. Record moisture conversions and all allocation factors."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_3
+    applies_to: "system_expansion_alternative"
+    rule: "System expansion may replace the mass-allocation baseline only when the study goal requires it and a transparent, quality-matched displaced-product model exists for every credited co-product. Report the substituted product, substitution ratio, geography, quality adjustment, and sensitivity result; do not mix system expansion and allocation for the same burden."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_4
+    applies_to: "foots_and_internal_recycling"
+    rule: "Treat foots returned to meal and recovered hexane returned to extraction as internal loops. Allocate or credit only net external outputs, and disclose any foots sold or sent to waste treatment."
+    source_ids:
+      - us-epa-ap42-vegetable-oil-background-1995
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_seed_preparation_records
+      process_id: "seed_preparation"
+      flow_role: "cottonseed, electricity, linters, hulls, rejects"
+      record_type: "weighbridge, scale, meter, production log"
+      raw_fields: "receipt mass; moisture; foreign matter; electricity; linter mass; hull mass; reject mass"
+      collection_method: "calibrated instruments and reconciled production records"
+      unit: "kg; kWh"
+      frequency: "each load or shift, aggregated monthly"
+      temporal_coverage: "representative continuous campaign or at least 12 months"
+      site_scope: "all seed-preparation equipment serving the product"
+      aggregation_rule: "sum external flows and reconcile prepared-kernel transfer by mass"
+      quality_evidence: "calibration certificates; weigh tickets; meter mapping; reconciliation"
+    - protocol_id: cp_conditioning_records
+      process_id: "conditioning_flaking"
+      flow_role: "meats, water, steam, electricity"
+      record_type: "transfer scale, flowmeter, steam meter, electricity meter, batch log"
+      raw_fields: "feed and output mass; moisture; water; steam; electricity; expander status"
+      collection_method: "direct metering or documented equipment allocation"
+      unit: "kg; kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "same reporting period as reference product"
+      site_scope: "all conditioning, flaking, cooking, and expansion equipment"
+      aggregation_rule: "sum by declared route and reconcile internal transfers"
+      quality_evidence: "meter calibration; operating log; moisture tests"
+    - protocol_id: cp_pressing_records
+      process_id: "mechanical_pressing"
+      flow_role: "press feed, electricity, oil, cake"
+      record_type: "scale, electricity meter, press log"
+      raw_fields: "feed mass; electricity; pressed oil; cake mass; cake destination"
+      collection_method: "direct measurement or documented equipment allocation"
+      unit: "kg; kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "route operating period"
+      site_scope: "all presses serving the declared route"
+      aggregation_rule: "aggregate only periods when pressing operates"
+      quality_evidence: "scale calibration; press log; mass balance"
+    - protocol_id: cp_extraction_records
+      process_id: "hexane_extraction"
+      flow_role: "extractor feeds, electricity, miscella, solvent-laden meal"
+      record_type: "transfer measurement, electricity meter, composition sample"
+      raw_fields: "feed mass by route; electricity; miscella mass and composition; meal mass and solvent content"
+      collection_method: "direct measurement and laboratory sampling"
+      unit: "kg; kWh; mass fraction"
+      frequency: "shift or batch"
+      temporal_coverage: "solvent-route operating period"
+      site_scope: "extractor and assigned auxiliaries"
+      aggregation_rule: "reconcile oil, solids, water, and solvent transfers"
+      quality_evidence: "meter calibration; laboratory methods; solvent balance"
+    - protocol_id: cp_desolventizing_records
+      process_id: "desolventizing_stripping"
+      flow_role: "miscella, meal, steam, electricity, crude oil, meal output"
+      record_type: "transfer scale, steam and electricity meters, lab sample"
+      raw_fields: "internal inputs; steam; electricity; crude oil; meal; moisture; residual solvent"
+      collection_method: "direct measurement and laboratory sampling"
+      unit: "kg; kWh; mass fraction"
+      frequency: "shift or batch"
+      temporal_coverage: "solvent-route operating period"
+      site_scope: "evaporators, stripper, desolventizer-toaster, dryer, cooler, condensers"
+      aggregation_rule: "aggregate route-specific operation and reconcile internal transfers"
+      quality_evidence: "calibration; lab QA; production balance"
+    - protocol_id: cp_solvent_balance_records
+      process_id: "hexane_extraction_desolventizing_stripping"
+      flow_role: "make-up hexane and air loss"
+      record_type: "tank gauge, purchases, flowmeter, stack test, leak survey"
+      raw_fields: "opening stock; purchases; closing stock; recovered hexane; retained solvent; wastewater solvent; vent emissions; fugitive estimate"
+      collection_method: "site solvent mass balance supported by measurements"
+      unit: "kg"
+      frequency: "daily or monthly balance; annual reconciliation"
+      temporal_coverage: "full solvent-route reporting period"
+      site_scope: "all solvent storage and solvent-using/recovery equipment"
+      aggregation_rule: "purchases plus opening stock minus closing stock minus retained/recovered transfers equals loss, with uncertainty disclosed"
+      quality_evidence: "tank calibration; purchase records; stack test; leak survey; closure error"
+    - protocol_id: cp_clarification_records
+      process_id: "crude_oil_clarification"
+      flow_role: "oil transfers, reference product, electricity, water, cleaning agent, foots"
+      record_type: "tank or scale records, meters, issue logs, lab tests"
+      raw_fields: "input oil; dispatchable crude oil; electricity; water; cleaning agent; foots; moisture; insoluble impurities; residual solvent"
+      collection_method: "direct measurement and representative sampling"
+      unit: "kg; kWh; mass fraction"
+      frequency: "batch or shift"
+      temporal_coverage: "full product reporting period"
+      site_scope: "clarification, filtration, tanks, and assigned cleaning"
+      aggregation_rule: "reconcile incoming oil to crude oil, foots, wastewater, and stock change"
+      quality_evidence: "tank calibration; laboratory QA; cleaning issue records; mass balance"
+    - protocol_id: cp_heat_generation_records
+      process_id: "onsite_heat_generation"
+      flow_role: "fuels, feed water, electricity, steam"
+      record_type: "fuel meter or tank, invoices, water and electricity meters, steam meter"
+      raw_fields: "natural gas; fuel oil; lower heating value; water; electricity; steam; condensate return; blowdown"
+      collection_method: "direct measurement and stock reconciliation"
+      unit: "MJ; kg; kWh"
+      frequency: "daily or monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "on-site boilers and direct heaters serving foreground production"
+      aggregation_rule: "allocate only after metered subdivision where feasible"
+      quality_evidence: "meter calibration; fuel certificates; boiler log; steam balance"
+    - protocol_id: cp_combustion_emission_records
+      process_id: "onsite_heat_generation"
+      flow_role: "combustion emissions"
+      record_type: "stack measurements or fuel-specific calculation"
+      raw_fields: "fuel quantity; carbon and sulfur content; stack concentration and flow; operating hours; emission factors"
+      collection_method: "direct monitoring or documented calculation from collected activity data"
+      unit: "kg"
+      frequency: "permit or monitoring frequency and annual aggregation"
+      temporal_coverage: "full reporting period"
+      site_scope: "each boiler or direct heater in scope"
+      aggregation_rule: "sum measured/calculated emissions without double counting"
+      quality_evidence: "stack-test report; fuel analysis; calculation workbook"
+    - protocol_id: cp_wastewater_records
+      process_id: "desolventizing_stripping_crude_oil_clarification"
+      flow_role: "wastewater"
+      record_type: "flowmeter, tank record, laboratory analysis"
+      raw_fields: "flow; oil and grease; suspended solids; hexane where applicable; destination"
+      collection_method: "continuous or batch flow measurement and representative sampling"
+      unit: "kg or m3; concentration"
+      frequency: "daily or batch"
+      temporal_coverage: "full operating period"
+      site_scope: "all in-scope wastewater sources"
+      aggregation_rule: "aggregate mass and pollutant loads by source and destination"
+      quality_evidence: "flowmeter calibration; chain of custody; laboratory QA"
+    - protocol_id: cp_wastewater_treatment_records
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "treated effluent, electricity, sludge"
+      record_type: "influent/effluent meters, electricity meter, sludge scale, lab tests"
+      raw_fields: "influent; effluent; electricity; sludge mass; dry solids; pollutant concentrations; destination"
+      collection_method: "direct measurement and laboratory analysis"
+      unit: "kg; m3; kWh; concentration"
+      frequency: "daily, batch, or permit frequency"
+      temporal_coverage: "full treatment operating period"
+      site_scope: "on-site wastewater-treatment plant"
+      aggregation_rule: "reconcile influent, effluent, sludge, evaporation, and stock change"
+      quality_evidence: "calibration; permit reports; lab QA; treatment balance"
+    - protocol_id: cp_air_emission_records
+      process_id: "seed_preparation"
+      flow_role: "process dust"
+      record_type: "stack test, bag-filter/cyclone monitoring, fugitive survey"
+      raw_fields: "concentration; gas flow; operating time; control status; fugitive estimate"
+      collection_method: "direct monitoring and documented calculation"
+      unit: "kg"
+      frequency: "monitoring frequency and annual aggregation"
+      temporal_coverage: "full operating period"
+      site_scope: "receiving, cleaning, delinting, dehulling, and meal handling assigned to this PCR"
+      aggregation_rule: "sum controlled and fugitive emissions by source"
+      quality_evidence: "stack-test report; control inspection; calculation workbook"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "all external inventory rows"
+      rule: "reporting-period row amount / reporting-period clarified crude cottonseed oil mass"
+      inputs:
+        - "collected row amount"
+        - "reference product mass"
+      output: "amount per 1 kg crude cottonseed oil"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_internal_mass_balance
+      applies_to: "every unit process"
+      rule: "opening stock + inputs = closing stock + products + co-products + wastes + measured releases + reported unaccounted difference"
+      inputs:
+        - transfer
+        - stock
+        - product
+        - waste
+        - "and emission records"
+      output: "process mass-balance closure and discrepancy"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_hexane_loss
+      applies_to: "solvent route"
+      rule: "opening hexane + purchases - closing hexane - net recovered inventory - quantified solvent retained in products/wastewater = total hexane loss; partition measured sources and report the residual as fugitive/unresolved"
+      inputs:
+        - "solvent records"
+        - samples
+        - "vent data"
+      output: "hexane make-up and loss per reference flow"
+      source_ids:
+        - us-epa-ap42-vegetable-oil-processing-1995
+        - eu-bat-food-drink-milk-2019
+    - id: calc_fuel_energy
+      applies_to: "on-site heat generation"
+      rule: "measured fuel quantity × documented lower heating value"
+      inputs:
+        - "fuel quantity"
+        - "lower heating value"
+      output: "fuel energy in MJ per reference flow"
+      source_ids:
+        - eu-bat-food-drink-milk-2019
+    - id: calc_allocation_mass
+      applies_to: "residual common burdens"
+      rule: "burden × dry mass of selected marketable output / total dry mass of all selected marketable outputs"
+      inputs:
+        - "common burden"
+        - "output wet masses"
+        - "moisture fractions"
+      output: "allocated burden and allocation factor"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and route"
+      requirement: "Demonstrate that the output is crude cottonseed oil rather than refined oil and identify the actual extraction route and solvent configuration."
+      evidence: "product specification or dispatch record; process flow diagram; route declaration"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Use one consistent reporting period that covers representative operation, shutdowns, start-ups, route changes, and seasonal campaigns; disclose exclusions."
+      evidence: "dated logs; production calendar; reporting-period reconciliation"
+    - id: dq_completeness
+      applies_to: "mass, energy, solvent, water, co-products, wastes, and emissions"
+      requirement: "Account for every listed important flow or document why its atomic row is not applicable to the declared technology."
+      evidence: "completeness matrix; signed not-applicable justification; mass and utility balances"
+    - id: dq_measurement
+      applies_to: "meters, scales, tanks, and laboratory results"
+      requirement: "Retain instrument identity, calibration or verification status, sampling method, detection limits, and unit conversions."
+      evidence: "calibration records; laboratory QA/QC; calculation workbook"
+    - id: dq_representativeness
+      applies_to: "upstream and secondary datasets"
+      requirement: "Report technological, geographical, and temporal representativeness and identify all proxies, especially cottonseed supply, electricity, fuels, hexane, and waste treatment."
+      evidence: "dataset metadata; proxy register; data-quality assessment"
+    - id: dq_allocation
+      applies_to: "co-products"
+      requirement: "Retain unallocated totals, subdivision keys, dry-mass conversions, allocation factors, destinations, and any system-expansion sensitivity model."
+      evidence: "allocation workbook; sales or dispatch records; moisture tests; sensitivity results"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "reference_flow"
+    rule: "Fail validation if the reference output is refined cottonseed oil, if the reference product UUID is represented by the known refined-oil UUID, or if the output is not measured in kg on a declared mass basis."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validation_rule_2
+    applies_to: "route_consistency"
+    rule: "Fail validation if mechanical-only data include hexane extraction/desolventizing burdens, or if a declared solvent route omits hexane make-up, recovery, wastewater, and air-loss accounting."
+    source_ids:
+      - us-epa-ap42-vegetable-oil-processing-1995
+      - eu-bat-food-drink-milk-2019
+  - rule_id: validation_rule_3
+    applies_to: "inventory_completeness"
+    rule: "Require separate atomic rows for cottonseed, electricity, steam, each fuel, process water, hexane, cleaning agent, linters, hulls, meal, foots, wastewater, sludge, hexane/VOC, dust, and each reported combustion emission when applicable."
+    source_ids:
+      - eu-pef-method-2021
+      - us-epa-ap42-vegetable-oil-processing-1995
+  - rule_id: validation_rule_4
+    applies_to: "balances"
+    rule: "Require disclosed closure for process mass balances, the site solvent balance on solvent routes, water/wastewater balance, and fuel-to-energy calculation. Flag unexplained discrepancies rather than forcing them into the reference product."
+    source_ids:
+      - us-epa-ap42-vegetable-oil-processing-1995
+      - eu-bat-food-drink-milk-2019
+  - rule_id: validation_rule_5
+    applies_to: "allocation"
+    rule: "Require one declared attributional mass-allocation result after subdivision, or one fully documented system-expansion alternative; fail if burdens are left unassigned or the same co-product receives both allocation and substitution credit."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_rule_6
+    applies_to: "quantitative_ranges"
+    rule: "Treat all amount ranges as unresolved for this candidate PCR until at least two independent original sources with compatible cottonseed-oil route, boundary, unit, and normalization basis are verified; do not infer a range from a single point or from soybean, rapeseed, or sunflower BAT values."
+    source_ids:
+      - us-epa-ap42-vegetable-oil-background-1995
+      - eu-bat-food-drink-milk-2019
+published_dataset_profile:
+  dataset_role: "Foreground unit-process data package for crude cottonseed oil production, publishable after review as a secondary_dataset or background_dataset"
+  downstream_use: "Product flow, process dataset, and lifecyclemodel construction for systems requiring crude cottonseed oil at the mill gate"
+  allowed_use: "Attributional modelling with declared mass allocation; system-expansion scenarios when fully documented; route-specific benchmarking that does not imply unsupported quantitative ranges"
+  excluded_use: "Refined cottonseed oil; generic vegetable oil without identity disclosure; comparative assertions across routes without aligned boundaries and data quality; automatic use of unresolved UUIDs or ranges"
+  required_metadata: "Geography; reporting period; cottonseed receipt condition; extraction route; technology; product moisture and impurities; residual solvent status; process coverage; energy supply; solvent recovery; wastewater boundary; co-product destinations; allocation method; upstream dataset identities"
+  required_quality_disclosure: "Foreground coverage; measurement and calculation split; mass/solvent/water closure; missing-flow justifications; proxy list; allocation factors; uncertainty and detection limits; unresolved reference-product and inventory UUIDs; absence of source-backed ranges"
+  update_trigger: "New exact public Tiangong crude-cottonseed-oil flow; material route or equipment change; revised official BAT/PEF method; two compatible quantitative sources enabling a range; changed solvent, energy, co-product, or treatment practice; review finding"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 21681, https://unstats.un.org/unsd/classifications/Meetings/UNCEISC2023/8-3_Background3_CPC3_Structure.pdf (accessed 2026-08-24)"
+    used_for: "Official product-category identity and exclusion of refined cottonseed oil"
+  - id: "us-epa-ap42-vegetable-oil-background-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, Background Report, AP-42 Section 9.11.1, Vegetable Oil Processing, November 1995, https://www.epa.gov/sites/default/files/2020-10/documents/b9s11-1.pdf (accessed 2026-08-24)"
+    used_for: "Cottonseed-specific cleaning, delinting, dehulling, conditioning, flaking, pressing, prepress-solvent extraction, meal, and foots process decomposition; evidence limitations"
+  - id: "us-epa-ap42-vegetable-oil-processing-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 9.11.1, Vegetable Oil Processing, November 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c9s11-1.pdf (accessed 2026-08-24)"
+    used_for: "Solvent extraction, evaporation, stripping, desolventizing, recovery, wastewater, dust, VOC/hexane sources, and site solvent-balance method"
+  - id: "eu-bat-food-drink-milk-2019"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, especially oilseed processing and vegetable oil refining, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj/eng (accessed 2026-08-24)"
+    used_for: "Energy and water monitoring, seed/meal dust, solvent-recovery configuration, hexane-loss accounting, and wastewater management; non-cottonseed numeric BAT levels are not used as ranges"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated English text, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (accessed 2026-08-24)"
+    used_for: "Company-specific foreground data, completeness, data quality, multifunctionality hierarchy, subdivision, allocation, and system expansion"
+  - id: "zia-cottonseed-oil-review-2021"
+    type: "literature"
+    reference: "Zia, M. A. et al., “Physicochemical features, functional characteristics, and health benefits of cottonseed oil: a review,” Brazilian Journal of Biology 82, DOI: 10.1590/1519-6984.243511, https://www.scielo.br/j/bjb/a/yQYp7FmKD5bbJzMqxm3Zs6x/?format=pdf&lang=en (accessed 2026-08-24)"
+    used_for: "Corroboration of mechanical screw pressing, prepress-solvent extraction, and expander-solvent route alternatives only; not used for LCA ranges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a995f6b8224a663aeede592c00c8cfdd324b61d6c29f6a1007a1ca06d1805947"
+  generated_content_sha256: "sha256:2b8fa823142c8e755868736f652553d298b97d37e06b5bd2b173584365527762"

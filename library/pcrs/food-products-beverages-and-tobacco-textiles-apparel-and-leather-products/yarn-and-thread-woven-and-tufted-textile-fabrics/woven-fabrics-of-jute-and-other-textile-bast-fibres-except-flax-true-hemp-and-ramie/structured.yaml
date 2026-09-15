@@ -1,10 +1,673 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26570"
-  title: "Woven fabrics of jute and other textile bast fibres (except flax, true hemp and ramie)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-jute-and-other-textile-bast-fibres-except-flax-true-hemp-and-ramie"
+  classification_refs: "CPC 3.0: 26570, exact"
+  covered_products: "Woven fabrics whose declared textile fibre is jute or another bast fibre within CPC 26570, excluding the named fibres"
+  excluded_products: "Flax, true-hemp, and ramie fabrics; cotton or man-made-fibre fabrics; knitted, crocheted, nonwoven, tufted, and special fabrics; yarn and finished textile articles"
+  representative_product: "Woven jute or other in-scope bast-fibre fabric at the fabric-mill gate"
+  production_route: "Spun yarn receipt; warping and optional sizing; weaving; route-specific pretreatment or finishing; inspection and packaging"
+  market_state: "Greige or finished fabric in rolls or another declared dispatch form, sold at the factory gate"
+functional_unit:
+  what: "Woven fabric of jute or another in-scope textile bast fibre, excluding flax, true hemp, and ramie"
+  how_much: "1 kg net fabric mass, excluding packaging"
+  how_well: "Conforming to the declared fibre composition, weave, areal density, width, finishing state, and quality grade"
+  how_long_or_cycle: "One production lot at the fabric-mill gate; no service-life duration is assigned"
+  reference_flow_link: "reference_woven_fabric_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_1
+      applies_to: "Foreground manufacturing"
+      rule: "Include yarn preparation, warping, sizing when applied, weaving, all on-site route-specific pretreatment or finishing, inspection, and dispatch packaging from yarn receipt to accepted fabric at the factory gate."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-2022-2508-textiles-bat
+    - rule_id: system_boundary_2
+      applies_to: "Purchased inputs"
+      rule: "Represent burdens before the mill gate with separate upstream datasets and do not duplicate them on internal intermediate fabric transfers."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: system_boundary_3
+      applies_to: "Conditional operations"
+      rule: "Include each wet, thermal, chemical, wastewater, and air-emission operation only when it occurred, and record a documented not-applicable decision otherwise."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-2022-2508-textiles-bat
+    - rule_id: system_boundary_4
+      applies_to: "Atomic inventory coverage"
+      rule: "Add every actual yarn, electricity supply, steam or heat supply, fuel, water supply, process chemical, packaging component, waste stream, and direct elementary emission as a separate atomic exchange; never combine unlike exchanges in one row."
+      source_ids:
+        - eu-2022-2508-textiles-bat
+boundary_abstraction:
+  declared_starting_condition: "Spun jute or other in-scope bast-fibre yarn received at the fabric-mill gate, with fibre identity, composition, yarn specification, supplier, and received mass declared"
+  starting_condition_role: "Purchased product input and start of foreground fabric manufacturing"
+  product_classification_scope: "CPC 3.0 code 26570 only; flax, true hemp, ramie, knitted, nonwoven, tufted, and special fabrics are excluded"
+  recursive_input_rule: "A same-category intermediate transferred between foreground processes is recorded as an internal product flow and carries no additional upstream fabric burden; purchased same-category fabric must use a separate upstream dataset and be disclosed"
+  upstream_dataset_requirement: "Use separate upstream datasets for yarn, electricity, steam or heat, water, chemicals, and packaging that cross the foreground boundary"
+  disclosure: "Declare whether sizing, desizing, washing, bleaching, dyeing, thermal treatment, or other finishing occurred; declare wastewater destination, packaging form, cut-offs, and any operation performed off-site"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Woven fabrics of jute and other textile bast fibres (except flax, true hemp and ramie)"
+    uuid: "97e92077-1caf-4f27-9d87-9b49e9d6a4e2"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "bast-fibre species"
+    - "fibre composition by mass"
+    - "yarn specification"
+    - weave
+    - "areal density"
+    - "fabric width"
+    - "greige or finished state"
+    - "pretreatment and finishing route"
+    - "moisture or conditioning state"
+    - "dispatch form"
+    - "production site and geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-based inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net fabric mass excluding tubes, film, labels, and other dispatch packaging; declare the moisture or conditioning state used for weighing."
+  - id: composition_basis
+    applies_to: "Fibre composition"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "mass %"
+    rule: "Report the mass percentage of each fibre in the woven fabric and demonstrate that flax, true hemp, and ramie are outside the claimed product scope."
+  - id: areal_density
+    applies_to: "Fabric specification"
+    required_property_ref:
+      name: "Mass per area"
+      uuid: ""
+    required_unit: "g/m2"
+    rule: "Record the tested or specification-based areal density and fabric width as qualifiers; do not replace the 1 kg reference amount with an area-based functional unit."
+  - id: lot_normalization
+    applies_to: "All foreground inventory quantities"
+    required_property_ref:
+      name: "Quantity appropriate to the atomic exchange"
+      uuid: ""
+    required_unit: "reported unit per 1 kg reference product"
+    rule: "Normalize each lot record by the accepted net mass of in-scope fabric from the same accounting period and retain the unnormalised source record."
+process_map:
+  - id: fabric_formation
+    name: "Yarn preparation and weaving"
+    inclusion: "required"
+    inclusion_condition: "Required for all in-scope woven fabric; sizing and sizing water are included only when used"
+    role: "Convert in-scope spun bast-fibre yarn into greige woven fabric"
+    quantitative_reference: "Mass of greige fabric leaving weaving"
+  - id: finishing_and_dispatch
+    name: "Route-specific finishing, inspection, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Inspection and dispatch are required; wet or thermal treatment inputs apply only when those operations occur"
+    role: "Produce accepted fabric in the declared market state and prepare it for dispatch"
+    quantitative_reference: "Accepted net mass of in-scope reference fabric"
+process_inventory:
+  - id: fabric_formation
+    label: "Yarn preparation and weaving"
+    inputs:
+      product:
+        - row_id: bast_fibre_yarn_input
+          role: "In-scope bast-fibre yarn"
+          name: "Jute and other in-scope textile bast-fibre yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Spun jute or other in-scope bast-fibre yarn enters the mill for warping and weaving. The record must identify the fibre species and exclude flax, true hemp, and ramie."
+          amount:
+            expression: "Supplier- and lot-recorded yarn mass issued to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_materials
+              source_ids:
+                - un-cpc-v3-26570
+            ranges: []
+        - row_id: grid_electricity_formation
+          role: "Grid electricity for fabric formation"
+          name: "Grid electricity supplied to the fabric-formation process"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered grid electricity supplies warping, sizing auxiliaries, loom drives, compressed air, humidification, and local extraction assigned to fabric formation."
+          amount:
+            expression: "Metered or invoice-reconciled electricity allocated to fabric formation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_energy
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: modified_starch_size
+          role: "Modified starch sizing agent"
+          name: "modified starch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "09797370-6632-42aa-9d77-e9d41ff82c75"
+          property_unit: "Mass / kg"
+          description: "Modified starch is recorded when it is applied to protect and lubricate warp yarn during weaving."
+          amount:
+            expression: "Supplier- and batch-recorded mass of modified starch charged to sizing"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_materials
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: process_water_sizing
+          role: "Process water for sizing"
+          name: "Process water supplied for sizing"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water is recorded separately when it is supplied to prepare or apply the sizing liquor."
+          amount:
+            expression: "Metered or batch-recorded water supplied to sizing"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_materials
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: greige_woven_fabric_output
+          role: "Greige woven jute fabric"
+          name: "Greige woven jute or other in-scope bast-fibre fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Greige woven fabric is the measured intermediate leaving fabric formation before any route-specific wet or thermal finishing."
+          amount:
+            expression: "Lot-recorded mass of greige fabric released from weaving"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_materials
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: jute_yarn_waste_output
+          role: "Jute yarn waste"
+          name: "Jute yarn waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Broken ends, loom waste, and other discarded in-scope yarn are recorded as one jute-yarn waste stream, separate from fabric offcuts."
+          amount:
+            expression: "Weighed or inventory-reconciled mass sent to the declared recovery or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_materials
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+      elementary:
+        []
+  - id: finishing_and_dispatch
+    label: "Route-specific finishing, inspection, and dispatch"
+    inputs:
+      product:
+        - row_id: greige_woven_fabric_input
+          role: "Greige woven jute fabric input"
+          name: "Greige woven jute or other in-scope bast-fibre fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The measured greige intermediate enters the route-specific finishing and dispatch process without an added upstream fabric burden when transferred internally."
+          amount:
+            expression: "Lot-recorded mass transferred from fabric formation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: process_water_finishing
+          role: "Process water for finishing"
+          name: "Process water supplied for textile finishing"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water is recorded when used for desizing, washing, bleaching, dyeing, rinsing, or equipment cleaning assigned to the product route."
+          amount:
+            expression: "Metered or batch-recorded water supplied to applicable finishing operations"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide input"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide is recorded when used in an applicable scouring, desizing, pH-control, or other declared finishing operation. The delivered concentration must be retained with the foreground record."
+          amount:
+            expression: "Supplier- and batch-recorded delivered mass with concentration declared"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: hydrogen_peroxide_solution_input
+          role: "Hydrogen peroxide solution input"
+          name: "Hydrogen peroxide solution used for textile bleaching"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Hydrogen peroxide solution is recorded only when chlorine-free bleaching with this chemical is performed; solution concentration is a mandatory foreground field."
+          amount:
+            expression: "Supplier- and batch-recorded delivered solution mass with concentration declared"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: grid_electricity_finishing
+          role: "Grid electricity for finishing and dispatch"
+          name: "Grid electricity supplied to finishing and dispatch"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered grid electricity supplies wet-processing equipment, drying or curing auxiliaries, inspection, winding, and packing assigned to this process."
+          amount:
+            expression: "Metered or invoice-reconciled electricity allocated to finishing and dispatch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: purchased_steam_finishing
+          role: "Purchased steam for finishing"
+          name: "Purchased steam supplied to textile finishing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam is recorded separately when it supplies washing, drying, curing, or other route-specific thermal duty."
+          amount:
+            expression: "Metered steam energy or supplier statement assigned to applicable finishing operations"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: paperboard_tube_input
+          role: "Paperboard tube input"
+          name: "Paperboard tube for a textile roll"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A paperboard tube is recorded when the accepted fabric is wound onto a tube for dispatch."
+          amount:
+            expression: "Purchasing or packing-record mass of paperboard tubes consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_film_input
+          role: "Polyethylene film input"
+          name: "Polyethylene film used for textile-roll packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyethylene film is recorded when used to wrap the fabric roll for dispatch."
+          amount:
+            expression: "Purchasing or packing-record mass of polyethylene film consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_woven_fabric_output
+          role: "Accepted reference woven fabric"
+          name: "Woven fabrics of jute and other textile bast fibres (except flax, true hemp and ramie)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "97e92077-1caf-4f27-9d87-9b49e9d6a4e2"
+          property_unit: "Mass / kg"
+          description: "Accepted in-scope woven fabric leaves the foreground boundary in the declared greige or finished state; packaging mass is excluded from the reference amount."
+          amount:
+            expression: "Weighed accepted net fabric mass released for dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_records
+              source_ids:
+                - un-cpc-v3-26570
+            ranges: []
+      waste:
+        - row_id: textile_wastewater_to_treatment
+          role: "Textile wastewater to treatment"
+          name: "Textile wastewater transferred to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Combined wastewater transferred to on-site or off-site treatment is recorded separately from any direct elementary discharge to water."
+          amount:
+            expression: "Metered wastewater volume assigned to the applicable product route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+        - row_id: jute_fabric_offcuts_output
+          role: "Jute fabric offcuts"
+          name: "Jute fabric offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected edges, samples, and cut pieces of in-scope fabric are recorded as a fabric-offcut waste stream, separate from yarn waste."
+          amount:
+            expression: "Weighed or inventory-reconciled offcut mass sent to the declared recovery or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_records
+              source_ids:
+                - eu-2022-2508-textiles-bat
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "Multi-process mill records"
+    rule: "Avoid allocation by metering, batch records, and process subdivision so that fabric formation and finishing burdens are assigned to the actual product route."
+    source_ids:
+      - iso-14044-2006
+      - eu-2022-2508-textiles-bat
+  - rule_id: allocation_rule_2
+    applies_to: "Rework and internal intermediate fabric"
+    rule: "Treat internal transfers and rework within the foreground boundary without a second upstream burden; disclose the returned mass and the processes repeated."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rule_3
+    applies_to: "Unavoidable shared burdens and co-products"
+    rule: "When subdivision cannot resolve shared burdens, apply and document a physical relationship that reflects causality; use mass only when it is representative, and use economic allocation only when no defensible physical relationship exists."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fabric_formation_materials
+      process_id: "fabric_formation"
+      flow_role: "yarn, sizing agent, sizing water, greige output, and yarn waste"
+      record_type: "weighbridge, warehouse issue, batch, meter, and waste-transfer records"
+      raw_fields: "lot_id; flow_name; supplier; fibre_identity; quantity; unit; timestamp; destination"
+      collection_method: "Reconcile issued inputs, metered water, greige output, stock change, and waste by production lot"
+      unit: "kg or m3 as recorded"
+      frequency: "Each lot, aggregated monthly"
+      temporal_coverage: "At least one representative production year or the full declared period"
+      site_scope: "All fabric-formation equipment serving the declared product"
+      aggregation_rule: "Sum by atomic flow and lot, then normalize to accepted reference-fabric mass"
+      quality_evidence: "Calibrated scale or meter evidence; supplier documents; stock reconciliation; waste receipts"
+    - protocol_id: cp_fabric_formation_energy
+      process_id: "fabric_formation"
+      flow_role: "grid electricity"
+      record_type: "submeter and invoice records"
+      raw_fields: "meter_id; opening_reading; closing_reading; period; production_line; allocation_key"
+      collection_method: "Prefer direct submetering; reconcile to site invoices and document any allocation"
+      unit: "kWh"
+      frequency: "Meter interval or monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Fabric-formation equipment and assigned auxiliaries"
+      aggregation_rule: "Sum direct readings or documented allocation for the process"
+      quality_evidence: "Meter calibration, invoice reconciliation, and allocation worksheet"
+    - protocol_id: cp_finishing_materials
+      process_id: "finishing_and_dispatch"
+      flow_role: "greige fabric, water, sodium hydroxide, and hydrogen peroxide solution"
+      record_type: "batch recipe, issue, meter, supplier, and transfer records"
+      raw_fields: "lot_id; operation; chemical_name; concentration; quantity; unit; water_meter; fabric_mass"
+      collection_method: "Record every applicable operation and reconcile chemical issues and water meters to the lot"
+      unit: "kg or m3 as recorded"
+      frequency: "Each batch or continuous production run"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All on-site wet or chemical operations for the declared product"
+      aggregation_rule: "Sum each atomic flow separately; do not aggregate different chemicals"
+      quality_evidence: "Batch sheets, safety data sheets, supplier specifications, meter calibration, and stock reconciliation"
+    - protocol_id: cp_finishing_energy
+      process_id: "finishing_and_dispatch"
+      flow_role: "electricity and purchased steam"
+      record_type: "submeter, steam meter, and supplier records"
+      raw_fields: "meter_id; energy_carrier; reading; unit; pressure; temperature; period; operation"
+      collection_method: "Measure each energy carrier separately and reconcile to supplier statements"
+      unit: "kWh or MJ"
+      frequency: "Meter interval or monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Finishing, inspection, packing, and assigned auxiliaries"
+      aggregation_rule: "Sum by energy carrier and process before normalization"
+      quality_evidence: "Meter calibration, invoice reconciliation, and documented conversion factors"
+    - protocol_id: cp_wastewater_records
+      process_id: "finishing_and_dispatch"
+      flow_role: "textile wastewater to treatment"
+      record_type: "effluent meter and treatment-transfer records"
+      raw_fields: "meter_id; volume; timestamp; destination; treatment_route; product_allocation"
+      collection_method: "Measure wastewater at the relevant process or treatment transfer point and document allocation"
+      unit: "m3"
+      frequency: "Continuous totalizer or each batch"
+      temporal_coverage: "Same period as wet processing"
+      site_scope: "Wastewater generated by the declared product route"
+      aggregation_rule: "Sum measured volume by destination and keep direct discharges separate"
+      quality_evidence: "Meter calibration, treatment records, and route identification"
+    - protocol_id: cp_dispatch_records
+      process_id: "finishing_and_dispatch"
+      flow_role: "packaging, accepted fabric, and fabric offcuts"
+      record_type: "packing list, scale, quality release, warehouse, and waste records"
+      raw_fields: "lot_id; net_fabric_mass; moisture_state; tube_mass; film_mass; offcut_mass; destination"
+      collection_method: "Weigh accepted fabric net of packaging and reconcile packaging issues and offcuts"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Full declared production period"
+      site_scope: "Final inspection, winding, packing, and dispatch for the declared product"
+      aggregation_rule: "Sum accepted net mass and each packaging or waste flow separately"
+      quality_evidence: "Scale calibration, quality-release record, packing list, and waste receipt"
+  calculation_rules:
+    - id: normalize_lot_records
+      applies_to: "Every foreground inventory row"
+      rule: "Divide the collected atomic-flow quantity for the declared period by accepted net reference-fabric mass from the same period; preserve the raw record and reported unit."
+      inputs:
+        - "atomic-flow quantity"
+        - "accepted net reference-fabric mass"
+      output: "foreground quantity per 1 kg reference fabric"
+      source_ids:
+        - iso-14044-2006
+    - id: reconcile_internal_fabric
+      applies_to: "Greige fabric transfer"
+      rule: "Reconcile greige output and input by lot; explain storage change, rejection, or rework and do not attach a second upstream burden to the internal transfer."
+      inputs:
+        - "greige output"
+        - "greige input"
+        - "stock change"
+        - rejects
+        - rework
+      output: "reconciled internal fabric transfer"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Confirm CPC 26570 product semantics, fibre species and composition, weave, areal density, width, market state, and exclusion of flax, true hemp, and ramie."
+      evidence: "Product specification, bill of materials, test report, and quality-release record"
+    - id: dq_atomic_completeness
+      applies_to: "Inventory"
+      requirement: "Record every actual input, waste, and direct emission separately; a combined utility, chemical, packaging, waste, or emission label is incomplete."
+      evidence: "Process-level input-output inventory and reconciliation"
+    - id: dq_temporal_match
+      applies_to: "All records"
+      requirement: "Use inputs and outputs from the same declared production period and disclose shutdowns, abnormal batches, outsourcing, and stock changes."
+      evidence: "Timestamped records and production log"
+    - id: dq_measurement
+      applies_to: "Metered and weighed quantities"
+      requirement: "Identify meter or scale, unit, calibration status, and any estimation or allocation applied to a missing reading."
+      evidence: "Calibration certificate, meter log, invoice, and allocation worksheet"
+    - id: dq_chemical_identity
+      applies_to: "Process chemicals"
+      requirement: "Record chemical name, delivered concentration, supplier, and batch or issue quantity; do not substitute a generic chemical-group amount."
+      evidence: "Supplier specification, safety data sheet, warehouse issue, and batch recipe"
+    - id: dq_no_default_values
+      applies_to: "Missing foreground data"
+      requirement: "Do not replace missing foreground records with AI-generated ranges or uncited default quantities; report the gap for review."
+      evidence: "Data-gap register and reviewer disposition"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "Reference flow"
+    rule: "Confirm UUID 97e92077-1caf-4f27-9d87-9b49e9d6a4e2, Product flow type, CPC 26570 identity, Mass property, 1 kg amount, and exclusion of packaging mass."
+    source_ids:
+      - un-cpc-v3-26570
+  - rule_id: validation_rule_2
+    applies_to: "Scope"
+    rule: "Reject a data package that includes flax, true hemp, ramie, knitted, nonwoven, tufted, or special fabric under this reference product."
+    source_ids:
+      - un-cpc-v3-26570
+  - rule_id: validation_rule_3
+    applies_to: "Required qualifiers"
+    rule: "Reject an incomplete reference flow when fibre identity and composition, weave, areal density, width, finishing state, moisture state, dispatch form, geography, or production period is missing."
+    source_ids:
+      - un-cpc-v3-26570
+  - rule_id: validation_rule_4
+    applies_to: "Process coverage"
+    rule: "Confirm fabric formation, inspection, and dispatch records; confirm each declared wet or thermal operation and its separate water, chemical, energy, wastewater, waste, and emission records when applicable."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-2022-2508-textiles-bat
+  - rule_id: validation_rule_5
+    applies_to: "Atomic exchanges"
+    rule: "Reject a row that combines different fuels, utilities, chemicals, packaging components, wastes, or elementary emissions, or that uses a selector instruction instead of one exchange."
+    source_ids:
+      - eu-2022-2508-textiles-bat
+  - rule_id: validation_rule_6
+    applies_to: "Reconciliation"
+    rule: "Require lot or period reconciliation of yarn input, internal greige transfer, accepted fabric, yarn waste, fabric offcuts, rework, and stock change; investigate and disclose material imbalance."
+    source_ids:
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset derived from a completed foreground data package"
+  downstream_use: "Foreground process datasets and lifecyclemodel projections for woven jute or other in-scope bast-fibre fabric"
+  allowed_use: "Studies whose product, geography, technology, fibre composition, finishing route, moisture state, and production period are compatible with the disclosed dataset"
+  excluded_use: "Flax, true-hemp, ramie, cotton, man-made-fibre, knitted, nonwoven, tufted, or special fabrics; undisclosed proxy use; substitution for missing site records"
+  required_metadata: "PCR id and version; reference UUID; CPC 26570; all reference-flow qualifiers; process route; site and geography; production period; data owners; source dataset versions; allocation and cut-off decisions"
+  required_quality_disclosure: "Record coverage; measurement and calibration evidence; allocation; mass reconciliation; data gaps; wastewater destination; off-site operations; uncertainty and limitations"
+  update_trigger: "Change in fibre composition, yarn specification, weave, finishing route, process technology, site, energy or water supply, chemical recipe, wastewater route, packaging, allocation, or production period that materially changes representativeness"
+data_sources:
+  - id: "un-cpc-v3-26570"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 26570, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-08-12"
+    used_for: "Product identity, inclusions, exclusions, and classification scope"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, JRC131874, EUR 31392 EN, DOI 10.2760/355887, 2023, https://doi.org/10.2760/355887, retrieved 2026-08-12"
+    used_for: "Process decomposition, wet processing, fabric production, finishing, and environmental inventory context"
+  - id: "eu-2022-2508-textiles-bat"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, ELI http://data.europa.eu/eli/dec_impl/2022/2508/oj, retrieved 2026-08-12"
+    used_for: "Sizing, weaving, water, energy, chemical, wastewater, waste, monitoring, and atomic input-output coverage rules"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including Amendments 1:2017 and 2:2020, https://www.iso.org/standard/38498.html, retrieved 2026-08-12"
+    used_for: "System boundary, allocation, inventory calculation, reconciliation, reporting, and data-quality principles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6d88707e226ca246e1e0e1f822beee519942291f0e7ba87c495db5c73226f457"
+  generated_content_sha256: "sha256:6f210f1b14436c1d0b12f887866295fa1f7c0dca421afd2fa4fe9fbcbbba56e9"

@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-09-14
-lastReviewedCommit: b4d45d1d7f379c5ce12cc4844c28d99921f5ba17
-lastReviewedNote: "Reviewed for PCR #6: the current sibling CLI command in .env.example, the builder tool contract, and the authoring guide now use the canonical ../cli directory. Package, runtime, business and environment credential content are unchanged."
+lastReviewedAt: 2026-09-15
+lastReviewedCommit: 09d9c2ea9d3b678cb96f648a500404ee6e6d032c
+lastReviewedNote: "Reviewed inventory-source consistency against PCR PR #9: current membership and counts resolve from canonical mappings, manifests, material/coverage indexes and the catalog alias binding."
 ---
 
 # TianGong LCA PCR Library
@@ -115,13 +115,31 @@ npm run catalog:recover [-- --force-stale-lock]
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --source-url <official-source-url>
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:sync-structured -- --pcr <library/pcrs/...> [--workspace current|revision]
+npm run pcr:check -- --pcr <library/pcrs/...> [--workspace current|revision] --format json
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
 npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
 npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
 npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
 npm run pcr:recover -- --pcr <library/pcrs/...> [--force-stale-lock]
+npm run goal:doctor -- --config <goal.yaml>
+npm run goal:plan -- --config <goal.yaml> --dry-run
+npm run goal:start -- --config <goal.yaml> --slots 1
+npm run goal:status -- --config <goal.yaml>
+npm run goal:resume -- --config <goal.yaml>
+npm run goal:integrate -- --config <goal.yaml>
+npm run goal:land -- --config <goal.yaml>
+npm run goal:stop -- --config <goal.yaml>
 npm run validate
 ```
+
+The local `goal:*` Harness turns a bounded classification/category objective into a persistent, hash-chained queue.
+It captures an allowlisted synthetic commit without changing the user's index or branch, gives each author a durable
+Codex-visible task in its own Git worktree through one Goal-owned loopback app-server daemon, verifies the exact four-file
+author commit, and serializes accepted mapping,
+catalog, coverage, viewer, validation, and consumer checks in integration snapshots. Landing uses exact-byte
+compare-and-swap and keeps author/integration worktrees after `stop` or a failed recovery. See
+`builder/docs/tools/goal-harness.md` for the configuration schema, state paths, recovery behavior, JSON output, and
+stable error codes.
 
 `pcr:import:cpc` is the canonical CPC import entry point, and every invocation must pass `--source` explicitly. It
 stores the raw source and metadata and regenerates the normalized hierarchy, leaves, and paths. The default mode
@@ -257,12 +275,14 @@ The viewer is a consumption surface only. It does not edit PCR Markdown, manifes
 
 The consumption surfaces are now material-first: default catalog, tree, list, and viewer output represent methodology
 records, while complete classification coverage remains queryable separately. Phase 2 steps 1-5 are complete:
-ordinary CPC imports create zero PCR records; CPC 3.0 mapping v2 retains exactly 3 accepted material edges, CPC 2.1
-is empty v2, and the deterministic registry preserves all 2,874 retired leaf-derived ids as coverage locators.
-CPC 3.0 coverage remains 2,877 total, 3 mapped, 2,874 unmapped, and 0 unknown.
+ordinary CPC imports create zero PCR records, current mapping v2 retains accepted material edges only, and the
+deterministic registry preserves retired leaf-derived ids as coverage locators. Read accepted edges from
+`classifications/mappings/`, current coverage totals from `coverage summary` or `classifications/indexes/`, and alias
+membership from `classifications/aliases/pcr-id-aliases.yaml`, whose count and digest are pinned by `library/catalog.yaml`.
 
-The first Phase 3 physical pilot removed only CPC `99000`. The repository therefore has 2,876 PCR directories:
-3 material records and 2,873 surviving legacy scaffolds. Code `99000` now resolves as known-unmapped and its old PCR
+The first Phase 3 physical pilot removed only CPC `99000`. Canonical manifests under `library/pcrs/` define the current
+physical inventory; `library/indexes/pcr-index.yaml` enumerates material records, and explicit `list --scope legacy`
+browsing inventories surviving scaffolds. Code `99000` now resolves as known-unmapped and its old PCR
 id redirects through the alias registry. CPC `98000` and the broader physical migration remain pending; do not treat
 the pilot as completion of bulk migration. Only authored or reviewed material records can enter guidance and
 validation.

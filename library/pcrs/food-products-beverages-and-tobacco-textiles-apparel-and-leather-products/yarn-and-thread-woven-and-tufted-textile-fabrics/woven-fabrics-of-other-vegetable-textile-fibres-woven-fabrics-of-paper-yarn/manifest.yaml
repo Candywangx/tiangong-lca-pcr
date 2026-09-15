@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-other-vegetable-textile-fibres-woven-fabrics-of-paper-yarn
 title:
   en-US: "Woven fabrics of other vegetable textile fibres; woven fabrics of paper yarn"
-  zh-CN: null
-status: scaffold
+  zh-CN: "其他植物纺织纤维机织织物；纸纱机织织物"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,116 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "26590"
     title: "Woven fabrics of other vegetable textile fibres; woven fabrics of paper yarn"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  uuid_review:
+    adopted_references:
+      - uuid: 60d1ccca-cd64-48de-83c4-4ceec6af40a6
+        identity: "Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn"
+        applies_to_row_ids:
+          - woven_fabric_weaving_output
+          - woven_fabric_wet_input
+          - woven_fabric_wet_output
+          - woven_fabric_pack_input
+          - reference_woven_fabric_output
+        decision: "Hybrid search and direct state-code-100 read confirm Product flow, CPC 26590, and reference property Mass."
+      - uuid: 93a60a56-a3c8-11da-a746-0800200b9a66
+        identity: "Mass"
+        applies_to: reference_flow_and_mass_inventory_rows
+        decision: "The adopted CPC 26590 flow exposes this ILCD reference property in both hybrid and direct reads; ILCD documentation identifies kg as the corresponding reference unit."
+      - uuid: 93a60a57-a4c8-11da-a746-0800200c9a66
+        identity: "Units of mass"
+        applies_to: reference_unit_group
+        decision: "The official JRC ILCD unit-group record identifies this UUID as Units of mass and kg as its default reference unit; it completes the Mass/kg identity chain exposed by the gated CPC 26590 flow."
+      - uuid: 09797370-6632-42aa-9d77-e9d41ff82c75
+        identity: "modified starch"
+        applies_to_row_ids:
+          - modified_starch_input
+        decision: "Hybrid search and direct state-code-100 reads confirm one Product flow with Mass and CPC 23220."
+      - uuid: 94a04f7e-2d5c-41f0-b182-d54a3b373a02
+        identity: "Process Water"
+        applies_to_row_ids:
+          - process_water_sizing_input
+          - process_water_wet_input
+        decision: "Hybrid search and direct state-code-100 reads confirm one Product flow whose current versions use CPC 18000 and Mass."
+      - uuid: e0abcced-0611-4c24-9290-5a2c5a0c4169
+        identity: "Sodium hydroxide"
+        applies_to_row_ids:
+          - sodium_hydroxide_wet_input
+        decision: "Hybrid search and direct state-code-100 reads confirm current Product-flow versions with industrial-grade route, CPC 34231, and Mass."
+      - uuid: 293f9fd9-5182-4d35-8aa5-ce73d4f322b7
+        identity: "Steam"
+        applies_to_row_ids:
+          - steam_wet_input
+        decision: "Hybrid search and direct state-code-100 read confirm Product flow, CPC 17300, industrial-boiler steam route, and Mass."
+      - uuid: 46e2b1e4-5a4e-4579-b6a2-65b03f9ce825
+        identity: "Compressed air"
+        applies_to_row_ids:
+          - compressed_air_input
+        decision: "Hybrid search and direct state-code-100 reads confirm Product flow, CPC 34250, and Volume."
+      - uuid: 33617934-f2c0-4016-bb14-264de8396a2c
+        identity: "Warp sizing wastewater"
+        applies_to_row_ids:
+          - warp_sizing_wastewater_output
+        decision: "Hybrid search and direct state-code-100 read confirm Waste flow, warp-sizing origin, untreated route to wastewater treatment, and Mass."
+      - uuid: 48438fa9-4988-405c-ba44-646f134e2ecc
+        identity: "Wastewater, textile process (to water)"
+        applies_to_row_ids:
+          - textile_wastewater_output
+        decision: "Hybrid search and direct state-code-100 read confirm Waste flow from textile wet processing, route to water, and Mass."
+  unresolved_identity:
+    other_vegetable_yarn_input:
+      selected_flow: "Other vegetable textile fibre yarn"
+      rejected_candidate_uuid: bf8e0cc2-c99b-43a9-b306-d31a7fb8c11f
+      reason: "Candidate combines flax, jute, coir, true hemp, other vegetable-fibre yarn and paper yarn under CPC 26380, so it is broader than this single route-specific exchange."
+    paper_yarn_input:
+      selected_flow: "Paper yarn"
+      rejected_candidate_uuid: bf8e0cc2-c99b-43a9-b306-d31a7fb8c11f
+      reason: "Candidate combines paper yarn with multiple vegetable-fibre yarns and cannot identify the paper-yarn exchange alone."
+    electricity_weaving_input:
+      selected_flow: "Electricity, medium voltage"
+      rejected_candidate_uuid: 54e25c46-aaf1-50b5-85b1-8383d1339567
+      reason: "Candidate is an electricity voltage-transformation service with net calorific value, not a delivered medium-voltage electricity product for the declared geography."
+    electricity_wet_input:
+      selected_flow: "Electricity, medium voltage"
+      rejected_candidate_uuid: 54e25c46-aaf1-50b5-85b1-8383d1339567
+      reason: "Candidate is an electricity voltage-transformation service with net calorific value, not a delivered medium-voltage electricity product for the declared geography."
+    electricity_pack_input:
+      selected_flow: "Electricity, medium voltage"
+      rejected_candidate_uuid: 54e25c46-aaf1-50b5-85b1-8383d1339567
+      reason: "Candidate is an electricity voltage-transformation service with net calorific value, not a delivered medium-voltage electricity product for the declared geography."
+    yarn_waste_output:
+      selected_flow: "Yarn waste from weaving"
+      rejected_candidate_uuid: cd3a2b81-3287-457e-9501-2a39f59cec99
+      reason: "Candidate is waste fibre fabric, not yarn waste generated by the declared weaving route."
+    hydrogen_peroxide_wet_input:
+      selected_flow: "Hydrogen peroxide solution"
+      rejected_candidate_uuid: b21960ac-f3c4-4f00-ba92-527ca1dd5d12
+      reason: "Candidate fixes a 30 percent concentration and carries CPC 34140 for carboxylic-acid derivatives; it is not a reliable identity for the site-declared hydrogen-peroxide solution."
+    paperboard_core_input:
+      selected_flow: "Paperboard roll core"
+      rejected_candidate_uuid: 78bf7f6e-519e-4b3d-82f0-eda15b2fee61
+      reason: "Candidate combines cardboard tube or paper core and therefore does not isolate the single paperboard roll-core identity."
+    polyethylene_film_input:
+      selected_flow: "Polyethylene packaging film"
+      rejected_candidate_uuid: e64eb06c-6dc9-45f1-b003-3dc6c44b27e2
+      reason: "Candidate is classified under CPC 29220 luggage and lacks a packaging-film route, so its semantics are not precise."
+    fabric_offcuts_output:
+      selected_flow: "Woven-fabric offcuts"
+      rejected_candidate_uuid: cd3a2b81-3287-457e-9501-2a39f59cec99
+      reason: "Candidate is generic waste fibre fabric and does not isolate offcuts of the declared CPC 26590 woven fabric."

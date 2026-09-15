@@ -1,10 +1,1504 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "25092"
-  title: "Products containing tobacco"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.tobacco-products.products-containing-tobacco"
+  classification_refs: "CPC 3.0: 25092; defined by the CPC explanatory note through HS 2022 heading 24.04, with tobacco-containing non-combustion products identified in HS 2404.11"
+  covered_products: "Finished consumable products physically containing tobacco or reconstituted tobacco and intended for inhalation without combustion, including tobacco sticks, plugs, capsules or pods when the tobacco-containing consumable is the saleable reference product"
+  excluded_products: "Combustible cigars and cigarettes; loose or water-pipe smoking tobacco; tobacco extracts; standalone reconstituted tobacco material; nicotine-only or tobacco-free products; reusable heating devices; medicinal nicotine products"
+  representative_product: "Finished tobacco-containing non-combustion consumable at factory release, expressed as net product mass excluding separate retail, transport and pallet packaging"
+  production_route: "Tobacco-material receipt; conditional conditioning, blending or reconstitution; formulation; forming and component assembly; quality release; retail and transport packaging; conditional on-site wastewater treatment"
+  market_state: "Finished packaged or declared bulk tobacco-containing consumable, with product architecture, tobacco form, formulation, intended use, unit mass, count per pack, packaging configuration, moisture specification and shelf-life condition declared"
+functional_unit:
+  what: "Supply of a finished manufactured consumable that contains tobacco or reconstituted tobacco and is intended for inhalation without combustion"
+  how_much: "1,000 kg net conforming tobacco-containing product, excluding separately inventoried packaging mass"
+  how_well: "Conforms to the declared formulation, tobacco-content, product architecture, unit-mass, moisture, physical-performance, chemical and target-market specifications"
+  how_long_or_cycle: "One completed production and release batch at the factory gate; shelf life is declared but no consumer service life is assigned"
+  reference_flow_link: "Net released mass of conforming finished tobacco-containing consumables after documented rejects and rework"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground production"
+      rule: "Include directly controlled operations from receipt of declared tobacco materials and components through quality release and factory-gate dispatch of the finished product."
+      source_ids:
+        - us-fda-iqos-tpl-2019
+        - us-epa-tobacco-processing-2006
+    - rule_id: boundary_route_specific
+      applies_to: "tobacco preparation and product architecture"
+      rule: "Include reconstitution, conditioning, steam use, drying, cutting, forming, filters, tubes, papers and adhesives only when performed or used in the declared product route; disclose purchased intermediates as upstream datasets."
+      source_ids:
+        - us-fda-iqos-tpl-2019
+        - us-epa-tobacco-processing-2006
+    - rule_id: boundary_complete_inventory
+      applies_to: "every included process"
+      rule: "Inventory electricity, purchased steam, natural gas, process water, each ingredient, each product component, each package component, each waste stream, each direct air emission, wastewater and each wastewater pollutant as separate exchanges."
+      source_ids:
+        - us-epa-tobacco-processing-2006
+        - eu-pef-2021
+    - rule_id: boundary_device_exclusion
+      applies_to: "tobacco consumable and reusable heater"
+      rule: "Exclude the reusable heating device from this consumable-product reference flow. A study that includes the device shall model it as a separate product system and disclose the allocation over device lifetime."
+      source_ids:
+        - us-fda-iqos-tpl-2019
+        - wco-hs-2022-chapter-24
+boundary_abstraction:
+  declared_starting_condition: "Tobacco blend, tobacco stems/fines, purchased reconstituted tobacco, and non-tobacco ingredients and components received at the reporting facility gate; the selected starting materials and any on-site reconstitution route are declared"
+  starting_condition_role: "Upstream product inputs to the foreground manufacture of the finished tobacco-containing consumable"
+  product_classification_scope: "Finished products physically containing tobacco or reconstituted tobacco and intended for inhalation without combustion; nicotine-only, tobacco-free, combustible and reusable-device products are excluded"
+  recursive_input_rule: "Returned or reworked product already in this category is recorded as a separately quantified same-category product input with its prior burdens retained; it is not silently treated as virgin tobacco or burden-free material"
+  upstream_dataset_requirement: "Link tobacco cultivation and curing, purchased tobacco preparation or reconstituted-sheet production, electricity, steam, natural gas, water, chemicals, polymers, paper, adhesives, packaging and off-site treatment to representative upstream datasets"
+  disclosure: "Declare product route; foreground starting materials; on-site versus purchased tobacco preparation; device exclusion; energy and water metering; reject and rework routing; wastewater treatment; air controls; packaging boundary; storage conditions; and all cut-offs"
+reference_flow_definition:
+  reference_amount: "1,000 kg net finished product"
+  product_flow_ref:
+    name: "Products containing tobacco"
+    uuid: "653e40de-b5ea-4e0c-8542-98a32e6bae12"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "tobacco_present=true"
+    - "tobacco form and origin"
+    - "reconstituted-tobacco content"
+    - "intended inhalation-without-combustion route"
+    - "product architecture and component list"
+    - "complete ingredient formulation by mass"
+    - "humectant and flavour specification"
+    - "net unit mass and units per pack"
+    - "moisture and water-activity specifications where controlled"
+    - "package-component masses"
+    - "release specifications"
+    - "production site"
+    - geography
+    - "batch and reference period"
+    - "whether a reusable device is excluded or separately modelled"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "net conforming finished product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every foreground exchange to exactly 1,000 kg net conforming product. Keep primary, secondary and tertiary packaging outside the reference amount and inventory each component separately."
+  - id: unit_count_to_mass
+    applies_to: "production and packing records recorded by unit count"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert count to net product mass using product-specific measured mean unit mass and retained sample records; preserve count, sampling plan, measured mass and conversion calculation."
+  - id: ingredient_mass
+    applies_to: "tobacco, humectants, binders, fibres, additives and adhesives"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each physically distinct ingredient as its own exchange from calibrated issue or batch records; do not aggregate ingredients into a recipe total."
+  - id: component_mass
+    applies_to: "tubes, filters, wraps, papers and packaging components"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record issued and returned mass separately for each component; use count-to-mass conversion only with component-specific measured mass."
+  - id: energy_separation
+    applies_to: "electricity, purchased steam and natural gas"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep electricity, purchased steam and each combusted fuel as separate exchanges; preserve meter basis, heating-value basis and conversion factors."
+  - id: water_separation
+    applies_to: "formulation, process conditioning, equipment washing and treatment"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Record water separately by use role and process; do not combine water incorporated into product with cleaning or treatment water."
+  - id: wastewater_load
+    applies_to: "each direct discharge indicator"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate each pollutant load separately from matched discharge volume and concentration records; retain sampling time, treatment boundary and receiving compartment."
+process_map:
+  - id: tobacco_preparation
+    name: "Tobacco preparation and formulation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when tobacco is conditioned, blended, ground, reconstituted, formulated, dried or cut at the reporting site"
+    role: "Produce the declared prepared tobacco material"
+    quantitative_reference: "kg prepared tobacco material transferred to assembly"
+  - id: forming_assembly
+    name: "Forming and product assembly"
+    inclusion: "required"
+    inclusion_condition: "Always include for the finished tobacco-containing consumable"
+    role: "Form the tobacco portion and assemble each non-tobacco component"
+    quantitative_reference: "kg unpacked conforming product"
+  - id: packaging_release
+    name: "Packaging, quality release and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include; component rows apply to the declared packaging configuration"
+    role: "Inspect, pack and release the finished product"
+    quantitative_reference: "1,000 kg net released product"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when tobacco-process wastewater is treated or directly discharged under foreground control"
+    role: "Treat wastewater and quantify sludge and separate discharge loads"
+    quantitative_reference: "m3 wastewater treated"
+process_inventory:
+  - id: tobacco_preparation
+    label: "Tobacco preparation and formulation"
+    inputs:
+      product:
+        - row_id: blended_tobacco_input
+          role: "Blended tobacco material"
+          name: "Blended tobacco for manufactured tobacco"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net accepted mass from calibrated receiving and issue records, with tobacco form and moisture stated."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tobacco_materials
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: process_water
+          role: "Process water incorporated into tobacco"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered or batch-dosed water entering conditioning, extraction, slurry or formulation; exclude cleaning water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - us-fda-iqos-tpl-2019
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: glycerol
+          role: "Glycerol humectant"
+          name: "Glycerol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Weighed glycerol issued to the formulation batch; mark not applicable only when absent from the declared formulation."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_ingredients
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: propylene_glycol
+          role: "Propylene glycol humectant"
+          name: "Propylene glycol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Weighed propylene glycol issued to the formulation batch when present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_ingredients
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: guar_gum
+          role: "Guar gum binder"
+          name: "Guar gum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Weighed guar gum issued to the reconstituted-tobacco or tobacco-plug formulation when present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_ingredients
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: cellulose_fibre
+          role: "Cellulose fibre reinforcement"
+          name: "Cellulose fibre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Weighed cellulose fibre added during sheet or plug formulation when present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_ingredients
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Electricity for tobacco preparation"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity for conveying, grinding, mixing, extraction, evaporation, sheet forming, drying and cutting actually performed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: purchased_steam
+          role: "Purchased steam for conditioning or drying"
+          name: "Steam, at plant"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered purchased steam entering conditioning, evaporation or drying; exclude steam generated from separately inventoried on-site natural gas."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for on-site thermal equipment"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered natural gas consumed by directly controlled dryers or boilers, on lower- or higher-heating-value basis as declared."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_tobacco_material
+          role: "Prepared tobacco material"
+          name: "Prepared tobacco material for non-combustion product assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product flow leaves the process boundary as the stated intermediate or reference output. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net transferred mass after conditioning, formulation, sheet forming, drying and cutting actually performed."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tobacco_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        - row_id: tobacco_solids_waste
+          role: "Tobacco sheet trim rejected from preparation"
+          name: "Tobacco sheet-trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured net tobacco sheet-trim waste sent to recovery, treatment or disposal, with destination declared."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: tobacco_process_wastewater
+          role: "Tobacco-preparation process wastewater"
+          name: "Tobacco-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured wastewater from sheet forming, extract loss, equipment washing, air-control blowdown and other included tobacco-preparation operations before treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        - row_id: tobacco_pm10_to_air
+          role: "Tobacco particulate matter to air"
+          name: "Particulate matter, less than 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Stack or fugitive PM10 mass from measured concentration and airflow, or a documented site emission calculation for included tobacco-handling equipment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: fossil_co2_to_air
+          role: "Fossil carbon dioxide from natural gas"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Calculate from metered natural gas and a documented site or jurisdictional combustion factor; mark not applicable when no on-site natural gas is burned."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides from natural gas"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Stack measurement or calculation from metered natural gas and the applicable equipment-specific factor; mark not applicable when no on-site combustion occurs."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared tobacco material"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+  - id: forming_assembly
+    label: "Forming and product assembly"
+    inputs:
+      product:
+        - row_id: assembly_tobacco_material
+          role: "Prepared tobacco supplied to assembly"
+          name: "Prepared tobacco material for non-combustion product assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured issued mass from on-site preparation or purchased prepared-tobacco receipt records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity for forming and assembly"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity for crimping, forming, cutting, wrapping, gluing, filter insertion, conveying and inspection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_records
+              source_ids:
+                - us-fda-iqos-tpl-2019
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: cellulose_acetate_tube
+          role: "Cellulose acetate hollow tube"
+          name: "Cellulose acetate hollow tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net issued component mass when the declared architecture contains a hollow acetate tube."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: polylactic_acid_filter
+          role: "Polylactic acid cooling filter"
+          name: "Polylactic acid filter element"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net issued component mass when a polylactic-acid cooling element is present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: cellulose_acetate_filter
+          role: "Cellulose acetate mouthpiece filter"
+          name: "Cellulose acetate mouthpiece filter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net issued component mass when a cellulose-acetate mouthpiece is present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: plug_wrap_paper
+          role: "Tobacco-plug wrap paper"
+          name: "Tobacco-plug wrap paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net issued mass of the paper directly wrapping the tobacco portion."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: outer_paper
+          role: "Outer structural paper"
+          name: "Outer structural paper for tobacco consumable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net issued mass of the outer paper used to hold the assembled consumable together."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: tipping_paper
+          role: "Tipping paper"
+          name: "Tipping paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net issued mass joining the mouthpiece or downstream component to the tobacco portion when present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: eva_adhesive
+          role: "Ethylene-vinyl acetate adhesive"
+          name: "Ethylene-vinyl acetate adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net adhesive mass issued to structural and tipping-paper bonding after documented returns."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpacked_tobacco_product
+          role: "Unpacked conforming tobacco product"
+          name: "Unpacked product containing tobacco"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product flow leaves the process boundary as the stated intermediate or reference output. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net conforming mass passing in-process physical and formulation checks before retail packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+      waste:
+        - row_id: off_spec_tobacco_product
+          role: "Off-specification tobacco product"
+          name: "Off-specification product containing tobacco"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured rejected product mass, separated by internal rework, tobacco recovery, treatment and disposal destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: paper_trim_waste
+          role: "Paper trim from assembly"
+          name: "Paper trim waste from product assembly"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured paper offcuts and rejected wraps leaving assembly, net of documented internal return."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: plastic_filter_trim_waste
+          role: "Plastic filter trim from assembly"
+          name: "Plastic filter trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured cellulose-acetate and polylactic-acid trim or rejected filter mass; keep destination and polymer identity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: adhesive_contaminated_waste
+          role: "Adhesive-contaminated solid waste"
+          name: "Solid waste contaminated with ethylene-vinyl acetate adhesive"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured discarded adhesive residue, wipes or contaminated packaging sent to the declared treatment route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unpacked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+      elementary:
+        []
+  - id: packaging_release
+    label: "Packaging, quality release and dispatch preparation"
+    inputs:
+      product:
+        - row_id: packaging_product_input
+          role: "Unpacked tobacco product supplied to packaging"
+          name: "Unpacked product containing tobacco"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net conforming product mass transferred from assembly to packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity for packaging and quality release"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity for inspection, packing, coding, case packing, pallet handling and conditioned storage attributable to the batch."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_records
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: paperboard_retail_pack
+          role: "Paperboard retail pack"
+          name: "Paperboard folding carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net paperboard mass placed around sale units from issue, return and component-weight records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+        - row_id: polypropylene_overwrap
+          role: "Polypropylene retail overwrap"
+          name: "Polypropylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net polypropylene film placed on market when the declared retail pack uses film overwrap."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: corrugated_shipping_case
+          role: "Corrugated shipping case"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Net corrugated-board mass used for transport cases attributable to the released product."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden dispatch pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Allocate measured pallet mass to the batch by documented trips or one-way use; declare reuse count."
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: r410a_makeup
+          role: "R-410A refrigerant make-up"
+          name: "Refrigerant R-410A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Annual R-410A make-up charged to packaging or conditioned-storage HVAC, allocated by measured operating time; mark not applicable when R-410A is not used."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - us-fda-iqos-tpl-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_product
+          role: "Released finished product"
+          name: "Products containing tobacco"
+          flow_type: "product"
+          flow_ref:
+            uuid: "653e40de-b5ea-4e0c-8542-98a32e6bae12"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This product flow leaves the process boundary as the stated intermediate or reference output. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Exactly 1,000 kg net conforming finished product; packaging mass is excluded and recorded separately."
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: waste_paperboard
+          role: "Waste paperboard from packaging"
+          name: "Waste paperboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured rejected retail-carton and corrugated-board mass leaving packaging, net of internal reuse."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_polypropylene_film
+          role: "Waste polypropylene film from packaging"
+          name: "Waste polypropylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured polypropylene film offcuts and rejected overwrap leaving packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_wood
+          role: "Waste wood from damaged pallets"
+          name: "Waste wood from pallets"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured pallet wood removed from service and attributable to the batch through the declared reuse allocation."
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        - row_id: r410a_to_air
+          role: "R-410A refrigerant loss to air"
+          name: "Refrigerant R-410A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Equal to documented R-410A make-up adjusted for inventory change and recovery; mark not applicable when R-410A is not used."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: treatment_electricity
+          role: "Electricity for wastewater treatment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered electricity for screening, pumping, aeration, mixing, clarification and sludge dewatering."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: ferric_chloride
+          role: "Ferric chloride for phosphorus removal"
+          name: "Ferric chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Active ferric-chloride mass calculated from formulation concentration and dosed solution mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_chemicals
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: sodium_hypochlorite
+          role: "Sodium hypochlorite for disinfection"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This material or energy input enters the process boundary because it is consumed in the stated operation. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Active sodium-hypochlorite mass calculated from solution concentration and dosed volume when chlorination is used."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_chemicals
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      waste:
+        - row_id: treatment_wastewater_input
+          role: "Tobacco-processing wastewater to treatment"
+          name: "Tobacco-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This wastewater crosses into the treatment process as the treated waste input. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Metered wastewater entering the on-site treatment train from included foreground processes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_sludge
+          role: "Dewatered wastewater-treatment sludge"
+          name: "Dewatered tobacco-wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste flow leaves the process boundary for recovery, treatment or disposal and is recorded separately from other wastes. Its quantity is obtained from the foreground record according to the rule below."
+          amount:
+            expression: "Measured wet sludge mass leaving belt presses, with dry-solids content and destination retained."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by measured COD concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_discharge_monitoring
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by measured total-nitrogen concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_discharge_monitoring
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by measured total-phosphorus concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_discharge_monitoring
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+        - row_id: suspended_solids_to_water
+          role: "Suspended solids to water"
+          name: "Suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary flow crosses the process boundary to the stated environmental compartment and is recorded separately from other emissions. Its quantity is obtained from the foreground record or calculation rule below."
+          amount:
+            expression: "Matched treated-effluent volume multiplied by measured total-suspended-solids concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_discharge_monitoring
+              source_ids:
+                - us-epa-tobacco-processing-2006
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared utilities and multi-output operations"
+    rule: "Avoid allocation by sub-metering or subdivision. If impossible, apply a documented physical relationship relevant to the process output; use another relationship such as economic value only after documenting why subdivision, system expansion and physical allocation are infeasible."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_internal_rework
+    applies_to: "tobacco, sheet and finished-product rework"
+    rule: "Return internal rework to the process mass balance without a second product credit. Retain all burdens incurred before rejection and quantify any additional reprocessing inputs."
+    source_ids:
+      - us-epa-tobacco-processing-2006
+      - eu-pef-2021
+  - rule_id: allocation_exported_tobacco_residue
+    applies_to: "tobacco residue sold as a co-product"
+    rule: "Treat a residue as waste unless it has a documented specification, customer and positive economic value. For a co-product, apply the hierarchy in allocation_subdivision_first and disclose quantities, prices, period and sensitivity."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_tobacco_materials
+      process_id: "tobacco_preparation"
+      flow_role: "tobacco input and prepared output"
+      record_type: "receiving, issue, transfer and moisture records"
+      raw_fields: "material id; supplier; tobacco form; gross and tare mass; moisture; batch; transfer mass"
+      collection_method: "calibrated scales and batch reconciliation"
+      unit: "kg"
+      frequency: "each lot and batch"
+      temporal_coverage: "complete reference period"
+      site_scope: "all included lines"
+      aggregation_rule: "sum net dry- or as-received mass consistently; reconcile opening and closing inventory"
+      quality_evidence: "calibration, supplier specification, lot traceability and signed batch record"
+    - protocol_id: cp_formulation_ingredients
+      process_id: "tobacco_preparation"
+      flow_role: "each formulation ingredient"
+      record_type: "formulation and issue records"
+      raw_fields: "ingredient id; concentration; issued mass; return mass; batch"
+      collection_method: "calibrated dispensing and recipe-system export"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reference period"
+      site_scope: "all formulations in scope"
+      aggregation_rule: "sum net issued mass separately by ingredient and normalize to output"
+      quality_evidence: "scale calibration, approved formula and material certificate"
+    - protocol_id: cp_water_records
+      process_id: "tobacco_preparation"
+      flow_role: "product and process water"
+      record_type: "meter and batch-dose records"
+      raw_fields: "meter id; start/end reading; batch dose; use role; process"
+      collection_method: "dedicated meter or calibrated dosing system"
+      unit: "m3 or kg"
+      frequency: "each batch or daily"
+      temporal_coverage: "representative full production period"
+      site_scope: "each included process"
+      aggregation_rule: "subtract verified non-process uses and aggregate by role"
+      quality_evidence: "meter calibration and water balance"
+    - protocol_id: cp_electricity_records
+      process_id: "all_processes"
+      flow_role: "electricity"
+      record_type: "meter and equipment records"
+      raw_fields: "meter id; readings; interval; operating time; rated load; process"
+      collection_method: "sub-meter; otherwise documented engineering allocation"
+      unit: "kWh"
+      frequency: "continuous or each shift"
+      temporal_coverage: "at least one representative year or full campaign"
+      site_scope: "all included lines and treatment"
+      aggregation_rule: "sum metered use; allocate shared use by documented causal driver"
+      quality_evidence: "meter calibration, coverage and allocation reconciliation"
+    - protocol_id: cp_steam_records
+      process_id: "tobacco_preparation"
+      flow_role: "purchased steam"
+      record_type: "supplier meter and condensate records"
+      raw_fields: "steam mass or energy; pressure; temperature; condensate return"
+      collection_method: "calibrated custody or process meter"
+      unit: "kg steam or MJ"
+      frequency: "continuous or each batch"
+      temporal_coverage: "complete reference period"
+      site_scope: "included thermal equipment"
+      aggregation_rule: "convert to declared energy basis and subtract documented return credit only once"
+      quality_evidence: "meter calibration and thermodynamic conversion record"
+    - protocol_id: cp_natural_gas_records
+      process_id: "tobacco_preparation"
+      flow_role: "natural gas"
+      record_type: "fuel meter and invoice records"
+      raw_fields: "meter readings; volume; temperature; pressure; heating value"
+      collection_method: "calibrated meter reconciled to invoices"
+      unit: "m3 and MJ"
+      frequency: "monthly with batch allocation"
+      temporal_coverage: "complete reference period"
+      site_scope: "included boilers and dryers"
+      aggregation_rule: "convert using declared heating value and allocate by metered or operating-hour driver"
+      quality_evidence: "invoice reconciliation and meter calibration"
+    - protocol_id: cp_component_materials
+      process_id: "forming_assembly"
+      flow_role: "tobacco, tube, filter, paper and adhesive components"
+      record_type: "bill of materials, issue, return and component-weight records"
+      raw_fields: "component id; supplier; count; mean mass; issue; return; batch"
+      collection_method: "ERP issue records plus verified component mass"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reference period"
+      site_scope: "all assembly lines"
+      aggregation_rule: "net issue by atomic component; reconcile to product and waste mass"
+      quality_evidence: "approved bill of materials, certificates and scale checks"
+    - protocol_id: cp_product_release
+      process_id: "forming_assembly_packaging_release"
+      flow_role: "conforming intermediate and finished output"
+      record_type: "batch, count, mass and release records"
+      raw_fields: "product id; unit count; sample mass; net batch mass; rejects; release status"
+      collection_method: "calibrated scale and quality-release system"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reference period"
+      site_scope: "all products in scope"
+      aggregation_rule: "sum released net mass only; exclude package mass"
+      quality_evidence: "release certificate, sampling plan and mass-balance reconciliation"
+    - protocol_id: cp_packaging_components
+      process_id: "packaging_release"
+      flow_role: "each package component"
+      record_type: "packaging issue, return and specification records"
+      raw_fields: "component id; material; count; unit mass; issue; return; reuse trips"
+      collection_method: "ERP issue records and component weighing"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reference period"
+      site_scope: "all package formats"
+      aggregation_rule: "net component mass placed on market; allocate reusable pallets by recorded trips"
+      quality_evidence: "supplier specification, sample weights and return log"
+    - protocol_id: cp_waste_records
+      process_id: "all_processes"
+      flow_role: "each waste stream"
+      record_type: "container, scale and destination records"
+      raw_fields: "waste id; gross/tare; dry solids where relevant; destination; treatment"
+      collection_method: "calibrated scale or verified contractor ticket"
+      unit: "kg"
+      frequency: "each container or shipment"
+      temporal_coverage: "complete reference period"
+      site_scope: "all included operations"
+      aggregation_rule: "sum separately by atomic waste and destination; do not net against product inputs"
+      quality_evidence: "weigh tickets, manifests and mass-balance check"
+    - protocol_id: cp_wastewater_records
+      process_id: "tobacco_preparation_onsite_wastewater_treatment"
+      flow_role: "tobacco-process wastewater"
+      record_type: "flow-meter and route records"
+      raw_fields: "inlet/outlet volume; source process; date; treatment route"
+      collection_method: "calibrated flow meter or validated water balance"
+      unit: "m3"
+      frequency: "continuous or daily"
+      temporal_coverage: "representative full production period"
+      site_scope: "all process drains in scope"
+      aggregation_rule: "aggregate by source and treatment route without sanitary water"
+      quality_evidence: "meter calibration, drainage map and water balance"
+    - protocol_id: cp_direct_emissions
+      process_id: "tobacco_preparation"
+      flow_role: "PM10 and combustion emissions"
+      record_type: "stack, airflow, fuel and operating records"
+      raw_fields: "concentration; airflow; duration; fuel use; equipment; factor version"
+      collection_method: "compliant stack test or documented calculation"
+      unit: "kg"
+      frequency: "permit frequency plus batch allocation"
+      temporal_coverage: "representative operating states"
+      site_scope: "all included emission points"
+      aggregation_rule: "calculate each pollutant separately and allocate by causal operation"
+      quality_evidence: "test report, laboratory QA and factor provenance"
+    - protocol_id: cp_refrigerant_records
+      process_id: "packaging_release"
+      flow_role: "R-410A make-up and loss"
+      record_type: "service and refrigerant inventory records"
+      raw_fields: "opening stock; purchases; charge; recovery; closing stock; equipment"
+      collection_method: "mass-balance from certified service records"
+      unit: "kg"
+      frequency: "each service event and annual"
+      temporal_coverage: "complete reference year"
+      site_scope: "attributable HVAC equipment"
+      aggregation_rule: "loss = opening + purchases - closing - recovered - transferred; allocate by operating time"
+      quality_evidence: "technician records and inventory reconciliation"
+    - protocol_id: cp_treatment_chemicals
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "ferric chloride and sodium hypochlorite"
+      record_type: "dosing and concentration records"
+      raw_fields: "chemical id; solution mass or volume; concentration; batch"
+      collection_method: "calibrated dosing pump and supplier assay"
+      unit: "kg active substance"
+      frequency: "daily"
+      temporal_coverage: "complete treatment period"
+      site_scope: "on-site treatment"
+      aggregation_rule: "calculate active mass separately for each chemical"
+      quality_evidence: "dosing calibration and certificate of analysis"
+    - protocol_id: cp_discharge_monitoring
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "each pollutant to water"
+      record_type: "flow and laboratory records"
+      raw_fields: "discharge volume; sample time; COD; total N; total P; TSS; method"
+      collection_method: "flow-proportional sampling and accredited analysis"
+      unit: "m3; mg/L; kg"
+      frequency: "permit frequency"
+      temporal_coverage: "representative full production period"
+      site_scope: "final controlled discharge"
+      aggregation_rule: "pair concentration with matching volume; report each pollutant separately"
+      quality_evidence: "chain of custody, method detection limit and laboratory accreditation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period amount × 1,000 kg / net conforming finished-product mass for the same period"
+      inputs:
+        - "period exchange"
+        - "released net product mass"
+      output: "exchange per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_component_mass
+      applies_to: "count-based product and component records"
+      rule: "mass = accepted count × verified mean unit mass; keep sampling uncertainty and do not mix product mass with packaging mass"
+      inputs:
+        - count
+        - "sample masses"
+        - "component identity"
+      output: "kg by product or component"
+      source_ids:
+        - us-fda-iqos-tpl-2019
+    - id: calc_material_balance
+      applies_to: "tobacco preparation and assembly"
+      rule: "opening inventory + receipts - closing inventory = conforming transfer + rework + each waste + measured loss; investigate unreconciled loss above the site's approved threshold"
+      inputs:
+        - inventory
+        - receipt
+        - transfer
+        - product
+        - "rework and waste records"
+      output: "reconciled material balance"
+      source_ids:
+        - us-epa-tobacco-processing-2006
+    - id: calc_wastewater_load
+      applies_to: "each pollutant to water"
+      rule: "load kg = matched discharge volume m3 × concentration mg/L × 0.001"
+      inputs:
+        - "flow and pollutant concentration"
+      output: "kg pollutant to water"
+      source_ids:
+        - us-epa-tobacco-processing-2006
+    - id: calc_refrigerant_loss
+      applies_to: "R-410A"
+      rule: "emitted mass = opening inventory + purchases - closing inventory - recovered mass - transferred mass"
+      inputs:
+        - "annual refrigerant inventory and service records"
+      output: "kg R-410A to air"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate physical tobacco or reconstituted-tobacco content, intended non-combustion use, product architecture and exclusion of reusable device mass."
+      evidence: "approved specification, bill of materials, label and release record; un-cpc-3-2025; wco-hs-2022-chapter-24"
+    - id: dq_formula_completeness
+      applies_to: "tobacco and non-tobacco formulation"
+      requirement: "Account for every uniquely identified ingredient, additive and component by quantity; do not replace the bill of materials with confidential or aggregated totals."
+      evidence: "controlled formula, component list, supplier certificates and batch issue records; us-fda-iqos-tpl-2019"
+    - id: dq_mass_balance
+      applies_to: "tobacco preparation, assembly and packaging"
+      requirement: "Reconcile inputs to product, rework, wastes, emissions and inventory changes for each process and the reporting period."
+      evidence: "signed mass-balance worksheet and investigation of discrepancies"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground data"
+      requirement: "Cover the full reference year or complete campaign, including start-up, shutdown, cleaning, rejects and seasonal storage loads."
+      evidence: "meter-coverage report and production calendar"
+    - id: dq_route_disclosure
+      applies_to: "all conditional processes and flows"
+      requirement: "State whether reconstitution, steam, natural gas, each component, R-410A and on-site treatment apply; absent rows require a documented not-applicable reason."
+      evidence: "process map, equipment list, product architecture and wastewater route"
+    - id: dq_source_separation
+      applies_to: "UUID identity and quantitative evidence"
+      requirement: "Keep Tiangong UUID identity separate from external process evidence and from foreground quantities."
+      evidence: "UUID direct-read record, source table and collection records"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference flow"
+    rule: "Fail if the product does not physically contain tobacco or reconstituted tobacco, is intended for combustion, is a nicotine-only or tobacco-free product, or includes reusable device mass without a separate model."
+    source_ids:
+      - un-cpc-3-2025
+      - wco-hs-2022-chapter-24
+      - us-fda-iqos-tpl-2019
+  - rule_id: validate_reference_mass
+    applies_to: "reference amount"
+    rule: "Fail if net conforming product is not exactly 1,000 kg after normalization or if packaging mass is included in the reference amount."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Fail if electricity, steam, natural gas, water, ingredients, components, packaging, wastes, refrigerants or emissions are combined into collection rows rather than individual exchanges."
+    source_ids:
+      - eu-pef-2021
+      - us-epa-tobacco-processing-2006
+  - rule_id: validate_route_completeness
+    applies_to: "process map"
+    rule: "Fail if forming and assembly or packaging and release are absent; require a documented applicability decision for tobacco preparation and on-site wastewater treatment."
+    source_ids:
+      - us-fda-iqos-tpl-2019
+      - us-epa-tobacco-processing-2006
+  - rule_id: validate_formula_and_mass_balance
+    applies_to: "foreground package"
+    rule: "Fail if the controlled formulation, atomic component quantities, released mass, rework and wastes do not reconcile or if a discrepancy lacks investigation."
+    source_ids:
+      - us-fda-iqos-tpl-2019
+      - us-epa-tobacco-processing-2006
+  - rule_id: validate_allocation
+    applies_to: "shared operations and co-products"
+    rule: "Fail if allocation is used without documenting why subdivision or system expansion is infeasible, the selected relationship, data period and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_uuid_support
+    applies_to: "UUID-bearing reference product"
+    rule: "Fail if the product-flow UUID, Mass property UUID, Units of mass UUID or kg reference unit does not resolve consistently."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after independent methodology review and publication"
+  downstream_use: "Foreground process datasets for products containing tobacco and factory-gate lifecycle-model projections"
+  allowed_use: "Product-specific factory-gate modelling when tobacco presence, non-combustion intended use, formulation, architecture, route, packaging and geography match the dataset metadata"
+  excluded_use: "Combustible tobacco products; nicotine-only or tobacco-free products; reusable heating devices; use-stage health or exposure assessment; unsupported comparison between different product architectures"
+  required_metadata: "canonical PCR id and version; reference UUID; CPC and HS context; product specification; tobacco form and mass fraction; complete formulation and component list; unit mass and count; route; package configuration; site and geography; reference period; upstream datasets; allocation; waste and treatment routes"
+  required_quality_disclosure: "primary-data coverage; meter and scale calibration; formula confidentiality limitations; mass-balance closure; conditional-flow applicability; unresolved UUIDs and ranges; source versions; temporal, geographic and technological representativeness"
+  update_trigger: "formulation or component change; manufacturing-route or site change; package redesign; new heating architecture; material meter change; wastewater route change; revised CPC/HS scope; reference UUID change; new reviewed range or emission evidence"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. *Central Product Classification (CPC) Version 3.0 Explanatory Notes*, subclass 25092, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-08-20)."
+    used_for: "Official CPC identity and link from subclass 25092 to HS 2022 heading 24.04"
+  - id: "wco-hs-2022-chapter-24"
+    type: "standard"
+    reference: "World Customs Organization. *Harmonized System Nomenclature 2022, Chapter 24*, heading 24.04 and subheading 2404.11. https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/0424_2022e.pdf?la=en (accessed 2026-08-20)."
+    used_for: "Tobacco-containing, inhalation-without-combustion product scope and exclusions"
+  - id: "us-fda-iqos-tpl-2019"
+    type: "official_guidance"
+    reference: "U.S. Food and Drug Administration. *Premarket Tobacco Product Applications: Technical Project Lead Review, IQOS Tobacco Heating System and Heatsticks*, 2019. https://www.fda.gov/media/124247/download?attachment= (accessed 2026-08-20)."
+    used_for: "Representative product architecture, tobacco plug, formulation ingredients, component identity, manufacturing controls, quality and stability requirements"
+  - id: "us-epa-tobacco-processing-2006"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency. *Final Engineering Report: Tobacco Products Processing Detailed Study*, EPA-821-R-06-015, 2006. https://19january2017snapshot.epa.gov/sites/production/files/2015-09/documents/tobacco-products-processing-study_2006.pdf (accessed 2026-08-20)."
+    used_for: "Tobacco conditioning, blending, cutting, reconstituted-sheet production, forming, packing, rejects, wastewater sources, air controls and treatment operations"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission. *Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods*, Annex I, 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (accessed 2026-08-20)."
+    used_for: "Inventory completeness, multifunctionality hierarchy, packaging and data-quality principles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c1ebe69ccfa9053c70203f7c524fa79fc9440111d7d879a3ccf96ead4b690601"
+  generated_content_sha256: "sha256:4282bd3a9acd3dceb0277642f253434550fb5789ae72f97efb32143e0d68d1ec"

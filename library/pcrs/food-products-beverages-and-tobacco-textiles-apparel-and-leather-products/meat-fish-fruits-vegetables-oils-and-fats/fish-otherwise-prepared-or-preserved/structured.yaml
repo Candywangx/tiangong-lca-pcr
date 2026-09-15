@@ -1,10 +1,671 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21242"
-  title: "Fish, otherwise prepared or preserved"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-otherwise-prepared-or-preserved"
+  classification_refs: "CPC 3.0: 21242, Fish, otherwise prepared or preserved"
+  covered_products: "Frozen surimi and other fish products otherwise prepared or preserved when their actual route and market state are declared"
+  excluded_products: "Caviar and caviar substitutes; plain fish fillets or minced fish without the surimi route; crustacean or mollusc products; downstream formed, cooked, flavoured, or imitation seafood made from surimi"
+  representative_product: "Frozen surimi"
+  production_route: "Fish reception and temperature-controlled storage; preparation and meat separation; repeated washing and dewatering; refining; final dewatering; mixing with declared adjuvant ingredients; packaging; freezing; metal detection; frozen storage and dispatch"
+  market_state: "Frozen, packaged intermediate food ingredient at the manufacturing facility gate"
+functional_unit:
+  what: "Provide frozen surimi as an intermediate fish-protein ingredient for subsequent food manufacturing"
+  how_much: "1 kg net mass of frozen surimi, excluding packaging"
+  how_well: "Conforms to the declared fish species or species mix, formulation, additive system, moisture, gel-strength or commercial grade, contaminant and food-safety controls, packaging configuration, and frozen product specification"
+  how_long_or_cycle: "One production batch at the factory gate; any frozen-storage duration represented before dispatch is declared separately"
+  reference_flow_link: "Surimi e6684e76-c555-40b8-9a7f-ecb12f574320"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_route
+      applies_to: "representative frozen-surimi manufacture"
+      rule: "Include the actual facility steps from raw-material reception through preparation, meat separation, repeated washing and dewatering, refining, final dewatering, ingredient mixing, packaging, freezing, metal detection, frozen storage, and dispatch preparation."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_supporting_operations
+      applies_to: "foreground supporting activities"
+      rule: "Include measured cleaning and sanitation, process-water supply, wastewater handling before hand-off, refrigeration, on-site energy use, packaging losses, and handling of fish residues when they serve the represented production."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent purchased fish, ingredients, packaging, utilities, refrigerants, and inbound transport as product inputs linked to upstream datasets; do not treat their upstream burdens as zero."
+      source_ids:
+        - ghg-protocol-product-2011
+    - rule_id: boundary_route_variants
+      applies_to: "non-representative products or routes"
+      rule: "Replace non-applicable representative steps with the actual preparation or preservation operations and disclose every material omission, addition, and preservation-state difference."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Fish and all purchased ingredients and packaging are received at the surimi manufacturing facility with supplier identity, quantity, product state, origin, and transport hand-off documented."
+  starting_condition_role: "factory_gate_input"
+  product_classification_scope: "Frozen surimi represents CPC 3.0 code 21242; another otherwise-prepared or preserved fish product is covered only with its actual route and qualifiers declared."
+  recursive_input_rule: "Purchased surimi or another product within the same PCR scope is recorded as a visible technosphere input linked to an upstream dataset and is not recursively re-manufactured inside this foreground system."
+  upstream_dataset_requirement: "Link fish production, fishing or aquaculture, ingredients, packaging, electricity, fuels, refrigerants, water supply, and inbound transport to geographically and technologically appropriate upstream datasets."
+  disclosure: "Declare fish species and origin, raw-fish state, facility geography, route variants, preservation state, reporting period, frozen-storage duration, treatment of same-category inputs, cut-offs, and allocation choices."
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Surimi"
+    uuid: "e6684e76-c555-40b8-9a7f-ecb12f574320"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fish species or species mix"
+    - "raw-fish state"
+    - "product form"
+    - "frozen or other preservation state"
+    - "formulation and adjuvant ingredients"
+    - "moisture basis"
+    - "gel-strength or commercial grade"
+    - "net mass and packaging configuration"
+    - "facility geography"
+    - "production period"
+    - "frozen-storage duration"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Surimi reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the inventory to exactly 1 kg of conforming surimi net output at the declared factory gate."
+  - id: net_mass_excludes_packaging
+    applies_to: "Reference product and packaged output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine product net mass independently from primary, secondary, and transport packaging mass; record packaging as separate product inputs and waste outputs."
+  - id: wet_mass_basis
+    applies_to: "Fish, washed mince, residues, ingredients, product, and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record masses on the as-received or as-discharged wet basis and retain moisture or solids measurements needed to compare differing states."
+  - id: energy_conversion
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Energy property appropriate to the selected flow"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered unit and conversion factor; do not mix delivered electricity, fuel lower heating value, and thermal output without an explicit conversion."
+process_map:
+  - id: surimi_manufacturing
+    name: "Frozen surimi manufacturing and factory-gate cold storage"
+    inclusion: "required"
+    inclusion_condition: "Always for the representative frozen-surimi route"
+    role: "Transform received fish into packaged, frozen, dispatch-ready surimi and record utilities, residues, wastewater, packaging, and refrigerant losses"
+    quantitative_reference: "1 kg net frozen surimi output"
+process_inventory:
+  - id: surimi_manufacturing
+    label: "Frozen surimi manufacturing and factory-gate cold storage"
+    inputs:
+      product:
+        - row_id: accepted_fish_input
+          role: "Accepted fish raw material"
+          name: "Fish raw material; exact Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the wet mass of accepted fish or fish flesh entering the represented manufacturing route after receipt inspection. Keep species, catch or farm origin, supplier, fresh or frozen state, and lot identity with the record."
+          amount:
+            expression: "measured accepted wet mass entering the production batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water_input
+          role: "Process and cleaning water"
+          name: "Process water; exact Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or reconciled water supplied for washing and dewatering cycles, equipment and area cleaning, ingredient preparation, and other foreground uses. Keep process water separable from sanitation water when meters or batch records permit."
+          amount:
+            expression: "measured water supplied to the represented production and supporting operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "100"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: ingredient_input
+          role: "Adjuvant and formulation ingredients"
+          name: "Individual formulation ingredient; exact Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each cryoprotective, pH-control, texture, salt, sugar, polyhydric-alcohol, phosphate, or other formulation ingredient separately using the approved formulation and actual issue or weigh records."
+          amount:
+            expression: "measured issued mass less documented return to inventory for each ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: packaging_input
+          role: "Primary, secondary, and transport packaging"
+          name: "Packaging material by polymer, paper, metal, or pallet type; exact Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging components separately by material and component type using purchase, issue, or packing-line count records and measured component mass."
+          amount:
+            expression: "component count multiplied by verified component mass, reconciled to issued packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_input
+          role: "Purchased electricity"
+          name: "Market electricity appropriate to facility geography; exact Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by meat separation, washing and dewatering, refining, mixing, packaging, freezing, metal detection, frozen storage, wastewater handling, cleaning, and allocated facility services."
+          amount:
+            expression: "metered consumption or reconciled equipment consumption assigned to the represented production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "20"
+                unit: "kWh/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refrigerant_makeup_input
+          role: "Refrigerant makeup"
+          name: "Refrigerant substance used at the facility; exact Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant charged to freezing and cold-storage equipment during the reporting period and identify the refrigerant substance."
+          amount:
+            expression: "measured refrigerant additions reconciled with service and inventory records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output during the reporting period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: surimi_output
+          role: "Frozen surimi at the factory gate"
+          name: "Surimi"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e6684e76-c555-40b8-9a7f-ecb12f574320"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The reference output is conforming packaged frozen surimi ready for dispatch after the declared factory-gate storage period."
+          amount:
+            expression: "exactly 1 kg net mass after normalization; preserve measured gross batch output before normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net mass reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fish_residue_output
+          role: "Fish preparation and refining residues"
+          name: "Fish-processing residues by physical form and treatment route; exact Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record heads, viscera, bones, skin, scales, dark meat, refining rejects, insoluble solids, and other separated fish material by destination. A marketed material is treated as a co-product rather than waste and enters the allocation decision."
+          amount:
+            expression: "measured or mass-balance-calculated wet mass dispatched to each treatment or recovery route"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wastewater_output
+          role: "Process wastewater"
+          name: "Fish-processing wastewater to the declared treatment route; exact Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater from washing, dewatering, sanitation, thawing, and other wet operations at the point it leaves the foreground process for on-site or off-site treatment. Preserve measured volume or mass and available solids or organic-load data."
+          amount:
+            expression: "measured discharge or water-balance estimate reconciled with water inputs and retained product moisture"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_waste_output
+          role: "Packaging rejects and other solid waste"
+          name: "Packaging waste by material and treatment route; exact Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected packaging, labels, cartons, liners, pallets, and other non-fish solid wastes separately by material and destination."
+          amount:
+            expression: "measured dispatched mass or verified count-to-mass calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_emission_output
+          role: "Fugitive refrigerant emissions to air"
+          name: "Refrigerant substance emitted to air; exact Tiangong UUID pending review"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct emissions of each refrigerant from inventory change, additions, removals, and documented recovery; do not substitute a generic refrigerant identity when the installed substance is known."
+          amount:
+            expression: "refrigerant mass balance for the reporting period allocated to represented production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen surimi output during the reporting period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net frozen surimi"
+                basis: "per 1 kg net frozen surimi output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "separately measurable lines, batches, or operations"
+    rule: "Avoid allocation where practicable by subdividing independently metered production lines, batches, storage periods, and treatment operations."
+    source_ids:
+      - ghg-protocol-product-2011
+  - rule_id: allocation_physical_relation
+    applies_to: "unavoidable shared burdens and co-products"
+    rule: "When subdivision is not practicable, use a documented physical relationship that reflects how inputs and emissions change with surimi and co-product outputs; use measured wet mass only when mass is the relevant causal relation."
+    source_ids:
+      - ghg-protocol-product-2011
+  - rule_id: allocation_economic_fallback
+    applies_to: "co-products without a defensible physical relationship"
+    rule: "If no defensible physical relationship exists, apply economic allocation using aligned price, quantity, geography, and reporting-period records, and disclose sensitivity to the selected period."
+    source_ids:
+      - ghg-protocol-product-2011
+  - rule_id: allocation_waste_status
+    applies_to: "fish residues, recovered solids, and other outputs"
+    rule: "Classify an output as waste only when the holder discards it and no product revenue or intended beneficial use is represented; otherwise treat it as a co-product and apply the allocation hierarchy."
+    source_ids:
+      - ghg-protocol-product-2011
+  - rule_id: allocation_consistency
+    applies_to: "all foreground products and residues"
+    rule: "Apply the same allocation method consistently to similar inputs and outputs, report allocation factors before normalization, and retain an unallocated mass-and-energy reconciliation."
+    source_ids:
+      - ghg-protocol-product-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_input_records
+      process_id: "surimi_manufacturing"
+      flow_role: "accepted fish and formulation ingredients"
+      record_type: "receiving, weigh, issue, return, formulation, and lot records"
+      raw_fields: "date; lot_id; supplier; species; origin; state; ingredient_id; gross_mass; tare_mass; returned_mass; unit"
+      collection_method: "calibrated scales and inventory reconciliation"
+      unit: "kg"
+      frequency: "each lot and batch"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented receiving and formulation points"
+      aggregation_rule: "sum accepted or net-issued mass by material and batch, then normalize to net output"
+      quality_evidence: "calibration records; supplier and lot traceability; formulation authorization; reconciliation"
+    - protocol_id: cp_water_records
+      process_id: "surimi_manufacturing"
+      flow_role: "process and cleaning water"
+      record_type: "meter, batch, and sanitation records"
+      raw_fields: "meter_id; start_reading; end_reading; batch_id; use_area; unit"
+      collection_method: "submeter reading or reconciled facility water balance"
+      unit: "kg or m3"
+      frequency: "each batch where metered, otherwise at least monthly"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented process and sanitation uses"
+      aggregation_rule: "convert volume using declared density when necessary, subtract excluded uses, and normalize to net output"
+      quality_evidence: "meter calibration; coverage map; balance reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "surimi_manufacturing"
+      flow_role: "packaging inputs"
+      record_type: "packing-line count, issue, return, and component-mass records"
+      raw_fields: "component_id; material; count_used; count_returned; sampled_component_mass; unit"
+      collection_method: "verified count-to-mass calculation reconciled to stores"
+      unit: "kg"
+      frequency: "each packaging configuration and batch"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented packing lines"
+      aggregation_rule: "net component count multiplied by verified component mass, summed by material"
+      quality_evidence: "sampling record; scale calibration; issue-return reconciliation"
+    - protocol_id: cp_energy_records
+      process_id: "surimi_manufacturing"
+      flow_role: "electricity and other energy"
+      record_type: "utility meter, invoice, submeter, equipment runtime, and production records"
+      raw_fields: "meter_id; opening; closing; unit; period; equipment; runtime; output_mass"
+      collection_method: "direct submetering preferred; otherwise documented engineering or production allocation"
+      unit: "kWh or MJ"
+      frequency: "continuous or monthly, aligned to production"
+      temporal_coverage: "full represented production period including declared frozen storage"
+      site_scope: "all represented processing, refrigeration, storage, sanitation, and treatment operations"
+      aggregation_rule: "subtract excluded loads, allocate shared loads under section 7, convert units explicitly, and normalize to net output"
+      quality_evidence: "meter calibration; invoices; load inventory; reconciliation"
+    - protocol_id: cp_product_output_records
+      process_id: "surimi_manufacturing"
+      flow_role: "conforming surimi output"
+      record_type: "batch, checkweigh, grade, moisture, release, storage, and dispatch records"
+      raw_fields: "batch_id; product_id; species; formulation; gross_mass; packaging_mass; net_mass; moisture; grade; freeze_time; storage_duration; release_status"
+      collection_method: "calibrated checkweighing and quality-release system"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented output and cold-storage locations"
+      aggregation_rule: "sum released net mass by product, exclude packaging and rejects, retain gross pre-normalization total"
+      quality_evidence: "scale calibration; quality release; lot traceability; cold-chain log"
+    - protocol_id: cp_residue_records
+      process_id: "surimi_manufacturing"
+      flow_role: "fish residues and recovered solids"
+      record_type: "bin weights, dispatch tickets, recovery records, and mass balance"
+      raw_fields: "batch_id; residue_type; wet_mass; moisture_or_solids; destination; revenue_status; unit"
+      collection_method: "direct weighing preferred; reconciled mass balance when direct measurement is unavailable"
+      unit: "kg"
+      frequency: "each batch or dispatch"
+      temporal_coverage: "full represented production period"
+      site_scope: "all preparation, washing, refining, and wastewater-solids points"
+      aggregation_rule: "sum by residue type and destination, then normalize to net output"
+      quality_evidence: "scale calibration; dispatch ticket; receiver record; mass-balance closure"
+    - protocol_id: cp_wastewater_records
+      process_id: "surimi_manufacturing"
+      flow_role: "process wastewater"
+      record_type: "discharge meter, tank, laboratory, and treatment records"
+      raw_fields: "period; discharge_mass_or_volume; solids; organic_load; destination; treatment_stage; unit"
+      collection_method: "direct discharge measurement or documented water balance with sampling"
+      unit: "kg or m3"
+      frequency: "continuous, batch, or representative sampling"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented discharge points"
+      aggregation_rule: "aggregate by treatment destination, convert volume when necessary, and normalize to net output"
+      quality_evidence: "meter calibration; sampling plan; laboratory result; water-balance closure"
+    - protocol_id: cp_packaging_waste_records
+      process_id: "surimi_manufacturing"
+      flow_role: "packaging and other solid waste"
+      record_type: "waste weights, counts, dispatch tickets, and treatment records"
+      raw_fields: "period; material; count; component_mass; waste_mass; destination; unit"
+      collection_method: "direct weighing or verified count-to-mass calculation"
+      unit: "kg"
+      frequency: "each batch or dispatch"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented packing and storage areas"
+      aggregation_rule: "sum by material and destination, then normalize to net output"
+      quality_evidence: "scale calibration; dispatch ticket; count-to-mass sampling"
+    - protocol_id: cp_refrigerant_records
+      process_id: "surimi_manufacturing"
+      flow_role: "refrigerant makeup and emissions"
+      record_type: "inventory, purchase, charge, recovery, disposal, and service records"
+      raw_fields: "refrigerant_id; opening_stock; purchases; additions; recoveries; disposals; closing_stock; equipment_id; period; unit"
+      collection_method: "substance-specific refrigerant mass balance"
+      unit: "kg"
+      frequency: "each service event and reporting-period close"
+      temporal_coverage: "full represented production period"
+      site_scope: "all represented freezing and cold-storage systems"
+      aggregation_rule: "calculate loss by substance, allocate shared systems under section 7, and normalize to net output"
+      quality_evidence: "service tickets; invoices; inventory reconciliation; equipment register"
+  calculation_rules:
+    - id: calc_net_surimi_mass
+      applies_to: "packaged surimi output"
+      rule: "net_surimi_mass = gross_packaged_mass - packaging_mass - nonconforming_product_mass"
+      inputs:
+        - "gross packaged mass"
+        - "packaging mass"
+        - "nonconforming product mass"
+      output: "kg conforming net surimi"
+      source_ids: []
+    - id: calc_normalized_amount
+      applies_to: "every inventory row"
+      rule: "normalized_amount = allocated_period_or_batch_amount / conforming_net_surimi_mass"
+      inputs:
+        - "allocated row amount"
+        - "conforming net surimi mass"
+      output: "row unit per kg net surimi"
+      source_ids: []
+    - id: calc_wet_mass_balance
+      applies_to: "manufacturing batch or reporting period"
+      rule: "mass_balance_gap = fish + water + ingredients + other mass inputs - surimi - residues - wastewater - other mass outputs, all on aligned wet-mass boundaries"
+      inputs:
+        - "collected input and output masses"
+        - "inventory changes"
+        - "moisture-state notes"
+      output: "absolute and percentage mass-balance gap before normalization"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "packaging input and waste"
+      rule: "packaging_mass = verified_component_count x sampled_component_mass for each material and component"
+      inputs:
+        - "component count"
+        - "sampled component mass"
+        - "return and reject counts"
+      output: "kg packaging by material"
+      source_ids: []
+    - id: calc_refrigerant_loss
+      applies_to: "freezing and cold-storage systems"
+      rule: "refrigerant_loss = opening_stock + purchases - closing_stock - documented_inventory_increase - recovered_or_disposed_mass"
+      inputs:
+        - "substance-specific inventory and service records"
+      output: "kg refrigerant emitted by substance before allocation"
+      source_ids: []
+    - id: calc_allocation_factor
+      applies_to: "shared operations and co-products"
+      rule: "calculate and disclose the selected physical or economic allocation factor from aligned quantities and, when applicable, prices; all factors for an allocation set shall sum to one"
+      inputs:
+        - "subdivision evidence"
+        - "co-product quantities"
+        - "causal relation or price records"
+      output: "dimensionless allocation factors"
+      source_ids:
+        - ghg-protocol-product-2011
+  data_quality_requirements:
+    - id: dq_primary_foreground
+      applies_to: "all foreground operations"
+      requirement: "Use facility-specific primary records for processes under the operator's control; document any secondary estimate, its reason, and replacement priority."
+      evidence: "ghg-protocol-product-2011; source records and calculation workbook"
+    - id: dq_representativeness
+      applies_to: "all data and linked datasets"
+      requirement: "Assess technological, geographical, and temporal representativeness against the declared species, route, facility, equipment, reporting period, electricity supply, and storage duration."
+      evidence: "ghg-protocol-product-2011; representativeness assessment"
+    - id: dq_traceability
+      applies_to: "fish, ingredients, packaging, and output"
+      requirement: "Retain supplier, lot or batch, species, origin, formulation, release, and destination links sufficient to reproduce each aggregated value."
+      evidence: "codex-cxc-52-2003; receiving, batch, formulation, and dispatch records"
+    - id: dq_food_safety_controls
+      applies_to: "reception through frozen dispatch"
+      requirement: "Retain the facility-specific HACCP flow diagram, hazard analysis, critical control and corrective-action records, sanitation records, metal-detection checks, and product-release evidence applicable to the represented route."
+      evidence: "codex-cxc-52-2003; HACCP and release records"
+    - id: dq_temperature_control
+      applies_to: "fish, washed mince, mixing, freezing, frozen storage, and dispatch"
+      requirement: "Retain time-temperature records and deviations against the facility's declared product specification and applicable food-safety limits; include the represented cold-storage duration."
+      evidence: "codex-cxc-52-2003; calibrated temperature logs and corrective actions"
+    - id: dq_mass_balance
+      applies_to: "each batch and aggregation period"
+      requirement: "Reconcile product, residues, wastewater, ingredient, packaging, and inventory-change records on consistent wet-mass and net-mass bases; investigate material gaps before release."
+      evidence: "mass-balance workbook; scale and meter calibration records"
+    - id: dq_completeness
+      applies_to: "full foreground inventory"
+      requirement: "Document every excluded foreground flow and demonstrate that excluded operations are not silently shifted to an unlinked upstream or downstream stage."
+      evidence: "completeness checklist; process map; cut-off register"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm that the output uses Surimi e6684e76-c555-40b8-9a7f-ecb12f574320, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and exactly 1 kg net mass excluding packaging."
+    source_ids: []
+  - rule_id: validate_qualifiers
+    applies_to: "dataset identity"
+    rule: "Fail completeness when any required species, raw-fish state, product form, preservation state, formulation, moisture basis, grade, packaging, geography, period, storage duration, or allocation qualifier is missing."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_route_completeness
+    applies_to: "representative process map"
+    rule: "Confirm that every applicable reception, preparation, separation, washing and dewatering, refining, mixing, packaging, freezing, metal-detection, storage, and dispatch step is included or explicitly justified as not applicable."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_collection_links
+    applies_to: "collected and calculated rows"
+    rule: "Confirm that every foreground-record or calculated row links to an implemented collection protocol and retains its raw evidence and unit conversion."
+    source_ids:
+      - ghg-protocol-product-2011
+  - rule_id: validate_mass_balance
+    applies_to: "batch and reporting period"
+    rule: "Confirm that wet-mass and packaging reconciliations were performed before normalization and that unexplained gaps are investigated and disclosed."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared operations and co-products"
+    rule: "Confirm subdivision was considered first, the selected physical or economic relationship is justified, factors sum to one, waste versus co-product status is documented, and the method is consistent across similar flows."
+    source_ids:
+      - ghg-protocol-product-2011
+  - rule_id: validate_cold_chain_and_haccp
+    applies_to: "product quality and food safety"
+    rule: "Confirm that facility-specific HACCP, sanitation, metal-detection, time-temperature, deviation, corrective-action, and release records cover the represented production and frozen-storage period."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_estimate_disclosure
+    applies_to: "provisional QA ranges and secondary estimates"
+    rule: "Confirm that every reasoned_estimate is identified as provisional and is not presented as an industry benchmark or source-backed acceptance limit."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Background or foreground-linked modelling of frozen surimi supply at the manufacturing facility gate and later food-manufacturing systems"
+  allowed_use: "Studies whose product, route, geography, technology, reporting period, cold-storage duration, allocation method, and quality requirements are compatible with the dataset metadata"
+  excluded_use: "Fishery or aquaculture production without linked upstream datasets; caviar, crustacean, mollusc, plain fillet or minced-fish, or downstream surimi-based product substitution; retail or consumer-stage claims; food-safety certification by the LCA dataset alone"
+  required_metadata: "PCR id; product and flow UUID; CPC reference; species and origin; raw-fish state; formulation and additives; moisture and grade; net mass and packaging; facility geography; technology; production period; cold-storage duration; boundary; linked upstream datasets; allocation; data sources; QA status"
+  required_quality_disclosure: "Primary-data share and gaps; meter and scale coverage; mass-balance result; route deviations; temporal, geographical, and technological representativeness; food-safety and cold-chain record coverage; provisional estimates; allocation sensitivity; unresolved flow identities"
+  update_trigger: "Change in species or origin, formulation, product state, processing or refrigeration technology, facility geography, energy supply, packaging, storage duration, co-product market, allocation basis, regulatory requirement, or material foreground performance"
+data_sources:
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, official FAO/WHO text, https://www.fao.org/docrep/pdf/011/a1553e/a1553e00.pdf, retrieved 2026-08-11"
+    used_for: "Frozen-surimi definition; typical process decomposition; raw-material handling; washing and dewatering; refining; ingredient mixing; packaging; freezing; metal detection; frozen storage; temperature control; HACCP and food-safety records"
+  - id: "ghg-protocol-product-2011"
+    type: "standard"
+    reference: "World Resources Institute and World Business Council for Sustainable Development, Product Life Cycle Accounting and Reporting Standard, 2011, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf, retrieved 2026-08-11"
+    used_for: "Foreground primary-data expectations; technological, geographical, and temporal data-quality assessment; system-boundary completeness; subdivision and physical/economic allocation hierarchy; allocation disclosure and consistency"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:404c4218c863cf3c9d3342d6de5c06d779b0880f0a8ff8c54cec6f3d324a20fa"
+  generated_content_sha256: "sha256:4204906389787f54f915fe75c2d4e493003140fe54312e68ee35557d8408be8e"

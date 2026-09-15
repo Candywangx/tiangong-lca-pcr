@@ -1,616 +1,669 @@
 ---
-schema_version: 1
 pcr_id: pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone
 language: en-US
 status: candidate
-content_maturity: authored_methodology
-translation_status: canonical
 sync_with: pcr.zh-CN.md
 ---
 
 # Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone
 
-This PCR defines foreground data collection and model-construction rules for CPC 3.0 code 04911. It covers biogenic mineral or shell-like products placed on the market as coral and similar products, mollusc shells, crustacean shells, echinoderm shells, or cuttle-bone after source receipt, washing, drying, sorting, optional size reduction, and optional packaging.
+## 1. Scope and Applicability
 
-## 1. Product Category Identity
+This PCR governs foreground data packages for coral and similar materials, shells of molluscs, crustaceans or echinoderms, and cuttle-bone that remain unworked or only simply prepared, are not cut to shape, or are marketed as fragments, powder, or waste within the declared product category. It covers source qualification, directly controlled collection or delivery, receipt, cleaning or desalting, removal of residual organic matter, drying, sorting, crushing or milling, grading, packaging, storage, and gate release when those operations apply.
+
+The user shall choose a route-specific process set rather than assume that every product undergoes every preparation step. Products transformed into calcium oxide, precipitated calcium carbonate, chitin, chitosan, hydroxyapatite, formulated construction products, jewellery, carved or cut-to-shape articles, food, feed, or other chemically or functionally distinct goods are outside this PCR. The dataset shall identify the source material family and shall not generalize mollusc-shell evidence to coral, crustacean shells, echinoderm shells, or cuttle-bone without disclosure.
+
+## 2. Product Category Identity
 
 | Field | Value |
 | --- | --- |
 | canonical_pcr_id | pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone |
-| classification_system | CPC |
-| classification_version | 3.0 |
-| classification_code | 04911 |
-| classification_title | Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone |
-| included_products | Natural or recovered coral-like calcareous products, shells of molluscs, shells of crustaceans, shells of echinoderms, and cuttle-bone sold as materials or prepared goods within CPC 04911. |
-| excluded_products | Live aquatic animals, edible fishery products, prepared food, jewellery or finished decorative articles outside CPC 04911, synthetic calcium carbonate, and products whose declared reference flow is not mass based. |
-| representative_product | Cleaned, dried, sorted shell or coral-like biogenic mineral material at the facility gate. |
-| production_route | Source collection or receipt, provenance check, washing or desalting, drying, sorting, optional crushing or grading, optional packaging, and gate release. |
-| market_state | Bulk or packed material declared by source route, moisture basis, grade, particle-size range when applicable, and legal or provenance status. |
+| classification_refs | CPC 3.0 `04911` (accepted exact mapping); HS 2022 `050800` (scope aid only) |
+| covered_products | Unworked or simply prepared coral and similar materials; shells of molluscs, crustaceans, or echinoderms; cuttle-bone; and their unshaped fragments, powder, or waste marketed within the declared category. |
+| excluded_products | Live aquatic organisms; edible products; cut-to-shape, carved, polished, jewellery, or other finished articles; calcined calcium oxide; precipitated or chemically purified calcium carbonate; chitin, chitosan, hydroxyapatite, and other chemically transformed derivatives; formulated construction, agricultural, food, feed, cosmetic, or medical products. |
+| representative_product | Cleaned, dried, unshaped shell, cuttle-bone, or coral-like material, or its mechanically crushed and graded fraction, at the preparation facility gate. |
+| production_route | Source qualification; conditional collection and delivery; receipt; route-specific cleaning, desalting, organic-residue removal, and drying; conditional size reduction and grading; conditional packaging and storage; gate release. |
+| market_state | Bulk or packaged whole unshaped material, fragments, grit, powder, or declared waste fraction, with material family, source route, moisture basis, grade or particle-size class, and legal or provenance status stated. |
 
-## 2. Functional Unit and Reference Flow
+## 3. Reference Flow
 
 | Field | Value |
 | --- | --- |
-| what | Provision of CPC 04911 shell, coral-like, echinoderm, crustacean-shell, mollusc-shell, or cuttle-bone material at the facility gate. |
-| how_much | 1 kg of declared product mass. |
-| how_well | Product shall state source route, material family, moisture basis, grade or particle-size class when applicable, and legal or provenance evidence. |
-| how_long_or_cycle | One production batch or reporting period, normalized to the reference flow. |
-| reference_flow_link | reference_product_flow |
+| What | Provision of declared coral-like material, mollusc shell, crustacean shell, echinoderm shell, or cuttle-bone product within this PCR at the preparation facility gate. |
+| How much | 1 kg of declared product mass. |
+| How well | The product meets the declared material family, source route, preparation state, moisture basis, grade or particle-size class, and applicable legal and provenance requirements. |
+| How long or cycle | One identified production batch or a declared reporting period normalized to the reference amount. |
+| reference_flow_link | `reference_product_flow` |
 
 | Field | Value |
 | --- | --- |
-| reference_amount | 1 kg |
-| reference_product_flow | Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906` |
-| reference_flow_property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
-| reference_unit_group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
-| reference_unit | kg |
-| required_qualifiers | source route; material family; moisture basis; grade or particle-size class where applicable; legal or provenance evidence |
+| Reference amount | 1 kg |
+| Reference product flow | Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906` |
+| Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
+| Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
+| Reference unit | kg |
+| Required qualifiers | material family and taxon where known; source route; source geography; collection, salvage, aquaculture, or processing-residue status; preparation state; moisture basis; grade or particle-size class; legal and provenance status; packaging state |
 
-## 3. Measurement and Unit Rules
+When constructing a foreground data package, the items listed in `Required qualifiers` shall be declared in dataset metadata, process notes, reference-flow comments, product descriptions, or equivalent data-package fields. Missing required qualifiers make the reference flow incomplete.
 
-| rule_id | applies_to | required_property | required_unit | rule |
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
-| reference_mass | Reference product and all product or waste mass flows | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Normalize product outputs, rejected material, residues, and packaging waste to kg per 1 kg declared reference product. |
-| declared_moisture_basis | Raw and cleaned source material | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | State whether mass is wet, air-dry, oven-dry, or contract-declared moisture basis. Convert only when measured moisture evidence is available. |
-| water_volume_or_mass | Washing, desalting, or cleaning water | Mass or volume | kg or m3 | Report water as measured facility records. If volume is used, retain the original unit and conversion basis. |
-| fuel_or_energy_basis | Collection, drying, crushing, grading, and packaging energy | Energy or mass | kWh, MJ, L, or kg | Record the original fuel or electricity unit before normalization. Convert to reference flow only after preserving source records. |
-| particle_size_declaration | Crushed, powdered, or graded product | Declared grade | mm or declared class | Particle-size class is a product qualifier, not a separate reference unit, unless the dataset declares a distinct product flow. |
+| `reference_mass` | Reference product and mass-bearing product or waste rows | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Normalize the declared product and all comparable material outputs to 1 kg of reference product while retaining unnormalized reporting-period totals. |
+| `moisture_basis` | Received, prepared, and final material | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | State whether each mass is as-received, air-dry, oven-dry, or measured at another moisture basis. Convert between bases only from measured moisture or solids content. |
+| `water_record` | Cleaning, desalting, and washing water | Mass or volume | kg or m3 | Retain the metered or invoiced unit. If mass and volume are converted, record the measured or documented density and conversion. |
+| `energy_and_fuel_record` | Collection, handling, drying, milling, grading, packaging, and storage energy | Energy, mass, or volume | kWh, MJ, kg, or L | Preserve the original meter, invoice, or fuel-log unit and the carrier identity before normalization. Do not use a generic conversion factor when a supplier-specific value is available. |
+| `transport_service` | Directly controlled collection and delivery | Mass-distance | tkm | Calculate transport service from actual transported mass and route distance and retain vehicle or vessel mode, load basis, and empty-return treatment. |
+| `particle_size_and_grade` | Mechanically crushed, milled, or graded product | Declared size or grade | mm, µm, or declared class | Particle size or grade is a required qualifier and does not replace the mass reference property. |
+| `transformation_scope` | Thermally or chemically treated material | Declared composition and process conditions | As measured | If treatment changes the material into CaO, precipitated calcium carbonate, chitin, chitosan, hydroxyapatite, or another chemically distinct product, this PCR no longer supplies the reference-flow rule. |
 
-## 4. System Boundary
+## 5. System Boundary
 
-The default boundary starts at the declared source material being received or directly collected for this product category. Upstream ecological formation of shells, coral-like material, or cuttle-bone is outside the foreground production boundary unless the operator directly controls aquaculture, harvesting, or habitat intervention. The dataset shall disclose the source route and shall include any directly controlled collection, receipt, cleaning, drying, sorting, size-reduction, packaging, and facility waste handling.
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `system_boundary_rule_1` | Source qualification and collection | Declare whether material is directly collected, salvaged, supplied from aquaculture, recovered from seafood processing, purchased as a by-product, or received as waste. Include directly controlled collection, habitat interaction, and delivery activities. | `unsd-cpc3-hs-scope`; `cites-current-coral-controls` |
+| `system_boundary_rule_2` | Purchased or supplied source material | Link the source material to a representative upstream dataset or disclose source geography, supplier process, prior product or waste status, and any upstream burden-allocation rule. A waste or by-product label alone does not establish zero upstream burden. | `eu-pef-method-2021` |
+| `system_boundary_rule_3` | Foreground preparation | Include applicable receipt, cleaning, desalting, organic-residue removal, drying, sorting, crushing or milling, grading, packaging, storage, internal handling, wastewater management, solid-residue management, and direct releases under operator control. | `eu-pef-method-2021`; `shell-waste-management-2023`; `bivalve-shell-valorization-2022` |
+| `system_boundary_rule_4` | Foreground outputs | Identify every co-product, by-product, waste stream, wastewater stream, and direct elementary flow. Any exclusion shall be justified and its likely significance disclosed. | `eu-pef-method-2021` |
+| `system_boundary_rule_5` | Facility-gate dataset | Exclude downstream distribution, product use, incorporation into another product, and end-of-life from this gate reference flow unless the declared dataset scope explicitly extends beyond the gate. | `eu-pef-method-2021` |
 
 ### Boundary Abstraction
 
 | Field | Value |
 | --- | --- |
-| declared_starting_condition | declared_source_material_received |
-| starting_condition_role | The first foreground-controlled material state is source material received, collected, salvaged, or purchased for CPC 04911 processing. |
-| product_classification_scope | CPC 3.0 code 04911 only. Same-category inputs remain in scope and must not be hidden as generic upstream material. |
-| recursive_input_rule | If CPC 04911 material is used as an input to produce CPC 04911 output, report it as a same-category product input with its own source route, mass, and quality qualifiers. Do not relabel it as an unspecified mineral input. |
-| upstream_dataset_requirement | When source material is purchased or supplied by another operator, link a supplier dataset or disclose source route, geography, collection method, and legal or provenance evidence. |
-| disclosure | Disclose controlled collection activity, rejected material fate, wastewater or brine fate, dust controls, packaging type, moisture basis, and unresolved Tiangong UUID substitutions. |
+| declared_starting_condition | `qualified_source_material_at_collection_or_receipt` |
+| starting_condition_role | The first foreground state is source material whose material family, source route, geography, prior product or waste status, moisture basis, and legal or provenance evidence have been checked at collection or receipt. |
+| product_classification_scope | CPC 3.0 `04911`, constrained to unworked or simply prepared, unshaped materials and the declared powder or waste fractions. |
+| recursive_input_rule | Record an input already within this product category as a same-category product input with its own source route, mass, moisture basis, grade, upstream dataset, and allocation status; do not hide it as generic mineral or waste input. |
+| upstream_dataset_requirement | Use a supplier- or route-representative dataset for purchased or supplied material. If unavailable, disclose the data gap and prior burden treatment; do not silently assign zero burden. |
+| disclosure | Report included and excluded unit operations; collection and transport control; material taxon or family; source geography; applicable permit or CITES status for coral; prior waste or by-product status; moisture and grade; cleaning, drying, and milling route; packaging; wastewater and residue fate; direct releases; allocation method; and background-data substitutions. |
 
-## 5. Allocation Rules
+## 6. Process Inventory Structure
 
-Avoid allocation where a batch can be separated by measured product grade, material family, or product destination. When a batch produces several saleable grades of CPC 04911 material, allocate shared washing, drying, sorting, and packaging burdens by dry or declared product mass unless a reviewed market-value rule is documented. Rejects, wastewater, brine, and dust are outputs requiring treatment or emission modelling, not co-products, unless the operator demonstrates a saleable recovered material dataset with a separate reference flow.
-
-## 6. Process Inventory
+### Process Map
 
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
-| source_receipt_and_provenance | Source receipt and provenance | required | Always included for CPC 04911 datasets. | Establish source route, accepted mass, rejected mass, and legal or provenance state. | Accepted source material entering preparation. |
-| washing_drying_and_sorting | Washing, drying, and sorting | required | Include when the product is cleaned, dried, desalted, sorted, graded, or otherwise prepared before gate release. | Convert source material into cleaned sorted reference material and record cleaning residues. | Cleaned sorted product mass. |
-| size_reduction_packaging_and_delivery | Size reduction, packaging, and gate release | conditional | Include when crushing, grinding, grading, bagging, palletizing, cold or dry storage, or direct delivery to gate is foreground controlled. | Declare final gate product state, packaging, and direct facility releases. | Declared product at gate. |
+| `source_qualification_and_receipt` | Source qualification and receipt | `required` | Always include. | Establish product identity, route, provenance, incoming mass, moisture, accepted mass, and rejected material. | Accepted source material entering preparation or gate handling. |
+| `controlled_collection_and_delivery` | Controlled collection and delivery | `conditional` | Include when collection, salvage, vessel activity, loading, or delivery is controlled by the reporting operator. | Capture route distance, transport mode, fuel or energy, and directly controlled collection interactions. | Transported accepted source material and transport service. |
+| `cleaning_drying_and_sorting` | Cleaning, drying, and sorting | `conditional` | Include when washing, desalting, organic-residue removal, sterilization, drying, sorting, or similar simple preparation occurs. | Produce clean prepared material and record water, energy, agents, residues, wastewater, and direct releases. | Prepared material output on its declared moisture basis. |
+| `size_reduction_and_grading` | Size reduction and grading | `conditional` | Include when crushing, milling, screening, sieving, or grading occurs. | Produce the declared fragment, grit, powder, or grade and record energy, off-spec material, and dust. | On-spec graded material output. |
+| `packaging_storage_and_gate_release` | Packaging, storage, and gate release | `required` | Always include gate release; include packaging and storage rows only when they occur. | Establish final reference product mass, packaging state, storage conditions, and gate output. | 1 kg declared product at facility gate. |
 
-### Process: Source receipt and provenance (`source_receipt_and_provenance`)
+### Process: Source qualification and receipt (`source_qualification_and_receipt`)
 
 #### Inputs
 
 ##### Product flows
 
-###### Source material received (`declared_source_material_received`)
+###### Source material received (`source_material_received`)
 
-As the incoming source material record, this row captures material identity, route, and accepted mass before preparation.
+This row records the incoming coral-like material, shell, or cuttle-bone before acceptance and preparation, including its prior product, by-product, or waste status.
 
 - Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
-- Flow property / unit: Mass; kg
-- Amount: Measured incoming mass by batch, supplier delivery note, receiving scale, or direct collection log before rejection adjustment.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Incoming batch or reporting-period receipt record before normalization.
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_source_material_receipt`
-- Range: Provisional source material receipt screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 1
-  - Upper: 20
-  - Unit: kg/kg declared product
-  - Basis: broad first-pass received source material per kg declared product before receipt rejection and preparation loss
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Collection or delivery fuel (`collection_or_delivery_fuel`)
-
-Use this row only for directly controlled collection, vessel, truck, loader, or internal transport fuel before facility receipt. Purchased delivered material may report this as supplier dataset input instead.
-
-- Selected flow: Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
-- Flow property / unit: Fuel quantity; L, kg, MJ, or kWh as recorded
-- Amount: Measured fuel or energy use for directly controlled collection or delivery, normalized to accepted source material.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure incoming gross and net material mass by batch or reporting period and record moisture or solids basis.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
-- Basis: Direct collection or delivery transport service associated with the accepted source material.
+- Normalization basis: Incoming mass and accepted mass normalized to 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_source_receipt`
+
+##### Waste flows
+
+No waste input is prescribed. If the facility accepts a legally classified waste, retain that status in the source record while modelling the material as the same-category input selected for this PCR.
+
+##### Elementary flows
+
+No default elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Accepted source material (`accepted_source_material`)
+
+Accepted material is the quantity transferred to simple preparation or directly to final gate handling after receipt rejects are removed.
+
+- Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
+- Flow property / unit: Mass / kg
+- Amount rule: Calculate accepted mass from measured incoming mass less measured receipt rejects on the same moisture basis.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: Accepted mass per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_source_receipt`
+
+##### Waste flows
+
+###### Receipt rejects (`receipt_rejects`)
+
+Record non-target biological material, sediment, foreign matter, contaminated material, and nonconforming source material removed at receipt, with its actual fate.
+
+- Selected flow: Select the route-specific Tiangong waste flow matching material and treatment destination.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure rejected mass by batch and record reuse, recovery, treatment, or disposal destination.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: Rejected mass per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_waste_and_wastewater`
+
+##### Elementary flows
+
+No default elementary output is prescribed for receipt. Add measured direct releases when present.
+
+### Process: Controlled collection and delivery (`controlled_collection_and_delivery`)
+
+#### Inputs
+
+##### Product flows
+
+###### Material collected or delivered (`material_collected_or_delivered`)
+
+Use the qualified source-material record for material moved by a collection or delivery activity controlled by the reporting operator.
+
+- Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
+- Flow property / unit: Mass / kg
+- Amount rule: Use measured loaded and delivered mass, with moisture basis and losses stated.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: Transported mass associated with 1 kg final reference product.
 - Basis kind: Transport service (`transport_service`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection_or_delivery_energy`
-- Range: Provisional collection or delivery fuel screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: L diesel-equivalent/kg accepted source material
-  - Basis: broad first-pass directly controlled collection or delivery fuel per kg accepted source material
-  - Basis kind: Transport service (`transport_service`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_collection_transport`
 
-##### Waste flows
+###### Collection or delivery diesel (`collection_or_delivery_diesel`)
 
-###### Receipt rejects and non-target residue (`receipt_rejects_and_non_target_residue`)
+Use this row only when diesel is the actual foreground-controlled carrier; select another Tiangong flow for another carrier.
 
-This row records stones, mixed debris, non-target shells, biological residue, or nonconforming material removed at receipt.
-
-- Selected flow: Select route-specific reject or residue waste flow
-- Flow property / unit: Mass; kg
-- Amount: Measured rejected mass and declared fate for material removed before washing or sorting.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Rejected mass relative to incoming received source material.
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_reject_and_residue_records`
-- Range: Mass-balance QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg received source material
-  - Basis: mass fraction of received source material
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
-
-##### Elementary flows
-
-###### Collection area or habitat interaction indicator (`collection_area_or_habitat_interaction_indicator`)
-
-This row is a foreground disclosure indicator for directly controlled collection from coastal, marine, aquaculture, salvage, or processing-residue routes. Select a more specific Tiangong elementary flow when one is available.
-
-- Selected flow: Select route-specific collection area, habitat interaction, or legal harvest disclosure flow
-- Flow property / unit: Area, count, permit descriptor, or narrative record
-- Amount: Record collection area, permit identifier, salvage source, aquaculture source, or processing-residue source when foreground collection is controlled.
+- Selected flow: Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass / kg
+- Amount rule: Record fuel from bunkering, tank, invoice, or equipment logs and link it to the collection or delivery route.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
-- Basis: Source route disclosure associated with accepted source material.
-- Basis kind: Process output (`process_output`)
+- Normalization basis: Fuel used for the transport service associated with 1 kg final reference product.
+- Basis kind: Transport service (`transport_service`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_collection_area_records`
+- Collection protocol: `cp_collection_transport`
+
+##### Waste flows
+
+No default waste input is prescribed.
+
+##### Elementary flows
+
+###### Direct collection interactions or releases (`collection_direct_releases`)
+
+Instantiate this row only for measured or permit-reported resource extraction, habitat interaction, or direct emissions caused by controlled collection.
+
+- Selected flow: Select the applicable Tiangong elementary flow for the measured resource or emission.
+- Flow property / unit: Use the selected Tiangong flow property and unit.
+- Amount rule: Use direct monitoring, permit records, or an approved calculation from collected activity data.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: Direct interaction or release per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_direct_releases`
 
 #### Outputs
 
 ##### Product flows
 
-###### Accepted raw biogenic mineral material (`accepted_raw_biogenic_mineral_material`)
+###### Delivered source material (`delivered_source_material`)
 
-The process output is the mass accepted into preparation after receipt checks and before washing, drying, or sorting.
+This output carries the measured delivered mass into receipt or preparation without changing its material identity.
 
 - Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
-- Flow property / unit: Mass; kg
-- Amount: Accepted incoming mass after receipt rejection, carried forward to preparation.
+- Flow property / unit: Mass / kg
+- Amount rule: Calculate delivered mass from loaded mass less measured transport losses on the same moisture basis.
 - Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Incoming source material minus receipt rejects, before normalization to the final reference flow.
-- Basis kind: Process output (`process_output`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: Delivered mass per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_source_material_receipt`
-- Range: Accepted material QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg received source material
-  - Basis: accepted fraction of received source material
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+- Collection protocol: `cp_collection_transport`
 
 ##### Waste flows
 
-No additional waste output is expected beyond receipt rejects unless route-specific handling creates separate waste records.
+###### Collection or delivery losses (`collection_or_delivery_losses`)
+
+Record lost, spilled, damaged, or rejected material only when it occurs and assign its actual fate.
+
+- Selected flow: Select the route-specific Tiangong waste flow matching material and destination.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure or reconcile the difference between loaded and delivered mass, excluding measured moisture change.
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: Loss mass per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_collection_transport`
 
 ##### Elementary flows
 
-No default elementary output is specified for this receipt process. Add route-specific emissions when directly measured or required by local modelling rules.
+Direct releases are recorded in `collection_direct_releases`; do not duplicate emissions already represented by a linked fuel-combustion or transport process.
 
-### Process: Washing, drying, and sorting (`washing_drying_and_sorting`)
+### Process: Cleaning, drying, and sorting (`cleaning_drying_and_sorting`)
 
 #### Inputs
 
 ##### Product flows
 
-###### Raw material input for washing and sorting (`raw_material_input_for_washing_and_sorting`)
+###### Accepted material for preparation (`material_for_preparation`)
 
-This row transfers accepted raw material into the cleaning and preparation process.
+This input is accepted material entering the applicable cleaning, desalting, organic-residue removal, drying, or sorting steps.
 
 - Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
-- Flow property / unit: Mass; kg
-- Amount: Accepted raw material mass entering washing, desalting, drying, and sorting.
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Output from source receipt and provenance.
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_source_material_receipt`
-- Range: Provisional raw material input screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 1
-  - Upper: 20
-  - Unit: kg/kg cleaned sorted product
-  - Basis: broad first-pass raw material input entering washing and sorting per kg cleaned sorted product
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Washing or desalting water (`washing_or_desalting_water`)
-
-Water shall be recorded when washing, desalting, or wet cleaning occurs.
-
-- Selected flow: Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
-- Flow property / unit: Mass or volume; kg or m3
-- Amount: Metered water withdrawal, purchased water, or tank refill records used for washing or desalting.
+- Flow property / unit: Mass / kg
+- Amount rule: Use measured accepted input mass and moisture or solids content.
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Water use per cleaned sorted product output.
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: Preparation input per 1 kg prepared material output and per 1 kg final reference product.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_washing_water_records`
-- Range: Provisional washing water screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: L/kg cleaned sorted product
-  - Basis: broad first-pass washing or desalting water use per kg cleaned sorted output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_preparation_material`
 
-###### Washing, drying, and sorting energy (`washing_drying_and_sorting_energy`)
+###### Process water (`preparation_water`)
 
-This row covers electricity, thermal fuel, compressed air, or other directly metered preparation energy. Select the actual Tiangong flow used by the facility.
+Record freshwater, seawater, reused water, or other water separately when used for cleaning or desalting.
 
-- Selected flow: Select electricity, thermal fuel, or equipment energy flow used for washing, drying, and sorting
-- Flow property / unit: Energy or fuel quantity; kWh, MJ, L, or kg
-- Amount: Metered or allocated energy use for washing, desalting, drying, sorting, grading, and related material handling.
+- Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- Flow property / unit: Mass / kg; retain measured m3 when volume is the primary record
+- Amount rule: Use meter, tank, invoice, or batch records and distinguish fresh, seawater, and reused water.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Basis: Energy use per cleaned sorted product output.
+- Normalization basis: Water supplied per tonne of shell feed entering the applicable cleaning step and per 1 kg final reference product.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_preparation_energy_records`
-- Range: Provisional preparation energy screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kWh/kg cleaned sorted product
-  - Basis: broad first-pass washing, drying, sorting, and material-handling energy per kg cleaned sorted output
+- Collection protocol: `cp_preparation_water`
+- Sources: `shell-waste-management-2023`
+- Range: Reported salt-reduction shell-cleaning water use
+  - Range role: Typical range (`typical_range`)
+  - Lower: 0.2
+  - Upper: 0.8
+  - Unit: m3/t shell feed
+  - Basis: Freshwater used to reduce salt content of shell material; screening evidence only, not a conformance limit
   - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+  - Evidence kind: External source (`external_source`)
+  - Sources: `shell-waste-management-2023`
+
+###### Preparation energy (`preparation_energy`)
+
+Record the actual electricity, thermal energy, or fuel used for cleaning equipment, heating, sterilization, drying, ventilation, and sorting.
+
+- Selected flow: Select the site- and carrier-specific Tiangong electricity, heat, or fuel flow.
+- Flow property / unit: Energy, mass, or volume / kWh, MJ, kg, or L as recorded
+- Amount rule: Use submeter, equipment meter, fuel, invoice, or allocated utility records; retain carrier and geography.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: Preparation energy per 1 kg prepared material output.
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_preparation_energy_and_agents`
+- Sources: `shell-waste-management-2023`
+
+###### Cleaning or processing agents (`cleaning_agents`)
+
+Record detergents, enzymes, disinfectants, solvents, acids, alkalis, or other agents only when actually used; treatment that creates a chemically distinct output is outside this PCR.
+
+- Selected flow: Select each actual Tiangong product flow for the agent used.
+- Flow property / unit: Mass or volume / kg or L as recorded
+- Amount rule: Use purchase, dosing, or batch formulation records and retain concentration and recovery information.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: Agent use per 1 kg prepared material output.
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_preparation_energy_and_agents`
+- Sources: `shell-waste-management-2023`
 
 ##### Waste flows
 
-No waste input is expected for this process.
+No default waste input is prescribed.
 
 ##### Elementary flows
 
-No elementary input is expected by default.
+No default elementary input is prescribed.
 
 #### Outputs
 
 ##### Product flows
 
-###### Cleaned sorted reference material (`cleaned_sorted_reference_material`)
+###### Cleaned and dried material (`cleaned_and_dried_material`)
 
-This row is the prepared material output before optional size reduction, packaging, or direct gate release.
+This output is the simply prepared material after applicable cleaning, desalting, drying, and sorting, before optional size reduction.
 
 - Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
-- Flow property / unit: Mass; kg
-- Amount: Measured cleaned and sorted mass by declared moisture basis and grade.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure output mass and moisture or solids basis by batch; calculate normalized dry mass where needed.
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Cleaned sorted product output from the preparation process.
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: Prepared output mass per 1 kg final reference product.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cleaned_product_mass`
-- Range: Cleaned yield QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg raw material input
-  - Basis: cleaned sorted yield
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+- Collection protocol: `cp_preparation_material`
 
 ##### Waste flows
 
-###### Washing wastewater or brine (`washing_wastewater_or_brine`)
+###### Cleaning and sorting residues (`cleaning_and_sorting_residues`)
 
-Record this row when wet washing, desalting, or cleaning generates liquid waste, brine, sludge, or sent-to-treatment wastewater.
+Record removed organic matter, sediment, salts, broken non-product fractions, and sorting rejects separately when their treatment differs.
 
-- Selected flow: Select route-specific wastewater, brine, or sludge waste flow
-- Flow property / unit: Mass or volume; kg or m3
-- Amount: Measured or balance-derived wastewater, brine, sludge, or sent-to-treatment quantity and fate.
+- Selected flow: Select the route-specific Tiangong waste flow for each residue and treatment destination.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure residue mass on a stated moisture basis and record recovery, treatment, or disposal destination.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Basis: Liquid waste quantity per cleaned sorted product output.
+- Normalization basis: Residue mass per 1 kg prepared material output and per 1 kg final reference product.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_wastewater_records`
-- Range: Provisional wastewater or brine screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 25
-  - Unit: L/kg cleaned sorted product
-  - Basis: broad first-pass liquid waste quantity per kg cleaned sorted output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_waste_and_wastewater`
 
-###### Organic residue, sediment, and sorting rejects (`organic_residue_sediment_and_rejects`)
+###### Cleaning wastewater (`cleaning_wastewater`)
 
-This row covers biological residue, sediment, off-grade fragments, and other rejects removed during washing, drying, or sorting.
+Record wastewater or spent brine at the point it leaves the foreground process for onsite treatment, offsite treatment, reuse, or discharge.
 
-- Selected flow: Select route-specific organic residue, sediment, or sorting reject waste flow
-- Flow property / unit: Mass; kg
-- Amount: Measured reject mass and fate from washing, drying, and sorting.
+- Selected flow: Select the Tiangong waste flow matching wastewater composition and actual treatment or discharge destination.
+- Flow property / unit: Mass or volume / kg or m3
+- Amount rule: Use discharge meters, tank records, or a documented water balance and retain salinity, suspended solids, organic load, and treatment destination when measured or required.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Basis: Reject mass per cleaned sorted product output.
+- Normalization basis: Wastewater per 1 kg prepared material output and per 1 kg final reference product.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_reject_and_residue_records`
-- Range: Washing and sorting reject QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1
-  - Unit: kg/kg raw material input
-  - Basis: reject fraction from washing and sorting
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+- Collection protocol: `cp_waste_and_wastewater`
 
 ##### Elementary flows
 
-###### Dust or particulate matter from dry handling (`dust_or_particulate_matter_from_dry_handling`)
+###### Direct preparation releases (`preparation_direct_releases`)
 
-Use this row when drying, brushing, screening, or dry sorting creates directly measured dust or when a reviewed facility factor is applied.
+Instantiate separate rows for measured dust, volatile releases, combustion emissions, or direct water emissions that are not already represented by a waste-treatment or energy-provider process.
 
-- Selected flow: Select applicable particulate matter emission flow
-- Flow property / unit: Mass; kg
-- Amount: Measured dust collection losses, filter catches, or calculated particulate release from dry handling records.
+- Selected flow: Select each applicable Tiangong elementary flow and receiving compartment.
+- Flow property / unit: Use the selected Tiangong flow property and unit.
+- Amount rule: Use direct monitoring or an approved calculation from collected activity data and a cited factor.
 - Value mode: Calculated value (`calculated_value`)
-- Specificity: Technology-specific (`technology_specific`)
-- Basis: Dust or particulate release per cleaned sorted product output.
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: Direct release per 1 kg prepared material output and per 1 kg final reference product.
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_dust_records`
-- Range: Provisional dust release screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.2
-  - Unit: kg/kg cleaned sorted product
-  - Basis: broad first-pass dust, fines, or particulate release per kg cleaned sorted output
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_direct_releases`
 
-### Process: Size reduction, packaging, and gate release (`size_reduction_packaging_and_delivery`)
+### Process: Size reduction and grading (`size_reduction_and_grading`)
 
 #### Inputs
 
 ##### Product flows
 
-###### Cleaned material for size reduction or packing (`cleaned_material_for_size_reduction_or_packing`)
+###### Prepared material for size reduction (`prepared_material_for_size_reduction`)
 
-This row transfers cleaned material into crushing, grinding, grading, bagging, or direct gate release.
+Use this input when cleaned material is crushed, milled, screened, sieved, or graded into the declared product form.
 
 - Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
-- Flow property / unit: Mass; kg
-- Amount: Cleaned sorted mass entering optional size reduction, packaging, storage, or direct gate release.
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Cleaned sorted material before final product declaration.
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_cleaned_product_mass`
-- Range: Provisional cleaned material transfer screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 1
-  - Upper: 5
-  - Unit: kg/kg declared product
-  - Basis: broad first-pass cleaned material entering final preparation per kg declared product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
-
-###### Packaging material (`packaging_material`)
-
-Use this row when bags, drums, pallets, liners, labels, or bulk packaging are foreground controlled.
-
-- Selected flow: Select applicable packaging material flow
-- Flow property / unit: Mass or count; kg or item count
-- Amount: Measured packaging material used for the declared product quantity.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure prepared input mass and moisture basis for each grading campaign.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
-- Basis: Packaging used per declared product at gate.
-- Basis kind: Reference flow (`reference_flow`)
+- Normalization basis: Prepared input per 1 kg on-spec graded output.
+- Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_records`
-- Range: Provisional packaging material screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.5
-  - Unit: kg/kg declared product
-  - Basis: broad first-pass packaging material per kg declared product at gate
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_size_reduction_and_grading`
 
-###### Size reduction, packaging, or storage energy (`size_reduction_packaging_or_storage_energy`)
+###### Size-reduction energy (`size_reduction_energy`)
 
-This row covers foreground electricity or fuel for crushing, grinding, grading, bagging, palletizing, storage, and direct gate handling.
+Record actual electricity or fuel used by crushers, mills, screens, dust control, and material handling.
 
-- Selected flow: Select electricity or fuel flow used for size reduction, packaging, storage, or gate handling
-- Flow property / unit: Energy or fuel quantity; kWh, MJ, L, or kg
-- Amount: Metered or allocated energy use for final product preparation and gate release.
+- Selected flow: Select the site- and carrier-specific Tiangong energy flow.
+- Flow property / unit: Energy, mass, or volume / kWh, MJ, kg, or L as recorded
+- Amount rule: Use equipment or utility meters, production logs, or a documented allocation of shared energy.
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Energy use per declared product at gate.
-- Basis kind: Reference flow (`reference_flow`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: Energy per 1 kg on-spec graded output.
+- Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_size_reduction_packaging_energy`
-- Range: Provisional final preparation energy screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 10
-  - Unit: kWh/kg declared product
-  - Basis: broad first-pass size reduction, packaging, storage, and gate-handling energy per kg declared product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_size_reduction_and_grading`
+- Sources: `bivalve-shell-valorization-2022`
 
 ##### Waste flows
 
-No waste input is expected for this process.
+No default waste input is prescribed.
 
 ##### Elementary flows
 
-No elementary input is expected by default.
+No default elementary input is prescribed.
 
 #### Outputs
 
 ##### Product flows
 
-###### Declared product at gate (`declared_product_at_gate`)
+###### On-spec whole, fragment, grit, or powder product (`on_spec_graded_product`)
 
-This row is the reference product output used for the final dataset normalization.
+This output carries the final mechanical grade while retaining the product-category identity and mass reference property.
 
 - Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
-- Flow property / unit: Mass; kg
-- Amount: Final declared product mass at facility gate, by moisture basis and grade or particle-size class.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure on-spec output by declared grade and moisture basis.
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
-- Basis: Declared reference product at the facility gate.
-- Basis kind: Reference flow (`reference_flow`)
+- Normalization basis: On-spec output carried to the final reference flow.
+- Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_final_product_mass`
-- Range: Declared product reference flow identity
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1
-  - Upper: 1
-  - Unit: kg/kg declared product
-  - Basis: declared product reference flow at the facility gate
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Method formula (`method_formula`)
-  - Sources: `mass-balance-identity`
+- Collection protocol: `cp_size_reduction_and_grading`
 
 ##### Waste flows
 
-###### Packaging and off-size waste (`packaging_and_offsize_waste`)
+###### Off-spec grading fraction (`off_spec_grading_fraction`)
 
-This row records packaging scrap, off-size fragments, fines, and nonconforming product removed during final preparation.
+Record off-spec fines, oversize fractions, foreign matter, and dust collected by control equipment according to their reuse or treatment destination.
 
-- Selected flow: Select route-specific packaging scrap, off-size material, or fines waste flow
-- Flow property / unit: Mass; kg
-- Amount: Measured packaging scrap, off-size material, fines, or rejected final product mass and fate.
+- Selected flow: Use the same-category product flow if internally recycled or sold as a declared grade; otherwise select the route-specific Tiangong waste flow.
+- Flow property / unit: Mass / kg
+- Amount rule: Measure each fraction and identify internal recycle, co-product sale, recovery, or waste destination.
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Site-specific (`site_specific`)
-- Basis: Waste from final preparation per declared product at gate.
-- Basis kind: Reference flow (`reference_flow`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: Off-spec fraction per 1 kg on-spec graded output and per 1 kg final reference product.
+- Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_waste_records`
-- Range: Provisional packaging and off-size waste screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.5
-  - Unit: kg/kg declared product
-  - Basis: broad first-pass final preparation waste per kg declared product at gate
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_size_reduction_and_grading`
 
 ##### Elementary flows
 
-###### Fossil carbon dioxide from direct fuel combustion (`fossil_co2_from_direct_fuel_combustion`)
+###### Uncaptured particulate release (`uncaptured_particulate_release`)
 
-Use this row only when direct fuel combustion emissions are modelled inside the foreground unit process instead of represented through linked fuel combustion datasets.
+Record an elementary-flow output only when a measured or approved calculated release crosses the environmental boundary; collected dust remains a waste or recoverable product flow.
 
-- Selected flow: Carbon dioxide, fossil, air `08a91e70-3ddc-11dd-923d-0050c2490048`
-- Flow property / unit: Mass; kg
-- Amount: Calculated fossil carbon dioxide from directly combusted foreground fuels when combustion is inside the reporting boundary.
+- Selected flow: Select the Tiangong particulate elementary flow matching size fraction and receiving compartment.
+- Flow property / unit: Mass / kg
+- Amount rule: Use stack, workplace-to-environment, or control-efficiency records with a cited calculation method.
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Basis: Direct fuel inventory for final preparation and gate handling.
-- Basis kind: Fuel inventory (`fuel_inventory`)
+- Normalization basis: Uncaptured particulate per 1 kg on-spec graded output.
+- Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_direct_fuel_combustion_records`
-- Range: Provisional direct fuel fossil CO2 screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg CO2/kg declared product
-  - Basis: broad first-pass fossil carbon dioxide from direct fuel combustion per kg declared product
-  - Basis kind: Fuel inventory (`fuel_inventory`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+- Collection protocol: `cp_direct_releases`
 
-## 7. Same-Category Input and Cut-Off Rules
+### Process: Packaging, storage, and gate release (`packaging_storage_and_gate_release`)
 
-Same-category CPC 04911 material inputs remain visible product inputs. They may not be cut off as unspecified natural mineral material. Ancillary flows may be excluded only when a program-specific cut-off rule permits exclusion and the dataset records the excluded flow type, reason, and expected relevance. Legal or provenance disclosures, wastewater fate, residue fate, and final product moisture basis are not cut-off candidates.
+#### Inputs
 
-## 8. Foreground Data Collection
+##### Product flows
+
+###### Product entering gate handling (`product_entering_gate_handling`)
+
+This input is the declared whole, fragment, grit, powder, or waste-grade material entering final weighing and gate handling.
+
+- Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
+- Flow property / unit: Mass / kg
+- Amount rule: Use final-batch or lot mass on the declared moisture basis before packaging tare is added.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: Product mass carried to 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_and_gate_release`
+
+###### Packaging materials (`packaging_materials`)
+
+Record bags, liners, drums, cartons, pallets, films, labels, and reusable containers when supplied with or consumed for the reference product.
+
+- Selected flow: Select each actual Tiangong packaging material flow.
+- Flow property / unit: Mass or count / kg or item as recorded
+- Amount rule: Use purchasing, bill-of-materials, or packaging-line records and state reusable-container cycles when applied.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: Packaging supplied or consumed per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_and_gate_release`
+
+###### Packaging and storage energy (`packaging_and_storage_energy`)
+
+Record actual gate-handling, ventilation, humidity control, storage, and packaging energy when these operations occur.
+
+- Selected flow: Select the site- and carrier-specific Tiangong energy flow.
+- Flow property / unit: Energy, mass, or volume / kWh, MJ, kg, or L as recorded
+- Amount rule: Use meters, equipment logs, or a documented shared-utility allocation over the declared storage duration.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: Energy per 1 kg final reference product.
+- Basis kind: Storage duration (`storage_duration`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_and_gate_release`
+
+##### Waste flows
+
+No default waste input is prescribed.
+
+##### Elementary flows
+
+No default elementary input is prescribed.
+
+#### Outputs
+
+##### Product flows
+
+###### Declared product at facility gate (`reference_product_flow`)
+
+This is the reference output after final quality, moisture, grade, provenance, packaging, and mass checks.
+
+- Selected flow: Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone `9d3c928f-f381-4d92-8452-944adaf37906`
+- Flow property / unit: Mass / kg
+- Amount rule: Set the quantitative reference to 1 kg and retain measured batch or reporting-period output as the normalization denominator.
+- Value mode: Fixed value (`fixed_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: 1 kg of declared gate product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Identity reference (`identity_reference`)
+
+##### Waste flows
+
+###### Packaging and gate-handling waste (`packaging_and_gate_handling_waste`)
+
+Record damaged packaging, labels, film, pallet losses, sweepings, and rejected finished product by actual treatment destination.
+
+- Selected flow: Select each route-specific Tiangong waste flow.
+- Flow property / unit: Mass / kg
+- Amount rule: Use waste tickets, counts, or material-balance records for the reporting period.
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: Waste mass per 1 kg final reference product.
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_waste_and_wastewater`
+
+##### Elementary flows
+
+Add only measured or approved calculated direct releases not already represented in upstream energy, packaging, or waste-treatment datasets.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `allocation_rule_1` | Separable unit operations and batches | Avoid allocation by subdividing processes, meters, batches, grades, and material families wherever records permit. | `eu-pef-method-2021` |
+| `allocation_rule_2` | Incoming processing residues, by-products, or wastes | Preserve the supplier's documented product or waste status and upstream burden rule. Do not assign zero upstream burden solely because the incoming material was called waste. | `eu-pef-method-2021`; `oyster-shell-lca-2012` |
+| `allocation_rule_3` | Shared preparation producing multiple saleable grades | When subdivision is not possible, use a causal physical relationship such as measured dry mass, equipment time, or metered energy if that relationship explains resource use. State the basis and formula. | `eu-pef-method-2021` |
+| `allocation_rule_4` | Multi-functional process without a defensible physical relationship | Use another documented relationship, including economic allocation where appropriate, only after subdivision and physical allocation are shown unsuitable; disclose prices, period, geography, and a sensitivity result. | `eu-pef-method-2021` |
+| `allocation_rule_5` | Recovered residues and off-spec fractions | Treat a fraction as a co-product only when it has a separate reference flow and documented destination or market. Otherwise retain it as waste requiring recovery, treatment, or disposal modelling. | `eu-pef-method-2021` |
+
+## 8. Foreground Data Collection, Calculation, and Quality Rules
 
 ### Data Collection Protocols
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| cp_source_material_receipt | source_receipt_and_provenance | source material received and accepted raw material | receiving record | batch_id, source_route, material_family, supplier_or_collection_site, received_mass, rejected_mass, accepted_mass, moisture_basis, legal_or_provenance_record | Weighbridge, floor scale, supplier delivery note, or direct collection log reconciled to batch record | kg | each batch | reporting period or production campaign | receiving facility and controlled collection route | Sum accepted mass by source route and normalize to final declared product mass | scale calibration, delivery tickets, batch ledger, provenance or permit records |
-| cp_collection_or_delivery_energy | source_receipt_and_provenance | collection or delivery fuel | energy and transport log | vehicle_or_vessel_id, route, distance, fuel_type, fuel_quantity, energy_quantity, allocation_basis | Fuel invoices, tank logs, vehicle logs, vessel logs, or metered charging records | L, kg, MJ, or kWh | each trip or monthly | reporting period | directly controlled collection or delivery routes | Allocate to accepted source material by mass or measured trip load | fuel invoices, odometer or trip logs, meter records |
-| cp_collection_area_records | source_receipt_and_provenance | collection area or habitat indicator | route and legal disclosure record | source_route, geography, collection_area, permit_id, salvage_or_byproduct_source, collection_method, restrictions | Permit review, supplier declaration, geospatial record, or site collection log | m2, permit id, or descriptive record | each source route | reporting period | collection area, supplier source, or processing-residue source | Retain route-specific disclosure with accepted source material mass | permit, supplier attestation, collection log, traceability record |
-| cp_reject_and_residue_records | source_receipt_and_provenance | receipt and sorting rejects | waste and residue record | batch_id, reject_type, mass, fate, treatment_destination, moisture_basis | Weighed rejects, waste transfer note, disposal ticket, or internal residue ledger | kg | each batch or disposal event | reporting period | receiving and preparation facility | Sum by reject type and fate, then normalize to reference product | scale record, waste transfer note, disposal invoice |
-| cp_washing_water_records | washing_drying_and_sorting | washing or desalting water | utility record | meter_id, water_source, water_quantity, batch_id, cleaning_step, allocation_basis | Water meter, tank refill log, purchased water invoice, or batch cleaning record | m3 or kg | batch, shift, or monthly | reporting period | washing and desalting operations | Allocate to cleaned sorted output by measured batch or production time | meter reading, invoice, batch log |
-| cp_preparation_energy_records | washing_drying_and_sorting | washing drying and sorting energy | energy record | meter_id, equipment_id, fuel_type, energy_quantity, operating_time, allocation_basis | Sub-meter, main meter allocation, fuel invoice, or equipment runtime log | kWh, MJ, L, or kg | batch, shift, or monthly | reporting period | preparation equipment | Allocate to cleaned sorted output by sub-metered quantity, runtime, or production mass | meter record, invoice, equipment runtime log |
-| cp_cleaned_product_mass | washing_drying_and_sorting | cleaned sorted product | production output record | batch_id, cleaned_mass, moisture_basis, grade, particle_size_class, destination | Scale ticket, batch production ledger, or inventory transfer record | kg | each batch | reporting period | preparation facility | Sum by declared grade and normalize to final declared product mass | scale calibration, batch ledger, inventory record |
-| cp_wastewater_records | washing_drying_and_sorting | wastewater or brine | liquid waste record | batch_id, wastewater_quantity, brine_quantity, sludge_quantity, treatment_destination, discharge_or_transfer_record | Flow meter, tank volume balance, treatment plant record, or waste transfer note | m3 or kg | batch, shift, or disposal event | reporting period | washing and treatment system | Sum by fate and normalize to cleaned sorted output or reference flow | meter record, treatment log, discharge permit record, transfer note |
-| cp_dust_records | washing_drying_and_sorting | dust or particulate matter | dust control and loss record | equipment_id, dust_collected, filter_change_mass, visible_release_record, emission_factor_if_used | Dust collector records, filter mass, housekeeping records, or reviewed facility factor | kg | shift, batch, or maintenance event | reporting period | dry handling and dust-control equipment | Calculate particulate release or collected dust per cleaned sorted output | maintenance record, filter log, calculation worksheet |
-| cp_packaging_records | size_reduction_packaging_and_delivery | packaging material | packaging inventory record | packaging_type, packaging_mass, item_count, product_mass_packed, supplier_record | Packaging purchase records, inventory issue records, bill of materials, or packing line logs | kg or item count | batch or monthly | reporting period | packing line or warehouse | Normalize packaging to declared product at gate | purchase record, inventory issue, packing log |
-| cp_size_reduction_packaging_energy | size_reduction_packaging_and_delivery | final preparation energy | energy record | meter_id, equipment_id, fuel_type, energy_quantity, operating_time, allocation_basis | Sub-meter, fuel invoice, equipment runtime log, or allocation worksheet | kWh, MJ, L, or kg | batch, shift, or monthly | reporting period | crushing, grinding, grading, packing, storage, and gate handling | Allocate to declared product at gate by sub-metered quantity, runtime, or production mass | meter record, invoice, runtime log |
-| cp_final_product_mass | size_reduction_packaging_and_delivery | declared product at gate | final production and sales record | batch_id, final_mass, moisture_basis, grade, particle_size_class, packaging_state, dispatch_record | Final scale ticket, warehouse release, sales dispatch record, or inventory closeout | kg | each batch or dispatch | reporting period | facility gate | Sum conforming declared product mass by product state | scale record, dispatch record, inventory closeout |
-| cp_packaging_waste_records | size_reduction_packaging_and_delivery | packaging and off-size waste | final waste record | waste_type, mass, fate, disposal_or_rework_destination, batch_id | Weighed scrap, rework record, waste transfer note, or disposal invoice | kg | batch or disposal event | reporting period | final preparation and packing area | Sum by fate and normalize to declared product at gate | scale record, rework ledger, transfer note |
-| cp_direct_fuel_combustion_records | size_reduction_packaging_and_delivery | direct fuel combustion emissions | fuel combustion calculation record | fuel_type, fuel_quantity, heating_value_or_density, emission_factor, combustion_scope | Fuel invoice, tank log, and reviewed emission-factor calculation | kg CO2 or fuel unit | batch or reporting period | reporting period | direct combustion equipment inside foreground boundary | Calculate fossil CO2 from foreground fuel quantity when combustion is modelled directly | fuel record, factor source, calculation worksheet |
+| `cp_source_receipt` | `source_qualification_and_receipt` | Source, accepted material, and receipt rejects | Batch receipt and provenance record | supplier or collection ID; taxon or material family; source route and geography; prior product or waste status; permit or CITES references where applicable; gross and net mass; moisture or solids; reject mass and fate | Weighbridge, calibrated scale, supplier document, collection log, inspection, and permit check | kg; mass fraction | Each batch or lot | All batches represented by the dataset period | Every included source and receiving site | Sum masses only after harmonizing moisture basis; retain source-level records | Scale calibration; supplier document; inspection record; applicable permit or CITES evidence |
+| `cp_collection_transport` | `controlled_collection_and_delivery` | Material movement, fuel, and losses | Trip, vessel, or equipment activity log | route; mode; origin and destination; loaded and delivered mass; distance; fuel or energy; load factor; empty return; loss mass | Trip log, GPS or route record, fuel record, invoice, and receiving check | kg; km; tkm; kWh; MJ; L | Each controlled trip or campaign | All controlled collection and delivery represented by the dataset | Every controlled route and vehicle or vessel class | Calculate mass-distance per trip; sum fuel and losses; normalize to accepted material and final product | Route evidence; fuel invoices; meter records; load tickets |
+| `cp_preparation_material` | `cleaning_drying_and_sorting` | Material input and prepared output | Batch production and moisture record | input mass; output mass; moisture or solids; material family; cleaning route; drying route; grade; timestamps | Calibrated scales, moisture test, batch sheet, and production log | kg; mass fraction | Each preparation batch | Representative operating period including normal route variation | Each preparation line and material family | Calculate dry mass before combining batches; report weighted moisture and total output | Scale and moisture-method records; batch reconciliation |
+| `cp_preparation_water` | `cleaning_drying_and_sorting` | Freshwater, seawater, reused water, and wastewater | Meter or batch water record | source; meter start and end; tank refill; reuse volume; discharge volume; salinity; suspended solids or organic load when required | Calibrated meter, tank record, invoice, or documented water balance | kg or m3 | Each batch or meter-reading interval | Same period as preparation production | Each water source and preparation line | Keep sources separate; sum by source and normalize to prepared and final product | Meter calibration; invoices; laboratory or discharge records |
+| `cp_preparation_energy_and_agents` | `cleaning_drying_and_sorting` | Energy carriers and cleaning agents | Meter, invoice, fuel, and dosing record | carrier or agent; Tiangong flow; quantity; unit; concentration; equipment; batch or period; recovery | Submeter, utility bill, fuel log, purchase record, and dosing system | kWh; MJ; kg; L | Each batch or billing interval | Same period as preparation production | Each process line and utility or agent | Direct meter first; otherwise allocate shared use using a documented causal driver | Meter calibration; invoices; dosing logs; allocation record |
+| `cp_waste_and_wastewater` | `source_qualification_and_receipt`; `cleaning_drying_and_sorting`; `packaging_storage_and_gate_release` | Solid rejects, residues, wastewater, and packaging waste | Waste ticket, discharge, or internal recovery record | waste identity; mass or volume; moisture; source process; internal recycle; transporter; treatment or discharge destination | Scale, container count, manifest, discharge meter, laboratory record, or reconciled balance | kg or m3 | Each shipment, discharge, or reporting interval | Same period as associated production | Every foreground waste and wastewater destination | Keep destinations and treatment routes separate; normalize after summing verified records | Waste manifest; treatment receipt; discharge permit or test; balance reconciliation |
+| `cp_size_reduction_and_grading` | `size_reduction_and_grading` | Material, energy, grades, off-spec fractions, and captured dust | Campaign production and equipment record | input and output mass; moisture; target size; sieve results; equipment time; energy; recycle; off-spec and dust mass | Scales, sieve analysis, equipment meter, and production log | kg; mm or µm; kWh; MJ | Each campaign | All campaigns represented by the dataset | Each line, material family, and grade | Reconcile grade fractions and recycle; allocate shared energy by causal equipment record | Scale, sieve, and meter calibration; campaign balance |
+| `cp_packaging_and_gate_release` | `packaging_storage_and_gate_release` | Final product, packaging, storage, and gate output | Lot, bill-of-materials, utility, and dispatch record | product mass and moisture; package material and mass; reusable cycles; storage duration; storage energy; dispatch ID | Final scale, packaging BOM, inventory, meter, and dispatch document | kg; item; day; kWh; MJ | Each lot and utility interval | Same period as final production | Each package format and storage condition | Normalize packaging and allocated storage energy to dispatched reference product | Final scale check; BOM; meter and dispatch records |
+| `cp_direct_releases` | `controlled_collection_and_delivery`; `cleaning_drying_and_sorting`; `size_reduction_and_grading` | Direct resource use and elementary releases | Monitoring, permit, or calculation record | flow UUID; compartment; measured concentration or quantity; gas or water volume; sampling period; factor and source; control efficiency | Direct monitoring or approved calculation from collected activity data | Selected Tiangong reference unit | Each monitoring event or required reporting interval | Same period as the generating process | Every controlled emission point or collection area | Integrate measured values over the period; avoid duplication with provider or treatment datasets | Calibration; laboratory chain of custody; permit report; cited factor and formula |
 
 ### Calculation Rules
 
-| rule_id | applies_to | formula_or_rule | inputs | output | source_ids |
+| rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| calculate_accepted_source_mass | source_receipt_and_provenance | accepted_mass = received_mass - receipt_reject_mass, with all masses on the declared moisture basis. | received_mass; receipt_reject_mass | accepted raw biogenic mineral material | `mass-balance-identity` |
-| normalize_to_reference_flow | all foreground rows | normalized_amount = measured_or_calculated_amount / final_declared_product_mass. Keep the raw record and normalized result. | measured amount; final_declared_product_mass | amount per 1 kg reference product | `mass-balance-identity` |
-| calculate_cleaned_yield | washing_drying_and_sorting | cleaned_yield = cleaned_sorted_mass / raw_material_input_mass on the same declared moisture basis. | cleaned_sorted_mass; raw_material_input_mass | cleaned sorted yield | `mass-balance-identity` |
-| calculate_direct_fuel_co2_if_modelled | size_reduction_packaging_and_delivery | fossil_CO2 = foreground_fuel_quantity x reviewed fuel emission factor when direct combustion is inside the foreground boundary. | fuel_quantity; emission_factor | fossil carbon dioxide elementary flow | `ipcc-2006-combustion` |
+| `calc_accepted_mass` | Source qualification and receipt | accepted mass = incoming mass - receipt rejects, using the same moisture basis | incoming mass; reject mass; moisture basis | accepted source material mass |  |
+| `calc_dry_mass` | Moisture-basis conversion | dry mass = measured mass × measured solids mass fraction | measured mass; measured moisture or solids fraction | dry mass |  |
+| `calc_normalized_amount` | Every inventory quantity | normalized amount = reporting-period quantity / reporting-period reference product mass | verified period quantity; verified reference output | amount per 1 kg reference product | `eu-pef-method-2021` |
+| `calc_transport_service` | Controlled collection and delivery | transport service = transported tonnes × route kilometres; model empty returns separately when included | trip mass; route distance; empty-return treatment | tkm |  |
+| `calc_material_balance` | Receipt, preparation, and grading | Reconcile dry material input plus measured added solids with dry product, co-product, waste, captured dust, and measured solids in wastewater; report the unclosed difference and the acceptance threshold used. | dry inputs; dry outputs; residues; wastewater solids; captured dust | mass-balance result and closure difference |  |
+| `calc_shared_utility` | Shared meters or utilities | Allocate shared utility only with the declared causal driver; retain total utility, driver totals, and allocated share. | total utility; process driver; total driver | allocated process utility | `eu-pef-method-2021` |
 
 ### Data Quality Requirements
 
-| requirement_id | applies_to | requirement | evidence |
+| requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| dq_source_identity | all source material records | State material family, source route, geography, and legal or provenance basis for each source route. | supplier declaration, permit, traceability document, or collection log |
-| dq_mass_balance | source receipt, preparation, and final gate product | Received mass, rejects, cleaned output, final product, and waste masses shall reconcile within facility-defined weighing tolerance. | batch mass balance worksheet and scale records |
-| dq_moisture_basis | all product and waste mass records | Declare wet, air-dry, oven-dry, or contract moisture basis and do not mix bases without measured conversion evidence. | moisture test, contract basis, or batch declaration |
-| dq_wastewater_fate | washing and desalting operations | Identify wastewater, brine, sludge, discharge, reuse, treatment, or transfer fate. | treatment log, discharge record, transfer note, or permit evidence |
-| dq_dust_controls | dry handling operations | Report whether dust is captured, emitted, internally recycled, or treated as waste. | filter logs, dust collector records, or maintenance logs |
-| dq_packaging_state | packed product datasets | Declare packaging material type, packaging mass or count, and packed product mass. | bill of materials, packing log, or inventory issue record |
+| `dq_identity_and_provenance` | Every source lot | Retain material family or taxon where known, source route, geography, prior product or waste status, and applicable legal, permit, and CITES evidence. | Source and inspection records; current CITES check where applicable; `unsd-cpc3-hs-scope`; `cites-current-coral-controls` |
+| `dq_measurement` | Mass, moisture, water, energy, agents, and waste | Use calibrated or verified measurement systems, preserve original units, and identify calculated rather than measured values. | Calibration, meter, invoice, laboratory, and calculation records; `eu-pef-method-2021` |
+| `dq_temporal` | Reporting period | Cover the declared normal production route and document shutdowns, abnormal batches, seasonality, and excluded periods. | Production calendar, batch list, utility intervals, and exception log |
+| `dq_geography_and_technology` | Foreground and background data | Match source, collection, preparation technology, energy, water, packaging, waste treatment, and transport geography, or disclose substitutions. | Site and supplier metadata; background dataset metadata |
+| `dq_completeness` | Process inventory | Include every applicable prescribed row or record an explicit not-applicable reason; reconcile product, co-product, waste, wastewater, and direct releases. | Applicability matrix and material, water, and utility balances; `eu-pef-method-2021` |
+| `dq_allocation` | Shared and multi-output processes | Retain subdivision evidence, allocation driver, formula, period, and sensitivity information when allocation is used. | Meter and batch records, allocation worksheet, and `eu-pef-method-2021` |
+| `dq_traceability` | Published data package | Each normalized value shall trace to a raw record, calculation rule, Tiangong identity, and applicable external source without embedding private credentials or lookup logs. | Record IDs, calculation links, UUIDs, and source IDs |
 
 ## 9. Validation Rules
 
-A conforming dataset shall provide the reference flow UUID, mass property UUID, unit group UUID, source route, material family, declared moisture basis, and final product mass. Required processes shall have foreground collection records or explicit zero-activity declarations. Required product and waste mass records shall reconcile by batch or reporting period. Route-specific unresolved flow choices shall be reviewed before publication when a more precise Tiangong flow exists. Same-category CPC 04911 inputs shall remain explicit product inputs and shall not be hidden as generic mineral or waste inputs.
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| `validation_rule_1` | Product identity and scope | Confirm that the output is unworked or simply prepared and unshaped, or is a declared powder or waste fraction within the category; reject chemically transformed or finished downstream products. | `unsd-cpc3-hs-scope` |
+| `validation_rule_2` | Reference flow | Confirm the reference product, mass flow property, mass unit group, 1 kg amount, and every required qualifier. |  |
+| `validation_rule_3` | Process applicability | Include every applicable process and flow row or provide a documented not-applicable reason; do not apply mollusc-shell preparation assumptions to another material family without disclosure. | `shell-waste-management-2023`; `bivalve-shell-valorization-2022` |
+| `validation_rule_4` | Instantiated flow identities | Resolve every instantiated product, waste, and elementary row to the applicable Tiangong UUID before publishing a dataset; route-specific placeholders are not complete flow selections. |  |
+| `validation_rule_5` | Foreground records | Verify that normalized values trace to the declared collection protocol and retain unnormalized totals, units, temporal scope, and site or route scope. | `eu-pef-method-2021` |
+| `validation_rule_6` | Mass and moisture balance | Reconcile receipt, preparation, grading, and final output on a consistent moisture or dry-mass basis and disclose the unclosed difference and acceptance threshold. |  |
+| `validation_rule_7` | Cleaning water screening | When freshwater salt-reduction cleaning applies, compare the recorded result with 0.2–0.8 m3/t shell feed as literature screening evidence; values outside this interval require explanation but are not automatically nonconforming. | `shell-waste-management-2023` |
+| `validation_rule_8` | Allocation and prior burden | Verify the subdivision or allocation hierarchy, prior product or waste status, formula, data period, and sensitivity; reject undocumented zero-burden assumptions. | `eu-pef-method-2021`; `oyster-shell-lca-2012` |
+| `validation_rule_9` | Wastewater, residues, and direct releases | Confirm identities, quantities, compartments or destinations, and absence of double counting with energy-provider or treatment datasets. | `eu-pef-method-2021` |
+| `validation_rule_10` | Coral legality and provenance | For coral or coral-derived source material, check the current applicable CITES listing and retain required permits, certificates, source and trade terms, or documented exemption evidence. | `cites-current-coral-controls` |
 
 ## 10. Published Dataset Profile
 
 | Field | Value |
 | --- | --- |
-| dataset_role | unit_process |
-| downstream_use | secondary_dataset; background_dataset |
-| allowed_use | Use as a foreground unit process or linked secondary dataset for CPC 04911 material at facility gate when source route, moisture basis, and processing state match the consuming model. |
-| excluded_use | Do not use for live aquatic animal production, food products, finished jewellery or decorative articles, synthetic calcium carbonate, or datasets lacking source route and legal or provenance disclosure. |
-| required_metadata | PCR id, PCR version, CPC code 04911, product title, source route, material family, geography, reporting period, moisture basis, grade or particle-size class, final product mass, Tiangong UUID substitutions, and unresolved flow notes. |
-| required_quality_disclosure | Report mass balance completeness, source identity evidence, wastewater or brine fate, residue fate, dust-control treatment, packaging state, and any allocation rule used for multiple grades. |
-| update_trigger | Update when Tiangong UUID mappings change, CPC mapping changes, source route or legal disclosure rules change, or reviewed range and collection evidence improves. |
+| dataset_role | Foreground production data package for a declared CPC 04911 preparation route; after review it may support a `secondary_dataset` or `background_dataset`. |
+| downstream_use | Construction of Tiangong `process` data and downstream `lifecyclemodel` projections for unworked or simply prepared coral-like material, shell, or cuttle-bone at the facility gate. |
+| allowed_use | Route-, geography-, material-family-, moisture-, grade-, and provenance-matched modelling where applicable processes, upstream burden treatment, waste routes, and background substitutions are declared. |
+| excluded_use | Live aquatic organisms; edible seafood; aquaculture or fishery production not covered by an upstream dataset; chemically transformed derivatives; calcined products; formulated downstream products; cut-to-shape, carved, jewellery, or other finished articles; undisclosed coral provenance. |
+| required_metadata | PCR id and version; Tiangong reference flow UUID; material family or taxon; source route and geography; prior product, by-product, or waste status; preparation route; moisture basis; grade or particle size; legal and provenance status; process applicability; reporting period; technology and site; allocation; packaging; waste and wastewater destinations; background dataset references. |
+| required_quality_disclosure | Measurement and calibration coverage; material and water balance closure; temporal, geographic, and technological representativeness; missing or estimated records; allocation sensitivity; source and permit limitations; background substitutions; validation findings. |
+| update_trigger | Change in product scope, material family, source or CITES status, collection route, technology, cleaning or drying method, grade, moisture basis, energy or water system, waste treatment, allocation, packaging, site or geography, Tiangong identity, external evidence, or applicable legal requirement. |
 
 ## 11. Data Sources
 
-| source_id | type | reference | used_for |
+| Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| unsd-cpc-3-0-04911 | official_guidance | United Nations Statistics Division, Central Product Classification Version 3.0, code 04911. | Product classification identity and included product scope. |
-| cites-stony-corals | official_guidance | CITES guidance and listings for stony corals and related trade controls, as applicable by route and geography. | Legal and provenance disclosure for coral-like source routes. |
-| fao-responsible-fisheries-code | official_guidance | FAO Code of Conduct for Responsible Fisheries. | Responsible source-route disclosure for fishery and aquaculture by-product routes. |
-| codex-fish-code | official_guidance | Codex Code of Practice for Fish and Fishery Products. | Hygiene and handling context for shellfish by-product and residue source routes where applicable. |
-| iso-14067-2018 | standard | ISO 14067:2018 Greenhouse gases - Carbon footprint of products - Requirements and guidelines for quantification. | General product carbon footprint boundary, data quality, and reporting alignment. |
-| mass-balance-identity | method_factor | Conservation of mass applied as a PCR calculation identity for batch input, output, and reject reconciliation. | QA guardrails, yield calculations, and normalization rules. |
-| ipcc-2006-combustion | method_factor | IPCC 2006 Guidelines for National Greenhouse Gas Inventories, stationary and mobile combustion factor approach. | Direct fuel combustion carbon dioxide calculation when foreground combustion is modelled directly. |
+| `unsd-cpc3-hs-scope` | Official guidance (`official_guidance`) | United Nations Statistics Division, CPC Version 3.0 and HS 2022 correspondence for subclass 04911 / subheading 050800, https://unstats.un.org/unsd/classifications/Family/Detail/2100 and https://unstats.un.org/unsd/classifications/Econ/Detail/EN/2089/050800 (retrieved 2026-08-07). | Product-category identity; unworked or simply prepared, unshaped, powder, and waste scope; exclusions. |
+| `eu-pef-method-2021` | Official guidance (`official_guidance`) | European Commission, Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30 and https://eplca.jrc.ec.europa.eu/permalink/PEF_method.pdf (retrieved 2026-08-07). | Foreground primary data, system boundary, co-product and waste visibility, allocation hierarchy, data quality, and disclosure. |
+| `cites-current-coral-controls` | Official guidance (`official_guidance`) | CITES, current Appendices and Resolution Conf. 11.10 on trade in stony corals, https://cites.org/eng/app/appendices.php and https://cites.org/eng/imp/Exemptions_and_special_procedures (retrieved 2026-08-07). | Coral taxon, source, legal and provenance checks; permit, certificate, trade-term, or exemption evidence where applicable. |
+| `shell-waste-management-2023` | Literature (`literature`) | Topić Popović, N. et al. (2023), Shell Waste Management and Utilization: Mitigating Organic Pollution and Enhancing Sustainability, Applied Sciences 13(1), 623, https://doi.org/10.3390/app13010623. | Cleaning and preparation process decomposition; water and energy significance; 0.2–0.8 m3/t shell-cleaning water screening range. |
+| `bivalve-shell-valorization-2022` | Literature (`literature`) | Summa, D. et al. (2022), Trends and Opportunities of Bivalve Shells' Waste Valorization in a Prospect of Circular Blue Bioeconomy, Resources 11(5), 48, https://doi.org/10.3390/resources11050048. | Washing, crushing, grading, and route-specific preparation evidence; boundary between simple preparation and downstream valorization. |
+| `oyster-shell-lca-2012` | Literature (`literature`) | de Alvarenga, R.A.F. et al. (2012), The recycling of oyster shells: an environmental analysis using Life Cycle Assessment, Journal of Environmental Management 106, 102–109, https://doi.org/10.1016/j.jenvman.2012.04.017. | Importance of actual collection and transport distance, upstream scenario, and allocation or avoided-disposal assumptions; no universal distance threshold adopted. |

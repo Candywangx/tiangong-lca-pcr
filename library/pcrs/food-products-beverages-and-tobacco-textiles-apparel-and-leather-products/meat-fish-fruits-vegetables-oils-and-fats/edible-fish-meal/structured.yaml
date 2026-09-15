@@ -1,10 +1,2021 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21233"
-  title: "Edible fish meal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.edible-fish-meal"
+  classification_refs: "CPC 3.0: 21233, Edible fish meal (exact mapping context)"
+  covered_products: "Food-grade edible fish meal or fish powder made by stabilization, drying, and comminution of edible fish material"
+  excluded_products: "Feed-grade or industrial fish meal; fertilizer; whole or portioned dried/smoked fish; fish-based prepared dishes; isolated fish oil or protein isolate; non-fish meal"
+  representative_product: "Packaged edible fish meal at the producing facility gate"
+  production_route: "Receipt and preparation; thermal or equivalent stabilization; dewatering where used; drying; grinding/sieving; optional salting or smoking treatment; cooling; packaging; applicable cold storage; wastewater and residual management"
+  market_state: "Food-grade dry meal or powder, bulk or packaged, with moisture condition, preservation route, and storage condition declared"
+functional_unit:
+  what: "Edible fish meal suitable for its declared human-food application"
+  how_much: "1 kg net mass of edible fish meal at the producing facility gate"
+  how_well: "Conforming to the declared species/material composition, particle form, moisture condition, salt/smoke/additive status, packaging, storage condition, and applicable food-safety specification"
+  how_long_or_cycle: "One production lot through release at the facility gate; shelf life is declared but no consumption duration is modelled"
+  reference_flow_link: "The reference flow is the packaged or declared bulk edible fish meal output from packaging_release"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_rule
+      applies_to: "Cradle-to-factory-gate model"
+      rule: "Include all foreground operations from receipt through released edible fish meal, including preparation, stabilization, dewatering when used, drying, milling/sieving, cooling, packaging, applicable cold storage, cleaning, wastewater, residual management, and direct releases. Connect upstream and treatment datasets rather than truncating those burdens."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_food_safety_rule
+      applies_to: "Food-grade processing"
+      rule: "Include process steps and monitoring needed to control biological, chemical, and physical hazards for the declared fish material and preservation route; rejected material and sanitation flows cross the foreground boundary."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_cutoff_rule
+      applies_to: "Inventory completeness"
+      rule: "A flow may be omitted only when its absence is justified and disclosed as immaterial to mass, energy, environmental significance, and compliance; hazardous releases, refrigerants, food-safety rejects, and allocation-relevant co-products shall not be omitted solely because their mass is small."
+      source_ids:
+        - eu-pef-2021-2279
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Edible fish raw material at receipt, with species/source, physical form, preservation condition, moisture, temperature, and supplier/lot identity declared"
+  starting_condition_role: "Purchased or transferred product input to the foreground edible-fish-meal facility"
+  product_classification_scope: "Edible fish meal as a semantic product category; CPC 3.0 code 21233 is mapping context rather than canonical identity"
+  recursive_input_rule: "If an input is already edible fish meal within this category, record it as a purchased product input with its upstream dataset and amount; do not recursively reproduce its manufacture in the same foreground package."
+  upstream_dataset_requirement: "Link representative upstream datasets for fish raw material, transport to the facility, energy carriers, water/ice, ingredients, packaging, treatment services, and other purchased inputs."
+  disclosure: "Declare excluded stages, outsourced operations, preservation route, cold-chain use, allocation events, co-products, waste destinations, and whether bulk or immediate packaging is represented."
+reference_flow_definition:
+  reference_amount: "1 kg net product mass"
+  product_flow_ref:
+    name: "Edible fish meal"
+    uuid: "fa402946-6236-41bb-8a2d-f7890b2e75cf"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fish species or species group"
+    - "wild-caught/farmed and geographic origin"
+    - "raw-material form"
+    - "edible-grade specification"
+    - "preservation and drying route"
+    - "salt/smoke/additive status"
+    - "moisture basis"
+    - "particle form"
+    - "bulk/packaging format"
+    - "storage temperature"
+    - "production geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference edible fish meal"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net edible fish meal, excluding pallet and transport packaging; state whether immediate packaging is included in the inventory."
+  - id: moisture_basis
+    applies_to: "Raw material, intermediate, and product mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass as measured and separately record moisture fraction for the raw material, dried intermediate, and released meal; do not convert between wet and dry basis without retaining the formula and test result."
+  - id: utility_conversion
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuels, steam, or heat"
+    rule: "Preserve measured utility units and conversion factors; do not add electricity and thermal energy as if they were interchangeable."
+  - id: packaging_net_mass
+    applies_to: "Packaging and reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize product to net mass and report packaging materials separately by material and measured mass."
+process_map:
+  - id: receipt_preparation
+    name: "Raw-material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Establish starting condition; record fish input, ice/cold preservation, sorting, washing, trimming, and prepared material"
+    quantitative_reference: "kg prepared fish material"
+  - id: stabilization_drying
+    name: "Stabilization, dewatering, and drying"
+    inclusion: "required"
+    inclusion_condition: "Always; unit operations reflect the declared technology"
+    role: "Stabilize edible material and reduce moisture to the declared meal condition"
+    quantitative_reference: "kg dried stabilized material"
+  - id: milling_finishing
+    name: "Milling, sieving, and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produce the declared particle form and record recirculation or rejects"
+    quantitative_reference: "kg bulk edible fish meal"
+  - id: packaging_release
+    name: "Cooling, packaging, storage, and release"
+    inclusion: "required"
+    inclusion_condition: "Always; cold storage only when used"
+    role: "Produce the reference flow at the facility gate"
+    quantitative_reference: "1 kg net edible fish meal"
+  - id: wastewater_residuals
+    name: "Wastewater and residual treatment"
+    inclusion: "conditional"
+    inclusion_condition: "When treatment occurs within the reporting organization or direct releases are recorded"
+    role: "Record treatment inputs, recovered materials, wastes, and elementary releases"
+    quantitative_reference: "kg wastewater or residual handled"
+process_inventory:
+  - id: receipt_preparation
+    label: "Raw-material receipt and preparation"
+    inputs:
+      product:
+        - row_id: raw_fish_chilled_input
+          role: "Chilled raw fish"
+          name: "Raw fish, chilled, delivered to processing plant"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd9e0589-ca55-4dad-8940-79a60c3bd7af"
+          property_unit: "Mass / kg"
+          description: "Record accepted chilled raw fish by species/source, lot, wet mass, moisture, and temperature; link its upstream dataset."
+          amount:
+            expression: "Measured accepted raw-material wet mass allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: raw_frozen_fish_input
+          role: "Frozen fish"
+          name: "Frozen Fish"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bbae8c72-d732-4f53-bdd5-aff8a0f39d48"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted frozen fish by species/source, lot, wet mass, moisture, and incoming frozen condition."
+          amount:
+            expression: "Measured accepted raw-material wet mass allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: raw_fish_meat_input
+          role: "Fresh or chilled fish fillets and fish meat"
+          name: "Fish fillets and fish meat (whether or not minced), fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a1c31d45-a225-426f-908a-f79eae6c071f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted fresh or chilled fish fillets and fish meat, whether or not minced, by species/source and lot."
+          amount:
+            expression: "Measured accepted raw-material wet mass allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: raw_edible_fish_offal_input
+          role: "Edible fish offal"
+          name: "Edible fish offal, fish fins, heads, tails, maws and other edible fish offal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "be045cb1-719b-41b1-9bec-bf27cf50c401"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record edible fish fins, heads, tails, maws, and other edible offal separately when they are accepted as food-grade raw material."
+          amount:
+            expression: "Measured accepted raw-material wet mass allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: ice_cold_input
+          role: "Ice supplied from the landing site"
+          name: "Ice, at landing site"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b30afcbe-38ce-47a9-9da5-a1278329b9ba"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased landing-site ice when it enters with or is added to the raw fish; electricity for mechanical refrigeration is recorded separately."
+          amount:
+            expression: "Measured purchased or added mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fish_output
+          role: "Prepared fish material"
+          name: "Prepared edible fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared edible material from measured accepted input, segregated rejects, and preparation losses."
+          amount:
+            expression: "accepted raw fish minus measured segregated preparation residuals, reconciled for retained ice/water"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_residuals
+          role: "Rejected or inedible preparation residuals"
+          name: "Inedible fish offal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately by destination; material demonstrably sold as a co-product remains a product flow and enters allocation rather than being labelled waste."
+          amount:
+            expression: "Measured wet mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: stabilization_drying
+    label: "Stabilization, dewatering, and drying"
+    inputs:
+      product:
+        - row_id: prepared_fish_input
+          role: "Prepared fish material"
+          name: "Prepared edible fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the reconciled prepared material from receipt_preparation without adding upstream production a second time."
+          amount:
+            expression: "transferred measured/calculated prepared mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried stabilized material output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: process_water_input
+          role: "Process and sanitation water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record metered or allocated water used for preparation, cleaning, sanitation, steam contact, and process addition, avoiding double counting returned condensate."
+          amount:
+            expression: "Metered water or documented allocation from facility meter records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_grid_electricity_low_voltage
+          role: "CN low-voltage grid electricity for processing"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only for a Chinese low-voltage grid connection serving pumps, dewatering, dryers, ventilation, and controls."
+          amount:
+            expression: "Metered electricity or documented allocation from facility meter records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "5"
+                unit: "kWh"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_grid_electricity_medium_voltage
+          role: "CN medium-voltage grid electricity for processing"
+          name: "Alternating current, electricity mix, consumption mix, 1-35 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only for a Chinese medium-voltage grid connection serving the process equipment."
+          amount:
+            expression: "Metered electricity or documented allocation from facility meter records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: processing_steam_input
+          role: "Purchased steam for stabilization and drying"
+          name: "Steam, 11.0 MPaG"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased or transferred steam only when the verified supply pressure is 11.0 MPaG."
+          amount:
+            expression: "Metered steam or condensate-corrected engineering balance, converted to delivered energy for utility reconciliation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "50"
+                unit: "MJ"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processing_hot_water_input
+          role: "Purchased industrial hot water"
+          name: "Industrial hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record hot water that crosses the foreground boundary as a supplied thermal product, retaining inlet and return temperatures."
+          amount:
+            expression: "Metered hot-water mass and temperature difference converted to delivered energy without double-counting return water"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: processing_natural_gas_input
+          role: "Natural gas for on-site heat"
+          name: "Natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record pipeline natural gas combusted on site for cooking, evaporation, or drying."
+          amount:
+            expression: "Metered mass or volume converted with measured density and declared net calorific value"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: processing_lpg_input
+          role: "Liquefied petroleum gas for on-site heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3786072f-d3ce-4941-9249-ed5d346b21a6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record LPG combusted on site only where it is the heat source."
+          amount:
+            expression: "Measured cylinder or bulk-tank issue reconciled to stock change and converted using the declared calorific value"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: processing_diesel_input
+          role: "Diesel oil for on-site heat"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record diesel oil combusted on site only where it is the dryer, boiler, or backup fuel."
+          amount:
+            expression: "Measured tank issue reconciled to stock change and converted using the declared net calorific value"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: processing_heavy_fuel_oil_input
+          role: "Heavy fuel oil for on-site heat"
+          name: "Heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record heavy fuel oil combusted on site only where it is the actual boiler or dryer fuel."
+          amount:
+            expression: "Measured tank issue reconciled to stock change and converted using the declared net calorific value"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: processing_biomass_wood_chips_input
+          role: "Untreated wood chips for on-site heat"
+          name: "Untreated wood chips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated wood chips combusted on site only where biomass supplies process heat; retain species and moisture records."
+          amount:
+            expression: "Measured as-received mass with moisture and lower-heating-value conversion retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: food_grade_salt_input
+          role: "Food-grade salt"
+          name: "Salt, food-grade, for brine preparation"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a5fa711-4648-4d58-b94d-67b79e7476c7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium chloride only when the declared formulation or preservation route uses added salt."
+          amount:
+            expression: "Measured mass charged to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: liquid_smoke_input
+          role: "Liquid smoke flavouring"
+          name: "Liquid smoke flavouring"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liquid smoke flavouring only when it is charged directly to the declared smoked-product route."
+          amount:
+            expression: "Measured mass charged to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_wood_chips_input
+          role: "Untreated hardwood chips for food smoking"
+          name: "Untreated hardwood chips for food smoking"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated hardwood chips only when an on-site smoke generator is used; retain wood species and moisture."
+          amount:
+            expression: "Measured as-received mass charged to the smoke generator"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_material_output
+          role: "Dried stabilized fish material"
+          name: "Dried stabilized edible fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record output wet mass and moisture fraction after stabilization/drying; retain product-hold and release records."
+          amount:
+            expression: "Measured output mass with moisture test result"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried stabilized material output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: process_wastewater_output
+          role: "Wastewater from processing and sanitation"
+          name: "Fish-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discharged or treated wastewater and its destination; separately report retained solids when measured."
+          amount:
+            expression: "Metered discharge or water-balance estimate documented by calculation rule"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: separated_fish_solids_output
+          role: "Separated fish solids"
+          name: "Separated fish solids"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wet separated fish solids and destination; saleable recovered oil or soluble concentrate remains a product output and enters allocation."
+          amount:
+            expression: "Measured wet mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "9"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dryer_fines_output
+          role: "Fish dryer fines"
+          name: "Fish dryer fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record collected fish fines removed from the dryer separately from wet separated solids."
+          amount:
+            expression: "Measured dry mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: direct_fossil_co2_air
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report direct fossil carbon dioxide from on-site fossil-fuel combustion without including upstream fuel-production emissions."
+          amount:
+            expression: "Measured release or fuel-specific calculation using retained carbon-content and oxidation data"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: direct_nox_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report nitrogen oxides from on-site combustion, drying, or smoking using monitoring or a retained equipment- and fuel-specific calculation."
+          amount:
+            expression: "Measured stack release or documented emission-factor calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: direct_so2_air
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report sulfur dioxide from sulfur-bearing on-site fuel using monitoring or a retained sulfur-balance calculation."
+          amount:
+            expression: "Measured stack release or documented fuel-sulfur calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: direct_pm25_air
+          role: "Fine particulate matter to air"
+          name: "Particulate matter, 0.2-2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report primary particulate matter between 0.2 and 2.5 micrometres from combustion, drying, or smoke generation after controls."
+          amount:
+            expression: "Measured stack release or documented equipment-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: direct_cod_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report chemical oxygen demand only for a monitored direct water release from this process."
+          amount:
+            expression: "Measured concentration multiplied by monitored discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: direct_total_n_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report total nitrogen only for a monitored direct water release from this process."
+          amount:
+            expression: "Measured concentration multiplied by monitored discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+  - id: milling_finishing
+    label: "Milling, sieving, and finishing"
+    inputs:
+      product:
+        - row_id: dried_material_input
+          role: "Dried stabilized fish material"
+          name: "Dried stabilized edible fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer measured dried material from stabilization_drying."
+          amount:
+            expression: "transferred measured mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk edible fish meal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: milling_grid_electricity_low_voltage
+          role: "CN low-voltage grid electricity for milling"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only for a Chinese low-voltage grid connection serving grinding, sieving, dust control, and material transfer."
+          amount:
+            expression: "Metered electricity or documented allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: milling_grid_electricity_medium_voltage
+          role: "CN medium-voltage grid electricity for milling"
+          name: "Alternating current, electricity mix, consumption mix, 1-35 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only for a Chinese medium-voltage grid connection serving milling equipment."
+          amount:
+            expression: "Metered electricity or documented allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: milling_compressed_air_input
+          role: "Compressed air for milling and conveying"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record compressed air only when pneumatic controls or conveying serve the milling process."
+          amount:
+            expression: "Metered compressed-air volume or documented allocation from compressor records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_meal_output
+          role: "Bulk edible fish meal"
+          name: "Edible fish meal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fa402946-6236-41bb-8a2d-f7890b2e75cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record bulk output mass, moisture, particle specification, and released or reworked status."
+          amount:
+            expression: "Measured bulk output mass before immediate packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk edible fish meal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: milling_dust_output
+          role: "Collected fish-meal dust"
+          name: "Collected fish-meal dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record collected fish-meal dust that leaves the process for disposal or recovery; internal return is not a waste output."
+          amount:
+            expression: "Measured mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: milling_offspec_meal_output
+          role: "Off-spec edible fish meal"
+          name: "Off-spec edible fish meal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec edible fish meal sent to disposal; approved internal rework or saleable output remains a product flow."
+          amount:
+            expression: "Measured mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: milling_sieve_oversize_output
+          role: "Fish-meal sieve oversize"
+          name: "Fish-meal sieve oversize"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sieve oversize that leaves the process as waste separately from dust and off-spec meal."
+          amount:
+            expression: "Measured mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging_release
+    label: "Cooling, packaging, storage, and release"
+    inputs:
+      product:
+        - row_id: bulk_meal_input
+          role: "Bulk edible fish meal input"
+          name: "Edible fish meal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fa402946-6236-41bb-8a2d-f7890b2e75cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Transfer released bulk meal from milling_finishing without duplicating its upstream burdens."
+          amount:
+            expression: "measured transferred mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_paper_bag_input
+          role: "Paper bag packaging"
+          name: "Paper Bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0a8faf13-9861-4805-bcee-a212c6dceb04"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record paper bags used for the declared bulk or immediate packaging format."
+          amount:
+            expression: "Purchase, issue, and stock-balanced paper-bag mass allocated to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_plastic_film_input
+          role: "Plastic film or liner"
+          name: "Plastic film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b01e4bd9-5ada-4676-8a90-be5f167c00fc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record plastic film used as an inner liner, pouch, wrap, or seal; declare polymer, thickness, recycled content, and food-contact status."
+          amount:
+            expression: "Purchase, issue, and stock-balanced film mass allocated to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_corrugated_box_input
+          role: "Corrugated board box"
+          name: "Corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated board boxes used for the declared immediate or secondary pack."
+          amount:
+            expression: "Purchase, issue, and stock-balanced corrugated-box mass allocated to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pp_woven_sack_input
+          role: "Polypropylene woven sack"
+          name: "Polypropylene woven sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene woven sacks only when used in the declared packaging format."
+          amount:
+            expression: "Purchase, issue, and stock-balanced sack mass allocated to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_steel_drum_input
+          role: "Food-grade steel drum"
+          name: "Food-grade steel drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel drums only when they are the declared food-grade bulk packaging."
+          amount:
+            expression: "Purchase, issue, and stock-balanced drum mass allocated to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_grid_electricity_low_voltage
+          role: "CN low-voltage grid electricity for cold storage"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only when controlled-temperature cooling or storage uses a Chinese low-voltage grid connection."
+          amount:
+            expression: "Metered or allocated electricity over the recorded storage duration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_grid_electricity_medium_voltage
+          role: "CN medium-voltage grid electricity for cold storage"
+          name: "Alternating current, electricity mix, consumption mix, 1-35 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only when controlled-temperature cooling or storage uses a Chinese medium-voltage grid connection."
+          amount:
+            expression: "Metered or allocated electricity over the recorded storage duration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_r134a_makeup_input
+          role: "R134a refrigerant make-up"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4facd51-1e5c-422e-8461-e9562c045164"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record R134a issued to cold rooms or freezers after charging or leakage."
+          amount:
+            expression: "Purchased or issued make-up mass assigned from the equipment refrigerant ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_r404a_makeup_input
+          role: "R404A refrigerant make-up"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "76513c71-a148-484e-865f-2ab54afb4331"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record R404A issued to industrial freezing or cold-storage equipment after charging or leakage."
+          amount:
+            expression: "Purchased or issued make-up mass assigned from the equipment refrigerant ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_r717_makeup_input
+          role: "R717 ammonia refrigerant make-up"
+          name: "Refrigeration-grade ammonia R717"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigeration-grade ammonia issued to equipment after charging or leakage."
+          amount:
+            expression: "Purchased or issued make-up mass assigned from the equipment refrigerant ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_r744_makeup_input
+          role: "R744 carbon dioxide refrigerant make-up"
+          name: "Refrigeration-grade carbon dioxide R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigeration-grade carbon dioxide issued to equipment after charging or leakage."
+          amount:
+            expression: "Purchased or issued make-up mass assigned from the equipment refrigerant ledger"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Released edible fish meal"
+          name: "Edible fish meal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fa402946-6236-41bb-8a2d-f7890b2e75cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference after product release, with net mass and required qualifiers recorded."
+          amount:
+            expression: "exactly 1 kg net released product"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: storage_r134a_emission_air
+          role: "R134a refrigerant loss to air"
+          name: "HFC-134a, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate R134a released to air from equipment charge and service records."
+          amount:
+            expression: "Calculated R134a loss from charge and service records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg"
+                basis: "per 1 kg released edible fish meal"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_r404a_emission_air
+          role: "R404A refrigerant loss to air"
+          name: "Refrigerant R404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate R404A released to air from equipment charge and service records."
+          amount:
+            expression: "Calculated R404A loss from charge and service records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_r717_emission_air
+          role: "R717 ammonia refrigerant loss to air"
+          name: "Ammonia from R717, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate ammonia released to air from R717 equipment charge and service records."
+          amount:
+            expression: "Calculated R717 ammonia loss from charge and service records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_r744_emission_air
+          role: "R744 carbon dioxide refrigerant loss to air"
+          name: "Carbon dioxide from R744, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate carbon dioxide released to air from R744 equipment charge and service records."
+          amount:
+            expression: "Calculated R744 carbon-dioxide loss from charge and service records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released edible fish meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+  - id: wastewater_residuals
+    label: "Wastewater and residual treatment"
+    inputs:
+      product:
+        - row_id: treatment_grid_electricity_low_voltage
+          role: "CN low-voltage grid electricity for treatment"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only for Chinese low-voltage grid electricity used by on-site wastewater or residual treatment."
+          amount:
+            expression: "Metered electricity or documented allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_grid_electricity_medium_voltage
+          role: "CN medium-voltage grid electricity for treatment"
+          name: "Alternating current, electricity mix, consumption mix, 1-35 kV, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record this supply only for Chinese medium-voltage grid electricity used by on-site treatment."
+          amount:
+            expression: "Metered electricity or documented allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_process_water_input
+          role: "Process water for treatment"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record new process water used to prepare treatment chemicals or wash on-site treatment equipment."
+          amount:
+            expression: "Metered or purchased mass attributable to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_steam_input
+          role: "Purchased steam for treatment"
+          name: "Steam, 11.0 MPaG"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record steam used by on-site treatment only when the verified supply pressure is 11.0 MPaG."
+          amount:
+            expression: "Metered or condensate-corrected steam mass attributable to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_hot_water_input
+          role: "Purchased industrial hot water for treatment"
+          name: "Industrial hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record hot water that crosses the treatment boundary as a supplied thermal product."
+          amount:
+            expression: "Metered supply mass and temperature difference converted to delivered energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_natural_gas_input
+          role: "Natural gas for treatment"
+          name: "Natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record natural gas combusted by on-site treatment equipment."
+          amount:
+            expression: "Metered mass or volume converted with measured density and declared net calorific value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_lpg_input
+          role: "Liquefied petroleum gas for treatment"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3786072f-d3ce-4941-9249-ed5d346b21a6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record LPG combusted by on-site treatment equipment."
+          amount:
+            expression: "Metered cylinder or bulk-tank issue reconciled to stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_diesel_input
+          role: "Diesel oil for treatment"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record diesel oil consumed by on-site treatment equipment."
+          amount:
+            expression: "Metered tank issue reconciled to stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_heavy_fuel_oil_input
+          role: "Heavy fuel oil for treatment"
+          name: "Heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record heavy fuel oil consumed by on-site treatment equipment."
+          amount:
+            expression: "Metered tank issue reconciled to stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_biomass_wood_chips_input
+          role: "Untreated wood chips for treatment heat"
+          name: "Untreated wood chips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated wood chips consumed by on-site thermal treatment equipment."
+          amount:
+            expression: "Measured as-received mass with moisture retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_sodium_hydroxide_input
+          role: "Sodium hydroxide solution for treatment"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide solution used for pH control, with concentration retained."
+          amount:
+            expression: "Purchased or stock-balanced solution mass with concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_ferric_chloride_input
+          role: "Ferric chloride solution for treatment"
+          name: "Ferric chloride solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ferric chloride solution used as coagulant, with concentration retained."
+          amount:
+            expression: "Purchased or stock-balanced solution mass with concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_polyacrylamide_input
+          role: "Polyacrylamide flocculant for treatment"
+          name: "Polyacrylamide flocculant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyacrylamide flocculant used in on-site treatment, with grade and concentration retained."
+          amount:
+            expression: "Purchased or stock-balanced active-product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: treatment_fish_wastewater_input
+          role: "Fish-processing wastewater accepted for on-site treatment"
+          name: "Fish-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Transfer measured fish-processing wastewater from the producing processes without double counting."
+          amount:
+            expression: "measured or reconciled transferred mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_fish_solids_input
+          role: "Separated fish solids accepted for on-site treatment"
+          name: "Separated fish solids"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Transfer measured separated fish solids from the producing processes without double counting."
+          amount:
+            expression: "measured or reconciled transferred mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_fish_oil_output
+          role: "Recovered fish oil"
+          name: "Recovered fish oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered fish oil only when it meets a documented product specification and leaves for beneficial use; apply the allocation rules."
+          amount:
+            expression: "measured saleable output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: recovered_fish_solubles_output
+          role: "Concentrated fish solubles"
+          name: "Concentrated fish solubles"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record concentrated fish solubles only when they meet a documented product specification and leave for beneficial use; apply the allocation rules."
+          amount:
+            expression: "measured saleable output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: treatment_sludge_output
+          role: "Fish-processing wastewater-treatment sludge"
+          name: "Fish-processing wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dewatered or wet sludge mass and destination, and link the applicable external treatment dataset."
+          amount:
+            expression: "measured dispatched mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: treatment_methane_air
+          role: "Methane to air from treatment"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report methane released from on-site biological treatment using monitoring or a retained calculation."
+          amount:
+            expression: "measured or calculated methane release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_n2o_air
+          role: "Nitrous oxide to air from treatment"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report nitrous oxide released from on-site nitrogen treatment using monitoring or a retained calculation."
+          amount:
+            expression: "measured or calculated nitrous-oxide release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_cod_water
+          role: "Chemical oxygen demand to water from treatment"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report chemical oxygen demand in treated effluent from monitored concentration and discharge volume."
+          amount:
+            expression: "measured concentration multiplied by monitored discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_total_n_water
+          role: "Total nitrogen to water from treatment"
+          name: "Total nitrogen, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report total nitrogen in treated effluent from monitored concentration and discharge volume."
+          amount:
+            expression: "measured concentration multiplied by monitored discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_total_p_water
+          role: "Total phosphorus to water from treatment"
+          name: "Total phosphorus, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report total phosphorus in treated effluent from monitored concentration and discharge volume."
+          amount:
+            expression: "measured concentration multiplied by monitored discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wastewater or residual handled"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoidance
+    applies_to: "Shared foreground operations"
+    rule: "First avoid allocation by process subdivision, separate metering, or expanding separately controllable unit operations."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_direct_assignment
+    applies_to: "Meal, recovered oil, soluble fractions, saleable residuals, and waste streams"
+    rule: "Directly assign inputs, emissions, and treatment burdens when causal records identify the receiving output. Materials classified as waste receive no co-product share before the selected waste-treatment boundary."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_economic
+    applies_to: "Unavoidable multifunctional processes"
+    rule: "If direct assignment is not possible, use a documented physical relation that reflects the causal production relationship. If no defensible physical relation exists, allocate by economic value using representative annual quantities and prices; disclose the method and test a reasonable alternative."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_mass_balance
+    applies_to: "Internal transfers and rework"
+    rule: "Do not allocate burdens to internal recirculation. Reconcile fish material, water incorporated or removed, meal, saleable co-products, wastewater, and residuals before allocating shared burdens."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "receipt_preparation_stabilization_drying_milling_finishing_packaging_release"
+      flow_role: "Raw material, intermediates, product, rejects, and residuals"
+      record_type: "Weighbridge, scale, production, moisture, and disposition records"
+      raw_fields: "lot_id; species/source; input_mass_kg; output_mass_kg; residual_mass_kg; moisture_fraction; destination; timestamp"
+      collection_method: "Calibrated weighing with lot reconciliation and retained moisture test"
+      unit: "kg; mass fraction"
+      frequency: "Each lot; daily reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or all lots for a shorter declared campaign"
+      site_scope: "All foreground lines and outsourced steps attributed to the product"
+      aggregation_rule: "Sum by lot and normalize released quantities to 1 kg net product; reconcile wet and dry matter separately"
+      quality_evidence: "Calibration records; laboratory result; lot release; reconciliation sign-off"
+    - protocol_id: cp_utility_records
+      process_id: "stabilization_drying_milling_finishing_wastewater_residuals"
+      flow_role: "Water, electricity, fuel, steam, and heat"
+      record_type: "Meter, invoice, fuel stock, and operating-hour records"
+      raw_fields: "meter_id; opening; closing; unit; carrier; lot_or_period; allocation_driver; conversion_factor"
+      collection_method: "Prefer submetering; otherwise document a physical allocation driver"
+      unit: "kg or m3; kWh; MJ; carrier unit"
+      frequency: "Meter interval or monthly, matched to production"
+      temporal_coverage: "Representative continuous 12-month period or declared campaign"
+      site_scope: "All foreground equipment and shared utilities"
+      aggregation_rule: "Carrier-specific total divided by reconciled output; retain conversions"
+      quality_evidence: "Meter verification; invoices; stock reconciliation; allocation worksheet"
+    - protocol_id: cp_cold_chain_records
+      process_id: "receipt_preparation_packaging_release"
+      flow_role: "Ice, storage electricity, temperature, and duration"
+      record_type: "Purchase, meter, temperature logger, and inventory records"
+      raw_fields: "ice_mass_kg; electricity_kwh; storage_mass_kg; start_time; end_time; setpoint; measured_temperature"
+      collection_method: "Weigh ice; meter electricity; retain continuous or defined-interval temperature records"
+      unit: "kg; kWh; h; degC"
+      frequency: "Each lot plus meter interval"
+      temporal_coverage: "All relevant storage within the reporting period"
+      site_scope: "All foreground chilled/frozen receiving and storage serving the product"
+      aggregation_rule: "Allocate shared electricity by mass-time and temperature-zone where defensible"
+      quality_evidence: "Scale/meter checks; logger calibration; excursion log"
+    - protocol_id: cp_ingredient_records
+      process_id: "stabilization_drying"
+      flow_role: "Salt, smoke treatment, and other ingredients/additives"
+      record_type: "Batch sheet and stock issue"
+      raw_fields: "material_id; supplier_lot; mass_kg; batch_id; purpose"
+      collection_method: "Weigh each charged material and reconcile stock"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "All batches in the reporting period"
+      site_scope: "All declared formulations/routes"
+      aggregation_rule: "Sum by material and normalize to released product"
+      quality_evidence: "Scale calibration; supplier specification; batch authorization"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_release"
+      flow_role: "Immediate packaging"
+      record_type: "Bill of materials, purchase, stock, and packing records"
+      raw_fields: "material; unit_mass_kg; units_used; scrap_kg; returned_kg"
+      collection_method: "Weigh representative packaging units and reconcile issues"
+      unit: "kg"
+      frequency: "Each packaging format; monthly reconciliation"
+      temporal_coverage: "All formats in the reporting period"
+      site_scope: "All immediate packaging at the reference gate"
+      aggregation_rule: "Net issued packaging plus attributable scrap divided by released net product"
+      quality_evidence: "Scale record; bill of materials; stock reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "all_applicable_processes"
+      flow_role: "Wastewater, residuals, treatment inputs, recovered outputs, and dispatched waste"
+      record_type: "Meter, manifest, scale, laboratory, and destination records"
+      raw_fields: "stream_id; mass_or_volume; moisture; destination; classification; treatment; recovered_product_status"
+      collection_method: "Measure by stream; document density conversion and product/waste decision"
+      unit: "kg; m3; mass fraction"
+      frequency: "Each transfer or meter interval"
+      temporal_coverage: "Representative continuous 12-month period or declared campaign"
+      site_scope: "All foreground waste and recovery routes"
+      aggregation_rule: "Aggregate by stream and destination; normalize to reference flow or treatment output as specified"
+      quality_evidence: "Meter/scale checks; manifests; analyses; receiving documentation"
+    - protocol_id: cp_emission_records
+      process_id: "stabilization_drying_wastewater_residuals"
+      flow_role: "Direct substance-specific releases"
+      record_type: "Monitoring, permit, fuel analysis, and approved calculation records"
+      raw_fields: "substance; compartment; measured_value; unit; flow_rate; operating_time; factor; source"
+      collection_method: "Use measured monitoring where available; otherwise document formula and factor provenance"
+      unit: "substance-appropriate"
+      frequency: "Monitoring/permit frequency and each calculation period"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All foreground emission points and diffuse sources that can be quantified"
+      aggregation_rule: "Calculate each substance and normalize to the applicable output"
+      quality_evidence: "Laboratory QA; instrument calibration; permit report; calculation file"
+    - protocol_id: cp_refrigerant_records
+      process_id: "packaging_release"
+      flow_role: "Refrigerant losses"
+      record_type: "Equipment register, charge, purchase, recovery, and service records"
+      raw_fields: "equipment_id; refrigerant; opening_charge_kg; added_kg; recovered_kg; closing_charge_kg; service_date"
+      collection_method: "Annual or campaign mass balance by refrigerant"
+      unit: "kg"
+      frequency: "Each service event and annual balance"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All refrigerant-bearing foreground equipment serving the product"
+      aggregation_rule: "Loss = opening charge + additions - recovery - closing charge; allocate by documented service driver"
+      quality_evidence: "Technician/service records; equipment register; purchase and recovery records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = attributed amount / net released edible fish meal mass"
+      inputs:
+        - "attributed amount"
+        - "released net mass"
+      output: "amount per 1 kg reference flow"
+      source_ids: []
+    - id: calc_wet_dry_balance
+      applies_to: "Fish material and product"
+      rule: "dry matter = wet mass x (1 - moisture fraction); reconcile dry matter across inputs, meal, co-products, residuals, and measured losses"
+      inputs:
+        - "wet mass"
+        - "moisture fraction"
+        - destinations
+      output: "wet- and dry-matter balance"
+      source_ids: []
+    - id: calc_wastewater
+      applies_to: "Process wastewater"
+      rule: "wastewater mass = measured discharge, or documented water inputs minus water retained in products/co-products and separately quantified evaporation/losses"
+      inputs:
+        - "water inputs"
+        - "retained water"
+        - "evaporation/losses"
+      output: "wastewater mass"
+      source_ids: []
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration equipment"
+      rule: "loss by substance = opening charge + additions - recovered refrigerant - closing charge"
+      inputs:
+        - "charge and service fields"
+      output: "kg refrigerant emitted before allocation"
+      source_ids: []
+    - id: calc_allocation
+      applies_to: "Unavoidable multifunctionality"
+      rule: "Apply direct assignment first, then the selected physical relation, and economic value only when no defensible physical relation exists; fractions shall sum to 1"
+      inputs:
+        - "assigned burdens"
+        - "output quantities"
+        - "physical driver or economic values"
+      output: "allocation fractions and allocated inventory"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and inputs"
+      requirement: "Retain species/source, raw-material condition, route, formulation, moisture basis, packaging, storage condition, geography, period, and supplier/lot identity."
+      evidence: "Product specification, supplier record, batch record, and release record; unsd-cpc-3-2025; codex-cxc-52-2003"
+    - id: dq_measurement
+      applies_to: "Mass, utilities, temperature, moisture, and emissions"
+      requirement: "Use calibrated or verified instruments where material; retain units, conversions, detection limits, allocation drivers, and calculation provenance."
+      evidence: "Calibration/verification records and calculation files; eu-pef-2021-2279"
+    - id: dq_temporal
+      applies_to: "Foreground inventory"
+      requirement: "Prefer a representative continuous 12-month period; if a shorter or discontinuous campaign is used, disclose seasonality and justify representativeness."
+      evidence: "Dated records, production calendar, and representativeness assessment; eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "Foreground and linked upstream inventory"
+      requirement: "Reconcile mass and energy, account for all required and conditionally applicable processes, and document any omitted flow against the cut-off rule."
+      evidence: "Reconciliation and completeness checklist; eu-pef-2021-2279"
+    - id: dq_food_safety
+      applies_to: "Food-grade production"
+      requirement: "Retain hazard-control, sanitation, temperature, process control, reject, and product-release evidence applicable to the declared material and route."
+      evidence: "HACCP or equivalent food-safety plan, monitoring and release records; codex-cxc-52-2003"
+    - id: dq_estimate_replacement
+      applies_to: "Provisional QA ranges"
+      requirement: "Treat every reasoned_estimate range as a review flag, not an industry default; compare foreground values but do not substitute the midpoint. Replace the range when reviewed representative evidence becomes available."
+      evidence: "Manifest review note and reviewer decision"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Reference product and dataset metadata"
+    rule: "Fail completeness when the product-flow UUID, 1 kg Mass reference, CPC mapping context, or any required qualifier is missing or inconsistent."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_reference_output
+    applies_to: "reference_product_output"
+    rule: "Require exactly 1 kg net released edible fish meal and report packaging separately; the product output shall use the declared Mass property and kg unit."
+    source_ids: []
+  - rule_id: validate_process_coverage
+    applies_to: "Process map"
+    rule: "Require every required process and each conditional process whose condition applies; disclose outsourced steps and link their datasets."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_balance
+    applies_to: "Material flows"
+    rule: "Require wet-mass and dry-matter reconciliation within a declared tolerance; unresolved differences, unclassified saleable outputs, and missing destinations are findings."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "Multifunctional operations"
+    rule: "Require fractions to sum to 1, prohibit allocation to internal recirculation, and retain direct-assignment/physical/economic method rationale and sensitivity where economic allocation is used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_food_safety_records
+    applies_to: "Food-grade route"
+    rule: "Require applicable hazard-control, sanitation, process monitoring, reject, and release records; this validates inventory evidence and does not certify regulatory compliance."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_provisional_ranges
+    applies_to: "reasoned_estimate ranges"
+    rule: "Flag values outside a provisional range for review, but do not replace measured values or treat the range as a conformance limit."
+    source_ids: []
+  - rule_id: validate_data_quality
+    applies_to: "Foreground package"
+    rule: "Require temporal, geographical, technological, measurement, and completeness disclosures plus the evidence named by each data-collection protocol."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for food-grade edible fish meal at the producing facility gate"
+  downstream_use: "May be published as a secondary_dataset and used as a background_dataset when product, geography, technology, time, and quality are representative"
+  allowed_use: "Product-footprint, process, and lifecyclemodel studies matching the declared edible-grade product, preservation route, boundary, geography, technology, and period"
+  excluded_use: "Feed-grade fish meal; whole dried/smoked fish; products with materially different species mix, moisture, additives, preservation, or co-product treatment without adjustment; regulatory or food-safety certification"
+  required_metadata: "PCR id/version; product-flow UUID; CPC mapping context; required qualifiers; facility geography; technology; reporting period; boundary; allocation; upstream dataset references; packaging and storage scenario"
+  required_quality_disclosure: "Primary-data share; coverage period; mass/energy balance; measurement and conversion methods; missing data; provisional estimates; allocation sensitivity; data-quality representativeness; food-safety record coverage"
+  update_trigger: "Material change in raw-material source/species, preservation or drying technology, product moisture/formulation, energy system, packaging/storage, co-product route/allocation, regulation, or representative data; replacement of any provisional range"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure dated 30 June 2025, code 21233 “Edible fish meal”, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Official classification boundary and distinction from adjacent dried, smoked, offal, and otherwise prepared fish categories"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, Code of Practice for Fish and Fishery Products, CXC 52-2003, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B52-2003%252FCXC_052e.pdf (retrieved 2026-08-11)"
+    used_for: "Fish-product process decomposition, hygiene and hazard-control records, handling, sanitation, process control, rejection, and release evidence"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Functional-unit completeness, lifecycle boundary, allocation hierarchy, inventory completeness, data-quality representativeness, and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7ff8fa98ef8e1f85cb91ac2a89be708c7385d87caf76a42213ee5a6cd5373952"
+  generated_content_sha256: "sha256:50fc8673ee62c08e73446ef9800217f334618c35f030d55c969dfb9e6ae7cb7f"

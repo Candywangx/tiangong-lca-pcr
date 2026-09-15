@@ -1,10 +1,993 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33370"
-  title: "Fuel oils n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.fuel-oils-n-e-c"
+  classification_refs: "CPC 3.0: 33370, Fuel oils n.e.c."
+  covered_products: "Marketable residual fuel oil, heavy fuel oil, heavy gas oil sold as fuel, and fuel-oil blends not elsewhere classified whose declared composition and market identity remain within CPC 33370."
+  excluded_products: "Crude petroleum; gasoline; aviation and turbine fuels; kerosene; gas oil or diesel assigned to CPC 33360; lubricants; petroleum gases; bitumen used as a material; pure biofuels or other products outside the declared CPC petroleum-product boundary; refinery intermediates not yet saleable as fuel oil."
+  representative_product: "A marketable residual or heavy fuel-oil blend released by quality control at the refinery or blending-facility gate."
+  production_route: "Declared combination of refinery separation, residue conversion or treating, component receipt, blending, quality control, storage, and transfer."
+  market_state: "Bulk liquid fuel at the producing or blending facility gate, with grade, composition basis, energy content, and applicable quality specification declared."
+functional_unit:
+  what: "Net calorific energy contained in marketable CPC 33370 fuel oil released at the refinery or blending-facility gate."
+  how_much: "1 MJ of net calorific value."
+  how_well: "The batch or reporting-period output meets its declared fuel-oil grade or contractual specification and reports sulfur content, density, viscosity with test temperature, water and sediment, net calorific value method, and route."
+  how_long_or_cycle: "One production batch or one internally consistent reporting period, normally not longer than 12 months."
+  reference_flow_link: "The functional unit is realized by the Tiangong product flow 6908344a-d905-4a65-a5e6-9511198fde88, constrained by the CPC 33370 classification and all Required qualifiers below."
+system_boundary:
+  rules:
+    - rule_id: boundary_route_completeness
+      applies_to: "foreground route"
+      rule: "Include every on-site operation needed to convert the declared starting condition into released fuel oil: applicable separation, conversion, treating, blending, quality control, storage, transfer, utilities, direct emissions, wastewater, and wastes."
+      source_ids:
+        - us-epa-ap42-petroleum-refining
+    - rule_id: boundary_purchased_components
+      applies_to: "received refinery streams and fuel components"
+      rule: "Treat received components as product inputs with upstream datasets; do not claim cradle-to-gate coverage when their production is omitted."
+      source_ids:
+        - unsd-cpc-33370
+    - rule_id: boundary_recursive_fuel_oil
+      applies_to: "CPC 33370 input used in blending"
+      rule: "Stop recursion at the received product input, retain its upstream dataset, and disclose the input and output grades so blending does not duplicate upstream production."
+      source_ids:
+        - mass-balance-identity
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream life cycle"
+      rule: "Exclude transport beyond the facility gate, distributor or user storage, combustion, ash management, and end-use equipment unless the study explicitly extends the boundary and reports those stages separately."
+      source_ids:
+        - unsd-cpc-33370
+    - rule_id: boundary_market_specification
+      applies_to: "marine and other regulated grades"
+      rule: "Apply market-specific quality and sulfur requirements only to the relevant declared grade; do not use a marine or heating-fuel specification to narrow the entire CPC category."
+      source_ids:
+        - iso-8217-2024
+        - imo-sulphur-2020
+        - astm-d396-21
+boundary_abstraction:
+  declared_starting_condition: "Identify every starting feed or purchased component as crude or unfinished oil, refinery intermediate, residual stream, distillate cutter stock, additive, or market fuel component; state whether it is produced on site or received across the foreground boundary."
+  starting_condition_role: "The starting condition determines which separation, conversion, treating, and upstream supplier processes are foreground and which are linked upstream product systems."
+  product_classification_scope: "CPC 3.0:33370 only; another fuel category, unfinished intermediate, or non-fuel petroleum product must not be relabelled to use this PCR."
+  recursive_input_rule: "A purchased input that itself qualifies as CPC 33370 is recorded as a product input with its own upstream dataset and declared grade; its production is not recreated inside the receiving blending process."
+  upstream_dataset_requirement: "Link crude oil, refinery intermediates, hydrogen, electricity, heat, water, chemicals, additives, and transport to representative upstream datasets, preserving supplier-specific data when available."
+  disclosure: "Declare facility and geography, reporting period, product grade, feed and component basis, route units used, allocation approach, storage and transfer boundary, and any excluded refinery infrastructure or shared operation."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "fuels"
+    uuid: "6908344a-d905-4a65-a5e6-9511198fde88"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-11da-a746-0800200c9a66"
+  reference_unit: "MJ"
+  required_qualifiers:
+    - "CPC 33370 product identity"
+    - "commercial grade or specification"
+    - residual
+    - distillate
+    - "or blend type"
+    - "component and feedstock basis"
+    - "production and treating route"
+    - "sulfur content"
+    - "density and reference temperature"
+    - "kinematic viscosity and test temperature"
+    - "water and sediment"
+    - "net calorific value and measurement or calculation method"
+    - biogenic
+    - synthetic
+    - recycled
+    - "or waste-derived share if present"
+    - "production geography"
+    - "facility-gate condition"
+    - "batch or reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_energy_ncv
+    applies_to: "reference product and all normalized inventory"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Normalize all inventory to 1 MJ of saleable output using the net calorific value for the same product batch or reporting-period weighted average."
+  - id: product_mass_energy_link
+    applies_to: "saleable product and fuel components"
+    required_property_ref:
+      name: "Net calorific value and mass"
+      uuid: ""
+    required_unit: "MJ and kg"
+    rule: "Record product mass and net calorific value separately; calculate output energy as saleable mass multiplied by batch-matched net calorific value. Do not substitute gross calorific value without a documented conversion."
+  - id: volume_mass_conversion
+    applies_to: "volume-metered liquid inputs and outputs"
+    required_property_ref:
+      name: "Volume, density, and mass"
+      uuid: ""
+    required_unit: "reported volume unit, kg/m3, and kg"
+    rule: "Convert volume to mass only with density measured or contractually reported for the same material and reference temperature; retain the raw volume, density, temperature, and conversion record."
+  - id: quality_test_conditions
+    applies_to: "viscosity, density, water, sediment, sulfur, and other grade properties"
+    required_property_ref:
+      name: "Property-specific test result"
+      uuid: ""
+    required_unit: "declared test unit"
+    rule: "Report the test method, sample or batch identity, test temperature where applicable, detection limit for censored results, and whether the value is measured or supplier-reported."
+process_map:
+  - id: primary_refining
+    name: "Primary separation and residue production"
+    inclusion: "conditional"
+    inclusion_condition: "Include when crude oil or unfinished feed is processed within the foreground facility."
+    role: "foreground production"
+    quantitative_reference: "mass and net calorific energy of separated refinery streams"
+  - id: conversion_and_treating
+    name: "Residue conversion and treating"
+    inclusion: "conditional"
+    inclusion_condition: "Include each visbreaking, cracking, coking, hydrotreating, desulfurization, sweetening, or equivalent unit that supplies or conditions the product components."
+    role: "foreground production and conditioning"
+    quantitative_reference: "mass of treated blend component"
+  - id: blending_and_quality_control
+    name: "Component blending and product release"
+    inclusion: "required"
+    inclusion_condition: "Always include the operations that formulate and release the saleable CPC 33370 product."
+    role: "foreground production"
+    quantitative_reference: "1 MJ net calorific value of released fuel oil"
+  - id: storage_and_transfer
+    name: "Product storage and transfer to facility gate"
+    inclusion: "required"
+    inclusion_condition: "Always include storage, circulation, pumping, inventory change, and loading up to the declared facility gate."
+    role: "foreground storage and delivery to gate"
+    quantitative_reference: "1 MJ net calorific value transferred at gate"
+  - id: onsite_utilities_and_treatment
+    name: "On-site utilities and residual treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include attributable boilers, furnaces, steam, electricity generation, hydrogen production, sulfur recovery, flaring, wastewater treatment, or waste treatment when inside the foreground boundary."
+    role: "foreground support and treatment"
+    quantitative_reference: "service delivered to foreground processes"
+process_inventory:
+  - id: primary_refining
+    label: "Primary separation and residue production"
+    inputs:
+      product:
+        - row_id: crude_or_unfinished_feed
+          role: "Crude oil or unfinished refinery feed"
+          name: "Feed-specific Tiangong product flow selected for the declared crude oil or unfinished refinery stream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each feed crossing into the foreground separation system by source, grade, mass, density, and energy-content record where relevant."
+          amount:
+            expression: "measured receipt plus opening inventory minus closing inventory for the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 MJ net calorific value of released fuel oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_refining_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: primary_refining_utilities
+          role: "Primary-refining utilities"
+          name: "Utility-specific Tiangong product flow selected for each metered utility"
+          flow_type: "product"
+          property_unit: "utility-specific property / metered unit"
+          description: "Record metered electricity, steam, process fuel, and water attributable to separation and residue production; do not include a shared utility twice."
+          amount:
+            expression: "measured or invoice-reconciled utility use allocated to the included unit operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per process output, subsequently normalized to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_refining_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: residual_heavy_components
+          role: "Residual and heavy blend components"
+          name: "Component-specific Tiangong product flow selected from the declared refinery stream identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each separated residue or heavy gas-oil component by batch or tank transfer, including disposition to the reference product, another product, or inventory."
+          amount:
+            expression: "measured transfer mass reconciled to feed, co-products, inventory change, wastes, and losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per primary-refining process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_primary_refining_records
+              source_ids:
+                - mass-balance-identity
+                - unsd-cpc-33370
+            ranges: []
+      waste:
+        - row_id: primary_refining_wastes
+          role: "Primary-refining wastewater and residues"
+          name: "Waste-specific Tiangong waste flow selected during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record oily water, sludges, tank or desalter residues, and other wastes leaving the process by named waste stream and destination."
+          amount:
+            expression: "measured transfer, treatment log, or documented mass-balance calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per process output, subsequently normalized to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_refining_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      elementary:
+        []
+  - id: conversion_and_treating
+    label: "Residue conversion and treating"
+    inputs:
+      product:
+        - row_id: conversion_feed
+          role: "Conversion or treating feed"
+          name: "Feed-specific Tiangong product flow selected for the declared refinery intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each residue, heavy fraction, or intermediate entering an included conversion or treating unit, preserving its source process and transfer mass."
+          amount:
+            expression: "measured unit feed reconciled to transfer and tank records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: conversion_auxiliaries
+          role: "Hydrogen, chemicals, catalysts, and utilities"
+          name: "Substance- or utility-specific Tiangong product flow selected during dataset construction"
+          flow_type: "product"
+          property_unit: "material- or energy-specific property / recorded unit"
+          description: "Record hydrogen, treating chemicals, catalyst make-up, electricity, steam, and process fuel separately for every included unit."
+          amount:
+            expression: "measured consumption, purchasing reconciliation, or catalyst make-up record attributable to the unit"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_blend_component
+          role: "Treated fuel-oil blend component"
+          name: "Component-specific Tiangong product flow selected for the declared treated refinery stream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the treated or converted component, its measured mass, sulfur and relevant quality changes, and the quantity transferred to blending."
+          amount:
+            expression: "measured transfer mass reconciled by unit mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per conversion or treating process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - mass-balance-identity
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: conversion_coproducts
+          role: "Recovered sulfur and other co-products"
+          name: "Co-product-specific Tiangong product flow selected during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable sulfur, gases, distillates, coke, or other co-products separately; retain measured quantities and the allocation decision."
+          amount:
+            expression: "measured co-product output and inventory reconciliation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      waste:
+        - row_id: conversion_wastes
+          role: "Spent catalysts, sludges, and treatment wastes"
+          name: "Waste-specific Tiangong waste flow selected during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent catalysts, sludges, spent caustic, and other named treatment wastes with treatment or recovery destination."
+          amount:
+            expression: "measured dispatch or treatment record"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      elementary:
+        - row_id: conversion_fossil_co2
+          role: "Fossil carbon dioxide from included conversion units"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from unit-specific monitoring or a documented carbon and fuel calculation; upstream electricity emissions remain upstream."
+          amount:
+            expression: "measured release or calculated value from collected fuel and carbon records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: conversion_sulfur_dioxide
+          role: "Sulfur dioxide from included conversion units"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct sulfur dioxide by emission point, distinguishing monitored releases from calculations and retaining sulfur-balance inputs."
+          amount:
+            expression: "measured release or calculated value from collected sulfur and control records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: conversion_nitrogen_oxides
+          role: "Nitrogen oxides from included conversion units"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass / kg"
+          description: "Record direct nitrogen oxides from monitored points or documented unit-specific calculations."
+          amount:
+            expression: "measured release or calculated value from collected operating and emission-control records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treated blend-component output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conversion_treating_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+  - id: blending_and_quality_control
+    label: "Component blending and product release"
+    inputs:
+      product:
+        - row_id: blend_components
+          role: "Fuel-oil blend components"
+          name: "Component-specific Tiangong product flow selected for each declared blend component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every on-site or purchased component by tank or batch, mass, density, net calorific value where used, and sulfur and viscosity contribution."
+          amount:
+            expression: "measured batch charge or transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per blending batch, subsequently normalized to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_release_records
+              source_ids:
+                - unsd-cpc-33370
+                - mass-balance-identity
+            ranges: []
+        - row_id: blend_auxiliaries
+          role: "Cutter stocks, additives, and blending energy"
+          name: "Material- or utility-specific Tiangong product flow selected during dataset construction"
+          flow_type: "product"
+          property_unit: "material- or energy-specific property / recorded unit"
+          description: "Record cutter stocks separately from additives and record metered heating, circulation, and pumping energy for the batch or reporting period."
+          amount:
+            expression: "measured batch charge, purchasing reconciliation, or metered utility use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per blending batch, subsequently normalized to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_release_records
+              source_ids:
+                - astm-d396-21
+                - iso-8217-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_reference_fuel_oil
+          role: "Released reference fuel oil"
+          name: "fuels"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6908344a-d905-4a65-a5e6-9511198fde88"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only saleable output passing the declared release specification is normalized to the reference flow. Off-specification material retained for rework is not saleable output."
+          amount:
+            expression: "exactly 1 MJ after batch-matched saleable mass and net calorific value normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 MJ net calorific value of released fuel oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_blending_release_records
+              source_ids:
+                - mass-balance-identity
+                - astm-d396-21
+                - iso-8217-2024
+            ranges: []
+        - row_id: off_spec_rework
+          role: "Off-specification material returned to rework"
+          name: "Product-specific internal flow selected for the declared off-specification material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record material returned to blending or another process as an internal transfer; material leaving the product system must instead be recorded as a waste or co-product according to its disposition."
+          amount:
+            expression: "measured rework transfer mass and inventory reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per blending batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_release_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: storage_and_transfer
+    label: "Product storage and transfer to facility gate"
+    inputs:
+      product:
+        - row_id: released_fuel_to_storage
+          role: "Released fuel oil entering storage"
+          name: "fuels"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6908344a-d905-4a65-a5e6-9511198fde88"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record the released batch transferred to saleable storage and retain tank identity, mass or volume, density, and energy content."
+          amount:
+            expression: "measured transfer energy calculated from batch mass and net calorific value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per storage and transfer process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_transfer_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: storage_energy
+          role: "Storage heating and transfer electricity"
+          name: "alternating current for purchased electricity; route-specific product flow for other energy carriers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ or kWh within Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record tank heating, circulation, pumping, and loading energy attributable to the included product tanks and transfer period."
+          amount:
+            expression: "submetered use or documented equipment-level allocation from collected operating records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 MJ fuel oil transferred at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_transfer_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fuel_oil_at_gate
+          role: "Fuel oil transferred at facility gate"
+          name: "fuels"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6908344a-d905-4a65-a5e6-9511198fde88"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record net saleable energy transferred at the gate after inventory reconciliation, excluding downstream transport and user storage."
+          amount:
+            expression: "exactly 1 MJ after gate-transfer and inventory-loss normalization"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1 MJ net calorific value transferred at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_transfer_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        - row_id: storage_wastes
+          role: "Tank bottoms, drainage, and contaminated material"
+          name: "Waste-specific Tiangong waste flow selected during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record tank bottoms, drainage, oily water, spill recovery, and contaminated absorbents by measured quantity and destination."
+          amount:
+            expression: "measured removal or documented inventory reconciliation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 MJ fuel oil transferred at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_transfer_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      elementary:
+        - row_id: storage_air_releases
+          role: "Storage and transfer air releases"
+          name: "Substance-specific Tiangong elementary flow selected for each reported air emission"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record substance-specific measured or modelled breathing, working, loading, and fugitive emissions. Do not report one unidentified aggregate VOC flow when substance-resolved data are available."
+          amount:
+            expression: "measured release or documented tank and transfer model calculated from collected throughput, tank, product, and control data"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 MJ fuel oil transferred at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_transfer_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+  - id: onsite_utilities_and_treatment
+    label: "On-site utilities and residual treatment"
+    inputs:
+      product:
+        - row_id: onsite_utility_inputs
+          role: "Utility fuels, electricity, water, and treatment chemicals"
+          name: "Input-specific Tiangong product flow selected for each utility or treatment input"
+          flow_type: "product"
+          property_unit: "material- or energy-specific property / recorded unit"
+          description: "Record all inputs to included on-site utility and treatment systems, then allocate only the attributable service share to the foreground fuel-oil route."
+          amount:
+            expression: "metered, purchased, or stock-reconciled input assigned to delivered service"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per unit of utility or treatment service delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_utility_treatment_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: onsite_services
+          role: "Utility and treatment services delivered"
+          name: "Service-specific Tiangong product flow selected during dataset construction"
+          flow_type: "product"
+          property_unit: "service-specific property / service unit"
+          description: "Record steam, heat, electricity, hydrogen, sulfur-recovery, wastewater-treatment, or other service delivered to each foreground process without double counting purchased supply."
+          amount:
+            expression: "metered service delivery or engineering calculation from collected operating records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per unit of service delivered"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_utility_treatment_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      waste:
+        - row_id: onsite_treatment_outputs
+          role: "Wastewater, sludge, ash, and treatment residues"
+          name: "Waste-specific Tiangong waste flow selected during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treated or untreated wastewater, sludge, ash, recovered residues, and final disposal flows separately with destination and treatment status."
+          amount:
+            expression: "measured discharge, dispatch, or documented treatment mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per delivered utility or treatment service, then allocated to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_utility_treatment_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+      elementary:
+        - row_id: onsite_fossil_co2
+          role: "Fossil carbon dioxide from included on-site utility systems"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record attributable direct fossil carbon dioxide from measured releases or calculations based on collected fuel and carbon records."
+          amount:
+            expression: "measured release or calculated value from collected fuel and carbon records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per delivered utility service, then allocated to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_utility_treatment_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: onsite_sulfur_dioxide
+          role: "Sulfur dioxide from included on-site utility systems"
+          name: "sulfur dioxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record attributable direct sulfur dioxide using monitored emissions or a documented sulfur and control calculation."
+          amount:
+            expression: "measured release or calculated value from collected sulfur and control records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per delivered utility service, then allocated to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_utility_treatment_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+        - row_id: onsite_nitrogen_oxides
+          role: "Nitrogen oxides from included on-site utility systems"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass / kg"
+          description: "Record attributable direct nitrogen oxides from monitoring or a documented unit-specific calculation."
+          amount:
+            expression: "measured release or calculated value from collected operating and emission-control records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per delivered utility service, then allocated to 1 MJ released fuel oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_utility_treatment_records
+              source_ids:
+                - us-epa-ap42-petroleum-refining
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared refinery and blending operations"
+    rule: "First avoid allocation by unit-process subdivision, separate metering, batch or tank tracing, or expanding the system for a separately modelled function when justified."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "unavoidable multi-output process"
+    rule: "When subdivision or system expansion is not feasible, allocate using a demonstrated physical relationship that reflects how inputs and emissions change with the co-products, such as mass, energy content, or another causal process parameter."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_other_relationship
+    applies_to: "process without a defensible physical relationship"
+    rule: "Use an economic or other relationship only after documenting why physical allocation is not representative; state prices, geography, period, currency basis, and perform sensitivity to a plausible physical alternative."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_internal_rework
+    applies_to: "off-specification internal return"
+    rule: "Treat internal rework as an internal transfer without co-product credit; include the additional blending, utility, storage, and loss burdens incurred."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: allocation_disclosure
+    applies_to: "all allocated burdens"
+    rule: "Report each shared process, co-product, allocation key, denominator, assigned share, excluded flow, and sensitivity result so totals can be reproduced."
+    source_ids:
+      - eu-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_primary_refining_records
+      process_id: "primary_refining"
+      flow_role: "feeds, utilities, components, wastes"
+      record_type: "meter, tank, laboratory, invoice, and waste records"
+      raw_fields: "material id; source; opening and closing inventory; receipt; transfer; mass or volume; density; temperature; NCV; destination"
+      collection_method: "reconcile meters and tank movements to unit operating logs"
+      unit: "recorded mass, volume, energy, and test units"
+      frequency: "batch and monthly reconciliation"
+      temporal_coverage: "same period as product output"
+      site_scope: "included separation units and associated tanks"
+      aggregation_rule: "sum by material and unit; calculate inventory-adjusted totals; normalize after allocation"
+      quality_evidence: "calibrated meters; tank tables; laboratory certificates; signed reconciliation"
+    - protocol_id: cp_conversion_treating_records
+      process_id: "conversion_and_treating"
+      flow_role: "feeds, auxiliaries, outputs, wastes, direct emissions"
+      record_type: "unit feed and output meters; chemical logs; catalyst records; continuous monitoring; stack tests; waste manifests"
+      raw_fields: "unit id; operating hours; feed; output; hydrogen; utilities; sulfur; controls; emissions; waste"
+      collection_method: "reconcile unit records and emission calculations by operating campaign"
+      unit: "recorded material, energy, concentration, and emission units"
+      frequency: "continuous or batch records aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "each included conversion or treating unit"
+      aggregation_rule: "aggregate only homogeneous routes; retain unit-level calculations before allocation"
+      quality_evidence: "calibration; laboratory data; monitoring QA; calculation worksheets; waste receipts"
+    - protocol_id: cp_blending_release_records
+      process_id: "blending_and_quality_control"
+      flow_role: "components, auxiliaries, released product, rework"
+      record_type: "blend ticket, tank transfer, laboratory release, meter, invoice"
+      raw_fields: "batch id; component ids and quantities; density; viscosity and temperature; sulfur; water; sediment; NCV; specification; pass or fail"
+      collection_method: "reconcile batch recipe, tank movement, and release certificate"
+      unit: "kg, recorded volume unit, MJ/kg, and property-specific test units"
+      frequency: "every released batch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "blending assets and release laboratory"
+      aggregation_rule: "calculate saleable output only from passing batches; mass-weight reporting-period properties where valid"
+      quality_evidence: "controlled recipe; calibrated meter; accredited or documented test method; release approval"
+    - protocol_id: cp_storage_transfer_records
+      process_id: "storage_and_transfer"
+      flow_role: "stored product, energy, gate output, wastes, air releases"
+      record_type: "tank gauges, transfer meters, loading tickets, energy meters, maintenance and emission-model inputs"
+      raw_fields: "tank id; opening and closing stock; receipts; dispatch; density; temperature; NCV; heating energy; waste removal; tank and control parameters"
+      collection_method: "reconcile stock and transfer records and apply documented substance-specific emission method"
+      unit: "kg, recorded volume unit, MJ, kWh, and kg emission"
+      frequency: "each transfer with monthly reconciliation"
+      temporal_coverage: "same period as product output"
+      site_scope: "included product tanks, pumps, and loading points"
+      aggregation_rule: "gate output equals dispatch adjusted to consistent mass and energy basis; allocate tank emissions by defensible throughput or causal driver"
+      quality_evidence: "meter calibration; tank table; loading ticket; model input review; inventory sign-off"
+    - protocol_id: cp_onsite_utility_treatment_records
+      process_id: "onsite_utilities_and_treatment"
+      flow_role: "utility inputs, services, treatment outputs, direct emissions"
+      record_type: "fuel and utility meters, operating logs, monitoring, discharge records, waste manifests"
+      raw_fields: "system id; inputs; service output; fuel composition; emission controls; emissions; wastewater; sludge; destination"
+      collection_method: "calculate service efficiencies and attributable outputs from reconciled operating records"
+      unit: "recorded material, energy, service, discharge, and emission units"
+      frequency: "continuous or shift records aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "included on-site support systems"
+      aggregation_rule: "allocate delivered service and residuals using section 7 hierarchy"
+      quality_evidence: "calibrated instruments; laboratory and monitoring QA; operator sign-off; disposal receipts"
+  calculation_rules:
+    - id: calc_saleable_energy
+      applies_to: "released product batch"
+      rule: "saleable energy (MJ) = saleable product mass (kg) × batch net calorific value (MJ/kg)"
+      inputs:
+        - "passing-batch mass"
+        - "batch-matched NCV"
+      output: "MJ saleable output"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_reference_normalization
+      applies_to: "every foreground inventory amount"
+      rule: "normalized amount = allocated reporting-period amount ÷ total saleable output energy; multiply by 1 MJ reference amount"
+      inputs:
+        - "allocated amount"
+        - "saleable output MJ"
+      output: "amount per 1 MJ NCV output"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_liquid_mass
+      applies_to: "volume-metered liquid"
+      rule: "mass = corrected volume × density at the same reference condition; do not mix density and volume reference temperatures"
+      inputs:
+        - "raw volume"
+        - "meter correction"
+        - density
+        - "reference temperature"
+      output: "kg material"
+      source_ids:
+        - astm-d396-21
+    - id: calc_mass_reconciliation
+      applies_to: "each unit, blend batch, and storage system"
+      rule: "inputs + opening inventory = products + co-products + wastes + measured releases + closing inventory + quantified unexplained difference"
+      inputs:
+        - "measured input"
+        - output
+        - waste
+        - release
+        - "and stock records"
+      output: "balanced mass and disclosed residual"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_technological
+      applies_to: "route and equipment"
+      requirement: "Describe actual separation, conversion, treating, blending, storage, utility, and control technologies; do not combine materially different routes without separate results or weighting."
+      evidence: "unit list, process diagram, operating records, and route weights"
+    - id: dq_geographical
+      applies_to: "foreground and upstream data"
+      requirement: "Use facility geography for direct operations and representative supplier geography for purchased inputs; disclose geographic proxies."
+      evidence: "site address, supplier origin, dataset geography, and proxy rationale"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one internally consistent period not normally longer than 12 months, covering representative operating conditions; disclose shutdowns, start-ups, and abnormal flaring."
+      evidence: "timestamps, production calendar, operating hours, and exception log"
+    - id: dq_precision_completeness
+      applies_to: "meters, tests, and balances"
+      requirement: "Report meter and test method, calibration or QA status, sampling frequency, missing-data treatment, mass-balance residual, and coverage of material and emission points."
+      evidence: "calibration records, laboratory QA, completeness table, and reconciliation workbook"
+    - id: dq_method_consistency
+      applies_to: "allocation and normalization"
+      requirement: "Apply one declared allocation hierarchy and the NCV reference basis consistently across all processes; retain unrounded calculation inputs."
+      evidence: "allocation workbook, NCV records, and normalization checks"
+validation_rules:
+  - rule_id: validate_category_identity
+    applies_to: "product and reference flow"
+    rule: "Fail if the dataset lacks CPC 33370 identity and all Required qualifiers, or if the product is an unfinished stream or belongs to a more specific fuel category."
+    source_ids:
+      - unsd-cpc-33370
+      - astm-d396-21
+      - iso-8217-2024
+  - rule_id: validate_reference_identity
+    applies_to: "Tiangong reference flow"
+    rule: "Require product flow 6908344a-d905-4a65-a5e6-9511198fde88, NCV property 93a60a56-a3c8-11da-a746-0800200c9a66, energy unit group 93a60a57-a3c8-11da-a746-0800200c9a66, and reference unit MJ without embedded dataset version."
+    source_ids: []
+  - rule_id: validate_route_completeness
+    applies_to: "process map"
+    rule: "Require both required processes and every conditional process triggered by the declared route; fail if a route unit, direct emission point, waste, or attributable utility is omitted without quantified justification."
+    source_ids:
+      - us-epa-ap42-petroleum-refining
+  - rule_id: validate_energy_normalization
+    applies_to: "reference output"
+    rule: "Recalculate saleable MJ from passing-batch mass and NCV and confirm every inventory row uses the same allocated denominator."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_mass_balance
+    applies_to: "unit, blend, and storage balances"
+    rule: "Recalculate the mass reconciliation; report the signed residual and fail when it exceeds the facility's reviewed measurement uncertainty without investigation and approval."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_allocation
+    applies_to: "co-products and shared systems"
+    rule: "Confirm the allocation hierarchy, reproduce assigned shares, and require sensitivity when an economic or non-physical fallback is used."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: validate_emission_resolution
+    applies_to: "direct air and water releases"
+    rule: "Require substance-specific flows, source or calculation method, control status, and no double counting between process units and on-site utilities."
+    source_ids:
+      - us-epa-ap42-petroleum-refining
+  - rule_id: validate_market_requirements
+    applies_to: "declared regulated grade"
+    rule: "Apply the declared market specification and sulfur limit only to the relevant product; for marine fuel, verify declared MARPOL area and applicable sulfur requirement."
+    source_ids:
+      - iso-8217-2024
+      - imo-sulphur-2020
+  - rule_id: validate_data_quality
+    applies_to: "foreground package"
+    rule: "Report checks performed, checks skipped, findings, completeness, temporal and geographic fit, technological representativeness, precision, and unresolved evidence gaps."
+    source_ids:
+      - eu-recommendation-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production data package for marketable CPC 33370 fuel oil at a refinery or blending-facility gate."
+  downstream_use: "Construction of Tiangong flow, process, and lifecyclemodel projections and comparative or accounting studies that preserve the declared grade and route."
+  allowed_use: "Use for the represented facility, period, route, product grade, allocation, and gate condition; broader use requires an explicit representativeness assessment."
+  excluded_use: "Do not use as a generic combustion dataset, crude-oil dataset, diesel or gas-oil dataset, marine-fuel default without matching qualifiers, or substitute for a route or geography not represented."
+  required_metadata: "PCR id; CPC code; product and commercial grade; reference UUIDs; facility and geography; period; route; feed and component basis; NCV; sulfur; density and temperature; viscosity and test temperature; water and sediment; specification; allocation; gate; data owner and review status."
+  required_quality_disclosure: "Primary versus proxy data shares; source and age of upstream datasets; meter and laboratory QA; missing-data treatment; mass-balance residuals; allocation sensitivities; excluded operations; abnormal events; unresolved identity and quantitative-evidence gaps."
+  update_trigger: "Material change in product grade, component basis, route technology, sulfur or other specification, facility or geography, allocation, reference-flow identity, reporting period representativeness, or governing classification and market requirements."
+data_sources:
+  - id: "unsd-cpc-33370"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 2.1 detail for code 33370, https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/1074/33370"
+    used_for: "Official explanatory scope for fuel oil, residual fuel oils, heavy fuel oil, heavy gas oil, and blends; interpreted under the repository's CPC 3.0 identity."
+  - id: "us-epa-ap42-petroleum-refining"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42, Chapter 5.1 Petroleum Refining, https://www.epa.gov/sites/default/files/2020-09/documents/5.1_petroleum_refining.pdf"
+    used_for: "Refinery process decomposition, storage and transfer, utility systems, and direct-emission inventory points."
+  - id: "eu-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on environmental footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30"
+    used_for: "Allocation hierarchy and technological, geographical, temporal, and precision data-quality criteria."
+  - id: "iso-8217-2024"
+    type: "standard"
+    reference: "ISO 8217:2024, Products from petroleum, synthetic and renewable sources — Fuels (class F) — Specifications of marine fuels, https://www.iso.org/standard/80579.html"
+    used_for: "Marine-grade qualifiers and quality-property disclosure; not used to narrow the whole CPC category."
+  - id: "imo-sulphur-2020"
+    type: "official_guidance"
+    reference: "International Maritime Organization, IMO 2020 — cutting sulphur oxide emissions, https://www.imo.org/en/mediacentre/hottopics/pages/sulphur-2020.aspx"
+    used_for: "Marine-fuel sulfur compliance qualifier by MARPOL operating area."
+  - id: "astm-d396-21"
+    type: "standard"
+    reference: "ASTM D396-21, Standard Specification for Fuel Oils, https://doi.org/10.1520/D0396-21"
+    used_for: "Fuel-oil grade and test-record qualifiers, including density, viscosity, sulfur, water, sediment, and release quality."
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass and batch energy-normalization identities stated in section 8"
+    used_for: "Mass reconciliation, liquid mass conversion control, saleable energy, reference normalization, and internal rework treatment."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:39342cf37c8a2003fc93ca187aa825a2f037a6e2b756eff2b25e427541417e5b"
+  generated_content_sha256: "sha256:59d09791375661c6128357d1316fdbbaa5bc01a082e5bf06d876dcc9d146502d"

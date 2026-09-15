@@ -1,10 +1,861 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21412"
-  title: "Plums, dried"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.plums-dried"
+  classification_refs: "CPC 3.0: 21412, Plums, dried"
+  covered_products: "Dried plums and prunes made by one declared sun-drying or mechanical-dehydration route; pitted or unpitted; bulk- or retail-packed"
+  excluded_products: "Fresh plums; plum puree, jam, juice, or canned products; materially distinct freeze-dried products; multi-fruit mixtures"
+  representative_product: "Marketable dried plums at the drying or packing facility gate"
+  production_route: "Fresh-plum receipt and preparation; exactly one of sun drying or mechanical dehydration; finishing and packaging"
+  market_state: "Dried, conditioned and sorted; pit status, moisture, grade or contract specification, treatments, and packaging declared"
+functional_unit:
+  what: "Supply of marketable dried plums with declared commercial and physical condition"
+  how_much: "1 kg net mass of dried plums"
+  how_well: "Meets the declared grade or contract specification and declared moisture requirement; pit status, treatments, and packaging format are stated"
+  how_long_or_cycle: "One facility-gate delivery; no use-duration function is assigned"
+  reference_flow_link: "The functional unit is realized by the single Tiangong product flow identified below"
+system_boundary:
+  rules:
+    - rule_id: boundary_receipt_to_gate
+      applies_to: "Foreground dried-plum production"
+      rule: "Include fresh-plum receipt, preparation, exactly one declared drying route, finishing, and packaging through facility-gate dried-plum output."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_supply
+      applies_to: "Fresh plums and purchased inputs"
+      rule: "Keep fresh plums, energy carriers, water, packaging, and processing aids visible as product inputs and link each material input to an appropriate upstream dataset; do not absorb upstream burdens into an undocumented aggregate."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "Drying operations"
+      rule: "Select sun drying or mechanical dehydration for a represented batch; never include both route processes for the same dried-plum quantity unless separately metered batches are modelled and recombined transparently."
+      source_ids: []
+    - rule_id: boundary_direct_releases
+      applies_to: "On-site combustion and direct releases"
+      rule: "Include substance-specific elementary flows from on-site fuel combustion and any other measured or calculated direct release; disclose the factor source and calculation basis."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_losses_and_packaging
+      applies_to: "Rejects, pits, wastewater, and packaging"
+      rule: "Include all material rejects, separated pits, wastewater, other wastes, and packaging that cross the foreground boundary, with destination or treatment route declared."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Fresh plums received at the drying facility, with received net quantity, origin, moisture or condition record, and acceptance or rejection status declared"
+  starting_condition_role: "Entry point for foreground dried-plum processing; orchard production and transport before receipt are represented by linked upstream datasets"
+  product_classification_scope: "Dried plums within CPC 3.0 subclass 21412, independent of pit status or package format when the drying route remains in scope"
+  recursive_input_rule: "If dried plums enter an in-scope operation, record them as a visible product input linked to an upstream dried-plum dataset and do not expand the same product category again inside the current foreground package"
+  upstream_dataset_requirement: "Use geographically, technologically, and temporally representative datasets for fresh plums, utilities, fuels, packaging, processing aids, and waste treatment"
+  disclosure: "Declare fresh-plum origin, route selection, pitting point, moisture basis and result, treatments, packaging format, outsourced operations, upstream dataset choices, and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Plums, dried"
+    uuid: "f5f0869e-5528-4563-97be-b319c24516b2"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "drying route: sun or mechanical"
+    - "cultivar or commercial type if known"
+    - "pitted or unpitted"
+    - "moisture result and wet- or dry-basis convention"
+    - "grade or contract specification"
+    - "treatment and processing-aid status"
+    - "bulk or retail packaging format"
+    - "geography and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all reported inventory to 1 kg net dried-plum output; exclude packaging mass from the reference amount."
+  - id: moisture_declaration
+    applies_to: "Fresh-plum input, drying intermediates, and reference product"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% wet basis or kg water/kg product"
+    rule: "Record the sampling method, lot, measurement result, and wet- or dry-basis convention; use UNECE DDP-07 measurement provisions only when applicable to the marketed product and do not treat them as an LCI amount."
+  - id: weighing_consistency
+    applies_to: "Lot inputs, intermediate transfers, rejects, residues, and final output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated scales or traceable transaction records and preserve gross, tare, and net quantities so the batch mass balance can be reconstructed."
+  - id: energy_carrier_preservation
+    applies_to: "Electricity, purchased heat, and fuels"
+    required_property_ref:
+      name: "Energy or carrier mass/volume"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as recorded"
+    rule: "Preserve each energy carrier and original unit; document conversion factors and lower- or higher-heating-value basis before normalization."
+process_map:
+  - id: receipt_and_preparation
+    name: "Fresh-plum receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground receiving, inspection, sorting, washing when used, and preparation"
+    quantitative_reference: "Per kg prepared plums transferred to the selected drying route"
+  - id: sun_drying
+    name: "Sun drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when drying_route = sun; exclude when the mechanical route is selected"
+    role: "Foreground solar exposure, turning, and route-specific handling"
+    quantitative_reference: "Per kg sun-dried intermediate output"
+  - id: mechanical_dehydration
+    name: "Mechanical dehydration"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when drying_route = mechanical; exclude when the sun route is selected"
+    role: "Foreground controlled dehydration and associated utilities"
+    quantitative_reference: "Per kg mechanically dried intermediate output"
+  - id: finishing_and_packaging
+    name: "Finishing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included after the one selected drying route"
+    role: "Foreground conditioning, sorting, optional pitting, treatment when used, and packaging"
+    quantitative_reference: "Per 1 kg net dried-plum output"
+process_inventory:
+  - id: receipt_and_preparation
+    label: "Fresh-plum receipt and preparation"
+    inputs:
+      product:
+        - row_id: fresh_plums_input
+          role: "Fresh plums supplied for drying"
+          name: "Fresh plums"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fresh plums cross the foreground boundary at facility receipt. Obtain the quantity from traceable net lot weights and retain origin, cultivar or commercial type when known, condition, and acceptance records."
+          amount:
+            expression: "Measured net accepted quantity assigned to the represented production batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dried-plum output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_and_quality
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg fresh plums/kg net dried-plum output"
+                basis: "broad conditional mass-ratio estimate pending route- and moisture-specific foreground yield records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or allocated water used for washing or other preparation steps only when those steps occur."
+          amount:
+            expression: "Measured preparation water attributable to the represented batch; zero only when no water-using preparation occurs and that condition is documented"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dried-plum output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg water/kg net dried-plum output"
+                basis: "broad candidate estimate conditional on washing and water-handling practice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_plums_output
+          role: "Prepared plums transferred to drying"
+          name: "Prepared fresh plums"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared accepted plums leave receipt and preparation and enter exactly one drying route."
+          amount:
+            expression: "Measured transfer quantity or calculated from accepted fresh plums minus recorded rejects and other documented preparation losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared plums transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_and_quality
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Preparation rejects and residues"
+          name: "Preparation rejects and residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected fruit, stems, leaves, stones removed before drying, and other separated preparation residues by destination."
+          amount:
+            expression: "Measured or mass-balance-derived quantity by destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted fresh-plum input"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reject_and_residue_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg rejects/kg accepted fresh-plum input"
+                basis: "conditional broad fraction bounded by the received accepted-input quantity"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater from fruit preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving preparation when water-using steps occur, including its measured or balance-derived quantity and destination."
+          amount:
+            expression: "Measured discharge or water balance attributable to the represented batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dried-plum output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg wastewater/kg net dried-plum output"
+                basis: "broad candidate estimate conditional on preparation-water use and discharge practice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: sun_drying
+    label: "Sun drying"
+    inputs:
+      product:
+        - row_id: sun_route_plums_input
+          role: "Prepared plums entering the sun route"
+          name: "Prepared fresh plums"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This transfer is included only for batches declared as sun-dried and shall match the preparation output assigned to this route."
+          amount:
+            expression: "Measured or reconciled batch transfer to the sun-drying route"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg sun-dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges: []
+        - row_id: sun_auxiliary_electricity
+          role: "Auxiliary electricity for sun drying"
+          name: "Site electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for fans, turning, conveying, controls, or other route equipment when used; do not assign electricity to passive operations without a record."
+          amount:
+            expression: "Metered or equipment-time-allocated electricity for the sun-drying batch"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg sun-dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg sun-dried intermediate output"
+                basis: "broad candidate estimate conditional on auxiliary equipment use"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sun_dried_intermediate
+          role: "Sun-dried plum intermediate"
+          name: "Sun-dried plums, intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the route output after the declared drying endpoint and before shared finishing."
+          amount:
+            expression: "Measured net route output at the declared moisture endpoint"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg sun-dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: sun_drying_water_to_air
+          role: "Water transferred to air during sun drying"
+          name: "Water to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Represent moisture removed during drying as a mass-balance elementary transfer when required by the modelling system; do not infer a measured atmospheric emission beyond the water balance."
+          amount:
+            expression: "Prepared-plum input minus dried intermediate, rejects, and other recorded transfers on a consistent moisture and mass basis"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg prepared plums entering sun drying"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg water/kg prepared plums entering sun drying"
+                basis: "conditional broad fraction bounded by prepared-plum input on a consistent mass basis"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: mechanical_dehydration
+    label: "Mechanical dehydration"
+    inputs:
+      product:
+        - row_id: mechanical_route_plums_input
+          role: "Prepared plums entering the mechanical route"
+          name: "Prepared fresh plums"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This transfer is included only for batches declared as mechanically dehydrated and shall match the preparation output assigned to this route."
+          amount:
+            expression: "Measured or reconciled batch transfer to mechanical dehydration"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg mechanically dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges: []
+        - row_id: mechanical_drying_electricity
+          role: "Mechanical-dehydration electricity"
+          name: "Site electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or equipment-time-allocated electricity for fans, conveyors, controls, heat pumps, and electric heating used by the represented batch."
+          amount:
+            expression: "Metered or defensibly allocated electricity for mechanical dehydration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg mechanically dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg mechanically dried intermediate output"
+                basis: "broad conditional estimate covering different mechanical configurations before foreground evidence is available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: mechanical_drying_thermal_energy
+          role: "Mechanical-dehydration fuel or purchased heat"
+          name: "Declared fuel or purchased heat supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ, with carrier quantity retained in its recorded unit"
+          description: "Record each fuel or purchased-heat carrier separately. Do not combine lower- and higher-heating-value quantities or different carrier datasets without documented conversion."
+          amount:
+            expression: "Metered, invoiced, or defensibly allocated thermal energy for mechanical dehydration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg mechanically dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "100"
+                unit: "MJ/kg mechanically dried intermediate output"
+                basis: "broad conditional estimate for non-electric thermal demand before foreground evidence is available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mechanically_dried_intermediate
+          role: "Mechanically dried plum intermediate"
+          name: "Mechanically dried plums, intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the route output after the declared drying endpoint and before shared finishing."
+          amount:
+            expression: "Measured net route output at the declared moisture endpoint"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg mechanically dried intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: mechanical_drying_water_to_air
+          role: "Water transferred to air during mechanical dehydration"
+          name: "Water to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Represent moisture removed during dehydration as a mass-balance elementary transfer when required by the modelling system; do not infer a measured atmospheric emission beyond the water balance."
+          amount:
+            expression: "Prepared-plum input minus dried intermediate, rejects, and other recorded transfers on a consistent moisture and mass basis"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg prepared plums entering mechanical dehydration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg water/kg prepared plums entering mechanical dehydration"
+                basis: "conditional broad fraction bounded by prepared-plum input on a consistent mass basis"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: mechanical_combustion_releases
+          role: "Substance-specific on-site combustion inventory"
+          name: "Substance-specific elementary flows from on-site combustion"
+          flow_type: "elementary"
+          property_unit: "Descriptive record; completed dataset uses Mass / kg per substance"
+          description: "This aggregate card requires individual elementary-flow rows in the completed dataset when fuel is combusted on site; no generic quantity applies across substances."
+          amount:
+            expression: "Not applicable to this aggregate card; calculate each emitted substance from measured carrier use and a declared factor source"
+            value_mode: "not_applicable"
+            specificity: "not_applicable"
+            basis:
+              text: "per kg mechanically dried intermediate output for the completed substance-specific rows"
+              kind: "process_output"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: finishing_and_packaging
+    label: "Finishing and packaging"
+    inputs:
+      product:
+        - row_id: selected_route_intermediate
+          role: "Dried-plum intermediate from the selected route"
+          name: "Dried plums, intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive output from exactly one drying route for each represented batch; separately metered route batches may be combined only after their quantities and burdens remain traceable."
+          amount:
+            expression: "Measured transfer from the selected drying route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net dried-plum output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_batch_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Declared packaging material supplies"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each primary, secondary, and tertiary packaging material separately by material and supplier dataset."
+          amount:
+            expression: "Measured bill-of-material or purchase-and-stock-balanced quantity allocated to the represented output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dried-plum output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg packaging/kg net dried-plum output"
+                basis: "broad conditional estimate covering bulk and retail packaging before product-specific records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Site electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conditioning, sorting, optional pitting, conveying, treatment, and packing equipment actually used."
+          amount:
+            expression: "Metered or equipment-time-allocated electricity for finishing and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dried-plum output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg net dried-plum output"
+                basis: "broad conditional estimate covering facility-specific finishing and package formats before foreground evidence is available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_plums_output
+          role: "Dried plums at facility gate"
+          name: "Plums, dried"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f5f0869e-5528-4563-97be-b319c24516b2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This output realizes the reference flow after the declared finishing and packaging operations."
+          amount:
+            expression: "Exactly 1 kg net dried-plum output after allocation and normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: pits_and_finishing_rejects
+          role: "Pits and finishing rejects"
+          name: "Pits and finishing residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated pits, off-grade fruit, and other finishing residues by destination; record zero only when the corresponding operation does not occur and the condition is documented."
+          amount:
+            expression: "Measured or mass-balance-derived quantity by destination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried-plum intermediate entering finishing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reject_and_residue_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg pits and rejects/kg dried-plum intermediate input"
+                basis: "conditional broad fraction bounded by the dried-plum intermediate input"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Route batches and separable operations"
+    rule: "Keep sun-dried and mechanically dehydrated batches separate and subdivide metered operations before allocating shared burdens."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_shared_operations
+    applies_to: "Unavoidable shared utilities or finishing"
+    rule: "When subdivision or direct metering is not possible, apply and justify an allocation basis consistent with the PEF method hierarchy; disclose quantities, relationship, formula, and sensitivity where material."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recovered_outputs
+    applies_to: "Pits and other recovered outputs"
+    rule: "Record recovered outputs and their destinations separately; do not assign zero burdens solely because an output is called a residue, and document any allocation or substitution treatment."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_mass_and_quality
+      process_id: "receipt_and_preparation"
+      flow_role: "Fresh-plum receipt, accepted transfer, and finished lot quality"
+      record_type: "Scale tickets and quality-control records"
+      raw_fields: "lot_id; date; origin; cultivar_or_type; gross_mass; tare_mass; accepted_mass; rejected_mass; moisture_result; moisture_basis; condition_or_grade"
+      collection_method: "Calibrated weighing plus documented sampling and test method"
+      unit: "kg; % or kg/kg for moisture"
+      frequency: "Each received and finished lot"
+      temporal_coverage: "At least one representative production campaign and the stated reference period"
+      site_scope: "All facilities and suppliers represented"
+      aggregation_rule: "Sum traceable lot quantities; reconcile accepted input, transfers, and output before normalization"
+      quality_evidence: "Calibration records, sample plan, test method, lot traceability, and exceptions"
+    - protocol_id: cp_utility_records
+      process_id: "all_applicable_processes"
+      flow_role: "Water, electricity, fuels, and purchased heat"
+      record_type: "Meter, invoice, tank, or equipment-runtime records"
+      raw_fields: "period; process_or_equipment; carrier; opening_reading; closing_reading; purchase_quantity; allocation_driver; unit; heating_value_basis"
+      collection_method: "Prefer submetering; otherwise use documented engineering allocation to represented batches"
+      unit: "kg; m3; kWh; MJ; carrier unit"
+      frequency: "Each batch or no longer than monthly"
+      temporal_coverage: "Same representative campaign and reference period as production"
+      site_scope: "Every in-scope facility and outsourced operation"
+      aggregation_rule: "Subtract non-production uses, allocate with a disclosed driver, preserve carrier identity, and normalize to process output"
+      quality_evidence: "Meter calibration, invoices, runtime logs, conversion factors, and allocation worksheet"
+    - protocol_id: cp_reject_and_residue_records
+      process_id: "receipt_and_preparation_and_finishing"
+      flow_role: "Preparation rejects, pits, and finishing residues"
+      record_type: "Weigh tickets, container counts, and destination records"
+      raw_fields: "batch_id; residue_type; gross_mass; tare_mass; destination; sale_or_disposal_status; moisture_basis_if_material"
+      collection_method: "Weigh each stream or use validated container factors with periodic checks"
+      unit: "kg"
+      frequency: "Each batch or shipment"
+      temporal_coverage: "Same representative campaign and reference period as production"
+      site_scope: "All represented facilities"
+      aggregation_rule: "Aggregate by stream and destination; reconcile against process input and output"
+      quality_evidence: "Scale checks, container-factor validation, destination receipts, and mass-balance reconciliation"
+    - protocol_id: cp_water_balance
+      process_id: "receipt_and_preparation"
+      flow_role: "Preparation water and wastewater"
+      record_type: "Supply and discharge meter records or documented water balance"
+      raw_fields: "batch_or_period; supplied_water; retained_water; discharged_water; evaporation_or_other_loss; allocation_driver"
+      collection_method: "Meter supply and discharge where practicable; otherwise calculate with disclosed balance terms"
+      unit: "kg or m3 with density conversion"
+      frequency: "Each batch or no longer than monthly"
+      temporal_coverage: "Same representative campaign and reference period as production"
+      site_scope: "All water-using preparation operations"
+      aggregation_rule: "Reconcile supply with discharge, retention, and other losses; normalize to final output"
+      quality_evidence: "Meter calibration, density conversion, discharge record, and balance closure"
+    - protocol_id: cp_route_batch_balance
+      process_id: "selected_drying_route"
+      flow_role: "Route input, dried intermediate, moisture change, and transfers"
+      record_type: "Batch weights, moisture tests, route logs, and transfer records"
+      raw_fields: "batch_id; drying_route; input_mass; input_moisture; output_mass; output_moisture; rejects; other_transfers; start_time; end_time"
+      collection_method: "Weigh route input and output and test moisture on the same declared basis"
+      unit: "kg; % or kg/kg for moisture"
+      frequency: "Each drying batch"
+      temporal_coverage: "At least one representative campaign covering declared route conditions"
+      site_scope: "Every represented drying site and route"
+      aggregation_rule: "Calculate water removed and yield on a consistent mass and moisture basis; keep route batches separate"
+      quality_evidence: "Scale calibration, moisture method, route log, and closed batch balance"
+    - protocol_id: cp_combustion_inventory
+      process_id: "mechanical_dehydration"
+      flow_role: "On-site combustion elementary flows"
+      record_type: "Fuel records, equipment logs, and documented emission factors"
+      raw_fields: "carrier; quantity; unit; heating_value_basis; substance; factor; factor_unit; factor_source; control_efficiency"
+      collection_method: "Calculate each substance from measured carrier quantity and an explicitly cited applicable factor"
+      unit: "kg per substance"
+      frequency: "Each batch or reporting period matching fuel records"
+      temporal_coverage: "Same representative campaign and reference period as mechanical dehydration"
+      site_scope: "Every represented on-site combustion source"
+      aggregation_rule: "Sum substance-specific results and normalize to mechanical route output without merging carriers or factor bases"
+      quality_evidence: "Fuel reconciliation, factor citation, applicability check, and calculation worksheet"
+    - protocol_id: cp_packaging_records
+      process_id: "finishing_and_packaging"
+      flow_role: "Primary, secondary, and tertiary packaging"
+      record_type: "Bill of materials, purchase records, and packed-output records"
+      raw_fields: "package_format; material; component_mass; units_used; recycled_content_if_claimed; packed_net_output; losses"
+      collection_method: "Weigh representative components or use verified supplier specifications and reconcile purchases and stock"
+      unit: "kg"
+      frequency: "Each package design and production campaign"
+      temporal_coverage: "Current package design during the stated reference period"
+      site_scope: "Every package format represented"
+      aggregation_rule: "Sum component mass and packaging losses by material; normalize to net packed output"
+      quality_evidence: "Component weigh records, supplier specification, bill-of-material revision, and stock reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized amount = quantity assigned to represented output / net kg dried-plum output after allocation"
+      inputs:
+        - "assigned quantity"
+        - "net dried-plum output"
+        - "allocation result"
+      output: "Amount per 1 kg reference flow"
+      source_ids: []
+    - id: calc_drying_water_balance
+      applies_to: "Selected drying route"
+      rule: "water transferred to air = route input mass - dried intermediate mass - rejects - other documented mass transfers, with every term on a consistent measurement basis"
+      inputs:
+        - "input and output weights"
+        - "moisture basis"
+        - rejects
+        - "other transfers"
+      output: "kg water transferred per route basis"
+      source_ids: []
+    - id: calc_direct_combustion_releases
+      applies_to: "On-site fuel combustion"
+      rule: "substance amount = measured carrier quantity × applicable documented factor × (1 - documented control efficiency), with carrier and factor units reconciled"
+      inputs:
+        - "carrier quantity"
+        - "heating-value basis where relevant"
+        - "substance factor"
+        - "control efficiency"
+      output: "kg of each elementary flow"
+      source_ids: []
+    - id: calc_route_selection
+      applies_to: "Drying process map"
+      rule: "Exactly one route flag is true for each represented batch; separately metered route batches may be aggregated only after independent normalization"
+      inputs:
+        - batch_id
+        - sun_route_flag
+        - mechanical_route_flag
+        - "route-specific output"
+      output: "Validated exclusive route assignment"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and input lots"
+      requirement: "Retain CPC context, product name, cultivar or commercial type when known, pit status, treatment status, packaging format, and applicable grade or contract specification."
+      evidence: "Lot and product specifications; unsd-cpc-30-21412; unece-ddp-07-2025 when applicable"
+    - id: dq_measurement_traceability
+      applies_to: "Mass, moisture, utilities, and packaging"
+      requirement: "Retain calibration, sampling, test method, meter, invoice, conversion, and allocation evidence sufficient to reproduce normalized amounts."
+      evidence: "Protocol records and calculation worksheets; unece-ddp-07-2025 for applicable quality and moisture measurement"
+    - id: dq_temporal_and_site_coverage
+      applies_to: "Foreground production"
+      requirement: "Cover a representative campaign for each declared route, site, seasonal condition, and package format, and disclose any omitted or estimated operation."
+      evidence: "Production calendar, batch register, site list, and coverage assessment; eu-pef-2021-2279"
+    - id: dq_completeness_and_balance
+      applies_to: "Each process and route"
+      requirement: "Reconcile input, output, reject, residue, wastewater, moisture-loss, and stock-change terms; explain every material imbalance and provisional estimate."
+      evidence: "Process mass balances, destination records, and estimate-replacement log"
+    - id: dq_source_and_factor_currency
+      applies_to: "Upstream datasets and emission factors"
+      requirement: "Record geography, technology, reference year, version, and applicability; replace provisional estimates when representative foreground records or reviewed source-backed values become available."
+      evidence: "Dataset metadata, factor citations, update log, and eu-pef-2021-2279"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference product"
+    rule: "Confirm the Tiangong product-flow UUID, Mass UUID, Units-of-mass UUID, kg unit, and exactly 1 kg net output; packaging mass shall not be included in the reference amount."
+    source_ids: []
+  - rule_id: validate_product_condition
+    applies_to: "Product identity and quality"
+    rule: "Confirm drying route, pit status, moisture result and basis, grade or contract specification, treatment status, package format, geography, and reference period; apply UNECE DDP-07 condition and measurement rules only when its product scope applies."
+    source_ids:
+      - unece-ddp-07-2025
+  - rule_id: validate_route_exclusivity
+    applies_to: "Process map and inventory"
+    rule: "Confirm exactly one of sun drying and mechanical dehydration is active for each represented batch and that no quantity or burden is counted in both routes."
+    source_ids: []
+  - rule_id: validate_upstream_links
+    applies_to: "Product inputs"
+    rule: "Confirm fresh plums, utilities, fuels, packaging, processing aids, and waste-treatment services use declared upstream datasets with representative metadata."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_and_moisture_balance
+    applies_to: "Each batch and process"
+    rule: "Confirm a consistent mass and moisture basis reconciles inputs, outputs, rejects, pits, wastewater, water transferred to air, and other transfers; investigate and disclose material imbalance."
+    source_ids: []
+  - rule_id: validate_direct_releases
+    applies_to: "On-site combustion"
+    rule: "When fuel is combusted on site, confirm substance-specific elementary flows are calculated from measured carrier use and cited applicable factors with unit and control-efficiency checks."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation_and_estimates
+    applies_to: "Shared operations and provisional values"
+    rule: "Confirm the allocation hierarchy and basis are disclosed, every reasoned estimate is identified as temporary and conditional, and each is replaced when its stated foreground-record trigger is met."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground dried-plum production data package and facility-gate product dataset"
+  downstream_use: "May be published as a secondary_dataset or background_dataset for food-product process and lifecyclemodel construction after review"
+  allowed_use: "Comparative or attributional studies whose product identity, route, geography, period, quality, pit status, treatment, and package format are compatible with the dataset metadata"
+  excluded_use: "Fresh plums, plum preparations other than dried whole or pitted fruit, materially distinct freeze-drying, undeclared route mixtures, or studies requiring an unrepresented quality or packaging state"
+  required_metadata: "PCR id and version; reference-flow UUIDs; CPC context; geography; reference period; facility and route coverage; drying route; cultivar or commercial type when known; pit status; moisture result and basis; grade or contract specification; treatments; packaging format; allocation; upstream datasets; source and factor versions"
+  required_quality_disclosure: "Foreground versus estimated shares; meter and scale coverage; sampling and moisture methods; route and site coverage; mass-balance closure; allocation; exclusions; data gaps; provisional estimates and their replacement status"
+  update_trigger: "New or changed route, equipment, fuel, package design, product specification, pit or treatment status, facility mix, upstream dataset, emission factor, allocation method, or representative foreground evidence that replaces a provisional estimate"
+data_sources:
+  - id: "unsd-cpc-30-21412"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, subclass 21412, “Plums, dried”"
+    used_for: "Classification context and product-category identity only"
+  - id: "unece-ddp-07-2025"
+    type: "standard"
+    reference: "UNECE Standard DDP-07 concerning the marketing and commercial quality control of prunes, current UNECE WP.7 listing (2025)"
+    used_for: "Prune and dried-plum identity, condition, moisture determination, and commercial-quality measurement when applicable; not LCI default amounts"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods"
+    used_for: "System-boundary completeness, allocation hierarchy, data-quality disclosure, calculation traceability, and validation method"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ffff551968bce7a339dc4bbb59c752470e251e4e59215ee2e34309f10fb046d5"
+  generated_content_sha256: "sha256:aa0520e5ee7942e3e95ead3e800fc08c73e437a7ee4851d3318176f85277900d"

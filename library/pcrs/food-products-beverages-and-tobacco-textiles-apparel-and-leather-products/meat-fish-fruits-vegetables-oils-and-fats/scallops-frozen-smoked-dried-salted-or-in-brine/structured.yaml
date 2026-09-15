@@ -1,10 +1,753 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21264"
-  title: "Scallops, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.scallops-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21264, exact"
+  covered_products: "Edible scallop meat or edible scallop portions sold frozen, smoked, dried, salted, or in brine, with the primary preservation route declared"
+  excluded_products: "Live, fresh, or merely chilled scallops; non-scallop molluscs; prepared meals; mixed seafood products; undeclared combinations of primary preservation routes"
+  representative_product: "Qualified saleable edible scallop product at the preservation facility gate"
+  production_route: "Exactly one primary route: frozen, smoked, dried, salted, or brine; route-inherent ancillary steps are disclosed"
+  market_state: "Packaged saleable product under the declared frozen, chilled, ambient, or other validated storage condition"
+functional_unit:
+  what: "Supply preserved edible scallop product for food preparation or further food processing"
+  how_much: "1 kg net edible scallop product content"
+  how_well: "Qualified and saleable for the declared primary route and product form; packaging, shell, inedible tissue, free brine, and frozen glaze are excluded from the reference mass"
+  how_long_or_cycle: "One released production lot at the preservation facility gate; declared shelf-life and storage condition accompany the dataset"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the reference product flow measured under the applicable route-specific mass rule"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_exclusivity
+      applies_to: "foreground route"
+      rule: "Model exactly one primary route (frozen, smoked, dried, salted, or brine); include only ancillary steps actually used by that route and disclose them."
+      source_ids:
+        - unsd-cpc-v3-2025
+        - codex-cxc-52-2003
+    - rule_id: boundary_foreground
+      applies_to: "all foreground processes"
+      rule: "Include preparation, selected-route preservation, packaging, on-site storage to release, all known material and energy inputs, direct releases, product outputs, co-products, and waste."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream
+      applies_to: "incoming raw scallops and supplied inputs"
+      rule: "Keep harvest or aquaculture and inbound supply-chain burdens in linked upstream datasets; do not omit them from the expanded product system."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_exclusions
+      applies_to: "any excluded process or flow"
+      rule: "Avoid cut-off; any exclusion must be explicit, justified, and assessed for significance in the completed study."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Accepted raw scallop lot at the preservation facility gate, with source, species or commercial designation, harvest system, incoming form, temperature, and mass basis declared"
+  starting_condition_role: "Foreground starting condition; upstream scallop production and inbound transport remain linked upstream datasets"
+  product_classification_scope: "Semantic preserved-scallop category aligned exactly to CPC 3.0 code 21264 without using CPC as the canonical PCR identity"
+  recursive_input_rule: "An input already preserved within this same category is linked once as an upstream product dataset with its route and mass basis disclosed; do not reapply this complete foreground route recursively"
+  upstream_dataset_requirement: "Use representative datasets for aquaculture or wild harvest, landing or primary handling, ingredients, packaging, energy, water supply, transport, and waste treatment that cross the selected study boundary"
+  disclosure: "Declare included and excluded stages, the one selected primary preservation route, ancillary steps, raw material form, edible-yield basis, storage condition, allocation, cut-offs, and all dataset gaps"
+reference_flow_definition:
+  reference_amount: "1 kg qualified saleable edible product"
+  product_flow_ref:
+    name: "Scallops, frozen, smoked, dried, salted or in brine"
+    uuid: "bc4bc819-06b0-4452-bc14-5b08c6e3abf0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "scallop species or commercial designation"
+    - "raw material form"
+    - "primary preservation route"
+    - "edible product form"
+    - "in-shell status and edible yield if applicable"
+    - "as-sold moisture condition"
+    - "salt or brine condition"
+    - "glaze fraction and deglazing method for frozen product"
+    - "draining method and time for brined product"
+    - "package levels"
+    - "storage temperature or condition"
+    - "production geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record exactly 1 kg of qualified saleable edible product content, excluding all packaging, shell, inedible tissue, free liquid, and non-product ice glaze."
+  - id: frozen_net_mass
+    applies_to: "frozen route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net product mass after a documented deglazing method; record glaze mass or fraction separately and never count glaze toward the reference flow."
+  - id: brined_drained_mass
+    applies_to: "brine route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use drained edible scallop mass after a declared draining method and time; record packing brine separately."
+  - id: route_composition
+    applies_to: "smoked, dried, salted, and brine routes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the product as sold and report moisture condition and salt content or salinity where applicable; dry-matter or salt-free comparisons are supplementary calculations and must not replace the as-sold reference mass."
+  - id: in_shell_conversion
+    applies_to: "any in-shell sale form"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Exclude shell mass from the reference flow and retain measured gross mass, edible mass, and edible-yield conversion for the same lot."
+process_map:
+  - id: raw_preparation
+    name: "Raw scallop reception and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; shucking, trimming, washing, grading, or thawing only when performed at the reporting facility"
+    role: "Foreground raw-material preparation"
+    quantitative_reference: "per kg prepared edible scallop output"
+  - id: route_preservation
+    name: "Route-specific preservation"
+    inclusion: "required"
+    inclusion_condition: "Exactly one declared primary route; record only the selected route and its actual ancillary operations"
+    role: "Foreground preservation"
+    quantitative_reference: "per kg preserved scallop output"
+  - id: packaging_storage
+    name: "Packaging and on-site storage to release"
+    inclusion: "required"
+    inclusion_condition: "Packaging levels and storage regime follow the declared product route and sale condition"
+    role: "Foreground finishing and facility-gate release"
+    quantitative_reference: "per 1 kg reference product"
+process_inventory:
+  - id: raw_preparation
+    label: "Raw scallop reception and preparation"
+    inputs:
+      product:
+        - row_id: raw_scallops_input
+          role: "Accepted raw scallops"
+          name: "Raw scallops, declared incoming form"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and form of the accepted lot entering foreground preparation, including whether it is live, chilled, frozen, in-shell, or shucked."
+          amount:
+            expression: "measured accepted-lot mass allocated to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared edible scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "20"
+                unit: "kg raw scallops/kg prepared edible output"
+                basis: "broad screen spanning shucked and in-shell incoming forms; applicable only before lot-specific edible yield is available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water and ice"
+          name: "Process water and ice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or reconciled water and ice used for washing, thawing, temperature control, or other actual preparation operations."
+          amount:
+            expression: "measured water plus ice mass attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared edible scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg prepared edible output"
+                basis: "only operations actually performed; replace with metered or batch-reconciled records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_scallops_output
+          role: "Prepared edible scallops"
+          name: "Prepared edible scallops"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared edible output from the same-lot mass balance and carry it to the selected preservation route."
+          amount:
+            expression: "incoming raw mass minus measured shells, inedible tissues, rejects, and other separated mass, reconciled for retained or removed water"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_raw_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "1"
+                unit: "kg prepared edible output/kg accepted raw scallops"
+                basis: "broad screen spanning in-shell and shucked inputs; replace with same-lot mass balance"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Shells, inedible tissues, and rejected scallops"
+          name: "Scallop preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated material by destination; material sold as a co-product is not recorded as waste."
+          amount:
+            expression: "measured separated mass by material and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared edible scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "19"
+                unit: "kg/kg prepared edible output"
+                basis: "broad screen dependent on incoming form; replace with same-lot residue records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: route_preservation
+    label: "Route-specific preservation"
+    inputs:
+      product:
+        - row_id: preservation_scallops_input
+          role: "Prepared edible scallops"
+          name: "Prepared edible scallops"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carry forward the prepared output without duplicating upstream scallop burdens."
+          amount:
+            expression: "measured batch input to the selected preservation route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg preserved scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids: []
+            ranges: []
+        - row_id: route_ingredients
+          role: "Route water, ice, salt, or brine ingredients"
+          name: "Route-specific water, ice, food-grade salt, and brine ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only ingredients actually used: freezing or glaze water for the frozen route, food-grade salt and water for salted or brined routes, and preparatory salt or water only when used by the smoked or dried route."
+          amount:
+            expression: "measured purchased or prepared ingredient mass by component; do not combine salt and water into an undocumented brine total"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg total route ingredients/kg preserved output"
+                basis: "applicable components depend on the selected route; replace with recipe and batch records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoke_material
+          role: "Smoke-generating material"
+          name: "Smoke-generating material or smoke preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wood, plant material, or smoke preparation only for the smoked route and identify the smoking technology."
+          amount:
+            expression: "measured consumption attributable to the smoked batch; zero or not applicable for non-smoked routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg smoked output"
+                basis: "smoked route only; replace with equipment and batch consumption records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_energy
+          role: "Electricity and thermal energy"
+          name: "Electricity and route-specific thermal energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh and MJ by carrier"
+          description: "Record metered electricity and fuel or purchased heat separately for freezing, frozen storage, smoking, drying, brine preparation, pumps, and other actual route operations."
+          amount:
+            expression: "metered or reconciled consumption by carrier and operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_energy
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kWh/kg preserved output"
+                basis: "broad route and technology screen; replace with metered records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "MJ/kg preserved output"
+                basis: "broad route and technology screen; replace with fuel or heat records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_scallops_output
+          role: "Preserved scallop intermediate"
+          name: "Preserved edible scallops, selected route"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure output under the selected route's applicable mass condition and carry it to packaging."
+          amount:
+            expression: "measured output mass with moisture, salt or salinity, glaze, and draining condition recorded as applicable"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "2"
+                unit: "kg preserved output/kg prepared scallop input"
+                basis: "broad route screen reflecting water removal or uptake; replace with route-specific batch mass balance"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preservation_waste
+          role: "Wastewater, spent brine, and preservation rejects"
+          name: "Wastewater, spent brine, and preservation rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aqueous and solid waste separately by composition and treatment destination; do not net these flows against product output."
+          amount:
+            expression: "measured or calculated from same-batch water, ingredient, and mass-balance records by waste stream"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved scallop output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg preserved output"
+                basis: "route-dependent screen; replace with batch mass balance and discharge records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packaging_storage
+    label: "Packaging and on-site storage to release"
+    inputs:
+      product:
+        - row_id: packaging_product_input
+          role: "Preserved scallop product"
+          name: "Preserved edible scallops, selected route"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the preserved product entering packaging under the same route-specific measurement condition used for the reference flow."
+          amount:
+            expression: "measured mass entering final packaging"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials by material type"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging separately by material and mass; packaging never contributes to the 1 kg reference product mass."
+          amount:
+            expression: "measured bill of materials, purchase reconciliation, or packaging-line records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "1"
+                unit: "kg packaging/kg reference product"
+                basis: "broad packaging-format screen; replace with product-specific bill of materials"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: release_storage_energy
+          role: "On-site storage electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for frozen, chilled, controlled-humidity, or other on-site storage from packaging to facility-gate release."
+          amount:
+            expression: "metered storage electricity allocated by occupied capacity and time, or another disclosed physical driver"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg reference product"
+                basis: "route- and duration-dependent screen; replace with metered storage and occupancy records"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Qualified saleable reference product"
+          name: "Scallops, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bc4bc819-06b0-4452-bc14-5b08c6e3abf0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Release exactly 1 kg of qualified edible scallop product under the applicable route-specific mass condition."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "one reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging scrap and rejected packed product"
+          name: "Packaging scrap and rejected packed scallop product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap and rejected packed product separately by material and treatment destination."
+          amount:
+            expression: "measured scrap and rejected-product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg reference product"
+                basis: "broad line-loss screen; replace with packaging-line records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "multifunctional foreground operations"
+    rule: "First avoid allocation through process subdivision or, where justified by the study goal, system expansion."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "inseparable shared inputs and emissions"
+    rule: "If subdivision or system expansion is not feasible, allocate using a documented physical relationship that reflects the function causing the shared burden."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other
+    applies_to: "no defensible physical relationship"
+    rule: "Use another relationship, including economic allocation, only after documenting why the preceding options fail, the prices and period used, and sensitivity to the choice."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "shells, trimmings, spent brine, and rejected product"
+    rule: "Classify each output as product, co-product, or waste at the point it leaves the process; do not allocate upstream burdens to a waste flow, but include its handling and treatment."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_mass_balance
+      process_id: "raw_preparation"
+      flow_role: "incoming scallops, water or ice, prepared output, residues"
+      record_type: "batch mass balance"
+      raw_fields: "lot id; species; incoming form; gross mass; edible mass; shell and reject mass; water and ice; temperature"
+      collection_method: "calibrated scales, meters, production and disposition records"
+      unit: "kg; °C"
+      frequency: "each lot or batch"
+      temporal_coverage: "representative reporting period including normal variation"
+      site_scope: "reporting facility and contracted preparation under operational control"
+      aggregation_rule: "reconcile inputs, outputs, retained water, and losses per batch, then production-weight"
+      quality_evidence: "scale and meter calibration; lot traceability; reconciliation residual"
+    - protocol_id: cp_preservation_batch
+      process_id: "route_preservation"
+      flow_role: "ingredients, preserved output, and waste"
+      record_type: "route batch record"
+      raw_fields: "route; ancillary steps; recipe masses; input and output masses; moisture; salt or salinity; glaze; drain method and time; wastewater; rejects"
+      collection_method: "calibrated scales, formulation records, laboratory or validated plant measurements"
+      unit: "kg; mass fraction; salinity"
+      frequency: "each batch"
+      temporal_coverage: "representative reporting period by route"
+      site_scope: "reporting facility and declared preservation line"
+      aggregation_rule: "calculate each route separately; do not average across primary routes"
+      quality_evidence: "calibration; recipe issue record; test method; route-specific mass balance"
+    - protocol_id: cp_preservation_energy
+      process_id: "route_preservation"
+      flow_role: "electricity, fuels, heat, and direct releases"
+      record_type: "meter and fuel record"
+      raw_fields: "meter readings; fuel quantity; energy carrier; equipment; operating time; batch throughput; direct emission measurement or factor"
+      collection_method: "submeter, invoice reconciliation, fuel log, and emission monitoring or calculation"
+      unit: "kWh; MJ; carrier unit; kg emission"
+      frequency: "each batch or production period"
+      temporal_coverage: "representative reporting period by route and season"
+      site_scope: "preservation equipment and shared utilities at reporting facility"
+      aggregation_rule: "direct meter where available; otherwise allocate by a disclosed physical driver"
+      quality_evidence: "meter calibration; invoices; runtime log; factor identity"
+    - protocol_id: cp_packaging_release
+      process_id: "packaging_storage"
+      flow_role: "product mass, packaging, storage energy, scrap, and release condition"
+      record_type: "packaging and release record"
+      raw_fields: "product mass; package material and mass; scrap; storage temperature or humidity; entry and release time; occupied capacity; electricity; final quality release"
+      collection_method: "bill of materials, line counts and scales, storage meter and inventory records, release certificate"
+      unit: "kg; item; kWh; °C; hour or day"
+      frequency: "each packaging lot and storage period"
+      temporal_coverage: "representative reporting period"
+      site_scope: "packaging line and on-site storage to facility gate"
+      aggregation_rule: "normalize material and allocated storage energy to compliant released product"
+      quality_evidence: "bill-of-material revision; scale and meter calibration; inventory reconciliation; release evidence"
+  calculation_rules:
+    - id: calc_reference_mass
+      applies_to: "released product"
+      rule: "Frozen: deglazed net edible mass; brine: drained edible mass; other routes: as-sold edible mass. Exclude package, shell, inedible tissue, free brine, and glaze."
+      inputs:
+        - "measured gross"
+        - "excluded fractions"
+        - "route-specific test condition"
+      output: "kg reference product"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_inventory_normalization
+      applies_to: "each foreground flow"
+      rule: "flow amount attributed to conforming output divided by conforming reference-product mass"
+      inputs:
+        - "batch flow amount"
+        - "allocation factor if any"
+        - "released reference-product mass"
+      output: "flow amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_route_mass_balance
+      applies_to: "preparation and preservation"
+      rule: "reconcile measured inputs with products, co-products, waste, wastewater, evaporation, glaze, and free brine; investigate and disclose residuals"
+      inputs:
+        - "same-batch mass records and composition conditions"
+      output: "reconciled route mass balance"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_shared_storage
+      applies_to: "on-site storage"
+      rule: "allocate metered storage energy using occupied capacity multiplied by residence time unless a more direct meter is available"
+      inputs:
+        - "storage electricity"
+        - "occupied capacity"
+        - "residence time"
+      output: "kWh per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_route
+      applies_to: "product and process identity"
+      requirement: "Preserve lot traceability and declare species or commercial designation, incoming form, one primary route, ancillary operations, product form, geography, and period."
+      evidence: "lot records; route records; product specification"
+    - id: dq_mass_condition
+      applies_to: "reference and yield measurements"
+      requirement: "Use calibrated mass measurements and retain applicable glaze, drainage, moisture, salt or salinity, and edible-yield conditions; never compare route yields without reconciling these bases."
+      evidence: "calibration records; test methods; same-lot mass balance"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Account for all known material, water, energy, direct release, product, co-product, and waste flows; document and assess exclusions."
+      evidence: "reconciliations; meters; invoices; waste manifests; limitation log"
+    - id: dq_temporal_technology
+      applies_to: "foreground activity data"
+      requirement: "Use a reporting period representative of normal operation and route technology, including relevant seasonal or storage variation."
+      evidence: "production calendar; equipment identity; coverage statement"
+    - id: dq_reasoned_estimates
+      applies_to: "all provisional ranges"
+      requirement: "Treat every reasoned_estimate only as a temporary authoring or QA screen. Disclose any use and replace it when route- and site-specific records or reviewed source-backed evidence become available."
+      evidence: "dataset limitation statement; replacement review record"
+    - id: dq_storage_shelf_life
+      applies_to: "released product"
+      requirement: "Declare validated storage condition and shelf-life; if an expanded PEF study models downstream loss, include packaging and shelf-life effects consistently."
+      evidence: "product specification; release certificate; shelf-life evidence"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow UUID bc4bc819-06b0-4452-bc14-5b08c6e3abf0, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and amount 1."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "dataset identity"
+    rule: "Require exactly one primary route and reject undeclared route combinations; require only route-relevant process inputs and conditions."
+    source_ids:
+      - unsd-cpc-v3-2025
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_basis
+    applies_to: "reference product"
+    rule: "Reject reference mass that includes packaging, shell, inedible tissue, free brine, or glaze; require the applicable deglazing, draining, moisture, salt, and edible-yield disclosures."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_process_coverage
+    applies_to: "foreground inventory"
+    rule: "Require all three process ids and actual material, energy, product, waste, and direct-release records for the selected route, or an explicit justified zero/not-applicable statement."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_balance
+    applies_to: "preparation and preservation"
+    rule: "Require reconciled, same-condition mass balances; unexplained residuals and cross-route averaging are findings."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_allocation
+    applies_to: "multifunctional operations"
+    rule: "Require the allocation hierarchy, factor, basis, period, and sensitivity where allocation is used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "any reasoned_estimate used"
+    rule: "Require explicit provisional disclosure and a replacement trigger; a provisional range cannot be asserted as a publication-critical allowed interval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground preserved-scallop production dataset at the preservation facility gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "LCA process or lifecyclemodel projections whose product form, primary preservation route, mass condition, geography, period, technology, and storage regime match the dataset"
+  excluded_use: "Live, fresh, or merely chilled scallops; other molluscs; prepared meals; mixed routes; cross-route comparison without harmonized moisture, salt, glaze, drainage, edible-yield, packaging, and boundary conditions"
+  required_metadata: "PCR id; reference UUIDs; CPC reference; species or commercial designation; raw form and source system; primary route and ancillary steps; product form; measurement conditions; package bill; storage condition and shelf-life; geography; period; technology; allocation and cut-offs"
+  required_quality_disclosure: "Foreground coverage and representativeness; calibration and test methods; same-lot mass-balance residuals; upstream datasets; allocation; exclusions; proxies; uncertainty; all retained reasoned estimates and replacement triggers"
+  update_trigger: "Changed product flow identity or reference property; changed route, formulation, packaging, storage, technology, or regulation; material foreground data shift; availability of measured records or reviewed source-backed ranges that replace reasoned estimates"
+data_sources:
+  - id: "unsd-cpc-v3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 21264, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Official category title and alternative preservation-route scope"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, Code of Practice for Fish and Fishery Products, CXC 52-2003, https://www.fao.org/input/download/standards/10273/CXP_052e.pdf (retrieved 2026-08-11)"
+    used_for: "Bivalve reception and preparation; freezing, glazing and net mass; salting, brining, drying, smoking, packaging, storage, and route-specific measurement controls"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I, Product Environmental Footprint method, CELEX 32021H2279, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow; system boundary; company-specific data; normalization; allocation hierarchy; exclusions and data quality"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:38d382bee2d43db290beeb4d405f5157e3eec7c0dc2f077c457d4c5ce5349c73"
+  generated_content_sha256: "sha256:63e01fc4859195796efa3d026b44f7b13370215160008898006507260d42e85d"

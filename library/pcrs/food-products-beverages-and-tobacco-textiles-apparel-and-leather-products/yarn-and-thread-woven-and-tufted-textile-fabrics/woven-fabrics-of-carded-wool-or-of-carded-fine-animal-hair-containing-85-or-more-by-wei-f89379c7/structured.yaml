@@ -1,10 +1,748 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26520"
-  title: "Woven fabrics of carded wool or of carded fine animal hair, containing 85% or more by weight of wool or fine animal hair"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-carded-wool-or-of-carded-fine-animal-hair-containing-85-or-more-by-wei-f89379c7"
+  classification_refs: "CPC 3.0: 26520 (exact)"
+  covered_products: "Woven fabrics of carded wool or carded fine animal hair containing at least 85% by mass of wool or fine animal hair"
+  excluded_products: "Combed-wool or combed-fine-animal-hair woven fabrics; fabrics below 85% wool or fine animal hair; knitted, crocheted, tufted, coated, laminated, or apparel products when they are classified outside the declared product category"
+  representative_product: "Finished woven fabric of carded wool or carded fine animal hair, containing at least 85% by mass of wool or fine animal hair"
+  production_route: "Qualifying carded-wool or carded-fine-animal-hair yarn receipt; warp and weft preparation; weaving; applicable finishing; inspection and mill-gate release"
+  market_state: "Finished product, manufactured, at fabric-mill gate"
+functional_unit:
+  what: "Provision of woven fabric made from carded wool or carded fine animal hair"
+  how_much: "1 kg of accepted fabric at the declared as-delivered moisture condition"
+  how_well: "Wool and fine animal hair together are at least 85% by mass; carded rather than combed yarn route; product meets the declared construction, finish, and quality specification"
+  how_long_or_cycle: "One production lot at mill-gate release; no use-stage service duration is represented"
+  reference_flow_link: "Output final_fabric_output from process finishing_and_inspection"
+system_boundary:
+  rules:
+    - rule_id: boundary_yarn_to_mill_gate
+      applies_to: "foreground system"
+      rule: "Include yarn preparation, weaving, all route-applicable finishing performed for the declared product, inspection, associated utilities, process chemicals, wastes, and direct emissions from receipt of qualifying yarn through mill-gate release."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-textiles-bat-2022
+    - rule_id: boundary_route_disclosure
+      applies_to: "process selection"
+      rule: "Record whether sizing, washing, fulling, dyeing, drying, heat treatment, or chemical finishing occurs; do not add a process that did not occur, and do not omit a process that contributes to the accepted product."
+      source_ids:
+        - eu-textiles-bat-2022
+    - rule_id: boundary_input_output_inventory
+      applies_to: "foreground records"
+      rule: "Maintain an input-output inventory covering textile materials, each process chemical, water, energy, wastewater, waste gas, and solid or liquid waste at the detail supported by the installation and route."
+      source_ids:
+        - eu-textiles-bat-2022
+boundary_abstraction:
+  declared_starting_condition: "Qualifying carded-wool or carded-fine-animal-hair yarn, with composition evidence, received at the fabric-mill gate"
+  starting_condition_role: "Upstream product input; animal production, scouring, carding, and spinning burdens are represented by upstream datasets rather than repeated in this foreground system"
+  product_classification_scope: "Woven fabric within the reviewed semantic scope corresponding exactly to CPC 3.0 code 26520"
+  recursive_input_rule: "When an input is already a woven fabric in the same product category, record it as a separately referenced upstream product flow, start the foreground account at the disclosed fabric state, and exclude overlapping yarn-preparation and weaving operations from the receiving process account."
+  upstream_dataset_requirement: "Each purchased yarn or same-category fabric input requires an upstream dataset whose product identity, fibre composition, carded route, geography, period, and allocation basis are disclosed."
+  disclosure: "Declare purchased-input state, included unit processes, wet and thermal finishing routes, outsourced operations, excluded operations, packaging treatment, moisture basis, and any same-category recursive input."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Woven fabrics of carded wool or of carded fine animal hair, containing 85% or more by weight of wool or fine animal hair"
+    uuid: "d5a61944-e4b9-4a9c-9b26-b2f2b413d7d0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "wool and fine-animal-hair mass fraction"
+    - "fibre species"
+    - "carded-yarn route"
+    - "fabric construction and weave"
+    - "width and mass per unit area"
+    - "colour and finish"
+    - "as-delivered moisture condition"
+    - "production site"
+    - "production period"
+    - "wet-finishing route"
+    - "thermal-finishing route"
+    - "packaging inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass_basis
+    applies_to: "reference product and material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the inventory to 1 kg of accepted fabric at the declared as-delivered moisture condition; retain measured gross and accepted product masses and disclose any moisture correction."
+  - id: composition_threshold
+    applies_to: "product identity and yarn inputs"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Demonstrate from bill-of-material, supplier, or lot-test records that wool and fine animal hair together are at least 85% by mass; do not infer compliance from the product name alone."
+  - id: area_mass_conversion
+    applies_to: "fabric area records"
+    required_property_ref:
+      name: "Mass per area and area"
+      uuid: ""
+    required_unit: "kg, m2, kg/m2"
+    rule: "When production is recorded by area or length, calculate mass from measured accepted area and lot-specific mass per unit area; retain width, length, and test records."
+  - id: energy_unit_separation
+    applies_to: "electricity, steam, and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Record electricity, purchased steam, and each fuel separately in their metered or invoiced units; retain the conversion factor and source when reporting a common energy unit."
+  - id: water_balance_units
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Retain the measured water and wastewater unit; when converting between mass and volume, disclose the density and temperature basis used."
+process_map:
+  - id: yarn_preparation
+    name: "Warp and weft yarn preparation"
+    inclusion: "required"
+    inclusion_condition: "Include preparation performed after qualifying yarn receipt, including winding, warping, and route-applicable sizing."
+    role: "Converts purchased qualifying yarn into loom-ready warp and weft."
+    quantitative_reference: "kg of loom-ready yarn"
+  - id: weaving
+    name: "Weaving"
+    inclusion: "required"
+    inclusion_condition: "Include all loom operations that form the woven fabric."
+    role: "Produces grey woven fabric and records yarn losses and loom electricity."
+    quantitative_reference: "kg of grey woven fabric"
+  - id: finishing_and_inspection
+    name: "Finishing and final inspection"
+    inclusion: "required"
+    inclusion_condition: "Include final inspection for every product and each wet or thermal finishing operation only when it occurs for the declared route."
+    role: "Produces accepted mill-gate fabric and records route-specific water, chemicals, heat, fuel, wastewater, and direct emissions."
+    quantitative_reference: "1 kg accepted fabric"
+process_inventory:
+  - id: yarn_preparation
+    label: "Warp and weft yarn preparation"
+    inputs:
+      product:
+        - row_id: carded_wool_yarn_input
+          role: "Qualifying carded-wool or fine-animal-hair yarn"
+          name: "Carded wool or carded fine animal hair yarn containing at least 85% wool or fine animal hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the purchased yarn that establishes the declared starting condition. The lot record must demonstrate the carded route and at least 85% combined wool and fine-animal-hair content for the resulting fabric."
+          amount:
+            expression: "Mass of qualifying yarn issued to the preparation lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of loom-ready yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_mass
+              source_ids:
+                - unsd-cpc-3-0
+            ranges: []
+        - row_id: electricity_yarn_preparation
+          role: "Medium-voltage electricity for yarn preparation"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered electricity consumed by winding, warping, sizing equipment when present, ventilation, and process controls is recorded for this process only."
+          amount:
+            expression: "Metered or allocated electricity consumption for the yarn-preparation lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of loom-ready yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_yarn_output
+          role: "Loom-ready warp and weft yarn"
+          name: "Prepared warp and weft yarn of carded wool or carded fine animal hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal product flow records the yarn accepted for weaving after preparation."
+          amount:
+            expression: "Measured mass transferred to weaving"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per yarn-preparation lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        - row_id: wool_yarn_waste_output
+          role: "Carded-wool or fine-animal-hair yarn waste"
+          name: "Carded wool or fine-animal-hair yarn waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collect loom-preparation yarn ends, damaged yarn, and unusable yarn generated before weaving as this separate waste flow."
+          amount:
+            expression: "Measured mass of yarn waste leaving yarn preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of loom-ready yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_waste_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+  - id: weaving
+    label: "Weaving"
+    inputs:
+      product:
+        - row_id: prepared_yarn_input
+          role: "Loom-ready warp and weft yarn"
+          name: "Prepared warp and weft yarn of carded wool or carded fine animal hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal input is the measured loom-ready yarn transferred from yarn preparation."
+          amount:
+            expression: "Measured mass issued to the weaving lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of grey woven fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: electricity_weaving
+          role: "Medium-voltage electricity for weaving"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record loom, compressed-air generation attributed to the loom where applicable, local ventilation, and weaving-control electricity through the site's metering method."
+          amount:
+            expression: "Metered or allocated electricity consumption for the weaving lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of grey woven fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: grey_fabric_output
+          role: "Grey woven fabric"
+          name: "Grey woven fabric of carded wool or carded fine animal hair containing at least 85% wool or fine animal hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal product flow is fabric directly after weaving and before route-applicable finishing."
+          amount:
+            expression: "Measured accepted grey-fabric mass transferred to finishing and inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per weaving lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_mass
+              source_ids:
+                - unsd-cpc-3-0
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        - row_id: wool_fabric_offcuts_output
+          role: "Woven-fabric offcuts"
+          name: "Woven-fabric offcuts of carded wool or carded fine animal hair"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record selvedge, start-up fabric, damaged woven fabric, and trimming losses as one composition-specific solid-waste flow; do not combine it with yarn waste or wastewater."
+          amount:
+            expression: "Measured mass of fabric offcuts leaving weaving"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of grey woven fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_waste_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+  - id: finishing_and_inspection
+    label: "Finishing and final inspection"
+    inputs:
+      product:
+        - row_id: grey_fabric_finishing_input
+          role: "Grey woven fabric entering finishing"
+          name: "Grey woven fabric of carded wool or carded fine animal hair containing at least 85% wool or fine animal hair"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is the grey fabric transferred from weaving. Its mass and lot identity preserve the link to yarn composition and the carded route."
+          amount:
+            expression: "Measured grey-fabric mass entering the finishing and inspection lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_mass
+              source_ids:
+                - unsd-cpc-3-0
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: process_water_finishing
+          role: "Process water for wet finishing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record process water only when washing, fulling, dyeing, rinsing, or another aqueous finishing step occurs for the declared product route."
+          amount:
+            expression: "Metered water supplied to the applicable finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: steam_finishing
+          role: "Purchased steam for finishing"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam separately when it supplies heat to fulling, washing, dyeing, drying, or thermal finishing."
+          amount:
+            expression: "Metered or invoiced steam delivered to the applicable finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: acetic_acid_finishing
+          role: "Acetic acid for pH control"
+          name: "Acetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record acetic acid as this individual chemical input only when the finishing recipe uses it for pH control. Other chemicals must be represented by their own atomic flow rows in the foreground data package."
+          amount:
+            expression: "Mass issued from the approved recipe and verified against chemical inventory records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_issue_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: electricity_finishing
+          role: "Medium-voltage electricity for finishing and inspection"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for wet-processing machinery, dryers, finishers, inspection equipment, ventilation, and controls through the site's metering method."
+          amount:
+            expression: "Metered or allocated electricity consumption for the finishing and inspection lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: natural_gas_finishing
+          role: "Natural gas for on-site direct heat"
+          name: "Natural gas in the gaseous state"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas only when on-site combustion supplies direct or indirect heat to the applicable finishing or drying operation; do not combine it with purchased steam."
+          amount:
+            expression: "Metered natural-gas consumption attributed to the applicable finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_fabric_output
+          role: "Accepted woven fabric at mill gate"
+          name: "Woven fabrics of carded wool or of carded fine animal hair, containing 85% or more by weight of wool or fine animal hair"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5a61944-e4b9-4a9c-9b26-b2f2b413d7d0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the declared reference product after all applicable finishing and final inspection."
+          amount:
+            expression: "1 kg after normalization to accepted product mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finishing_wastewater_output
+          role: "Wool-fabric finishing wastewater"
+          name: "Wool-fabric finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the wastewater leaving wet finishing before on-site or off-site treatment. Keep this stream separate from unpolluted cooling water and solid waste."
+          amount:
+            expression: "Metered wastewater volume from the applicable finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_meter
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_output
+          role: "Fossil carbon dioxide from on-site natural-gas combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide to the applicable air compartment only when on-site natural-gas combustion occurs and the emission is measured as a foreground release. Calculated emissions require a separately reviewed factor and calculation rule."
+          amount:
+            expression: "Measured fossil carbon-dioxide emission attributed to the applicable finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of accepted final fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emission_mass
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared yarn-preparation, weaving, and finishing operations"
+    rule: "Avoid allocation by metering, lot tracking, recipe records, machine time, or other subdivision that directly assigns inputs and outputs to the declared fabric."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical_relationship
+    applies_to: "inseparable multi-product operations"
+    rule: "When subdivision is not practicable, use a documented physical relationship that reflects how the shared input or operation changes with the outputs; mass allocation may be used only when that relationship is demonstrated for the affected operation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_economic_fallback
+    applies_to: "inseparable co-products without a defensible physical relationship"
+    rule: "Economic allocation is a last-resort study choice; disclose prices, currency, price period, calculation, sensitivity, and the reason a physical relationship was not usable."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_waste_and_recovery
+    applies_to: "yarn waste, fabric offcuts, wastewater, and recovered materials"
+    rule: "Do not treat a waste stream as a co-product merely because it is transferred for recovery. Record its measured mass and destination; disclose any avoided-burden or recycled-content convention outside the foreground unit-process inventory."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_lot_mass
+      process_id: "yarn_preparation_weaving_finishing_and_inspection"
+      flow_role: "yarn, grey fabric, accepted fabric"
+      record_type: "weighbridge, calibrated scale, production order, bill of material, quality release"
+      raw_fields: "lot_id; material_id; fibre_species; carded_route; wool_fine_hair_fraction; gross_mass; accepted_mass; moisture_condition; timestamp"
+      collection_method: "Link calibrated mass records and quality release to each production lot."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope lines and outsourced steps"
+      aggregation_rule: "Sum accepted, issued, transfer, and rejected masses by process and lot before reference-flow normalization."
+      quality_evidence: "calibration certificate; supplier composition evidence; lot quality release; reconciliation record"
+    - protocol_id: cp_electricity_meter
+      process_id: "yarn_preparation_weaving_finishing_and_inspection"
+      flow_role: "medium-voltage electricity"
+      record_type: "submeter, production meter, or invoice with allocation record"
+      raw_fields: "meter_id; start_reading; end_reading; timestamp; process_id; lot_id; allocation_driver"
+      collection_method: "Read process submeter where available; otherwise document the site-meter allocation to machine or lot."
+      unit: "kWh"
+      frequency: "each lot or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope equipment"
+      aggregation_rule: "Sum consumption by process; allocate only documented shared-meter residuals."
+      quality_evidence: "meter calibration or utility invoice; allocation worksheet"
+    - protocol_id: cp_water_meter
+      process_id: "finishing_and_inspection"
+      flow_role: "process water"
+      record_type: "flow meter and wet-process batch record"
+      raw_fields: "meter_id; start_reading; end_reading; lot_id; operation; reuse_volume; timestamp"
+      collection_method: "Record supplied, reused, and recycled water separately for each applicable wet-finishing lot."
+      unit: "m3"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all wet-finishing lines"
+      aggregation_rule: "Sum net external water input by lot without netting wastewater."
+      quality_evidence: "meter check; water balance; batch record"
+    - protocol_id: cp_steam_meter
+      process_id: "finishing_and_inspection"
+      flow_role: "purchased steam"
+      record_type: "steam meter or supplier invoice"
+      raw_fields: "meter_id; delivered_quantity; pressure; temperature; condensate_return; lot_id; timestamp"
+      collection_method: "Measure delivered steam and retain pressure, temperature, and condensate-return information used for energy conversion."
+      unit: "kg or MJ"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all steam-using in-scope equipment"
+      aggregation_rule: "Convert only with a documented enthalpy basis; sum by lot."
+      quality_evidence: "meter check; invoice; conversion worksheet"
+    - protocol_id: cp_chemical_issue_mass
+      process_id: "finishing_and_inspection"
+      flow_role: "acetic acid"
+      record_type: "approved recipe, batch sheet, chemical issue and return log"
+      raw_fields: "chemical_name; supplier_product; concentration; issued_mass; returned_mass; lot_id; operation; timestamp"
+      collection_method: "Reconcile recipe dosage with net chemical issue for the lot and retain concentration."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all applicable finishing recipes"
+      aggregation_rule: "Sum net issued mass for this chemical only; create separate atomic records for every other chemical."
+      quality_evidence: "recipe approval; inventory reconciliation; safety data sheet"
+    - protocol_id: cp_natural_gas_meter
+      process_id: "finishing_and_inspection"
+      flow_role: "natural gas"
+      record_type: "fuel meter or supplier invoice"
+      raw_fields: "meter_id; start_reading; end_reading; energy_basis; lot_id; equipment; timestamp"
+      collection_method: "Attribute metered fuel to operating equipment and lot using documented operating records."
+      unit: "m3 or MJ"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope combustion equipment"
+      aggregation_rule: "Retain raw volume and heating-value basis; sum energy by lot."
+      quality_evidence: "meter check; invoice; heating-value certificate"
+    - protocol_id: cp_solid_waste_mass
+      process_id: "yarn_preparation_weaving"
+      flow_role: "yarn waste and fabric offcuts"
+      record_type: "segregated waste container scale and dispatch record"
+      raw_fields: "waste_name; composition; container_id; gross_mass; tare_mass; destination; lot_id; timestamp"
+      collection_method: "Weigh each segregated waste stream and link it to the generating process and lot."
+      unit: "kg"
+      frequency: "each container or dispatch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope lines"
+      aggregation_rule: "Sum net mass by atomic waste identity, process, and destination."
+      quality_evidence: "scale check; waste transfer record; segregation log"
+    - protocol_id: cp_wastewater_meter
+      process_id: "finishing_and_inspection"
+      flow_role: "wool-fabric finishing wastewater"
+      record_type: "wastewater flow meter and batch log"
+      raw_fields: "meter_id; flow; pH; temperature; conductivity; lot_id; discharge_route; timestamp"
+      collection_method: "Measure the polluted finishing stream separately from reusable or unpolluted water."
+      unit: "m3"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all wet-finishing discharge points"
+      aggregation_rule: "Sum discharge by lot and route; do not subtract it from process-water input."
+      quality_evidence: "meter check; water balance; discharge log"
+    - protocol_id: cp_direct_air_emission_mass
+      process_id: "finishing_and_inspection"
+      flow_role: "fossil carbon dioxide to air"
+      record_type: "calibrated continuous or periodic emission measurement"
+      raw_fields: "emission_point; compartment; measured_concentration; gas_flow; duration; lot_id; method; timestamp"
+      collection_method: "Measure the identified emission point using the applicable approved method and attribute only the operating interval serving the lot."
+      unit: "kg"
+      frequency: "applicable measurement interval"
+      temporal_coverage: "representative of the reporting period and operating route"
+      site_scope: "all relevant in-scope emission points"
+      aggregation_rule: "Integrate measured mass flow over the attributed operating interval; do not substitute an uncited factor."
+      quality_evidence: "calibration; laboratory report; operating log; method record"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "all collected inventory rows"
+      rule: "normalized amount = collected process or lot amount / accepted final-fabric mass"
+      inputs:
+        - "collected amount"
+        - "accepted final-fabric mass"
+      output: "amount per 1 kg accepted final fabric"
+      source_ids:
+        - iso-14044-2006
+    - id: fabric_mass_from_area
+      applies_to: "lots recorded by area or length"
+      rule: "fabric mass = accepted length × accepted width × lot-specific mass per unit area"
+      inputs:
+        - "accepted length"
+        - "accepted width"
+        - "measured mass per unit area"
+      output: "accepted fabric mass"
+      source_ids:
+        - iso-14044-2006
+    - id: process_mass_reconciliation
+      applies_to: "yarn preparation, weaving, and finishing"
+      rule: "Reconcile measured product input with accepted product output, separately measured waste, retained work in progress, and documented stock change; investigate rather than force-close unexplained residuals."
+      inputs:
+        - "input mass"
+        - "output mass"
+        - "waste mass"
+        - "work in progress"
+        - "stock change"
+      output: "process mass-balance finding"
+      source_ids:
+        - eu-textiles-bat-2022
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and yarn inputs"
+      requirement: "Retain exact product name, composition evidence, fibre species, carded-route evidence, lot identity, and accepted Tiangong UUID status."
+      evidence: "supplier specification; bill of material; lot test; UUID review status"
+    - id: dq_measurement
+      applies_to: "mass, electricity, water, steam, fuel, wastewater, and emissions"
+      requirement: "Use calibrated or otherwise controlled meters and scales; retain raw readings, units, conversion bases, and gap treatment."
+      evidence: "calibration or verification record; raw meter log; invoice; calculation worksheet"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Cover all in-scope production in the declared period and identify shutdown, start-up, abnormal operation, and missing intervals."
+      evidence: "production calendar; meter coverage log; exception register"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile every included process against material, water, energy, chemical, waste, wastewater, and relevant direct-emission records without aggregated selector flows."
+      evidence: "input-output inventory; water balance; energy balance; chemical inventory; waste register"
+    - id: dq_outsourcing
+      applies_to: "outsourced preparation, weaving, or finishing"
+      requirement: "Identify the contractor, transferred product state, included operations, primary-data coverage, and any background substitution."
+      evidence: "contract manufacturing record; transfer document; supplier dataset"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the exact reference product-flow UUID, Mass flow-property UUID, 1 kg reference amount, and all required qualifiers; fail validation when a required qualifier is absent."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_category_threshold
+    applies_to: "product and yarn composition"
+    rule: "Confirm that wool and fine animal hair together account for at least 85% by mass and that the route is carded rather than combed."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_process_route
+    applies_to: "process map"
+    rule: "Confirm yarn preparation, weaving, finishing, inspection, outsourcing, and exclusions against actual production records; every performed wet or thermal operation must be represented."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-textiles-bat-2022
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Confirm that every exchange is one specific product, electricity or energy carrier, chemical, waste, or elementary flow; reject collection labels and reject UUIDs lacking exact identity evidence."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_input_output_inventory
+    applies_to: "foreground completeness"
+    rule: "Confirm separately recorded textile materials, each process chemical, water, electricity, steam, each fuel, wastewater, solid waste, and relevant direct emissions for the applicable route."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_mass_reconciliation
+    applies_to: "each process and final reference"
+    rule: "Reconcile lot inputs, outputs, wastes, work in progress, and stock change; report unexplained residuals and do not silently force the balance."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_allocation_disclosure
+    applies_to: "shared and multi-product operations"
+    rule: "Confirm subdivision evidence or the selected allocation relationship, calculation, data period, and sensitivity disclosure."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_data_coverage
+    applies_to: "published dataset"
+    rule: "Confirm temporal, site, route, outsourced-operation, meter, and record coverage and disclose all gaps or substitutions."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for mill-gate woven fabric; eligible for reviewed use as a secondary_dataset or background_dataset"
+  downstream_use: "Construction of TianGong process records and downstream lifecyclemodel projections for products consuming CPC 26520 woven fabric"
+  allowed_use: "Studies whose product matches the declared fibre composition, carded route, construction, finish, geography, period, moisture basis, and mill-gate boundary"
+  excluded_use: "Combed-wool fabrics, fabrics below the 85% threshold, knitted or tufted textiles, apparel manufacture, use-stage performance, and product systems requiring omitted upstream or downstream stages without added datasets"
+  required_metadata: "PCR id; exact product-flow UUID; product and yarn composition; fibre species; carded-route evidence; weave and construction; width; mass per unit area; finish; moisture condition; site; period; process route; outsourced operations; allocation; cut-off and packaging treatment"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; composition and quality-test evidence; temporal and site coverage; missing records; substitutions; unresolved UUIDs; allocation method; mass-balance findings; water, energy, chemical, waste, wastewater, and direct-emission completeness"
+  update_trigger: "Change in fibre composition, carded/combed route, weave, finish, site, process route, energy or water system, chemical recipe, allocation, upstream yarn source, measurement system, reference-flow identity, or material evidence source"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, CPC resources and structure, https://unstats.un.org/unsd/classifications/Econ/CPC"
+    used_for: "Product-category title, composition threshold, and classification scope"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, published January 2023, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/textiles-industry"
+    used_for: "Textile process decomposition, including fabric production, pretreatment, dyeing, and finishing"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, CELEX 32022D2508, https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32022D2508"
+    used_for: "Input-output inventory, fabric production, sizing, weaving, finishing, water, energy, chemicals, waste, wastewater, and emissions collection rules"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html"
+    used_for: "Inventory normalization, allocation hierarchy, reporting, and data-quality disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a4832a08233eabb4f7a63b8beeac7aa4c75950e855fab2f0a466c9f418623f45"
+  generated_content_sha256: "sha256:e7e7604f30a5fa9986671c50b963610ac9fe4caf6c14a26736388c623a3d6b8d"

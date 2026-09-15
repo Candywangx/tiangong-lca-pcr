@@ -1,10 +1,518 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26422"
-  title: "Man-made filament yarn (other than sewing thread), put up for retail sale"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.man-made-filament-yarn-other-than-sewing-thread-put-up-for-retail-sale"
+  classification_refs: "CPC 3.0: 26422, Man-made filament yarn (other than sewing thread), put up for retail sale"
+  covered_products: "Saleable retail packages of synthetic or artificial continuous-filament yarn, including mono- or multifilament and single, multiple, or cabled constructions, provided the product is not sewing thread and its fibre composition, construction, linear density, colour, finish, and package form are declared."
+  excluded_products: "Sewing thread; yarn made from man-made staple fibres; filament tow; yarn not put up for retail sale as the final market state; woven, knitted, or tufted fabrics; products whose twisting, dyeing, washing, heat setting, or other wet or thermal finishing occurs inside the declared foreground boundary."
+  representative_product: "Finished man-made filament yarn wound on one paperboard retail core, supplied with one paper label and, when used, one low-density polyethylene outer film, reported by net yarn mass."
+  production_route: "Receipt of finished non-retail filament yarn -> lot verification and tare control -> mechanical retail winding -> labelling and outer-film packing -> saleable packaged yarn at plant gate."
+  market_state: "Saleable retail put-up at the gate of a China retail-winding and packaging plant; distribution beyond the plant gate is excluded."
+functional_unit:
+  what: "Man-made filament yarn, other than sewing thread, in a declared saleable retail put-up."
+  how_much: "1 kg net yarn mass, excluding the paperboard core, label, outer film, and other packaging."
+  how_well: "Finished and saleable, with the fibre identity, construction, linear density, colour and finishing state, and retail package form declared."
+  how_long_or_cycle: "One completed foreground retail-winding and packaging batch; no use duration is assigned."
+  reference_flow_link: "The measured net mass of conforming retail yarn output from retail_winding_packaging."
+system_boundary:
+  rules:
+    - rule_id: boundary_retail_conversion_only
+      applies_to: "foreground system"
+      rule: "Include lot verification, tare control, mechanical retail winding, labelling, outer-film packing when used, foreground electricity, material inputs, measured yarn loss, packaging loss, and on-site waste handling. Exclude all yarn-production and wet-processing operations completed before receipt and all post-gate distribution, use, and end-of-life."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_upstream_link_required
+      applies_to: "received yarn"
+      rule: "Require a matching upstream dataset for the received finished yarn and prevent double counting of upstream filament manufacture, twisting, dyeing, or finishing."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - iso-14044-2006
+    - rule_id: boundary_inventory_inputs_outputs
+      applies_to: "foreground records"
+      rule: "Maintain batch-level records of material, energy, product, and waste inputs and outputs, with separately identifiable streams."
+      source_ids:
+        - eu-bat-textiles-2022
+boundary_abstraction:
+  declared_starting_condition: "Finished man-made filament yarn, other than sewing thread, whose fibre composition, filament form, yarn construction, linear density, colour, and dyeing or finishing state already match the retail product, received net of producer transport packaging."
+  starting_condition_role: "Upstream product input to the foreground retail-winding and packaging process."
+  product_classification_scope: "CPC 3.0 subclass 26422 for the output; the received non-retail yarn is an upstream product and does not acquire CPC 26422 identity until the declared retail put-up is completed."
+  recursive_input_rule: "If returned or reworked CPC 26422 yarn enters the foreground process, record it once as an input linked to its supplying dataset, disclose the rework relationship, and do not recursively apply this PCR to the same physical yarn within the same product system."
+  upstream_dataset_requirement: "Link every received-yarn lot to an upstream dataset matching fibre family and mass fraction, filament form, yarn construction, linear density, recycled content, colour and finishing state, production geography, and technology. Upstream polymer, filament, texturing, twisting, dyeing, and finishing burdens must not be recreated in this foreground process."
+  disclosure: "Declare the foreground site, reporting period, received-yarn starting condition, excluded upstream operations, retail package configuration, electricity scenario, treatment of producer transport packaging, and all departures from the representative route."
+reference_flow_definition:
+  reference_amount: "1 kg net yarn mass"
+  product_flow_ref:
+    name: "Man-made filament yarn (other than sewing thread), put up for retail sale"
+    uuid: "561c51b1-b4f9-4eea-b081-e096bf93820b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fibre origin as synthetic or artificial"
+    - "polymer or regenerated-cellulosic fibre family and mass fraction"
+    - "mono- or multifilament form"
+    - "yarn construction and ply or cable status"
+    - "linear density in tex with the measurement or conversion basis"
+    - "colour and dyeing or finishing state"
+    - "retail package form"
+    - "net yarn mass excluding packaging"
+    - "foreground production geography"
+    - "electricity supply scenario"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory values to 1 kg of measured net yarn. Determine and retain gross, tare, packaging, and net readings; do not add core, label, film, or other packaging mass to the reference product amount."
+  - id: yarn_linear_density
+    applies_to: "reference product qualifiers"
+    required_property_ref:
+      name: "Linear density"
+      uuid: ""
+    required_unit: "tex"
+    rule: "Declare the measured or converted linear density and the original count system. Apply the Tex System consistently and retain the test or conversion basis."
+  - id: packaging_component_mass
+    applies_to: "paperboard core, paper label, and LDPE film"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each packaging component separately from supplier delivery records, component counts, and measured representative unit mass; do not combine different materials in one amount."
+  - id: cn_electricity_energy
+    applies_to: "China 1-35 kV consumption-mix electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the original meter unit, apply an auditable unit conversion to MJ, and normalize the resulting energy to measured net yarn output. The electricity UUID in this PCR is valid only for the declared China supply scenario."
+process_map:
+  - id: retail_winding_packaging
+    name: "Retail winding and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included for the covered China plant-gate product."
+    role: "Foreground conversion of finished non-retail yarn into the declared retail put-up."
+    quantitative_reference: "1 kg measured net retail yarn output"
+process_inventory:
+  - id: retail_winding_packaging
+    label: "Retail winding and packaging"
+    inputs:
+      product:
+        - row_id: received_nonretail_filament_yarn
+          role: "Received finished non-retail filament yarn"
+          name: "Man-made filament yarn other than sewing thread, finished and not put up for retail sale"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the composition- and construction-matched yarn entering mechanical retail winding. The Tiangong UUID remains unresolved because the reviewed CPC 26421 candidate is narrower than this input."
+          amount:
+            expression: "Record the calibrated net mass issued to the retail-winding batch, adjusted for documented opening and closing work-in-progress."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: cn_medium_voltage_electricity
+          role: "China medium-voltage electricity at user"
+          name: "Alternating current, 1-35 kV, consumption mix, at user, CN"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "This card represents one explicit supply scenario: 1-35 kV alternating current, China consumption mix, supplied to the user. It must not be used as a proxy for a non-China site."
+          amount:
+            expression: "Record submetered or meter-allocated electricity for the retail-winding and packaging batch, convert the recorded unit to MJ auditably, and normalize to measured net yarn output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_metering
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: paperboard_yarn_core
+          role: "Paperboard yarn-winding tube"
+          name: "Paperboard yarn-winding tube"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+          property_unit: "Mass / kg"
+          description: "This is the single paperboard core incorporated into the retail yarn put-up. Its mass is recorded separately from the yarn and from every other packaging component."
+          amount:
+            expression: "Record issued core count and measured representative unit mass, reconcile unused returns, and calculate the mass incorporated into the batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: paper_retail_label
+          role: "Paper retail label"
+          name: "Paper packaging label, at plant, GLO"
+          flow_type: "product"
+          flow_ref:
+            uuid: "64321117-433d-43a5-97f9-2ea624c15656"
+          property_unit: "Mass / kg"
+          description: "This is the paper label incorporated into the retail package. Adhesive, ink, or backing material is not represented by this card unless it is included in the selected Tiangong flow and supplier specification."
+          amount:
+            expression: "Record issued label count and measured representative unit mass, reconcile unused returns, and calculate the mass incorporated into the batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: ldpe_retail_packaging_film
+          role: "Low-density polyethylene retail packaging film"
+          name: "Low-density polyethylene retail packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the single LDPE outer-film component when the declared retail package uses it. The UUID remains unresolved because the reviewed polyethylene candidate does not confirm LDPE grade or retail film state."
+          amount:
+            expression: "Record film roll or bag mass issued, unused returns, and measured same-material waste; calculate the mass incorporated into the batch. Record zero only with evidence that no outer film is used."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retail_product
+          role: "Saleable retail filament yarn"
+          name: "Man-made filament yarn (other than sewing thread), put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "561c51b1-b4f9-4eea-b081-e096bf93820b"
+          property_unit: "Mass / kg"
+          description: "This is the conforming foreground output and the reference product. Its recorded amount is net yarn mass and excludes all packaging mass."
+          amount:
+            expression: "Record calibrated gross and tare readings for conforming packages and report net yarn mass for the batch."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: filament_yarn_winding_waste
+          role: "Man-made filament yarn winding offcut waste"
+          name: "Man-made filament yarn winding offcut waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This card records only man-made filament yarn offcuts, tangled yarn, and rejected yarn generated by the retail-winding step. It excludes paperboard and plastic packaging waste."
+          amount:
+            expression: "Separately weigh the yarn waste from each batch and retain its declared recovery or disposal destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_tracking
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: waste_paperboard_yarn_core
+          role: "Waste paperboard yarn-winding tube"
+          name: "Waste paperboard yarn-winding tube"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This card records damaged or rejected paperboard yarn-winding tubes generated on site. It excludes paper labels and plastic film."
+          amount:
+            expression: "Separately weigh rejected paperboard tubes by batch and retain their recovery or disposal destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_tracking
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: waste_ldpe_packaging_film
+          role: "Waste low-density polyethylene packaging film"
+          name: "Waste low-density polyethylene retail packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This card records only LDPE film trim, damaged bags, or rejected outer film generated on site. It excludes other plastics and paper packaging."
+          amount:
+            expression: "Separately weigh the LDPE film waste by batch and retain its recovery or disposal destination. Record zero only when no LDPE film is used and the absence is documented."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg measured net retail yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_tracking
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-bat-textiles-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_separation
+    applies_to: "all foreground exchanges"
+    rule: "Avoid allocation by using batch-specific material, electricity, product, and waste records and by subdividing separately metered or separately weighed operations."
+    source_ids:
+      - iso-14044-2006
+      - eu-bat-textiles-2022
+  - rule_id: allocation_shared_electricity
+    applies_to: "shared electricity meters"
+    rule: "When subdivision is not feasible, allocate metered electricity to the batch using documented machine operating time and measured equipment power or another demonstrated physical causal parameter; disclose the method and retain the calculation inputs."
+    source_ids:
+      - iso-14044-2006
+      - jrc-textiles-bref-2023
+  - rule_id: allocation_no_avoided_burden
+    applies_to: "yarn and packaging waste"
+    rule: "Report each waste stream and destination as a foreground waste output. Do not credit avoided virgin production or downstream recycling inside this foreground process; model downstream treatment in the linked waste-management system."
+    source_ids:
+      - jrc-textiles-bref-2023
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_yarn_mass_balance
+      process_id: "retail_winding_packaging"
+      flow_role: "received_nonretail_filament_yarn; retail_product"
+      record_type: "scale and batch production records"
+      raw_fields: "lot_id; batch_id; fibre_family; composition; construction; linear_density; colour_finish; opening_wip_mass; received_net_mass; closing_wip_mass; product_gross_mass; product_tare_mass; product_net_mass"
+      collection_method: "Calibrated scale readings tied to lot and batch identifiers; retain gross, tare, and net records."
+      unit: "kg"
+      frequency: "every lot and batch"
+      temporal_coverage: "complete reporting period with no omitted production batch"
+      site_scope: "all retail-winding lines in the declared foreground site"
+      aggregation_rule: "sum by batch, reconcile work-in-progress, then normalize to conforming net yarn output"
+      quality_evidence: "scale calibration status; signed batch record; lot traceability; gross-tare-net reconciliation"
+    - protocol_id: cp_electricity_metering
+      process_id: "retail_winding_packaging"
+      flow_role: "cn_medium_voltage_electricity"
+      record_type: "electricity meter and machine-operation records"
+      raw_fields: "meter_id; start_reading; end_reading; recorded_unit; reading_time; machine_id; operating_time; batch_id; allocation_parameter"
+      collection_method: "Prefer a dedicated submeter; otherwise use a documented physical allocation from the site meter to the batch."
+      unit: "native meter unit and MJ after conversion"
+      frequency: "each batch or shift with batch linkage"
+      temporal_coverage: "complete reporting period including start-up, shutdown, and idle energy assigned by the declared rule"
+      site_scope: "all winding, conveying, labelling, and film-packing equipment inside the foreground boundary"
+      aggregation_rule: "subtract sequential readings, allocate only when needed, convert auditably to MJ, and normalize to net yarn output"
+      quality_evidence: "meter identifier and calibration; reading evidence; operating log; conversion factor provenance; allocation calculation"
+    - protocol_id: cp_packaging_components
+      process_id: "retail_winding_packaging"
+      flow_role: "paperboard_yarn_core; paper_retail_label; ldpe_retail_packaging_film"
+      record_type: "stores issue, return, supplier specification, and representative weighing records"
+      raw_fields: "component_id; material; supplier_lot; issued_count_or_mass; returned_unused_count_or_mass; sampled_unit_mass; incorporated_count; batch_id"
+      collection_method: "Reconcile issued and returned components; determine component mass by direct weighing or count multiplied by a current measured representative unit mass."
+      unit: "count and kg"
+      frequency: "every packaging lot and production batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all packaging stations inside the foreground site"
+      aggregation_rule: "calculate each material and component separately and normalize incorporated mass to net yarn output"
+      quality_evidence: "supplier specification; sample-weighing record; scale calibration; issue-return reconciliation"
+    - protocol_id: cp_waste_tracking
+      process_id: "retail_winding_packaging"
+      flow_role: "filament_yarn_winding_waste; waste_paperboard_yarn_core; waste_ldpe_packaging_film"
+      record_type: "segregated waste weighing and destination records"
+      raw_fields: "waste_row_id; batch_id; container_tare; gross_mass; net_mass; material_identity; destination; transfer_date; transfer_record"
+      collection_method: "Segregate and weigh each named waste stream; prohibit cross-material aggregation."
+      unit: "kg"
+      frequency: "every waste container and batch allocation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all waste generation points inside the foreground boundary"
+      aggregation_rule: "sum each row_id by batch and normalize to net yarn output without avoided-burden credit"
+      quality_evidence: "scale calibration; container label; transfer note; recycler or disposal receipt"
+  calculation_rules:
+    - id: calc_net_yarn_output
+      applies_to: "retail_product"
+      rule: "Sum package gross mass minus separately measured package tare mass; exclude all paperboard, label, film, and other packaging."
+      inputs:
+        - product_gross_mass
+        - product_tare_mass
+        - batch_id
+      output: "product_net_mass in kg"
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+    - id: calc_yarn_mass_reconciliation
+      applies_to: "received yarn and yarn waste"
+      rule: "Opening work-in-progress plus received net yarn minus closing work-in-progress must reconcile with net conforming yarn output plus separately measured man-made filament yarn waste; retain and explain any residual."
+      inputs:
+        - opening_wip_mass
+        - received_net_mass
+        - closing_wip_mass
+        - product_net_mass
+        - filament_yarn_waste_mass
+      output: "batch mass-balance residual in kg"
+      source_ids:
+        - eu-bat-textiles-2022
+    - id: calc_packaging_component_mass
+      applies_to: "each packaging input"
+      rule: "Issued mass minus returned unused mass minus separately measured same-material foreground waste equals mass incorporated into the delivered retail packages; calculate each material separately."
+      inputs:
+        - issued_count_or_mass
+        - returned_unused_count_or_mass
+        - sampled_unit_mass
+        - same_material_waste_mass
+      output: "incorporated component mass in kg"
+      source_ids:
+        - eu-bat-textiles-2022
+    - id: calc_electricity_normalization
+      applies_to: "cn_medium_voltage_electricity"
+      rule: "Subtract meter readings, apply the documented native-unit-to-MJ conversion, allocate only by the declared physical parameter when a dedicated meter is unavailable, and divide by measured net yarn output."
+      inputs:
+        - start_reading
+        - end_reading
+        - recorded_unit
+        - conversion_factor
+        - allocation_parameter
+        - product_net_mass
+      output: "MJ per kg net yarn"
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-bat-textiles-2022
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "received and retail yarn"
+      requirement: "Preserve lot-level linkage between received yarn and retail output, including fibre family, composition, filament form, construction, linear density, colour and finish, and upstream dataset reference."
+      evidence: "purchase specification; certificate or lot sheet; batch genealogy; upstream dataset identifier"
+    - id: dq_measurement_control
+      applies_to: "mass and electricity records"
+      requirement: "Use identified measuring equipment with current calibration or verification status; retain native readings and prohibit undocumented unit conversion."
+      evidence: "calibration certificate or verification log; meter export; scale record; conversion record"
+    - id: dq_temporal_completeness
+      applies_to: "foreground reporting period"
+      requirement: "Include every production batch, packaging lot, start-up, shutdown, reject, and waste transfer inside the declared period, or disclose and quantify each gap."
+      evidence: "production schedule; batch register; stores ledger; meter continuity check; waste register"
+    - id: dq_geographic_match
+      applies_to: "electricity"
+      requirement: "Use the selected CN 1-35 kV consumption-mix flow only for a China foreground site supplied at the declared voltage range."
+      evidence: "site address; supply contract or meter specification; selected flow UUID"
+    - id: dq_zero_and_absence_evidence
+      applies_to: "LDPE film and waste rows"
+      requirement: "A zero amount is valid only when a batch record, bill of materials, or segregated waste record demonstrates absence; blank values are not zero."
+      evidence: "bill of materials; issue-return record; waste log; signed batch record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product UUID 561c51b1-b4f9-4eea-b081-e096bf93820b, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and reference unit kg."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_required_qualifiers
+    applies_to: "reference product"
+    rule: "Reject a foreground package that omits any required fibre, construction, linear-density, finishing, package-form, net-mass, geography, or electricity-scenario qualifier."
+    source_ids:
+      - iso-1144-2016
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_foreground_boundary
+    applies_to: "process scope"
+    rule: "Reject double counting of upstream polymer, filament, texturing, twisting, dyeing, or finishing burdens in retail_winding_packaging; require the upstream received-yarn dataset and boundary disclosure."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - iso-14044-2006
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory rows"
+    rule: "Require one physical or chemical exchange per row_id and require the bilingual files to preserve the same ordered row_id, flow type, UUID, and controlled machine fields."
+    source_ids:
+      - eu-bat-textiles-2022
+  - rule_id: validate_yarn_mass_balance
+    applies_to: "yarn inputs and outputs"
+    rule: "Require the batch yarn mass reconciliation, an explained residual, and direct records for net product and yarn waste; do not substitute an estimated yield or loss range."
+    source_ids:
+      - eu-bat-textiles-2022
+  - rule_id: validate_packaging_reconciliation
+    applies_to: "packaging inputs and waste"
+    rule: "Require separate mass reconciliation for paperboard core, paper label, and LDPE film, including evidence for any zero or absent film and separately identified waste."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-bat-textiles-2022
+  - rule_id: validate_electricity_scenario
+    applies_to: "electricity"
+    rule: "Require foreground electricity records and verify that the selected 1-35 kV CN consumption-mix flow matches the site geography and supply voltage; reject proxy use outside the declared scenario."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-bat-textiles-2022
+  - rule_id: validate_no_unresolved_uuid_as_match
+    applies_to: "unresolved inventory identities"
+    rule: "Keep an unresolved selected flow human-readable and atomic, but do not claim a Tiangong identity until a future hybrid search and public direct read confirm the exact flow type and semantics."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for the China retail winding and packaging of finished man-made filament yarn."
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product systems requiring a China plant-gate dataset for the declared retail-winding and packaging route, with a separately linked, composition- and construction-matched upstream yarn dataset."
+  excluded_use: "Non-China electricity scenarios; sewing thread; staple-fibre yarn; upstream filament manufacture or wet processing; distribution, use, or end-of-life; any dataset that lacks net yarn mass or the required product qualifiers."
+  required_metadata: "PCR id and status; foreground site and period; upstream yarn dataset; all required qualifiers; net/gross/tare basis; package bill of materials; electricity flow UUID and voltage; allocation method; waste destinations; source ids; unresolved UUID disclosures."
+  required_quality_disclosure: "Measurement and calibration evidence; temporal and batch coverage; mass-balance residual; packaging reconciliation; electricity metering or allocation; zero-value evidence; unresolved flow identities; deviations from the representative route."
+  update_trigger: "Re-run identity review when Tiangong adds exact non-retail yarn, LDPE film, or matching waste flows; update the dataset when yarn composition or construction, package configuration, site, voltage, electricity supply, allocation method, reporting technology, or upstream dataset changes materially."
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure only, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 26422 product identity and retail-market-state boundary."
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Textiles Industry, 2023, JRC131874, DOI 10.2760/355887. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf"
+    used_for: "Winding process decomposition, electricity as a material foreground input, separate waste tracking, and packaging-waste management."
+  - id: "eu-bat-textiles-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry. http://data.europa.eu/eli/dec_impl/2022/2508/oj"
+    used_for: "Input-output inventory, material and energy records, waste identification, and quality evidence."
+  - id: "iso-1144-2016"
+    type: "standard"
+    reference: "ISO 1144:2016, Textiles - Universal system for designating linear density (Tex System). https://www.iso.org/standard/70774.html"
+    used_for: "Yarn linear-density qualifier and consistent Tex-system declaration."
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines. https://www.iso.org/standard/38498.html"
+    used_for: "LCI scope, transparent allocation, reporting, and upstream/foreground separation."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6ddb540d281ec7af9a6330d445e95d1d1cdd64817999f8e2d5ec424379266e72"
+  generated_content_sha256: "sha256:e91f19a4b749ccc1bb078a98034f8950195f1372b1b68ea1e28e948826efeba2"

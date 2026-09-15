@@ -1,10 +1,2163 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23511"
-  title: "Cane sugar"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.cane-sugar"
+  classification_refs: "CPC 3.0 23511 Cane sugar"
+  covered_products: "Partially purified sucrose crystallized from partially purified sugar-cane juice without further refining, including declared raw or mill-white cane-sugar routes that remain within CPC 23511."
+  excluded_products: "Beet sugar; refined sugar; flavoured or coloured sugar; liquid sugar and syrup; molasses as the declared reference product; cultivation-only datasets."
+  representative_product: "Conforming cane sugar leaving the sugar mill."
+  production_route: "Sugar-cane reception and preparation; milling or diffusion; juice clarification; evaporation; crystallization and centrifugation; drying and cooling; optional packaging."
+  market_state: "Bulk or declared packaged mill-gate product, with grade, moisture or polarization basis, and packaging state disclosed."
+functional_unit:
+  what: "Cane sugar conforming to the declared grade and specification, produced from sugar cane without a subsequent refinery stage."
+  how_much: "1 kg net mass of conforming cane sugar at the mill gate."
+  how_well: "Declare grade or standard, polarization or sucrose basis, moisture basis, colour or route qualifier when relevant, and whether the product is raw, mill-white, bulk, or packaged."
+  how_long_or_cycle: "One full crushing season or at least 12 consecutive months representative of normal operation; disclose shutdowns and atypical campaigns."
+  reference_flow_link: "The output row cane_sugar_output in process sugar_finishing."
+system_boundary:
+  rules:
+    - rule_id: boundary_mill_gate
+      applies_to: "Foreground system"
+      rule: "Include cane reception through conforming sugar dispatch and all onsite operations serving those stages."
+      source_ids:
+        - us-epa-ap42-cane-sugar-1997
+        - ifc-sugar-manufacturing-ehs-2007
+    - rule_id: boundary_upstream_cane
+      applies_to: "Cane cultivation and transport"
+      rule: "Keep cultivation and inbound transport outside the foreground process map but represent them as traceable upstream datasets."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_internal_recycling
+      applies_to: "Bagasse, condensate, water, steam, electricity, and intermediate juice or syrup"
+      rule: "Model internal transfers consistently and do not count an internally reused flow as both an avoided product and an external output."
+      source_ids:
+        - eu-pef-2021-2279
+        - ifc-sugar-manufacturing-ehs-2007
+    - rule_id: boundary_conditional_routes
+      applies_to: "CHP, optional clarification chemicals, packaging, and wastewater treatment"
+      rule: "Include a conditional process or exchange only when the route operates; document not_applicable only with site evidence."
+      source_ids:
+        - us-epa-ap42-cane-sugar-1997
+        - ifc-sugar-manufacturing-ehs-2007
+boundary_abstraction:
+  declared_starting_condition: "Harvested sugar cane received and weighed at the sugar-mill gate."
+  starting_condition_role: "Upstream product input to the foreground mill system."
+  product_classification_scope: "CPC 3.0 23511 only."
+  recursive_input_rule: "Every purchased material, fuel, electricity, heat, water supply, and packaging component crossing the boundary is linked to a separate upstream dataset; do not recursively include those upstream processes inside the foreground mill map."
+  upstream_dataset_requirement: "Use geography-, technology-, and time-representative datasets for cane cultivation and transport, utilities, chemicals, fuels, packaging, and external waste treatment."
+  disclosure: "Declare the mill route, internal recirculation, co-product destinations, wastewater route, boiler or CHP configuration, exported energy, and all exclusions."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Cane sugar; Tiangong UUID unresolved."
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Cane source region and upstream dataset"
+    - "cane delivery condition"
+    - "declared sugar grade or specification"
+    - "polarization or sucrose basis"
+    - "moisture basis"
+    - "raw or mill-white route"
+    - "sulphitation or other clarification route"
+    - "bulk or packaging configuration"
+    - site
+    - "technology and crushing season"
+    - "utility configuration"
+    - "co-product disposition and allocation method."
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_reference_mass
+    applies_to: "Cane sugar reference output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Determine net conforming product mass on a calibrated scale, excluding packaging mass, and normalize all exchanges to exactly 1 kg."
+  - id: measure_material_mass
+    applies_to: "Cane, chemicals, fuels, products, co-products, solid wastes, sludge, and air or water emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use direct mass records where available; otherwise document the measured inputs, density or composition, conversion equation, and uncertainty."
+  - id: measure_water
+    applies_to: "Process water, wash water, condensate, and wastewater"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Retain the metered unit in raw records and convert only with a documented density and temperature basis. Do not aggregate freshwater, recovered condensate, and wastewater."
+  - id: measure_electricity
+    applies_to: "Purchased, generated, consumed, and exported electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use revenue-grade or calibrated submeter readings and distinguish onsite generation, internal consumption, import, and export."
+  - id: measure_thermal_energy
+    applies_to: "Steam and purchased heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Calculate from measured mass flow, pressure, temperature, condensate condition, and documented enthalpy; do not combine steam with fuels or electricity."
+  - id: measure_concentration_load
+    applies_to: "Wastewater substances"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate discharged load from matched flow and concentration records after treatment; preserve the measured analyte identity and sampling basis."
+process_map:
+  - id: cane_reception_extraction
+    name: "Cane reception, cleaning, preparation and juice extraction"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Receive cane and separate raw juice, bagasse, cleaning residues, and wastewater."
+    quantitative_reference: "Net mass of raw cane juice transferred to clarification."
+  - id: juice_clarification
+    name: "Juice heating, clarification and filtration"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Remove suspended and nonsugar matter and produce clarified juice."
+    quantitative_reference: "Net mass of clarified cane juice transferred to evaporation."
+  - id: juice_evaporation
+    name: "Multiple-effect juice evaporation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Concentrate clarified juice to cane syrup."
+    quantitative_reference: "Net mass of concentrated cane syrup transferred to crystallization."
+  - id: sugar_crystallization
+    name: "Vacuum-pan crystallization and centrifugation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Separate wet cane-sugar crystals and molasses."
+    quantitative_reference: "Net mass of wet cane-sugar crystals transferred to finishing."
+  - id: sugar_finishing
+    name: "Drying, cooling, grading and dispatch or packaging"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produce the conforming reference product."
+    quantitative_reference: "1 kg net conforming cane sugar."
+  - id: steam_power_generation
+    name: "Onsite boiler or combined heat and power generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the mill combusts bagasse or another fuel onsite."
+    role: "Supply steam or electricity and account for fuel, ash, and stack emissions."
+    quantitative_reference: "Net steam and electricity supplied to foreground processes."
+  - id: wastewater_treatment
+    name: "Onsite cane-sugar mill wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when wastewater is treated within the reporting site."
+    role: "Treat process wastewater and account for effluent, sludge, and treatment emissions."
+    quantitative_reference: "Volume of wastewater treated."
+process_inventory:
+  - id: cane_reception_extraction
+    label: "Cane reception, cleaning, preparation and juice extraction"
+    inputs:
+      product:
+        - row_id: sugar_cane_input
+          role: "Delivered sugar cane"
+          name: "Sugar cane; Tiangong UUID unresolved."
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sugar cane crosses the mill gate and is the principal feedstock. Record weighbridge net mass and link the exchange to a representative cultivation and inbound-transport dataset."
+          amount:
+            expression: "Record delivered net cane mass for the reporting period and normalize to 1 kg conforming cane sugar."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_feed
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: cane_washing_water_input
+          role: "Cane washing water"
+          name: "Cane washing water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This row represents only freshwater or supplied water used to wash cane before extraction."
+          amount:
+            expression: "Record the metered amount when wet cleaning is used; mark not applicable only for a documented dry-cleaning route."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_water_energy
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: imbibition_water_input
+          role: "Imbibition water"
+          name: "Imbibition water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water applied during milling or diffusion to recover residual sucrose is kept separate from cane washing water."
+          amount:
+            expression: "Record metered imbibition water supplied to extraction."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_water_energy
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: extraction_electricity_input
+          role: "Extraction electricity"
+          name: "Electricity, medium voltage, at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for cane handling, preparation, milling or diffusion is one separate utility exchange."
+          amount:
+            expression: "Record submetered electricity consumed by reception, preparation and extraction."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_water_energy
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: extraction_steam_input
+          role: "Extraction steam"
+          name: "Process steam at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam used for extraction conditioning is recorded only where the route uses it."
+          amount:
+            expression: "Calculate supplied steam energy from metered mass and operating state; record not applicable when no steam is used."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_water_energy
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: raw_cane_juice_output
+          role: "Raw cane juice"
+          name: "Raw cane juice ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db15cb0e-919a-4c23-a926-69509fef15e2"
+          property_unit: "Mass / kg"
+          description: "Extracted juice is transferred to clarification as an internal product flow."
+          amount:
+            expression: "Record measured raw-juice mass or calculate it from flow and density records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_outputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: bagasse_output
+          role: "Bagasse"
+          name: "Bagasse ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f13cc16c-a598-48a2-b226-fdd991eac633"
+          property_unit: "Mass / kg"
+          description: "Fibrous cane residue leaves extraction for internal fuel use, sale, or waste management; its destination determines treatment under allocation rules."
+          amount:
+            expression: "Record bagasse mass and moisture at each distinct destination; do not count internal boiler feed as an exported co-product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_outputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: cane_leaves_waste
+          role: "Cane leaves from cleaning"
+          name: "Cane leaves from sugar-mill cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Leaves and tops removed at reception are recorded as a separate solid waste or recovered biomass stream."
+          amount:
+            expression: "Record measured mass by destination and classify as waste unless a documented useful product destination exists."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: cane_cleaning_soil_waste
+          role: "Soil from cane cleaning"
+          name: "Soil from sugar-cane cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Soil removed from delivered cane is not combined with leaves or wastewater solids."
+          amount:
+            expression: "Record collected soil mass and treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: cane_washing_wastewater_output
+          role: "Cane washing wastewater"
+          name: "Cane washing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from wet cane cleaning is transferred to treatment or offsite management as one concrete wastewater flow."
+          amount:
+            expression: "Record metered discharge by destination when wet cleaning is used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      elementary:
+        []
+  - id: juice_clarification
+    label: "Juice heating, clarification and filtration"
+    inputs:
+      product:
+        - row_id: raw_cane_juice_input
+          role: "Raw cane juice"
+          name: "Raw cane juice ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db15cb0e-919a-4c23-a926-69509fef15e2"
+          property_unit: "Mass / kg"
+          description: "This internal transfer must match the extraction output after documented storage change or loss."
+          amount:
+            expression: "Record raw juice received by clarification and reconcile it to raw_cane_juice_output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_inputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: hydrated_lime_input
+          role: "Hydrated lime"
+          name: "hydrated lime ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ef11ca4-62b6-4a66-b5d9-76d6539ec86e"
+          property_unit: "Mass / kg"
+          description: "Lime used to adjust pH and assist clarification is recorded as a distinct chemical input."
+          amount:
+            expression: "Record dry-equivalent hydrated-lime mass from batch or dosing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_inputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: phosphoric_acid_input
+          role: "Phosphoric acid"
+          name: "Phosphoric acid, pure substance"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Phosphoric acid is included only for a route that doses it during clarification."
+          amount:
+            expression: "Record active-substance mass from solution concentration and metered dose; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_inputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: sulfur_dioxide_clarification_input
+          role: "Sulfur dioxide"
+          name: "Sulfur dioxide, clarification reagent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide used as a sulphitation reagent is distinct from sulfur dioxide emitted by combustion."
+          amount:
+            expression: "Record active sulfur-dioxide mass supplied to the juice when sulphitation is used; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_inputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: clarification_flocculant_input
+          role: "Polyacrylamide flocculant"
+          name: "Polyacrylamide flocculant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polymer flocculant is included only when dosed and is not grouped with lime or phosphoric acid."
+          amount:
+            expression: "Record active-polymer mass from concentration and dosing records; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_inputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: clarification_steam_input
+          role: "Clarification steam"
+          name: "Process steam at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam supplied for juice heating is kept separate from electricity and fuel."
+          amount:
+            expression: "Calculate steam energy from metered mass and thermodynamic state."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_utilities
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: clarification_electricity_input
+          role: "Clarification electricity"
+          name: "Electricity, medium voltage, at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for heaters, pumps, clarifiers, filters, and auxiliaries is recorded separately."
+          amount:
+            expression: "Record submetered clarification electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_utilities
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: filter_wash_water_input
+          role: "Filter wash water"
+          name: "Clarification filter wash water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used to wash clarification filter cake is kept separate from other process water."
+          amount:
+            expression: "Record metered wash water where cake washing is used; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_utilities
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: clarified_cane_juice_output
+          role: "Clarified cane juice"
+          name: "Clarified cane juice ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d68309c-8623-4e3a-b9c7-ee9c11007ed5"
+          property_unit: "Mass / kg"
+          description: "Clarified juice is an internal product flow transferred to evaporation."
+          amount:
+            expression: "Record measured clarified-juice mass or calculate from flow and density records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_outputs
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: filter_cake_product_output
+          role: "Sugarcane filter cake co-product"
+          name: "Sugarcane filter cake (press mud)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this product row only for filter cake with a documented useful destination and market or substituted function."
+          amount:
+            expression: "Record wet mass, moisture, dry mass, and useful destination; do not also report the same mass as waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: filter_cake_waste_output
+          role: "Sugarcane filter cake waste"
+          name: "Sugarcane filter cake waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use this row only for filter cake sent to disposal or waste treatment."
+          amount:
+            expression: "Record wet mass, moisture, dry mass, and treatment destination; do not also report the same mass as a product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      elementary:
+        []
+  - id: juice_evaporation
+    label: "Multiple-effect juice evaporation"
+    inputs:
+      product:
+        - row_id: clarified_cane_juice_input
+          role: "Clarified cane juice"
+          name: "Clarified cane juice ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d68309c-8623-4e3a-b9c7-ee9c11007ed5"
+          property_unit: "Mass / kg"
+          description: "Clarified juice received by evaporation must reconcile with the preceding process output."
+          amount:
+            expression: "Record transferred clarified-juice mass and reconcile storage changes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: evaporation_steam_input
+          role: "Evaporation steam"
+          name: "Process steam at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam supplied to the multiple-effect evaporators is a separate thermal exchange."
+          amount:
+            expression: "Calculate steam energy from metered mass and thermodynamic state."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: evaporation_electricity_input
+          role: "Evaporation electricity"
+          name: "Electricity, medium voltage, at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumps, vacuum systems, and evaporator auxiliaries is recorded separately."
+          amount:
+            expression: "Record submetered evaporation electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: concentrated_cane_syrup_output
+          role: "Concentrated cane syrup"
+          name: "Concentrated cane syrup ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "38f69d10-beb9-44de-a39f-e9c6bb39be5a"
+          property_unit: "Mass / kg"
+          description: "Concentrated syrup is transferred to crystallization as an internal product flow."
+          amount:
+            expression: "Record syrup mass or calculate from measured flow, density, and solids concentration."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: evaporation_condensate_output
+          role: "Recovered process condensate"
+          name: "Recovered process condensate"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Condensate recovered for internal use or discharged is tracked as a distinct water product flow."
+          amount:
+            expression: "Record metered condensate by reuse or discharge destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: sugar_crystallization
+    label: "Vacuum-pan crystallization and centrifugation"
+    inputs:
+      product:
+        - row_id: concentrated_cane_syrup_input
+          role: "Concentrated cane syrup"
+          name: "Concentrated cane syrup ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "38f69d10-beb9-44de-a39f-e9c6bb39be5a"
+          property_unit: "Mass / kg"
+          description: "Syrup received by crystallization must reconcile with the evaporator output."
+          amount:
+            expression: "Record transferred syrup mass and reconcile storage changes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: crystallization_steam_input
+          role: "Crystallization steam"
+          name: "Process steam at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam supplied to vacuum pans is recorded separately from electricity and fuels."
+          amount:
+            expression: "Calculate steam energy from metered mass and thermodynamic state."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: crystallization_electricity_input
+          role: "Crystallization electricity"
+          name: "Electricity, medium voltage, at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for vacuum, agitation, centrifuges, and auxiliaries is a separate exchange."
+          amount:
+            expression: "Record submetered crystallization and centrifugation electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: crystal_wash_water_input
+          role: "Crystal wash water"
+          name: "Cane-sugar crystal wash water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water applied in centrifuges to wash sugar crystals is kept separate from other process water."
+          amount:
+            expression: "Record metered wash water supplied to centrifuges."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: seed_sugar_input
+          role: "Seed sugar"
+          name: "Seed sugar for cane-sugar crystallization"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sugar used for crystal seeding is recorded when externally supplied or not already included in an internal recycle."
+          amount:
+            expression: "Record net externally supplied seed sugar; exclude closed internal recycle already included in product mass."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: isopropyl_alcohol_input
+          role: "Isopropyl alcohol"
+          name: "Isopropyl alcohol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Isopropyl alcohol used to prepare a seed slurry is conditional and must not be grouped with seed sugar."
+          amount:
+            expression: "Record pure-substance mass when used for seed preparation; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_cane_sugar_output
+          role: "Wet cane-sugar crystals"
+          name: "Wet cane-sugar crystals"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet crystals are transferred to drying and cooling as an internal product flow."
+          amount:
+            expression: "Record wet-crystal mass and moisture at transfer to finishing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: molasses_output
+          role: "Molasses"
+          name: "Molasses ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dcc60867-03df-4ea1-be73-6d88987911bd"
+          property_unit: "Mass / kg"
+          description: "Final molasses separated by centrifugation is a separate product or residue flow whose disposition controls allocation."
+          amount:
+            expression: "Record mass, solids or moisture basis, and destination; do not combine with wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: crystallization_wastewater_output
+          role: "Crystallization and centrifuge wastewater"
+          name: "Crystallization and centrifuge wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from pan cleaning, centrifugation, or sugar washing is transferred as a concrete wastewater flow."
+          amount:
+            expression: "Record metered wastewater by destination and exclude condensate already reported separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crystallization_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      elementary:
+        []
+  - id: sugar_finishing
+    label: "Drying, cooling, grading and dispatch or packaging"
+    inputs:
+      product:
+        - row_id: wet_cane_sugar_input
+          role: "Wet cane-sugar crystals"
+          name: "Wet cane-sugar crystals"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet crystals received by finishing must reconcile with crystallization output."
+          amount:
+            expression: "Record received wet-crystal mass and moisture and reconcile storage changes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: finishing_electricity_input
+          role: "Finishing electricity"
+          name: "Electricity, medium voltage, at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for drying fans, cooling, grading, conveying, and packaging is recorded separately."
+          amount:
+            expression: "Record submetered finishing electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: finishing_steam_input
+          role: "Finishing steam"
+          name: "Process steam at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam used for sugar drying is conditional and kept separate from purchased heat."
+          amount:
+            expression: "Calculate steam energy from measured mass and thermodynamic state; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+            ranges: []
+        - row_id: purchased_drying_heat_input
+          role: "Purchased drying heat"
+          name: "Purchased process heat for cane-sugar drying"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased heat is reported only when supplied externally and is not combined with onsite steam."
+          amount:
+            expression: "Record metered purchased heat; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: kraft_sack_input
+          role: "Kraft paper sugar sack"
+          name: "Kraft paper sack for cane sugar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Kraft paper sacks are one packaging component and are included only for the declared package configuration."
+          amount:
+            expression: "Record net sack mass consumed, including recorded production loss, when used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polypropylene_sack_input
+          role: "Woven polypropylene sugar sack"
+          name: "Woven polypropylene sack for cane sugar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Woven polypropylene sacks are recorded separately from paper sacks and liners."
+          amount:
+            expression: "Record net sack mass consumed, including recorded production loss, when used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polyethylene_liner_input
+          role: "Polyethylene liner"
+          name: "Polyethylene liner for cane-sugar sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "An internal polyethylene liner is a distinct packaging component."
+          amount:
+            expression: "Record net liner mass consumed, including recorded production loss, when used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cane_sugar_output
+          role: "Cane sugar reference product"
+          name: "Cane sugar; Tiangong UUID unresolved."
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66) / kg; unit group Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "This is the only reference product flow. Packaging mass is excluded from its net mass."
+          amount:
+            expression: "Set to exactly 1 kg after normalizing all reporting-period exchanges by net conforming cane-sugar output."
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - unsd-cpc-3-0
+                - codex-cxs-212-1999
+            ranges: []
+      waste:
+        - row_id: off_spec_sugar_waste
+          role: "Off-specification cane sugar"
+          name: "Off-specification cane sugar waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected sugar not recycled into the measured production system is recorded separately from the reference product."
+          amount:
+            expression: "Record net mass by recycling, recovery, or disposal destination; exclude internal recycle already reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_kraft_sack_output
+          role: "Waste kraft paper sack"
+          name: "Waste kraft paper sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Packaging loss from kraft sacks is a separate waste exchange."
+          amount:
+            expression: "Record waste mass and treatment destination when kraft sacks are used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_polypropylene_sack_output
+          role: "Waste woven polypropylene sack"
+          name: "Waste woven polypropylene sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Packaging loss from woven polypropylene sacks is not grouped with paper or polyethylene waste."
+          amount:
+            expression: "Record waste mass and treatment destination when polypropylene sacks are used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_polyethylene_liner_output
+          role: "Waste polyethylene liner"
+          name: "Waste polyethylene liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Packaging loss from polyethylene liners is a separate waste exchange."
+          amount:
+            expression: "Record waste mass and treatment destination when liners are used."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: finishing_pm10_to_air
+          role: "Particulate matter below 10 micrometres"
+          name: "Particulate matter, < 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sugar dust emitted after abatement from drying, cooling, conveying, or packaging is reported as PM10 to air."
+          amount:
+            expression: "Use stack or workplace-exhaust measurement adjusted to emitted load; if calculated, disclose airflow, concentration, abatement, and operating time."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_air
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+  - id: steam_power_generation
+    label: "Onsite boiler or combined heat and power generation"
+    inputs:
+      product:
+        - row_id: bagasse_fuel_input
+          role: "Bagasse boiler fuel"
+          name: "Bagasse ()"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f13cc16c-a598-48a2-b226-fdd991eac633"
+          property_unit: "Mass / kg"
+          description: "Bagasse combusted onsite is an internal product transfer and must match the assigned share of extraction output."
+          amount:
+            expression: "Record as-fired mass and moisture supplied to boilers and reconcile with bagasse_output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fuels
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas"
+          name: "Natural gas, combusted in sugar-mill boiler"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas is a conditional fossil fuel and is not grouped with fuel oil or biomass."
+          amount:
+            expression: "Record metered lower-heating-value energy when used; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fuels
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: fuel_oil_input
+          role: "Fuel oil"
+          name: "Residual fuel oil, combusted in sugar-mill boiler"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fuel oil used for boiler firing or startup is one separate fuel exchange."
+          amount:
+            expression: "Record delivered mass and heating value when used; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fuels
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: diesel_input
+          role: "Diesel"
+          name: "Diesel, combusted in sugar-mill boiler"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used for boiler startup is separated from mobile-equipment diesel outside this process."
+          amount:
+            expression: "Record boiler-consumed mass when used; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fuels
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: coal_input
+          role: "Coal"
+          name: "Coal, combusted in sugar-mill boiler"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Coal is included only at mills that combust it and is not grouped with bagasse or liquid fuels."
+          amount:
+            expression: "Record as-fired mass, moisture, and heating value when used; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fuels
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: boiler_feedwater_input
+          role: "Boiler feedwater"
+          name: "Boiler feedwater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Make-up and treated boiler feedwater is recorded separately from process and wash water."
+          amount:
+            expression: "Record metered make-up water supplied to the boiler system net of returned condensate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fuels
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: generated_steam_output
+          role: "Generated steam"
+          name: "Process steam at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam supplied to foreground processes is an internal product flow; exported steam is disclosed separately by destination."
+          amount:
+            expression: "Calculate net supplied steam energy from mass flow and thermodynamic state after boiler-house own use."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: generated_electricity_output
+          role: "Generated electricity"
+          name: "Electricity, generated at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Gross generation, internal use, import, and export must be metered separately."
+          amount:
+            expression: "Record net electricity supplied to foreground processes and separately disclose any export."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: boiler_ash_output
+          role: "Boiler ash"
+          name: "Sugar-mill boiler ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Ash leaving the boiler or particulate-control system is a separate solid waste or useful product stream."
+          amount:
+            expression: "Record dry and wet mass by destination; classify a useful destination as a product only with supporting evidence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_outputs
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      elementary:
+        - row_id: biogenic_carbon_dioxide_to_air
+          role: "Biogenic carbon dioxide"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide from bagasse carbon is reported separately from fossil carbon dioxide."
+          amount:
+            expression: "Use measured carbon content and oxidation balance or a disclosed authoritative factor applied to measured bagasse combustion."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: fossil_carbon_dioxide_to_air
+          role: "Fossil carbon dioxide"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide from natural gas, fuel oil, diesel, or coal is kept separate from biogenic carbon dioxide."
+          amount:
+            expression: "Calculate by fuel from measured consumption, carbon content, and oxidation or use direct measurement; sum only after fuel-specific records are retained."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: combustion_methane_to_air
+          role: "Methane from combustion"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unburned methane from stationary combustion is reported as a distinct elementary flow."
+          amount:
+            expression: "Use direct measurement or a disclosed fuel- and equipment-specific factor applied to measured fuel use."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: combustion_nitrous_oxide_to_air
+          role: "Nitrous oxide from combustion"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrous oxide is not grouped with nitrogen monoxide or nitrogen dioxide."
+          amount:
+            expression: "Use direct measurement or a disclosed fuel- and equipment-specific factor applied to measured fuel use."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: carbon_monoxide_to_air
+          role: "Carbon monoxide"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon monoxide from boiler combustion is one distinct elementary flow."
+          amount:
+            expression: "Use stack measurement or a disclosed fuel- and boiler-specific factor applied to measured fuel use."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: nitrogen_monoxide_to_air
+          role: "Nitrogen monoxide"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured or calculated nitrogen monoxide is reported separately from nitrogen dioxide."
+          amount:
+            expression: "Use speciated stack measurement or a disclosed conversion from measured nitrogen oxides with the speciation basis retained."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: nitrogen_dioxide_to_air
+          role: "Nitrogen dioxide"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured or calculated nitrogen dioxide is reported separately from nitrogen monoxide."
+          amount:
+            expression: "Use speciated stack measurement or a disclosed conversion from measured nitrogen oxides with the speciation basis retained."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: combustion_sulfur_dioxide_to_air
+          role: "Sulfur dioxide from combustion"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Combustion sulfur dioxide is distinct from sulfur dioxide used as a clarification reagent."
+          amount:
+            expression: "Use stack measurement or calculate from measured fuel sulfur, retention, and abatement with the basis disclosed."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: boiler_pm10_to_air
+          role: "Boiler particulate matter below 10 micrometres"
+          name: "Particulate matter, < 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "PM10 after the installed control device is reported separately from sugar-drying dust."
+          amount:
+            expression: "Use stack measurement or a disclosed fuel-, boiler-, and control-specific factor applied to measured fuel use."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emissions
+              source_ids:
+                - us-epa-ap42-cane-sugar-1997
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+  - id: wastewater_treatment
+    label: "Onsite cane-sugar mill wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_electricity_input
+          role: "Wastewater-treatment electricity"
+          name: "Electricity, medium voltage, at sugar mill"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumping, aeration, mixing, and dewatering is recorded separately."
+          amount:
+            expression: "Record treatment-system submeter readings."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: wastewater_sodium_hydroxide_input
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide, pure substance"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide used for wastewater pH control is a conditional chemical input."
+          amount:
+            expression: "Record active-substance mass from solution concentration and metered dose; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: wastewater_flocculant_input
+          role: "Wastewater-treatment flocculant"
+          name: "Polyacrylamide flocculant for wastewater treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Flocculant used in sedimentation or sludge dewatering is distinct from clarification flocculant."
+          amount:
+            expression: "Record active-polymer mass from concentration and dosing records; otherwise document not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: mill_wastewater_input
+          role: "Cane-sugar mill process wastewater"
+          name: "Cane-sugar mill process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This row receives the combined, measured process-wastewater flow after internal water reuse has been subtracted."
+          amount:
+            expression: "Record influent volume by source and reconcile the sum with wastewater transfers from foreground processes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_water_reuse_output
+          role: "Treated water for internal reuse"
+          name: "Treated sugar-mill water for internal reuse"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Treated water reused onsite is an internal product flow and must not also be counted as a surface-water discharge."
+          amount:
+            expression: "Record metered treated-water volume returned to identified foreground uses."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: wastewater_sludge_output
+          role: "Wastewater-treatment sludge"
+          name: "Cane-sugar mill wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge is recorded separately from clarification filter cake and boiler ash."
+          amount:
+            expression: "Record wet mass, dry solids, and treatment or useful destination; avoid double counting with filter cake."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+      elementary:
+        - row_id: wastewater_methane_to_air
+          role: "Methane from wastewater treatment"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Methane released from anaerobic treatment is included when not captured and combusted."
+          amount:
+            expression: "Measure captured and emitted gas separately or apply a disclosed treatment-specific calculation to measured organic load; otherwise document not applicable for non-anaerobic routes."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: wastewater_biogenic_co2_to_air
+          role: "Biogenic carbon dioxide from wastewater treatment"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Biogenic carbon dioxide released by biological treatment is kept separate from fossil combustion emissions."
+          amount:
+            expression: "Use measured gas flow and composition or a disclosed carbon balance based on measured wastewater load."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to surface water"
+          name: "Chemical oxygen demand, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Residual chemical oxygen demand is a monitored water emission, not a substitute for speciated substances where those data exist."
+          amount:
+            expression: "Multiply matched treated-effluent volume by laboratory COD concentration and convert to kg discharged."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: nitrate_to_water
+          role: "Nitrate to surface water"
+          name: "Nitrate, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrate is reported only when measured or analytically derived as nitrate; do not relabel total nitrogen as nitrate."
+          amount:
+            expression: "Multiply matched effluent volume by measured nitrate concentration and convert to kg discharged; otherwise leave unresolved rather than infer from total nitrogen."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: phosphate_to_water
+          role: "Phosphate to surface water"
+          name: "Phosphate, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Phosphate is reported only when measured or analytically derived as phosphate; do not relabel total phosphorus as phosphate."
+          amount:
+            expression: "Multiply matched effluent volume by measured phosphate concentration and convert to kg discharged; otherwise leave unresolved rather than infer from total phosphorus."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+        - row_id: suspended_solids_to_water
+          role: "Suspended solids to surface water"
+          name: "Suspended solids, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Residual suspended solids are calculated from matched treated-effluent volume and laboratory concentration."
+          amount:
+            expression: "Multiply matched treated-effluent volume by measured suspended-solids concentration and convert to kg discharged."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cane sugar reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_emissions
+              source_ids:
+                - ifc-sugar-manufacturing-ehs-2007
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Multi-output mill and utility processes"
+    rule: "First subdivide processes or expand the system where technically feasible and supported by traceable data."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_co_product_status
+    applies_to: "Bagasse, molasses, filter cake, ash, exported steam, and exported electricity"
+    rule: "Determine separately whether each destination is internal reuse, a product with a useful function, or waste. Do not assign a co-product credit or allocation share to waste."
+    source_ids:
+      - ifc-sugar-manufacturing-ehs-2007
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_relation
+    applies_to: "Remaining inseparable co-products"
+    rule: "If subdivision or expansion cannot be applied, use a documented physical causal relation that reflects how inputs and emissions change with co-product output. Mass allocation is not automatic."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relation
+    applies_to: "Co-products without a defensible physical relation"
+    rule: "Use another documented relation, such as economic value, only after the preceding options are shown infeasible; disclose prices, geography, period, currency, averaging, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_exported_energy
+    applies_to: "Exported steam or electricity"
+    rule: "Separate internal supply from export. Apply system expansion or the selected allocation relation consistently and disclose any substituted dataset; do not credit gross generation."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_extraction_feed
+      process_id: "cane_reception_extraction"
+      flow_role: "Delivered cane"
+      record_type: "Weighbridge record"
+      raw_fields: "Gross vehicle mass; tare; net cane; supplier; field or region; receipt time"
+      collection_method: "Calibrated weighbridge and delivery reconciliation"
+      unit: "kg"
+      frequency: "Each load"
+      temporal_coverage: "Full crushing season or at least 12 consecutive months"
+      site_scope: "Reporting mill and all cane receiving points"
+      aggregation_rule: "Sum accepted net cane; separately flag rejected loads"
+      quality_evidence: "Calibration certificate; delivery ledger; reconciliation"
+    - protocol_id: cp_extraction_water_energy
+      process_id: "cane_reception_extraction"
+      flow_role: "Water, electricity, and steam"
+      record_type: "Meter and operating record"
+      raw_fields: "Meter start/end; route; steam state; downtime"
+      collection_method: "Calibrated meters matched to operating hours"
+      unit: "Row unit"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Reception, preparation, milling or diffusion"
+      aggregation_rule: "Sum by atomic exchange; subtract only documented return"
+      quality_evidence: "Meter register; route diagram; operating log"
+    - protocol_id: cp_extraction_outputs
+      process_id: "cane_reception_extraction"
+      flow_role: "Juice, bagasse, residues, wastewater"
+      record_type: "Scale, flowmeter, moisture, and destination record"
+      raw_fields: "Mass or volume; density; moisture; destination; storage change"
+      collection_method: "Calibrated scales or flowmeters plus laboratory analysis"
+      unit: "Row unit"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Extraction and cleaning"
+      aggregation_rule: "Sum by exchange and destination; reconcile mass and storage"
+      quality_evidence: "Calibration; laboratory results; destination tickets"
+    - protocol_id: cp_clarification_inputs
+      process_id: "juice_clarification"
+      flow_role: "Juice and clarification chemicals"
+      record_type: "Batch, dosing, and transfer record"
+      raw_fields: "Juice flow; chemical purchase; concentration; dose; route"
+      collection_method: "Metered transfer and calibrated dosing equipment"
+      unit: "Row unit"
+      frequency: "Batch or shift"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Clarification and filtration"
+      aggregation_rule: "Convert solutions to active-substance mass where specified"
+      quality_evidence: "Dosing calibration; certificates of analysis; route log"
+    - protocol_id: cp_clarification_utilities
+      process_id: "juice_clarification"
+      flow_role: "Steam, electricity, and filter wash water"
+      record_type: "Meter record"
+      raw_fields: "Energy or volume; steam state; operating time"
+      collection_method: "Submeters and steam balance"
+      unit: "Row unit"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Clarification and filters"
+      aggregation_rule: "Sum by atomic utility"
+      quality_evidence: "Meter calibration; steam balance"
+    - protocol_id: cp_clarification_outputs
+      process_id: "juice_clarification"
+      flow_role: "Clarified juice and filter cake"
+      record_type: "Flow, mass, moisture, and destination record"
+      raw_fields: "Juice flow; density; cake wet mass; dry solids; destination"
+      collection_method: "Calibrated flowmeter or scale and laboratory analysis"
+      unit: "kg"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Clarification and filters"
+      aggregation_rule: "Sum by destination; prohibit product/waste duplication"
+      quality_evidence: "Lab results; dispatch or waste records; balance"
+    - protocol_id: cp_evaporation_records
+      process_id: "juice_evaporation"
+      flow_role: "Juice, syrup, condensate, steam, and electricity"
+      record_type: "Meter and laboratory record"
+      raw_fields: "Flow; density; solids; condensate destination; energy"
+      collection_method: "Calibrated meters and solids analysis"
+      unit: "Row unit"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Evaporator station"
+      aggregation_rule: "Sum by atomic exchange and reconcile soluble solids"
+      quality_evidence: "Calibration; laboratory records; evaporation balance"
+    - protocol_id: cp_crystallization_records
+      process_id: "sugar_crystallization"
+      flow_role: "Syrup, utilities, seed materials, crystals, molasses, and wastewater"
+      record_type: "Batch, meter, scale, and laboratory record"
+      raw_fields: "Batch mass; energy; water; seed; crystal moisture; molasses solids; wastewater"
+      collection_method: "Calibrated batch system, meters, scales, and laboratory analysis"
+      unit: "Row unit"
+      frequency: "Batch or shift"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Vacuum pans and centrifuges"
+      aggregation_rule: "Sum by atomic exchange and reconcile sugar solids"
+      quality_evidence: "Batch sheets; calibration; laboratory results"
+    - protocol_id: cp_finishing_records
+      process_id: "sugar_finishing"
+      flow_role: "Wet sugar, utilities, finished sugar, and off-spec sugar"
+      record_type: "Scale, meter, grade, and dispatch record"
+      raw_fields: "Input mass and moisture; energy; conforming mass; off-spec mass; grade"
+      collection_method: "Calibrated scales and meters; product laboratory testing"
+      unit: "Row unit"
+      frequency: "Batch or shift"
+      temporal_coverage: "Full crushing season or at least 12 consecutive months"
+      site_scope: "Dryer, cooler, grader, silo, dispatch"
+      aggregation_rule: "Net conforming sugar excludes packaging; reconcile off-spec and storage"
+      quality_evidence: "Scale calibration; certificates of analysis; dispatch ledger"
+    - protocol_id: cp_finishing_packaging
+      process_id: "sugar_finishing"
+      flow_role: "Packaging inputs and wastes"
+      record_type: "Purchase, bill-of-material, and waste record"
+      raw_fields: "Component identity; unit mass; count; loss; waste destination"
+      collection_method: "Supplier specification verified by sample weighing and inventory balance"
+      unit: "kg"
+      frequency: "Lot or monthly"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Packaging line"
+      aggregation_rule: "Sum each material separately; reconcile input, packed stock, and waste"
+      quality_evidence: "Supplier specification; sample weights; waste ticket"
+    - protocol_id: cp_finishing_air
+      process_id: "sugar_finishing"
+      flow_role: "Sugar-dust PM10"
+      record_type: "Stack or exhaust measurement"
+      raw_fields: "Airflow; PM10 concentration; operating time; abatement status"
+      collection_method: "Representative measurement using an applicable regulatory method"
+      unit: "kg"
+      frequency: "Test campaign plus operating log"
+      temporal_coverage: "Representative of the reporting period and equipment state"
+      site_scope: "Dryer, cooler, conveyors, packaging exhausts"
+      aggregation_rule: "Convert concentration and airflow to emitted load"
+      quality_evidence: "Test report; instrument calibration; abatement log"
+    - protocol_id: cp_utility_fuels
+      process_id: "steam_power_generation"
+      flow_role: "Fuels and feedwater"
+      record_type: "Fuel meter, scale, purchase, and laboratory record"
+      raw_fields: "Fuel quantity; moisture; heating value; sulfur; feedwater; operating time"
+      collection_method: "Calibrated meters or scales and fuel analysis"
+      unit: "Row unit"
+      frequency: "Shift or delivery"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Onsite boiler and CHP"
+      aggregation_rule: "Sum each fuel separately; reconcile inventory and internal bagasse"
+      quality_evidence: "Calibration; fuel certificates; stock balance"
+    - protocol_id: cp_utility_outputs
+      process_id: "steam_power_generation"
+      flow_role: "Steam, electricity, and ash"
+      record_type: "Meter, thermodynamic, and mass record"
+      raw_fields: "Steam mass/state; power generation/use/export; ash mass/moisture/destination"
+      collection_method: "Calibrated meters, scales, and energy balance"
+      unit: "Row unit"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Boiler, turbine, generator, and control equipment"
+      aggregation_rule: "Calculate net useful outputs after own use; keep export separate"
+      quality_evidence: "Meter calibration; energy balance; destination evidence"
+    - protocol_id: cp_stack_emissions
+      process_id: "steam_power_generation"
+      flow_role: "Individual stack emissions"
+      record_type: "Stack test, continuous monitor, fuel analysis, and operating record"
+      raw_fields: "Pollutant concentration; gas flow; oxygen; operating state; fuel; control efficiency"
+      collection_method: "Direct measurement preferred; otherwise disclosed source-specific factor"
+      unit: "kg"
+      frequency: "Applicable test or monitoring frequency"
+      temporal_coverage: "Representative of fuel and boiler states in the reporting period"
+      site_scope: "Each stack and control train"
+      aggregation_rule: "Calculate each named pollutant separately and weight by operating time"
+      quality_evidence: "Accredited report; calibration; factor reference; uncertainty"
+    - protocol_id: cp_wastewater_records
+      process_id: "wastewater_treatment"
+      flow_role: "Influent, electricity, chemicals, treated-water reuse, and sludge"
+      record_type: "Flowmeter, dosing, meter, mass, and laboratory record"
+      raw_fields: "Influent/reuse flow; energy; concentration and dose; sludge mass and solids; destination"
+      collection_method: "Calibrated meters, dosing records, scales, and laboratory analysis"
+      unit: "Row unit"
+      frequency: "Daily or batch"
+      temporal_coverage: "Same period as reference output"
+      site_scope: "Onsite treatment plant"
+      aggregation_rule: "Sum atomic inputs and outputs; reconcile hydraulic balance"
+      quality_evidence: "Calibration; laboratory results; sludge tickets; balance"
+    - protocol_id: cp_wastewater_emissions
+      process_id: "wastewater_treatment"
+      flow_role: "Air and water emissions"
+      record_type: "Matched flow, concentration, gas, and treatment-state record"
+      raw_fields: "Effluent flow and analyte concentration; gas flow/composition; route and capture"
+      collection_method: "Representative sampling and laboratory analysis; gas measurement or documented carbon balance"
+      unit: "kg"
+      frequency: "Applicable permit frequency or representative campaign"
+      temporal_coverage: "Representative of the reporting period and treatment states"
+      site_scope: "Final discharge and treatment gas points"
+      aggregation_rule: "Match flow and concentration in time; calculate each analyte separately"
+      quality_evidence: "Laboratory QA/QC; chain of custody; calculation sheet; uncertainty"
+  calculation_rules:
+    - id: normalize_reference_output
+      applies_to: "All exchanges"
+      rule: "Q_normalized = Q_reporting_period / M_conforming_cane_sugar_reporting_period"
+      inputs:
+        - "Reporting-period exchange quantity"
+        - "net conforming cane-sugar mass"
+      output: "Exchange per 1 kg cane sugar"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: internal_flow_reconciliation
+      applies_to: "Juice, syrup, wet sugar, bagasse, condensate, steam, electricity, and wastewater transfers"
+      rule: "Output from sending process equals input to receiving process after separately documented storage change, measured loss, export, or other destination."
+      inputs:
+        - "Sending output"
+        - "receiving input"
+        - storage
+        - loss
+        - destination
+      output: "Reconciled internal transfer"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: steam_energy
+      applies_to: "Steam exchanges"
+      rule: "Q = m × (h_steam - h_return) using measured pressure, temperature, quality, and condensate state."
+      inputs:
+        - "Steam mass"
+        - "steam enthalpy"
+        - "return enthalpy"
+      output: "MJ supplied"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: effluent_load
+      applies_to: "Each named water emission"
+      rule: "Load_kg = volume_m3 × concentration_mg_per_L × 0.001 for matched records."
+      inputs:
+        - "Effluent volume"
+        - "analyte concentration"
+      output: "kg emitted"
+      source_ids:
+        - ifc-sugar-manufacturing-ehs-2007
+    - id: combustion_emissions
+      applies_to: "Each named boiler emission"
+      rule: "Prefer direct measurement; otherwise Emission = measured fuel activity × disclosed fuel- and technology-specific factor, with biogenic and fossil carbon separated."
+      inputs:
+        - "Fuel activity"
+        - "factor or measured concentration and flow"
+        - "control state"
+      output: "kg of the named substance"
+      source_ids:
+        - us-epa-ap42-cane-sugar-1997
+        - ifc-sugar-manufacturing-ehs-2007
+    - id: co_product_allocation
+      applies_to: "Remaining inseparable co-products"
+      rule: "Apply the hierarchy in Section 7 and retain the unallocated inventory, allocation key, shares, sensitivity, and product or waste status."
+      inputs:
+        - "Joint inventory"
+        - "product quantities or causal parameter"
+        - "values if used"
+      output: "Allocated inventory"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: mass_balance
+      applies_to: "Extraction through finishing and residue management"
+      rule: "Reconcile measured mass and dry solids across each process, explicitly including water evaporation, products, residues, wastes, emissions where material, and storage changes."
+      inputs:
+        - "Input and output masses"
+        - "moisture or solids"
+        - storage
+      output: "Process balance and unexplained difference"
+      source_ids:
+        - us-epa-ap42-cane-sugar-1997
+        - ifc-sugar-manufacturing-ehs-2007
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and major intermediate flows"
+      requirement: "Product grade, route, state, flow property, unit, and Tiangong identity must be unambiguous; unresolved UUIDs remain explicit."
+      evidence: "Product specification; laboratory certificate; flow lookup record"
+    - id: dq_temporal
+      applies_to: "All foreground records"
+      requirement: "Cover one full crushing season or at least 12 consecutive months representative of normal operation; disclose gaps, shutdowns, and atypical campaigns."
+      evidence: "Dated ledgers; operating calendar; gap assessment"
+    - id: dq_technology_geography
+      applies_to: "Foreground and upstream datasets"
+      requirement: "Identify mill technology, clarification route, boiler and wastewater configuration, cane source region, and dataset geography."
+      evidence: "Process diagram; equipment list; dataset metadata"
+    - id: dq_completeness
+      applies_to: "All process inventories"
+      requirement: "Account for every listed applicable atomic exchange; document each omitted row as not applicable or unresolved, with evidence and likely effect."
+      evidence: "Completeness checklist; route evidence; unresolved-item log"
+    - id: dq_measurement
+      applies_to: "Meters, scales, tests, and laboratory data"
+      requirement: "Use current calibration and QA/QC evidence and retain raw records, units, conversions, detection limits, and uncertainty."
+      evidence: "Certificates; chain of custody; QA/QC reports; calculation sheets"
+    - id: dq_balance
+      applies_to: "Materials, sucrose solids, water, steam, and electricity"
+      requirement: "Reconcile process balances and investigate unexplained differences without forcing closure by an invented flow."
+      evidence: "Signed balance sheets; investigation notes"
+    - id: dq_allocation
+      applies_to: "Co-products and exported energy"
+      requirement: "Retain product or waste classification, destination, hierarchy decision, allocation relation, inputs, shares, and sensitivity."
+      evidence: "Contracts; dispatch records; allocation workbook; sensitivity result"
+    - id: dq_no_double_count
+      applies_to: "Internal reuse and waste or co-product destinations"
+      requirement: "Do not count one physical quantity as both internal input and export, product and waste, reuse and discharge, or gross and net energy."
+      evidence: "Cross-process reconciliation and destination ledger"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference product"
+    rule: "Confirm exactly one cane_sugar_output equals 1 kg net conforming cane sugar and uses the fixed Mass and unit-group UUIDs."
+    source_ids: []
+  - rule_id: validate_scope_route
+    applies_to: "Dataset scope"
+    rule: "Confirm CPC 23511 scope, mill-gate start and end, route qualifiers, and inclusion of every applicable conditional process."
+    source_ids: []
+  - rule_id: validate_internal_transfers
+    applies_to: "Internal flows"
+    rule: "Reconcile matching juice, syrup, wet sugar, bagasse, steam, electricity, condensate, and wastewater transfers after documented storage and loss."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Each foreground process"
+    rule: "Review mass and dry-solids balances and the disposition of bagasse, molasses, filter cake, wastewater sludge, ash, and off-spec sugar."
+    source_ids: []
+  - rule_id: validate_co_products
+    applies_to: "Multi-output processes"
+    rule: "Apply and document the Section 7 hierarchy and distinguish internal reuse, product, and waste."
+    source_ids: []
+  - rule_id: validate_water_waste
+    applies_to: "Water and waste exchanges"
+    rule: "Keep washing water, imbibition water, filter wash water, crystal wash water, feedwater, condensate, wastewater, filter cake, sludge, and ash separate."
+    source_ids: []
+  - rule_id: validate_air_emissions
+    applies_to: "Finishing, boiler, and wastewater air releases"
+    rule: "Report each applicable named substance separately and retain measurement or factor provenance and abatement state."
+    source_ids: []
+  - rule_id: validate_ranges
+    applies_to: "All inventory quantities"
+    rule: "Do not assert a range unless at least two independent original sources are boundary-, unit-, product-, and basis-compatible; normalization identity is not a range."
+    source_ids: []
+  - rule_id: validate_uuid_identity
+    applies_to: "UUID-bearing flows"
+    rule: "Confirm every UUID by public state_code=100 direct read, flow type, name, property, and unit semantics; keep unresolved identities empty."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground data package for cane sugar manufacturing at a declared sugar mill."
+  downstream_use: "Construction of process and lifecyclemodel datasets with separately linked upstream and downstream datasets."
+  allowed_use: "Mill-gate LCI, supply-chain modelling, hotspot analysis, and scenario analysis when product grade, route, geography, period, allocation, and data quality are compatible."
+  excluded_use: "Beet or refined sugar; cultivation-only claims; comparative assertions without harmonized functional equivalence, boundary, allocation, geography, period, and data quality; use of unresolved UUIDs as confirmed identities."
+  required_metadata: "All reference-flow qualifiers; site and technology; reporting period; process route; upstream dataset references; co-product destinations and allocation; water, wastewater, boiler and packaging configuration; exclusions and unresolved items."
+  required_quality_disclosure: "Primary-data coverage; calibration and laboratory QA/QC; balance results; gap handling; proxy or secondary data; allocation sensitivity; uncertainty; original-source verification scope."
+  update_trigger: "Significant change in product grade, cane source, extraction or clarification route, energy or fuel mix, co-product disposition, wastewater route, packaging, allocation method, reporting period, or applicable regulation."
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "standard"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 23511 Cane sugar, official classification portal, https://unstats.un.org/unsd/classifications/Econ/CPC, accessed 2026-08-24."
+    used_for: "Classification identity and exclusion of adjacent beet, refined, and flavoured or coloured sugar subclasses."
+  - id: "codex-cxs-212-1999"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, CXS 212-1999, Standard for Sugars, official PDF, https://workspace.fao.org/sites/codex/Standards/CXS%20212-1999/CXS_212e.pdf, accessed 2026-08-24."
+    used_for: "Raw cane sugar identity and quality-qualifier requirements; no inventory range is taken from the standard."
+  - id: "us-epa-ap42-cane-sugar-1997"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 9.10.1.1 Sugarcane Processing, June 1997, official PDF, https://www.epa.gov/sites/default/files/2020-10/documents/c9s10-1a.pdf, accessed 2026-08-24."
+    used_for: "Foreground process sequence, juice extraction and clarification materials, crystallization, bagasse, molasses, filter cake, and air-emission inventory structure."
+  - id: "ifc-sugar-manufacturing-ehs-2007"
+    type: "official_guidance"
+    reference: "International Finance Corporation, Environmental, Health, and Safety Guidelines for Sugar Manufacturing, 30 April 2007, official PDF, https://www.ifc.org/content/dam/ifc/doc/2000/2007-sugar-manufacturing-ehs-guidelines-en.pdf, accessed 2026-08-24."
+    used_for: "Water, energy, bagasse CHP, solid residues, wastewater treatment, sludge, effluent and air monitoring, and route disclosure."
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, consolidated official text, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng, accessed 2026-08-24."
+    used_for: "Multi-functionality hierarchy, foreground and upstream dataset separation, inventory completeness, data quality, and transparent calculation rules."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4f3461fb8b3043adcb23b6a565d47300f91d353b78845626792573a1f824ab6d"
+  generated_content_sha256: "sha256:ae1ede6783b2aca9c95cc13df838afe602e2240682b8e3e854f112363c978685"

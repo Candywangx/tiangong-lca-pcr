@@ -1,10 +1,1297 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21321"
-  title: "Tomato juice"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.tomato-juice"
+  classification_refs: "CPC 3.0: 21321 Tomato juice"
+  covered_products: "Unconcentrated tomato juice and tomato juice reconstituted from tomato juice concentrate, with permitted declared ingredients and preservation routes"
+  excluded_products: "Tomato paste; concentrated tomato juice sold as concentrate; tomato sauce; mixed vegetable juice; nectar; fermented tomato beverages; beverages containing tomato juice as an ingredient"
+  representative_product: "Tomato juice ready for direct consumption, at the processing facility gate"
+  production_route: "Direct extraction from mature tomatoes or declared reconstitution from tomato juice concentrate, followed by route-specific preservation and filling"
+  market_state: "Ambient shelf-stable, chilled, or frozen; packaged or bulk; preservation and packaging state declared"
+functional_unit:
+  what: "Provision of tomato juice meeting the declared product and market specification at the processing facility gate"
+  how_much: "1,000 kg net tomato juice, excluding packaging"
+  how_well: "Conforms to the declared direct-extraction or from-concentrate identity, recipe, soluble-solids basis, preservation route, packaging state, and applicable market requirements"
+  how_long_or_cycle: "One representative production batch or campaign ending at facility-gate release; shelf life is a required product qualifier rather than the functional duration"
+  reference_flow_link: "The measured conforming net product output is normalized to the 1,000 kg reference amount"
+system_boundary:
+  rules:
+    - rule_id: boundary_facility_operations
+      applies_to: "foreground facility"
+      rule: "Include all applicable onsite operations from receipt of source materials through conforming tomato juice release, including cleaning, packaging, onsite utility use, residual handling, and direct releases."
+      source_ids:
+        - fao-fruit-vegetable-processing-1995
+        - us-ecfr-21-cfr-156-145
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Link upstream datasets for tomatoes, concentrate, ingredients, packaging, water supply, fuels, electricity, and other purchased inputs; do not recreate their external production as foreground operations."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_concentrate_route
+      applies_to: "from-concentrate production"
+      rule: "Include concentration only when it occurs inside the declared foreground facility boundary; otherwise record purchased tomato juice concentrate as an input and disclose its upstream dataset."
+      source_ids:
+        - us-ecfr-21-cfr-156-145
+    - rule_id: boundary_preservation_route
+      applies_to: "preservation and filling"
+      rule: "Include the actual thermal, chilled, or frozen preservation route and its monitored operations; do not substitute a generic thermal profile for the validated site process."
+      source_ids:
+        - fda-juice-haccp-2004
+        - us-ecfr-21-cfr-156-145
+    - rule_id: boundary_residual_treatment
+      applies_to: "wastewater and solid residuals"
+      rule: "Include onsite treatment and recovery as foreground processes. Record offsite treatment or recovery as waste or product flows linked to the applicable external datasets."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Tomatoes, tomato juice concentrate, ingredients, packaging, water, and energy carriers as received at the reporting facility"
+  starting_condition_role: "Facility-gate foreground input condition with upstream burdens supplied by linked datasets"
+  product_classification_scope: "Tomato juice only; CPC 3.0 21321 is classification context and does not define the canonical PCR identity"
+  recursive_input_rule: "Purchased tomato juice or tomato juice concentrate used as an input is recorded once as a product input with its upstream dataset; its upstream tomato-juice production is not recursively reproduced inside the same foreground process"
+  upstream_dataset_requirement: "Use temporally, geographically, technologically, and materially representative upstream datasets for tomatoes, concentrate, ingredients, packaging, utilities, transport brought into scope, and offsite treatment"
+  disclosure: "Declare source-material form, direct or from-concentrate route, facility operations, preservation method, packaging state, allocation, exclusions, data gaps, and whether residual treatment is onsite or offsite"
+reference_flow_definition:
+  reference_amount: "1,000 kg net tomato juice"
+  product_flow_ref:
+    name: "Tomato juice"
+    uuid: "0e1f9da3-8a58-4fab-a793-1edde8bead88"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "production route: direct extraction or from concentrate"
+    - "source-material specification"
+    - "soluble-solids or recipe basis"
+    - "added salt"
+    - acid
+    - "or other ingredients"
+    - "preservation route"
+    - "package or bulk configuration"
+    - "net product mass"
+    - "product temperature at release"
+    - "shelf-life or storage condition"
+    - geography
+    - "reference period"
+    - "technology and facility"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "conforming tomato juice output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net tomato juice mass separately from packaging and normalize all inventory amounts to 1,000 kg conforming net output."
+  - id: route_and_solids_declaration
+    applies_to: "direct and from-concentrate routes"
+    required_property_ref:
+      name: "Mass and declared soluble-solids measurement basis"
+      uuid: ""
+    required_unit: "kg and declared laboratory unit"
+    rule: "Record the route and measured product specification; do not infer concentrate or dilution factors from a generic default."
+  - id: packaging_count_to_mass
+    applies_to: "primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert package counts to mass using lot-specific or supplier-supported unit masses and retain the count and conversion evidence."
+  - id: energy_unit_conversion
+    applies_to: "electricity, steam, fuels, heating, cooling, and compressed air"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve source meter units and conversion factors; report electricity in kWh and other delivered energy in MJ without applying an undocumented efficiency or heating value."
+  - id: water_and_wastewater_volume_mass
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Record the measured property and unit; if converting between mass and volume, retain the measured or justified density and conversion rule."
+process_map:
+  - id: raw_receipt_preparation
+    name: "Raw material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included for received tomatoes or other source material"
+    role: "Foreground receiving, inspection, sorting, washing, and preparation"
+    quantitative_reference: "Mass of source material and prepared tomatoes per 1,000 kg reference product"
+  - id: juice_extraction_finishing
+    name: "Juice extraction and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always included; for from-concentrate-only sites this may represent receipt verification and any onsite finishing before formulation"
+    role: "Foreground crushing, heating where used, extraction, screening, deaeration, and homogenization"
+    quantitative_reference: "Mass balance from prepared material to extracted juice and residuals"
+  - id: formulation_reconstitution
+    name: "Formulation and reconstitution"
+    inclusion: "conditional"
+    inclusion_condition: "Include when concentrate, water, salt, acid, or another declared ingredient is added or when blending standardizes the product"
+    role: "Foreground recipe and reconstitution control"
+    quantitative_reference: "Conditioned juice mass and declared recipe or soluble-solids basis"
+  - id: preservation_packaging
+    name: "Preservation, filling, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included with the actual ambient, chilled, or frozen route"
+    role: "Foreground preservation, filling, closing, cooling or freezing, and packaging"
+    quantitative_reference: "1,000 kg conforming net tomato juice output"
+  - id: onsite_residuals_treatment
+    name: "Onsite residuals and wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when wastewater, pomace, rejects, sludge, or other residuals are treated or recovered onsite"
+    role: "Foreground treatment, recovery, and direct release control"
+    quantitative_reference: "Received residual mass or volume and treatment outputs"
+process_inventory:
+  - id: raw_receipt_preparation
+    label: "Raw material receipt and preparation"
+    inputs:
+      product:
+        - row_id: source_tomatoes
+          role: "Tomatoes or declared tomato source material"
+          name: "Fresh tomatoes (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record mature tomatoes received for direct extraction. For a from-concentrate-only facility, record the concentrate under the formulation process and report zero here with the route disclosed."
+          amount:
+            expression: "Measured accepted mass entering preparation, excluding returned loads and separately recorded packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - fao-fruit-vegetable-processing-1995
+                - us-ecfr-21-cfr-156-145
+            ranges:
+              - role: default_estimate
+                lower: "1000"
+                upper: "3000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice for the direct-extraction route"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Washing and preparation water"
+          name: "Process water (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record supplied water used for source-material washing and preparation, excluding water already counted in a closed-loop internal transfer."
+          amount:
+            expression: "Metered or otherwise measured water entering the preparation operation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_use
+              source_ids:
+                - fao-fruit-vegetable-processing-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "m3"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_tomatoes
+          role: "Prepared tomatoes transferred to extraction"
+          name: "Prepared tomatoes, internal product flow (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared material from measured accepted source material, sorting rejects, other removed material, and stock change."
+          amount:
+            expression: "Accepted source mass minus measured preparation rejects and other removed material, adjusted for measured stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Sorting and preparation rejects"
+          name: "Preparation rejects (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected tomatoes, foreign material, and other removed solids by actual destination; do not combine recovered product with disposed waste."
+          amount:
+            expression: "Measured rejected and removed mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fao-fruit-vegetable-processing-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Preparation wastewater (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater leaving preparation, including its destination and whether it enters onsite treatment or an external system."
+          amount:
+            expression: "Metered discharge or calculated balance supported by water records and retained calculation inputs"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "m3"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: juice_extraction_finishing
+    label: "Juice extraction and finishing"
+    inputs:
+      product:
+        - row_id: extraction_feed
+          role: "Prepared tomatoes or received juice intermediate"
+          name: "Prepared tomatoes or tomato juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured internal prepared-tomato transfer or a received juice intermediate without double counting the source-material input."
+          amount:
+            expression: "Measured transfer into extraction and finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_mass
+              source_ids:
+                - fao-fruit-vegetable-processing-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_electricity
+          role: "Electricity for extraction and finishing"
+          name: "Electricity supply (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for crushing, pumping, extraction, finishing, deaeration, homogenization, and associated line operation."
+          amount:
+            expression: "Submetered electricity or allocated facility-meter electricity using a documented operating basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kWh"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_thermal_energy
+          role: "Delivered thermal energy for extraction and finishing"
+          name: "Delivered thermal energy carrier (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam, hot water, or fuel-derived heat used by the actual extraction and finishing route without embedding undocumented boiler efficiency."
+          amount:
+            expression: "Metered delivered heat or measured fuel quantity converted with a documented supplier or laboratory heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10000"
+                unit: "MJ"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: extracted_juice
+          role: "Extracted and finished tomato juice intermediate"
+          name: "Extracted tomato juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred from extraction and finishing to formulation or preservation."
+          amount:
+            expression: "Measured intermediate output, reconciled with feed, pomace, other residuals, and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_mass
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: extraction_residuals
+          role: "Pomace, peel, seeds, and extraction residuals"
+          name: "Tomato extraction residuals (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each materially different residual by actual recovery, feed, treatment, or disposal destination where records permit disaggregation."
+          amount:
+            expression: "Measured residual mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fao-fruit-vegetable-processing-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: formulation_reconstitution
+    label: "Formulation and reconstitution"
+    inputs:
+      product:
+        - row_id: formulation_tomato_input
+          role: "Extracted juice or purchased tomato juice concentrate"
+          name: "Extracted tomato juice or tomato juice concentrate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record extracted juice and purchased concentrate as separate input rows in the foreground dataset when both are used; this PCR row defines their shared role only."
+          amount:
+            expression: "Measured batch input by source-material form and supplier lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_inputs
+              source_ids:
+                - us-ecfr-21-cfr-156-145
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "3000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice across direct and from-concentrate routes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: reconstitution_water
+          role: "Reconstitution and recipe water"
+          name: "Potable process water (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water added to reconstitute concentrate or implement the declared recipe separately from cleaning water."
+          amount:
+            expression: "Metered or weighed batch addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_inputs
+              source_ids:
+                - us-ecfr-21-cfr-156-145
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recipe_ingredients
+          role: "Declared salt, acid, and other recipe ingredients"
+          name: "Declared recipe ingredients (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every added ingredient by identity, lot, and measured mass; zero is valid when no ingredient is added."
+          amount:
+            expression: "Weighed or supplier-recorded addition by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recipe_inputs
+              source_ids:
+                - us-ecfr-21-cfr-156-145
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_juice
+          role: "Conditioned tomato juice transferred to preservation"
+          name: "Conditioned tomato juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate conditioned juice from measured recipe inputs, recovered returns, measured losses, and stock change, then verify the declared product specification."
+          amount:
+            expression: "Sum of measured recipe inputs and eligible returns minus measured losses, adjusted for stock change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recipe_inputs
+              source_ids:
+                - mass-balance-identity
+                - us-ecfr-21-cfr-156-145
+            ranges:
+              - role: qa_guardrail
+                lower: "900"
+                upper: "1500"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: preservation_packaging
+    label: "Preservation, filling, and packaging"
+    inputs:
+      product:
+        - row_id: preservation_feed
+          role: "Conditioned tomato juice feed"
+          name: "Conditioned tomato juice intermediate (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured product entering the actual thermal, chilled, or frozen preservation and filling route."
+          amount:
+            expression: "Measured transfer into preservation and filling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - fao-fruit-vegetable-processing-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "900"
+                upper: "1500"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials by material and component (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging separately in the foreground dataset and distinguish reusable packaging and pallets."
+          amount:
+            expression: "Package count multiplied by verified unit mass, or direct measured issued mass minus returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_electricity
+          role: "Electricity for preservation and packaging"
+          name: "Electricity supply (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for pumping, heating systems, cooling or freezing, filling, closure, conveying, and packaging."
+          amount:
+            expression: "Submetered electricity or allocated facility-meter electricity using documented operating evidence"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kWh"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_thermal_energy
+          role: "Delivered thermal energy for preservation"
+          name: "Delivered thermal energy carrier (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record delivered heat or fuel used for the actual validated preservation route and retain its measured conversion basis."
+          amount:
+            expression: "Metered delivered heat or measured fuel quantity converted with a documented heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids:
+                - fda-juice-haccp-2004
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10000"
+                unit: "MJ"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tomato_juice_reference_output
+          role: "Conforming tomato juice reference product"
+          name: "Tomato juice"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0e1f9da3-8a58-4fab-a793-1edde8bead88"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This is the sole UUID-resolved reference product row. Measure conforming net output, exclude packaging mass, and normalize it to the PCR reference amount."
+          amount:
+            expression: "Measured conforming net output normalized to exactly 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - mass-balance-identity
+                - us-ecfr-21-cfr-156-145
+            ranges:
+              - role: allowed_range
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "PCR reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        - row_id: offspec_product
+          role: "Off-specification product and filling losses"
+          name: "Off-specification tomato juice (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification product, start-up and shutdown losses, spills, and retained rework separately by actual destination."
+          amount:
+            expression: "Measured mass by destination, with eligible internal rework excluded from final waste only after reconciliation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_scrap
+          role: "Packaging scrap and rejected containers"
+          name: "Packaging scrap by material (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap and rejected containers by material and destination."
+          amount:
+            expression: "Measured scrap mass or rejected count multiplied by verified unit mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_wastewater
+          role: "Cleaning and filling wastewater"
+          name: "Process wastewater (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater generated by cleaning, sterilization, cooling, filling, and packaging operations by destination."
+          amount:
+            expression: "Metered discharge or retained water-balance calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "m3"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_release
+          role: "Refrigerant releases from onsite cooling or freezing"
+          name: "Refrigerant substance by actual identity (Tiangong UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only when the selected route uses onsite refrigeration and a charge-balance, service, or leak record supports a direct release."
+          amount:
+            expression: "Annual or campaign refrigerant loss allocated using documented equipment service and charge-balance records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice using the documented production allocation period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: onsite_residuals_treatment
+    label: "Onsite residuals and wastewater treatment"
+    inputs:
+      product:
+        - row_id: treatment_inputs
+          role: "Electricity and treatment aids"
+          name: "Electricity and treatment aids by actual input (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh for electricity; Mass / kg for treatment aids"
+          description: "Disaggregate electricity and each treatment aid in the foreground dataset; this shared row defines the collection role for the conditional treatment process."
+          amount:
+            expression: "Metered electricity and measured treatment-aid additions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg or kWh as applicable to the disaggregated row"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: residuals_received
+          role: "Wastewater and organic residuals received for onsite treatment"
+          name: "Residual received by actual waste identity (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record internal wastewater, pomace, rejects, and other residuals without duplicating their originating process outputs."
+          amount:
+            expression: "Measured internal transfer reconciled to originating process records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3000"
+                unit: "kg or m3 as applicable to the disaggregated row"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_coproduct
+          role: "Recovered material or energy coproduct"
+          name: "Recovered material or energy by actual product identity (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg or Energy / MJ"
+          description: "Record a recovered output as a product only when it has a documented recipient and substitutes a specified product or service; otherwise retain it as a waste flow."
+          amount:
+            expression: "Measured dispatched quantity supported by recipient or sales records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg or MJ as applicable to the disaggregated row"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: treatment_residual_waste
+          role: "Treatment sludge and residual waste"
+          name: "Treatment residual waste by actual identity (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treatment sludge and other residual waste by measured mass, composition where required, and destination."
+          amount:
+            expression: "Measured dispatched or stored mass adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: treated_effluent_release
+          role: "Treated effluent and direct treatment releases"
+          name: "Treated effluent and measured direct release by actual identity (Tiangong UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Volume / m3 for effluent; substance-specific Mass / kg for pollutant releases"
+          description: "Record treated effluent volume and each measured direct pollutant or gas as separate elementary flows with the actual receiving compartment."
+          amount:
+            expression: "Metered effluent and measured or permitted-monitoring-based direct release, disaggregated by substance and compartment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming net tomato juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "m3 for the effluent-volume row"
+                basis: "per 1,000 kg conforming net tomato juice"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid_subdivide
+    applies_to: "multifunctional foreground operations"
+    rule: "First seek process subdivision or expansion of separately measured operations so that tomato juice and recovered outputs receive directly attributable inputs and releases."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical_relation
+    applies_to: "unavoidable joint processing"
+    rule: "When subdivision is not practicable and a physical causal relationship can be justified, allocate remaining shared burdens using that documented physical relationship and report the factor and sensitivity."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_other_relation
+    applies_to: "no defensible physical relation"
+    rule: "When no defensible physical relation exists, use another documented relationship consistent with the study goal, such as economic value, and disclose prices, reference period, calculation, and sensitivity."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_residual_status
+    applies_to: "pomace, rejects, sludge, recovered materials, and energy"
+    rule: "Do not assign coproduct status solely to avoid waste burdens. Record the actual destination and evidence of a useful product or service before applying coproduct allocation or substitution."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "raw_receipt_preparation"
+      flow_role: "accepted source material, prepared tomatoes, and preparation rejects"
+      record_type: "weighbridge, calibrated scale, receiving, and stock records"
+      raw_fields: "timestamp; batch; supplier lot; gross; tare; net mass; acceptance status; stock change; destination"
+      collection_method: "Reconcile accepted deliveries, preparation output, rejects, returns, and inventory"
+      unit: "kg"
+      frequency: "Each load or batch"
+      temporal_coverage: "At least one representative continuous production period, normally 12 months where available"
+      site_scope: "All included lines and storage points at the reporting facility"
+      aggregation_rule: "Sum by product and route; subtract returns; reconcile opening and closing stock; normalize with calc_reference_normalization"
+      quality_evidence: "Scale calibration, delivery tickets, batch records, stock reconciliation, and exception log"
+    - protocol_id: cp_water_use
+      process_id: "raw_receipt_preparation_formulation_reconstitution_preservation_packaging"
+      flow_role: "washing, recipe, cleaning, cooling, and other water"
+      record_type: "water meter, batch meter, or justified water balance"
+      raw_fields: "meter id; opening and closing reading; batch; use area; recycled volume; discharge volume"
+      collection_method: "Meter each material water use where practicable and separate recipe water from cleaning and utility water"
+      unit: "m3 or kg"
+      frequency: "Each batch or daily meter interval"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included water users"
+      aggregation_rule: "Subtract documented recirculated internal water; aggregate by use and normalize with calc_reference_normalization"
+      quality_evidence: "Meter calibration, meter map, batch sheet, and water-balance reconciliation"
+    - protocol_id: cp_extraction_mass
+      process_id: "juice_extraction_finishing"
+      flow_role: "extraction feed, juice intermediate, and extraction residuals"
+      record_type: "flowmeter, tank level, calibrated scale, and batch records"
+      raw_fields: "batch; input mass; intermediate output mass; residual mass; stock change; rework"
+      collection_method: "Measure transfers and reconcile the extraction mass balance"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included extraction and finishing lines"
+      aggregation_rule: "Sum accepted transfers; account for rework once; reconcile stock change and normalize"
+      quality_evidence: "Instrument calibration, batch sheet, and signed mass-balance review"
+    - protocol_id: cp_recipe_inputs
+      process_id: "formulation_reconstitution"
+      flow_role: "concentrate, extracted juice, water, salt, acid, other ingredients, and conditioned juice"
+      record_type: "recipe system, batch scale, laboratory, and supplier lot records"
+      raw_fields: "batch; ingredient identity; lot; quantity; soluble-solids result; recipe revision; output mass; loss; stock change"
+      collection_method: "Record each addition and verify the finished product against the declared recipe and product specification"
+      unit: "kg and declared laboratory unit"
+      frequency: "Each batch"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "Every included formulation tank and product variant"
+      aggregation_rule: "Aggregate by product variant; calculate with calc_reconstitution_balance; normalize"
+      quality_evidence: "Scale calibration, recipe authorization, certificates, laboratory results, and deviation records"
+    - protocol_id: cp_metered_energy
+      process_id: "juice_extraction_finishing_preservation_packaging_onsite_residuals_treatment"
+      flow_role: "electricity, steam, hot water, fuels, refrigeration, and compressed air"
+      record_type: "submeter, utility invoice, fuel issue, and operating-hour record"
+      raw_fields: "meter id; opening and closing reading; fuel mass or volume; heating value; operating time; allocation driver"
+      collection_method: "Prefer submeters; otherwise allocate facility totals with documented operating or engineering evidence"
+      unit: "kWh or MJ"
+      frequency: "Continuous, batch, shift, or invoice interval"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included equipment and shared utilities"
+      aggregation_rule: "Convert with documented factors; subtract exports; allocate shared use transparently; normalize"
+      quality_evidence: "Meter calibration, invoices, fuel specifications, equipment logs, and allocation calculation"
+    - protocol_id: cp_packaging_mass
+      process_id: "preservation_packaging"
+      flow_role: "packaging issued, returned, rejected, and incorporated"
+      record_type: "bill of materials, count, supplier unit mass, and scale record"
+      raw_fields: "component; material; count; unit mass; issued; returned; rejected; reuse cycles"
+      collection_method: "Calculate each component mass from verified count and unit mass or direct measurement"
+      unit: "kg"
+      frequency: "Each packaging lot or product batch"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "Primary, secondary, tertiary, and reusable packaging in scope"
+      aggregation_rule: "Issued minus returned stock; separate product packaging from scrap; normalize"
+      quality_evidence: "Supplier specification, sampled unit-mass check, bill of materials, and stock record"
+    - protocol_id: cp_product_output
+      process_id: "preservation_packaging"
+      flow_role: "preservation feed, conforming net tomato juice, off-specification product, and rework"
+      record_type: "batch meter, filler count, checkweigher, tank record, and release record"
+      raw_fields: "batch; product code; route; gross; tare; net mass; package count; released mass; off-spec mass; rework; stock change"
+      collection_method: "Measure conforming net product separately from packaging and reconcile preservation and filling outputs"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same representative period as all inventory inputs"
+      site_scope: "Every included product and filling line"
+      aggregation_rule: "Sum released net mass; exclude packaging; account for rework once; normalize to 1,000 kg"
+      quality_evidence: "Instrument calibration, quality release, checkweigher results, batch record, and reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "all_foreground_processes"
+      flow_role: "rejects, pomace, off-specification product, packaging scrap, wastewater, and other waste"
+      record_type: "scale, waste manifest, meter, invoice, and internal transfer record"
+      raw_fields: "waste identity; origin; mass or volume; destination; date; carrier; recovery status; stock change"
+      collection_method: "Measure or reconcile each material waste stream and destination"
+      unit: "kg or m3"
+      frequency: "Each dispatch, batch, or meter interval"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included foreground processes"
+      aggregation_rule: "Sum by identity and destination; prevent duplicate internal transfers; normalize"
+      quality_evidence: "Scale or meter calibration, manifests, invoices, treatment receipts, and stock records"
+    - protocol_id: cp_thermal_process
+      process_id: "preservation_packaging"
+      flow_role: "actual preservation process and release evidence"
+      record_type: "validated process schedule, temperature, time, flow, pressure, and deviation records"
+      raw_fields: "process authority or validation reference; product; pH or relevant property; temperature; residence time; flow rate; hold; deviation; disposition"
+      collection_method: "Retain the site- and product-specific validated schedule and continuous or batch monitoring required by the selected process"
+      unit: "Declared process units"
+      frequency: "Each batch with continuous records where applicable"
+      temporal_coverage: "Same representative period as product output and current validated process"
+      site_scope: "Every included preservation line and product route"
+      aggregation_rule: "No averaging across failed critical limits; link each released batch to valid monitoring and deviation disposition"
+      quality_evidence: "Validation study or process authority record, calibrated sensors, monitoring charts, deviation and release records"
+    - protocol_id: cp_treatment_records
+      process_id: "onsite_residuals_treatment"
+      flow_role: "received residuals, treatment inputs, recovered outputs, sludge, and stored material"
+      record_type: "meter, scale, treatment log, laboratory, dispatch, and stock record"
+      raw_fields: "stream identity; input; chemical; electricity; output; quality; destination; stock change"
+      collection_method: "Reconcile each treatment operation and retain evidence for recovered product status"
+      unit: "kg, m3, kWh, or MJ"
+      frequency: "Each batch, day, or dispatch"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All onsite residual treatment and recovery"
+      aggregation_rule: "Sum inputs and outputs; reconcile stock and moisture basis; normalize"
+      quality_evidence: "Meter and scale calibration, laboratory reports, treatment logs, recipient evidence, and manifests"
+    - protocol_id: cp_direct_emissions
+      process_id: "preservation_packaging_onsite_residuals_treatment"
+      flow_role: "refrigerants, treated effluent, and measured direct releases"
+      record_type: "service record, charge balance, stack or effluent monitoring, and permit record"
+      raw_fields: "substance; compartment; measured value; method; detection limit; equipment; charge added or recovered; effluent volume; sampling period"
+      collection_method: "Record each substance and compartment separately using measured or permitted-monitoring evidence"
+      unit: "kg or m3"
+      frequency: "Per event and reporting interval"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included direct release points"
+      aggregation_rule: "Apply documented sampling and allocation method; report below-detection treatment; normalize"
+      quality_evidence: "Laboratory accreditation where applicable, calibration, service records, permits, and calculation file"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory amount"
+      rule: "normalized amount = period or batch amount / conforming net tomato juice output × 1,000 kg"
+      inputs:
+        - "collected amount"
+        - "conforming net product mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_process_mass_balance
+      applies_to: "each foreground process"
+      rule: "measured inputs + opening stock = measured outputs + closing stock + quantified loss; report the unexplained difference and do not force it to zero"
+      inputs:
+        - input
+        - output
+        - stock
+        - rework
+        - "and loss records"
+      output: "reconciled mass balance and unexplained difference"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_reconstitution_balance
+      applies_to: "from-concentrate and formulation routes"
+      rule: "conditioned juice mass = measured tomato input + measured recipe water + measured ingredients + eligible returns - measured losses, adjusted for stock change; verify the declared product specification from measured laboratory and recipe records"
+      inputs:
+        - "recipe inputs"
+        - returns
+        - losses
+        - "stock change"
+        - "laboratory results"
+      output: "conditioned juice mass and specification check"
+      source_ids:
+        - mass-balance-identity
+        - us-ecfr-21-cfr-156-145
+    - id: calc_energy_conversion
+      applies_to: "energy records"
+      rule: "convert electricity to kWh and delivered fuel or heat to MJ using retained supplier or measured conversion data; do not assume an efficiency or heating value"
+      inputs:
+        - "meter readings"
+        - "fuel quantity"
+        - "heating value"
+        - "conversion factor"
+      output: "kWh or MJ by process"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "packaging materials and scrap"
+      rule: "component mass = verified component count × verified unit mass; reconcile issued, returned, incorporated, and rejected components"
+      inputs:
+        - counts
+        - "sampled or supplier unit mass"
+        - "stock movement"
+      output: "packaging and packaging-scrap mass by material"
+      source_ids: []
+    - id: calc_allocation_factor
+      applies_to: "unavoidable shared burdens"
+      rule: "calculate the selected physical or other relationship from period-matched records and document sensitivity to a reasonable alternative"
+      inputs:
+        - "separately attributable burdens"
+        - "coproduct quantities"
+        - "selected allocation driver"
+      output: "allocation factor and sensitivity result"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and source materials"
+      requirement: "Verify product name, UUID for the reference flow, production route, recipe, product specification, preservation state, and package or bulk state."
+      evidence: "Tiangong flow readback, batch specification, label or sales specification, and release record"
+    - id: dq_representativeness
+      applies_to: "all foreground data"
+      requirement: "State geography, technology, facility, reference period, seasonal coverage, capacity utilization, and material product variants; justify any proxy period or site."
+      evidence: "Dataset metadata, production schedule, site description, and variance review"
+    - id: dq_completeness
+      applies_to: "process map and inventory"
+      requirement: "Cover every required process and every applicable conditional process; reconcile material, water, energy, waste, and direct-release records without double counting internal transfers."
+      evidence: "Process flow diagram, meter map, mass and water balances, inventory reconciliation, and gap log"
+    - id: dq_measurement
+      applies_to: "collected and calculated values"
+      requirement: "Retain instrument identity, calibration or verification status, raw units, conversion factors, aggregation, and data owner."
+      evidence: "Calibration certificates, raw exports, calculation workbook, and signed review"
+    - id: dq_thermal_validation
+      applies_to: "preservation and filling"
+      requirement: "Link each released product route to the current validated process and retain critical monitoring and deviation disposition; generic time-temperature values are not a substitute for route-specific validation."
+      evidence: "Validated process schedule, process authority or equivalent evidence, monitoring records, deviations, and release approval"
+    - id: dq_provisional_ranges
+      applies_to: "every reasoned_estimate range"
+      requirement: "Treat the range only as a broad screening or QA prior. Replace it with foreground measurements or reviewed source evidence before publication-critical use and explain deviations rather than clipping data."
+      evidence: "Range replacement log, foreground records, reviewed source, and reviewer disposition"
+    - id: dq_unresolved_uuid
+      applies_to: "non-reference inventory flows"
+      requirement: "Resolve and verify Tiangong UUIDs before active use where a database-backed identity is required; do not copy the tomato-juice reference UUID to another flow."
+      evidence: "Tiangong identity readback and reviewer confirmation"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference product must be Tomato juice 0e1f9da3-8a58-4fab-a793-1edde8bead88 with Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg; no other inventory flow may inherit this UUID by analogy."
+    source_ids: []
+  - rule_id: validation_reference_amount
+    applies_to: "normalized inventory"
+    rule: "Conforming net tomato juice output, excluding packaging, must equal exactly 1,000 kg after normalization and every reported inventory amount must state its basis."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "The data package must declare every required qualifier, including route, source material, product specification, ingredients, preservation, package or bulk state, storage condition, geography, reference period, technology, and facility."
+    source_ids:
+      - us-ecfr-21-cfr-156-145
+  - rule_id: validation_process_coverage
+    applies_to: "process map"
+    rule: "Every required process and each applicable conditional process must have inventory and collection evidence; excluded conditional processes must carry a reason."
+    source_ids:
+      - fao-fruit-vegetable-processing-1995
+  - rule_id: validation_mass_balance
+    applies_to: "foreground processes"
+    rule: "Each process must report measured inputs, outputs, stock change, rework, quantified loss, and unexplained balance difference; material differences require investigation and disclosure."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_route_consistency
+    applies_to: "direct and from-concentrate routes"
+    rule: "Source-material form, recipe water, concentrate input, process map, product label or specification, and upstream datasets must describe one consistent production route."
+    source_ids:
+      - us-ecfr-21-cfr-156-145
+  - rule_id: validation_preservation_evidence
+    applies_to: "preserved product release"
+    rule: "The selected preservation route must have current product- and process-specific validation, monitored process records, and disposition of deviations; do not validate a dataset from generic guidance values alone."
+    source_ids:
+      - fda-juice-haccp-2004
+  - rule_id: validation_allocation_disclosure
+    applies_to: "multifunctional operations"
+    rule: "Report subdivision attempts, coproduct or waste status evidence, allocation method, factors, period-matched inputs, and sensitivity when allocation remains."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validation_provisional_estimates
+    applies_to: "reasoned estimates"
+    rule: "A value outside a provisional range is a review trigger, not an automatic failure. Publication-critical use requires replacement or explicit reviewer acceptance supported by evidence."
+    source_ids: []
+  - rule_id: validation_uuid_resolution
+    applies_to: "non-reference inventory rows"
+    rule: "Any non-reference Tiangong flow UUID left unresolved makes identity coverage incomplete and must be disclosed; invented or unverified UUIDs are prohibited."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground tomato-juice production data package normalized to 1,000 kg conforming net product"
+  downstream_use: "May support a secondary_dataset or background_dataset after methodology, identity, evidence, and review requirements are satisfied"
+  allowed_use: "Product- and route-matched LCI studies, supply-chain models, process improvement, and scenario analysis within the declared geography, period, technology, preservation, and packaging scope"
+  excluded_use: "Unqualified proxy for tomato paste, concentrated tomato juice, sauces, mixed juices, nectars, fermented beverages, cultivation, consumer use, or materially different production and preservation routes"
+  required_metadata: "Canonical PCR id; reference-flow UUIDs; required qualifiers; facility and geography; reference period; technology; direct or from-concentrate route; preservation; packaging; process coverage; upstream dataset identities; allocation; data owners; review state"
+  required_quality_disclosure: "Measurement coverage; data gaps; unresolved UUIDs; reasoned estimates; mass, water, and energy reconciliation; thermal-process evidence; allocation sensitivity; waste destinations; direct-release measurement; deviations and reviewer dispositions"
+  update_trigger: "Change in product specification, source-material form, recipe, preservation or packaging route, facility technology, supplier mix, allocation, validated process, material data gap, reference period, or Tiangong identity"
+data_sources:
+  - id: "us-ecfr-21-cfr-156-145"
+    type: "standard"
+    reference: "U.S. Electronic Code of Federal Regulations, 21 CFR 156.145, Tomato juice, https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-156/subpart-B/section-156.145, retrieved 2026-08-11"
+    used_for: "Tomato-juice identity, direct and from-concentrate routes, permitted processing and declared ingredients, and preservation-state requirements"
+  - id: "fao-fruit-vegetable-processing-1995"
+    type: "official_guidance"
+    reference: "FAO Agricultural Services Bulletin No. 119, Fruit and vegetable processing, section 9.5.1.1 Tomato juice, https://www.fao.org/4/V5030E/V5030E0r.htm, retrieved 2026-08-11"
+    used_for: "Candidate process decomposition from washing and sorting through extraction, finishing, preservation, filling, and cooling; not used as a mandatory numeric process schedule"
+  - id: "fda-juice-haccp-2004"
+    type: "official_guidance"
+    reference: "U.S. Food and Drug Administration, Guidance for Industry: Juice HACCP Hazards and Controls Guidance, First Edition, March 2004, https://www.fda.gov/regulatory-information/search-fda-guidance-documents/guidance-industry-juice-hazard-analysis-critical-control-point-hazards-and-controls-guidance-first, retrieved 2026-08-11"
+    used_for: "Requirement to retain product- and process-specific hazard analysis, validation, monitoring, critical process records, and deviation disposition; not used to impose a generic tomato-juice time-temperature value"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html, confirmed current in 2022 and retrieved 2026-08-11"
+    used_for: "LCI requirements, system-boundary disclosure, allocation hierarchy, reporting, and review framework"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass applied to each foreground process with explicit stock change, rework, quantified loss, and unexplained balance difference"
+    used_for: "Process reconciliation, recipe balance, reference normalization, and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:40ae1995e602d7f7e0fa4741b34103265b1e405839616723b540c4e429a45a0f"
+  generated_content_sha256: "sha256:234d6a6d2821365d40abfafd8a5332e85509f3954d7449dd57d765db28ee8825"

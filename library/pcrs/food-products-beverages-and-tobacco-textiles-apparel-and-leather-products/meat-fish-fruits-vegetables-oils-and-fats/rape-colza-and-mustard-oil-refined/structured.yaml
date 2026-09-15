@@ -1,10 +1,689 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21642"
-  title: "Rape, colza and mustard oil, refined"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.rape-colza-and-mustard-oil-refined"
+  classification_refs: "CPC 3.0: 21642 Rape, colza and mustard oil, refined"
+  covered_products: "Refined fixed oil from rape or colza seed; refined low-erucic-acid rapeseed or canola oil; refined fixed oil from white, brown, yellow, or black mustard seed; declared food, feed, or technical grades"
+  excluded_products: "Crude oil; virgin or cold-pressed oil sold without refining; hydrogenated, interesterified, or otherwise chemically modified oil; biodiesel; volatile mustard oil or allyl isothiocyanate; oilcake and meal; margarine and formulated blends; packaging and downstream distribution"
+  representative_product: "Bulk refined rape or colza oil at the refinery gate"
+  production_route: "Received crude named oil followed by declared chemical refining or physical refining, normally including degumming or pretreatment, bleaching, and deodorisation; chemical neutralisation is route-conditional"
+  market_state: "Finished liquid refined oil, production mix at plant, bulk and before retail packaging"
+functional_unit:
+  what: "Refined rape, colza, canola, or mustard fixed oil supplied as a finished bulk product at the refinery gate"
+  how_much: "1 kg net refined oil"
+  how_well: "The declared oil identity, grade, refining route, and market specification are met; food-grade oil is linked to the applicable named-oil and food-safety specification"
+  how_long_or_cycle: "One production batch or a representative production campaign whose dates and averaging period are declared"
+  reference_flow_link: "The reference output of the refining_train process"
+system_boundary:
+  rules:
+    - rule_id: boundary_refinery_gate
+      applies_to: "Foreground product system"
+      rule: "Include receipt and storage losses, degumming or pretreatment, route-conditional neutralisation, bleaching, deodorisation, internal recirculation, utility use, direct emissions, residue handling, wastewater sent to treatment, and the bulk refined-oil output up to the refinery gate."
+      source_ids:
+        - eu-fdm-bref-2019
+    - rule_id: boundary_route_declaration
+      applies_to: "Chemical and physical refining"
+      rule: "Declare the actual route. Chemical refining includes degumming or neutralisation, bleaching, and deodorisation; physical refining includes adequate degumming or pretreatment, bleaching, and distillative deacidification or deodorisation. Do not insert a route-conditional operation that did not occur."
+      source_ids:
+        - eu-fdm-bref-2019
+    - rule_id: boundary_upstream_crude_oil
+      applies_to: "Crude-oil input"
+      rule: "Keep cultivation, crushing, pressing, and solvent extraction in the linked upstream crude-oil dataset unless an integrated-site study explicitly expands the boundary and reports the additional processes separately."
+      source_ids:
+        - eu-fdm-bref-2019
+    - rule_id: boundary_material_completeness
+      applies_to: "Listed material and emission flows"
+      rule: "Collect all material flows listed by this PCR. Any omission shall be identified, quantified where possible, justified for environmental insignificance, and included in the quality disclosure; no omitted flow may be hidden by a generic cut-off statement."
+      source_ids:
+        - eu-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Named crude rape, colza, canola, or mustard fixed oil received at the refinery gate with mass, pretreatment state, quality, supplier geography, and upstream dataset reference declared"
+  starting_condition_role: "Upstream product input to the stand-alone foreground refining train"
+  product_classification_scope: "Refined fixed oils within CPC 3.0 subclass 21642; the canonical PCR meaning is not owned by CPC"
+  recursive_input_rule: "Any refined named oil used as rework or blending input is recorded as a product input linked to a compatible upstream dataset; its production is not recursively reconstructed inside the same refining-train record"
+  upstream_dataset_requirement: "A traceable crude-oil dataset including cultivation and oil extraction as applicable, with its reference flow, geography, technology, allocation, and data quality disclosed"
+  disclosure: "Declare crude-oil origin and pretreatment, refining route, included and bypassed unit operations, site integration with crushing, utility system, co-product destinations, wastewater treatment, packaging exclusion, production period, and any departures from the default refinery-gate boundary"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Rape, colza and mustard oil, refined"
+    uuid: "e30cf6ff-7dfb-4972-affc-6cab3ae17283"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "oil source: rape or colza"
+    - "low-erucic canola"
+    - "or mustard"
+    - "species or commercial oil designation"
+    - food
+    - feed
+    - "or technical grade"
+    - "chemical or physical refining route"
+    - "crude-oil pretreatment state"
+    - "production geography"
+    - "production period"
+    - "bulk delivery state"
+    - "allocation treatment"
+    - "applicable product specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product, crude-oil input, co-products, and oil-bearing residues"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net mass at the measurement temperature and moisture or volatile-matter convention used by the site; normalize all mass rows to 1 kg net refined oil."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, steam, heat, and fuels"
+    required_property_ref:
+      name: "Carrier-native energy property"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep electricity and each thermal-energy carrier as separate collected records; convert to final energy only for the installation-level BAT screening calculation and retain the conversion factors."
+  - id: water_volume_and_mass
+    applies_to: "Process, wash, and cooling water"
+    required_property_ref:
+      name: "Declared volume or mass property"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Record water by function and circulation mode; do not treat recirculated cooling water as fresh-water withdrawal, and disclose any density conversion."
+process_map:
+  - id: refining_train
+    name: "Named seed-oil refining train"
+    inclusion: "required"
+    inclusion_condition: "Always; declare chemical or physical route and all bypassed operations"
+    role: "Foreground refining from received crude oil to finished bulk refined oil"
+    quantitative_reference: "1 kg net refined oil at refinery gate"
+process_inventory:
+  - id: refining_train
+    label: "Named seed-oil refining train"
+    inputs:
+      product:
+        - row_id: crude_named_oil
+          role: "Received named crude oil"
+          name: "Site-specific crude named oil product flow; Tiangong UUID to be selected for the declared oil identity and pretreatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the crude rape, colza, canola, or mustard fixed oil entering the refinery, including supplier, origin, species or commercial designation, degumming state, free-fatty-acid and phosphorus indicators when available, and the linked upstream dataset."
+          amount:
+            expression: "Measured net crude-oil input assigned to the production batch or campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.3"
+                unit: "kg/kg refined oil"
+                basis: "crude-oil input per 1 kg net refined oil output; deliberately broad pending reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refinery_water
+          role: "Process and wash water"
+          name: "Site-specific process-water product flow; UUID to be selected for water source and treatment state"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Collect fresh and reused water separately for degumming, neutralisation washing, steam makeup, cleaning, and cooling. The range is an annual installation-level screen and shall not replace metered foreground data."
+          amount:
+            expression: "Metered net water withdrawal allocated to the refining train, excluding recirculated volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne net refined oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.15"
+                upper: "0.9"
+                unit: "m3/t refined oil"
+                basis: "annual net water consumption per tonne of oil produced at a stand-alone refinery"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019
+        - row_id: neutralising_alkali
+          role: "Neutralising alkali"
+          name: "Site-specific sodium hydroxide or other alkali product flow; UUID to be selected for concentration and market state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include sodium hydroxide or the actual alkali only when chemical neutralisation occurs; preserve concentration and convert the inventory to both solution mass and active-alkali mass."
+          amount:
+            expression: "Measured solution consumption and calculated active-alkali mass from batch dosing records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 tonne oil processed through chemical neutralisation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_dosing
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges:
+              - role: typical_range
+                lower: "1"
+                upper: "6"
+                unit: "kg NaOH/t oil"
+                basis: "active sodium hydroxide per tonne of oil entering chemical neutralisation"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bref-2019
+        - row_id: degumming_acid
+          role: "Degumming acid"
+          name: "Site-specific phosphoric-acid or citric-acid product flow; UUID to be selected for acid identity and concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include phosphoric acid or citric acid when used for acid degumming or pretreatment. Preserve acid identity and concentration; do not sum different acids without a separate calculation field."
+          amount:
+            expression: "Measured acid solution consumption and calculated active-acid mass from dosing records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 tonne oil treated with the declared acid"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_dosing
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges:
+              - role: typical_range
+                lower: "0.1"
+                upper: "2.0"
+                unit: "kg active acid/t oil"
+                basis: "phosphoric acid range is 0.1-2.0 kg/t and citric acid range is 0.1-1.0 kg/t; use the narrower upper limit when citric acid is declared"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bref-2019
+        - row_id: bleaching_media
+          role: "Bleaching earth and filter aid"
+          name: "Site-specific bleaching-earth product flow; UUID to be selected for activated or non-activated grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bleaching earth, activated carbon, and filter aid separately. This row covers the bleaching earth mass; additional media remain distinct product flows in the foreground record."
+          amount:
+            expression: "Measured bleaching-earth input from batch recipes or silo mass balance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 tonne oil entering bleaching"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_dosing
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges:
+              - role: typical_range
+                lower: "1"
+                upper: "30"
+                unit: "kg/t oil"
+                basis: "0.1-3 percent bleaching earth per tonne of oil entering bleaching"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bref-2019
+        - row_id: refining_energy
+          role: "Electricity and thermal-energy carriers"
+          name: "Site-specific electricity, steam, heat, and fuel product flows; UUIDs to be selected separately for each carrier"
+          flow_type: "product"
+          property_unit: "Carrier-native energy property / kWh or MJ"
+          description: "Collect electricity, steam, direct fuel, and purchased heat as separate carrier rows before calculating total final energy. The screening interval is a yearly stand-alone-refinery total and is not a default amount for an individual batch."
+          amount:
+            expression: "Metered or invoice-reconciled final energy assigned to refining, separated by carrier and converted with documented factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne net refined oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "0.45"
+                unit: "MWh/t refined oil"
+                basis: "annual final energy consumption per tonne of oil produced at a stand-alone refinery"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019
+      waste:
+        []
+      elementary:
+        - row_id: direct_water_withdrawal
+          role: "Direct water withdrawal"
+          name: "Site-specific freshwater or other environmental water-compartment flow; UUID to be selected for source compartment"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record only water taken directly from the environment as an elementary input. Purchased municipal or industrial water remains the product-flow input refinery_water."
+          amount:
+            expression: "Metered direct abstraction assigned to the refining train"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne net refined oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: refined_named_oil
+          role: "Finished refined named oil"
+          name: "Rape, colza and mustard oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e30cf6ff-7dfb-4972-affc-6cab3ae17283"
+          property_unit: "Mass / kg"
+          description: "This is the quantitative reference output. It shall meet the declared oil identity, grade, and product specification and shall be measured after refining losses and before excluded retail packaging."
+          amount:
+            expression: "exactly 1 kg net refined oil as the normalized reference output"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference output"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "normalized reference output"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: refining_coproducts
+          role: "Marketable refining co-products"
+          name: "Site-specific co-product flow for each declared output; UUID to be selected separately for gums or lecithin, soapstock or acid oil, and deodoriser distillate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record gums or lecithin, soapstock or recovered acid oil, and deodoriser distillate as separate product outputs only when they leave the system with a documented beneficial use or market. Preserve identity, mass, destination, and revenue evidence for each output."
+          amount:
+            expression: "Measured sale or transfer mass by co-product identity; zero for a co-product not produced or treated as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_residue_mass
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.15"
+                unit: "kg/kg refined oil"
+                basis: "combined marketable refining co-products per 1 kg net refined oil; replace with reviewed route-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: refining_residues
+          role: "Non-marketable refining residues"
+          name: "Site-specific waste flow for each residue; UUID to be selected separately by waste identity and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent bleaching earth, non-marketable gums or soapstock, filter aid, sludge, and off-spec oil separately by waste identity and destination. Spent bleaching earth shall retain oil content and self-heating risk information."
+          amount:
+            expression: "Measured dispatched mass or tank and container mass balance by residue type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_residue_mass
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg refined oil"
+                basis: "combined non-marketable residues per 1 kg net refined oil; replace with reviewed route-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refinery_wastewater
+          role: "Refinery wastewater"
+          name: "Site-specific wastewater flow; UUID to be selected for wastewater identity and treatment destination"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record process wastewater sent to on-site or off-site treatment separately from uncontaminated cooling-water discharge. Include flow, receiving treatment, and measured pollutant loads where applicable."
+          amount:
+            expression: "Metered wastewater discharge assigned to the refining train, separated by stream and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne net refined oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "m3/t refined oil"
+                basis: "total process wastewater per tonne of net refined oil; replace with reviewed route-specific evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_refining_emissions
+          role: "Direct emissions from refining"
+          name: "Site-specific elementary flows to the actual air or water compartments; UUIDs to be selected for each measured substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Quantify site emissions caused by the refining train, including combustion emissions and any residual volatile organic compounds from deodorisation or vacuum systems. Do not duplicate emissions already contained in purchased energy or off-site treatment datasets."
+          amount:
+            expression: "Measured emissions or calculations from measured activity data and a cited method factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 tonne net refined oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Refining train and shared utilities"
+    rule: "First subdivide stage-level measurements and directly assign material and utility records to the refining train. Use system expansion only when the added function and substituted product can be represented consistently."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_output_status
+    applies_to: "Gums, lecithin, soapstock, acid oil, deodoriser distillate, spent earth, and residues"
+    rule: "Treat an output as a co-product only when it has a documented beneficial use or market and leaves the boundary as a product. Otherwise classify it as waste and include its treatment; do not change classification solely to obtain an allocation credit."
+    source_ids:
+      - eu-fdm-bref-2019
+  - rule_id: allocation_physical_residual
+    applies_to: "Unsubdivided burdens with multiple marketable oil-derived outputs"
+    rule: "If subdivision and justified system expansion are not feasible, allocate the remaining shared burdens by measured dry or net mass among the refined oil and marketable oil-derived co-products. Exclude wastewater, recirculated water, and wastes from the denominator."
+    source_ids:
+      - eu-pef-2021
+      - mass-balance-identity
+  - rule_id: allocation_disclosure
+    applies_to: "Published foreground package"
+    rule: "Report output masses, allocation fractions, co-product status and destination, price period if an economic sensitivity is used, excluded waste-treatment burdens, and the change in results under a no-credit sensitivity."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "refining_train"
+      flow_role: "Crude-oil input and internal oil transfers"
+      record_type: "Weighbridge, calibrated tank gauge, batch sheet, and inventory reconciliation"
+      raw_fields: "material identity; supplier; batch; opening stock; receipts; transfers; closing stock; net mass; temperature; moisture or volatile convention"
+      collection_method: "Reconcile calibrated mass or volume-and-density records to each batch and monthly inventory"
+      unit: "kg"
+      frequency: "Each receipt and batch; monthly reconciliation"
+      temporal_coverage: "At least 12 representative consecutive months or a declared complete campaign"
+      site_scope: "All units supplying the reported refinery output"
+      aggregation_rule: "Sum net input by oil identity and assign only to conforming output batches; document stock changes and rework"
+      quality_evidence: "Calibration certificates; tank tables; weigh tickets; signed reconciliation; specification or certificate of analysis"
+    - protocol_id: cp_water_records
+      process_id: "refining_train"
+      flow_role: "Fresh water, reused water, cooling water, and direct abstraction"
+      record_type: "Meter and water-balance record"
+      raw_fields: "source; meter id; opening and closing reading; withdrawal; recirculation; discharge; purpose; batch or period"
+      collection_method: "Read source and sub-meters; reconcile fresh intake, reuse, evaporation, product carryover, and discharge"
+      unit: "m3"
+      frequency: "Daily or batch readings; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Whole refinery with sub-meter allocation to refining"
+      aggregation_rule: "Net fresh water equals withdrawal minus exported or returned uncontaminated water; recirculated volume is disclosed separately"
+      quality_evidence: "Meter calibration; utility invoice; water-balance sign-off"
+    - protocol_id: cp_chemical_dosing
+      process_id: "refining_train"
+      flow_role: "Alkali, acid, bleaching earth, activated carbon, and filter aid"
+      record_type: "Recipe, dosing meter, purchase, and stock record"
+      raw_fields: "chemical identity; concentration; lot; gross solution mass; active fraction; batch; opening and closing stock"
+      collection_method: "Reconcile automated dosing or weighed batch additions with purchase and inventory records"
+      unit: "kg"
+      frequency: "Each batch; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All refining lines in scope"
+      aggregation_rule: "Calculate active reagent as solution mass multiplied by certified active fraction; retain each chemical separately"
+      quality_evidence: "Dosing calibration; supplier certificate; batch recipe; stock reconciliation"
+    - protocol_id: cp_energy_records
+      process_id: "refining_train"
+      flow_role: "Electricity, steam, purchased heat, and fuels"
+      record_type: "Meter, invoice, boiler log, and energy-balance record"
+      raw_fields: "carrier; meter id; quantity; unit; heating value; steam condition; generation efficiency; allocation key; period"
+      collection_method: "Read sub-meters where available and reconcile with invoices or fuel stocks"
+      unit: "kWh or MJ"
+      frequency: "Continuous or daily; monthly reconciliation"
+      temporal_coverage: "At least 12 representative consecutive months or a complete campaign"
+      site_scope: "Refining train and declared shared utilities"
+      aggregation_rule: "Preserve carriers; convert to final energy with documented factors; assign shared utility use by metered demand before any allocation"
+      quality_evidence: "Meter calibration; invoices; boiler logs; documented conversion factors; energy-balance review"
+    - protocol_id: cp_output_and_residue_mass
+      process_id: "refining_train"
+      flow_role: "Refined oil, co-products, and solid or liquid residues"
+      record_type: "Tank, scale, dispatch, sales, and waste-transfer record"
+      raw_fields: "output identity; product or waste status; batch; net mass; moisture; oil content where relevant; destination; revenue or disposal route"
+      collection_method: "Reconcile production tanks, packaged bulk dispatch, co-product sales, and waste transfers"
+      unit: "kg"
+      frequency: "Each batch or dispatch; monthly reconciliation"
+      temporal_coverage: "Same period as input and utility records"
+      site_scope: "All output and residue handling areas in scope"
+      aggregation_rule: "Sum by identity and destination; keep marketable co-products separate from wastes and internal recycle"
+      quality_evidence: "Calibrated scales or tank tables; dispatch documents; sales records; waste transfer notes; laboratory oil-content result"
+    - protocol_id: cp_wastewater_records
+      process_id: "refining_train"
+      flow_role: "Process wastewater and pollutant load"
+      record_type: "Flow meter, composite sample, and treatment record"
+      raw_fields: "stream; flow; COD; BOD; total suspended solids; total nitrogen; total phosphorus; oils and grease; pH; treatment destination"
+      collection_method: "Meter discharge and sample under the applicable permit or site monitoring plan"
+      unit: "m3 and kg pollutant"
+      frequency: "Flow continuous or daily; laboratory frequency justified by variability"
+      temporal_coverage: "Same period as product output and representative operating conditions"
+      site_scope: "All refinery wastewater outlets in scope"
+      aggregation_rule: "Calculate pollutant load as concentration multiplied by compatible measured flow; separate uncontaminated cooling water"
+      quality_evidence: "Meter calibration; accredited laboratory report; chain of custody; treatment operator record"
+    - protocol_id: cp_direct_emissions
+      process_id: "refining_train"
+      flow_role: "Direct air and water emissions"
+      record_type: "Stack test, continuous monitor, leak record, and method calculation"
+      raw_fields: "substance; compartment; concentration; flow; operating hours; fuel activity; factor; abatement status"
+      collection_method: "Use measured emission and gas-flow data where available; otherwise calculate from collected activity and cited factor"
+      unit: "kg"
+      frequency: "Permit frequency and after material process change"
+      temporal_coverage: "Same period as product output or a justified representative test"
+      site_scope: "All direct emission points serving the refining train"
+      aggregation_rule: "Integrate measured rate over operating time or multiply measured activity by the cited factor; prevent double counting with energy datasets"
+      quality_evidence: "Accredited test report; monitor QA; activity record; factor reference; uncertainty statement"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "Every inventory row"
+      rule: "normalized amount = period amount / net conforming refined-oil output in the same period"
+      inputs:
+        - "Period flow amount"
+        - "net refined-oil output"
+      output: "Amount per 1 kg or 1 tonne refined oil"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_active_reagent
+      applies_to: "Alkali and acid solutions"
+      rule: "active reagent mass = solution mass x certified active mass fraction"
+      inputs:
+        - "Solution mass"
+        - "certificate concentration"
+      output: "kg active reagent"
+      source_ids:
+        - eu-fdm-bref-2019
+    - id: calc_final_energy
+      applies_to: "Refinery energy screen"
+      rule: "total final energy = purchased electricity + purchased heat + fuel lower-heating-value input + net imported steam energy; keep carrier rows available"
+      inputs:
+        - "Metered carrier quantities"
+        - "heating values"
+        - "steam enthalpy"
+        - "exported energy"
+      output: "MWh final energy per tonne refined oil"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_oil_phase_closure
+      applies_to: "Oil-bearing inputs and outputs"
+      rule: "closure = (refined oil + oil contained in co-products + oil contained in wastes + measured oil losses) / crude-oil input x 100"
+      inputs:
+        - "Crude-oil input"
+        - "output masses"
+        - "measured oil contents"
+        - "identified losses"
+      output: "Oil-phase mass closure percent"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_physical_allocation
+      applies_to: "Remaining shared burdens"
+      rule: "allocation fraction for output i = net mass of marketable output i / sum of net masses of all marketable outputs"
+      inputs:
+        - "Measured refined-oil and marketable co-product masses"
+      output: "Output-specific allocation fractions summing to 1"
+      source_ids:
+        - eu-pef-2021
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and crude-oil input"
+      requirement: "Preserve named oil source, species or commercial designation, low-erucic status when claimed, grade, route, pretreatment state, and applicable specification for every contributing batch."
+      evidence: "Product specification; certificate of analysis; supplier declaration; batch genealogy"
+    - id: dq_measurement
+      applies_to: "Mass, water, energy, chemicals, and outputs"
+      requirement: "Use calibrated measurement where material; document resolution, conversion factors, stock corrections, and uncertainty; estimates shall be separately flagged and sensitivity-tested."
+      evidence: "Calibration certificate; meter register; reconciliation; uncertainty record"
+    - id: dq_temporal
+      applies_to: "Published average"
+      requirement: "Use at least 12 representative consecutive months or a complete declared campaign; explain shutdowns, abnormal batches, and seasonal or feedstock shifts."
+      evidence: "Production calendar; batch list; maintenance and exception log"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile all measured crude-oil, chemical, energy, and water records to the selected production basis and explicitly assess every omitted or unreconciled balance for environmental significance."
+      evidence: "Completeness reconciliation by flow family; omission register; reviewer sign-off"
+    - id: dq_route_and_site
+      applies_to: "Technology and geography"
+      requirement: "Identify chemical or physical refining, actual degumming, neutralisation, bleaching, and deodorisation configuration, vacuum and wastewater systems, site integration, and geography."
+      evidence: "Process flow diagram; equipment list; site description; operator confirmation"
+    - id: dq_source_currency
+      applies_to: "External ranges and method rules"
+      requirement: "Record source edition and retrieval date; treat BAT ranges as QA screens and reassess applicability after a material technology, feedstock, or regulatory change."
+      evidence: "Source register; applicability review; change log"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "Reference flow"
+    rule: "The reference output UUID shall be e30cf6ff-7dfb-4972-affc-6cab3ae17283, its quantitative flow property shall be Mass 93a60a56-a3c8-11da-a746-0800200b9a66, and the normalized amount shall be exactly 1 kg."
+    source_ids: []
+  - rule_id: validation_product_scope
+    applies_to: "Product identity"
+    rule: "Reject a package that does not declare named oil source, grade, refining route, crude-oil pretreatment, geography, period, and bulk delivery state, or that represents a crude, hydrogenated, interesterified, volatile, blended, or biodiesel product outside this scope."
+    source_ids:
+      - codex-cxs-210-1999
+      - unsd-cpc-v3-2025
+  - rule_id: validation_route_inventory
+    applies_to: "Process completeness"
+    rule: "Chemical refining shall include collected records for degumming or neutralisation, bleaching, and deodorisation. Physical refining shall include collected records for adequate pretreatment or degumming, bleaching, and distillative deacidification or deodorisation. Bypassed steps require explicit justification."
+    source_ids:
+      - eu-fdm-bref-2019
+  - rule_id: validation_mass_closure
+    applies_to: "Oil-phase mass balance"
+    rule: "Investigate oil-phase closure outside 95-105 percent; do not force closure by changing the fixed reference output or hiding unmeasured residues. The interval is a provisional QA tolerance, not a permitted process loss."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_bat_screens
+    applies_to: "Annual stand-alone refinery totals"
+    rule: "Flag, but do not automatically reject, final energy outside 0.1-0.45 MWh/t oil or net water consumption outside 0.15-0.9 m3/t oil. Confirm installation type, boundary, route, and operating context before concluding that data are erroneous."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validation_coproduct_allocation
+    applies_to: "Co-products and wastes"
+    rule: "Allocation fractions shall sum to 1 within rounding; every included co-product shall have measured mass and documented beneficial destination, while every excluded residue shall be linked to waste treatment without an allocation credit."
+    source_ids:
+      - eu-pef-2021
+      - eu-fdm-bref-2019
+  - rule_id: validation_no_double_count
+    applies_to: "Upstream and downstream datasets"
+    rule: "Do not duplicate seed cultivation, crushing or extraction burdens contained in the crude-oil dataset, direct emissions already represented in purchased-energy datasets, or wastewater treatment both on site and in an off-site treatment dataset."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for stand-alone refinery-gate refined named oil"
+  downstream_use: "secondary_dataset; background_dataset after methodology and translation review and publication"
+  allowed_use: "Product and process LCA requiring bulk refined rape, colza, canola, or mustard fixed oil at the refinery gate when geography, period, grade, route, upstream crude-oil dataset, and allocation are compatible"
+  excluded_use: "Crude or virgin oil; farm-gate seed; integrated crushing and refining without explicit boundary expansion; hydrogenated or interesterified oil; biodiesel; volatile mustard oil; packaged retail oil; comparative food-safety or legal-conformity claims without separate verification"
+  required_metadata: "PCR id and version state; reference-flow UUID; named oil source and low-erucic status where applicable; grade and specification; chemical or physical route; crude-oil pretreatment and upstream dataset; geography; technology; production period; bulk delivery state; co-product status and allocation; wastewater treatment; data owner and review state"
+  required_quality_disclosure: "Foreground share; measurement and estimation shares; temporal coverage; completeness by flow family; mass closure; energy and water BAT-screen result; omitted flows; provisional reasoned ranges used; source applicability; allocation sensitivity; unresolved UUIDs"
+  update_trigger: "Material change in feedstock identity or origin, refining route or equipment, energy or water system, co-product destination, allocation, product specification, regulation, site geography, or normalized major inputs or outputs beyond documented uncertainty or process-control limits"
+data_sources:
+  - id: "codex-cxs-210-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 210-1999, Standard for Named Vegetable Oils, official standard listing last modified 2024 and official text; https://www.fao.org/fao-who-codexalimentarius/codex-texts/list-standards/en/ ; retrieved 2026-08-10"
+    used_for: "Rapeseed, low-erucic or canola, and mustardseed oil identity; edible-oil applicability and product specification linkage"
+  - id: "unsd-cpc-v3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 explanatory notes, subclass 21642; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf ; retrieved 2026-08-10"
+    used_for: "Classification context and refined named-oil product boundary"
+  - id: "eu-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, 2019; https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf ; retrieved 2026-08-10"
+    used_for: "Chemical and physical refining sequence; degumming, neutralisation, bleaching, and deodorisation; reagent ranges; co-products, residues, and emissions"
+  - id: "eu-fdm-bat-2019"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, especially Section 10 oilseed processing and vegetable oil refining; https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj ; retrieved 2026-08-10"
+    used_for: "Stand-alone refining energy and water QA screens; monitoring and environmental-performance context"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, Annex I; https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 ; retrieved 2026-08-10"
+    used_for: "Multi-functionality hierarchy, allocation disclosure, material completeness, data collection, and quality principles"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Mass conservation identity applied to the measured oil phase of the foreground refining train"
+    used_for: "Reference normalization, oil-phase closure, and physical mass allocation calculations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ce3c14793c5e40a062bec3a175216cfe8786ab628a823c4571694f6eb5eb865a"
+  generated_content_sha256: "sha256:fef1a8ffcc73c79752c55d2bf725624c90fa22db6d6b3ad28a07295930301dc5"

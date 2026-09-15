@@ -1,10 +1,842 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23110"
-  title: "Wheat and meslin flour"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.wheat-and-meslin-flour"
+  classification_refs: "CPC 3.0 23110, Wheat and meslin flour, exact category context"
+  covered_products: "Food-grade flour made from wheat or meslin and sold at the mill gate, with declared grade, extraction basis, and composition"
+  excluded_products: "Durum semolina or groats; other cereal flours; isolated starch or gluten; prepared mixes or doughs; bakery products; non-food milling products"
+  representative_product: "Conventional refined wheat flour in bulk or declared packaging at the mill gate"
+  production_route: "Grain receipt and cleaning; conditioning or tempering; roller or equivalent milling and fractionation; blending or finishing; storage and bulk dispatch or packaging"
+  market_state: "Finished food-grade flour, as-produced, at the mill gate"
+functional_unit:
+  what: "Wheat flour or meslin flour meeting the declared commercial specification"
+  how_much: "1 kg as-produced finished flour at the mill gate"
+  how_well: "Food-grade; declared grain composition, flour grade or extraction basis, moisture, additives or fortification, and packaging state"
+  how_long_or_cycle: "One representative production batch or campaign, including storage until transfer at the mill gate"
+  reference_flow_link: "The quantitative reference is 1 kg of the selected Tiangong product flow output from blending_finishing_packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "mandatory_foreground_operations"
+      rule: "Include receiving and cleaning, conditioning or tempering, milling and fractionation, flour blending or finishing, storage, and mill-gate dispatch when performed by the reporting mill."
+      source_ids:
+        - us-epa-ap42-wheat-milling-2003
+        - epd-pcr-grain-mill-products-2013-04
+    - rule_id: boundary_rule_2
+      applies_to: "conditional_foreground_operations"
+      rule: "Include packaging, fortification, bleaching, drying, on-site utilities, wastewater handling, and dust collection when they occur for the represented product; otherwise document their absence."
+      source_ids:
+        - codex-cxs-152-2023
+        - us-epa-ap42-wheat-milling-2003
+    - rule_id: boundary_rule_3
+      applies_to: "upstream_and_downstream_links"
+      rule: "Model upstream supplies and treatments as linked datasets and exclude distribution after the mill gate, flour use, baking, consumption, and end-of-life from the foreground inventory."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_rule_4
+      applies_to: "cutoff_and_recursive_inputs"
+      rule: "Do not omit a material or energy flow merely because no UUID is available; retain a semantic row and resolve or disclose the link before publication. Prevent recursive expansion of purchased flour inputs."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Food-grade wheat, rye, or meslin grain received at the reporting mill, with origin, moisture, quality class, transport boundary, and mass basis declared"
+  starting_condition_role: "Upstream product input to the mill-gate foreground system"
+  product_classification_scope: "CPC 3.0 23110 finished wheat and meslin flour; upstream grain and co-products remain separately classified products"
+  recursive_input_rule: "A purchased input already classified as wheat or meslin flour must remain a linked upstream product dataset and must not be expanded through this PCR inside the same foreground system. Reworked flour generated within the reporting mill is an internal flow and must be identified separately."
+  upstream_dataset_requirement: "Link grain production, grain drying or storage before receipt, inbound transport, electricity, fuels, water supply, ingredients, packaging production, and waste treatment to geographically and technologically appropriate upstream datasets."
+  disclosure: "Declare whether the dataset starts at grain receipt or includes any upstream operation; list excluded on-site operations, outsourced milling stages, co-product treatment, packaging state, dust-control coverage, and cut-offs."
+reference_flow_definition:
+  reference_amount: "1 kg as-produced finished flour"
+  product_flow_ref:
+    name: "Wheat and meslin flour"
+    uuid: "2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "wheat or meslin identity and wheat/rye shares"
+    - "species or grain class where relevant"
+    - refined
+    - straight-grade
+    - high-extraction
+    - "or wholemeal designation"
+    - "extraction-rate basis"
+    - "as-produced flour moisture"
+    - additive
+    - fortification
+    - bleaching
+    - "or treatment status"
+    - "bulk or packaged state and packaging bill of materials"
+    - "plant geography and technology"
+    - "applicable food specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference flour output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Set the quantitative reference to exactly 1 kg of as-produced finished flour at the mill gate."
+  - id: as_produced_moisture
+    applies_to: "grain, intermediate, flour, and co-product masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg and mass % moisture"
+    rule: "Record weighed mass and moisture on the same lot and time basis; do not mix as-produced and dry-matter quantities without conversion."
+  - id: dry_matter_conversion
+    applies_to: "any dry-basis comparison"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg dry matter"
+    rule: "Calculate dry matter as as-produced mass multiplied by (1 - moisture_fraction) and retain the measured moisture result."
+  - id: extraction_rate
+    applies_to: "finished flour yield"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "%"
+    rule: "Calculate extraction rate as finished flour mass divided by clean conditioned grain entering the first break, multiplied by 100; state whether the result covers straight-grade flour only or all flour streams."
+  - id: energy_conversion
+    applies_to: "purchased electricity and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Preserve the metered carrier unit and convert only with documented factors; use 1 kWh = 3.6 MJ for final-energy conversion."
+  - id: packaging_mass
+    applies_to: "packaging supplied with product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each packaging material by actual bill-of-material mass per 1 kg flour; enter zero only for verified bulk dispatch."
+process_map:
+  - id: grain_receiving_cleaning
+    name: "Grain receiving, storage, and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always for received milling grain"
+    role: "foreground preprocessing"
+    quantitative_reference: "kg clean grain released to tempering"
+  - id: conditioning_tempering
+    name: "Conditioning and tempering"
+    inclusion: "required"
+    inclusion_condition: "Always when water or holding time is used before milling"
+    role: "foreground preparation"
+    quantitative_reference: "kg conditioned grain released to milling"
+  - id: milling_fractionation
+    name: "Milling, sifting, purification, and fractionation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground conversion"
+    quantitative_reference: "kg unblended flour produced"
+  - id: blending_finishing_packaging
+    name: "Blending, finishing, storage, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging inputs are conditional on packaged sale"
+    role: "final foreground process"
+    quantitative_reference: "1 kg finished flour at the mill gate"
+process_inventory:
+  - id: grain_receiving_cleaning
+    label: "Grain receiving, storage, and cleaning"
+    inputs:
+      product:
+        - row_id: received_milling_grain
+          role: "Food-grade milling grain"
+          name: "Food-grade wheat or meslin milling grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wheat and rye or pre-mixed meslin received for the represented flour. No Tiangong input UUID is prescribed until a food-grade grain flow with correct classification and reference property is confirmed."
+          amount:
+            expression: "Weighed received mass assigned to accepted production lots, corrected only through the explicit moisture rule"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grain_lot_mass_quality
+              source_ids:
+                - usda-ars-soft-wheat-milling-methods
+            ranges: []
+        - row_id: receiving_cleaning_energy
+          role: "Receiving and cleaning energy"
+          name: "Purchased electricity and fuels by actual carrier and supplier geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered electricity and fuels for conveying, aspiration, separation, storage, and cleaning; allocate shared meters using documented operating records."
+          amount:
+            expression: "Metered consumption less unrelated loads, normalized to accepted clean grain or finished flour"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      waste:
+        - row_id: cleaning_residues
+          role: "Rejected screenings and cleaning residues"
+          name: "Cleaning residues by actual treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record stones, foreign material, rejected grain, and other cleaning residues by measured destination and classification; saleable animal-feed outputs are product co-products, not waste."
+          amount:
+            expression: "Weighed or reconciled residue mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass_balance
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaned_grain_internal
+          role: "Cleaned milling grain"
+          name: "Cleaned milling grain, internal flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer cleaned grain as an internal foreground flow with lot identity and moisture preserved."
+          amount:
+            expression: "Weighed or mass-balance-reconciled clean grain released to tempering"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg clean grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grain_lot_mass_quality
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: conditioning_tempering
+    label: "Conditioning and tempering"
+    inputs:
+      product:
+        - row_id: cleaned_grain_input
+          role: "Cleaned grain from receiving"
+          name: "Cleaned milling grain, internal flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carry the internal cleaned-grain lot into conditioning without duplicating its upstream burden."
+          amount:
+            expression: "Equal to the transferred output from cleaned_grain_internal, subject to documented storage change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tempering_water_moisture
+              source_ids:
+                - usda-ars-soft-wheat-milling-methods
+            ranges: []
+        - row_id: tempering_water
+          role: "Tempering water"
+          name: "Process water appropriate to the plant supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual water added to reach the declared target moisture and include losses or recirculation separately when material."
+          amount:
+            expression: "Metered or batch-dosed water addition reconciled against before-and-after grain mass and moisture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tempering_water_moisture
+              source_ids:
+                - usda-ars-soft-wheat-milling-methods
+            ranges: []
+        - row_id: tempering_energy
+          role: "Tempering energy"
+          name: "Purchased electricity and fuels by actual carrier and supplier geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered conveying, water preparation, and conditioning energy where separable from other mill loads."
+          amount:
+            expression: "Metered use or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_grain_internal
+          role: "Conditioned grain"
+          name: "Conditioned wheat or meslin grain, internal flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer conditioned grain to milling with measured moisture and tempering time."
+          amount:
+            expression: "Measured conditioned-grain mass after water addition and holding"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned grain output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tempering_water_moisture
+              source_ids:
+                - usda-ars-soft-wheat-milling-methods
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: milling_fractionation
+    label: "Milling, sifting, purification, and fractionation"
+    inputs:
+      product:
+        - row_id: conditioned_grain_input
+          role: "Conditioned grain to first break"
+          name: "Conditioned wheat or meslin grain, internal flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the transferred conditioned-grain mass as the extraction-rate denominator and retain its measured moisture."
+          amount:
+            expression: "Equal to the transferred output from conditioned_grain_internal, less separately measured handling loss"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass_balance
+              source_ids:
+                - usda-ars-soft-wheat-milling-methods
+            ranges: []
+        - row_id: milling_energy
+          role: "Milling energy"
+          name: "Purchased electricity and fuels by actual carrier and supplier geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and other mill energy for break and reduction rolls, sifters, purifiers, pneumatic conveying, and dust collection."
+          amount:
+            expression: "Metered milling-stage energy normalized to finished flour; use the range only as a screen, never as a default value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - odunfa-joel-flour-milling-energy-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0.18749"
+                upper: "0.28037"
+                unit: "MJ"
+                basis: "per 1 kg flour output; values converted from 187.49 to 280.37 MJ per tonne reported for two mills"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - odunfa-joel-flour-milling-energy-2022
+      waste:
+        - row_id: captured_milling_dust
+          role: "Captured milling dust and non-saleable residue"
+          name: "Captured milling dust or residue by actual treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured dust and non-saleable residue by measured mass and treatment. Do not use a feed-grade or otherwise qualified database flow unless it matches the actual material."
+          amount:
+            expression: "Weighed collection or reconciled dust-control record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_and_air_records
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      elementary:
+        - row_id: particulate_to_air
+          role: "Particulate matter released to air"
+          name: "Compartment-specific particulate matter to air, unresolved UUID"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only measured, permitted, or otherwise supported releases after control, using a Tiangong elementary flow with the correct air compartment and particle-size definition."
+          amount:
+            expression: "Stack or permit result after control, or a documented site-specific factor multiplied by throughput"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_and_air_records
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+    outputs:
+      product:
+        - row_id: unblended_flour_internal
+          role: "Unblended flour streams"
+          name: "Unblended wheat or meslin flour, internal flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all flour streams sent to blending or finishing and distinguish any stream sold directly."
+          amount:
+            expression: "Weighed flour output by stream and grade"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass_balance
+              source_ids:
+                - asb-extraction-rate
+                - usda-ars-soft-wheat-milling-methods
+            ranges:
+              - role: qa_guardrail
+                lower: "72"
+                upper: "76"
+                unit: "percent"
+                basis: "finished conventional refined flour divided by clean conditioned grain entering first break; not applicable as a limit for wholemeal or product-specific high-extraction routes"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - asb-extraction-rate
+        - row_id: milling_coproducts
+          role: "Saleable bran, germ, middlings, and other fractions"
+          name: "Saleable milling fractions by actual product identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each saleable fraction as a product co-product with its actual name, moisture, quantity, destination, and unresolved or verified flow identity."
+          amount:
+            expression: "Weighed output by fraction and lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass_balance
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: blending_finishing_packaging
+    label: "Blending, finishing, storage, and dispatch"
+    inputs:
+      product:
+        - row_id: flour_streams_input
+          role: "Flour streams for final blend"
+          name: "Unblended wheat or meslin flour, internal flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer measured flour streams without duplicating their upstream burden."
+          amount:
+            expression: "Sum of transferred flour streams assigned to the represented product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass_balance
+              source_ids:
+                - codex-cxs-152-2023
+            ranges: []
+        - row_id: ingredients_additives
+          role: "Ingredients, fortificants, and processing aids"
+          name: "Actual ingredient, fortificant, or processing-aid product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only materials actually added and distinguish retained ingredients from processing aids and unintentional carryover."
+          amount:
+            expression: "Batch-sheet or dosing-system quantity assigned to released product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blend_pack_dispatch
+              source_ids:
+                - codex-cxs-152-2023
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging material flows matching the bill of materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual primary, secondary, and tertiary packaging supplied with the product; omit only for verified bulk dispatch."
+          amount:
+            expression: "Purchased or issued packaging less verified losses, divided by packaged flour output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blend_pack_dispatch
+              source_ids:
+                - codex-cxs-152-2023
+            ranges: []
+        - row_id: finishing_energy
+          role: "Blending, storage, and dispatch energy"
+          name: "Purchased electricity and fuels by actual carrier and supplier geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered energy for blending, pneumatic transfer, storage, packing, and load-out."
+          amount:
+            expression: "Metered use or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - us-epa-ap42-wheat-milling-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_flour_reference
+          role: "Finished wheat or meslin flour"
+          name: "Wheat and meslin flour"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This output carries the quantitative reference and all required product qualifiers."
+          amount:
+            expression: "exactly 1 kg as-produced released finished flour at the mill gate"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg finished flour at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_blend_pack_dispatch
+              source_ids:
+                - codex-cxs-152-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "process_subdivision"
+    rule: "Avoid allocation by separately metering cleaning, tempering, milling, blending, packaging, and independently operated product lines wherever technically possible."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_2
+    applies_to: "joint_milling_inventory"
+    rule: "Before allocation, keep flour, bran, germ, middlings, and other saleable fractions in one reconciled joint mass balance; do not classify a saleable co-product as waste solely to avoid allocation."
+    source_ids:
+      - eu-pef-method-2021
+      - us-epa-ap42-wheat-milling-2003
+  - rule_id: allocation_rule_3
+    applies_to: "multifunctionality_hierarchy"
+    rule: "Where subdivision cannot resolve multifunctionality, apply system expansion or substitution when a defensible displaced function is documented; otherwise use a relevant physical causal relationship, and use another relationship such as economic allocation only when physical causality cannot be established."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_4
+    applies_to: "allocation_disclosure"
+    rule: "Report the selected method, allocation factors, quantities, moisture basis, price geography and averaging period if economic allocation is used, and a sensitivity result for any material choice."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_grain_lot_mass_quality
+      process_id: "grain_receiving_cleaning"
+      flow_role: "received grain and clean grain"
+      record_type: "weighbridge, intake, and laboratory records"
+      raw_fields: "lot id; supplier; species; wheat/rye shares; gross and net mass; moisture; quality class; rejection"
+      collection_method: "Calibrated scale plus representative moisture and quality sampling"
+      unit: "kg; mass %"
+      frequency: "each lot"
+      temporal_coverage: "all lots in representative period"
+      site_scope: "reporting mill"
+      aggregation_rule: "Sum accepted lot masses; preserve lot-weighted moisture and composition"
+      quality_evidence: "calibration, sampling, and acceptance records"
+    - protocol_id: cp_tempering_water_moisture
+      process_id: "conditioning_tempering"
+      flow_role: "cleaned grain, water, conditioned grain"
+      record_type: "batch and laboratory records"
+      raw_fields: "batch id; before and after grain mass; before and after moisture; added water; hold time"
+      collection_method: "Calibrated dosing meter or batch addition plus moisture test"
+      unit: "kg; mass %; h"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative campaigns and seasons"
+      site_scope: "reporting mill"
+      aggregation_rule: "Reconcile water addition and moisture change by batch, then mass-weight"
+      quality_evidence: "meter checks, moisture method, batch reconciliation"
+    - protocol_id: cp_process_energy
+      process_id: "all_foreground_processes"
+      flow_role: "electricity and fuel"
+      record_type: "meter, invoice, runtime, and equipment records"
+      raw_fields: "meter id; start and end reading; carrier; equipment hours; production quantity; allocation driver"
+      collection_method: "Submeter preferred; otherwise documented shared-meter allocation"
+      unit: "kWh; MJ; carrier unit"
+      frequency: "continuous or each shift; monthly invoice reconciliation"
+      temporal_coverage: "at least 12 representative months where seasonality is material"
+      site_scope: "reporting mill"
+      aggregation_rule: "Subtract unrelated loads, convert documented units, and normalize to released flour"
+      quality_evidence: "meter calibration, invoices, runtime logs, reconciliation"
+    - protocol_id: cp_output_mass_balance
+      process_id: "grain_receiving_cleaning_milling_fractionation_blending_finishing_packaging"
+      flow_role: "flour, co-products, residues, and transfers"
+      record_type: "production, silo, bagging, dispatch, and waste records"
+      raw_fields: "input and output masses; moisture; stream identity; destination; rework; stock change"
+      collection_method: "Calibrated scales and inventory reconciliation"
+      unit: "kg; mass %"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative production period including stock opening and closing"
+      site_scope: "reporting mill"
+      aggregation_rule: "Sum by stream, account for stock change, and reconcile on as-produced and dry-matter bases"
+      quality_evidence: "scale calibration, silo reconciliation, signed dispatch or waste records"
+    - protocol_id: cp_dust_and_air_records
+      process_id: "grain_receiving_cleaning_milling_fractionation"
+      flow_role: "captured dust and particulate releases"
+      record_type: "collection, stack-test, permit, and control records"
+      raw_fields: "source; particle fraction; compartment; control state; captured mass; released concentration; gas flow; hours"
+      collection_method: "Weigh captured material and use site test or permit data for releases"
+      unit: "kg; mg/m3; m3; h"
+      frequency: "each collection event and test; operating-period reconciliation"
+      temporal_coverage: "representative operating period"
+      site_scope: "all relevant emission points"
+      aggregation_rule: "Keep captured material separate from released elementary flows and aggregate by particle fraction"
+      quality_evidence: "test report, permit, control-operation log"
+    - protocol_id: cp_blend_pack_dispatch
+      process_id: "blending_finishing_packaging"
+      flow_role: "ingredients, packaging, finished flour"
+      record_type: "batch sheet, dosing, packaging issue, and dispatch records"
+      raw_fields: "formula; dose; packaging material and mass; packed or bulk quantity; product moisture; release specification"
+      collection_method: "Calibrated dosing and packing equipment plus release testing"
+      unit: "kg; mass %"
+      frequency: "each batch or product code"
+      temporal_coverage: "representative product mix"
+      site_scope: "reporting mill"
+      aggregation_rule: "Attribute directly by product code; reconcile issued packaging and released output"
+      quality_evidence: "batch approval, packaging BOM, release certificate"
+  calculation_rules:
+    - id: calc_rule_1
+      applies_to: "inventory normalization"
+      rule: "Divide every attributable foreground amount by released finished-flour mass on the same as-produced basis."
+      inputs:
+        - "attributable amount"
+        - "released flour mass"
+      output: "amount per 1 kg finished flour"
+      source_ids: []
+    - id: calc_rule_2
+      applies_to: "dry-matter balance"
+      rule: "dry_mass = as_produced_mass × (1 - moisture_fraction); apply separately to each input and output lot."
+      inputs:
+        - "as-produced mass"
+        - "measured moisture"
+      output: "kg dry matter"
+      source_ids:
+        - usda-ars-soft-wheat-milling-methods
+    - id: calc_rule_3
+      applies_to: "extraction rate"
+      rule: "extraction_rate_percent = finished_flour_mass / clean_conditioned_grain_to_first_break × 100; state which flour streams are included."
+      inputs:
+        - "finished flour mass"
+        - "clean conditioned grain mass"
+      output: "extraction rate, %"
+      source_ids:
+        - asb-extraction-rate
+        - usda-ars-soft-wheat-milling-methods
+    - id: calc_rule_4
+      applies_to: "energy conversion"
+      rule: "MJ = kWh × 3.6; do not convert primary-energy literature values into electricity without a documented primary-energy factor."
+      inputs:
+        - "metered kWh"
+      output: "final energy, MJ"
+      source_ids: []
+    - id: calc_rule_5
+      applies_to: "process mass balance"
+      rule: "Reconcile grain, tempering water, retained ingredients, outputs, waste, measured releases, and stock change on both as-produced and dry-matter bases; investigate unexplained differences before release."
+      inputs:
+        - "all process inputs"
+        - outputs
+        - moisture
+        - "and stock change"
+      output: "balance closure and unexplained difference"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_rule_6
+      applies_to: "allocation"
+      rule: "Apply the ordered hierarchy in section 7 to the reconciled joint inventory and retain unallocated quantities and factors for audit."
+      inputs:
+        - "joint inventory"
+        - "co-product quantities"
+        - "causal relation or economic data"
+      output: "allocated inventory per reference flow"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: quality_req_1
+      applies_to: "representativeness"
+      requirement: "Cover the declared technology, geography, flour grades, grain mix, and operating seasons; use at least 12 months when seasonal sourcing or mill operation materially changes results, or justify a shorter representative campaign."
+      evidence: "production schedule, product mix, supplier and meter coverage"
+    - id: quality_req_2
+      applies_to: "metrology"
+      requirement: "Use calibrated mass, moisture, dosing, and energy instruments; identify estimation and shared-meter allocation separately."
+      evidence: "calibration certificates, laboratory methods, invoices, allocation worksheets"
+    - id: quality_req_3
+      applies_to: "mass_balance"
+      requirement: "Close as-produced and dry-matter balances across each process and the full mill; explain stock changes, rework, evaporation, and all material residuals."
+      evidence: "signed reconciliation with unresolved-difference review"
+    - id: quality_req_4
+      applies_to: "product_conformity"
+      requirement: "Record the applicable food specification. For products within CXS 152 scope, verify declared requirements including moisture not exceeding 15.5% by mass; do not apply this limit automatically outside that scope."
+      evidence: "release certificate and cited specification"
+    - id: quality_req_5
+      applies_to: "source_linkage"
+      requirement: "Resolve product, energy, packaging, co-product, waste, and elementary flows to semantically correct datasets before publication; document every remaining gap without substituting a similar but incorrect UUID."
+      evidence: "UUID review record and unresolved-flow register"
+    - id: quality_req_6
+      applies_to: "uncertainty"
+      requirement: "Treat extraction and energy ranges as screening evidence only; replace them with site observations and disclose range context, sample count, variation, and any outliers."
+      evidence: "raw data summary and uncertainty statement"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "reference_flow"
+    rule: "Require exactly one 1 kg as-produced finished-flour reference output using product flow 2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "product_identity"
+    rule: "Require every reference-flow qualifier in section 3, including wheat/meslin composition, flour grade and extraction basis, moisture basis, treatments or additives, packaging state, geography, and applicable specification."
+    source_ids:
+      - codex-cxs-152-2023
+  - rule_id: validation_rule_3
+    applies_to: "process_completeness"
+    rule: "Require all four process ids in section 6 and a documented reason for any operation reported as not applicable or outsourced."
+    source_ids:
+      - us-epa-ap42-wheat-milling-2003
+  - rule_id: validation_rule_4
+    applies_to: "mass_and_moisture_balance"
+    rule: "Require reconciled as-produced and dry-matter balances and investigate any unexplained difference beyond the reporting mill's documented metering uncertainty."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_rule_5
+    applies_to: "co_products_and_allocation"
+    rule: "Require every saleable milling fraction, the multifunctionality hierarchy, allocation factors, and sensitivity disclosure where the allocation choice is material."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_rule_6
+    applies_to: "emissions_and_waste"
+    rule: "Reject double counting of captured dust as both waste and air emission; require an air compartment and particle-size definition for particulate elementary flows."
+    source_ids:
+      - us-epa-ap42-wheat-milling-2003
+  - rule_id: validation_rule_7
+    applies_to: "source_and_uuid_integrity"
+    rule: "Reject search snippets, invented identifiers, version-pinned UUID substitutions, or semantically mismatched flows; unresolved non-reference flows must remain explicit until a verified link is available."
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "codex_scope"
+    rule: "For a product claiming CXS 152 conformity, require evidence that the product is within that standard's scope and verify its applicable composition, hygiene, packaging, labelling, and moisture requirements; otherwise do not make the claim."
+    source_ids:
+      - codex-cxs-152-2023
+published_dataset_profile:
+  dataset_role: "Plant-specific foreground mill-gate dataset for wheat or meslin flour production"
+  downstream_use: "Background input to food, feed, starch, ingredient, or other product systems where the declared flour matches the user's required specification"
+  allowed_use: "Comparative or non-comparative LCA after checking geography, technology, grain mix, flour grade, allocation, packaging, and temporal representativeness"
+  excluded_use: "Direct representation of durum semolina, other cereal flour, isolated starch or gluten, prepared dough, bakery product, or a different flour grade without adjustment"
+  required_metadata: "Plant geography; reference period; technology; wheat/rye shares; species or grain class; flour grade and extraction basis; moisture; additives, fortification, bleaching, or treatment; packaging BOM or bulk state; process coverage; upstream dataset choices; co-products and allocation; applicable food specification"
+  required_quality_disclosure: "Primary-data share; meter and lot coverage; mass-balance closure; uncertainty; screening-range use; allocation sensitivity; unresolved dataset links; deviations from this PCR"
+  update_trigger: "Material change in grain mix, flour grade, extraction, process technology, energy supply, product formulation, packaging, allocation, regulation or specification, or data older than the declared representativeness period"
+data_sources:
+  - id: "codex-cxs-152-2023"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 152-1985 Standard for Wheat Flour, amended 2023, https://www.fao.org/input/download/standards/50/CXS_152e.pdf"
+    used_for: "Product scope for common and club wheat flour; definition, moisture, ingredient, hygiene, packaging, and labelling controls; applied only within the standard's scope"
+  - id: "us-epa-ap42-wheat-milling-2003"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 9.9.1 Grain Elevators and Processes, wheat flour milling section, final 2003, https://www.epa.gov/sites/default/files/2020-10/documents/c9s0909-1.pdf"
+    used_for: "Mill process decomposition, cleaning and tempering operations, milling and fractionation, material handling, and particulate-source coverage"
+  - id: "epd-pcr-grain-mill-products-2013-04"
+    type: "standard"
+    reference: "EPD International, PCR 2013:04 Grain mill products, version 3.0.5, https://www.environdec.com/pcr-library/pcr2013-04"
+    used_for: "Category and LCA-method context for UN CPC 2311; the programme page states that this PCR expired on 2026-05-30, so it is not treated as a currently valid quantitative authority"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the Product Environmental Footprint method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "System-boundary completeness, linked upstream datasets, data quality, and multifunctionality hierarchy"
+  - id: "usda-ars-soft-wheat-milling-methods"
+    type: "official_guidance"
+    reference: "USDA Agricultural Research Service, Soft Wheat Quality Laboratory Materials and Methods, https://www.ars.usda.gov/midwest-area/wooster-oh/corn-soybean-and-wheat-quality-research/docs/soft-wheat-quality-laboratory-materials-and-methods/"
+    used_for: "Lot moisture records, tempering method, milling stream measurement, and flour-yield calculation protocol"
+  - id: "asb-extraction-rate"
+    type: "handbook"
+    reference: "American Society of Baking, Extraction Rate, https://asbe.org/article/extraction-rate/?topic=analytical-methods"
+    used_for: "Extraction-rate definition and 72-76% screening context for efficient conventional refined flour milling"
+  - id: "odunfa-joel-flour-milling-energy-2022"
+    type: "literature"
+    reference: "Odunfa M. K. and Joel O. T., Energy audit and conservation opportunities in flour milling industry in Nigeria, Global Journal of Engineering and Technology Advances 13(1), 2022, DOI 10.30574/gjeta.2022.13.1.0120"
+    used_for: "Reported 187.49-280.37 MJ per tonne milling-stage energy-intensity range used only as a contextual QA screen"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:38f1d6e5a44f8363a1d7d60c4bb3d6c5ae3402476136640e8bdd8b11bcd4f13a"
+  generated_content_sha256: "sha256:2e243e76e93793dbc7aa4f53cf2b34cabd3b432655aa57cb548141363cd661ae"

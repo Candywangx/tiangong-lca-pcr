@@ -40,7 +40,7 @@ test("parsePcrMarkdownToStructured reads localized Chinese flow cards", () => {
 
 清洗水作为输入产品流记录。
 
-- 选定流：Process water \`ec205030-248c-496f-9cf2-06d9d26dc6ff\`
+- 选定流：过程水 \`ec205030-248c-496f-9cf2-06d9d26dc6ff\`
 - 流属性/单位：Mass / kg
 - 数量规则：计量用水量
 - 数值来源模式：前景记录（\`foreground_record\`）
@@ -332,5 +332,53 @@ test("material PCR translations preserve machine-addressable normative rule ids"
         `${manifest.id} has misaligned ${label} rule ids`,
       );
     }
+  }
+});
+
+test("Chinese measurement fixture retains its unresolved reference product definition", () => {
+  const fixture = readFileSync(
+    new URL("../fixtures/measurement-44125/pcr.zh-CN.md", import.meta.url), "utf8",
+  );
+  const definition = parsePcrMarkdownToStructured(fixture).referenceFlowDefinition;
+  assert.ok(definition, "localized reference fields must not disappear");
+  assert.equal(definition.reference_amount, "1");
+  assert.equal(definition.product_flow.name, "成品秸秆或饲料打捆机（UUID 未解决）");
+  assert.equal(definition.product_flow.uuid, "");
+  assert.equal(definition.flow_property_uuid, "93a60a56-a3c8-11da-a746-0800200b9a66");
+  assert.equal(definition.unit_group_uuid, "93a60a57-a4c8-11da-a746-0800200c9a66");
+  assert.equal(definition.reference_unit, "kg");
+  assert.ok(definition.required_qualifiers.some(value => value.includes("制造商和工厂")));
+});
+
+test("English and existing Chinese reference field labels resolve the same UUID identity", () => {
+  const uuid = "AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE";
+  const english = `## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 |
+| Reference product flow | Iron \`${uuid}\` |
+| Reference flow property | Mass \`93a60a56-a3c8-11da-a746-0800200b9a66\` |
+| Reference unit group | Mass \`93a60a57-a4c8-11da-a746-0800200c9a66\` |
+| Reference unit | kg |
+| Required qualifiers | grade; geography |
+`;
+  const en = parsePcrMarkdownToStructured(english).referenceFlowDefinition;
+  for (const [productLabel, qualifierLabel] of [
+    ["参考产品流", "必需限定信息"],
+    ["参考产品", "必填限定信息"],
+  ]) {
+    const chinese = english
+      .replace("Reference Flow", "参考流")
+      .replace("| Field | Value |", "| 字段 | 值 |")
+      .replace("Reference amount", "参考数量")
+      .replace("Reference product flow", productLabel)
+      .replace("Reference flow property", "参考流属性")
+      .replace("Reference unit group", "参考单位组")
+      .replace("Reference unit", "参考单位")
+      .replace("Required qualifiers", qualifierLabel);
+    const zh = parsePcrMarkdownToStructured(chinese).referenceFlowDefinition;
+    assert.deepEqual(zh, en);
+    assert.equal(zh.product_flow.uuid, uuid.toLowerCase());
   }
 });

@@ -67,7 +67,100 @@ function inventoryFlowRowCount(processInventory) {
  * Checks content that must be present before a material projection can guide data production.
  * JSON Schema owns stable shape; this function owns state-sensitive methodology completeness.
  */
-export function materialProjectionCompletenessIssues(projection, { expectedPcrId } = {}) {
+export function hasDeclaredUnresolvedReferenceProductFlow(projection, manifest) {
+  if (
+    manifest?.status !== "candidate" ||
+    manifest?.content_maturity !== "authored_methodology"
+  ) {
+    return false;
+  }
+  const productName = String(
+    projection?.reference_flow_definition?.product_flow_ref?.name ?? "",
+  ).trim();
+  if (!productName) {
+    return false;
+  }
+  const reviewMetadata = manifest?.review_metadata ?? {};
+  const hasLegacyReferenceProductDeclaration =
+    (Array.isArray(reviewMetadata.unresolved) &&
+      reviewMetadata.unresolved.some((entry) =>
+        /reference[_ -]?product[_ -]?flow/iu.test(
+          String(entry?.code ?? entry?.issue_id ?? ""),
+        ),
+      )) ||
+    (reviewMetadata.reference_flow_identity?.status === "unresolved" &&
+      (reviewMetadata.reference_flow_identity?.unresolved_support_fields ?? []).some(
+        (field) => String(field) === "reference_product_flow_uuid",
+      ));
+  const unresolvedEntries = [
+    ...(Array.isArray(reviewMetadata.unresolved?.inventory_flow_uuids)
+      ? reviewMetadata.unresolved.inventory_flow_uuids
+      : []),
+    ...(Array.isArray(reviewMetadata.unresolved_flow_identities)
+      ? reviewMetadata.unresolved_flow_identities
+      : []),
+    ...(Array.isArray(reviewMetadata.unresolved)
+      ? reviewMetadata.unresolved
+          .filter((entry) =>
+            /reference[_ -]?product[_ -]?flow(?:[_ -]?uuid)?/iu.test(
+              String(entry?.code ?? entry?.issue_id ?? ""),
+            ),
+          )
+          .map(() => "reference product flow")
+      : []),
+    ...(reviewMetadata.reference_flow_identity?.status === "unresolved" &&
+    (reviewMetadata.reference_flow_identity?.unresolved_support_fields ?? []).some(
+      (field) => String(field) === "reference_product_flow_uuid",
+    )
+      ? ["reference product flow"]
+      : []),
+  ];
+  if (!Array.isArray(unresolvedEntries) || unresolvedEntries.length === 0) {
+    return false;
+  }
+  for (const processEntry of Array.isArray(projection?.process_inventory)
+    ? projection.process_inventory
+    : []) {
+    for (const row of Array.isArray(processEntry?.outputs?.product)
+      ? processEntry.outputs.product
+      : []) {
+      const rowId = String(row?.row_id ?? "").trim();
+      if (
+        hasLegacyReferenceProductDeclaration &&
+        /^reference_product(?:_|$)/u.test(rowId)
+      ) {
+        return true;
+      }
+      if (String(row?.name ?? "").trim() !== productName) {
+        continue;
+      }
+      const normalizedProductName = productName.toLocaleLowerCase("en-US");
+      const hasMatchingDeclaration = unresolvedEntries.some((entry) => {
+        if (typeof entry === "object" && entry !== null) {
+          return String(entry.row_id ?? "").trim() === rowId;
+        }
+        const declaration = String(entry ?? "").trim();
+        const normalizedDeclaration = declaration.toLocaleLowerCase("en-US");
+        return (
+          declaration === rowId ||
+          (rowId && declaration.includes(rowId)) ||
+          declaration.startsWith("reference_product_") ||
+          normalizedDeclaration.includes(normalizedProductName) ||
+          /\breference product(?: flow)?\b|参考产品(?:流)?/iu.test(declaration)
+        );
+      });
+      if (hasMatchingDeclaration) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+export function materialProjectionCompletenessIssues(
+  projection,
+  { expectedPcrId, allowUnresolvedProductFlowUuid = false } = {},
+) {
   const issues = [];
   const canonicalPcrId = projection?.product_category_identity?.canonical_pcr_id;
   if (!meaningfulScalar(canonicalPcrId)) {
@@ -98,6 +191,14 @@ export function materialProjectionCompletenessIssues(projection, { expectedPcrId
   }
 
   for (const segments of REFERENCE_FLOW_FIELDS) {
+    if (
+      allowUnresolvedProductFlowUuid &&
+      segments.length === 2 &&
+      segments[0] === "product_flow_ref" &&
+      segments[1] === "uuid"
+    ) {
+      continue;
+    }
     if (!meaningfulScalar(valueAtPath(projection?.reference_flow_definition, segments))) {
       const field = segments.join(".");
       issues.push(

@@ -1,10 +1,1465 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "29210"
-  title: "Saddlery and harness, for any animal, of any material"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.leather-and-leather-products-footwear.saddlery-and-harness-for-any-animal-of-any-material"
+  classification_refs: "CPC 3.0: 29210, exact mapping"
+  covered_products: "Saddles, bridles, reins, halters, collars, traces, harnesses and comparable animal tack of leather, synthetic materials, textile webbing or mixed construction"
+  excluded_products: "Luggage; handbags; human apparel, belts or PPE; veterinary devices; unrelated animal clothing; non-tack sporting goods"
+  representative_product: "A finished, inspected item of saddlery or harness at the factory gate"
+  production_route: "Leather route, synthetic-sheet route, webbing route, or a documented combination, followed by cutting, assembly and packaging; surface finishing is conditional"
+  market_state: "Finished product ready to leave the manufacturing facility"
+functional_unit:
+  what: "A finished item of saddlery or harness that provides its declared riding-support, animal-control, restraint or load-transfer function"
+  how_much: "1 kg net mass of conforming finished product, excluding all packaging mass"
+  how_well: "Conforms to the declared product specification for animal/use class, materials, dimensions, load or restraint duty, stitching, hardware, finish and inspection criteria"
+  how_long_or_cycle: "One manufacturing reporting period; expected service life may be disclosed but is not imposed by this factory-gate mass reference"
+  reference_flow_link: "reference_product_output in final_inspection_packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_finished_inputs
+      applies_to: "all routes"
+      rule: "Start the foreground at receipt of finished leather, synthetic sheet/fabric, webbing, padding, hardware, thread, chemicals and packaging; link their manufacture to upstream datasets."
+      source_ids:
+        - eu-pef-2021-2279
+        - apparel-footwear-pefcr-v3.1
+    - rule_id: boundary_include_factory_operations
+      applies_to: "reporting facility"
+      rule: "Include all on-site preparation, cutting, sewing, hardware assembly, applicable finishing/drying, inspection, utilities, packaging, wastes and emissions."
+      source_ids:
+        - eu-pef-2021-2279
+        - apparel-footwear-pefcr-v3.1
+    - rule_id: boundary_conditional_finishing
+      applies_to: "surface finishing"
+      rule: "Include edge coating, topcoating, cleaning, wastewater, drying fuel and emissions only when performed at the facility; document their absence otherwise."
+      source_ids:
+        - eu-tanning-bref
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_leather
+      applies_to: "leather route"
+      rule: "Keep hide preparation and tanning upstream unless physically performed at the reporting facility; disclose the linked leather dataset and its tanning chemistry."
+      source_ids:
+        - eu-tanning-bref
+    - rule_id: boundary_no_cutoff
+      applies_to: "foreground exchanges"
+      rule: "Do not omit a known foreground material, utility, packaging component, waste or emission because it is small; record it or document a justified not-applicable determination."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_exclude_downstream
+      applies_to: "factory-gate result"
+      rule: "Exclude distribution, retail, use, animal care, maintenance, repair and end-of-life from this dataset."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "finished constituent materials, components and packaging received at the reporting facility"
+  starting_condition_role: "cradle-to-gate upstream datasets terminate at each purchased input; this PCR foreground models conversion and assembly"
+  product_classification_scope: "CPC 3.0 subclass 29210"
+  recursive_input_rule: "A purchased or transferred item already classified in CPC 29210 remains a visible product input and is linked to its own upstream dataset; do not recursively reconstruct it in this foreground"
+  upstream_dataset_requirement: "Match material, technology, geography and period; for leather inputs disclose species, tanning system, thickness and finish, and use tanning-background data only upstream unless tanning occurs on site"
+  disclosure: "Declare included routes, excluded conditional operations, facility boundary, reporting period, allocation and all unresolved upstream proxies"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Saddlery and harness, for any animal, of any material"
+    uuid: "850d448a-711c-4151-8745-7aece3fc2acb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype"
+    - "animal and intended use"
+    - "material bill of materials"
+    - "product dimensions or size"
+    - "declared load/restraint class where applicable"
+    - "construction and stitching"
+    - "hardware alloys and finishes"
+    - "coating/adhesive system"
+    - "packaging configuration"
+    - "production geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net mass after final inspection and before packaging; normalize every exchange to exactly 1 kg."
+  - id: material_mass
+    applies_to: "materials, hardware, chemicals, packaging and solid/liquid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated weighing, invoices corrected by stock change, or documented batch reconciliation; keep each material and waste separate."
+  - id: electricity_energy
+    applies_to: "each process electricity input"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use submetered consumption where available; otherwise allocate a reconciled facility meter using documented machine time and rated load."
+  - id: fuel_energy
+    applies_to: "natural gas used for on-site drying"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered gas to energy with the supplier calorific value for the reporting period and retain the source record."
+  - id: compressed_air_volume
+    applies_to: "compressed air input"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "State pressure and measurement condition; do not report compressor electricity again if compressed air is modelled as a purchased product input."
+  - id: solvent_balance
+    applies_to: "isopropanol input, waste and air emission"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile solvent input with product retention, recovered solvent, liquid waste and separately calculated or measured air emission."
+process_map:
+  - id: material_cutting
+    name: "Material preparation and cutting"
+    inclusion: "required"
+    inclusion_condition: "All production routes"
+    role: "foreground_process"
+    quantitative_reference: "cut_component_kit_output"
+  - id: assembly_hardware
+    name: "Sewing and hardware assembly"
+    inclusion: "required"
+    inclusion_condition: "All production routes; record only hardware actually used"
+    role: "foreground_process"
+    quantitative_reference: "assembled_unfinished_saddlery_output"
+  - id: surface_finishing
+    name: "Edge treatment, surface finishing and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when coating, edge treatment, solvent cleaning or thermal drying occurs at the reporting facility"
+    role: "foreground_process"
+    quantitative_reference: "finished_unpacked_saddlery_output"
+  - id: final_inspection_packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "All production routes"
+    role: "foreground_process"
+    quantitative_reference: "reference_product_output"
+process_inventory:
+  - id: material_cutting
+    label: "Material preparation and cutting"
+    inputs:
+      product:
+        - row_id: finished_bovine_leather_input
+          role: "Finished bovine leather"
+          name: "Finished bovine leather"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished bovine leather crosses the material preparation and cutting boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+                - eu-tanning-bref
+            ranges: []
+        - row_id: polyurethane_coated_polyester_fabric_input
+          role: "Polyurethane-coated polyester fabric"
+          name: "Polyurethane-coated polyester fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyurethane-coated polyester fabric crosses the material preparation and cutting boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: woven_polyester_webbing_input
+          role: "Woven polyester webbing"
+          name: "Woven polyester webbing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Woven polyester webbing crosses the material preparation and cutting boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: eva_foam_padding_input
+          role: "Ethylene-vinyl acetate foam padding"
+          name: "Ethylene-vinyl acetate foam padding"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ethylene-vinyl acetate foam padding crosses the material preparation and cutting boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: marker_paper_input
+          role: "Marker paper"
+          name: "Marker paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Marker paper crosses the material preparation and cutting boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: cutting_electricity_input
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the material preparation and cutting boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the dedicated meter value or an allocated share of a reconciled facility meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cut_component_kit_output
+          role: "Cut saddlery component kit"
+          name: "Cut saddlery component kit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cut saddlery component kit is the separately recorded intermediate output transferred to the next foreground process. Reconcile its quantity with the process material balance."
+          amount:
+            expression: "Record the weighed or batch-reconciled mass transferred to the next process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      waste:
+        - row_id: finished_leather_offcut_output
+          role: "Finished bovine leather offcut"
+          name: "Finished bovine leather offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Finished bovine leather offcut leaves the material preparation and cutting process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+                - eu-tanning-bref
+            ranges: []
+        - row_id: coated_fabric_offcut_output
+          role: "Polyurethane-coated polyester fabric offcut"
+          name: "Polyurethane-coated polyester fabric offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyurethane-coated polyester fabric offcut leaves the material preparation and cutting process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: polyester_webbing_offcut_output
+          role: "Woven polyester webbing offcut"
+          name: "Woven polyester webbing offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Woven polyester webbing offcut leaves the material preparation and cutting process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: eva_foam_offcut_output
+          role: "Ethylene-vinyl acetate foam offcut"
+          name: "Ethylene-vinyl acetate foam offcut"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Ethylene-vinyl acetate foam offcut leaves the material preparation and cutting process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: waste_marker_paper_output
+          role: "Waste marker paper"
+          name: "Waste marker paper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste marker paper leaves the material preparation and cutting process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_cutting_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      elementary:
+        []
+  - id: assembly_hardware
+    label: "Sewing and hardware assembly"
+    inputs:
+      product:
+        - row_id: cut_component_kit_assembly_input
+          role: "Cut saddlery component kit"
+          name: "Cut saddlery component kit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cut saddlery component kit crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: polyester_sewing_thread_input
+          role: "Polyester sewing thread"
+          name: "Polyester sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyester sewing thread crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: stainless_steel_buckle_input
+          role: "Stainless steel saddlery buckle"
+          name: "Stainless steel saddlery buckle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Stainless steel saddlery buckle crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: stainless_steel_d_ring_input
+          role: "Stainless steel D-ring"
+          name: "Stainless steel D-ring"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Stainless steel D-ring crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: stainless_steel_rivet_input
+          role: "Stainless steel saddlery rivet"
+          name: "Stainless steel saddlery rivet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Stainless steel saddlery rivet crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: brass_eyelet_input
+          role: "Brass saddlery eyelet"
+          name: "Brass saddlery eyelet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Brass saddlery eyelet crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: waterborne_polyurethane_adhesive_input
+          role: "Waterborne polyurethane adhesive"
+          name: "Waterborne polyurethane adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Waterborne polyurethane adhesive crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: assembly_electricity_input
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the dedicated meter value or an allocated share of a reconciled facility meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: compressed_air_input
+          role: "Compressed air, facility supply"
+          name: "Compressed air, facility supply"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Compressed air, facility supply crosses the sewing and hardware assembly boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the delivered or metered volume at the declared pressure and measurement condition."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_unfinished_saddlery_output
+          role: "Assembled unfinished saddlery or harness"
+          name: "Assembled unfinished saddlery or harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Assembled unfinished saddlery or harness is the separately recorded intermediate output transferred to the next foreground process. Reconcile its quantity with the process material balance."
+          amount:
+            expression: "Record the weighed or batch-reconciled mass transferred to the next process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      waste:
+        - row_id: waste_polyester_thread_output
+          role: "Waste polyester sewing thread"
+          name: "Waste polyester sewing thread"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste polyester sewing thread leaves the sewing and hardware assembly process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: rejected_stainless_steel_hardware_output
+          role: "Rejected stainless steel saddlery hardware"
+          name: "Rejected stainless steel saddlery hardware"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected stainless steel saddlery hardware leaves the sewing and hardware assembly process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: waste_waterborne_polyurethane_adhesive_output
+          role: "Waste waterborne polyurethane adhesive"
+          name: "Waste waterborne polyurethane adhesive"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste waterborne polyurethane adhesive leaves the sewing and hardware assembly process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_hardware_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Edge treatment, surface finishing and drying"
+    inputs:
+      product:
+        - row_id: assembled_unfinished_surface_input
+          role: "Assembled unfinished saddlery or harness"
+          name: "Assembled unfinished saddlery or harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Assembled unfinished saddlery or harness crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: waterborne_acrylic_edge_coating_input
+          role: "Waterborne acrylic leather edge coating"
+          name: "Waterborne acrylic leather edge coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Waterborne acrylic leather edge coating crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+                - eu-tanning-bref
+            ranges: []
+        - row_id: waterborne_polyurethane_topcoat_input
+          role: "Waterborne polyurethane leather topcoat"
+          name: "Waterborne polyurethane leather topcoat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Waterborne polyurethane leather topcoat crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+                - eu-tanning-bref
+            ranges: []
+        - row_id: isopropanol_cleaning_solvent_input
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Isopropanol crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-tanning-bref
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Process water crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-tanning-bref
+            ranges: []
+        - row_id: surface_finishing_electricity_input
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the dedicated meter value or an allocated share of a reconciled facility meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: natural_gas_drying_input
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the edge treatment, surface finishing and drying boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the dedicated meter value or an allocated share of a reconciled facility meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_utility_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_unpacked_saddlery_output
+          role: "Finished unpacked saddlery or harness"
+          name: "Finished unpacked saddlery or harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished unpacked saddlery or harness is the separately recorded intermediate output transferred to the next foreground process. Reconcile its quantity with the process material balance."
+          amount:
+            expression: "Record the weighed or batch-reconciled mass transferred to the next process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      waste:
+        - row_id: waste_acrylic_edge_coating_output
+          role: "Waste waterborne acrylic leather edge coating"
+          name: "Waste waterborne acrylic leather edge coating"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste waterborne acrylic leather edge coating leaves the edge treatment, surface finishing and drying process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+                - eu-tanning-bref
+            ranges: []
+        - row_id: waste_polyurethane_topcoat_output
+          role: "Waste waterborne polyurethane leather topcoat"
+          name: "Waste waterborne polyurethane leather topcoat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste waterborne polyurethane leather topcoat leaves the edge treatment, surface finishing and drying process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+                - eu-tanning-bref
+            ranges: []
+        - row_id: waste_isopropanol_output
+          role: "Waste isopropanol cleaning solvent"
+          name: "Waste isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste isopropanol cleaning solvent leaves the edge treatment, surface finishing and drying process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-tanning-bref
+            ranges: []
+        - row_id: surface_finishing_wastewater_output
+          role: "Aqueous leather surface-finishing wastewater"
+          name: "Aqueous leather surface-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Aqueous leather surface-finishing wastewater leaves the edge treatment, surface finishing and drying process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finishing_material_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-tanning-bref
+            ranges: []
+      elementary:
+        - row_id: isopropanol_air_output
+          role: "Isopropanol, to air"
+          name: "Isopropanol, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Isopropanol, to air leaves the edge treatment, surface finishing and drying process as one separately quantified elementary emission; do not combine it with other volatile compounds or combustion species."
+          amount:
+            expression: "Calculate from the measured isopropanol input, separately measured recovery and waste quantities, and any direct emission measurement; document the solvent balance."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_finishing_emission_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-tanning-bref
+            ranges: []
+        - row_id: fossil_co2_air_output
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide, fossil, to air leaves the edge treatment, surface finishing and drying process as one separately quantified elementary emission; do not combine it with other volatile compounds or combustion species."
+          amount:
+            expression: "Calculate from measured natural-gas energy and a source-appropriate, cited emission factor or use a direct stack measurement; retain the calculation record."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_finishing_emission_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: nitrogen_dioxide_air_output
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen dioxide, to air leaves the edge treatment, surface finishing and drying process as one separately quantified elementary emission; do not combine it with other volatile compounds or combustion species."
+          amount:
+            expression: "Calculate from measured natural-gas energy and a source-appropriate, cited emission factor or use a direct stack measurement; retain the calculation record."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_finishing_emission_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: final_inspection_packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: finished_unpacked_packaging_input
+          role: "Finished unpacked saddlery or harness"
+          name: "Finished unpacked saddlery or harness"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished unpacked saddlery or harness crosses the final inspection and packaging boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: final_inspection_electricity_input
+          role: "Electricity, facility supply"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity, facility supply crosses the final inspection and packaging boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the dedicated meter value or an allocated share of a reconciled facility meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: paper_hangtag_input
+          role: "Paper hangtag"
+          name: "Paper hangtag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper hangtag crosses the final inspection and packaging boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: ldpe_protective_bag_input
+          role: "Low-density polyethylene protective bag"
+          name: "Low-density polyethylene protective bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene protective bag crosses the final inspection and packaging boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: corrugated_shipping_carton_input
+          role: "Corrugated paperboard shipping carton"
+          name: "Corrugated paperboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated paperboard shipping carton crosses the final inspection and packaging boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: polypropylene_packing_tape_input
+          role: "Polypropylene packing tape"
+          name: "Polypropylene packing tape"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polypropylene packing tape crosses the final inspection and packaging boundary as one separately recorded input. Apply this card only when this exact material or utility is used; do not aggregate substitutes or alternatives into it."
+          amount:
+            expression: "Record the weighed, invoiced or stock-reconciled quantity crossing this process boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Saddlery and harness, for any animal, of any material"
+          name: "Saddlery and harness, for any animal, of any material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "850d448a-711c-4151-8745-7aece3fc2acb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The conforming finished reference product leaves the reporting facility after inspection. Its net product mass excludes hangtag, protective bag, carton and tape mass."
+          amount:
+            expression: "Fixed at 1 kg net mass of conforming finished product; packaging mass is excluded."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_reference_output_records
+              source_ids:
+                - un-cpc-official
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: waste_corrugated_paperboard_output
+          role: "Waste corrugated paperboard"
+          name: "Waste corrugated paperboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste corrugated paperboard leaves the final inspection and packaging process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: waste_ldpe_film_output
+          role: "Waste low-density polyethylene film"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste low-density polyethylene film leaves the final inspection and packaging process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+        - row_id: waste_polypropylene_tape_output
+          role: "Waste polypropylene packing tape"
+          name: "Waste polypropylene packing tape"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste polypropylene packing tape leaves the final inspection and packaging process as one separately identified waste stream. Keep its composition, contamination state and actual treatment destination in the foreground record."
+          amount:
+            expression: "Record the weighed or container-reconciled quantity leaving the process and its actual treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net mass of conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+                - apparel-footwear-pefcr-v3.1
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "distinct products, routes and batches"
+    rule: "Prefer separate meters, batch records and process subdivision so burdens are directly assigned before any allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_driver
+    applies_to: "unavoidable shared utilities and wastes"
+    rule: "Allocate by a documented causal physical driver such as machine time, metered energy, treated area or processed mass."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_last_resort
+    applies_to: "shared burdens without a defensible physical driver"
+    rule: "Use economic allocation only as a last resort and disclose prices, period, sensitivity and affected exchanges."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_no_avoided_burden_scrap
+    applies_to: "offcuts and rejected hardware"
+    rule: "Record actual waste treatment or sale at the boundary; do not apply an avoided-burden recycling credit inside the foreground result."
+    source_ids:
+      - eu-pef-2021-2279
+      - apparel-footwear-pefcr-v3.1
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_cutting_records
+      process_id: "material_cutting"
+      flow_role: "material, electricity, intermediate and offcut rows"
+      record_type: "purchase/stock, cutting batch, submeter and waste records"
+      raw_fields: "flow name; material specification; opening/closing stock; purchases; batch issue; output; waste; kWh; timestamp"
+      collection_method: "reconcile stock and batch issues; weigh output/offcuts; read meter or allocate reconciled meter"
+      unit: "kg; kWh"
+      frequency: "each batch, aggregated monthly"
+      temporal_coverage: "same reporting period as reference output"
+      site_scope: "reporting facility"
+      aggregation_rule: "sum atomic rows, then divide by conforming reference-product mass"
+      quality_evidence: "calibration, invoices, stock ledger, batch sheet, meter record and waste ticket"
+    - protocol_id: cp_assembly_hardware_records
+      process_id: "assembly_hardware"
+      flow_role: "thread, each hardware item, adhesive, electricity, compressed air, intermediate and waste rows"
+      record_type: "bill of materials, issue/return, machine, meter and waste records"
+      raw_fields: "atomic item; alloy/formulation; quantity; mass; batch; machine time; kWh; m3; waste; destination"
+      collection_method: "reconcile BOM with issue/return and batch output; separately meter or allocate utilities"
+      unit: "kg; kWh; m3"
+      frequency: "each batch, aggregated monthly"
+      temporal_coverage: "same reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "sum by atomic flow and normalize to reference mass"
+      quality_evidence: "approved BOM, supplier specification, batch record, meter record and waste ticket"
+    - protocol_id: cp_surface_finishing_material_records
+      process_id: "surface_finishing"
+      flow_role: "coating, solvent, water, intermediate and waste/wastewater rows"
+      record_type: "formulation, issue/return, batch, water meter and waste records"
+      raw_fields: "formulation; solids; input mass; returned mass; water; output; waste; wastewater; destination"
+      collection_method: "reconcile issued and returned chemicals; weigh waste; meter water; document route applicability"
+      unit: "kg"
+      frequency: "each finishing batch"
+      temporal_coverage: "same reporting period"
+      site_scope: "finishing area at reporting facility"
+      aggregation_rule: "sum each atomic flow and normalize to reference mass"
+      quality_evidence: "supplier SDS/specification, batch sheet, water record, waste manifest and wastewater record"
+    - protocol_id: cp_surface_finishing_utility_records
+      process_id: "surface_finishing"
+      flow_role: "electricity and natural-gas rows"
+      record_type: "submeter, gas invoice and equipment log"
+      raw_fields: "kWh; gas volume; calorific value; MJ; machine time; batch; timestamp"
+      collection_method: "read submeter and gas meter; convert gas using period supplier calorific value"
+      unit: "kWh; MJ"
+      frequency: "each batch or meter interval, aggregated monthly"
+      temporal_coverage: "same reporting period"
+      site_scope: "finishing/drying equipment"
+      aggregation_rule: "direct sum or causal allocation documented by machine time"
+      quality_evidence: "meter calibration, invoices and equipment logs"
+    - protocol_id: cp_surface_finishing_emission_records
+      process_id: "surface_finishing"
+      flow_role: "isopropanol, fossil CO2 and nitrogen dioxide air rows"
+      record_type: "solvent balance, stack measurement or emission-factor calculation"
+      raw_fields: "measured inputs; recovery; waste; retained mass; gas MJ; factor; measured concentration; flow; duration"
+      collection_method: "calculate solvent residual and combustion emissions or use direct measurement; cite every factor"
+      unit: "kg"
+      frequency: "each campaign or reporting period"
+      temporal_coverage: "same reporting period"
+      site_scope: "finishing/drying emission points"
+      aggregation_rule: "aggregate each chemical species separately"
+      quality_evidence: "calculation sheet, factor citation, sampling report and mass-balance closure"
+    - protocol_id: cp_final_packaging_records
+      process_id: "final_inspection_packaging"
+      flow_role: "unpacked product, electricity, each package component and package waste"
+      record_type: "inspection, packaging BOM, issue/return, meter and waste records"
+      raw_fields: "accepted/rejected mass; packaging item; issued/returned mass; kWh; waste; destination"
+      collection_method: "reconcile accepted output and each packaging component; weigh package waste; read or allocate electricity meter"
+      unit: "kg; kWh"
+      frequency: "each batch, aggregated monthly"
+      temporal_coverage: "same reporting period"
+      site_scope: "inspection and packing area"
+      aggregation_rule: "sum atomic rows and normalize to accepted net product mass"
+      quality_evidence: "inspection release, packaging specification, stock record, meter record and waste ticket"
+    - protocol_id: cp_reference_output_records
+      process_id: "final_inspection_packaging"
+      flow_role: "reference product"
+      record_type: "final release and net-mass records"
+      raw_fields: "product subtype; qualifiers; accepted units; net mass; packaging tare; batch; date"
+      collection_method: "weigh conforming product before packaging and reconcile with final release records"
+      unit: "kg"
+      frequency: "each released batch"
+      temporal_coverage: "same reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "sum accepted net mass; normalize to exactly 1 kg"
+      quality_evidence: "calibrated scale record, batch release and declared qualifiers"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period atomic-flow amount / reporting-period accepted net reference-product mass"
+      inputs:
+        - "collected exchange amount"
+        - "accepted net product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_material_balance
+      applies_to: "each material route and process"
+      rule: "input mass = transferred product + retained mass + separately identified waste + separately identified emissions + documented stock change, within stated measurement uncertainty"
+      inputs:
+        - "material inputs"
+        - intermediates
+        - wastes
+        - emissions
+        - "stock change"
+      output: "reconciled mass-balance statement"
+      source_ids:
+        - eu-pef-2021-2279
+        - apparel-footwear-pefcr-v3.1
+    - id: calc_shared_utility_allocation
+      applies_to: "electricity and compressed air without submetering"
+      rule: "allocated quantity = reconciled facility quantity × documented causal driver share"
+      inputs:
+        - "facility meter"
+        - "machine time or other causal driver"
+      output: "process-specific utility amount"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_solvent_air_emission
+      applies_to: "isopropanol to air"
+      rule: "input isopropanol − product retention − recovered isopropanol − liquid-waste isopropanol − documented stock change"
+      inputs:
+        - "measured solvent input"
+        - recovery
+        - waste
+        - "retention and stock"
+      output: "isopropanol emitted to air"
+      source_ids:
+        - eu-pef-2021-2279
+        - eu-tanning-bref
+    - id: calc_combustion_emissions
+      applies_to: "fossil CO2 and nitrogen dioxide"
+      rule: "measured natural-gas energy × a documented source-appropriate factor, unless direct stack measurement is used"
+      inputs:
+        - "gas energy"
+        - "cited factor or measurement"
+      output: "each combustion species as a separate mass flow"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_primary_foreground
+      applies_to: "manufacturing processes"
+      requirement: "Use company-specific records for the reporting facility and period; disclose any gap, proxy and allocation."
+      evidence: "meters, invoices, stock ledgers, BOMs, batch sheets and waste records"
+    - id: dq_bom_specificity
+      applies_to: "product materials and components"
+      requirement: "Preserve product-specific material identity, supplier grade, amount, hardware alloy/finish and package specification."
+      evidence: "approved BOM and supplier technical specifications"
+    - id: dq_upstream_match
+      applies_to: "linked background datasets"
+      requirement: "Match technology, material, geography and time; leather data shall disclose species, tanning system and finish."
+      evidence: "dataset metadata and documented selection rationale"
+    - id: dq_completeness
+      applies_to: "all foreground exchanges"
+      requirement: "Reconcile material, solvent and packaging balances and explain every missing or not-applicable atomic row."
+      evidence: "balance worksheets and applicability log"
+    - id: dq_temporal_representativeness
+      applies_to: "reporting period"
+      requirement: "Use a representative continuous period, normally twelve months where available, and explain shorter periods or atypical operation."
+      evidence: "dated raw records and production log"
+    - id: dq_traceability
+      applies_to: "calculations and factors"
+      requirement: "Retain raw fields, unit conversions, factor citations, allocation drivers and versioned calculation sheets."
+      evidence: "auditable calculation package"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "dataset identity"
+    rule: "CPC code, product title, declared qualifiers and canonical PCR id shall be present and mutually consistent."
+    source_ids:
+      - un-cpc-official
+  - rule_id: validate_reference_flow
+    applies_to: "quantitative reference"
+    rule: "The reference product shall use flow 850d448a-711c-4151-8745-7aece3fc2acb, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, kg, and exactly 1 kg net product mass excluding packaging."
+    source_ids:
+      - un-cpc-official
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory"
+    rule: "Every exchange shall be one concrete flow; materials, utilities, packaging, wastes and each air emission shall remain separate."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_route_completeness
+    applies_to: "route declaration"
+    rule: "The data package shall state leather, synthetic, webbing or mixed route and explain every conditional or not-applicable card."
+    source_ids:
+      - apparel-footwear-pefcr-v3.1
+  - rule_id: validate_mass_balance
+    applies_to: "material and solvent balances"
+    rule: "Cutting, assembly, finishing and packaging balances shall reconcile within documented measurement uncertainty without an unexplained residual."
+    source_ids:
+      - eu-pef-2021-2279
+      - apparel-footwear-pefcr-v3.1
+  - rule_id: validate_finishing_boundary
+    applies_to: "surface finishing"
+    rule: "If finishing occurs on site, coatings, solvent, water, electricity, drying fuel, wastes, wastewater and separately quantified emissions shall be present; otherwise the exclusion shall be documented."
+    source_ids:
+      - eu-tanning-bref
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "shared burdens"
+    rule: "Every allocated exchange shall identify the shared total, causal driver, allocation share and sensitivity where material."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "evidence package"
+    rule: "Each foreground row shall link to its protocol and raw evidence; every background dataset and calculation factor shall have a selection rationale and citation."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for a declared saddlery or harness product"
+  downstream_use: "LCA process datasets, product systems, footprint studies and supplier data exchange"
+  allowed_use: "Products within CPC 29210 whose route and required qualifiers match the dataset"
+  excluded_use: "Different tack constructions without documented representativeness; tanning-only datasets; distribution, use or end-of-life claims"
+  required_metadata: "canonical PCR id; CPC code; product subtype; animal/use; net reference mass; BOM; route; facility geography; reporting period; included operations; packaging; allocation; background dataset versions"
+  required_quality_disclosure: "primary-data coverage; meter and balance quality; proxies; unresolved UUIDs; allocation; temporal/geographical/technological representativeness; exclusions and not-applicable rows"
+  update_trigger: "material or supplier change; hardware/coating/adhesive change; process or energy-source change; facility/geography change; packaging redesign; allocation change; data older than the declared representativeness period"
+data_sources:
+  - id: "un-cpc-official"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC), official portal: https://unstats.un.org/unsd/classifications/Econ/CPC; official repository raw CSV supplies the exact CPC 3.0 subclass title"
+    used_for: "product category identity and exact CPC 29210 scope"
+  - id: "eu-pef-2021-2279"
+    type: "method_factor"
+    reference: "European Commission Recommendation (EU) 2021/2279, consolidated Product Environmental Footprint method: https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "product-specific BOM, company-specific manufacturing data, LCI completeness, allocation, transparency and data quality"
+  - id: "eu-tanning-bref"
+    type: "official_guidance"
+    reference: "European Commission JRC, BAT Reference Document for the Tanning of Hides and Skins: https://eippcb.jrc.ec.europa.eu/reference/tanning-hides-and-skins-0"
+    used_for: "upstream leather dataset disclosure and conditional leather-finishing chemical, wastewater and emission background; not a basis for forcing tanning into an assembly plant"
+  - id: "apparel-footwear-pefcr-v3.1"
+    type: "method_factor"
+    reference: "Apparel & Footwear Product Environmental Footprint Category Rules, Version 3.1, official text verified by orchestration"
+    used_for: "organization of product BOM, manufacturing losses, packaging and process-specific foreground records; no default quantity is imported"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:993d8f9fb474ca1f3506246fc187de596bac6c7e3604b91c874dabc8e2233e39"
+  generated_content_sha256: "sha256:cb325b27c65ba04fdda3081ce3969434dda5cac7edda2a104590dde9cca919c6"

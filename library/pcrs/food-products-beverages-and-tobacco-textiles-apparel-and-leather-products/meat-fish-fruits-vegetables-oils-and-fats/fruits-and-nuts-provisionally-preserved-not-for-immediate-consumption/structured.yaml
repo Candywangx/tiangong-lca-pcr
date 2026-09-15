@@ -1,10 +1,1185 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21496"
-  title: "Fruits and nuts, provisionally preserved, not for immediate consumption"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fruits-and-nuts-provisionally-preserved-not-for-immediate-consumption"
+  classification_refs: "CPC 3.0: 21496 — Fruits and nuts, provisionally preserved, not for immediate consumption"
+  covered_products: "Fruits, nuts, fruit peel, and relevant edible plant parts in a declared temporary preservation state and intended for further processing; route may be brine, sulfur dioxide or sulfite, or another documented provisional-preservation method"
+  excluded_products: "Fresh, frozen, simply dried, sugar-preserved, ready-to-eat pickled, canned final, jam, jelly, paste, roasted, salted ready-to-eat, and other products suitable for immediate consumption or no longer intended for further processing"
+  representative_product: "A declared fruit or nut batch temporarily preserved by one identified route, held under specified conditions, and supplied in declared packaging for further processing"
+  production_route: "Receiving and preparation; one declared temporary preservation route; controlled holding; conditional draining, rinsing, or medium adjustment; packaging and dispatch; route-specific residual management"
+  market_state: "Packaged or bulk provisionally preserved intermediate product at the producer gate, not suitable in that state for immediate consumption and destined for a subsequent processing operation"
+functional_unit:
+  what: "Provision of a declared fruit or nut in a verified temporary preservation state for transfer to a subsequent processor"
+  how_much: "1 kg of saleable provisionally preserved product on the declared mass basis"
+  how_well: "Product identity, physical form, preservation route and agent, as-packed or drained mass basis, retained medium state, holding conditions, intended next processing step, and packaging system are declared; the product is not represented as ready for direct consumption"
+  how_long_or_cycle: "One production lot from receipt of the incoming fruit or nut through temporary preservation, holding, packaging, and producer-gate dispatch; actual holding duration is recorded"
+  reference_flow_link: "One reference flow equals the Reference amount in the reference-flow object below"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_to_gate
+      applies_to: "foreground production"
+      rule: "Include receiving, sorting and preparation, the actual temporary preservation treatment, controlled holding, conditional pre-dispatch conditioning, packaging, and on-site residual handling through producer-gate dispatch."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - eu-pef-2021-2279
+        - eu-fdm-bat-2019-2031
+    - rule_id: boundary_route_specificity
+      applies_to: "preservation route"
+      rule: "Select one primary preservation route for a single-route dataset. If the real operation is hybrid, represent each stage and its inputs, outputs, holding conditions, and emissions separately; do not use a blended salt-plus-sulfur-dioxide default recipe."
+      source_ids:
+        - unsd-cpc-3-0-2025
+    - rule_id: boundary_packaging
+      applies_to: "packaging"
+      rule: "Include primary, secondary, and tertiary packaging placed on the product at the reporting gate; exclude packaging mass from the reference product mass and disclose reusable-container cycles."
+      source_ids:
+        - eu-pef-2021-2279
+        - eu-fdm-bat-2019-2031
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream processing"
+      rule: "Exclude de-preservation and conversion performed by the next processor, final food manufacture, distribution beyond the reporting gate, preparation for consumption, use, and end of life unless a broader study explicitly adds them as separate life-cycle stages."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - codex-cxs-260-2007
+    - rule_id: boundary_inventory_completeness
+      applies_to: "foreground inputs and outputs"
+      rule: "Record water, energy, raw materials, packaging, products, wastes, wastewater or spent medium, and route-relevant direct emissions; link non-foreground burdens to appropriate upstream or treatment datasets."
+      source_ids:
+        - eu-pef-2021-2279
+        - eu-fdm-bat-2019-2031
+boundary_abstraction:
+  declared_starting_condition: "Incoming fruit or nut at the temporary-preservation facility gate, with species or commercial form, preparation state, received mass, supplier, origin, and receipt condition declared"
+  starting_condition_role: "Foreground gate-to-gate starting point; upstream cultivation, harvest, and any earlier handling are represented by linked upstream datasets rather than repeated in this foreground inventory"
+  product_classification_scope: "CPC 3.0 code 21496 is classification context for products provisionally preserved and not for immediate consumption; the canonical PCR remains classification-independent"
+  recursive_input_rule: "If an input is already a product within this same category, record it as an upstream product input with its own declared preservation route and upstream dataset; do not recursively recreate its prior temporary-preservation operations inside the current process"
+  upstream_dataset_requirement: "Require linked datasets for incoming fruit or nuts, water, salt, sulfur dioxide or sulfite, other preservation agents, electricity, thermal-energy carriers, packaging materials, transport when included, and off-site waste or wastewater treatment"
+  disclosure: "Declare the product identity, preservation route and route sequence, agent formulation, mass basis, holding conditions and duration, retained or removed medium, intended next processing step, packaging, included treatment, excluded downstream processing, geography, reference period, and any use of provisional estimates"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fruits and nuts, provisionally preserved, not for immediate consumption"
+    uuid: "70b546f4-bfbc-4e64-a70d-4ff57cedcc6d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fruit or nut species and commercial form"
+    - "physical preparation state"
+    - "preservation route identifier"
+    - "preservation agent or medium identity"
+    - "formulation or concentration as applied"
+    - "route sequence for hybrid treatment"
+    - "contact time and holding duration"
+    - "temperature or other controlled holding condition"
+    - "as-packed net-content or drained-product mass basis"
+    - "retained medium included or excluded from reference mass"
+    - "intended subsequent processing step"
+    - "primary and secondary packaging system"
+    - geography
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all reported inventory to 1 kg of saleable product on one explicitly declared mass basis. Packaging mass is excluded from reference product mass and inventoried separately."
+  - id: medium_mass_basis
+    applies_to: "preservation medium and treated product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State whether the reference mass is as-packed net contents or drained product. Include retained medium in the reference mass only when the declared commercial mass basis includes it; separately report medium added, recovered, retained, drained, and discarded."
+  - id: agent_as_supplied
+    applies_to: "salt, sulfur dioxide, sulfite, and other preservation agents"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each agent as supplied and also record active-substance concentration or purity. Do not compare or aggregate agents without a documented conversion."
+  - id: energy_separation
+    applies_to: "electricity and thermal-energy carriers"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Record electricity in kWh and fuels or purchased heat in their native quantity and MJ; do not combine them into one unqualified energy amount."
+  - id: packaging_mass
+    applies_to: "packaging materials"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each packaging component by material and mass per reference flow, including reusable-container trip count when applicable."
+process_map:
+  - id: raw_receiving_preparation
+    name: "Raw fruit or nut receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, inspection, sorting, trimming, and washing where performed"
+    quantitative_reference: "Per mass of accepted material transferred to preservation"
+  - id: temporary_preservation_holding
+    name: "Temporary preservation and controlled holding"
+    inclusion: "required"
+    inclusion_condition: "Always; populate only the actual route-specific agent rows"
+    role: "Foreground application of the declared preservation method and holding before further processing"
+    quantitative_reference: "Per mass of provisionally preserved intermediate product"
+  - id: predispatch_conditioning
+    name: "Pre-dispatch draining, rinsing, or medium adjustment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when performed before the producer gate"
+    role: "Foreground route-specific conditioning without converting the product into a direct-consumption product"
+    quantitative_reference: "Per mass of conditioned product"
+  - id: packaging_dispatch
+    name: "Packaging and producer-gate dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always; bulk reusable containers remain packaging and are recorded by trip"
+    role: "Foreground packaging and release of the reference product"
+    quantitative_reference: "1 kg reference product"
+  - id: onsite_residual_treatment
+    name: "On-site residual or wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when treatment occurs within the reporting facility boundary"
+    role: "Foreground treatment of rejects, spent medium, wastewater, or route-specific emissions"
+    quantitative_reference: "Per mass or volume treated"
+process_inventory:
+  - id: raw_receiving_preparation
+    label: "Raw fruit or nut receiving and preparation"
+    inputs:
+      product:
+        - row_id: received_fruit_or_nuts
+          role: "Incoming fruit or nut material"
+          name: "Declared incoming fruit or nut material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the received fruit or nut batch crossing the facility gate before temporary preservation."
+          amount:
+            expression: "measured received mass assigned to accepted and rejected batch fractions"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "3.0"
+                unit: "kg/kg reference product"
+                basis: "received fruit or nut mass per kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for washing, fluming, or other preparation when it crosses the foreground boundary."
+          amount:
+            expression: "measured make-up water allocated to the batch; record reused water separately from make-up water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_water
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "preparation make-up water per kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fruit_or_nuts
+          role: "Accepted prepared fruit or nut"
+          name: "Accepted prepared fruit or nut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted product transferred to temporary preservation from measured mass records."
+          amount:
+            expression: "received mass minus measured preparation rejects and other documented mass changes"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Preparation rejects"
+          name: "Fruit or nut preparation rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spoiled, damaged, trimmed, or otherwise rejected fruit or nut material by destination."
+          amount:
+            expression: "measured reject mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg received fruit or nut material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg received material"
+                basis: "preparation rejects per kg received fruit or nut material"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: temporary_preservation_holding
+    label: "Temporary preservation and controlled holding"
+    inputs:
+      product:
+        - row_id: preservation_product_input
+          role: "Prepared fruit or nut input"
+          name: "Accepted prepared fruit or nut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted prepared material entering the declared temporary preservation route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg provisionally preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_route
+              source_ids: []
+            ranges: []
+        - row_id: preservation_water
+          role: "Preservation water for an aqueous route"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Populate only for a route that actually uses water in brine, sulfurous water, solution preparation, make-up, or holding."
+          amount:
+            expression: "measured make-up water; separately record recovered, recirculated, retained, and discharged quantities"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg provisionally preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_route
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg preserved intermediate output"
+                basis: "make-up water per kg preserved intermediate output; excludes internal recirculation unless make-up is added"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: brine_salt
+          role: "Salt for a brine route"
+          name: "Salt as supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Populate only when salt is actually used in the declared brine route; do not populate it as part of a generic recipe for sulfur-dioxide or other routes."
+          amount:
+            expression: "measured salt charged, replenished, recovered, and remaining in retained medium"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg preserved intermediate output"
+                basis: "salt as supplied per kg preserved intermediate output for a declared brine route"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sulfur_dioxide_agent
+          role: "Sulfur dioxide or sulfite agent for an SO2 route"
+          name: "Declared sulfur dioxide or sulfite agent as supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Populate only when sulfur dioxide, sulfurous water, or a sulfite formulation is actually used. Record formulation, purity, and active SO2 equivalent without transferring a food-category limit from an inapplicable standard."
+          amount:
+            expression: "measured agent charge and replenishment, with active-substance concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.00001"
+                upper: "0.1"
+                unit: "kg/kg preserved intermediate output"
+                basis: "agent as supplied per kg preserved intermediate output for a declared SO2 or sulfite route"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: other_preservation_agent
+          role: "Other temporary preservation agent"
+          name: "Declared other temporary preservation agent as supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Populate only for a documented route not represented by the brine or SO2 rows. Identify every agent separately; this row is not permission to combine unspecified agents."
+          amount:
+            expression: "measured charge by named agent, formulation, and purity"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.00001"
+                upper: "1"
+                unit: "kg/kg preserved intermediate output"
+                basis: "one named agent as supplied per kg preserved intermediate output for the declared other route"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_electricity
+          role: "Preservation electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for dosing, pumping, agitation, cooling, ventilation, monitoring, and holding."
+          amount:
+            expression: "meter or equipment record allocated to the route and batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg preserved intermediate output"
+                basis: "electricity per kg preserved intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_thermal_energy
+          role: "Preservation thermal energy"
+          name: "Declared fuel or purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased heat or fuel used for temperature control or other route operations; leave the row unused when no thermal energy is consumed."
+          amount:
+            expression: "metered or invoiced energy allocated to the route and batch; retain native fuel quantity and conversion basis"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg preserved intermediate output"
+                basis: "thermal energy per kg preserved intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_intermediate_product
+          role: "Provisionally preserved intermediate product"
+          name: "Provisionally preserved fruit or nut intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass leaving preservation and holding before any optional pre-dispatch conditioning."
+          amount:
+            expression: "measured output mass with retained preservation medium identified separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_route
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: spent_preservation_liquid
+          role: "Spent preservation liquid or wastewater"
+          name: "Declared spent preservation liquid or wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent brine, sulfurous water, other preservation solution, wash-off, and wastewater separately by composition and destination."
+          amount:
+            expression: "measured discharge or transfer mass, with reused and retained fractions excluded and documented"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_emissions
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg preserved intermediate output"
+                basis: "spent liquid or wastewater per kg preserved intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_rejects
+          role: "Preservation rejects"
+          name: "Preservation rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product removed during treatment or holding, including spoiled and off-specification material, by destination."
+          amount:
+            expression: "measured reject mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg preserved intermediate output"
+                basis: "preservation rejects per kg preserved intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_preservation_emissions
+          role: "Direct route-specific emissions to air"
+          name: "Declared direct preservation emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated direct emissions, including sulfur dioxide when relevant, at the point where they cross to the environment; do not equate agent input with emissions."
+          amount:
+            expression: "species-specific measured emission or calculation from collected agent input, recovery, residual, waste, and mass-balance records"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_emissions
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg corresponding preservation agent input"
+                basis: "direct emitted mass per kg of the corresponding agent as supplied; assess each emitted species separately"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: predispatch_conditioning
+    label: "Pre-dispatch draining, rinsing, or medium adjustment"
+    inputs:
+      product:
+        - row_id: conditioning_product_input
+          role: "Provisionally preserved product for conditioning"
+          name: "Provisionally preserved fruit or nut intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the preserved product transferred to conditioning without redefining it as a direct-consumption product."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conditioned output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_water
+          role: "Conditioning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record rinse or adjustment water only when the producer performs this operation before dispatch."
+          amount:
+            expression: "measured make-up water allocated to conditioned product"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conditioned output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg conditioned output"
+                basis: "conditioning make-up water per kg conditioned output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_product
+          role: "Conditioned provisionally preserved product"
+          name: "Conditioned provisionally preserved fruit or nut"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conditioned mass and continued not-for-immediate-consumption state."
+          amount:
+            expression: "measured conditioned output mass and retained-medium status"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per conditioning batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: drained_conditioning_liquid
+          role: "Drained or rinse liquid"
+          name: "Declared drained preservation medium or rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record drained medium and rinse liquid separately by route, composition, and destination."
+          amount:
+            expression: "measured drained or discharged mass net of recovered and reused fractions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conditioned output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg conditioned output"
+                basis: "drained or rinse liquid per kg conditioned output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packaging_dispatch
+    label: "Packaging and producer-gate dispatch"
+    inputs:
+      product:
+        - row_id: packaging_product_input
+          role: "Product entering packaging"
+          name: "Provisionally preserved fruit or nut before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the preserved product entering packaging from preservation or conditional conditioning."
+          amount:
+            expression: "measured transfer mass on the same declared mass basis as the reference flow"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: primary_packaging
+          role: "Primary packaging"
+          name: "Declared primary packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each container, liner, closure, seal, and other product-contact packaging component by material and mass."
+          amount:
+            expression: "component count multiplied by measured component mass, divided by saleable reference product mass; apply recorded trip count for reusable packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kg/kg reference product"
+                basis: "primary packaging supplied per kg reference product, after reusable-trip allocation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: secondary_tertiary_packaging
+          role: "Secondary and tertiary packaging"
+          name: "Declared secondary or tertiary packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cartons, straps, stretch film, pallets, and other dispatch packaging by material and mass."
+          amount:
+            expression: "measured or bill-of-material packaging quantity allocated to shipped reference product; apply recorded trip count for reusable items"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "secondary and tertiary packaging per kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Reference provisionally preserved product"
+          name: "Fruits and nuts, provisionally preserved, not for immediate consumption"
+          flow_type: "product"
+          flow_ref:
+            uuid: "70b546f4-bfbc-4e64-a70d-4ff57cedcc6d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This is the sole reference product output at the producer gate."
+          amount:
+            expression: "fixed normalization output of 1 kg on the declared reference mass basis"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "reference product output per reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "identity_reference"
+                source_ids: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging waste generated on site"
+          name: "Declared packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged, trimmed, or discarded packaging material generated before dispatch, by material and destination."
+          amount:
+            expression: "measured waste mass by packaging material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg reference product"
+                basis: "on-site packaging waste per kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: onsite_residual_treatment
+    label: "On-site residual or wastewater treatment"
+    inputs:
+      product:
+        - row_id: treatment_inputs
+          role: "Treatment utilities and reagents"
+          name: "Declared treatment utility or reagent"
+          flow_type: "product"
+          property_unit: "Native property and unit for each input"
+          description: "Record named electricity, fuel, water, and treatment reagents when on-site treatment is included."
+          amount:
+            expression: "measured treatment input allocated to the relevant residual stream and batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg or m3 residual treated and converted to the reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_emissions
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: onsite_treatment_feed
+          role: "Residual stream entering on-site treatment"
+          name: "Declared residual or wastewater stream"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record each reject, spent medium, or wastewater stream entering on-site treatment without double-counting it as a system-boundary output before treatment."
+          amount:
+            expression: "measured transfer to on-site treatment by stream"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg reference product"
+                basis: "residual stream sent to on-site treatment per kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treatment_waste
+          role: "Treatment sludge and other treatment waste"
+          name: "Declared treatment sludge or waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treatment sludge and other residuals by composition and destination."
+          amount:
+            expression: "measured wet and dry mass with moisture basis declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg reference product"
+                basis: "wet treatment waste per kg reference product, with moisture basis declared"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: treatment_emissions
+          role: "Treated discharge and direct treatment emissions"
+          name: "Declared elementary flow from on-site treatment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record species-specific emissions to water, air, or soil after on-site treatment at the point they cross the environment boundary."
+          amount:
+            expression: "measured load or concentration multiplied by measured discharge quantity, separately for each elementary flow and compartment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_emissions
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg residual stream treated"
+                basis: "emitted species mass per kg corresponding residual stream treated; assess each species separately"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "all multifunctional foreground processes"
+    rule: "Avoid allocation by separately metering and subdividing route, batch, holding, conditioning, packaging, and treatment operations wherever feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "shared operations that cannot be subdivided"
+    rule: "Allocate shared burdens using a documented causal physical relationship, such as measured mass throughput, vessel occupancy time, pumping time, or treatment load, chosen to represent the driver of resource use or emissions."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_fallback
+    applies_to: "shared operations lacking a defensible physical relationship"
+    rule: "Use economic allocation only as a documented fallback, record prices, currency, reference period, and sensitivity, and do not use it to reclassify wastes as co-products."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recovered_material
+    applies_to: "rejects, recovered medium, and recovered packaging"
+    rule: "Treat an output as a co-product only when it has documented intended use, a receiving user or market, and non-waste status under the applicable jurisdiction; otherwise model it as waste and link treatment."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_route_separation
+    applies_to: "brine, SO2 or sulfite, other, and hybrid routes"
+    rule: "Do not average burdens across preservation routes as one default formula. A multi-route facility shall report route-specific inventories or disclose the production-weighted aggregation and its underlying route shares."
+    source_ids:
+      - unsd-cpc-3-0-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_mass
+      process_id: "raw_receiving_preparation"
+      flow_role: "received, accepted, and rejected product mass"
+      record_type: "scale tickets and batch records"
+      raw_fields: "batch_id; product identity; supplier; origin; receipt date; gross mass; tare; accepted mass; reject mass; reject destination; preparation state"
+      collection_method: "calibrated scales reconciled to batch ledger"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "representative campaign and stated reference period"
+      site_scope: "all facilities and lines in scope"
+      aggregation_rule: "sum by batch and product; normalize to saleable reference product"
+      quality_evidence: "calibration records; signed batch reconciliation; completeness check"
+    - protocol_id: cp_preparation_water
+      process_id: "raw_receiving_preparation"
+      flow_role: "preparation make-up, reused, and discharged water"
+      record_type: "meter and batch log"
+      raw_fields: "meter_id; opening and closing readings; batch_id; make-up water; recirculated water; discharge water; allocation driver"
+      collection_method: "dedicated meter or validated water balance"
+      unit: "kg or m3"
+      frequency: "every batch or shift"
+      temporal_coverage: "representative campaign and stated reference period"
+      site_scope: "each preparation line in scope"
+      aggregation_rule: "allocate by measured batch use; convert volume using measured or documented density"
+      quality_evidence: "meter calibration; water balance; exception log"
+    - protocol_id: cp_preservation_route
+      process_id: "temporary_preservation_holding"
+      flow_role: "product, medium, agents, route conditions, and preserved output"
+      record_type: "batch formulation, assay, vessel, and holding records"
+      raw_fields: "batch_id; product identity; route_id; ordered route stages; vessel_id; input and output mass; water; each agent name; formulation; purity; charge; replenishment; recovered amount; retained amount; concentration; contact time; holding duration; temperature; other controlled condition"
+      collection_method: "calibrated scales, dosing records, concentration or residual analysis, and vessel log"
+      unit: "kg; concentration unit; h; °C as applicable"
+      frequency: "every batch and each charge or adjustment"
+      temporal_coverage: "representative campaign and stated reference period"
+      site_scope: "every preservation vessel and route in scope"
+      aggregation_rule: "retain route-specific records; calculate per preserved output; never blend unused route rows"
+      quality_evidence: "scale and dosing calibration; supplier assay; laboratory result; signed route record"
+    - protocol_id: cp_utilities
+      process_id: "temporary_preservation_holding"
+      flow_role: "electricity, fuel, and purchased heat"
+      record_type: "meter, invoice, and equipment runtime records"
+      raw_fields: "meter_id; fuel_type; native_quantity; energy_content; opening and closing readings; runtime; batch_id; allocation driver"
+      collection_method: "submetering preferred; otherwise documented engineering allocation from facility records"
+      unit: "kWh; MJ; native fuel unit"
+      frequency: "continuous, batch, shift, or invoice period"
+      temporal_coverage: "at least one representative campaign and the stated reference period"
+      site_scope: "all included preservation and holding equipment"
+      aggregation_rule: "allocate using causal driver and convert to reference flow"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_waste_emissions
+      process_id: "temporary_preservation_holding"
+      flow_role: "spent liquid, rejects, treatment feed, treatment waste, and direct emissions"
+      record_type: "weigh tickets, flow meters, laboratory analyses, manifests, and emission records"
+      raw_fields: "batch_id; stream_id; route_id; mass or volume; composition; concentration; pH; temperature; pollutant species; compartment; recovery; destination; treatment; moisture basis"
+      collection_method: "direct measurement or calculation from measured activity and reviewed factor or mass balance"
+      unit: "kg; m3; mg/L or other analyte unit"
+      frequency: "every batch or discharge event; continuous where required"
+      temporal_coverage: "representative campaign and stated reference period"
+      site_scope: "all included discharge, emission, and treatment points"
+      aggregation_rule: "calculate species-specific loads; prevent double counting of internal treatment transfers"
+      quality_evidence: "meter calibration; laboratory report; waste manifest; mass balance; monitoring record"
+    - protocol_id: cp_conditioning
+      process_id: "predispatch_conditioning"
+      flow_role: "product transfer, conditioning water, drained medium, and conditioned output"
+      record_type: "batch, meter, and scale records"
+      raw_fields: "batch_id; route_id; input mass; water; recovered medium; drained medium; discharge; output mass; retained medium; continued further-processing designation"
+      collection_method: "calibrated scales, meter, and batch balance"
+      unit: "kg or m3"
+      frequency: "every conditioned batch"
+      temporal_coverage: "representative campaign and stated reference period"
+      site_scope: "each conditioning line in scope"
+      aggregation_rule: "normalize to conditioned output and reference flow; retain route identity"
+      quality_evidence: "calibration records; batch mass balance; disposition record"
+    - protocol_id: cp_packaging
+      process_id: "packaging_dispatch"
+      flow_role: "product, packaging materials, reusable trips, and packaging waste"
+      record_type: "packaging bill, component weights, batch and shipment records"
+      raw_fields: "batch_id; product net mass; declared mass basis; component_id; material; component mass; count; reusable trip count; waste mass; shipment_id"
+      collection_method: "calibrated scale, supplier specification verified by sampling, and packaging issue record"
+      unit: "kg; count; trips"
+      frequency: "every packaging format and representative shipment"
+      temporal_coverage: "representative campaign and stated reference period"
+      site_scope: "all packaging formats and dispatch points in scope"
+      aggregation_rule: "component mass times count divided by reference product mass; divide reusable items by validated trips"
+      quality_evidence: "packaging bill; weighing record; supplier specification; trip log; shipment reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Normalized amount = batch-attributed amount / saleable reference product mass on the declared as-packed or drained basis. Packaging is never included in the denominator."
+      inputs:
+        - "batch-attributed amount"
+        - "saleable reference product mass"
+        - "declared mass basis"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_product_yield
+      applies_to: "receiving, preservation, and conditioning"
+      rule: "Yield = measured saleable output mass / measured incoming product mass for the stated process; separately reconcile retained medium, rejects, samples, and unexplained difference."
+      inputs:
+        - "input mass"
+        - "output mass"
+        - "retained medium"
+        - rejects
+        - samples
+      output: "process yield and mass-balance closure"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_active_agent
+      applies_to: "sulfur dioxide, sulfite, salt, and other formulated agents"
+      rule: "Active amount = formulation mass × measured or supplier-certified active fraction; preserve the as-supplied amount as a separate inventory value."
+      inputs:
+        - "formulation mass"
+        - "active fraction"
+        - "assay basis"
+      output: "active-agent amount and as-supplied amount"
+      source_ids: []
+    - id: calc_liquid_load
+      applies_to: "wastewater and spent medium"
+      rule: "Pollutant load = measured liquid quantity × measured concentration, with density and unit conversion documented; do not apply one composition to another route."
+      inputs:
+        - "liquid mass or volume"
+        - density
+        - "species concentration"
+        - route_id
+      output: "species-specific load by stream and compartment"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_packaging_amount
+      applies_to: "packaging"
+      rule: "Packaging amount = component mass × component count / saleable reference product mass; divide reusable component burden by validated lifetime trips only when the study method requires trip allocation."
+      inputs:
+        - "component mass"
+        - count
+        - "trip count"
+        - "reference product mass"
+      output: "kg packaging per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_burden
+      applies_to: "shared equipment and treatment"
+      rule: "Apply the allocation hierarchy in section 7 and retain the measured or calculated driver, route share, and sensitivity record."
+      inputs:
+        - "shared burden"
+        - "physical driver"
+        - "route share"
+        - "economic fallback data if used"
+      output: "route- and product-attributed burden"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and reference flow"
+      requirement: "Match the declared product to the category, preserve the exact reference UUID, and declare every required qualifier."
+      evidence: "product specification; batch record; reference-flow record"
+    - id: dq_route_specificity
+      applies_to: "preservation inventory"
+      requirement: "Records shall identify one primary route or an ordered hybrid sequence and shall not silently populate salt, SO2 or sulfite, and other-agent rows as one default formulation."
+      evidence: "route sheet; batch formulation; agent issue record; vessel log"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Cover a representative campaign and the stated reference period, including seasonal or product-change variability where material."
+      evidence: "date-bounded batch list; production calendar; coverage calculation"
+    - id: dq_completeness
+      applies_to: "mass, water, energy, waste, and emissions"
+      requirement: "Reconcile incoming and outgoing product, medium, water, agents, wastes, and retained inventory; explain exclusions and unresolved balance differences."
+      evidence: "mass and water balance; meter reconciliation; waste manifests; exception log"
+    - id: dq_measurement
+      applies_to: "measured values"
+      requirement: "Use calibrated instruments or documented supplier records and retain units, detection limits, sampling methods, and conversions."
+      evidence: "calibration certificate; laboratory report; invoice; conversion worksheet"
+    - id: dq_estimates
+      applies_to: "all reasoned_estimate ranges"
+      requirement: "Treat ranges marked reasoned_estimate only as provisional screening or default values and replace them when the stated product-, route-, facility-, or campaign-specific trigger is met."
+      evidence: "estimate register; replacement record; reviewed source or foreground data"
+    - id: dq_source_limit
+      applies_to: "Codex, UNECE, EU PEF, and EU BAT use"
+      requirement: "Apply each source only within its scope: do not transfer direct-consumption pickled-product requirements, product-specific commercial standards, legal thresholds, or sector performance levels to this whole category."
+      evidence: "source applicability assessment; documented exclusions and assumptions"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The product-flow UUID shall be 70b546f4-bfbc-4e64-a70d-4ff57cedcc6d, the Mass flow-property UUID shall be 93a60a56-a3c8-11da-a746-0800200b9a66, the Units of mass UUID shall be 93a60a57-a4c8-11da-a746-0800200c9a66, and the reference unit shall be kg."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Fail validation when any required qualifier is absent, including route identifier, mass basis, medium status, holding duration, intended next processing step, or packaging system."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_not_immediate_consumption
+    applies_to: "product scope"
+    rule: "The dataset shall state that the product remains intended for further processing and is not ready for immediate consumption; otherwise a different product category is required."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxs-260-2007
+  - rule_id: validate_route_exclusivity
+    applies_to: "preservation inventory"
+    rule: "A single-route dataset shall populate only the applicable route-specific agent rows. A hybrid route shall declare ordered stages and separate their activity data; a blended generic salt/SO2/other formula is invalid."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_reference_mass
+    applies_to: "mass normalization"
+    rule: "The reference output shall equal 1 kg on the declared as-packed or drained basis; packaging shall be excluded, and retained medium inclusion shall agree with the declaration."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_inventory_balance
+    applies_to: "foreground inventory"
+    rule: "Check product and preservation-medium mass balances, water balance where material, energy coverage, rejects, spent liquid, treatment transfers, and route-relevant direct emissions; unexplained differences require disclosure and review."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_packaging
+    applies_to: "packaging"
+    rule: "Require packaging material, mass, component count, reusable-trip basis, and on-site packaging waste for every packaging format represented at the producer gate."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_estimate_replacement
+    applies_to: "reasoned estimates"
+    rule: "Every reasoned_estimate shall retain its provisional label and replacement trigger; it shall not be presented as a source-backed typical or allowed range."
+    source_ids: []
+  - rule_id: validate_source_applicability
+    applies_to: "external standards and guidance"
+    rule: "Reject any use of Codex direct-consumption pickled-product composition or pH rules, a product-specific UNECE standard, or EU BAT performance levels unless the concrete product and facility applicability are separately demonstrated."
+    source_ids:
+      - codex-cxs-260-2007
+      - eu-fdm-bat-2019-2031
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for a declared fruit or nut and one actual provisional-preservation route at the producer gate"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness, source applicability, estimate replacement, and data quality"
+  allowed_use: "Product-, route-, geography-, technology-, and time-representative modelling of provisionally preserved fruits or nuts destined for further processing; aggregation only when route shares and allocation are disclosed"
+  excluded_use: "Ready-to-eat pickled or canned products; fresh, frozen, simply dried, or sugar-preserved products; undisclosed route mixtures; consumer use; downstream final processing; comparative assertions based on unresolved reasoned estimates"
+  required_metadata: "canonical PCR id; product and commercial form; Tiangong reference-flow UUID; route and ordered stages; agent identity, formulation, and concentration; mass basis; retained medium state; holding duration and conditions; intended next process; packaging; facility and geography; reference period; allocation; data sources; estimate register"
+  required_quality_disclosure: "foreground coverage; meter and scale calibration; batch and campaign coverage; mass and water balance; allocation basis; source applicability; route share; treatment destinations; unresolved UUIDs; every reasoned_estimate and its replacement status"
+  update_trigger: "Change in fruit or nut, commercial form, preservation route or agent, formulation, equipment, holding condition, mass basis, retained medium, packaging, treatment, facility, geography, allocation, regulation, source applicability, or availability of reviewed evidence replacing a reasoned estimate"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "CPC 21496 category identity, provisional-preservation and further-processing boundary, and exclusions; it does not supply a route recipe or quantitative factors"
+  - id: "codex-cxs-260-2007"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 260-2007, Standard for Pickled Fruits and Vegetables, adopted 2007 and amended through 2023, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+260-2007%2FCXS_260e.pdf (retrieved 2026-08-11)"
+    used_for: "Applicability limit: the standard covers direct-consumption pickled products and excludes products intended for further processing; its composition, pH, drained-weight, and additive provisions are not generalized here"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Functional-unit and reference-flow consistency, life-cycle inventory completeness, packaging, multifunctionality hierarchy, data collection, data quality, and downstream EF use"
+  - id: "eu-fdm-bat-2019-2031"
+    type: "official_guidance"
+    reference: "European Commission, Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, CELEX 32019D2031, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-11)"
+    used_for: "Generic process-flow and monitoring coverage for water, energy, raw materials, wastewater, waste gas, residues, and treatment; legal scope thresholds and sector performance levels are not generalized to this PCR"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:276bdc8519ba97dcb6efd1b26769abec4cf8ca63486120259fd9dfee1169c6c4"
+  generated_content_sha256: "sha256:938ef5b32e48f1dbc7c58c9b78f62a96211d6abcc59ed48d746fae8dc917da2c"

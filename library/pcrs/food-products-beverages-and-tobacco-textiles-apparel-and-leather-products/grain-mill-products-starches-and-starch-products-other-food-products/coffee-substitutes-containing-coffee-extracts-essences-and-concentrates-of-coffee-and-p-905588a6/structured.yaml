@@ -1,10 +1,995 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23912"
-  title: "Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.coffee-substitutes-containing-coffee-extracts-essences-and-concentrates-of-coffee-and-p-905588a6"
+  classification_refs: "CPC 3.0: 23912"
+  covered_products: "Dried soluble or instant coffee extract; coffee extract paste; liquid coffee extract or concentrate; preparations based on coffee extract or coffee; coffee-containing substitutes; roasted chicory and other roasted coffee substitutes; extracts and concentrates of those substitutes"
+  excluded_products: "Green coffee; roasted or decaffeinated coffee sold without extraction or substitute preparation; ready-to-drink brewed coffee beverages; pure flavourings without a coffee or coffee-substitute basis; beverage-serving services"
+  representative_product: "Instant Coffee / 速溶咖啡, the verified Tiangong flow used only for dried soluble or instant coffee products"
+  production_route: "Receipt and preparation of roasted coffee or declared substitute ingredients; aqueous extraction and clarification where applicable; concentration; optional spray drying or freeze drying and agglomeration; conditional blending or formulation; packaging"
+  market_state: "Saleable dry powder or granules, paste, liquid concentrate, roasted substitute, or formulated preparation at the manufacturing gate, with product form, composition basis, dry-matter content, decaffeination status, and packaging state declared"
+functional_unit:
+  what: "Saleable coffee extract, concentrate, instant coffee, coffee-based preparation, or declared coffee-substitute product at the manufacturing gate"
+  how_much: "1 kg net product, excluding transport packaging unless the study explicitly includes it in the reference product mass"
+  how_well: "Product form, coffee or substitute basis, dry-matter content, decaffeination status, recipe share for preparations, drying technology where relevant, and packaging state meet the declared specification"
+  how_long_or_cycle: "One completed production lot at factory gate; shelf life and beverage preparation are not represented by this mass reference flow"
+  reference_flow_link: "One kilogram of net saleable output is the quantitative reference for all foreground inventory amounts"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "Foreground manufacturing"
+      rule: "Include all on-site material preparation, aqueous extraction and clarification, concentration, drying or agglomeration, formulation, cleaning, site utilities, wastewater handling, product losses, and packaging operations that occur for the declared route."
+      source_ids:
+        - eu-coffee-extracts-directive-1999
+        - eu-pef-method-2021
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Represent purchased coffee, chicory, substitute ingredients, extracts, formulation ingredients, utilities, packaging materials, and treatment services with linked upstream datasets rather than omitting their burdens."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_route_conditionals
+      applies_to: "Conditional operations"
+      rule: "Include only route steps that occur for the declared product, but document a not-applicable decision for every conditional process in the Process Map."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_cutoff_disclosure
+      applies_to: "Excluded flows"
+      rule: "Do not use an undocumented mass, energy, or environmental-significance cut-off. Quantify excluded flows or justify and disclose why they are immaterial to the intended dataset use."
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Received roasted coffee, roasted chicory or other substitute ingredients, purchased coffee/substitute extract, formulation ingredients, utilities, and packaging materials at the reporting site"
+  starting_condition_role: "Upstream products entering the foreground manufacturing system"
+  product_classification_scope: "Coffee extracts, concentrates, coffee-based preparations, coffee-containing substitutes, roasted chicory and other roasted substitutes, and their extracts covered by the declared category scope"
+  recursive_input_rule: "A purchased extract, concentrate, or preparation within this same category is recorded once as a technosphere product input with its own upstream dataset; its production is not recursively reconstructed inside the receiving foreground process"
+  upstream_dataset_requirement: "Link representative upstream datasets for coffee or substitute ingredients, purchased extracts, water, energy carriers, packaging materials, transport where in scope, and waste treatment; disclose geographic, temporal, and technological representativeness"
+  disclosure: "Declare which starting materials are roasted, extracted, concentrated, or already formulated; identify on-site versus supplier operations; state product form, recipe basis, dry matter, drying technology, packaging boundary, geography, reference year, and all exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Instant Coffee / 速溶咖啡"
+    uuid: "16ecdc48-3ef5-40b0-8a5d-56b3794a2ba4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form: dried powder/granules"
+    - paste
+    - "liquid concentrate"
+    - "roasted substitute"
+    - "or preparation"
+    - "coffee/chicory/substitute basis and recipe shares"
+    - "coffee-based or substitute-based dry-matter content"
+    - "decaffeinated status"
+    - "extraction medium"
+    - "drying technology when dried"
+    - "net packaging state"
+    - geography
+    - "reference year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Net reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize foreground inputs and outputs to 1 kg net saleable product. Record gross packaged mass separately and do not count packaging in the product reference mass."
+  - id: product_form_dry_matter
+    applies_to: "Dried, paste, and liquid extracts"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg or % by mass"
+    rule: "Record dry-matter test result and method. For EU-market coffee extract, screen against Directive 1999/4/EC: at least 95% coffee-based dry matter for dried extract, 70–85% for paste, and 15–55% for liquid extract; use the applicable jurisdictional specification elsewhere."
+  - id: ingredient_mass_basis
+    applies_to: "Coffee, chicory, substitute ingredients, additives, and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use as-received mass and separately record moisture or dry-matter basis when it materially affects yield or comparison."
+  - id: energy_conversion
+    applies_to: "Purchased electricity, fuels, steam, refrigeration, and compressed air"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve measured billing or meter units and conversion factors. Do not convert energy carriers to mass without a documented lower or higher heating value and basis."
+  - id: water_balance
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Use measured mass or volume; if volume is converted to mass, record temperature-dependent density or an explicit justified approximation."
+process_map:
+  - id: ingredient_preparation
+    name: "Ingredient receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; the operation may consist only of metered transfer when ingredients arrive ready for extraction or blending"
+    role: "Foreground material preparation"
+    quantitative_reference: "kg prepared feed"
+  - id: aqueous_extraction
+    name: "Aqueous extraction and clarification"
+    inclusion: "conditional"
+    inclusion_condition: "Required for coffee or substitute extracts produced on site; not applicable when a purchased extract is only blended or packed"
+    role: "Foreground extraction"
+    quantitative_reference: "kg clarified extract liquor"
+  - id: concentration
+    name: "Concentration and aroma handling"
+    inclusion: "conditional"
+    inclusion_condition: "Required when extract liquor is concentrated on site or recovered aromas are returned"
+    role: "Foreground concentration"
+    quantitative_reference: "kg concentrated extract"
+  - id: drying_finishing
+    name: "Drying, agglomeration, and dry-product finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Required for dried soluble or instant products produced on site"
+    role: "Foreground product finishing"
+    quantitative_reference: "kg dried finished product"
+  - id: formulation
+    name: "Blending and formulation"
+    inclusion: "conditional"
+    inclusion_condition: "Required for coffee-based preparations, coffee-containing substitutes, or products made from multiple ingredients"
+    role: "Foreground formulation"
+    quantitative_reference: "kg formulated product"
+  - id: packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always for saleable factory-gate product; use an explicit unpackaged state only when that is the commercial output"
+    role: "Foreground packing"
+    quantitative_reference: "1 kg net saleable product"
+process_inventory:
+  - id: ingredient_preparation
+    label: "Ingredient receipt and preparation"
+    inputs:
+      product:
+        - row_id: primary_ingredient_feed
+          role: "Roasted coffee, chicory, substitute, or purchased extract feed"
+          name: "Declared roasted coffee, roasted chicory, coffee substitute, or purchased extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each principal ingredient separately by identity, origin, roasted/extracted state, moisture or dry matter, and lot. Do not merge coffee, chicory, other substitutes, or purchased extract into an unnamed aggregate."
+          amount:
+            expression: "Measured as-received lot mass consumed, net of documented returns to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "10"
+                unit: "kg/kg net saleable product"
+                basis: "broad category-level screen spanning preparations, liquid extracts, and dried extracts; replace with product- and site-specific yield evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: minor_ingredients
+          role: "Minor formulation and processing aids"
+          name: "Declared formulation ingredient or processing aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sugars, carriers, anti-caking agents, or other declared ingredients and processing aids separately when used. Apply applicable product-composition rules and retain recipe records."
+          amount:
+            expression: "Measured issue-to-production mass by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_records
+              source_ids:
+                - eu-coffee-extracts-directive-1999
+            ranges: []
+      waste:
+        - row_id: ingredient_rejects
+          role: "Rejected or spilled ingredients"
+          name: "Organic food-processing waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification, spilled, and discarded ingredient mass by material and destination."
+          amount:
+            expression: "Measured rejected or discarded mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg prepared feed"
+                basis: "broad first-pass screen; replace with site mass-balance history"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_feed
+          role: "Prepared ingredient feed"
+          name: "Prepared coffee or substitute feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared material transferred to extraction or formulation is calculated from opening stock, receipts, closing stock, returns, and measured losses."
+          amount:
+            expression: "Calculated prepared feed transferred to the next foreground process"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_lot_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: aqueous_extraction
+    label: "Aqueous extraction and clarification"
+    inputs:
+      product:
+        - row_id: extraction_feed
+          role: "Prepared roasted material"
+          name: "Prepared roasted coffee or substitute material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared roasted coffee or substitute material entering extraction. Purchased extract bypasses this process and enters concentration or formulation."
+          amount:
+            expression: "Metered or batch-weighed extraction feed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clarified extract liquor"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_records
+              source_ids:
+                - eu-coffee-extracts-directive-1999
+            ranges: []
+        - row_id: process_water
+          role: "Extraction and cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separate water incorporated in extract from cleaning water where metering permits; record recycled water and condensate without double counting makeup water."
+          amount:
+            expression: "Metered freshwater makeup plus other externally supplied water entering the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "50"
+                unit: "kg/kg net saleable product"
+                basis: "broad first-pass screen across extract forms and cleaning regimes; replace with site metering"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_energy
+          role: "Extraction energy and utilities"
+          name: "Purchased electricity and thermal-energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and thermal energy carriers separately. Steam crossing the process boundary shall include its pressure or temperature basis and condensate return treatment."
+          amount:
+            expression: "Metered or allocated utility consumption for extraction and clarification"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "50"
+                unit: "MJ/kg net saleable product"
+                basis: "broad first-pass combined-energy screen; replace with separated meter or engineering records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: clarified_extract
+          role: "Clarified coffee or substitute extract liquor"
+          name: "Clarified coffee or substitute extract liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record extract mass and dry-matter fraction at the transfer point to concentration or direct liquid-product finishing."
+          amount:
+            expression: "Measured transfer mass with paired dry-matter test"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg clarified extract liquor"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: spent_extraction_solids
+          role: "Spent coffee grounds or substitute solids"
+          name: "Spent coffee grounds or spent substitute solids"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wet mass, dry matter, any recovered coffee oil or other co-product, and treatment or use destination."
+          amount:
+            expression: "Measured wet mass leaving extraction, paired with representative dry-matter samples"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg wet solids/kg net saleable product"
+                basis: "broad first-pass screen; replace with site mass balance and moisture data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_wastewater
+          role: "Extraction wastewater"
+          name: "Food-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record wastewater volume or mass, relevant load indicators, and destination; do not combine it with water incorporated in product or evaporated water."
+          amount:
+            expression: "Metered discharge from extraction, cleaning, and clarification attributable to the product route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg/kg net saleable product"
+                basis: "broad first-pass screen; replace with flow-meter and production records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: concentration
+    label: "Concentration and aroma handling"
+    inputs:
+      product:
+        - row_id: concentration_feed
+          role: "Clarified extract or purchased extract"
+          name: "Clarified or purchased coffee or substitute extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the feed mass, dry matter, and whether aromas are recovered and returned."
+          amount:
+            expression: "Measured feed transfer mass with dry-matter test"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg concentrated extract output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids: []
+            ranges: []
+        - row_id: concentration_energy
+          role: "Concentration energy and utilities"
+          name: "Purchased electricity and thermal-energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity, steam, refrigeration, and vacuum-system utilities separately where available."
+          amount:
+            expression: "Metered or engineering-allocated concentration utility consumption"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "50"
+                unit: "MJ/kg net saleable product"
+                basis: "broad first-pass combined-energy screen; replace with site utility data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: concentrated_extract
+          role: "Concentrated extract"
+          name: "Concentrated coffee or substitute extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record product mass, product form, and dry matter at the concentration outlet. Recovered aroma returned to the same product is an internal flow and shall not be counted as an additional output."
+          amount:
+            expression: "Measured outlet mass with dry-matter test"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg concentrated extract output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids:
+                - eu-coffee-extracts-directive-1999
+            ranges: []
+      waste:
+        - row_id: concentration_water_output
+          role: "Concentration condensate or wastewater"
+          name: "Process condensate or wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record condensate reuse, discharge, or treatment separately so recovered water is not counted both as waste and avoided input."
+          amount:
+            expression: "Metered or mass-balance-calculated water output by destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg concentrated extract output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: drying_finishing
+    label: "Drying, agglomeration, and dry-product finishing"
+    inputs:
+      product:
+        - row_id: drying_feed
+          role: "Concentrated extract feed"
+          name: "Concentrated coffee or substitute extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Declare spray drying, freeze drying, or another reviewed drying technology and record feed mass and dry matter."
+          amount:
+            expression: "Measured concentrated feed to the dryer"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids: []
+            ranges: []
+        - row_id: drying_energy
+          role: "Drying energy and utilities"
+          name: "Purchased electricity and thermal-energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity, heat, refrigeration, compressed air, and inert gas separately by drying technology."
+          amount:
+            expression: "Metered or engineering-allocated utility consumption for drying and agglomeration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dried product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meter_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "100"
+                unit: "MJ/kg dried product"
+                basis: "broad first-pass screen spanning spray and freeze drying; replace with technology-specific site data"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_product
+          role: "Dried soluble or instant product"
+          name: "Instant Coffee / 速溶咖啡"
+          flow_type: "product"
+          flow_ref:
+            uuid: "16ecdc48-3ef5-40b0-8a5d-56b3794a2ba4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net dried output, dry matter, retained fines returned internally, and off-specification product separately."
+          amount:
+            expression: "Measured conforming dried output transferred to formulation or packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids:
+                - eu-coffee-extracts-directive-1999
+            ranges: []
+      waste:
+        - row_id: drying_rejects
+          role: "Off-specification dried product and captured fines"
+          name: "Off-specification soluble coffee or substitute product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record final destination and distinguish internally recycled fines from material that leaves the foreground system."
+          amount:
+            expression: "Measured off-specification output leaving the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dried product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg dried product output"
+                basis: "broad first-pass screen; replace with site yield history"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: formulation
+    label: "Blending and formulation"
+    inputs:
+      product:
+        - row_id: formulation_components
+          role: "Coffee extract, substitute, and formulation components"
+          name: "Declared formulation components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every recipe component separately and identify the coffee, chicory, or other substitute basis."
+          amount:
+            expression: "Measured batch recipe quantities corrected for returns and rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_lot_records
+              source_ids:
+                - eu-coffee-extracts-directive-1999
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formulated_product
+          role: "Formulated coffee or substitute preparation"
+          name: "Formulated coffee or substitute preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net batch output, recipe version, dry matter, and product-specific flow identity."
+          amount:
+            expression: "Measured conforming formulated output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: unpacked_product
+          role: "Unpacked conforming product"
+          name: "Product-specific coffee extract, preparation, or substitute product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the product-specific flow entering packaging. The instant-coffee UUID is used only when the product is instant or soluble coffee."
+          amount:
+            expression: "Measured conforming product transferred to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass_quality_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging materials"
+          name: "Product-specific packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each material and component separately, including multilayer packs, closures, labels, cartons, and pallets when inside the declared packaging boundary."
+          amount:
+            expression: "Measured or bill-of-material packaging mass consumed, net of returned components"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kg/kg net saleable product"
+                basis: "broad first-pass screen spanning bulk and retail formats; replace with the packaging bill of materials"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap"
+          name: "Packaging waste by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap by material and treatment destination."
+          amount:
+            expression: "Measured packaging scrap leaving the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Net saleable reference product"
+          name: "Instant Coffee / 速溶咖啡"
+          flow_type: "product"
+          flow_ref:
+            uuid: "16ecdc48-3ef5-40b0-8a5d-56b3794a2ba4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output flow shall be product-specific. Use the verified Instant Coffee flow only for instant or soluble coffee; all other products require a verified, more specific Tiangong flow."
+          amount:
+            expression: "Fixed quantitative reference of 1 kg net saleable product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Multi-output foreground processes"
+    rule: "First avoid allocation through process subdivision, separate metering, and mass balance, including separate accounting for recovered aroma, coffee oil, reusable condensate, internally recycled fines, and saleable co-products."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_physical_then_other
+    applies_to: "Unavoidable shared burdens"
+    rule: "When subdivision is not feasible, use a documented physical causal relationship. If no defensible physical relationship exists, use an explicitly justified alternative such as economic allocation, report prices and reference period, and test sensitivity."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_internal_recycling
+    applies_to: "Internal loops"
+    rule: "Do not assign a second product output or avoided burden to recovered aroma, condensate, extract, or fines returned to the same foreground route; record the loop and count only makeup inputs and losses crossing the system boundary."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_waste_treatment
+    applies_to: "Spent grounds, wastewater, and packaging scrap"
+    rule: "Assign treatment burdens to the foreground product up to the declared system boundary. Do not credit substitution or recycling benefits unless the downstream method and dataset scope explicitly require them and the modelling choice is disclosed."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_lot_records
+      process_id: "ingredient_preparation"
+      flow_role: "Principal and minor ingredient inputs; prepared feed; formulation components"
+      record_type: "ERP issue records, scale tickets, batch sheets, stock reconciliation"
+      raw_fields: "material_id; supplier; lot_id; product_state; opening_stock; receipts; issues; returns; closing_stock; moisture_or_dry_matter; timestamp"
+      collection_method: "Calibrated scales plus inventory reconciliation"
+      unit: "kg and kg/kg dry matter"
+      frequency: "Each lot or batch, reconciled monthly"
+      temporal_coverage: "Representative production cycle; preferably 12 consecutive months for annual datasets"
+      site_scope: "Every included manufacturing site and product recipe"
+      aggregation_rule: "Sum net consumption by material and divide by conforming reference-product output; keep ingredients separate"
+      quality_evidence: "Scale calibration, lot traceability, stock-variance review, recipe approval"
+    - protocol_id: cp_utility_meter_records
+      process_id: "aqueous_extraction"
+      flow_role: "Water, electricity, fuels, steam, refrigeration, compressed air, and other utilities for extraction, concentration, and drying"
+      record_type: "Utility meters, invoices, boiler logs, engineering allocation records"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; conversion_factor; process_area; production_period; allocation_key"
+      collection_method: "Submeter preferred; otherwise documented engineering allocation from site totals"
+      unit: "kg, m3, kWh, or MJ"
+      frequency: "Continuous or per batch, reconciled monthly"
+      temporal_coverage: "Same representative period as product output; preferably 12 consecutive months"
+      site_scope: "All equipment and shared utilities serving included processes"
+      aggregation_rule: "Convert with documented factors, subtract verified exports or returns, allocate shared totals using causal operating data, normalize to output"
+      quality_evidence: "Meter calibration, invoice reconciliation, operating-hour record, conversion-factor source"
+    - protocol_id: cp_product_mass_quality_records
+      process_id: "packaging"
+      flow_role: "Extract intermediates and conforming product outputs"
+      record_type: "Batch mass records, tank or hopper measurements, laboratory results, release records"
+      raw_fields: "batch_id; product_id; input_mass; output_mass; product_form; dry_matter; caffeine_status; recipe_version; drying_technology; release_status"
+      collection_method: "Calibrated mass measurement paired with representative laboratory sampling"
+      unit: "kg and % by mass"
+      frequency: "Every batch or production lot"
+      temporal_coverage: "All batches in the representative dataset period"
+      site_scope: "Every included product and site"
+      aggregation_rule: "Sum released output only; retain intermediate mass and dry-matter pairs for mass balance"
+      quality_evidence: "Scale calibration, laboratory method, sample plan, release authorization"
+    - protocol_id: cp_waste_records
+      process_id: "ingredient_preparation"
+      flow_role: "Ingredient rejects, spent solids, off-specification product, and packaging scrap"
+      record_type: "Waste scales, container tickets, transfer notes, treatment invoices"
+      raw_fields: "waste_id; material; wet_mass; dry_matter_if_relevant; destination; treatment; recovery_status; batch_or_period"
+      collection_method: "Weigh each transfer or use calibrated container factors verified by periodic weighing"
+      unit: "kg and kg/kg dry matter where relevant"
+      frequency: "Each transfer, reconciled monthly"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included processes and destinations"
+      aggregation_rule: "Sum by waste type and destination; subtract only documented internal return before boundary crossing"
+      quality_evidence: "Scale calibration, transfer documentation, treatment receipt, moisture sampling"
+    - protocol_id: cp_wastewater_records
+      process_id: "aqueous_extraction"
+      flow_role: "Wastewater and condensate discharge or reuse"
+      record_type: "Flow meter, tank record, discharge permit sampling, treatment log"
+      raw_fields: "stream_id; volume_or_mass; density_if_used; COD_or_relevant_load; destination; reuse_quantity; period"
+      collection_method: "Continuous flow meter or documented water balance with representative sampling"
+      unit: "kg, m3, and applicable load unit"
+      frequency: "Continuous/monthly plus permit sampling frequency"
+      temporal_coverage: "Same representative period as product output, including seasonal cleaning campaigns"
+      site_scope: "All included wastewater and condensate streams"
+      aggregation_rule: "Separate discharge, treatment, evaporation, product incorporation, and internal reuse; avoid double counting"
+      quality_evidence: "Meter calibration, balance closure, laboratory report, discharge record"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "Primary, secondary, and tertiary packaging inside the declared boundary"
+      record_type: "Bill of materials, supplier specification, issue and scrap records"
+      raw_fields: "component_id; material; unit_mass; units_used; recycled_content_if_claimed; scrap; pallet_cycles; product_format"
+      collection_method: "Component weighing and approved bill of materials reconciled to issues"
+      unit: "kg"
+      frequency: "Per packaging specification; issues reconciled monthly"
+      temporal_coverage: "All packaging formats produced in the representative dataset period"
+      site_scope: "Every saleable format and included site"
+      aggregation_rule: "Sum component mass consumed minus documented reusable returns; normalize to net product mass"
+      quality_evidence: "Approved specification, supplier declaration, scale record, inventory reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground flows"
+      rule: "normalized amount = period or batch flow amount / net conforming saleable product mass for the same period or batch"
+      inputs:
+        - flow_amount
+        - net_saleable_product_mass
+      output: "amount per 1 kg net saleable reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_dry_matter
+      applies_to: "Extract and product quality"
+      rule: "dry-matter fraction = dry sample mass / as-received sample mass; retain the laboratory method and sampling basis"
+      inputs:
+        - dry_sample_mass
+        - as_received_sample_mass
+      output: "kg/kg and % by mass dry matter"
+      source_ids:
+        - eu-coffee-extracts-directive-1999
+    - id: calc_material_balance
+      applies_to: "Each process and complete foreground route"
+      rule: "mass-balance difference = total measured mass inputs - total measured mass outputs - separately measured evaporation or other mass transfer; report difference relative to total inputs"
+      inputs:
+        - input_masses
+        - product_outputs
+        - waste_outputs
+        - wastewater
+        - evaporation_or_transfer
+      output: "kg difference and % closure"
+      source_ids: []
+    - id: calc_shared_utility
+      applies_to: "Shared utility systems"
+      rule: "allocated utility = metered shared total × causal process driver / sum of the same driver across served processes; use operating time only when it reasonably represents demand"
+      inputs:
+        - shared_utility_total
+        - causal_driver_by_process
+      output: "utility amount assigned to each process"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_packaging_mass
+      applies_to: "Packaging"
+      rule: "packaging mass = sum(component unit mass × units consumed) - verified reusable components returned without crossing the boundary"
+      inputs:
+        - component_unit_mass
+        - units_consumed
+        - reusable_returns
+      output: "kg packaging per kg net product"
+      source_ids: []
+    - id: calc_yield
+      applies_to: "Extraction, concentration, drying, formulation, and packaging"
+      rule: "process yield = conforming output dry mass / applicable input dry mass; for packaging use conforming net product mass / unpacked input mass"
+      inputs:
+        - input_mass_and_dry_matter
+        - conforming_output_mass_and_dry_matter
+      output: "kg/kg process yield on declared basis"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and ingredients"
+      requirement: "Preserve product-specific identities, lot links, product form, coffee/chicory/substitute basis, recipe version, and the verified Tiangong flow UUID. Non-instant products shall not use the Instant Coffee UUID."
+      evidence: "Product specification, batch release record, supplier record, and Tiangong identity verification"
+    - id: dq_measurement
+      applies_to: "Mass, utilities, water, wastes, and quality tests"
+      requirement: "Use calibrated or legally controlled instruments where applicable; retain calibration status, reading units, conversion factors, and laboratory methods."
+      evidence: "Calibration certificate, meter log, laboratory report, and conversion record"
+    - id: dq_temporal
+      applies_to: "Foreground annual or campaign dataset"
+      requirement: "Cover at least one representative production cycle and preferably 12 consecutive months when seasonality or product campaigns affect utilities or yield; disclose shorter coverage and its limitations."
+      evidence: "Production calendar, monthly reconciliation, and representativeness assessment"
+    - id: dq_completeness
+      applies_to: "Foreground system"
+      requirement: "Reconcile material, water, energy, product, waste, and wastewater records across every included process and document excluded or unmetered flows."
+      evidence: "Completeness checklist, mass and water balances, utility reconciliation"
+    - id: dq_representativeness
+      applies_to: "Upstream datasets and shared allocations"
+      requirement: "Document geographic, temporal, and technological match, shared-site allocation drivers, and substitutions used when exact upstream data are unavailable."
+      evidence: "Dataset metadata, allocation worksheet, supplier geography, technology description"
+    - id: dq_uncertainty
+      applies_to: "Provisional ranges and modelled estimates"
+      requirement: "Treat every reasoned_estimate range only as a QA screen; replace it with foreground measurements or reviewed source-backed evidence before publication or disclose the unresolved limitation."
+      evidence: "Range review log, measured value, source citation, or explicit limitation statement"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Confirm UUID 16ecdc48-3ef5-40b0-8a5d-56b3794a2ba4, flow name Instant Coffee / 速溶咖啡, flow type Product flow, state code 100, Mass property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, mass unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg reference unit."
+    source_ids: []
+  - rule_id: validate_non_instant_flow
+    applies_to: "Non-instant products"
+    rule: "Reject publication if liquid or paste extract, coffee-based preparation, roasted chicory, or another substitute product relabels or reuses the Instant Coffee UUID; require a verified product-specific flow."
+    source_ids: []
+  - rule_id: validate_qualifiers
+    applies_to: "Reference product metadata"
+    rule: "Require product form, coffee/chicory/substitute and recipe basis, dry matter, decaffeination status, extraction medium, applicable drying technology, packaging state, geography, and reference year."
+    source_ids:
+      - eu-coffee-extracts-directive-1999
+  - rule_id: validate_route
+    applies_to: "Process coverage"
+    rule: "Require both mandatory processes and a documented included/not-applicable decision for aqueous extraction, concentration, drying, and formulation; the detailed inventories shall match the declared production route."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_mass_balance
+    applies_to: "Foreground processes"
+    rule: "Require batch or period mass-balance calculations for extraction, concentration, drying, formulation, and packaging; investigate and disclose material imbalances instead of forcing closure."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: validate_foreground_evidence
+    applies_to: "Collected and calculated rows"
+    rule: "Require every collected_record or calculated_from_collection row to reference an implemented collection protocol and retain the stated quality evidence."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_allocation
+    applies_to: "Multi-output and shared processes"
+    rule: "Require documented subdivision attempts, allocation method, allocation factors totaling one, source period, and sensitivity when a non-physical basis is used."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: validate_estimate_status
+    applies_to: "Reasoned-estimate ranges"
+    rule: "Flag every reasoned_estimate as a non-authoritative QA guardrail and require replacement by measured or reviewed evidence, or explicit limitation disclosure, before normal published use."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for a declared coffee extract, concentrate, instant coffee, coffee-based preparation, or coffee-substitute product"
+  downstream_use: "secondary_dataset; background_dataset when product identity, route, geography, technology, and data quality are sufficiently representative for reuse"
+  allowed_use: "Product-footprint, process, and lifecycle-model studies using the same product form and composition basis, manufacturing route, boundary, geography, time period, packaging state, and allocation assumptions"
+  excluded_use: "Direct substitution across dried, paste, liquid, preparation, chicory, or other substitute forms without dry-matter and function adjustment; consumer beverage preparation; agricultural coffee production; use of the Instant Coffee UUID for a non-instant product; comparative public claims without applicable review"
+  required_metadata: "Product-specific flow UUID; product name and form; coffee/chicory/substitute basis and recipe shares; dry matter; decaffeination status; extraction medium; drying technology; net and packaging mass basis; process inclusion decisions; geography; reference year; site coverage; allocation method; upstream dataset versions"
+  required_quality_disclosure: "Foreground coverage period and site share; meter and scale quality; laboratory methods; mass and water balance closure; missing-flow assessment; shared-utility allocation; upstream representativeness; provisional estimate status; exclusions and limitations"
+  update_trigger: "Change of product flow identity, product form or recipe, dry-matter specification, extraction or drying technology, site or geography, packaging format, allocation method, material supplier route, or a material shift in yield, energy, water, waste, or wastewater performance"
+data_sources:
+  - id: "eu-coffee-extracts-directive-1999"
+    type: "official_guidance"
+    reference: "European Parliament and Council, Directive 1999/4/EC relating to coffee extracts and chicory extracts, consolidated current version, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:31999L0004 (retrieved 2026-08-11)"
+    used_for: "Product definitions; water-only extraction definition; dried, paste, and liquid form distinctions; dry-matter and composition qualifiers"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow; system boundary; company-specific data; data quality; multifunctionality; validation and reporting rules"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including published amendments; official record https://www.iso.org/standard/38498.html (confirmed current in 2022; retrieved 2026-08-11)"
+    used_for: "LCA inventory consistency, allocation hierarchy, completeness, interpretation, reporting, and critical-review basis"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e622d42db03d477bc2dfa4d6d5b08e64eced687cc61f0a64c05d8a7e1ca75a0a"
+  generated_content_sha256: "sha256:99ce451ae6d1ba070a129aa80d5d462efd78d52baba6488097aff69ed97d982b"

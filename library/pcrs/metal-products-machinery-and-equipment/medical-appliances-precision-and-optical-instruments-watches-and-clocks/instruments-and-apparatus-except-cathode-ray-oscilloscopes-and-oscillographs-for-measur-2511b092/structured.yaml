@@ -1,10 +1,794 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48243"
-  title: "Instruments and apparatus (except cathode-ray oscilloscopes and oscillographs) for measuring or checking voltage, current, resistance or power, without a recording device (except electricity production or supply meters)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.instruments-and-apparatus-except-cathode-ray-oscilloscopes-and-oscillographs-for-measur-2511b092"
+  classification_refs: "CPC 3.0: 48243 (exact classification reference; the classification mapping remains governed outside this PCR)"
+  covered_products: "Finished non-recording instruments and apparatus for measuring or checking voltage, current, resistance, or power"
+  excluded_products: "Cathode-ray oscilloscopes and oscillographs; recording instruments; electricity production or supply meters; other-electrical-quantity instruments; separately supplied parts, accessories, software, and services"
+  representative_product: "A finished non-recording electrical measuring instrument, such as a handheld or bench multimeter, supplied at the factory gate"
+  production_route: "Purchased electronic and mechanical inputs, optional in-house component manufacture, final electromechanical assembly, calibration and functional/safety/EMC verification as applicable, and packaging"
+  market_state: "Finished product, manufactured; production mix, at plant"
+functional_unit:
+  what: "Provide a finished instrument capable of the declared voltage, current, resistance, or power measurement/checking function without a recording device"
+  how_much: "1 kg of finished instrument at the factory gate"
+  how_well: "Meets the declared measurement functions, ranges, accuracy specification, safety category, and applicable conformity requirements for the represented model or product family"
+  how_long_or_cycle: "One production reporting period; service life is not represented by this cradle-to-gate reference flow and must be declared separately for use-stage comparisons"
+  reference_flow_link: "One kilogram of the Tiangong reference product flow defined below"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_manufacturing
+      applies_to: "foreground_system_boundary"
+      rule: "Include all directly controlled and attributable in-house component manufacture, electromechanical assembly, firmware loading when part of manufacture, calibration, functional verification, applicable safety and EMC tests, quality control, rework, cleaning, and packaging through the finished-product factory gate."
+      source_ids:
+        - iec-63366-2025
+        - eu-pef-2021-2279
+    - rule_id: sb_purchased_inputs
+      applies_to: "purchased_input_boundary"
+      rule: "Record the full product-specific bill of materials and packaging, purchased subassemblies, energy, auxiliaries, intra-site handling, and waste/treatment outputs; connect each purchased input to an upstream dataset rather than omitting it from the foreground package."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_compliance_evidence
+      applies_to: "product_conformance_boundary"
+      rule: "Include the activity data for tests actually performed for the represented product route and retain product safety, EMC, calibration, and restricted-substance documentation; a cited standard does not substitute for the product's test or supplier records."
+      source_ids:
+        - iec-61010-1-2010-amd1-2016
+        - iec-61326-1-2020
+        - iec-63000-2016-amd1-2022
+    - rule_id: sb_no_silent_cutoff
+      applies_to: "foreground_cutoff"
+      rule: "Do not silently omit known production inputs, outputs, or process stages. Any exclusion must identify the omitted flow or stage, the reason and materiality basis, the governing study method, and the expected effect on completeness."
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-2021-2279
+    - rule_id: sb_extended_stages
+      applies_to: "downstream_extension"
+      rule: "Keep distribution, use, maintenance, and end-of-life outside the default foreground package; if added for a specific study, model and disclose them as an explicit boundary extension without changing the canonical cradle-to-gate reference-flow identity."
+      source_ids:
+        - iec-63366-2025
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, electronic and electromechanical components, housings, subassemblies, packaging, and energy received at the manufacturing site"
+  starting_condition_role: "Foreground manufacturing gate; upstream burdens of purchased inputs are supplied by linked secondary or background datasets"
+  product_classification_scope: "Finished non-recording instruments for measuring or checking voltage, current, resistance, or power within the semantic product boundary represented by CPC 3.0 code 48243"
+  recursive_input_rule: "If an input is itself a product in this same category, record it as a visible product input and link an upstream dataset; do not recursively reproduce its manufacture inside the receiving process"
+  upstream_dataset_requirement: "Every material, component, subassembly, packaging, energy, transport, and treatment input crossing the foreground boundary requires a named upstream dataset or a disclosed unresolved data gap"
+  disclosure: "Declare manufacturing sites and routes; included product contents and packaging; in-house versus purchased subassemblies; allocation and cut-off decisions; testing scope; data period; geography; and all excluded life-cycle stages"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Instruments and apparatus (except cathode-ray oscilloscopes and oscillographs) for measuring or checking voltage, current, resistance or power, without a recording device (except electricity production or supply meters)"
+    uuid: "7ecc1c5a-4a45-4d93-8648-9a86405e3d20"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "instrument type and model or product family"
+    - "measured quantities"
+    - "measurement ranges"
+    - "accuracy specification or class"
+    - "safety measurement category and rated voltage where applicable"
+    - "analogue or digital indication"
+    - "explicit absence of a recording device"
+    - "power-supply and included-battery state"
+    - "included leads"
+    - probes
+    - accessories
+    - manuals
+    - "and packaging"
+    - "production route"
+    - "manufacturing geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all mass-normalized inventory results"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the foreground package to exactly 1 kg of conforming finished reference product. Report whether included batteries, test leads, probes, manuals, accessories, and sales packaging are inside that mass."
+  - id: count_to_mass_conversion
+    applies_to: "Source records available only as instruments, assemblies, or packages by count"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts to mass only with measured net or gross mass for the represented model and lot; retain the count, measured mass, sample size, and packaging convention."
+  - id: energy_normalization
+    applies_to: "Electricity and other energy used by in-house manufacturing, assembly, calibration, testing, and packaging"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered unit and conversion factor, separate energy carriers, and divide attributable energy by conforming finished-product mass from the same reporting period."
+  - id: measurement_quality_identity
+    applies_to: "Product conformance records"
+    required_property_ref:
+      name: "Declared measurement result and uncertainty or tolerance"
+      uuid: ""
+    required_unit: "Declared engineering unit"
+    rule: "Retain the tested quantity, range, set point, observed result, tolerance or uncertainty, equipment identifier, calibration status, and pass/fail decision; do not convert a product performance result into an inventory mass or energy amount."
+process_map:
+  - id: inhouse_component_manufacture
+    name: "In-house component and subassembly manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the reporting facility manufactures or materially transforms circuit assemblies, sensors, shunts, housings, terminals, wiring assemblies, or other product components"
+    role: "Foreground component manufacture"
+    quantitative_reference: "1 kg of accepted in-house component or subassembly output"
+  - id: final_instrument_assembly
+    name: "Final instrument assembly and configuration"
+    inclusion: "required"
+    inclusion_condition: "Always include for a manufactured finished instrument"
+    role: "Foreground electromechanical assembly"
+    quantitative_reference: "1 kg of assembled instrument before final calibration and release"
+  - id: calibration_test_packaging
+    name: "Calibration, verification, release, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include; record only the tests and packaging activities applicable to the represented route"
+    role: "Foreground calibration, conformance verification, quality release, and packaging"
+    quantitative_reference: "1 kg of conforming finished reference product"
+process_inventory:
+  - id: inhouse_component_manufacture
+    label: "In-house component and subassembly manufacture"
+    inputs:
+      product:
+        - row_id: inhouse_material_inputs
+          role: "Raw materials, parts, and process materials for in-house manufacture"
+          name: "Supplier-specific material, part, or process material; resolve each concrete flow during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record product-specific materials and parts entering each in-house component or subassembly operation from purchasing, stores, or another site."
+          amount:
+            expression: "Measured receipts and stock-adjusted consumption attributable to accepted component or subassembly output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of accepted in-house component or subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inhouse_materials
+              source_ids:
+                - eu-pef-2021-2279
+                - iec-63000-2016-amd1-2022
+            ranges: []
+        - row_id: inhouse_energy
+          role: "Energy supplied to in-house manufacture"
+          name: "Site- and carrier-specific energy supply; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and other energy carriers consumed by the included in-house operations, separated by carrier and supply dataset."
+          amount:
+            expression: "Submetered consumption, or documented allocation from a complete site meter when submetering is unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of accepted in-house component or subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inhouse_energy
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: inhouse_component_output
+          role: "Accepted in-house components and subassemblies"
+          name: "Product-specific component or subassembly; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted component or subassembly mass transferred to final instrument assembly."
+          amount:
+            expression: "Measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of accepted in-house component or subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inhouse_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: inhouse_waste_outputs
+          role: "In-house manufacturing scrap, rejects, and treatment residues"
+          name: "Material- and treatment-specific waste flow; resolve during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each material-specific scrap, rejected component, wastewater, spent bath, and other waste output with destination and recovery or disposal route."
+          amount:
+            expression: "Measured waste shipment, treatment, or internal transfer mass by waste type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of accepted in-house component or subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inhouse_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: inhouse_direct_emissions
+          role: "Direct emissions from in-house component manufacture"
+          name: "Substance- and compartment-specific elementary flow; resolve during dataset construction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or legally reported releases to air, water, or soil from included in-house operations without duplicating emissions already represented in upstream energy or material datasets."
+          amount:
+            expression: "Measured release or calculation from measured concentration and discharge volume using the declared monitoring method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of accepted in-house component or subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_inhouse_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: final_instrument_assembly
+    label: "Final instrument assembly and configuration"
+    inputs:
+      product:
+        - row_id: assembly_electronic_inputs
+          role: "Electronic, sensing, and electromechanical bill-of-material inputs"
+          name: "Supplier- and part-specific product flow; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record populated or bare circuit assemblies, sensors, shunts, displays, switches, terminals, connectors, wiring, power modules, batteries when included, and other electronic or electromechanical items by supplier and part identity."
+          amount:
+            expression: "Product-specific bill-of-material quantity reconciled to measured issue, return, and stock-change records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of assembled instrument output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - eu-pef-2021-2279
+                - iec-63000-2016-amd1-2022
+            ranges: []
+        - row_id: assembly_mechanical_inputs
+          role: "Housings, mechanical parts, fasteners, and labels"
+          name: "Supplier- and part-specific product flow; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record housings, frames, shields, knobs, buttons, fasteners, labels, and other mechanical items by material and part identity."
+          amount:
+            expression: "Product-specific bill-of-material quantity reconciled to measured issue, return, and stock-change records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of assembled instrument output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - eu-pef-2021-2279
+                - iec-63000-2016-amd1-2022
+            ranges: []
+        - row_id: assembly_energy_auxiliaries
+          role: "Assembly energy and directly consumed auxiliaries"
+          name: "Site- and material-specific product flow; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ for energy; Mass / kg for materials"
+          description: "Record electricity, compressed air, solder or joining materials, adhesives, cleaning agents, lubricants, and other directly attributable assembly inputs separately."
+          amount:
+            expression: "Metered energy and stock-adjusted auxiliary consumption attributable to the assembly process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of assembled instrument output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_energy_auxiliaries
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_instrument_output
+          role: "Assembled instrument awaiting calibration and release"
+          name: "Product-specific uncalibrated assembled instrument; no category-generic UUID is prescribed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass transferred to final calibration, verification, and product release."
+          amount:
+            expression: "Measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of assembled instrument output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: assembly_waste_outputs
+          role: "Assembly scrap, rejects, and replaced parts"
+          name: "Material- and treatment-specific waste flow; resolve during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record assembly scrap, rejected assemblies, removed parts, spent consumables, and their actual destinations without netting them against material inputs."
+          amount:
+            expression: "Measured waste, reject, and return mass by type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of assembled instrument output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: calibration_test_packaging
+    label: "Calibration, verification, release, and packaging"
+    inputs:
+      product:
+        - row_id: test_assembled_input
+          role: "Assembled instrument input"
+          name: "Product-specific uncalibrated assembled instrument; no category-generic UUID is prescribed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of assembled instruments entering calibration and verification, including returned rework loops without double counting repeated throughput as new product input."
+          amount:
+            expression: "Measured unique input mass plus separately disclosed rework passes"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of conforming finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_inputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: test_energy_consumables
+          role: "Test, calibration, and packaging energy and consumables"
+          name: "Site- and carrier-specific energy or material flow; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ for energy; Mass / kg for materials"
+          description: "Record energy used by calibration and test equipment, conditioning, firmware programming, burn-in when performed, and packaging, together with directly consumed calibration and cleaning materials."
+          amount:
+            expression: "Metered consumption or documented allocation to tested and released product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of conforming finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_energy_consumables
+              source_ids:
+                - eu-pef-2021-2279
+                - iec-61010-1-2010-amd1-2016
+                - iec-61326-1-2020
+            ranges: []
+        - row_id: packaging_accessory_inputs
+          role: "Sales packaging and included accessories"
+          name: "Material- and supplier-specific packaging or accessory flow; resolve during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary and secondary sales packaging and all leads, probes, adapters, batteries, manuals, and accessories included with the declared reference product; clearly distinguish included product mass from packaging mass."
+          amount:
+            expression: "Product-specific packaging and accessory bill of materials reconciled to issue and stock-change records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg of conforming finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_inputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming finished non-recording electrical measuring instrument"
+          name: "Instruments and apparatus (except cathode-ray oscilloscopes and oscillographs) for measuring or checking voltage, current, resistance or power, without a recording device (except electricity production or supply meters)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ecc1c5a-4a45-4d93-8648-9a86405e3d20"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the released finished-product mass using the exact Tiangong reference product flow and retain the model, function, accuracy, test, accessory, battery, and packaging qualifiers."
+          amount:
+            expression: "Exactly 1 kg of conforming released reference product after normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: test_reject_outputs
+          role: "Failed units, replaced parts, and test rejects"
+          name: "Material- and treatment-specific waste flow; resolve during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record failed units and parts leaving the rework loop, including their measured mass, disposition, recovery, or treatment route."
+          amount:
+            expression: "Measured reject and replaced-part mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of conforming finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_waste_outputs
+          role: "Packaging-process waste"
+          name: "Material- and treatment-specific packaging waste flow; resolve during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record offcuts, damaged packaging, liners, reels, and other packaging waste generated before the finished product leaves the factory gate."
+          amount:
+            expression: "Measured packaging waste mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg of conforming finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid
+    applies_to: "shared_manufacturing_processes"
+    rule: "Avoid allocation by separate metering, batch or line subdivision, or another defensible separation of processes and records directly attributable to the represented product."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: alloc_physical
+    applies_to: "inseparable_shared_burdens"
+    rule: "When allocation cannot be avoided, use a documented causal physical relationship that reflects the driver of the shared input or output, such as machine time, test time, energy demand, or mass where mass is causally relevant."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: alloc_other_relationship
+    applies_to: "no_defensible_physical_relationship"
+    rule: "If no relevant physical relationship can be demonstrated, use economic allocation or another justified relationship, disclose the data period and calculation, and report a sensitivity result for a materially different defensible method."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: alloc_scrap_and_recycling
+    applies_to: "scrap_recycling_and_recovery"
+    rule: "Report scrap and recovered material as visible output flows and state the upstream and end-of-life convention. Do not apply an avoided-burden credit inside this cradle-to-gate foreground package unless the declared governing methodology explicitly requires it."
+    source_ids:
+      - iec-63366-2025
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_inhouse_materials
+      process_id: "inhouse_component_manufacture"
+      flow_role: "raw materials, parts, and process materials"
+      record_type: "purchase, issue, return, stock, and composition records"
+      raw_fields: "part_id; supplier; material; opening_stock; receipts; issues; returns; closing_stock; measured_mass; lot_id"
+      collection_method: "Reconcile ERP or stores movements to production lots and verify mass by scales or supplier records"
+      unit: "kg"
+      frequency: "per lot with monthly reconciliation"
+      temporal_coverage: "representative continuous reporting period, normally at least 12 months, or justified shorter campaign"
+      site_scope: "every included manufacturing site and in-house operation"
+      aggregation_rule: "net attributable consumption divided by accepted component output mass"
+      quality_evidence: "BOM revision, supplier declaration, scale calibration, stock reconciliation, and restricted-substance documentation where applicable"
+    - protocol_id: cp_inhouse_energy
+      process_id: "inhouse_component_manufacture"
+      flow_role: "in-house manufacturing energy"
+      record_type: "meter and production records"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; submeter_scope; operating_time; allocation_driver; accepted_output_mass"
+      collection_method: "Read dedicated submeters; if unavailable, reconcile complete site meters and apply the declared allocation rule"
+      unit: "kWh or MJ"
+      frequency: "meter interval aggregated monthly"
+      temporal_coverage: "same period as production output"
+      site_scope: "every included site and energy carrier"
+      aggregation_rule: "attributable consumption divided by accepted component output mass"
+      quality_evidence: "meter calibration or utility invoice, meter coverage map, and allocation evidence"
+    - protocol_id: cp_inhouse_outputs
+      process_id: "inhouse_component_manufacture"
+      flow_role: "accepted output, wastes, and direct emissions"
+      record_type: "production, weighbridge, waste, discharge, and emissions records"
+      raw_fields: "output_mass; reject_mass; waste_type; destination; recovery_status; concentration; discharge_volume; emission_period"
+      collection_method: "Measure accepted output and each waste; calculate direct emissions only from measured activity and concentration data"
+      unit: "kg; m3; measured concentration unit"
+      frequency: "per lot or shipment; emissions at monitoring frequency"
+      temporal_coverage: "same period as production output"
+      site_scope: "every included in-house operation"
+      aggregation_rule: "sum by flow and destination, then normalize to accepted output mass"
+      quality_evidence: "calibrated scales, waste manifests, laboratory reports, permits, and mass-balance reconciliation"
+    - protocol_id: cp_assembly_bom
+      process_id: "final_instrument_assembly"
+      flow_role: "electronic and mechanical BOM inputs"
+      record_type: "product BOM and material issue records"
+      raw_fields: "product_model; BOM_revision; part_id; supplier; quantity_per_unit; issued_quantity; returned_quantity; stock_change; unit_mass; included_battery_flag"
+      collection_method: "Reconcile the product-specific BOM to actual issues, returns, substitutions, and stock changes; verify part mass"
+      unit: "kg and item count"
+      frequency: "per production lot with monthly reconciliation"
+      temporal_coverage: "same period as assembled output"
+      site_scope: "every final assembly site"
+      aggregation_rule: "net attributable part mass divided by assembled output mass"
+      quality_evidence: "approved BOM, change notices, supplier declarations, measured part mass, and stock reconciliation"
+    - protocol_id: cp_assembly_energy_auxiliaries
+      process_id: "final_instrument_assembly"
+      flow_role: "assembly energy and auxiliaries"
+      record_type: "meters, purchase, issue, and stock records"
+      raw_fields: "meter_id; carrier; reading; auxiliary_id; opening_stock; receipts; issues; closing_stock; allocation_driver"
+      collection_method: "Submeter assembly energy and reconcile auxiliary consumption to production records"
+      unit: "kWh or MJ; kg"
+      frequency: "meter interval and per lot, aggregated monthly"
+      temporal_coverage: "same period as assembled output"
+      site_scope: "every final assembly site"
+      aggregation_rule: "attributable energy or auxiliary quantity divided by assembled output mass"
+      quality_evidence: "meter evidence, invoices, calibrated scales, and allocation worksheet"
+    - protocol_id: cp_assembly_outputs
+      process_id: "final_instrument_assembly"
+      flow_role: "assembled output, scrap, rejects, and rework"
+      record_type: "production and waste records"
+      raw_fields: "assembled_output_mass; reject_mass; scrap_type; rework_entry; rework_exit; destination"
+      collection_method: "Measure unique accepted output and wastes; track rework loops without double counting output"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "same period as assembly inputs"
+      site_scope: "every final assembly line"
+      aggregation_rule: "accepted mass and waste mass by type normalized to accepted assembled output"
+      quality_evidence: "calibrated scales, lot genealogy, nonconformance records, and waste manifests"
+    - protocol_id: cp_test_inputs
+      process_id: "calibration_test_packaging"
+      flow_role: "assembled input, accessories, and packaging"
+      record_type: "test intake, packaging BOM, and issue records"
+      raw_fields: "serial_or_lot; assembled_mass; rework_passes; accessory_id; packaging_material; quantity; unit_mass; included_in_reference_mass"
+      collection_method: "Link unique instruments to test intake and reconcile included accessories and packaging to product-specific issue records"
+      unit: "kg and item count"
+      frequency: "per lot or serial batch"
+      temporal_coverage: "same period as released product"
+      site_scope: "every calibration, test, and packaging site"
+      aggregation_rule: "unique input and included-material mass divided by conforming released product mass"
+      quality_evidence: "traceability record, packaging BOM, calibrated scale, and stock reconciliation"
+    - protocol_id: cp_test_energy_consumables
+      process_id: "calibration_test_packaging"
+      flow_role: "calibration, verification, and packaging energy and consumables"
+      record_type: "equipment meter, runtime, and consumable records"
+      raw_fields: "test_station_id; test_type; meter_reading; runtime; conditioning_time; consumable_id; issued_quantity; allocation_driver"
+      collection_method: "Use dedicated test-station or area meters where available; otherwise use documented complete-meter allocation"
+      unit: "kWh or MJ; kg"
+      frequency: "per test batch with monthly reconciliation"
+      temporal_coverage: "same period as released product"
+      site_scope: "every included test and packaging operation"
+      aggregation_rule: "attributable energy and consumables divided by conforming released product mass"
+      quality_evidence: "meter calibration, equipment log, utility invoice, and allocation worksheet"
+    - protocol_id: cp_final_output_quality
+      process_id: "calibration_test_packaging"
+      flow_role: "conforming finished product and conformance status"
+      record_type: "release, calibration, safety, EMC, and quality records"
+      raw_fields: "model; serial_or_lot; measured_quantities; ranges; set_points; observed_results; accuracy_or_tolerance; uncertainty_if_reported; test_standard; equipment_id; equipment_calibration_status; pass_fail; released_mass"
+      collection_method: "Link product release to the tests actually required and performed for the represented route"
+      unit: "kg and declared engineering units"
+      frequency: "each serial unit or statistically justified lot, according to the applicable test plan"
+      temporal_coverage: "same period as released product"
+      site_scope: "every release site and represented product family"
+      aggregation_rule: "sum conforming released mass; retain unaggregated conformance evidence"
+      quality_evidence: "approved test plan, calibrated equipment records, test results, nonconformance disposition, and release authorization"
+    - protocol_id: cp_test_outputs
+      process_id: "calibration_test_packaging"
+      flow_role: "test rejects and packaging-process waste"
+      record_type: "nonconformance and waste records"
+      raw_fields: "reject_id; part_or_unit; measured_mass; cause; rework_status; final_disposition; waste_material; destination"
+      collection_method: "Track rejects through rework or final waste disposition and measure waste by material"
+      unit: "kg"
+      frequency: "per lot and waste shipment"
+      temporal_coverage: "same period as released product"
+      site_scope: "every test and packaging site"
+      aggregation_rule: "final waste leaving the rework loop divided by conforming released product mass"
+      quality_evidence: "nonconformance report, calibrated scale, waste manifest, and rework genealogy"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground inventory rows"
+      rule: "normalized amount = attributable amount during the reporting period / conforming finished-product mass during the same period; convert the denominator to kg and scale to 1 kg"
+      inputs:
+        - "attributable flow amount"
+        - "conforming finished-product mass"
+        - "unit conversion factor"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_stock_adjusted_consumption
+      applies_to: "materials, components, packaging, and consumables"
+      rule: "net consumption = opening stock + receipts - closing stock - documented returns or transfers out; reconcile the result to lot issues and substitutions"
+      inputs:
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - returns
+        - transfers
+        - "issue records"
+      output: "stock-adjusted foreground consumption"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_meter_allocation
+      applies_to: "energy or auxiliaries without dedicated submetering"
+      rule: "allocate the complete measured total using the first defensible allocation rule in Section 7 and document numerator, denominator, coverage, and reconciliation to the complete meter total"
+      inputs:
+        - "total meter consumption"
+        - "selected physical or other allocation driver"
+        - "represented output"
+      output: "attributable energy or auxiliary amount"
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-2021-2279
+    - id: calc_direct_emission
+      applies_to: "measured direct releases"
+      rule: "released mass = measured concentration × measured discharge volume, with dimensional conversion and sampling-period coverage explicitly retained"
+      inputs:
+        - concentration
+        - "discharge volume"
+        - "unit conversion"
+        - "monitoring coverage"
+      output: "substance mass released"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_reject_rate
+      applies_to: "assembly and test rejects"
+      rule: "reject rate = final reject mass leaving the rework loop / gross unique input mass; repeated rework passes do not increase gross unique input"
+      inputs:
+        - "final reject mass"
+        - "gross unique input mass"
+        - "rework genealogy"
+      output: "disclosed reject fraction and waste mass per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate that the represented models measure or check one or more of voltage, current, resistance, or power, lack a recording device, and are not electricity production or supply meters or excluded oscilloscopes/oscillographs."
+      evidence: "Product specification, approved BOM, user documentation, nameplate, and classification review against unsd-cpc-3-0"
+    - id: dq_temporal_consistency
+      applies_to: "all foreground records"
+      requirement: "Inputs, outputs, meters, stock movements, and released-product mass must cover the same representative period; justify campaigns shorter than 12 months and disclose seasonality or production-ramp effects."
+      evidence: "Dated production, stock, meter, and shipment records"
+    - id: dq_technological_geographical_representativeness
+      applies_to: "processes and upstream datasets"
+      requirement: "Match technology, component state, electricity supply, treatment route, geography, and production period to the represented route; disclose proxies and materially different sites or product families."
+      evidence: "Dataset metadata, supplier/site mapping, and representativeness assessment following eu-pef-2021-2279"
+    - id: dq_bom_and_mass_reconciliation
+      applies_to: "product and packaging materials"
+      requirement: "Reconcile the current product-specific BOM, substitutions, stock-adjusted consumption, accepted output, rejects, wastes, and included packaging/accessory convention; explain unreconciled mass."
+      evidence: "BOM revision, stock reconciliation, scale records, output records, and mass-balance worksheet"
+    - id: dq_measurement_traceability
+      applies_to: "product calibration and conformance tests"
+      requirement: "Retain test method, equipment identifier, calibration status, set points, results, tolerance or uncertainty, and pass/fail status for tests actually performed; identify applicable safety and EMC standards without claiming unperformed tests."
+      evidence: "Test plan and results, equipment calibration records, and applicable iec-61010-1-2010-amd1-2016 and iec-61326-1-2020 evidence"
+    - id: dq_substance_documentation
+      applies_to: "materials and components"
+      requirement: "Retain supplier and manufacturer documentation used to assess restricted substances and clearly distinguish declarations, analytical results, and unresolved evidence gaps."
+      evidence: "Supplier declarations and technical documentation structured according to iec-63000-2016-amd1-2022"
+validation_rules:
+  - rule_id: val_identity_scope
+    applies_to: "reference_product_identity"
+    rule: "Reject the package if the product includes a recording device, is an electricity production or supply meter, is a cathode-ray oscilloscope or oscillograph, or otherwise falls outside the declared product boundary."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: val_reference_flow
+    applies_to: "reference_flow_consistency"
+    rule: "Require the exact reference product flow UUID, Mass flow-property UUID, Units of mass unit-group UUID, kg reference unit, exactly 1 kg normalized output, and all required qualifiers."
+    source_ids: []
+  - rule_id: val_process_coverage
+    applies_to: "foreground_process_completeness"
+    rule: "Require final assembly and calibration/verification/release/packaging records, and require in-house component manufacture whenever the declared site performs it; every included process must have inputs, outputs, waste disposition, and a linked collection protocol."
+    source_ids:
+      - iec-63366-2025
+      - eu-pef-2021-2279
+  - rule_id: val_bom_energy_waste
+    applies_to: "inventory_completeness"
+    rule: "Require a product-specific BOM and packaging/accessory convention, energy and auxiliary records for each included process, final product output, rejects and wastes, and direct emissions when they occur; unresolved upstream datasets must be disclosed as data gaps."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_quality_release
+    applies_to: "product_conformance"
+    rule: "Require release evidence for the declared measurement functions and applicable calibration, safety, and EMC test plan; standards cited in metadata do not count as evidence that a test was performed."
+    source_ids:
+      - iec-61010-1-2010-amd1-2016
+      - iec-61326-1-2020
+  - rule_id: val_allocation_disclosure
+    applies_to: "shared_burdens"
+    rule: "Require every shared burden to identify the allocation decision, driver, numerator, denominator, data period, source records, reconciliation to the complete total, and justification for not applying an earlier hierarchy step."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: val_no_unsupported_values
+    applies_to: "quantitative_evidence"
+    rule: "Reject invented category-default quantities, undocumented proxy UUIDs, or values copied from a different product/process. Values must arise from the declared collection/calculation protocol or cited non-default evidence."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Product-specific cradle-to-gate foreground manufacturing dataset normalized to 1 kg of conforming finished non-recording electrical measuring instrument"
+  downstream_use: "Secondary dataset and background dataset for process or lifecyclemodel construction when product identity, route, geography, period, and included-product convention match"
+  allowed_use: "Modelling the manufacture of covered instruments; supplier or site comparisons with harmonized scope and qualifiers; incorporation into broader product systems with transparent upstream and downstream extensions"
+  excluded_use: "A category-average claim without representative sampling; use-stage service comparison without declared lifetime and performance; modelling excluded recording instruments, supply meters, oscilloscopes, oscillographs, standalone parts, or services; regulatory conformity claims based solely on this LCA dataset"
+  required_metadata: "canonical PCR id; product model or family; measured quantities, ranges, and accuracy; recording-device absence; safety category and rated voltage where applicable; geography; technology and in-house/purchased route; reporting period; product, accessories, battery, manual, and packaging mass convention; upstream datasets; allocation and cut-off decisions; test-plan coverage"
+  required_quality_disclosure: "Foreground share and primary-data coverage; temporal, geographical, and technological representativeness; BOM and mass reconciliation; meter and allocation coverage; test and calibration evidence; proxy and upstream data gaps; reject/rework treatment; exclusions and uncertainty limitations"
+  update_trigger: "Product or BOM revision; added recording functionality; changed principal measured quantity or accuracy/safety category; changed site, technology, supply mix, packaging, included accessories or batteries; material supplier substitution; changed test plan or applicable standard; reporting data older than the declared validity period; material unresolved data gap closed"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure and explanatory-note resources, including subclass 48243, https://unstats.un.org/unsd/classifications/econ (retrieved 2026-08-09)"
+    used_for: "Product-category inclusion and exclusion boundary"
+  - id: "iec-63366-2025"
+    type: "standard"
+    reference: "IEC 63366:2025, Product category rules for life cycle assessment of electrical and electronic products and systems, https://webstore.iec.ch/en/publication/67691 (retrieved 2026-08-09)"
+    used_for: "Electrical/electronic-product PCR framework, recorded complementary specifications, system-boundary and reporting context"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006 with Amendments 1:2017 and 2:2020, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html (retrieved 2026-08-09)"
+    used_for: "LCI completeness, allocation hierarchy, reporting, interpretation, and limitations"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 and corrigendum, Product Environmental Footprint Method, http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-09)"
+    used_for: "Functional-unit/reference-flow structure, company-specific BOM and manufacturing data, process inputs and outputs, data quality, allocation, calculation, and cut-off disclosure"
+  - id: "iec-61010-1-2010-amd1-2016"
+    type: "standard"
+    reference: "IEC 61010-1:2010+AMD1:2016, Safety requirements for electrical equipment for measurement, control, and laboratory use — Part 1: General requirements, https://webstore.iec.ch/en/publication/4279 (retrieved 2026-08-09)"
+    used_for: "Applicability of safety requirements and product-specific safety-test evidence for electrical test and measurement equipment"
+  - id: "iec-61326-1-2020"
+    type: "standard"
+    reference: "IEC 61326-1:2020, Electrical equipment for measurement, control and laboratory use — EMC requirements — Part 1: General requirements, https://webstore.iec.ch/en/publication/62793 (retrieved 2026-08-09)"
+    used_for: "Applicability of emissions and immunity verification and retention of route-specific EMC test evidence"
+  - id: "iec-63000-2016-amd1-2022"
+    type: "standard"
+    reference: "IEC 63000:2016+AMD1:2022, Technical documentation for the assessment of electrical and electronic products with respect to the restriction of hazardous substances, https://webstore.iec.ch/en/publication/25985 (retrieved 2026-08-09)"
+    used_for: "Supplier and manufacturer restricted-substance technical-documentation evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e50e35ae4149e249f9cda239d294781076c067927663a475667db84e22ca46d0"
+  generated_content_sha256: "sha256:bdf0d16202cb52c64cae45ac1672e36d64fe321fd8b76bee3994e477cef623fb"

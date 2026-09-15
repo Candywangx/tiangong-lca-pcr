@@ -1,10 +1,1036 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46113"
-  title: "Photovoltaic AC/DC generators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.photovoltaic-ac-dc-generators"
+  classification_refs: "CPC 3.0: 46113, Photovoltaic AC/DC generators (exact semantic reference; acceptance in the shared mapping is outside this PCR record)"
+  covered_products: "Finished factory-gate photovoltaic DC generators and finished photovoltaic AC generators whose inverter or power-conversion electronics are incorporated in the product sold as one item; framed modules, laminates and module-integrated equipment are covered when the exact architecture is declared"
+  excluded_products: "Separate cells and wafers; separately sold inverters, optimisers, batteries, mounting systems, cabling and other balance-of-system parts; generator sets using non-photovoltaic prime movers; installed PV stations; construction, operation, electricity production and end-of-life services"
+  representative_product: "One tested and packaged photovoltaic generator item with declared photovoltaic technology, rated DC power, output form and included-component list"
+  production_route: "Route-specific receipt or manufacture of photovoltaic conversion components, generator assembly, conditional integration of AC power electronics, electrical qualification, packing and factory-gate release"
+  market_state: "Finished durable electrical product at the manufacturing facility gate, before distribution and installation"
+functional_unit:
+  what: "Delivery at the factory gate of one finished, conforming photovoltaic generator sold as one product"
+  how_much: "1 generator item; rated DC power in Wp or kWp is a mandatory parallel qualifier and intensity denominator, not a replacement for the Tiangong reference property"
+  how_well: "The product meets the declared nameplate performance, output configuration and applicable design-qualification and safety-conformity specifications; the included component list and test evidence are retained"
+  how_long_or_cycle: "One manufacturing and release cycle for one durable product item; service life and degradation assumptions are disclosed for downstream use but no electricity-generation service is included"
+  reference_flow_link: "One released product item equals the declared reference amount; all foreground inventory is normalized to that item and also reported per declared kWp where capacity comparison is needed"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground package"
+      rule: "Include receiving, generator assembly, conditional integrated power electronics, electrical qualification, internal material handling, on-site utilities, direct emissions, on-site waste handling, packing and factory-gate release. Exclude distribution after the gate, installation, operation, electricity production and end of life."
+      source_ids:
+        - jrc-2025-pv-carbon-footprint
+        - iea-pvps-t12-18-2020
+    - rule_id: boundary_route_expansion
+      applies_to: "upstream photovoltaic conversion route"
+      rule: "If the reporting organization manufactures ingots, wafers, cells or thin-film layers, model those stages as separate foreground processes; otherwise represent them through upstream product datasets."
+      source_ids:
+        - jrc-2025-pv-carbon-footprint
+    - rule_id: boundary_ac_configuration
+      applies_to: "AC-output product"
+      rule: "Include only inverter or conversion electronics incorporated in and sold with the generator. A separately traded inverter remains a separate product input and does not by itself make the reference product an AC generator."
+      source_ids:
+        - iec-62109-2-2011
+        - iec-62109-3-2020
+    - rule_id: boundary_no_power_station_substitution
+      applies_to: "reference product"
+      rule: "Do not substitute an installed power station, construction service, photovoltaic electricity process or electricity flow for the factory-gate generator item."
+      source_ids:
+        - unsd-cpc-v3-photovoltaic-generators
+        - iea-pvps-t12-18-2020
+boundary_abstraction:
+  declared_starting_condition: "Accepted photovoltaic conversion components or their declared upstream feedstocks, carrier and connection materials, integrated electronics when applicable, process aids, utilities and packaging at the reporting facility gate"
+  starting_condition_role: "Foreground manufacturing input condition; the exact make-or-buy boundary is declared for each component group"
+  product_classification_scope: "Finished photovoltaic AC/DC generator goods corresponding semantically to CPC 3.0 code 46113, not electricity, installation services or separately traded components"
+  recursive_input_rule: "A purchased input already meeting this product-category definition is recorded once as a same-category product input with an upstream dataset; do not reopen its internal production in the consuming process unless subdivision is explicit and double counting is prevented"
+  upstream_dataset_requirement: "Every purchased cell, module, laminate, inverter, electronic assembly, frame, glass, encapsulant, cable, junction component, process aid, utility and packaging input requires a geographically, temporally and technologically representative upstream dataset or a disclosed proxy"
+  disclosure: "Declare technology, architecture, AC/DC configuration, rated power, included components, make-or-buy boundary, factory geography, production period, allocation choices, recycled-content modelling, excluded stages and all proxy datasets"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "PV system"
+    uuid: "3f66ec10-aedd-4032-baff-5f7764c1670e"
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "photovoltaic conversion technology"
+    - "product architecture and module count or active area"
+    - "rated DC power at the declared rating condition"
+    - "DC-only or AC-output configuration"
+    - "nominal voltage and current"
+    - "integrated inverter"
+    - optimiser
+    - transformer
+    - "storage and other balance-of-system inclusion or exclusion"
+    - "total product mass"
+    - "factory geography and production period"
+    - "applicable qualification and safety specifications"
+    - "declared service life and degradation assumption for downstream modelling"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item
+    applies_to: "released reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Normalize the foreground package to exactly one released generator item. Count only complete products passing release criteria; do not count cells, subassemblies or unpackaged rejects."
+  - id: rated_power_disclosure
+    applies_to: "reference product and capacity-normalized intensities"
+    required_property_ref:
+      name: "Declared rated DC power"
+      uuid: ""
+    required_unit: "Wp or kWp"
+    rule: "Retain the measured or nameplate rated DC power and its rating condition. Convert Wp to kWp by division by 1,000. Do not infer capacity from module count, area or a different technology."
+  - id: item_capacity_bridge
+    applies_to: "comparison of differently sized products"
+    required_property_ref:
+      name: "Number of items and declared rated DC power"
+      uuid: ""
+    required_unit: "Item(s) and kWp"
+    rule: "Report both per-item and per-kWp results when products of different capacity are compared. The item-to-kWp factor must come from the tested or nameplate value for the represented product configuration."
+  - id: mass_composition
+    applies_to: "product and incoming material balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure total product mass and the bill-of-material mass by declared component group. Reconcile the component sum with the released-product mass and recorded manufacturing losses."
+  - id: energy_units
+    applies_to: "purchased electricity and test energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve meter units and convert only with an explicit dimensional factor. Report electricity separately by supply contract, geography and production period when these differ materially."
+  - id: water_balance
+    applies_to: "process water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record withdrawal and discharge or consumption consistently; state whether water is recirculated and avoid counting the same recirculated volume as repeated fresh withdrawal."
+process_map:
+  - id: component_receipt
+    name: "Component receipt, inspection and kitting"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Establish the declared make-or-buy boundary and accepted component inventory"
+    quantitative_reference: "Accepted kit for one released generator item"
+  - id: generator_assembly
+    name: "Photovoltaic generator assembly"
+    inclusion: "required"
+    inclusion_condition: "Always; subdivide upstream cell or module production when performed by the reporting organization"
+    role: "Join and integrate photovoltaic conversion, carrier, connection and enclosure components"
+    quantitative_reference: "One assembled generator before final qualification"
+  - id: ac_electronics_integration
+    name: "Integrated AC power-conversion assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the sold generator provides AC output or contains module-integrated power electronics"
+    role: "Integrate inverter, control, protection and related electronics into the sold product"
+    quantitative_reference: "One AC-capable generator assembly"
+  - id: electrical_qualification
+    name: "Electrical qualification and safety testing"
+    inclusion: "required"
+    inclusion_condition: "Always; apply product-specific test plan"
+    role: "Verify declared output, construction and release criteria"
+    quantitative_reference: "One tested conforming generator"
+  - id: packing_release
+    name: "Packing and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Package, label and release the reference product"
+    quantitative_reference: "1 released photovoltaic generator item"
+process_inventory:
+  - id: component_receipt
+    label: "Component receipt, inspection and kitting"
+    inputs:
+      product:
+        - row_id: conversion_components_received
+          role: "Photovoltaic conversion components"
+          name: "Route-specific photovoltaic cells, modules, laminates or semiconductor feedstocks"
+          flow_type: "product"
+          property_unit: "Mass or number of items / kg or Item(s), consistent with the selected upstream flow"
+          description: "Record the received cells, modules, laminates or declared semiconductor feedstocks at the exact make-or-buy boundary, separated by technology and supplier dataset."
+          amount:
+            expression: "measured accepted quantity consumed for one released generator item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+            ranges: []
+        - row_id: carrier_connection_components
+          role: "Carrier, connection and enclosure components"
+          name: "Route-specific carrier, connection and enclosure product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record glass, frames, encapsulants, backsheets, junction components, conductors, connectors, enclosure parts and other included hardware as separately traceable component groups."
+          amount:
+            expression: "measured issued quantity minus returned unused quantity"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+            ranges: []
+        - row_id: integrated_electronics_received
+          role: "Integrated electronics received"
+          name: "Route-specific power-electronic and electrical components"
+          flow_type: "product"
+          property_unit: "Mass or number of items / kg or Item(s)"
+          description: "Record inverter, optimiser, control, protection, transformer or other electronics only when incorporated in and sold with the reference product."
+          amount:
+            expression: "measured accepted quantity incorporated in one released product; zero for a DC-only product without integrated electronics"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - iec-62109-2-2011
+                - iec-62109-3-2020
+            ranges: []
+      waste:
+        - row_id: incoming_rejects
+          role: "Rejected incoming components and transport packaging"
+          name: "Route-specific rejected component and packaging waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or damaged components and incoming packaging by treatment route; returned supplier property is disclosed separately from waste crossing the facility boundary."
+          amount:
+            expression: "measured waste dispatched by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_component_kit
+          role: "Accepted production kit"
+          name: "Internal accepted photovoltaic generator component kit"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "This internal intermediate preserves the item-level component configuration issued to assembly."
+          amount:
+            expression: "one complete accepted kit issued for each assembly start, adjusted for documented substitutions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per assembly start"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: generator_assembly
+    label: "Photovoltaic generator assembly"
+    inputs:
+      product:
+        - row_id: assembly_component_kit
+          role: "Accepted component kit"
+          name: "Internal accepted photovoltaic generator component kit"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record the internal kit transferred from receipt and any route-specific additional materials introduced during assembly."
+          amount:
+            expression: "measured kit issues to generator assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 assembled generator"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly electricity"
+          name: "Site electricity supply product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include metered assembly-line electricity, climate control, ventilation and allocated common-facility electricity for the declared production period."
+          amount:
+            expression: "metered assembly electricity plus allocated common-facility electricity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared kWp of released generator capacity and convertible to one item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+                - iea-pvps-t12-18-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "10000"
+                unit: "kWh/kWp"
+                basis: "broad candidate-stage screen per declared kWp of released generator capacity across make-or-buy boundaries"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: assembly_water_aids
+          role: "Assembly water and process aids"
+          name: "Route-specific water and process-aid product flows"
+          flow_type: "product"
+          property_unit: "Volume or mass / m3 or kg"
+          description: "Include fresh water and route-specific process aids used for cleaning, lamination, sealing, joining or other on-site assembly steps; keep chemicals as separate rows when material."
+          amount:
+            expression: "metered withdrawal and measured material issues less returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared kWp of released generator capacity and convertible to one item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_aid_records
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+                - iea-pvps-t12-18-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "m3/kWp"
+                basis: "broad candidate-stage screen per declared kWp; zero is possible for a dry assembly boundary using purchased modules"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        - row_id: direct_water_withdrawal
+          role: "Direct water withdrawal"
+          name: "Route- and geography-specific water elementary flow"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Use an elementary water input only for direct environmental withdrawal; purchased municipal or treated water remains a product input."
+          amount:
+            expression: "measured direct withdrawal not already represented in a purchased water dataset"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_aid_records
+              source_ids:
+                - iea-pvps-t12-18-2020
+            ranges: []
+    outputs:
+      product:
+        - row_id: assembled_generator
+          role: "Assembled photovoltaic generator"
+          name: "Internal assembled photovoltaic generator"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record the route-specific assembled DC generator or the photovoltaic conversion assembly awaiting integrated AC electronics."
+          amount:
+            expression: "measured assembly completions transferred to the next process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per assembly process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_release
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: assembly_scrap
+          role: "Assembly scrap and rejects"
+          name: "Route-specific photovoltaic manufacturing waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record broken cells or modules, conductor and frame offcuts, encapsulant and sealant losses, electronic rejects and other manufacturing waste separately by material and treatment route."
+          amount:
+            expression: "measured dispatched waste plus documented inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared kWp of released generator capacity and convertible to one item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg/kWp"
+                basis: "broad candidate-stage screen per declared kWp across heterogeneous technologies and make-or-buy boundaries"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: assembly_direct_emissions
+          role: "Direct assembly emissions"
+          name: "Substance- and compartment-specific elementary flows"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured volatile organic compounds, particulates or other direct releases by substance and compartment; do not use this composite role as the published elementary-flow identity."
+          amount:
+            expression: "measured release or calculation from captured material and a documented method"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - iea-pvps-t12-18-2020
+            ranges: []
+  - id: ac_electronics_integration
+    label: "Integrated AC power-conversion assembly"
+    inputs:
+      product:
+        - row_id: dc_generator_for_ac_integration
+          role: "DC photovoltaic generator assembly"
+          name: "Internal DC photovoltaic generator assembly"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record the tested or assembly-stage DC generator entering integrated electronics assembly."
+          amount:
+            expression: "measured units transferred into AC integration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 AC-output generator assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ac_integration_records
+              source_ids:
+                - iec-62109-3-2020
+            ranges: []
+        - row_id: ac_power_electronics
+          role: "Power-conversion and protection electronics"
+          name: "Route-specific power-conversion and protection electronics product flows"
+          flow_type: "product"
+          property_unit: "Mass or number of items / kg or Item(s)"
+          description: "Record the exact inverter, control, protection, wiring and optional transformer configuration incorporated in the sold product."
+          amount:
+            expression: "measured component issues incorporated in one AC-output generator"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 AC-output generator assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ac_integration_records
+              source_ids:
+                - iec-62109-2-2011
+                - iec-62109-3-2020
+            ranges: []
+        - row_id: ac_integration_electricity
+          role: "Electronics-integration electricity"
+          name: "Site electricity supply product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered joining, firmware loading, configuration and inspection electricity attributable to integrated electronics."
+          amount:
+            expression: "metered or submetered electricity allocated to AC integration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 AC-output generator assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - iea-pvps-t12-18-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ac_generator_assembly
+          role: "AC-capable photovoltaic generator assembly"
+          name: "Internal AC-capable photovoltaic generator assembly"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "This internal intermediate is the complete product configuration before final electrical qualification."
+          amount:
+            expression: "measured completed assemblies transferred to qualification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per AC-integration process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ac_integration_records
+              source_ids:
+                - iec-62109-3-2020
+            ranges: []
+      waste:
+        - row_id: electronics_rejects
+          role: "Electronics rejects"
+          name: "Route-specific electronic waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record irreparable boards, wiring, protection devices and other electronic scrap by material and treatment route."
+          amount:
+            expression: "measured waste dispatched by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 AC-output generator assembly"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: electrical_qualification
+    label: "Electrical qualification and safety testing"
+    inputs:
+      product:
+        - row_id: generator_test_input
+          role: "Generator submitted for qualification"
+          name: "Internal assembled photovoltaic generator"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record the exact DC or AC product configuration submitted to the release test plan."
+          amount:
+            expression: "measured units entering qualification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per qualification process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_records
+              source_ids:
+                - iec-61215-1-2021
+                - iec-61730-1-2023
+                - iec-62109-2-2011
+                - iec-62109-3-2020
+            ranges: []
+        - row_id: test_electricity
+          role: "Qualification electricity"
+          name: "Site electricity supply product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include energy consumed by flash testing, electrical safety tests, burn-in, climate conditioning and other tests performed within the declared production package."
+          amount:
+            expression: "metered test-bench energy plus allocated conditioning energy"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per tested generator item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - iec-61215-1-2021
+                - iec-61730-1-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tested_generator
+          role: "Conforming tested generator"
+          name: "Internal conforming tested photovoltaic generator"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record only items satisfying the declared release criteria; reworked units re-enter the appropriate process and are not double-counted."
+          amount:
+            expression: "counted conforming units released from qualification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per qualification process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_records
+              source_ids:
+                - iec-61215-1-2021
+                - iec-61730-1-2023
+                - iec-62109-2-2011
+                - iec-62109-3-2020
+            ranges: []
+      waste:
+        - row_id: test_rejects
+          role: "Irreparable test rejects"
+          name: "Route-specific photovoltaic generator reject waste flows"
+          flow_type: "waste"
+          property_unit: "Mass or number of items / kg or Item(s)"
+          description: "Record items failing final qualification and not returned to rework, separated by material and treatment route."
+          amount:
+            expression: "measured irreparable rejects dispatched for treatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per tested generator item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packing_release
+    label: "Packing and factory-gate release"
+    inputs:
+      product:
+        - row_id: tested_generator_for_packing
+          role: "Conforming generator for packing"
+          name: "Internal conforming tested photovoltaic generator"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record the conforming product transferred from qualification without changing its declared configuration."
+          amount:
+            expression: "counted conforming units entering packing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packing process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_release
+              source_ids: []
+            ranges: []
+        - row_id: outbound_packaging
+          role: "Packaging materials"
+          name: "Route-specific packaging product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pallets, crates, cartons, films, protective materials, labels and reusable packaging at actual issued mass and reuse rate."
+          amount:
+            expression: "measured packaging issued per released product, divided by verified trips for reusable packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per declared kWp of released generator capacity and convertible to one item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - jrc-2025-pv-carbon-footprint
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg/kWp"
+                basis: "broad candidate-stage screen per declared kWp across product sizes and reusable-packaging systems"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_photovoltaic_generator
+          role: "Released photovoltaic generator"
+          name: "PV system"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3f66ec10-aedd-4032-baff-5f7764c1670e"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "This is the quantitative-reference output. It represents one tested, packaged product whose required qualifiers and included components match the dataset description."
+          amount:
+            expression: "exactly 1 released photovoltaic generator item"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packing_scrap
+          role: "Packing scrap"
+          name: "Route-specific packaging waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging offcuts, damaged packaging and label waste by material and treatment route."
+          amount:
+            expression: "measured packing waste dispatched by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 released photovoltaic generator item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "all foreground processes"
+    rule: "Avoid allocation by subdivision, separate metering and separate material records whenever practical. Same-category intermediates transferred between foreground processes carry burdens without creating a second final product."
+    source_ids:
+      - iea-pvps-t12-18-2020
+  - rule_id: allocation_shared_facility
+    applies_to: "shared electricity, water, climate control and waste handling"
+    rule: "Allocate shared facility quantities using a documented causal driver such as machine-hours, metered energy, occupied controlled area-time or processed mass. Production count or revenue may be used only when a causal driver is unavailable and the sensitivity is disclosed."
+    source_ids:
+      - iea-pvps-t12-18-2020
+  - rule_id: allocation_recycling
+    applies_to: "recycled inputs and recyclable manufacturing waste"
+    rule: "Use a recycled-content cut-off approach as the default foreground accounting convention. Report any avoided-burden or system-expansion result separately and do not net it silently against factory-gate burdens."
+    source_ids:
+      - iea-pvps-t12-18-2020
+      - jrc-2025-pv-carbon-footprint
+  - rule_id: allocation_bipv
+    applies_to: "building-integrated photovoltaic product"
+    rule: "When one sold BIPV product also replaces a building element, declare the multifunctionality and allocate only with clearly described physical or functional criteria; avoid unreported credits."
+    source_ids:
+      - iea-pvps-t12-18-2020
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "component_receipt_generator_assembly"
+      flow_role: "received and issued components"
+      record_type: "approved bill of materials, receiving inspection and material issue/return records"
+      raw_fields: "product configuration; supplier; lot; component identity; technology; issued quantity; returned quantity; mass; included-component flag"
+      collection_method: "reconcile engineering BOM with warehouse issues, substitutions and cycle counts"
+      unit: "kg and Item(s)"
+      frequency: "each lot, aggregated monthly"
+      temporal_coverage: "representative production period, normally at least 12 consecutive months"
+      site_scope: "every reporting facility and outsourced stage inside the foreground boundary"
+      aggregation_rule: "net issue equals issued minus unused return; normalize by released conforming items"
+      quality_evidence: "approved BOM revision, supplier trace, calibration or scale record, substitution approval and inventory reconciliation"
+    - protocol_id: cp_energy_records
+      process_id: "generator_assembly_ac_electronics_integration_electrical_qualification_packing_release"
+      flow_role: "electricity and other metered energy"
+      record_type: "meter, submeter, invoice and operating-hour records"
+      raw_fields: "meter id; opening and closing reading; energy carrier; process area; operating hours; common-facility share; production count; rated kWp released"
+      collection_method: "collect meter intervals and reconcile with invoices; allocate only residual common use"
+      unit: "kWh or carrier-specific unit"
+      frequency: "monthly or finer"
+      temporal_coverage: "same period as product output"
+      site_scope: "each reporting facility"
+      aggregation_rule: "direct meter use plus documented allocated common use, divided by conforming output"
+      quality_evidence: "meter calibration, invoice reconciliation, allocation driver and missing-interval log"
+    - protocol_id: cp_water_aid_records
+      process_id: "generator_assembly"
+      flow_role: "water and process aids"
+      record_type: "meter, batch sheet and material issue records"
+      raw_fields: "withdrawal; discharge; recirculation; aid identity; issued mass; returned mass; batch; process step"
+      collection_method: "reconcile water balance and chemical issues by batch"
+      unit: "m3 and kg"
+      frequency: "each batch or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "each wet-process or assembly facility"
+      aggregation_rule: "fresh withdrawal excludes internal recirculation; net aid use equals issue minus return"
+      quality_evidence: "meter status, batch sheet, purchase reconciliation and discharge record"
+    - protocol_id: cp_ac_integration_records
+      process_id: "ac_electronics_integration"
+      flow_role: "integrated electronics and completed assemblies"
+      record_type: "configuration, serial-number and work-order records"
+      raw_fields: "generator serial; inverter/control/protection identities; firmware; component quantities; DC/AC rating; completion status"
+      collection_method: "serial-level configuration reconciliation"
+      unit: "Item(s) and kg"
+      frequency: "each unit"
+      temporal_coverage: "same period as product output"
+      site_scope: "every integration line"
+      aggregation_rule: "sum incorporated components and completed assemblies by product configuration"
+      quality_evidence: "approved configuration, serial trace, work order and nonconformance record"
+    - protocol_id: cp_test_records
+      process_id: "electrical_qualification"
+      flow_role: "tested units, performance and safety results"
+      record_type: "calibrated test-bench and release records"
+      raw_fields: "serial; test procedure; rating condition; measured power; voltage; current; insulation/safety result; pass, rework or reject status"
+      collection_method: "retain test result linked to product serial and declared specification"
+      unit: "Item(s), Wp, V, A and method-specific units"
+      frequency: "each released unit or justified sampling plan"
+      temporal_coverage: "same period as product output"
+      site_scope: "every release-test location"
+      aggregation_rule: "count only conforming released units; rework is counted once after final pass"
+      quality_evidence: "calibration certificate, procedure revision, raw result, sampling justification and release signature"
+    - protocol_id: cp_packaging_records
+      process_id: "packing_release"
+      flow_role: "outbound packaging"
+      record_type: "packaging BOM, warehouse issues and reusable-packaging logs"
+      raw_fields: "packaging material; mass; issued quantity; product count; reuse cycles; losses"
+      collection_method: "reconcile packaging BOM and dispatch records"
+      unit: "kg and trips"
+      frequency: "each lot, aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "each packing site"
+      aggregation_rule: "single-use mass plus reusable mass divided by verified reuse count"
+      quality_evidence: "packaging specification, scale record, reuse log and dispatch record"
+    - protocol_id: cp_waste_records
+      process_id: "all_foreground_processes"
+      flow_role: "rejects, scrap, wastewater sludge and packaging waste"
+      record_type: "waste manifest, scale ticket and internal scrap log"
+      raw_fields: "waste identity; material; mass; source process; treatment route; returned-to-supplier flag; date"
+      collection_method: "reconcile internal scrap generation with dispatched waste and inventory change"
+      unit: "kg or Item(s)"
+      frequency: "each dispatch, aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "each reporting facility"
+      aggregation_rule: "dispatched waste plus closing-minus-opening stored waste, separated by treatment"
+      quality_evidence: "scale calibration, waste manifest, contractor receipt and inventory reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "generator_assembly_ac_electronics_integration_electrical_qualification"
+      flow_role: "direct air, water and soil releases"
+      record_type: "continuous monitor, stack or effluent test, material balance and permit report"
+      raw_fields: "substance; compartment; concentration; flow rate; duration; capture; destruction efficiency; method"
+      collection_method: "use measured releases where available; calculations require traceable activity and factor"
+      unit: "kg"
+      frequency: "monitoring interval or batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "each emitting point inside the foreground boundary"
+      aggregation_rule: "integrate concentration and flow over time or apply documented mass balance without double counting captured material"
+      quality_evidence: "laboratory accreditation, instrument calibration, sampling plan, permit report and calculation worksheet"
+    - protocol_id: cp_output_release
+      process_id: "all_foreground_processes"
+      flow_role: "intermediates and released reference product"
+      record_type: "production, transfer, warehouse and shipment records"
+      raw_fields: "item count; serial or lot; product configuration; total mass; rated DC power; status; process transfer; release date"
+      collection_method: "reconcile process transfers and finished-goods release"
+      unit: "Item(s), kg and kWp"
+      frequency: "each lot or unit"
+      temporal_coverage: "same period as inputs"
+      site_scope: "each reporting facility"
+      aggregation_rule: "final output is conforming releases adjusted for opening and closing finished-goods inventory"
+      quality_evidence: "ERP reconciliation, release record, test link and stock count"
+  calculation_rules:
+    - id: calc_item_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period process amount / conforming released generator items in the same represented product configuration"
+      inputs:
+        - "period quantity"
+        - "released item count"
+        - "inventory change"
+      output: "amount per released item"
+      source_ids: []
+    - id: calc_capacity_intensity
+      applies_to: "capacity-normalized disclosure"
+      rule: "capacity intensity = per-item amount / tested or nameplate rated DC power in kWp for that item configuration"
+      inputs:
+        - "per-item amount"
+        - "rated DC power in Wp or kWp"
+      output: "amount per kWp"
+      source_ids:
+        - iea-pvps-t12-18-2020
+    - id: calc_net_material_use
+      applies_to: "components, process aids and packaging"
+      rule: "net material use = issued quantity - unused returns + opening work-in-process - closing work-in-process"
+      inputs:
+        - issue
+        - "return and inventory records"
+      output: "net consumed mass or item count"
+      source_ids:
+        - jrc-2025-pv-carbon-footprint
+    - id: calc_shared_utility
+      applies_to: "shared energy and water"
+      rule: "allocated quantity = shared measured quantity x causal driver share; direct metered use is not allocated again"
+      inputs:
+        - "shared meter"
+        - "process driver"
+        - "total driver"
+      output: "allocated process utility"
+      source_ids:
+        - iea-pvps-t12-18-2020
+    - id: calc_waste_balance
+      applies_to: "manufacturing waste"
+      rule: "generated waste = dispatched waste + closing stored waste - opening stored waste - documented returned reusable material"
+      inputs:
+        - dispatch
+        - "storage and return records"
+      output: "waste by material and route"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "product and manufacturing losses"
+      rule: "accepted material mass = released product mass + dispatched waste + closing-minus-opening material and work-in-process inventory + measured direct mass releases"
+      inputs:
+        - BOM
+        - scale
+        - waste
+        - "inventory and emission records"
+      output: "reconciliation difference and completeness ratio"
+      source_ids:
+        - jrc-2025-pv-carbon-footprint
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Product name, technology, architecture, rated power, AC/DC configuration and included components must identify one non-ambiguous sold configuration."
+      evidence: "approved specification, BOM revision, nameplate and product serial/lot"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Use one representative production period, normally at least 12 consecutive months; disclose start/end dates, shutdowns, ramp-up and substitutions."
+      evidence: "dated meters, invoices, production and inventory records"
+    - id: dq_geography
+      applies_to: "foreground and upstream data"
+      requirement: "Identify each manufacturing site and electricity/water supply geography; justify any proxy geography."
+      evidence: "site record, supply contract and proxy justification"
+    - id: dq_technology
+      applies_to: "route-specific data"
+      requirement: "Do not average crystalline-silicon, thin-film, emerging, DC-only and AC-integrated routes without weights and separate route evidence."
+      evidence: "route map, production volumes and weighted calculation"
+    - id: dq_completeness
+      applies_to: "BOM, utilities, waste and emissions"
+      requirement: "Reconcile material, energy, output, waste and direct release records; explain unresolved balances and omitted flows."
+      evidence: "reconciliation worksheets and completeness ratio"
+    - id: dq_secondary_data
+      applies_to: "purchased inputs"
+      requirement: "Select current, geographically and technologically representative upstream datasets; document dataset identity, version used during modelling and proxy limitations outside PCR UUID fields."
+      evidence: "dataset selection log and representativeness assessment"
+    - id: dq_testing
+      applies_to: "product release"
+      requirement: "Link performance and safety evidence to the represented configuration and retain calibration and sampling evidence."
+      evidence: "test report, calibration certificate and release record"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "dataset identity"
+    rule: "Fail if the canonical PCR id, product flow UUID, Product flow type, CPC 46113 scope or required product qualifiers are missing or contradictory."
+    source_ids:
+      - unsd-cpc-v3-photovoltaic-generators
+  - rule_id: validation_reference_amount
+    applies_to: "quantitative reference"
+    rule: "Require exactly 1 Item(s) of 3f66ec10-aedd-4032-baff-5f7764c1670e with Number of items 01846770-4cfe-4a25-8ad9-919d8d378345; require a declared rated DC power to enable per-kWp disclosure."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "foreground boundary"
+    rule: "Fail if an electricity flow, installed power station, construction service, separately sold inverter or battery is used as the reference product, or if distribution/installation/use/end-of-life burdens are silently mixed into the factory-gate package."
+    source_ids:
+      - unsd-cpc-v3-photovoltaic-generators
+      - jrc-2025-pv-carbon-footprint
+  - rule_id: validation_route
+    applies_to: "product technology and configuration"
+    rule: "Require separate disclosure and inventory for technology, product architecture, AC/DC output and integrated electronics. Reject an unlabeled single-technology dataset presented as a generic category average."
+    source_ids:
+      - jrc-2025-pv-carbon-footprint
+      - iea-pvps-t12-18-2020
+  - rule_id: validation_bom_mass
+    applies_to: "components and outputs"
+    rule: "Require BOM-to-product-and-loss mass reconciliation and investigate material differences beyond the producer's documented measurement uncertainty."
+    source_ids:
+      - jrc-2025-pv-carbon-footprint
+  - rule_id: validation_energy_water
+    applies_to: "utilities"
+    rule: "Require period-aligned meter or invoice reconciliation, causal allocation of shared utilities and no double counting of recirculated water."
+    source_ids:
+      - iea-pvps-t12-18-2020
+  - rule_id: validation_test_release
+    applies_to: "performance and safety"
+    rule: "Require traceable test/release evidence for the represented product configuration; AC-integrated products must identify the applicable inverter or module-integrated electronics test basis."
+    source_ids:
+      - iec-61215-1-2021
+      - iec-61730-1-2023
+      - iec-62109-2-2011
+      - iec-62109-3-2020
+  - rule_id: validation_recursive_input
+    applies_to: "same-category input"
+    rule: "Require a separate upstream dataset for a purchased photovoltaic generator input and prevent its burdens from being expanded and counted again in the consuming foreground process."
+    source_ids: []
+  - rule_id: validation_estimate_status
+    applies_to: "provisional ranges"
+    rule: "Treat all reasoned_estimate ranges as candidate-stage screens only; fail publication readiness if a publication-critical allowed range relies on them without explicit review acceptance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground product data package publishable as a secondary_dataset or background_dataset after methodology and translation review"
+  downstream_use: "Foreground process construction for photovoltaic generator manufacture; capacity-normalized product comparisons when configuration and rated-power bases match; input to broader PV system, installation, electricity-generation and lifecycle models as a distinct product-stage dataset"
+  allowed_use: "Use for the declared technology, architecture, factory geography, production period, AC/DC configuration and component boundary; weighted market mixes are allowed only with transparent weights and route-specific source datasets"
+  excluded_use: "Do not use as photovoltaic electricity, an installed power station, an inverter-only or battery-only dataset, an undeclared generic technology average, or a use/end-of-life dataset"
+  required_metadata: "canonical PCR id; product flow UUID; product specification; technology; architecture; module count or active area; rated DC power and rating condition; AC/DC output; integrated-component list; total mass; make-or-buy boundary; factory geography; production period; allocation; upstream dataset identities; test basis"
+  required_quality_disclosure: "foreground coverage and period; metering and allocation methods; BOM and mass reconciliation; missing data; proxies; technology mixing; reasoned estimates; data-quality assessment; direct-emission methods; test sampling and calibration"
+  update_trigger: "Change in photovoltaic technology, product architecture, rated-power basis, integrated electronics, principal BOM, factory or energy supply; material change in yield, waste or emissions; test specification revision; new representative source evidence; or age beyond the declared representativeness period"
+data_sources:
+  - id: "unsd-cpc-v3-photovoltaic-generators"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Overview of the proposed main changes introduced in the revised CPC*, CPC Version 3.0 accompanying note, p. 11, https://unstats.un.org/unsd/classifications/CPC/Documents/4-Accompanying-note-Overview-of-the-proposed-main-changes-introduced-in-the-revised-CPC.pdf (retrieved 2026-08-09)"
+    used_for: "CPC 46113 identity and separation from non-photovoltaic generators and generating sets"
+  - id: "jrc-2025-pv-carbon-footprint"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Ardente et al., *Harmonised rules for the calculation of the carbon footprint of photovoltaic modules in the context of the EU Ecodesign Directive*, JRC141275, 2025, DOI 10.2760/4062978, https://publications.jrc.ec.europa.eu/repository/handle/JRC141275 (retrieved 2026-08-09)"
+    used_for: "PV technology scope, BOM, material and energy hotspots, module manufacturing boundary, assembly, packaging and secondary-data quality"
+  - id: "iea-pvps-t12-18-2020"
+    type: "official_guidance"
+    reference: "IEA PVPS Task 12, Frischknecht et al., *Methodology Guidelines on Life Cycle Assessment of Photovoltaic Electricity*, 4th edition, report T12-18:2020, https://iea-pvps.org/key-topics/methodology-guidelines-on-life-cycle-assessment-of-photovoltaic-2020/ (retrieved 2026-08-09)"
+    used_for: "PV system components, facility inventory, kWp disclosure, water balance, allocation, recycling and reporting parameters"
+  - id: "iec-61215-1-2021"
+    type: "standard"
+    reference: "IEC 61215-1:2021, *Terrestrial photovoltaic (PV) modules - Design qualification and type approval - Part 1: Test requirements*, https://webstore.iec.ch/en/publication/61345 (retrieved 2026-08-09)"
+    used_for: "Module design qualification, output measurement and product test evidence"
+  - id: "iec-61730-1-2023"
+    type: "standard"
+    reference: "IEC 61730-1:2023, *Photovoltaic (PV) module safety qualification - Part 1: Requirements for construction*, https://webstore.iec.ch/en/publication/59803 (retrieved 2026-08-09)"
+    used_for: "PV module construction and safety release evidence"
+  - id: "iec-62109-2-2011"
+    type: "standard"
+    reference: "IEC 62109-2:2011, *Safety of power converters for use in photovoltaic power systems - Part 2: Particular requirements for inverters*, https://webstore.iec.ch/en/publication/6471 (retrieved 2026-08-09)"
+    used_for: "Boundary and safety basis for DC-to-AC inverter functions incorporated in an AC-output product"
+  - id: "iec-62109-3-2020"
+    type: "standard"
+    reference: "IEC 62109-3:2020, *Safety of power converters for use in photovoltaic power systems - Part 3: Particular requirements for electronic devices in combination with photovoltaic elements*, https://webstore.iec.ch/en/publication/27684 (retrieved 2026-08-09)"
+    used_for: "Product boundary and testing basis for module-integrated electronics sold with photovoltaic elements as one product"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:28b63b223ef827d3d06432860a372a571af06bc61d5192ca172c73b77e0de5d2"
+  generated_content_sha256: "sha256:6cb6dbb190b36af96182a779a4630cb0614bc1f678c8179f16a9755582fce517"

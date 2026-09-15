@@ -1,10 +1,988 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21330"
-  title: "Vegetables provisionally preserved"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.vegetables-provisionally-preserved"
+  classification_refs: "CPC 3.0: 21330, Vegetables provisionally preserved"
+  covered_products: "vegetables provisionally preserved in a declared preservative solution or by a declared non-solution treatment; intermediate products unsuitable in that state for immediate consumption"
+  excluded_products: "fresh, frozen, dried, ready-to-eat, canned or otherwise finally preserved vegetables; vegetables preserved by vinegar or acetic acid as the defining finished-product route; fruit, nuts, pulses and potatoes outside the declared CPC scope"
+  representative_product: "provisionally preserved tomato; Tomato is a narrower representative and is not a generic flow for other vegetables"
+  production_route: "receipt and preparation; exactly one of solution preservation or gas/non-solution preservation; storage and factory-gate dispatch"
+  market_state: "bulk or non-retail intermediate product requiring further processing, with preservation medium, temperature and packaging state declared"
+functional_unit:
+  what: "provisionally preserved vegetable delivered as an intermediate input for further processing"
+  how_much: "1 kg of declared product mass at factory-gate handover"
+  how_well: "vegetable identity, preparation state, selected preservation route, preservative identity and formulation, product-to-medium mass basis, packaging state and further-processing requirement are declared"
+  how_long_or_cycle: "one production batch through the declared preservation and storage duration to factory-gate handover"
+  reference_flow_link: "the reference amount is the quantitative reference output of storage_dispatch"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground production"
+      rule: "Include receipt, preparation, the one selected provisional-preservation route, storage and dispatch, together with all known material, water, energy, product, waste and direct elementary flows crossing those process boundaries."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "preservation route"
+      rule: "Select exactly one route for each modelled lot: solution_preservation or gas_non_solution_preservation. Do not model both as simultaneously occurring. A genuinely combined treatment is outside this candidate PCR until reviewed route-specific evidence expands the scope."
+      source_ids: []
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link representative upstream datasets for the incoming vegetable, water, preservative agents, energy, packaging and other purchased inputs; do not recreate those upstream processes inside the foreground."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_food_safety_controls
+      applies_to: "food-contact operations"
+      rule: "Include the activity records needed to describe and verify applicable GHP/HACCP controls, including water suitability, sanitation, formulation, time, temperature, pH or other facility-identified control parameters."
+      source_ids:
+        - codex-cxc-1-1969
+boundary_abstraction:
+  declared_starting_condition: "accepted fresh or otherwise declared pre-processed vegetable lot at the preserving facility gate"
+  starting_condition_role: "purchased product input with identity, condition, mass basis and upstream dataset declared"
+  product_classification_scope: "CPC 3.0 subclass 21330 intermediate vegetables provisionally preserved and unsuitable in that state for immediate consumption"
+  recursive_input_rule: "if an input is already a provisionally preserved vegetable in this same category, record it as a purchased starting-condition input and link a separate upstream dataset; do not repeat its earlier preservation operations in this foreground"
+  upstream_dataset_requirement: "representative datasets are required for all purchased vegetables, preservative agents, water, energy, packaging and waste-treatment services"
+  disclosure: "declare vegetable identity, incoming condition, route, formulation, reference-mass basis, accompanying medium, storage conditions, factory gate, exclusions and all data gaps or temporary estimates"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Tomato"
+    uuid: "4dc258f9-c5fc-47d7-821e-12526fe6b5d7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "vegetable species and cultivar"
+    - "tomato-only applicability of the selected UUID or verified replacement flow"
+    - "vegetable form and preparation state"
+    - "preservation route"
+    - "preservative agent and formulation"
+    - gross
+    - "net or drained mass basis"
+    - "accompanying medium included or excluded"
+    - "storage temperature and duration"
+    - "packaging state"
+    - "factory-gate location"
+    - "unsuitable-for-immediate-consumption status"
+    - "required further processing"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg on the declared gross, net or drained product-mass basis and use that same basis for every normalized inventory amount."
+  - id: component_mass_separation
+    applies_to: "vegetable and accompanying preservation medium"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure or calculate vegetable mass and accompanying-medium mass separately; disclose whether either component is included in the reference amount."
+  - id: batch_normalization
+    applies_to: "all foreground inputs and outputs"
+    required_property_ref:
+      name: "applicable flow property"
+      uuid: ""
+    required_unit: "per kg reference product"
+    rule: "Normalize batch totals by compliant reference-product mass at factory-gate handover; do not normalize by incoming raw-vegetable mass."
+  - id: formulation_measurement
+    applies_to: "preservative medium and agent"
+    required_property_ref:
+      name: "mass or concentration property used by the facility"
+      uuid: ""
+    required_unit: "declared unit"
+    rule: "Record the actual recipe, concentration basis, make-up quantity, recovered quantity and disposition; do not substitute a nominal recipe for a measured or controlled batch record."
+process_map:
+  - id: receipt_preparation
+    name: "Vegetable receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground preparation"
+    quantitative_reference: "kg prepared vegetable leaving the process"
+  - id: solution_preservation
+    name: "Solution provisional-preservation route"
+    inclusion: "conditional"
+    inclusion_condition: "include only when the lot is preserved by immersion or contact with a declared preservative solution; exclude the gas/non-solution route"
+    role: "foreground preservation"
+    quantitative_reference: "kg solution-preserved intermediate leaving the process"
+  - id: gas_non_solution_preservation
+    name: "Gas or non-solution provisional-preservation route"
+    inclusion: "conditional"
+    inclusion_condition: "include only when the lot is preserved by a declared gas or other non-solution treatment; exclude the solution route"
+    role: "foreground preservation"
+    quantitative_reference: "kg treated intermediate leaving the process"
+  - id: storage_dispatch
+    name: "Storage and factory-gate dispatch"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground finishing"
+    quantitative_reference: "1 kg reference product at factory-gate handover"
+process_inventory:
+  - id: receipt_preparation
+    label: "Vegetable receipt and preparation"
+    inputs:
+      product:
+        - row_id: incoming_vegetable
+          role: "Accepted incoming vegetable lot"
+          name: "Incoming vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted vegetable mass and its species, cultivar, condition and supplier-lot identity. Use a semantically appropriate product flow for the actual vegetable."
+          amount:
+            expression: "calibrated-scale mass of accepted vegetable lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product at factory-gate handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_incoming_vegetable
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across the declared representative batch set"
+                upper: "maximum observed across the declared representative batch set"
+                unit: "kg/kg reference product"
+                basis: "per kg reference product at factory-gate handover"
+                basis_kind: "reference_flow"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Water supply, facility-appropriate product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water entering washing, rinsing or other preparation operations when it crosses the foreground boundary."
+          amount:
+            expression: "metered water supplied to the process, less separately metered water routed outside the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared vegetable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_water
+              source_ids:
+                - codex-cxc-1-1969
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across the declared representative batch set"
+                upper: "maximum observed across the declared representative batch set"
+                unit: "kg/kg prepared vegetable"
+                basis: "per kg prepared vegetable output"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_vegetable
+          role: "Prepared vegetable routed to preservation"
+          name: "Prepared vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of prepared vegetable released to exactly one declared preservation route."
+          amount:
+            expression: "calibrated-scale mass transferred to the selected preservation route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared vegetable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prepared_vegetable
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed prepared-vegetable mass per accepted input mass"
+                upper: "maximum observed prepared-vegetable mass per accepted input mass"
+                unit: "kg/kg accepted vegetable"
+                basis: "per kg accepted incoming vegetable"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Removed vegetable matter and rejects"
+          name: "Vegetable preparation waste, destination-specific waste flow to be selected"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trimmings, spoiled material and rejected vegetable fractions by actual destination; do not treat them as co-products without evidence of a product function and market."
+          amount:
+            expression: "measured mass by waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared vegetable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_rejects
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across the declared representative batch set"
+                upper: "maximum observed across the declared representative batch set"
+                unit: "kg/kg prepared vegetable"
+                basis: "per kg prepared vegetable output"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater, treatment-specific waste flow to be selected"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving preparation, including its treatment destination and any separately measured entrained solids."
+          amount:
+            expression: "metered discharge or validated water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared vegetable output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_wastewater
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum measured or balanced value across the declared representative batch set"
+                upper: "maximum measured or balanced value across the declared representative batch set"
+                unit: "kg/kg prepared vegetable"
+                basis: "per kg prepared vegetable output"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      elementary:
+        []
+  - id: solution_preservation
+    label: "Solution provisional-preservation route"
+    inputs:
+      product:
+        - row_id: solution_route_vegetable
+          role: "Prepared vegetable for solution treatment"
+          name: "Prepared vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only prepared vegetable assigned to the solution route."
+          amount:
+            expression: "measured transfer mass reconciled to the preparation output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg solution-preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solution_route_inputs
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across the declared representative batch set"
+                upper: "maximum observed across the declared representative batch set"
+                unit: "kg/kg solution-preserved intermediate"
+                basis: "per kg solution-preserved intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: preservation_solution
+          role: "Preservation solution and make-up agents"
+          name: "Preservation solution components, component-specific product flows to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water, salt and every preservative or formulation component separately in the underlying data package, with actual recipe and concentration basis."
+          amount:
+            expression: "measured make-up and replenishment mass less separately measured recovered solution reused in the same batch system"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg solution-preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solution_route_inputs
+              source_ids:
+                - codex-cxc-1-1969
+            ranges:
+              - role: typical_range
+                lower: "minimum observed for each declared component across the representative batch set"
+                upper: "maximum observed for each declared component across the representative batch set"
+                unit: "kg/kg solution-preserved intermediate"
+                basis: "per kg solution-preserved intermediate output, reported separately by component"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: solution_preserved_intermediate
+          role: "Solution-preserved vegetable intermediate"
+          name: "Provisionally preserved vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record treated vegetable and accompanying medium on separately measured mass bases before combination into any declared shipped-product mass."
+          amount:
+            expression: "measured vegetable mass plus only the accompanying medium included by the declared product-mass basis"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg solution-preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solution_product_mass
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed output mass per prepared-vegetable input mass"
+                upper: "maximum observed output mass per prepared-vegetable input mass"
+                unit: "kg/kg prepared vegetable"
+                basis: "per kg prepared vegetable assigned to the solution route"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        - row_id: spent_solution
+          role: "Spent or purged preservation solution"
+          name: "Spent preservation solution, treatment-specific waste flow to be selected"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the mass and destination of solution purged from the process; reused solution remaining within the same batch system is not a boundary output."
+          amount:
+            expression: "measured purge mass or validated solution mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg solution-preserved intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_spent_solution
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum measured or balanced value across the declared representative batch set"
+                upper: "maximum measured or balanced value across the declared representative batch set"
+                unit: "kg/kg solution-preserved intermediate"
+                basis: "per kg solution-preserved intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      elementary:
+        []
+  - id: gas_non_solution_preservation
+    label: "Gas or non-solution provisional-preservation route"
+    inputs:
+      product:
+        - row_id: gas_route_vegetable
+          role: "Prepared vegetable for gas or non-solution treatment"
+          name: "Prepared vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only prepared vegetable assigned to this route."
+          amount:
+            expression: "measured transfer mass reconciled to the preparation output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg gas/non-solution-treated intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_route_inputs
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across the declared representative batch set"
+                upper: "maximum observed across the declared representative batch set"
+                unit: "kg/kg treated intermediate"
+                basis: "per kg gas/non-solution-treated intermediate output"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: gas_route_agent
+          role: "Gas or non-solution preservative agent"
+          name: "Preservative agent, agent-specific product flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each actual treatment agent and carrier separately; no particular chemical is mandatory under this candidate PCR."
+          amount:
+            expression: "measured charged mass from batch issue, cylinder change or calibrated dosing records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg gas/non-solution-treated intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_route_inputs
+              source_ids:
+                - codex-cxc-1-1969
+            ranges:
+              - role: typical_range
+                lower: "minimum observed for each declared agent across the representative batch set"
+                upper: "maximum observed for each declared agent across the representative batch set"
+                unit: "kg/kg treated intermediate"
+                basis: "per kg gas/non-solution-treated intermediate output, reported separately by agent"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gas_treated_intermediate
+          role: "Gas or non-solution treated vegetable intermediate"
+          name: "Provisionally preserved vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured treated vegetable mass and declared treatment condition."
+          amount:
+            expression: "calibrated-scale mass released from the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg gas/non-solution-treated intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_product_mass
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed output mass per prepared-vegetable input mass"
+                upper: "maximum observed output mass per prepared-vegetable input mass"
+                unit: "kg/kg prepared vegetable"
+                basis: "per kg prepared vegetable assigned to this route"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        - row_id: treatment_agent_release
+          role: "Uncaptured treatment-agent release"
+          name: "Substance- and compartment-specific elementary flow to be selected"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only an actual direct release crossing to air, water or soil. Identify the substance and compartment; do not equate charged agent mass with emitted mass."
+          amount:
+            expression: "direct measurement or calculation from charged, retained, recovered and captured quantities"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg gas/non-solution-treated intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_agent_release
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum measured or balanced release across the declared representative batch set"
+                upper: "maximum measured or balanced release across the declared representative batch set"
+                unit: "kg/kg treated intermediate"
+                basis: "per kg gas/non-solution-treated intermediate output, separately by substance and compartment"
+                basis_kind: "process_output"
+                evidence_kind: "collected_record"
+                source_ids: []
+  - id: storage_dispatch
+    label: "Storage and factory-gate dispatch"
+    inputs:
+      product:
+        - row_id: selected_route_intermediate
+          role: "Intermediate from the selected preservation route"
+          name: "Provisionally preserved vegetable, product-specific Tiangong flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record output from exactly one preservation route and preserve the route identifier in the batch link."
+          amount:
+            expression: "measured route-output mass received into storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product at factory-gate handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_selected_route_intermediate
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across the declared representative batch set"
+                upper: "maximum observed across the declared representative batch set"
+                unit: "kg/kg reference product"
+                basis: "per kg reference product at factory-gate handover"
+                basis_kind: "reference_flow"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: dispatch_packaging
+          role: "Packaging supplied to the product"
+          name: "Packaging material, material-specific product flow to be selected"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary and transport packaging that remains with the dispatched product, separately by material and reuse status."
+          amount:
+            expression: "purchased or issued packaging mass allocated to dispatched compliant product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product at factory-gate handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_packaging
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed by packaging configuration across the declared representative batch set"
+                upper: "maximum observed by packaging configuration across the declared representative batch set"
+                unit: "kg/kg reference product"
+                basis: "per kg reference product at factory-gate handover, separately by material"
+                basis_kind: "reference_flow"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: dispatch_electricity
+          role: "Metered storage and dispatch electricity"
+          name: "Electricity supply, geography- and voltage-appropriate product flow to be selected"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use this row when representative meters or a validated submeter allocation are available. It is mutually exclusive with unmetered_energy_screening for the same equipment and time interval."
+          amount:
+            expression: "metered consumption attributable to storage and dispatch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reference product at factory-gate handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_energy
+              source_ids: []
+            ranges:
+              - role: typical_range
+                lower: "minimum observed across representative storage-duration and operating-condition strata"
+                upper: "maximum observed across representative storage-duration and operating-condition strata"
+                unit: "kWh/kg reference product"
+                basis: "per kg reference product at factory-gate handover"
+                basis_kind: "reference_flow"
+                evidence_kind: "collected_record"
+                source_ids: []
+        - row_id: unmetered_energy_screening
+          role: "Temporary unmetered energy screening estimate"
+          name: "Electricity supply, geography- and voltage-appropriate product flow to be selected"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use only for candidate screening when the same equipment and time interval are not represented by dispatch_electricity: estimate electricity as equipment nameplate power multiplied by logged operating hours and a documented load factor, divided by compliant output. This is a provisional reasoned_estimate, not a conformity value. Replace it when representative-batch metering, a validated facility energy balance or reviewed transferable evidence becomes available."
+          amount:
+            expression: "sum(nameplate kW × logged operating h × documented load factor) / compliant reference-product kg"
+            value_mode: "modelled_estimate"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg reference product at factory-gate handover for the declared equipment and operating scenario"
+              kind: "reference_flow"
+            evidence:
+              kind: "reasoned_estimate"
+              source_ids: []
+            ranges:
+              - role: uncertainty_range
+                lower: "calculated minimum across declared plausible equipment load scenarios"
+                upper: "calculated maximum across declared plausible equipment load scenarios"
+                unit: "kWh/kg reference product"
+                basis: "per kg reference product for the declared equipment, operating hours and storage duration"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Provisionally preserved vegetable at factory gate"
+          name: "Tomato"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4dc258f9-c5fc-47d7-821e-12526fe6b5d7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. For the representative tomato dataset use the selected Tiangong flow; another vegetable requires a semantically appropriate flow before publication."
+          amount:
+            expression: "exactly 1 kg on the declared product-mass basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product at factory-gate handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "per reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "source_rule"
+                source_ids:
+                  - eu-pef-2021-2279
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "route and process-specific burdens"
+    rule: "Avoid allocation by separately recording preparation, the selected preservation route, storage and dispatch, and by submetering or subdividing shared operations where feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "inseparable shared operations"
+    rule: "If subdivision is not feasible, allocate by a documented relevant physical relationship that reflects causality, such as metered operating time, treated mass or occupied storage capacity and duration. Report the factor and all quantities used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relationship
+    applies_to: "remaining multifunctionality"
+    rule: "Use another relationship, including economic allocation, only after documenting why subdivision/system expansion and a relevant physical relationship are not feasible; disclose prices, period and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rejects
+    applies_to: "vegetable rejects, spent solution and treatment residues"
+    rule: "Treat a stream as waste and assign its treatment burden to the foreground unless a demonstrated product function and destination support co-product treatment; do not claim an avoided burden by default."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_incoming_vegetable
+      process_id: "receipt_preparation"
+      flow_role: "accepted incoming vegetable lot"
+      record_type: "receiving and scale record"
+      raw_fields: "lot id; species; cultivar; supplier; incoming condition; gross mass; tare; accepted mass; timestamp"
+      collection_method: "calibrated scale linked to receiving record"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all supplying lots for the foreground site"
+      aggregation_rule: "sum accepted mass by product and batch; normalize to reference output"
+      quality_evidence: "scale calibration; lot traceability; rejection record"
+    - protocol_id: cp_preparation_water
+      process_id: "receipt_preparation"
+      flow_role: "preparation water"
+      record_type: "water-meter record"
+      raw_fields: "meter id; opening; closing; batch id; routed-away water"
+      collection_method: "calibrated meter or verified vessel-volume log"
+      unit: "kg"
+      frequency: "per batch or continuous meter interval"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all preparation lines in scope"
+      aggregation_rule: "subtract separately routed water and normalize to prepared output"
+      quality_evidence: "meter calibration or vessel verification; batch linkage"
+    - protocol_id: cp_prepared_vegetable
+      process_id: "receipt_preparation"
+      flow_role: "prepared vegetable"
+      record_type: "transfer-scale record"
+      raw_fields: "batch id; vegetable identity; gross mass; tare; net mass; destination route"
+      collection_method: "calibrated scale at route transfer"
+      unit: "kg"
+      frequency: "per batch transfer"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all preparation lines in scope"
+      aggregation_rule: "sum net transfer mass by selected route"
+      quality_evidence: "scale calibration; route reconciliation"
+    - protocol_id: cp_preparation_rejects
+      process_id: "receipt_preparation"
+      flow_role: "removed vegetable matter and rejects"
+      record_type: "waste log"
+      raw_fields: "batch id; waste type; mass; destination; timestamp"
+      collection_method: "calibrated scale or destination weigh ticket"
+      unit: "kg"
+      frequency: "per waste movement"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all preparation lines in scope"
+      aggregation_rule: "sum separately by destination and normalize to prepared output"
+      quality_evidence: "scale calibration; transporter or treatment receipt"
+    - protocol_id: cp_preparation_wastewater
+      process_id: "receipt_preparation"
+      flow_role: "preparation wastewater"
+      record_type: "discharge and water-balance record"
+      raw_fields: "batch id; discharge meter; water input; retained water; entrained solids; destination"
+      collection_method: "discharge meter or validated input-output balance"
+      unit: "kg"
+      frequency: "per batch or discharge interval"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all preparation lines in scope"
+      aggregation_rule: "measured discharge, or water input minus measured retained/routed quantities"
+      quality_evidence: "meter calibration; signed mass-balance review"
+    - protocol_id: cp_solution_route_inputs
+      process_id: "solution_preservation"
+      flow_role: "solution-route vegetable and formulation inputs"
+      record_type: "recipe and issue record"
+      raw_fields: "batch id; vegetable mass; component id; component mass; concentration basis; replenishment; recovered reuse"
+      collection_method: "calibrated dosing, scale and recipe-control records"
+      unit: "kg"
+      frequency: "per solution batch"
+      temporal_coverage: "declared representative production period"
+      site_scope: "every solution-preservation line in scope"
+      aggregation_rule: "sum each component separately; subtract only measured same-system reuse"
+      quality_evidence: "scale/doser calibration; approved recipe; batch reconciliation"
+    - protocol_id: cp_solution_product_mass
+      process_id: "solution_preservation"
+      flow_role: "solution-preserved intermediate"
+      record_type: "product and medium mass record"
+      raw_fields: "batch id; vegetable mass; accompanying-medium mass; product-mass basis; release timestamp"
+      collection_method: "calibrated scale with separate component measurement or validated component mass balance"
+      unit: "kg"
+      frequency: "per batch release"
+      temporal_coverage: "declared representative production period"
+      site_scope: "every solution-preservation line in scope"
+      aggregation_rule: "combine components only as specified by the declared reference-mass basis"
+      quality_evidence: "calibration; batch release; component reconciliation"
+    - protocol_id: cp_spent_solution
+      process_id: "solution_preservation"
+      flow_role: "spent or purged solution"
+      record_type: "purge and destination record"
+      raw_fields: "batch id; purge mass; recovered mass; treatment destination; solids content if measured"
+      collection_method: "calibrated tank/scale record or validated solution balance"
+      unit: "kg"
+      frequency: "per purge"
+      temporal_coverage: "declared representative production period"
+      site_scope: "every solution-preservation line in scope"
+      aggregation_rule: "sum purge by destination and normalize to route output"
+      quality_evidence: "calibration; balance closure; treatment receipt"
+    - protocol_id: cp_gas_route_inputs
+      process_id: "gas_non_solution_preservation"
+      flow_role: "gas-route vegetable and treatment agents"
+      record_type: "treatment batch record"
+      raw_fields: "batch id; vegetable mass; agent identity; charged mass; carrier mass; dose setting; cylinder or inventory change"
+      collection_method: "calibrated scale, dosing system or reconciled cylinder/inventory record"
+      unit: "kg"
+      frequency: "per treatment batch"
+      temporal_coverage: "declared representative production period"
+      site_scope: "every gas/non-solution line in scope"
+      aggregation_rule: "sum each agent separately and normalize to treated output"
+      quality_evidence: "scale/doser calibration; inventory reconciliation; approved treatment specification"
+    - protocol_id: cp_gas_product_mass
+      process_id: "gas_non_solution_preservation"
+      flow_role: "gas/non-solution-treated intermediate"
+      record_type: "release-scale record"
+      raw_fields: "batch id; product identity; gross mass; tare; net mass; treatment condition"
+      collection_method: "calibrated scale at treatment release"
+      unit: "kg"
+      frequency: "per batch release"
+      temporal_coverage: "declared representative production period"
+      site_scope: "every gas/non-solution line in scope"
+      aggregation_rule: "sum compliant released mass"
+      quality_evidence: "calibration; batch release record"
+    - protocol_id: cp_treatment_agent_release
+      process_id: "gas_non_solution_preservation"
+      flow_role: "uncaptured treatment-agent release"
+      record_type: "emission measurement or agent balance"
+      raw_fields: "batch id; substance; compartment; charged; retained; recovered; captured; measured release; method"
+      collection_method: "direct monitor where available, otherwise validated agent balance"
+      unit: "kg"
+      frequency: "per batch or monitoring interval"
+      temporal_coverage: "declared representative production period"
+      site_scope: "every emission point in scope"
+      aggregation_rule: "report separately by substance and compartment; do not use charged mass as release"
+      quality_evidence: "monitor calibration or signed balance and capture-efficiency evidence"
+    - protocol_id: cp_selected_route_intermediate
+      process_id: "storage_dispatch"
+      flow_role: "intermediate from selected route"
+      record_type: "storage receiving record"
+      raw_fields: "batch id; route id; product identity; vegetable mass; medium mass; total received mass; timestamp"
+      collection_method: "calibrated receiving scale and batch-link record"
+      unit: "kg"
+      frequency: "per storage intake"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all in-scope storage intakes"
+      aggregation_rule: "accept one route id per lot and sum received mass"
+      quality_evidence: "scale calibration; route genealogy; duplicate-route check"
+    - protocol_id: cp_dispatch_packaging
+      process_id: "storage_dispatch"
+      flow_role: "packaging supplied to product"
+      record_type: "packaging issue record"
+      raw_fields: "batch id; material id; packaging mass; units; reuse status; product mass"
+      collection_method: "purchase/issue records checked by sample weighing"
+      unit: "kg"
+      frequency: "per packaging configuration and batch"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all packaging used for dispatched product"
+      aggregation_rule: "sum by material and reuse status; normalize to dispatched product"
+      quality_evidence: "invoice/issue record; sample-scale calibration"
+    - protocol_id: cp_dispatch_energy
+      process_id: "storage_dispatch"
+      flow_role: "metered storage and dispatch electricity"
+      record_type: "energy-meter record"
+      raw_fields: "meter id; opening; closing; interval; batch ids; storage duration; allocation driver"
+      collection_method: "calibrated dedicated meter or validated submeter allocation"
+      unit: "kWh"
+      frequency: "continuous or per dispatch interval"
+      temporal_coverage: "representative seasons and operating modes in the declared period"
+      site_scope: "all storage and dispatch equipment in scope"
+      aggregation_rule: "subtract out-of-scope loads; allocate by documented causal driver; normalize to dispatched product"
+      quality_evidence: "meter calibration; load map; allocation reconciliation"
+    - protocol_id: cp_final_product_mass
+      process_id: "storage_dispatch"
+      flow_role: "provisionally preserved vegetable at factory gate"
+      record_type: "dispatch-scale and release record"
+      raw_fields: "batch id; vegetable identity; route; product-mass basis; vegetable mass; medium mass; gross mass; tare; compliant net mass; gate; timestamp"
+      collection_method: "calibrated dispatch scale linked to release certificate"
+      unit: "kg"
+      frequency: "per dispatched lot"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all compliant factory-gate output"
+      aggregation_rule: "sum compliant mass on one declared basis; normalize all inventory to 1 kg"
+      quality_evidence: "calibration; release certificate; route and formulation traceability"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every batch inventory amount"
+      rule: "normalized amount = batch amount / compliant factory-gate product mass on the declared basis × 1 kg"
+      inputs:
+        - "applicable collection protocol"
+        - cp_final_product_mass
+      output: "amount per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_component_mass
+      applies_to: "shipped solution-route product"
+      rule: "declared product mass = measured vegetable mass + measured accompanying-medium mass only when that medium is included by the declared mass basis"
+      inputs:
+        - cp_solution_product_mass
+      output: "kg declared product and separate component fractions"
+      source_ids: []
+    - id: calc_route_mass_balance
+      applies_to: "each foreground process"
+      rule: "reconcile measured inputs = product outputs + waste outputs + direct releases + measured inventory change; report residual and facility acceptance rationale"
+      inputs:
+        - "process-specific mass protocols"
+      output: "batch mass-balance residual and normalized flows"
+      source_ids: []
+    - id: calc_agent_release
+      applies_to: "direct treatment-agent release"
+      rule: "release = charged agent - agent retained in product - recovered agent - captured agent - closing inventory adjustment, separately by substance and compartment"
+      inputs:
+        - cp_gas_route_inputs
+        - cp_treatment_agent_release
+      output: "kg direct elementary flow"
+      source_ids: []
+    - id: calc_unmetered_energy_screening
+      applies_to: "temporary candidate energy estimate"
+      rule: "estimate = sum(nameplate power × logged operating time × documented load factor) / compliant product mass; apply only to declared equipment and operating scenario, and never together with metered energy for the same interval"
+      inputs:
+        - "equipment nameplates"
+        - "operating logs"
+        - "documented load-factor rationale"
+        - cp_final_product_mass
+      output: "provisional kWh/kg reasoned estimate"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference and intermediate product flows"
+      requirement: "Demonstrate semantic match between vegetable identity and selected Tiangong flow. UUID 4dc258f9-c5fc-47d7-821e-12526fe6b5d7 is acceptable only for tomato datasets; another vegetable needs an appropriate flow before publication."
+      evidence: "product specification; flow review; batch genealogy"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Include all known inputs and outputs, with exclusions and residual mass-balance terms documented."
+      evidence: "protocol coverage matrix; mass balance; eu-pef-2021-2279"
+    - id: dq_representativeness
+      applies_to: "activity data"
+      requirement: "State technological, geographical and time-related representativeness and precision; representative batches shall span declared operating modes, route, formulation and storage conditions."
+      evidence: "sampling rationale; batch list; DQR record; eu-pef-2021-2279"
+    - id: dq_measurement
+      applies_to: "mass, water, agents, energy and releases"
+      requirement: "Retain calibration status, measurement method, unit conversions and batch linkage; do not mix gross, net and drained mass bases."
+      evidence: "calibration certificates; raw records; reconciliation sheets"
+    - id: dq_food_control_records
+      applies_to: "formulation and preservation controls"
+      requirement: "Retain the actual product description and applicable GHP/HACCP monitoring evidence for water suitability, sanitation, formulation, time, temperature, pH or other identified controls."
+      evidence: "approved specification; control records; codex-cxc-1-1969"
+    - id: dq_reasoned_estimate_replacement
+      applies_to: "unmetered energy screening"
+      requirement: "Mark the estimate provisional and limited to the declared equipment scenario. Replace it when representative-batch metering, a validated facility energy balance or reviewed transferable evidence becomes available; publication shall not rely on an unreviewed temporary estimate."
+      evidence: "estimate sheet; replacement decision; meter or reviewed evidence"
+validation_rules:
+  - rule_id: validate_reference_flow_semantics
+    applies_to: "reference product flow"
+    rule: "Fail if the dataset product is not tomato while the reference product UUID remains 4dc258f9-c5fc-47d7-821e-12526fe6b5d7; require a verified semantically appropriate flow before publication."
+    source_ids: []
+  - rule_id: validate_route_exclusivity
+    applies_to: "process selection"
+    rule: "Require exactly one of solution_preservation and gas_non_solution_preservation for each lot; fail on neither, both, or an undeclared combined route."
+    source_ids: []
+  - rule_id: validate_product_state
+    applies_to: "category applicability"
+    rule: "Require evidence that the output is provisionally preserved, unsuitable in that state for immediate consumption and intended for further processing; otherwise reject CPC-21330 applicability."
+    source_ids:
+      - unsd-cpc-v3-21330
+  - rule_id: validate_reference_mass_basis
+    applies_to: "reference and normalized amounts"
+    rule: "Require one declared gross, net or drained mass basis, separate vegetable and medium masses, and consistent use of that basis in every normalization."
+    source_ids: []
+  - rule_id: validate_inventory_coverage
+    applies_to: "foreground processes"
+    rule: "Require all known material, water, energy, product, waste and direct elementary flows, with every exclusion and data gap disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_balance
+    applies_to: "each batch and process"
+    rule: "Require non-negative amounts and a documented mass-balance residual within the facility's declared acceptance criterion; investigate and disclose failures."
+    source_ids: []
+  - rule_id: validate_food_control_evidence
+    applies_to: "applicable preservation controls"
+    rule: "Require product description, intended use and applicable monitoring/verification records defined by the facility's GHP/HACCP system."
+    source_ids:
+      - codex-cxc-1-1969
+  - rule_id: validate_reasoned_estimate
+    applies_to: "temporary unmetered energy row"
+    rule: "Require declared equipment, operating hours, load-factor rationale, scenario bounds, temporary status and replacement trigger; fail publication if the estimate remains unreviewed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground unit-process data package for a provisionally preserved vegetable intermediate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "factory-gate datasets within CPC 21330 that match the declared vegetable, route, formulation, product-mass basis, storage conditions, geography and unsuitable-for-immediate-consumption state"
+  excluded_use: "fresh, frozen, dried, ready-to-eat or finally preserved vegetables; undeclared combined preservation routes; non-tomato datasets using the Tomato UUID; comparative assertions across unlike products, mass bases or routes without further review"
+  required_metadata: "vegetable species and cultivar; Tiangong flow and semantic review; CPC reference; route; formulation; vegetable and medium mass; reference-mass basis; batch and site; geography; storage temperature and duration; packaging; factory gate; further-processing requirement; temporal coverage; protocol coverage; allocation; exclusions"
+  required_quality_disclosure: "foreground-data coverage; calibration and reconciliation evidence; technological, geographical and temporal representativeness; precision; mass-balance residuals; food-control records; reasoned estimates and replacement status"
+  update_trigger: "change in vegetable or Tiangong flow; route, agent, formulation, equipment, storage, packaging, geography or allocation; representative-batch evidence replacing an estimate; revised CPC, Codex or PEF evidence; review finding affecting scope or controls"
+data_sources:
+  - id: "unsd-cpc-v3-21330"
+    type: "standard"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21330 and official explanatory-notes publication, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "classification identity, applicability and product-state validation"
+  - id: "codex-cxc-1-1969"
+    type: "standard"
+    reference: "Codex Alimentarius, General Principles of Food Hygiene, CXC 1-1969, revised 2022, https://workspace.fao.org/sites/codex/Standards/CXC%201-1969/CXC_001e.pdf (retrieved 2026-08-11)"
+    used_for: "product and process description, GHP/HACCP controls, water suitability, monitoring and records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 of 15 December 2021, Product Environmental Footprint method, http://data.europa.eu/eli/reco/2021/2279/2021-12-30 (retrieved 2026-08-11)"
+    used_for: "functional unit, system boundary, inventory completeness, multifunctionality hierarchy and data quality"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0b8b4b24dffc1539f994027e3ee4d20b35d477633968b5acfa475dbb08d7fe5a"
+  generated_content_sha256: "sha256:dab5c2d76c030a575a5d75449f2950fb65191e9100f1d06179d6b26684daf36d"

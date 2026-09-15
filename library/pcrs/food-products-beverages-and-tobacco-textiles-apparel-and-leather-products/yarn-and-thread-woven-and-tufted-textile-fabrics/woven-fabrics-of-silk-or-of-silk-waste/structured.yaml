@@ -1,10 +1,701 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26510"
-  title: "Woven fabrics of silk or of silk waste"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-silk-or-of-silk-waste"
+  classification_refs: "CPC 3.0: 26510 - Woven fabrics of silk or of silk waste"
+  covered_products: "Woven fabrics whose textile material is natural silk filament yarn, yarn spun from silk waste, or a declared combination of those silk yarns"
+  excluded_products: "Silk yarn; fabrics principally of other fibres; knitted, tufted, non-woven, pile, chenille, narrow, or other special fabrics; carpets; garments and made-up articles"
+  representative_product: "Saleable woven silk fabric of declared yarn origin, construction, areal mass, finish state, and moisture condition"
+  production_route: "Yarn receipt, warping, conditional sizing, weaving, inspection, and conditional on-site silk wet processing"
+  market_state: "Production mix at plant gate, with greige or finished state explicitly declared"
+functional_unit:
+  what: "Woven silk fabric meeting the declared construction and finish specification"
+  how_much: "1 kg"
+  how_well: "Saleable output meeting the declared yarn composition, weave, areal mass, width, finish, quality grade, and moisture condition"
+  how_long_or_cycle: "One production batch or reporting-period output at the plant gate; no use-stage duration is represented"
+  reference_flow_link: "woven_silk_fabric_output or finished_woven_silk_fabric_output, according to the declared final foreground process"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground_fabric_production"
+      rule: "Include material and energy exchanges from yarn receipt through the declared saleable fabric at the plant gate; include wet processing only when it is performed within the reporting site or claimed product system."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_route_disclosure
+      applies_to: "process_route"
+      rule: "Distinguish warping, sizing, weaving, silk pretreatment, dyeing, printing, and finishing; do not infer an unreported wet process from the product name."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-textiles-bat-2022
+    - rule_id: boundary_atomic_chemicals
+      applies_to: "chemicals_and_auxiliaries"
+      rule: "Record every chemical product actually consumed as its own product-flow exchange with identity and amount; a chemicals total or formulation family is not an exchange."
+      source_ids:
+        - eu-textiles-bat-2022
+    - rule_id: boundary_waste_and_emissions
+      applies_to: "outputs"
+      rule: "Record each waste, wastewater, recovered material, and direct emission separately at the point it crosses the foreground boundary; do not net recovery against consumption."
+      source_ids:
+        - eu-textiles-bat-2022
+boundary_abstraction:
+  declared_starting_condition: "Silk filament yarn and/or yarn spun from silk waste received at the reporting mill gate, with supplier, yarn state, composition, moisture condition, and upstream dataset reference declared"
+  starting_condition_role: "Upstream product input to foreground fabric production"
+  product_classification_scope: "Woven silk fabrics covered by CPC 3.0 code 26510; the classification reference does not replace the semantic product and finish-state declaration"
+  recursive_input_rule: "A purchased woven silk fabric entering on-site wet processing shall reference a separate upstream dataset. An internally woven fabric is an internal transfer and shall not be counted again as a purchased input."
+  upstream_dataset_requirement: "Supplier- or region-specific silk yarn data are preferred. Generic upstream data shall disclose geography, technology, time, yarn origin, and whether silk waste is included."
+  disclosure: "Declare the plant gate, integrated or purchased starting material, yarn shares, sizing status, wet-processing operations, treatment of internal transfers, and all excluded life-cycle stages."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Woven fabrics of silk or of silk waste"
+    uuid: "f7cf0661-025b-47cc-b5e2-d44b43e07e6b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "natural silk filament yarn share"
+    - "silk-waste yarn share"
+    - "weave and construction"
+    - "areal mass"
+    - "usable width"
+    - "greige or finish state"
+    - dyeing
+    - printing
+    - weighting
+    - "and finishing status"
+    - "quality grade"
+    - "moisture condition"
+    - geography
+    - technology
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and silk-material mass flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report dry or conditioned mass consistently. Declare the moisture condition and do not combine wet and conditioned masses without a recorded conversion."
+  - id: batch_mass_balance
+    applies_to: "Each foreground process and reporting period"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record input, saleable output, silk waste, retained inventory, and other separately identified outputs on the same temporal and moisture basis; disclose unexplained imbalance."
+  - id: water_mass_conversion
+    applies_to: "Process-water and wastewater rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "When a meter reports volume, convert to mass only with the recorded meter volume and a measured or documented density applicable to the stream and temperature."
+  - id: electricity_energy_conversion
+    applies_to: "Electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve metered kWh in raw records and convert to MJ with the exact physical conversion 1 kWh = 3.6 MJ; do not mix electricity with steam or fuel."
+process_map:
+  - id: warp_weave
+    name: "Warping, conditional sizing, and weaving"
+    inclusion: "required"
+    inclusion_condition: "Always included for fabric manufactured from yarn within the foreground mill"
+    role: "Foreground fabric production"
+    quantitative_reference: "kg saleable woven silk fabric leaving this process"
+  - id: wet_processing
+    name: "Silk pretreatment, dyeing, printing, and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only operations performed within the reporting site or explicitly claimed product system"
+    role: "Foreground wet processing"
+    quantitative_reference: "kg saleable finished woven silk fabric leaving this process"
+process_inventory:
+  - id: warp_weave
+    label: "Warping, conditional sizing, and weaving"
+    inputs:
+      product:
+        - row_id: natural_silk_yarn_input
+          role: "Natural silk filament yarn input"
+          name: "Natural Silk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eea5e113-2fbc-4fde-ac38-b938654f382c"
+          property_unit: "Mass / kg"
+          description: "Record natural silk yarn received for the batch as a distinct product input. Do not combine it with yarn spun from silk waste."
+          amount:
+            expression: "measured conditioned mass issued to the foreground batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_materials
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: spun_silk_waste_yarn_input
+          role: "Spun silk-waste yarn input"
+          name: "Spun Silk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6c639604-29e8-44b6-be18-4e0ad97fdef8"
+          property_unit: "Mass / kg"
+          description: "Record yarn spun from silk waste separately when used in the batch. Do not combine it with natural silk filament yarn."
+          amount:
+            expression: "measured conditioned mass issued to the foreground batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_materials
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: weaving_electricity_input
+          role: "Weaving electricity input"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed by warping, sizing equipment when present, looms, inspection, and directly associated material handling within this process."
+          amount:
+            expression: "submetered electricity or an allocation from a reconciled site meter using recorded machine-hours and rated or measured demand"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_energy
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: pva_sizing_agent_input
+          role: "Polyvinyl alcohol sizing-agent input"
+          name: "Polyvinyl alcohol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cea707dd-98a3-451d-bc43-2dcc145091e9"
+          property_unit: "Mass / kg"
+          description: "Record polyvinyl alcohol only when it is actually applied to warp yarn at the reporting mill. Other sizing substances shall be additional, separately identified atomic product-flow rows in the foreground package."
+          amount:
+            expression: "weighed issue or supplier-delivery mass minus reconciled closing stock for the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_chemicals
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_process_water_input
+          role: "Sizing-liquor process-water input"
+          name: "Process water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "68ac99df-f4b9-43b9-8da3-661c7d51f356"
+          property_unit: "Mass / kg"
+          description: "Record process water only when sizing liquor is prepared or sizing equipment is cleaned within this process."
+          amount:
+            expression: "metered or batch-tank water mass attributable to sizing and associated cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_water
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: loom_lubricating_oil_input
+          role: "Loom lubricating-oil input"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Record fresh lubricating oil added to looms and directly associated equipment. Keep recovered oil and waste oil as separate outputs when they cross the boundary."
+          amount:
+            expression: "measured additions adjusted for opening and closing stock over the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_chemicals
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: woven_silk_fabric_output
+          role: "Woven silk fabric output"
+          name: "Woven fabrics of silk or of silk waste"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f7cf0661-025b-47cc-b5e2-d44b43e07e6b"
+          property_unit: "Mass / kg"
+          description: "Record the measured saleable fabric output when warp_weave is the last foreground process. When integrated wet processing follows, treat this flow as an internal transfer and use finished_woven_silk_fabric_output as the reference-flow link."
+          amount:
+            expression: "measured conditioned mass accepted as saleable output after inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_outputs
+              source_ids:
+                - unsd-cpc-3-0
+            ranges: []
+      waste:
+        - row_id: silk_waste_output
+          role: "Silk yarn and fabric waste output"
+          name: "Silk waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "690d2d6b-d573-4ab5-9e50-742a2ee12275"
+          property_unit: "Mass / kg"
+          description: "Record loom waste, damaged yarn, and rejected silk fabric that leave the foreground process as one silk-waste stream only when they share the same physical flow and destination record."
+          amount:
+            expression: "measured mass transferred to the recorded recovery, treatment, or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable woven silk fabric from warp_weave"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_warp_weave_outputs
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+  - id: wet_processing
+    label: "Silk pretreatment, dyeing, printing, and finishing"
+    inputs:
+      product:
+        - row_id: woven_silk_fabric_wet_input
+          role: "Woven silk fabric entering wet processing"
+          name: "Woven fabrics of silk or of silk waste"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f7cf0661-025b-47cc-b5e2-d44b43e07e6b"
+          property_unit: "Mass / kg"
+          description: "Record purchased woven silk fabric as an input; for an integrated site, identify the same amount as an internal transfer from warp_weave and do not count it again as a purchased upstream burden."
+          amount:
+            expression: "measured conditioned fabric mass charged to wet processing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable finished woven silk fabric from wet_processing"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_materials
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: wet_process_water_input
+          role: "Wet-process water input"
+          name: "Process water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "68ac99df-f4b9-43b9-8da3-661c7d51f356"
+          property_unit: "Mass / kg"
+          description: "Record process water entering silk pretreatment, dyeing, printing, finishing, washing, rinsing, and equipment cleaning when those operations occur on site."
+          amount:
+            expression: "metered water mass, segregated to the wet-processing process where measurements permit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable finished woven silk fabric from wet_processing"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_water_wastewater
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: wet_process_electricity_input
+          role: "Wet-processing electricity input"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by wet-processing equipment, pumps, controls, mechanical dewatering, drying, and directly associated treatment equipment."
+          amount:
+            expression: "submetered electricity or an allocation from a reconciled site meter using recorded equipment activity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable finished woven silk fabric from wet_processing"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_energy
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: wet_process_steam_input
+          role: "Wet-processing steam input"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record purchased or separately metered steam delivered to silk wet processing. Do not combine steam with electricity, direct fuel, or purchased heat."
+          amount:
+            expression: "metered steam mass or a supplier invoice reconciled to the wet-processing reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable finished woven silk fabric from wet_processing"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_energy
+              source_ids:
+                - jrc-textiles-bref-2023
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_woven_silk_fabric_output
+          role: "Finished woven silk fabric output"
+          name: "Woven fabrics of silk or of silk waste"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f7cf0661-025b-47cc-b5e2-d44b43e07e6b"
+          property_unit: "Mass / kg"
+          description: "Record the measured saleable output after the declared wet-processing route and final inspection."
+          amount:
+            expression: "measured conditioned mass accepted as saleable finished output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_outputs
+              source_ids:
+                - unsd-cpc-3-0
+            ranges: []
+      waste:
+        - row_id: textile_wet_processing_wastewater_output
+          role: "Textile wet-processing wastewater output"
+          name: "Wastewater, textile wet processing, to water"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a60031a7-ea29-49ef-b578-90de910fcf8e"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving the wet-processing boundary to on-site treatment, off-site treatment, or direct discharge. Destination and treatment status are mandatory qualifiers."
+          amount:
+            expression: "metered wastewater mass at the transfer or discharge point"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable finished woven silk fabric from wet_processing"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_water_wastewater
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "foreground_processes"
+    rule: "Avoid allocation by separately metering warping/weaving and wet-processing operations and by treating integrated intermediate fabric as an internal transfer."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared_site_utilities"
+    rule: "Allocate a shared meter only with a documented causal parameter such as measured operating time and demand, steam enthalpy and mass, or metered water use; disclose the parameter and reconciliation."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+  - rule_id: allocation_recovered_material
+    applies_to: "recovered_silk_and_sizing_material"
+    rule: "Report recovered silk, sizing material, and other recovered outputs separately. Do not subtract them from gross inputs or assign an avoided burden unless the downstream study declares and justifies that allocation method."
+    source_ids:
+      - iso-14044-2006
+      - eu-textiles-bat-2022
+  - rule_id: allocation_unavoidable
+    applies_to: "residual_multioutput_process"
+    rule: "If subdivision or a physical causal relation is not practicable, disclose the selected allocation basis, affected flows, and sensitivity; this PCR supplies no default economic factor."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_warp_weave_materials
+      process_id: "warp_weave"
+      flow_role: "silk yarn inputs"
+      record_type: "Scale, issue, and stock records"
+      raw_fields: "batch_id; yarn_type; supplier; yarn_lot; opening_stock; issued_mass; return_mass; closing_stock; moisture_condition"
+      collection_method: "Reconciled calibrated-scale and inventory records"
+      unit: "kg"
+      frequency: "Each batch, reconciled monthly"
+      temporal_coverage: "Same period as output"
+      site_scope: "All in-scope yarn stores and looms"
+      aggregation_rule: "Sum net issued mass by yarn type and batch, then normalize to saleable output"
+      quality_evidence: "Scale calibration; lot trace; stock reconciliation"
+    - protocol_id: cp_warp_weave_energy
+      process_id: "warp_weave"
+      flow_role: "electricity input"
+      record_type: "Meter and equipment-activity records"
+      raw_fields: "meter_id; start_reading; end_reading; machine_id; operating_hours; measured_or_rated_demand; batch_id"
+      collection_method: "Process submeter; otherwise reconciled site meter with documented causal allocation"
+      unit: "kWh"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Same period as output"
+      site_scope: "Warping, sizing, looms, inspection, and associated handling"
+      aggregation_rule: "Sum metered kWh or allocated reconciled kWh and convert to MJ"
+      quality_evidence: "Meter calibration; site-meter reconciliation; allocation worksheet"
+    - protocol_id: cp_warp_weave_chemicals
+      process_id: "warp_weave"
+      flow_role: "PVA sizing agent and lubricating oil inputs"
+      record_type: "Weighing, issue, purchase, and stock records"
+      raw_fields: "product_name; supplier; product_id; CAS_when_available; lot; issued_mass; returned_mass; opening_stock; closing_stock; process_step"
+      collection_method: "Reconciled issue and stock records; every chemical product remains a separate row"
+      unit: "kg"
+      frequency: "Each issue, reconciled monthly"
+      temporal_coverage: "Same period as output"
+      site_scope: "Sizing and weaving equipment"
+      aggregation_rule: "Sum net consumed mass for each identified product; never aggregate unlike chemicals"
+      quality_evidence: "Invoice or batch sheet; product specification; stock reconciliation"
+    - protocol_id: cp_warp_weave_water
+      process_id: "warp_weave"
+      flow_role: "sizing-liquor process water"
+      record_type: "Meter or batch-tank records"
+      raw_fields: "meter_id; volume; density; temperature; batch_id; use_step"
+      collection_method: "Metered volume converted with stream-specific density, or direct mass measurement"
+      unit: "kg"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Same period as output"
+      site_scope: "Sizing preparation and equipment cleaning"
+      aggregation_rule: "Sum water mass attributable to the process"
+      quality_evidence: "Meter calibration; tank-volume check; density record"
+    - protocol_id: cp_warp_weave_outputs
+      process_id: "warp_weave"
+      flow_role: "saleable fabric and silk waste outputs"
+      record_type: "Scale, inspection, and transfer records"
+      raw_fields: "batch_id; output_mass; rejected_mass; waste_mass; moisture_condition; grade; destination"
+      collection_method: "Calibrated scale linked to inspection and destination records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same period as inputs"
+      site_scope: "All in-scope looms and inspection points"
+      aggregation_rule: "Sum saleable output and each separately transferred waste stream"
+      quality_evidence: "Scale calibration; inspection record; waste transfer note"
+    - protocol_id: cp_wet_materials
+      process_id: "wet_processing"
+      flow_role: "woven silk fabric input"
+      record_type: "Charge and batch records"
+      raw_fields: "batch_id; source_process_or_supplier; fabric_mass; moisture_condition; finish_state_in; internal_transfer_flag"
+      collection_method: "Calibrated scale and batch charge record"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same period as wet output"
+      site_scope: "All in-scope wet-processing lines"
+      aggregation_rule: "Sum charged fabric mass, separating purchased and internal transfers"
+      quality_evidence: "Scale calibration; batch trace; supplier or internal-transfer record"
+    - protocol_id: cp_wet_energy
+      process_id: "wet_processing"
+      flow_role: "electricity and steam inputs"
+      record_type: "Utility meters and supplier records"
+      raw_fields: "utility_type; meter_id; start_reading; end_reading; steam_mass; electricity_kWh; batch_id; allocation_parameter"
+      collection_method: "Process meters; otherwise reconciled supplier/site meters with documented causal allocation"
+      unit: "kg steam; kWh electricity"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Same period as wet output"
+      site_scope: "Pretreatment, dyeing, printing, finishing, drying, and associated treatment"
+      aggregation_rule: "Sum each utility separately and normalize to saleable output"
+      quality_evidence: "Meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_wet_water_wastewater
+      process_id: "wet_processing"
+      flow_role: "process-water input and wastewater output"
+      record_type: "Water and effluent meters, discharge logs, and laboratory records"
+      raw_fields: "inlet_volume; inlet_density; effluent_volume; effluent_density; pH; temperature; destination; treatment_status; sampling_time; batch_id"
+      collection_method: "Key-location meters and relevant wastewater monitoring"
+      unit: "kg"
+      frequency: "Each batch or meter interval; wastewater parameters at permit or BAT-relevant frequency"
+      temporal_coverage: "Same period as wet output"
+      site_scope: "All in-scope wet lines and discharge or transfer points"
+      aggregation_rule: "Convert each stream to mass with documented density; report inflow and each outflow separately"
+      quality_evidence: "Meter calibration; sampling record; laboratory QA/QC; water balance"
+    - protocol_id: cp_wet_outputs
+      process_id: "wet_processing"
+      flow_role: "finished fabric output"
+      record_type: "Scale and final-inspection records"
+      raw_fields: "batch_id; finished_mass; moisture_condition; finish_state; dye_or_print_status; quality_grade; rejected_mass"
+      collection_method: "Calibrated scale linked to final inspection"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same period as wet inputs"
+      site_scope: "Final wet-process and inspection points"
+      aggregation_rule: "Sum saleable finished mass by declared product specification"
+      quality_evidence: "Scale calibration; final-inspection record; batch release"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide each reporting-period exchange by the saleable mass linked to the selected reference-flow output; internal transfers cancel only within the same integrated package."
+      inputs:
+        - "exchange amount"
+        - "saleable output mass"
+        - "route identifier"
+      output: "exchange per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_electricity_mj
+      applies_to: "electricity rows"
+      rule: "electricity_MJ = metered_electricity_kWh x 3.6"
+      inputs:
+        - "reconciled metered kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_process_mass_balance
+      applies_to: "each foreground process"
+      rule: "imbalance = mass inputs - saleable product - separately identified waste and other outputs - closing inventory change; retain the signed result and explanation."
+      inputs:
+        - "conditioned input masses"
+        - "output masses"
+        - "inventory change"
+      output: "process mass-balance record"
+      source_ids:
+        - eu-textiles-bat-2022
+    - id: calc_route_yield
+      applies_to: "warp_weave and wet_processing"
+      rule: "route_yield = saleable conditioned output mass / conditioned material input mass; calculate separately for each process and declared moisture basis."
+      inputs:
+        - "conditioned material input"
+        - "conditioned saleable output"
+      output: "process yield"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product, yarn, chemical, waste, and utility flows"
+      requirement: "Retain supplier name, product or stream identity, lot or meter reference, and the exact Tiangong UUID when resolved; never substitute a collection label for one exchange."
+      evidence: "Supplier specification; batch record; meter or waste-transfer record; Tiangong identity reference"
+    - id: dq_route
+      applies_to: "foreground package"
+      requirement: "Identify every included unit operation and whether wet processing is integrated, purchased, or absent."
+      evidence: "Process flow sheet; batch routing; site boundary diagram"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use records from one declared, representative period and disclose shutdowns, abnormal production, rework, and stock changes."
+      evidence: "Dated meter, production, stock, and maintenance records"
+    - id: dq_completeness
+      applies_to: "chemicals, water, energy, wastes, wastewater, and emissions"
+      requirement: "Reconcile annual and process-level input/output inventories. Add every actually consumed chemical, fuel, packaging component, waste, and direct emission as a separate atomic exchange even when this minimum inventory does not enumerate it."
+      evidence: "Input/output inventory; invoices; chemical ledger; waste log; emissions and effluent monitoring"
+    - id: dq_mass_balance
+      applies_to: "warp_weave and wet_processing"
+      requirement: "Reconcile conditioned material input, saleable output, wastes, retained inventory, and measured losses; document every material residual."
+      evidence: "Signed mass-balance worksheet and investigation note"
+    - id: dq_wastewater
+      applies_to: "wet_processing"
+      requirement: "Record wastewater flow, destination, treatment status, and relevant monitored parameters at the actual transfer or discharge point."
+      evidence: "Meter and sampling logs; laboratory QA/QC; treatment or discharge record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "The reference product UUID, CPC 26510 identity, Mass property, Units of mass group, kg unit, and all required qualifiers shall be present and mutually consistent."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_bilingual_inventory
+    applies_to: "bilingual_markdown"
+    rule: "English and Chinese process ids, directions, flow types, row ids, row order, selected UUIDs, controlled tokens, and rule-id order shall match exactly."
+    source_ids: []
+  - rule_id: validate_route_completeness
+    applies_to: "foreground_processes"
+    rule: "warp_weave is mandatory. Include wet_processing only when performed or claimed, and then include its water, electricity, steam when used, each actual chemical, wastewater, waste, and direct-emission exchange separately."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-textiles-bat-2022
+  - rule_id: validate_atomic_flows
+    applies_to: "process_inventory"
+    rule: "Reject any card whose selected flow is a collection, selector, combined utility, combined chemical, combined waste, or unresolved placeholder rather than one atomic exchange."
+    source_ids: []
+  - rule_id: validate_internal_transfer
+    applies_to: "integrated_route"
+    rule: "The woven-fabric transfer between warp_weave and wet_processing shall be internal and counted once; a purchased fabric input shall carry a separate upstream dataset."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_mass_and_utility_reconciliation
+    applies_to: "reporting_period"
+    rule: "Reconcile material mass, electricity, water, steam, chemical issues, waste, and wastewater to the same production period and explain residuals or shared-meter allocations."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_no_unlabelled_estimates
+    applies_to: "amounts"
+    rule: "Reject AI-generated or undocumented numerical ranges. Amounts shall come from foreground records, explicit calculations from those records, or cited external evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate production dataset for woven silk fabric"
+  downstream_use: "secondary_dataset; background_dataset when geography, technology, yarn route, finish state, and quality disclosures fit the downstream study"
+  allowed_use: "Foreground data-package construction and downstream process or lifecyclemodel projection for the declared fabric, route, site, and period"
+  excluded_use: "Garments, knitted or special fabrics, undisclosed fibre blends, cradle-to-gate claims without upstream yarn data, wet-finished claims when wet processing is omitted, or geography/technology extrapolation without justification"
+  required_metadata: "PCR id; CPC reference; product UUID; yarn origin and shares; construction and areal mass; finish state; moisture condition; geography; technology; site boundary; reporting period; allocation; upstream dataset references; data quality statement"
+  required_quality_disclosure: "Metering and scale coverage; mass-balance residual; shared-utility allocation; chemical-ledger completeness; wastewater destination and monitoring; unresolved identities; missing upstream data; abnormal operations"
+  update_trigger: "Material change in yarn route, fibre share, loom or sizing technology, wet-processing recipe, energy or water supply, wastewater treatment, allocation, site boundary, or product specification"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 Explanatory Notes, subclass 26510, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
+    used_for: "Product-category scope and classification identity"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Textiles Industry, 2023. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf (retrieved 2026-08-12)"
+    used_for: "Silk characteristics; warping, sizing, weaving, silk pretreatment and dyeing process decomposition; utility and pollution pathways"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, 2022. https://eur-lex.europa.eu/eli/dec_impl/2022/2508/oj (retrieved 2026-08-12)"
+    used_for: "Input/output inventory, water and energy monitoring, chemicals, waste, wastewater, and process-level data requirements"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines, confirmed 2022. https://www.iso.org/standard/38498.html (retrieved 2026-08-12)"
+    used_for: "LCI consistency, allocation, reporting, and interpretation framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b1ac6cb1b5513763c71c21a717e9a295cd01b1c1473aac1236f95bc044b90923"
+  generated_content_sha256: "sha256:21393619bb3730c469cdc162d0a4f0a187a212a0dbccd3459307041ab51964b6"

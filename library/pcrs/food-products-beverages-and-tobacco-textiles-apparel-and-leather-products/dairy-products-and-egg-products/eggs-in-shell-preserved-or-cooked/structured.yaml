@@ -1,10 +1,1876 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22300"
-  title: "Eggs, in shell, preserved or cooked"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.eggs-in-shell-preserved-or-cooked"
+  classification_refs: "CPC 3.0: 22300, Eggs, in shell, preserved or cooked"
+  covered_products: "Bird eggs retaining the shell after in-shell cooking, validated in-shell pasteurization, food-grade oil coating, or declared alkaline/sodium-silicate preservation"
+  excluded_products: "Fresh untreated eggs; hatching eggs; eggs not in shell; peeled cooked eggs; liquid, frozen, concentrated, or dried egg products; foods formulated from egg contents"
+  representative_product: "Marketable preserved or cooked chicken eggs retaining an intact shell"
+  production_route: "Receipt and grading; dry cleaning or controlled washing/disinfection when applicable; one declared preservation, pasteurization, or cooking route; cooling when required; packaging and storage"
+  market_state: "Packaged at the processing-facility gate under the declared ambient, chilled, or other validated storage condition"
+functional_unit:
+  what: "Supply of preserved or cooked edible bird eggs retaining their shell"
+  how_much: "1 kg net mass of marketable eggs in shell, excluding transport and sales packaging"
+  how_well: "Conforming to the declared species, treatment route and validated safety target, with declared shell integrity, grade, package format, and storage condition"
+  how_long_or_cycle: "One processing lot delivered at the processing-facility gate; shelf life is declared but no use duration is credited"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_steps
+      applies_to: "Foreground processing"
+      rule: "Include receiving and grading, applicable shell cleaning, the declared cooking/pasteurization/preservation treatment, required cooling, packaging, and storage. Record excluded route steps as not applicable with the reason."
+      source_ids:
+        - codex-cxc-15-1976
+        - shenga-et-al-2010-in-shell-pasteurization
+    - rule_id: boundary_upstream_eggs
+      applies_to: "Untreated shell-egg input"
+      rule: "Link a supplier-specific or representative upstream dataset for untreated eggs in shell; do not reproduce farm production inside this foreground processing dataset."
+      source_ids:
+        - unsd-cpc-22300
+    - rule_id: boundary_downstream
+      applies_to: "Facility-gate output"
+      rule: "Exclude retail, consumer cooking, food-service use, and packaging end of life unless the study explicitly expands the boundary and reports those additions separately."
+      source_ids:
+        - unsd-cpc-22300
+    - rule_id: boundary_route_separation
+      applies_to: "Multiple treatment routes"
+      rule: "Subdivide separately metered cooking, pasteurization, oil-coating, and alkaline/silicate-preservation routes. Do not average routes unless production shares and route-specific inventories are retained."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_waste_emissions
+      applies_to: "Foreground losses and releases"
+      rule: "Include broken egg, loose eggshell, wastewater, sludge, packaging scrap, refrigerant loss, and every measured direct combustion or treatment emission as separate exchanges."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Untreated edible eggs in shell received at the processing facility, with supplier, species, laying date or age information where available, lot mass, shell condition, and incoming storage condition declared"
+  starting_condition_role: "Upstream product input to foreground preservation or cooking"
+  product_classification_scope: "Eggs that remain in shell and become preserved or cooked product; fresh eggs and eggs not in shell are outside this PCR"
+  recursive_input_rule: "If preserved or cooked eggs in shell are used as an input to another in-scope step, record the input once at receipt and link its upstream dataset; do not recursively recreate its earlier preservation or cooking inventory"
+  upstream_dataset_requirement: "Use supplier-specific untreated-shell-egg data when available; otherwise use a geographically and technologically representative upstream dataset and disclose the substitution"
+  disclosure: "Declare species, source geography, incoming grade/condition, treatment route, route share, treatment validation basis, cleaning route, package format, storage condition, losses, and any excluded or shared operation"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Eggs, in shell, preserved or cooked"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "bird species"
+    - "egg grade or size class"
+    - "treatment route"
+    - "treatment time-temperature or other validated process specification"
+    - "pathogen or preservation target"
+    - "shell retention and integrity criterion"
+    - "package format"
+    - "storage temperature and humidity condition"
+    - "declared shelf life"
+    - "facility-gate geography"
+    - "net product mass basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg net mass of conforming eggs in shell at the facility gate. Exclude package mass and report it in its own inventory rows."
+  - id: count_to_mass
+    applies_to: "Records available only as egg counts or dozens"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts using measured lot-specific net egg mass. Do not use a generic egg mass when a lot mass is available."
+  - id: utility_units
+    applies_to: "Electricity, steam, purchased heat, and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered unit, document the lower or higher heating-value convention for fuels, and convert consistently before normalization."
+  - id: water_mass_volume
+    applies_to: "Process and cooling water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Use measured mass or volume. If converted, record the density and temperature assumption used."
+process_map:
+  - id: egg_receiving_grading
+    name: "Shell-egg receiving, candling, sorting, and grading"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground receipt and quality segregation"
+    quantitative_reference: "kg untreated eggs received and kg accepted eggs"
+  - id: shell_cleaning
+    name: "Dry cleaning or controlled washing, disinfection, drying, and optional oiling"
+    inclusion: "conditional"
+    inclusion_condition: "Include the actual permitted cleaning route; explicitly record no cleaning when prohibited or unnecessary"
+    role: "Foreground shell preparation"
+    quantitative_reference: "kg eggs entering cleaning"
+  - id: in_shell_treatment
+    name: "In-shell cooking, pasteurization, or preservation"
+    inclusion: "required"
+    inclusion_condition: "Include exactly the declared product route; subdivide simultaneous routes"
+    role: "Foreground product transformation"
+    quantitative_reference: "kg treated marketable eggs"
+  - id: post_treatment_cooling
+    name: "Cooling after heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when treatment or product specification requires cooling"
+    role: "Foreground conditioning"
+    quantitative_reference: "kg hot treated eggs entering cooling"
+  - id: packing_and_storage
+    name: "Packaging and pre-dispatch storage"
+    inclusion: "required"
+    inclusion_condition: "Always included; refrigeration inputs apply only when installed and used"
+    role: "Foreground packing and storage"
+    quantitative_reference: "kg final marketable eggs in shell"
+process_inventory:
+  - id: egg_receiving_grading
+    label: "Shell-egg receiving, candling, sorting, and grading"
+    inputs:
+      product:
+        - row_id: raw_shell_eggs_receipt
+          role: "Untreated shell eggs received"
+          name: "Untreated edible bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of edible untreated eggs in shell crossing the facility boundary."
+          amount:
+            expression: "Measured lot mass received, excluding inbound packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable eggs in shell"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_grading_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Electricity for receiving and grading"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by conveyors, candling, crack detection, grading, and associated controls."
+          amount:
+            expression: "Metered electricity assigned to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable eggs in shell"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: graded_shell_eggs
+          role: "Accepted graded shell eggs"
+          name: "Accepted graded bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass accepted for cleaning or direct treatment after sorting and grading."
+          amount:
+            expression: "Measured accepted mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per receiving process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_grading_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+      waste:
+        - row_id: broken_egg_waste_grading
+          role: "Broken or leaking egg waste from grading"
+          name: "Broken or leaking bird egg waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected eggs whose contents remain with the broken or leaking egg waste stream."
+          amount:
+            expression: "Measured rejected mass sent to the declared waste treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per receiving process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_grading_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: eggshell_waste_grading
+          role: "Loose eggshell waste from grading"
+          name: "Bird eggshell waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record shell fragments collected separately from broken egg contents."
+          amount:
+            expression: "Measured separately collected shell-fragment mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per receiving process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_grading_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: shell_cleaning
+    label: "Dry cleaning or controlled washing, disinfection, drying, and optional oiling"
+    inputs:
+      product:
+        - row_id: graded_eggs_cleaning
+          role: "Graded shell eggs entering cleaning"
+          name: "Accepted graded bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted eggs entering the declared dry or wet cleaning route."
+          amount:
+            expression: "Measured mass entering cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_material_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: cleaning_water
+          role: "Water for egg washing and rinsing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include only for a permitted wet-cleaning route; record make-up and rinse water crossing the process boundary."
+          amount:
+            expression: "Metered wash and rinse water input"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_material_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: cleaning_electricity
+          role: "Electricity for cleaning, brushing, pumping, and drying"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by dry-cleaning equipment or wet-washing, pumping, sanitising, and drying equipment."
+          amount:
+            expression: "Metered electricity assigned to cleaning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_steam
+          role: "Steam for wash-water heating"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include only when steam crosses the cleaning boundary for water heating."
+          amount:
+            expression: "Metered or calculated delivered steam energy assigned to cleaning"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide_detergent
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the facility formulation uses sodium hydroxide as the egg-compatible alkaline detergent."
+          amount:
+            expression: "Measured active sodium hydroxide charged to wash solution"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_material_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: sodium_hypochlorite_sanitizer
+          role: "Sodium hypochlorite sanitiser"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when sodium hypochlorite is the approved shell sanitiser used by the facility."
+          amount:
+            expression: "Measured active sodium hypochlorite charged to sanitising solution"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_material_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: food_grade_mineral_oil_cleaning
+          role: "Food-grade mineral oil after cleaning"
+          name: "Food-grade mineral oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when a food-grade mineral-oil coating is applied after dry cleaning or washing."
+          amount:
+            expression: "Measured oil make-up applied to eggs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_material_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaned_shell_eggs
+          role: "Cleaned shell eggs"
+          name: "Cleaned bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record eggs leaving cleaning after dry cleaning or washing, sanitising, drying, and optional oiling."
+          amount:
+            expression: "Measured accepted mass leaving cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_output_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Egg-wash wastewater"
+          name: "Egg-wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater transferred to onsite or offsite treatment; do not combine it with sludge."
+          amount:
+            expression: "Metered wastewater leaving the cleaning process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_output_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_sludge
+          role: "Egg-wash sludge"
+          name: "Egg-wash sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record settled or filtered solids removed from egg-wash water as a separate waste stream."
+          amount:
+            expression: "Measured wet mass, with dry-matter fraction disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_output_records
+              source_ids: []
+            ranges: []
+        - row_id: broken_egg_waste_cleaning
+          role: "Broken egg waste from cleaning"
+          name: "Broken bird egg waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record eggs broken during cleaning whose contents remain in the rejected waste stream."
+          amount:
+            expression: "Measured rejected mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_output_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: eggshell_waste_cleaning
+          role: "Loose eggshell waste from cleaning"
+          name: "Bird eggshell waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected shell fragments from cleaning breakage."
+          amount:
+            expression: "Measured shell-fragment mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cleaning process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_output_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: in_shell_treatment
+    label: "In-shell cooking, pasteurization, or preservation"
+    inputs:
+      product:
+        - row_id: cleaned_eggs_treatment
+          role: "Shell eggs entering treatment"
+          name: "Prepared bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record eggs entering the declared in-shell cooking, pasteurization, or preservation route."
+          amount:
+            expression: "Measured mass entering the treatment route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_recipe_records
+              source_ids:
+                - codex-cxc-15-1976
+                - shenga-et-al-2010-in-shell-pasteurization
+            ranges: []
+        - row_id: treatment_water
+          role: "Water for in-shell thermal treatment"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include water charged to a hot-water cooking or moist-heat pasteurization system."
+          amount:
+            expression: "Metered make-up water charged to treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_utility_records
+              source_ids:
+                - shenga-et-al-2010-in-shell-pasteurization
+            ranges: []
+        - row_id: treatment_electricity
+          role: "Electricity for treatment equipment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by heaters, microwave or radio-frequency equipment, pumps, conveyors, mixers, and controls."
+          amount:
+            expression: "Metered electricity assigned to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_utility_records
+              source_ids:
+                - chiozzi-et-al-2022-thermal-nonthermal
+            ranges: []
+        - row_id: treatment_steam
+          role: "Steam for thermal treatment"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include delivered steam only when it crosses the treatment boundary."
+          amount:
+            expression: "Metered or calculated delivered steam energy"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_utility_records
+              source_ids:
+                - chiozzi-et-al-2022-thermal-nonthermal
+            ranges: []
+        - row_id: treatment_natural_gas
+          role: "Natural gas for onsite treatment heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include natural gas combusted onsite for treatment heat; do not combine it with other fuels."
+          amount:
+            expression: "Metered natural-gas consumption on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_utility_records
+              source_ids:
+                - chiozzi-et-al-2022-thermal-nonthermal
+            ranges: []
+        - row_id: treatment_lpg
+          role: "Liquefied petroleum gas for onsite treatment heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include liquefied petroleum gas combusted onsite; do not combine it with natural gas."
+          amount:
+            expression: "Metered LPG consumption on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_silicate_preservative
+          role: "Sodium silicate for shell preservation"
+          name: "Sodium silicate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a declared sodium-silicate preservation bath or coating route."
+          amount:
+            expression: "Measured sodium silicate charged, expressed on the declared commercial-product or active-mass basis"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_recipe_records
+              source_ids: []
+            ranges: []
+        - row_id: calcium_hydroxide_preservative
+          role: "Calcium hydroxide for alkaline preservation"
+          name: "Calcium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when calcium hydroxide is charged to the declared alkaline preservation recipe."
+          amount:
+            expression: "Measured calcium hydroxide charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_recipe_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_chloride_preservative
+          role: "Sodium chloride for preservation"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when sodium chloride is charged to the declared preservation recipe."
+          amount:
+            expression: "Measured sodium chloride charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_recipe_records
+              source_ids: []
+            ranges: []
+        - row_id: food_grade_mineral_oil_preservative
+          role: "Food-grade mineral oil for preservation"
+          name: "Food-grade mineral oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when oil coating is the declared preservation treatment rather than a cleaning after-step."
+          amount:
+            expression: "Measured mineral-oil make-up applied"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_recipe_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_shell_eggs
+          role: "Treated eggs retaining the shell"
+          name: "Treated bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming eggs leaving the declared treatment with their shell retained."
+          amount:
+            expression: "Measured conforming treated mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_output_records
+              source_ids:
+                - codex-cxc-15-1976
+                - shenga-et-al-2010-in-shell-pasteurization
+            ranges: []
+      waste:
+        - row_id: treatment_wastewater
+          role: "Treatment wastewater"
+          name: "In-shell egg treatment wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record spent thermal-treatment water or aqueous preservation liquor transferred for treatment."
+          amount:
+            expression: "Metered wastewater leaving treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_output_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_sludge
+          role: "Treatment sludge"
+          name: "In-shell egg treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record settled solids from a preservation bath or treatment-water system separately from wastewater."
+          amount:
+            expression: "Measured wet mass, with dry-matter fraction disclosed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_output_records
+              source_ids: []
+            ranges: []
+        - row_id: broken_egg_waste_treatment
+          role: "Broken egg waste from treatment"
+          name: "Broken treated bird egg waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record nonconforming eggs broken during treatment whose contents remain with the waste."
+          amount:
+            expression: "Measured rejected mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_output_records
+              source_ids: []
+            ranges: []
+        - row_id: eggshell_waste_treatment
+          role: "Loose eggshell waste from treatment"
+          name: "Bird eggshell waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected shell fragments from treatment breakage."
+          amount:
+            expression: "Measured shell-fragment mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_output_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_air
+          role: "Fossil carbon dioxide from onsite fuel combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only for onsite natural-gas or LPG combustion and exclude upstream fuel-production emissions."
+          amount:
+            expression: "Measured stack release or calculated from metered fuel and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: carbon_monoxide_air
+          role: "Carbon monoxide from onsite fuel combustion"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include measured or factor-calculated carbon monoxide as its own direct emission."
+          amount:
+            expression: "Measured stack release or calculated from metered fuel and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_oxides_air
+          role: "Nitrogen oxides from onsite fuel combustion"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include measured or factor-calculated nitrogen oxides as its own direct emission."
+          amount:
+            expression: "Measured stack release or calculated from metered fuel and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: fossil_methane_air
+          role: "Fossil methane from onsite fuel combustion"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include measured or factor-calculated unburned fossil methane as its own direct emission."
+          amount:
+            expression: "Measured stack release or calculated from metered fuel and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm25_air
+          role: "Fine particulate matter from onsite fuel combustion"
+          name: "Particulate matter, less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include measured or factor-calculated particulate matter at or below 2.5 micrometres as its own direct emission."
+          amount:
+            expression: "Measured stack release or calculated from metered fuel and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per treatment process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_emissions
+              source_ids: []
+            ranges: []
+  - id: post_treatment_cooling
+    label: "Cooling after heat treatment"
+    inputs:
+      product:
+        - row_id: hot_treated_shell_eggs
+          role: "Hot treated eggs entering cooling"
+          name: "Hot treated bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record heat-treated eggs entering the cooling operation."
+          amount:
+            expression: "Measured mass entering cooling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids: []
+            ranges: []
+        - row_id: cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Include water crossing the boundary in immersion, spray, or once-through cooling."
+          amount:
+            expression: "Metered make-up water supplied to cooling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids: []
+            ranges: []
+        - row_id: cooling_electricity
+          role: "Electricity for cooling"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by chillers, pumps, fans, conveyors, and controls."
+          amount:
+            expression: "Metered electricity assigned to cooling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids: []
+            ranges: []
+        - row_id: ammonia_refrigerant_cooling
+          role: "Ammonia refrigerant make-up for cooling"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the cooling system uses R-717 ammonia."
+          amount:
+            expression: "Inventory-balance make-up assigned to cooling equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: hfc134a_refrigerant_cooling
+          role: "HFC-134a refrigerant make-up for cooling"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the cooling system uses HFC-134a."
+          amount:
+            expression: "Inventory-balance make-up assigned to cooling equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: r404a_refrigerant_cooling
+          role: "R-404A refrigerant make-up for cooling"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the cooling system uses the R-404A refrigerant blend."
+          amount:
+            expression: "Inventory-balance make-up assigned to cooling equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooled_shell_eggs
+          role: "Cooled treated eggs"
+          name: "Cooled treated bird eggs in shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming treated eggs leaving cooling at the declared temperature."
+          amount:
+            expression: "Measured mass leaving cooling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+      waste:
+        - row_id: cooling_wastewater
+          role: "Cooling wastewater"
+          name: "Egg-cooling wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record cooling water discharged to onsite or offsite treatment."
+          amount:
+            expression: "Metered wastewater leaving cooling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ammonia_air_cooling
+          role: "Ammonia refrigerant released during cooling"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only R-717 leakage assigned to cooling equipment."
+          amount:
+            expression: "Inventory-balance refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: hfc134a_air_cooling
+          role: "HFC-134a released during cooling"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only HFC-134a leakage assigned to cooling equipment."
+          amount:
+            expression: "Inventory-balance refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: r404a_air_cooling
+          role: "R-404A released during cooling"
+          name: "Refrigerant R-404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only R-404A blend leakage assigned to cooling equipment."
+          amount:
+            expression: "Inventory-balance refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per cooling process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_refrigerant_balance
+              source_ids: []
+            ranges: []
+  - id: packing_and_storage
+    label: "Packaging and pre-dispatch storage"
+    inputs:
+      product:
+        - row_id: cooled_eggs_packing
+          role: "Treated eggs entering packing"
+          name: "Treated bird eggs in shell ready for packing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record treated eggs entering packing, whether cooled or held under another validated condition."
+          amount:
+            expression: "Measured mass entering packing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+        - row_id: packing_electricity
+          role: "Electricity for packing"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by packing, coding, check-weighing, and conveying equipment."
+          amount:
+            expression: "Metered electricity assigned to packing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_electricity
+          role: "Electricity for pre-dispatch storage"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by the declared storage room, refrigeration, fans, lighting, and controls."
+          amount:
+            expression: "Metered storage electricity allocated by occupied capacity and storage time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_records
+              source_ids:
+                - codex-cxc-15-1976
+            ranges: []
+        - row_id: molded_pulp_tray
+          role: "Molded-pulp egg tray"
+          name: "Molded-pulp egg tray"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include the net mass of molded-pulp trays incorporated into the delivered package."
+          amount:
+            expression: "Count multiplied by supplier mass per tray, reconciled to purchase records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_fiberboard_box
+          role: "Corrugated-fiberboard shipping box"
+          name: "Corrugated fiberboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include the net mass of corrugated boxes incorporated into the delivered package."
+          amount:
+            expression: "Count multiplied by supplier mass per box, reconciled to purchase records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_records
+              source_ids: []
+            ranges: []
+        - row_id: pet_egg_carton
+          role: "PET egg carton"
+          name: "Polyethylene terephthalate egg carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a polyethylene-terephthalate carton format."
+          amount:
+            expression: "Count multiplied by supplier mass per carton, reconciled to purchase records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_overwrap
+          role: "Polyethylene overwrap film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when polyethylene film is applied to the finished package."
+          amount:
+            expression: "Issued film mass minus separately measured scrap"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_records
+              source_ids: []
+            ranges: []
+        - row_id: paper_label
+          role: "Paper package label"
+          name: "Paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include paper labels affixed to the delivered package."
+          amount:
+            expression: "Label count multiplied by supplier mass per label"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_material_records
+              source_ids: []
+            ranges: []
+        - row_id: acrylic_label_adhesive
+          role: "Water-based acrylic label adhesive"
+          name: "Water-based acrylic adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this adhesive is applied onsite to package labels."
+          amount:
+            expression: "Measured adhesive make-up consumed, with water content disclosed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_material_records
+              source_ids: []
+            ranges: []
+        - row_id: ammonia_refrigerant_storage
+          role: "Ammonia refrigerant make-up for storage"
+          name: "Ammonia, anhydrous"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when pre-dispatch storage uses R-717 ammonia."
+          amount:
+            expression: "Inventory-balance make-up assigned to storage refrigeration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: hfc134a_refrigerant_storage
+          role: "HFC-134a refrigerant make-up for storage"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when pre-dispatch storage uses HFC-134a."
+          amount:
+            expression: "Inventory-balance make-up assigned to storage refrigeration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: r404a_refrigerant_storage
+          role: "R-404A refrigerant make-up for storage"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when pre-dispatch storage uses the R-404A refrigerant blend."
+          amount:
+            expression: "Inventory-balance make-up assigned to storage refrigeration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Reference product"
+          name: "Eggs, in shell, preserved or cooked"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net marketable mass of preserved or cooked eggs retaining their shell at the facility gate."
+          amount:
+            expression: "1 kg reference product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - unsd-cpc-22300
+            ranges: []
+      waste:
+        - row_id: molded_pulp_waste
+          role: "Molded-pulp packaging scrap"
+          name: "Molded-pulp packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record offcuts and rejected molded-pulp trays separately."
+          amount:
+            expression: "Measured scrap mass sent to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_fiberboard_waste
+          role: "Corrugated-fiberboard packaging scrap"
+          name: "Corrugated fiberboard packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record corrugated box offcuts and rejects separately."
+          amount:
+            expression: "Measured scrap mass sent to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+        - row_id: pet_packaging_waste
+          role: "PET packaging scrap"
+          name: "Polyethylene terephthalate packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected PET cartons separately from other packaging scrap."
+          amount:
+            expression: "Measured scrap mass sent to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_film_waste
+          role: "Polyethylene film scrap"
+          name: "Polyethylene packaging film waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene film trim and rejects separately from PET and fibre packaging."
+          amount:
+            expression: "Measured scrap mass sent to the declared treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+        - row_id: broken_egg_waste_packing
+          role: "Broken egg waste from packing and storage"
+          name: "Broken treated bird egg waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged eggs whose contents remain with the rejected product."
+          amount:
+            expression: "Measured rejected mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+        - row_id: eggshell_waste_packing
+          role: "Loose eggshell waste from packing and storage"
+          name: "Bird eggshell waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected shell fragments from packing or storage breakage."
+          amount:
+            expression: "Measured shell-fragment mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per final product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_output_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ammonia_air_storage
+          role: "Ammonia refrigerant released during storage"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only R-717 leakage assigned to pre-dispatch storage."
+          amount:
+            expression: "Inventory-balance refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: hfc134a_air_storage
+          role: "HFC-134a released during storage"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only HFC-134a leakage assigned to pre-dispatch storage."
+          amount:
+            expression: "Inventory-balance refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: r404a_air_storage
+          role: "R-404A released during storage"
+          name: "Refrigerant R-404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only R-404A blend leakage assigned to pre-dispatch storage."
+          amount:
+            expression: "Inventory-balance refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per final product output"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigerant_balance
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared operations and multiple products"
+    rule: "First avoid allocation through process subdivision, route-specific metering, and separate lot records."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_direct_assignment
+    applies_to: "Cleaning, treatment, cooling, packaging, and storage"
+    rule: "Directly assign measured material, utility, waste, and emission records to the product route that caused them."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_storage
+    applies_to: "Shared chilled or ambient storage"
+    rule: "Allocate storage electricity and refrigerant loss using occupied capacity multiplied by verified storage time; disclose any alternative causal driver."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_waste_default
+    applies_to: "Broken egg, eggshell, sludge, and packaging scrap"
+    rule: "Treat the stream as waste at the point generated and include its treatment. If a stream is sold or intentionally produced as a co-product, document the changed status, subdivide where possible, and apply a justified physical or economic allocation consistently."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_no_avoided_burden
+    applies_to: "Recycling or valorisation claims"
+    rule: "Do not credit avoided products inside the foreground inventory unless the governing study method explicitly requires substitution and the substituted product, quality, and factor are documented."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receipt_grading_records
+      process_id: "egg_receiving_grading"
+      flow_role: "received, accepted, broken-egg, and shell-fragment mass"
+      record_type: "weighbridge, scale, grader, and rejection log"
+      raw_fields: "lot_id; species; supplier; incoming_condition; received_mass; accepted_mass; broken_egg_mass; shell_fragment_mass"
+      collection_method: "Calibrated weighing reconciled to lot and grader records"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative continuous production period"
+      site_scope: "all included receiving lines"
+      aggregation_rule: "sum by lot, then normalize to final conforming mass"
+      quality_evidence: "calibration records; lot reconciliation; rejection disposition"
+    - protocol_id: cp_receiving_electricity
+      process_id: "egg_receiving_grading"
+      flow_role: "electricity"
+      record_type: "submeter or equipment log"
+      raw_fields: "meter_start; meter_end; production_time; lot_id"
+      collection_method: "Submeter preferred; otherwise rated-load calculation with runtime"
+      unit: "kWh"
+      frequency: "each shift or lot"
+      temporal_coverage: "same period as production mass"
+      site_scope: "all included receiving/grading equipment"
+      aggregation_rule: "subtract idle baseline and allocate by processed mass"
+      quality_evidence: "meter calibration or equipment rating and runtime log"
+    - protocol_id: cp_cleaning_material_records
+      process_id: "shell_cleaning"
+      flow_role: "eggs, water, detergent, sanitiser, and oil"
+      record_type: "batch sheet, flow meter, dosing log, and scale"
+      raw_fields: "route; egg_mass_in; water_in; chemical_product_mass; active_fraction; oil_mass"
+      collection_method: "Meter or weigh each charged material; retain formulation and approval record"
+      unit: "kg or m3"
+      frequency: "each batch or shift"
+      temporal_coverage: "same period as cleaning output"
+      site_scope: "each cleaning line"
+      aggregation_rule: "sum actual route inputs and normalize to cleaned output"
+      quality_evidence: "meter calibration; supplier specification; dosing verification"
+    - protocol_id: cp_cleaning_utility_records
+      process_id: "shell_cleaning"
+      flow_role: "electricity and steam"
+      record_type: "utility submeter and steam log"
+      raw_fields: "electricity; steam_mass; pressure; temperature; condensate_return"
+      collection_method: "Meter utilities and calculate delivered steam energy from recorded state"
+      unit: "kWh or MJ"
+      frequency: "each shift"
+      temporal_coverage: "same period as cleaning output"
+      site_scope: "each cleaning line"
+      aggregation_rule: "subtract idle use and normalize to cleaned output"
+      quality_evidence: "utility invoices; meter calibration; steam-state record"
+    - protocol_id: cp_cleaning_output_records
+      process_id: "shell_cleaning"
+      flow_role: "cleaned eggs, wastewater, sludge, broken eggs, and shell fragments"
+      record_type: "scale, effluent meter, filter/sludge log, and rejection log"
+      raw_fields: "cleaned_mass; wastewater_volume; sludge_wet_mass; sludge_dry_fraction; broken_egg_mass; shell_mass"
+      collection_method: "Measure each output separately and retain treatment destination"
+      unit: "kg or m3"
+      frequency: "each batch or shift"
+      temporal_coverage: "same period as cleaning inputs"
+      site_scope: "each cleaning line"
+      aggregation_rule: "mass/volume totals normalized to cleaned output"
+      quality_evidence: "balance reconciliation; destination ticket; sampling record"
+    - protocol_id: cp_treatment_recipe_records
+      process_id: "in_shell_treatment"
+      flow_role: "eggs and preservation recipe inputs"
+      record_type: "treatment batch record and formulation sheet"
+      raw_fields: "route; egg_mass_in; chemical_product_mass; active_fraction; oil_mass; recipe_id"
+      collection_method: "Weigh each charge and link to the declared treatment route"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as treated output"
+      site_scope: "each treatment line"
+      aggregation_rule: "sum by route and normalize to treated output"
+      quality_evidence: "calibrated scales; approved recipe; lot traceability"
+    - protocol_id: cp_treatment_utility_records
+      process_id: "in_shell_treatment"
+      flow_role: "water, electricity, steam, natural gas, and LPG"
+      record_type: "flow meter, submeter, fuel meter, and batch controller"
+      raw_fields: "water; electricity; steam_mass; steam_state; natural_gas; lpg; heating_value_basis; route; batch_id"
+      collection_method: "Meter each utility and fuel separately"
+      unit: "m3, kWh, MJ, or fuel purchase unit"
+      frequency: "each batch or shift"
+      temporal_coverage: "same period as treated output"
+      site_scope: "each treatment line and heat source"
+      aggregation_rule: "convert consistently and normalize by route output"
+      quality_evidence: "meter calibration; invoice reconciliation; controller record"
+    - protocol_id: cp_treatment_output_records
+      process_id: "in_shell_treatment"
+      flow_role: "treated eggs, wastewater, sludge, broken eggs, and shell fragments"
+      record_type: "scale, effluent meter, sludge log, and rejection log"
+      raw_fields: "treated_mass; wastewater_volume; sludge_wet_mass; sludge_dry_fraction; broken_egg_mass; shell_mass"
+      collection_method: "Measure outputs separately and record destination"
+      unit: "kg or m3"
+      frequency: "each batch"
+      temporal_coverage: "same period as treatment inputs"
+      site_scope: "each treatment line"
+      aggregation_rule: "sum by route and normalize to treated output"
+      quality_evidence: "mass balance; treatment record; destination ticket"
+    - protocol_id: cp_direct_combustion_emissions
+      process_id: "in_shell_treatment"
+      flow_role: "direct combustion emissions"
+      record_type: "stack test or fuel-factor calculation"
+      raw_fields: "fuel_type; fuel_quantity; heating_value_basis; emission_factor; factor_source; measured_concentration; flue_gas_volume"
+      collection_method: "Prefer representative stack measurement; otherwise use documented fuel-specific factors"
+      unit: "kg"
+      frequency: "test campaign plus each production period"
+      temporal_coverage: "representative operating states"
+      site_scope: "each onsite combustor"
+      aggregation_rule: "calculate each pollutant separately and normalize to treatment output"
+      quality_evidence: "stack report or factor source; fuel-meter reconciliation"
+    - protocol_id: cp_cooling_records
+      process_id: "post_treatment_cooling"
+      flow_role: "eggs, water, electricity, wastewater, and outlet temperature"
+      record_type: "batch log, flow meter, submeter, and temperature recorder"
+      raw_fields: "egg_mass_in; egg_mass_out; water_in; wastewater_out; electricity; inlet_temperature; outlet_temperature; time"
+      collection_method: "Meter utilities and masses; continuously record critical time-temperature values"
+      unit: "kg, m3, kWh, °C, and time"
+      frequency: "each batch"
+      temporal_coverage: "all cooling batches in reporting period"
+      site_scope: "each cooling system"
+      aggregation_rule: "normalize to cooled output"
+      quality_evidence: "calibrated temperature recorder; meter calibration; batch release record"
+    - protocol_id: cp_cooling_refrigerant_balance
+      process_id: "post_treatment_cooling"
+      flow_role: "refrigerant make-up and release"
+      record_type: "refrigerant inventory and service log"
+      raw_fields: "refrigerant_identity; opening_charge; additions; recoveries; closing_charge; equipment_id; allocation_basis"
+      collection_method: "Annual or campaign mass balance by named refrigerant and equipment"
+      unit: "kg"
+      frequency: "each service event and reporting period"
+      temporal_coverage: "full reporting period"
+      site_scope: "cooling equipment only"
+      aggregation_rule: "loss = opening + additions - recoveries - closing; allocate by causal equipment use"
+      quality_evidence: "service invoices; recovery records; charge verification"
+    - protocol_id: cp_packaging_material_records
+      process_id: "packing_and_storage"
+      flow_role: "each packaging component"
+      record_type: "purchase, issue, bill-of-material, and supplier mass record"
+      raw_fields: "component_identity; count; unit_mass; issued_mass; returned_mass; scrap_mass"
+      collection_method: "Weigh or count each component separately and reconcile to inventory"
+      unit: "kg"
+      frequency: "each lot or shift"
+      temporal_coverage: "same period as final product"
+      site_scope: "all included packing lines"
+      aggregation_rule: "incorporated mass = issued - returned - scrap"
+      quality_evidence: "supplier specification; stock reconciliation; scale calibration"
+    - protocol_id: cp_packing_energy_records
+      process_id: "packing_and_storage"
+      flow_role: "packing electricity"
+      record_type: "submeter or equipment log"
+      raw_fields: "meter_start; meter_end; runtime; product_mass"
+      collection_method: "Submeter preferred; otherwise rated-load calculation"
+      unit: "kWh"
+      frequency: "each shift"
+      temporal_coverage: "same period as packed output"
+      site_scope: "included packing equipment"
+      aggregation_rule: "subtract idle baseline and normalize to packed output"
+      quality_evidence: "meter calibration or equipment rating and runtime"
+    - protocol_id: cp_storage_energy_records
+      process_id: "packing_and_storage"
+      flow_role: "storage electricity"
+      record_type: "room submeter and occupancy log"
+      raw_fields: "electricity; storage_time; occupied_capacity; product_mass; room_id"
+      collection_method: "Meter each storage room and record product occupancy-time"
+      unit: "kWh and kg·h"
+      frequency: "daily or shift"
+      temporal_coverage: "full declared storage period"
+      site_scope: "all included storage rooms"
+      aggregation_rule: "allocate by occupied capacity × verified time"
+      quality_evidence: "submeter calibration; inventory timestamps; room log"
+    - protocol_id: cp_storage_refrigerant_balance
+      process_id: "packing_and_storage"
+      flow_role: "refrigerant make-up and release"
+      record_type: "refrigerant inventory and service log"
+      raw_fields: "refrigerant_identity; opening_charge; additions; recoveries; closing_charge; equipment_id; allocation_basis"
+      collection_method: "Annual or campaign mass balance by named refrigerant and equipment"
+      unit: "kg"
+      frequency: "each service event and reporting period"
+      temporal_coverage: "full reporting period"
+      site_scope: "storage refrigeration only"
+      aggregation_rule: "loss = opening + additions - recoveries - closing; allocate by occupied capacity-time"
+      quality_evidence: "service invoices; recovery records; charge verification"
+    - protocol_id: cp_packing_output_records
+      process_id: "packing_and_storage"
+      flow_role: "final product, packaging scrap, broken eggs, and shell fragments"
+      record_type: "checkweigher, scrap scale, rejection log, and dispatch record"
+      raw_fields: "product_mass; package_mass; each_scrap_mass; broken_egg_mass; shell_mass; dispatch_time"
+      collection_method: "Measure every output stream separately and reconcile to packed input"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same period as packing inputs"
+      site_scope: "all included packing lines and storage rooms"
+      aggregation_rule: "normalize to final marketable product mass"
+      quality_evidence: "scale calibration; dispatch record; waste destination ticket"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory exchanges"
+      rule: "normalized exchange = period exchange ÷ net kg of conforming reference product"
+      inputs:
+        - "exchange record"
+        - "final product mass"
+      output: "exchange per 1 kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_count_mass
+      applies_to: "Egg-count records"
+      rule: "lot egg mass = measured sample or total lot net mass; use count only to reconcile, not as a generic mass factor"
+      inputs:
+        - count
+        - "measured lot mass"
+      output: "kg eggs"
+      source_ids: []
+    - id: calc_active_chemical
+      applies_to: "Sodium hydroxide, sodium hypochlorite, sodium silicate, and other formulated chemicals"
+      rule: "active mass = commercial product mass × supplier-declared active fraction; retain both commercial and active mass"
+      inputs:
+        - "product mass"
+        - "active fraction"
+      output: "kg active substance and kg commercial product"
+      source_ids: []
+    - id: calc_steam_energy
+      applies_to: "Steam inputs"
+      rule: "delivered heat = steam mass × difference between inlet steam enthalpy and returned condensate enthalpy; document state assumptions"
+      inputs:
+        - "steam mass"
+        - pressure
+        - temperature
+        - "condensate state"
+      output: "MJ delivered steam energy"
+      source_ids: []
+    - id: calc_storage_allocation
+      applies_to: "Shared storage electricity and refrigerant loss"
+      rule: "product share = product occupied capacity-time ÷ total occupied capacity-time"
+      inputs:
+        - "product mass or pallet positions"
+        - "entry/exit time"
+        - "room total"
+      output: "allocated kWh or kg refrigerant loss"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_refrigerant_loss
+      applies_to: "Each named refrigerant"
+      rule: "loss = opening charge + additions - recovered amount - closing charge; report each refrigerant separately"
+      inputs:
+        - "charge and service records"
+      output: "kg named refrigerant to air"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Each process"
+      rule: "closure = inputs - separately measured product outputs - waste outputs - retained or evaporated mass; investigate material unexplained residuals"
+      inputs:
+        - "all mass inputs and outputs"
+      output: "balance closure and explanation"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and treatment route"
+      requirement: "Preserve lot identity from incoming shell eggs through final product and declare species, route, shell condition, grade, and storage condition."
+      evidence: "lot genealogy; batch and dispatch records"
+    - id: dq_temporal
+      applies_to: "Foreground records"
+      requirement: "Cover representative production including start-up, normal operation, cleaning, changeover, and shutdown where they materially affect the route."
+      evidence: "dated meters, batch records, and production schedule"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Reconcile all named material, utility, packaging, waste, refrigerant, and direct-emission records; do not hide an unmeasured item in an aggregated placeholder."
+      evidence: "completeness checklist and process mass/energy reconciliation"
+    - id: dq_treatment_validation
+      applies_to: "Cooking, pasteurization, or preservation"
+      requirement: "Retain the validated route specification, critical limits, monitoring results, deviations, corrective actions, and product-release decision."
+      evidence: "approved validation study and batch controller records"
+    - id: dq_measurement
+      applies_to: "Scales, meters, and temperature recorders"
+      requirement: "Use calibrated equipment suitable for the operating range and retain calibration status for the reporting period."
+      evidence: "calibration certificates and verification checks"
+    - id: dq_waste_destination
+      applies_to: "Wastewater, sludge, eggshell, broken egg, and packaging scrap"
+      requirement: "Identify each receiving treatment or recovery route and record wet/dry basis where relevant."
+      evidence: "manifests, invoices, treatment contract, or onsite log"
+    - id: dq_refrigerant
+      applies_to: "Cooling and storage"
+      requirement: "Identify the actual refrigerant by chemical or commercial blend and keep service-event mass balance; do not report a generic refrigerant."
+      evidence: "equipment register, service log, purchase and recovery records"
+    - id: dq_source_currency
+      applies_to: "External method evidence"
+      requirement: "Use the identified edition or DOI and disclose any jurisdictional departure from Codex cleaning or storage guidance."
+      evidence: "source register and deviation note"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "Product identity"
+    rule: "Fail if the final product is fresh untreated, not in shell, or peeled before the reference-flow gate."
+    source_ids:
+      - unsd-cpc-22300
+  - rule_id: validate_reference_mass
+    applies_to: "Reference flow"
+    rule: "Confirm exactly 1 kg net marketable egg mass excluding packaging and verify count-to-mass conversion from lot records."
+    source_ids: []
+  - rule_id: validate_process_route
+    applies_to: "Process map"
+    rule: "Require receiving/grading, one declared in-shell treatment route, packaging/storage, and each conditionally applicable cleaning or cooling process."
+    source_ids:
+      - codex-cxc-15-1976
+      - shenga-et-al-2010-in-shell-pasteurization
+  - rule_id: validate_atomic_exchange
+    applies_to: "Inventory rows"
+    rule: "Reject any combined utility, fuel, chemical, packaging, waste, refrigerant, or emission row; every selected flow must be one resolvable exchange."
+    source_ids: []
+  - rule_id: validate_treatment
+    applies_to: "Treatment batch"
+    rule: "Confirm that monitored route conditions meet the approved cooking, pasteurization, or preservation specification and that deviations are excluded or corrected."
+    source_ids:
+      - codex-cxc-15-1976
+      - shenga-et-al-2010-in-shell-pasteurization
+  - rule_id: validate_mass_balance
+    applies_to: "Each process"
+    rule: "Check measured inputs against product, waste, retained, and released outputs and require an explanation for material imbalance."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_waste_emissions
+    applies_to: "Foreground outputs"
+    rule: "Confirm separate records and destinations for wastewater, sludge, broken egg, eggshell, packaging scrap, each refrigerant release, and each direct combustion emission that applies."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_bilingual_rows
+    applies_to: "English and Chinese PCR"
+    rule: "Confirm identical ordered process ids, row ids, directions, flow types, controlled values, and source ids; confirm that every non-UUID Chinese selected-flow name is an accurate translation."
+    source_ids: []
+  - rule_id: validate_range_evidence
+    applies_to: "Quantitative ranges"
+    rule: "Do not add an empirical range unless at least two independent original sources are boundary-, unit-, product-state-, and normalization-compatible, or an authoritative source explicitly prescribes an interval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground processing dataset for preserved or cooked eggs retaining their shell"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product carbon footprint, LCA, supply-chain modelling, facility improvement, and route comparison when product qualifiers and system boundary match"
+  excluded_use: "Fresh eggs, eggs not in shell, peeled cooked eggs, farm egg production, consumer cooking, or another treatment route without route-specific foreground data"
+  required_metadata: "PCR id and version; species; supplier geography; incoming condition; route and route share; cleaning route; treatment validation basis; package components; storage condition and duration; allocation method; reference year; facility geography"
+  required_quality_disclosure: "Meter coverage; calculated-versus-measured shares; unresolved Tiangong identities; mass-balance closure; treatment deviations; waste destinations; refrigerant identity and balance; source editions; data gaps"
+  update_trigger: "Material change in species mix, treatment technology or recipe, energy source, cleaning permission or practice, package format, refrigeration system, storage duration, allocation, supplier geography, or validated safety target"
+data_sources:
+  - id: "unsd-cpc-22300"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. Central Product Classification detail, code 22300, “Eggs, in shell, preserved or cooked.” https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/22300 (retrieved 2026-08-24)."
+    used_for: "Category inclusion and exclusions; facility-gate product identity"
+  - id: "codex-cxc-15-1976"
+    type: "official_guidance"
+    reference: "Codex Alimentarius. Code of Hygienic Practice for Eggs and Egg Products, CXC 15-1976. https://workspace.fao.org/sites/codex/Standards/CXC%2015-1976/CXC_015e.pdf (retrieved 2026-08-24)."
+    used_for: "Receiving, sorting, grading, dry cleaning, washing, disinfection, drying, oiling, in-shell treatment, packaging, storage, segregation, and validation rules"
+  - id: "shenga-et-al-2010-in-shell-pasteurization"
+    type: "literature"
+    reference: "Shenga, E.; Singh, R. P.; Yadav, A. S. Effect of pasteurization of shell egg on its quality characteristics under ambient storage. Journal of Food Science and Technology 47, 420–425. https://doi.org/10.1007/s13197-010-0069-2."
+    used_for: "Intact-shell dry, moist-heat, and microwave pasteurization route evidence; treatment-condition and product-quality monitoring"
+  - id: "chiozzi-et-al-2022-thermal-nonthermal"
+    type: "literature"
+    reference: "Chiozzi, V.; Agriopoulou, S.; Varzakas, T. Advances, Applications, and Comparison of Thermal (Pasteurization, Sterilization, and Aseptic Packaging) against Non-Thermal (Ultrasounds, UV Radiation, Ozonation, High Hydrostatic Pressure) Technologies in Food Processing. Applied Sciences 12(4), 2202. https://doi.org/10.3390/app12042202."
+    used_for: "General thermal/non-thermal treatment classification and the need to collect treatment energy and water records; no egg-specific quantitative range"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006. Environmental management — Life cycle assessment — Requirements and guidelines. https://www.iso.org/standard/38498.html (confirmed current in 2022; retrieved 2026-08-24)."
+    used_for: "Boundary consistency, subdivision, allocation hierarchy, inventory completeness, and mass-balance validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ccac301cc339c824ff5725b73a2db0bee52f7db88c998a3744024d75bb363b90"
+  generated_content_sha256: "sha256:fe8c0357b8d83f84f0c952fa4ff887383dbc93b6fda597cc8b1422effd01392e"

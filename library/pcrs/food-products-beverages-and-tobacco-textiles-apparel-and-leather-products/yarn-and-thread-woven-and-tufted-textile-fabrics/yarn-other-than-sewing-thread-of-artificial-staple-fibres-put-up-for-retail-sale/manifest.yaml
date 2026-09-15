@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.yarn-other-than-sewing-thread-of-artificial-staple-fibres-put-up-for-retail-sale
 title:
   en-US: "Yarn (other than sewing thread) of artificial staple fibres, put up for retail sale"
-  zh-CN: null
-status: scaffold
+  zh-CN: "供零售的人造短纤维纱线（缝纫线除外）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-08-12T09:52:04Z"
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +23,73 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "26462"
     title: "Yarn (other than sewing thread) of artificial staple fibres, put up for retail sale"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  accepted_identity_references:
+    - row_id: reference_yarn_output
+      uuid: "9cb2deeb-5eb3-4128-a175-ccbf63b8a2cc"
+      basis: "Public state 100 Product flow; exact English base name and CPC 26462 on hybrid search and direct read."
+    - row_id: paperboard_yarn_core
+      uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+      basis: "Public state 100 Product flow; paperboard tube/paper core identity explicitly includes yarn-core use."
+    - row_id: paper_label
+      uuid: "7b25a54f-baa6-4593-9670-4240a3315eed"
+      basis: "Public state 100 Product flow; exact paper-label identity and CPC 32197."
+    - row_id: corrugated_board_box
+      uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+      basis: "Public state 100 Product flow; exact corrugated-board-box identity and Mass reference property."
+  reference_identity_notes:
+    - row_id: reference_yarn_output
+      note: "The direct-read common:generalComment incorrectly mentions CPC 265 woven fabrics; it was not used as identity evidence because baseName, Product flow type, Mass property, and the full CPC path ending in 26462 agree exactly."
+  unresolved_identity:
+    - row_id: reference_yarn_output
+      selected_flow: "Units of mass"
+      rejected_candidates: []
+      reason: "The public flow list/get response confirms Mass and kg as the PCR reference unit but does not expose a separately verifiable unit-group UUID."
+    - row_id: received_artificial_staple_fibre
+      selected_flow: "Artificial staple fibres, carded, combed or otherwise processed for spinning"
+      rejected_candidates:
+        - uuid: "4f65996d-819a-4b51-8c1a-e3c3ecaa96b2"
+          reason: "Name and CPC 26220 match, but the direct-read general comment incorrectly describes CPC 263 natural-fibre yarn; the internally inconsistent record is not adopted."
+    - row_id: site_low_voltage_electricity
+      selected_flow: "Low-voltage alternating-current grid consumption mix supplied to the reporting site"
+      rejected_candidates:
+        - uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          reason: "Direct read confirms low-voltage consumption mix but supplies no reporting geography and uses Net calorific value rather than a directly usable electricity property/unit identity."
+        - uuid: "949661a5-2af6-4e66-adf8-74f5fca306a9"
+          reason: "Direct read is low-voltage hydropower production at a power plant, not the reporting site's grid consumption mix."
+    - row_id: textile_spinning_lubricant
+      selected_flow: "Biodegradable ester-based textile spinning lubricant"
+      rejected_candidates:
+        - uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          reason: "Direct read describes generic automotive and transmission lubricating oil, not a textile spinning preparation."
+    - row_id: ldpe_retail_wrap
+      selected_flow: "Low-density polyethylene film for retail yarn wrapping"
+      rejected_candidates:
+        - uuid: "1ff32f1d-77ac-4a6f-b91c-67b08b13e55a"
+          reason: "Direct read merges LDPE, HDPE, and LLDPE under a broad polyethylene identity and does not identify retail wrapping film precisely."
+    - row_id: captured_loose_artificial_fibre
+      selected_flow: "Captured loose artificial staple-fibre waste"
+      rejected_candidates:
+        - uuid: "cd3a2b81-3287-457e-9501-2a39f59cec99"
+          reason: "Direct read is mixed-fibre waste fabric, not loose artificial staple-fibre waste from spinning."
+    - row_id: offspec_artificial_yarn
+      selected_flow: "Off-spec artificial staple-fibre yarn waste"
+      rejected_candidates:
+        - uuid: "cd3a2b81-3287-457e-9501-2a39f59cec99"
+          reason: "Direct read is mixed-fibre waste fabric, not off-spec artificial staple-fibre yarn."

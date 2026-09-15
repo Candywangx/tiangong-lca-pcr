@@ -1,10 +1,857 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33330"
-  title: "Naphtha"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.naphtha"
+  classification_refs: "CPC 3.0 33330 Naphtha (exact)"
+  covered_products: "Refinery naphtha sold as light, heavy, or full-range naphtha; straight-run, cracked, hydrotreated, sweetened, or blended naphtha when the final stream remains within the declared naphtha category boundary."
+  excluded_products: "Motor gasoline; aviation gasoline; gasoline-type and kerosene-type jet fuels; kerosene; white spirit and special-boiling-point spirits; separately marketed natural-gas liquids; pyrolysis gasoline; benzene, toluene, xylenes, olefins, and other downstream conversion products."
+  representative_product: "Saleable naphtha at the refinery loading or custody-transfer point."
+  production_route: "Crude or unfinished refinery feed receipt, separation by refinery fractionation, conditional stabilization or hydrotreating/sweetening, specification blending, storage, and loading."
+  market_state: "Liquid petroleum fraction at the refinery gate, with grade, treatment status, distillation range, and contractual quality specification declared."
+functional_unit:
+  what: "Provision of refinery-gate naphtha as a petroleum fraction or petrochemical feedstock."
+  how_much: "1,000 kg net saleable naphtha."
+  how_well: "Meets the declared buyer, refinery, or regulatory specification; remains within the CPC 33330 category boundary; and has its actual distillation range, grade, treatment status, and key quality properties disclosed."
+  how_long_or_cycle: "One representative production campaign or reporting period, with opening and closing inventory reconciled."
+  reference_flow_link: "Net mass of conforming naphtha transferred at the declared refinery-gate custody-transfer point."
+system_boundary:
+  rules:
+    - rule_id: boundary_refinery_gate
+      applies_to: "foreground naphtha production"
+      rule: "Include refinery activities from receipt of crude oil or unfinished refinery feed through separation, applicable product treatment, storage, specification blending, and loading at the declared refinery-gate custody-transfer point."
+      source_ids:
+        - us-epa-ap42-refining-2015
+        - us-epa-refinery-effluent-guidelines
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased and imported inputs"
+      rule: "Link crude production and transport, imported refinery intermediates, purchased naphtha, electricity, fuels, steam, hydrogen, water, and chemicals to representative upstream datasets; do not silently absorb them into an unqualified refinery average."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_direct_releases
+      applies_to: "controlled and fugitive refinery releases"
+      rule: "Include direct combustion and process emissions, vents, flares, equipment leaks, storage and loading losses, wastewater releases, and treatment wastes attributable to the included processes."
+      source_ids:
+        - us-epa-ap42-refining-2015
+        - eu-refinery-bat-2014
+    - rule_id: boundary_exclusions
+      applies_to: "downstream conversion and use"
+      rule: "Exclude downstream steam cracking, catalytic reforming, aromatics or olefins production, gasoline blending beyond the declared naphtha specification, distribution after the refinery gate, and product use or combustion."
+      source_ids:
+        - us-epa-ap42-refining-2015
+        - unsd-cpc-3-2025
+    - rule_id: boundary_cutoff_disclosure
+      applies_to: "omitted flows"
+      rule: "Quantify all environmentally relevant material, energy, waste, and elementary flows. Any justified exclusion shall be disclosed with its basis and a sensitivity or materiality check; legal or permit-reportable releases shall not be cut off."
+      source_ids:
+        - eu-pef-2021
+        - eu-refinery-bat-2014
+boundary_abstraction:
+  declared_starting_condition: "Crude oil and any unfinished refinery feed are received at the refinery boundary with feed identity, origin, quantity, and quality basis recorded."
+  starting_condition_role: "Foreground refinery entry condition."
+  product_classification_scope: "Naphtha under CPC 3.0 subclass 33330, limited to the declared qualifying petroleum fraction and excluding separately classified finished fuels, solvents, and downstream chemicals."
+  recursive_input_rule: "Purchased or internally transferred naphtha that enters an included process is recorded as a distinct product input with its own upstream dataset or documented internal transfer; do not recursively recreate its upstream naphtha production inside the same process."
+  upstream_dataset_requirement: "Use representative datasets for crude production and transport, imported unfinished feed, purchased hydrogen, electricity, steam, fuels, water, chemicals, and externally supplied naphtha."
+  disclosure: "Declare feed slate, route and treatment status, included units, shared utilities, allocation method and factors, tank and loading boundary, geography, period, data gaps, and every excluded refinery activity."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Naphtha"
+    uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual initial and final boiling points or declared distillation range"
+    - light
+    - heavy
+    - "or full-range grade"
+    - straight-run
+    - cracked
+    - hydrotreated
+    - sweetened
+    - "or blended route"
+    - "sulfur and benzene or other contractual composition limits"
+    - "water and sediment basis where specified"
+    - "refinery technology and feed slate"
+    - geography
+    - "reference year"
+    - "allocation method"
+    - "custody-transfer point"
+    - "density and reference temperature when volume-to-mass conversion is used"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all refinery material-balance streams"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference product as net mass. Reconcile gross meter readings for opening and closing tank inventory, returns, off-spec diversion, and internal recycle before normalizing to 1,000 kg."
+  - id: volume_to_mass
+    applies_to: "any liquid stream initially metered by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass using a measured or specification-supported density for the same stream and declared reference temperature; retain the raw volume, density, temperature, and conversion equation."
+  - id: energy_carriers
+    applies_to: "purchased electricity, steam, fuel, and recovered refinery energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ or kWh, as recorded"
+    rule: "Preserve the original carrier and unit. Convert only with a documented factor, avoid double counting recovered energy, and identify whether refinery fuel gas is an internal co-product or a purchased input."
+  - id: water_balance
+    applies_to: "process, cooling, boiler-feed, and wastewater streams"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Keep water withdrawals, recirculation, evaporation, and discharge distinct. Do not report gross circulating cooling water as net withdrawal."
+process_map:
+  - id: refinery_separation
+    name: "Refinery feed preparation and naphtha separation"
+    inclusion: "required"
+    inclusion_condition: "Always included for refinery-produced naphtha; imported naphtha shall instead enter as a disclosed upstream product input."
+    role: "Foreground crude or unfinished-feed preparation and fractionation. Tiangong process identity: e6baedfb-bafc-454a-a24e-751ebf3eea4d."
+    quantitative_reference: "Net separated naphtha transferred to treatment or storage, normalized to the final 1,000 kg reference product."
+  - id: naphtha_treatment
+    name: "Naphtha stabilization and treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when stabilization, hydrotreating, sweetening, fraction adjustment, or specification blending is performed before sale."
+    role: "Foreground product conditioning and impurity removal."
+    quantitative_reference: "Net conforming naphtha leaving treatment, normalized to the final 1,000 kg reference product."
+  - id: storage_and_loading
+    name: "Naphtha storage, blending, and refinery-gate loading"
+    inclusion: "required"
+    inclusion_condition: "Include tanks, circulation, specification blending, and the loading mode used at the declared custody-transfer point."
+    role: "Foreground final handling and dispatch."
+    quantitative_reference: "1,000 kg net conforming naphtha dispatched."
+process_inventory:
+  - id: refinery_separation
+    label: "Refinery feed preparation and naphtha separation"
+    inputs:
+      product:
+        - row_id: refinery_feed
+          role: "Crude oil and unfinished refinery feed"
+          name: "Route-specific crude oil or unfinished refinery feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every crude or unfinished petroleum feed entering the included separation units. Keep different feed grades or imported intermediates separate when their upstream burdens or qualities differ materially."
+          amount:
+            expression: "Measured net feed charged to the included units after inventory reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refinery_mass_balance
+              source_ids:
+                - us-epa-ap42-refining-2015
+            ranges: []
+        - row_id: separation_energy
+          role: "Separation energy and utilities"
+          name: "Carrier-specific electricity, steam, process heat, and fuels"
+          flow_type: "product"
+          property_unit: "Energy / MJ or kWh as recorded"
+          description: "Record metered electricity, steam, process heat, fuel gas, and other energy carriers consumed by feed preparation and fractionation. Recovered heat and internal fuel shall remain visible to prevent double counting."
+          amount:
+            expression: "Metered or engineering-accounted carrier consumption attributable to the included units."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-epa-ap42-refining-2015
+            ranges: []
+        - row_id: separation_water_chemicals
+          role: "Separation water and process chemicals"
+          name: "Carrier- or substance-specific water and process chemicals"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record net process and boiler-feed water, desalting chemicals, corrosion inhibitors, and other purchased chemicals that cross the foreground boundary."
+          amount:
+            expression: "Purchased or net-withdrawn quantity attributable to the included units, excluding internal recirculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_water_records
+              source_ids:
+                - eu-refinery-bat-2014
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_naphtha
+          role: "Separated naphtha intermediate"
+          name: "Naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the net naphtha cut transferred from separation to treatment or storage. The concrete data package shall declare grade and distillation range rather than treating all side cuts as interchangeable."
+          amount:
+            expression: "Net measured transfer mass, reconciled for internal recycle and tank inventory change."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refinery_mass_balance
+              source_ids:
+                - unsd-cpc-3-2025
+            ranges: []
+        - row_id: separation_coproducts
+          role: "Other refinery fractions and co-products"
+          name: "Product-specific refinery co-product flows"
+          flow_type: "product"
+          property_unit: "Mass or energy, matching the product / kg or MJ"
+          description: "Record every co-produced petroleum fraction, refinery gas, water stream reused as a product, or saleable material leaving the separated unit. These quantities define the multifunctional process and allocation factors."
+          amount:
+            expression: "Measured net co-product output by product grade and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reporting-period throughput before allocation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refinery_mass_balance
+              source_ids:
+                - us-epa-ap42-refining-2015
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: separation_waste
+          role: "Separation sludges and discarded residues"
+          name: "Waste-specific Tiangong waste flow selected for the documented waste and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record desalting sludge, tank or separator residues, spent filters, and other wastes generated by the included feed preparation and separation units, by destination and treatment route."
+          amount:
+            expression: "Weighed quantity or mass-balance estimate supported by disposal and treatment records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-refinery-bat-2014
+            ranges: []
+      elementary:
+        - row_id: separation_air_emissions
+          role: "Separation air emissions"
+          name: "Substance-specific elementary flows to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report direct combustion and process emissions, flares, vents, and equipment leaks by monitored or calculated substance. Select individual Tiangong elementary flows for each reported substance; do not use one unspecified aggregate emission."
+          amount:
+            expression: "Measured or permit-consistent calculated emissions for the included units, including allocated shared sources."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-refining-2015
+                - eu-refinery-bat-2014
+            ranges: []
+        - row_id: separation_water_emissions
+          role: "Separation water emissions"
+          name: "Substance- and compartment-specific elementary flows to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report direct releases to water after treatment by substance and receiving compartment. Wastewater sent to another foreground treatment unit remains an internal transfer until final discharge."
+          amount:
+            expression: "Measured discharge concentration multiplied by represented discharge volume, corrected for internal recycle and linked to the same period."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_releases
+              source_ids:
+                - us-epa-refinery-effluent-guidelines
+                - eu-refinery-bat-2014
+            ranges: []
+  - id: naphtha_treatment
+    label: "Naphtha stabilization and treatment"
+    inputs:
+      product:
+        - row_id: naphtha_to_treatment
+          role: "Naphtha entering treatment"
+          name: "Naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the actual naphtha stream entering stabilization, hydrotreating, sweetening, fraction adjustment, or specification blending."
+          amount:
+            expression: "Net measured input mass after inventory and recycle reconciliation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_mass_balance
+              source_ids:
+                - us-epa-ap42-refining-2015
+            ranges: []
+        - row_id: treatment_inputs
+          role: "Hydrogen, chemicals, and treatment utilities"
+          name: "Carrier- or substance-specific treatment input flows"
+          flow_type: "product"
+          property_unit: "Mass, energy, or volume / kg, MJ, kWh, or m3"
+          description: "Record hydrogen, caustic or other treatment chemicals, electricity, steam, fuel, and water separately by carrier or substance. Record only inputs for the treatment actually performed."
+          amount:
+            expression: "Metered or purchased quantity attributable to the treatment unit and reporting period."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_inputs
+              source_ids:
+                - us-epa-ap42-refining-2015
+                - eu-refinery-bat-2014
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_naphtha
+          role: "Treated conforming naphtha"
+          name: "Naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the net conforming naphtha leaving treatment. The same product flow is used only when the output remains within the declared naphtha category; downstream gasoline or chemical products require other product flows."
+          amount:
+            expression: "Net measured conforming output after off-spec diversion, recycle, and inventory change."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_mass_balance
+              source_ids:
+                - unsd-cpc-3-2025
+            ranges: []
+        - row_id: treatment_coproducts
+          role: "Treatment co-products and recovered streams"
+          name: "Product-specific recovered or co-product flows"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg or MJ"
+          description: "Record recovered refinery gas, sulfur, reusable hydrocarbon streams, and other products by identity and destination. Do not net them against energy or material inputs."
+          amount:
+            expression: "Measured net output by stream and destination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per reporting-period treatment throughput before allocation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_mass_balance
+              source_ids:
+                - us-epa-ap42-refining-2015
+                - eu-refinery-bat-2014
+            ranges: []
+      waste:
+        - row_id: spent_treatment_materials
+          role: "Spent treatment materials"
+          name: "Waste-specific Tiangong flow selected for the documented material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent catalysts, spent caustic, filters, sludges, and other treatment wastes by composition and management route."
+          amount:
+            expression: "Weighed replacement or disposal quantity assigned to the represented operating period."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-refinery-bat-2014
+            ranges: []
+      elementary:
+        - row_id: treatment_releases
+          role: "Treatment air and water releases"
+          name: "Substance- and compartment-specific elementary flows"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report combustion emissions, process off-gases, fugitive leaks, and final water releases by substance and compartment. Acid gas, sour water, and off-gas sent to another included unit remain internal transfers until their final treatment or release."
+          amount:
+            expression: "Measured or permit-consistent calculated releases attributable to the included treatment route."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-refining-2015
+                - eu-refinery-bat-2014
+            ranges: []
+  - id: storage_and_loading
+    label: "Naphtha storage, blending, and refinery-gate loading"
+    inputs:
+      product:
+        - row_id: naphtha_to_storage
+          role: "Naphtha received into final handling"
+          name: "Naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record conforming or blend-component naphtha entering the final tank and loading system, with internal transfers and recirculation identified."
+          amount:
+            expression: "Net measured receipt mass after opening and closing inventory reconciliation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_dispatch
+              source_ids:
+                - eu-refinery-bat-2014
+            ranges: []
+        - row_id: handling_inputs
+          role: "Handling energy and ancillary materials"
+          name: "Carrier- or substance-specific handling input flows"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg, MJ, or kWh"
+          description: "Record electricity or fuel for pumps and vapor controls, blanketing gas, and other ancillary materials consumed in final storage and loading."
+          amount:
+            expression: "Metered or purchased quantity attributable to naphtha storage and loading."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-refinery-bat-2014
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_naphtha
+          role: "Dispatched reference naphtha"
+          name: "Naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This is the reference product transferred at the declared refinery-gate custody point. Off-spec material and internal returns are excluded from net saleable output."
+          amount:
+            expression: "Normalize the reconciled net custody-transfer mass of conforming naphtha to exactly 1,000 kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_dispatch
+              source_ids:
+                - unsd-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: handling_waste
+          role: "Tank bottoms, off-spec disposal, and loading wastes"
+          name: "Waste-specific Tiangong flow selected for the documented waste and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record tank bottoms, contaminated absorbents, unrecovered off-spec material, and other handling wastes by destination. Reworked or internally recycled material is an internal transfer, not waste."
+          amount:
+            expression: "Weighed disposal quantity or inventory-supported mass balance for the represented period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-refinery-bat-2014
+            ranges: []
+      elementary:
+        - row_id: handling_air_emissions
+          role: "Storage and loading releases to air"
+          name: "Substance-specific elementary flows to air, including reported NMVOC and benzene where applicable"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report working and breathing losses, loading displacement vapors, equipment leaks, and vapor-control residual emissions by substance. Keep recovered vapors as internal product transfers."
+          amount:
+            expression: "Measured vapor-control outlet emissions or permit-consistent calculation using actual throughput, vapor properties, loading method, capture efficiency, control efficiency, and downtime."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable naphtha at the refinery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_voc
+              source_ids:
+                - us-epa-ap42-petroleum-liquids-2008
+                - eu-refinery-bat-2014
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "refinery units and directly metered streams"
+    rule: "Avoid allocation by subdividing unit operations and assigning directly measured feed, energy, materials, wastes, and releases to the process and product that cause them."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_physical_relationship
+    applies_to: "inseparable multifunctional refinery operations"
+    rule: "When subdivision or justified system expansion is not possible, use a documented, quantifiable physical relationship that reflects how shared inputs and releases relate to the co-product functions; do not select mass or energy content merely because it is convenient."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_other_relationship
+    applies_to: "operations with no defensible physical relationship"
+    rule: "If another relationship such as economic allocation is used, document why subdivision, system expansion, and physical allocation were rejected; use prices at the co-production stage and test sensitivity to the allocation basis and price period."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_internal_energy
+    applies_to: "refinery gas, recovered heat, steam, hydrogen, and internal recycle"
+    rule: "Keep recovered energy and internal transfers visible. Assign shared utility burdens consistently with the chosen allocation method and prevent credits or avoided burdens from being counted twice."
+    source_ids:
+      - eu-pef-2021
+      - us-epa-ap42-refining-2015
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_refinery_mass_balance
+      process_id: "refinery_separation"
+      flow_role: "refinery feed, separated naphtha, and co-products"
+      record_type: "custody meters, tank gauges, laboratory release records, and production ledger"
+      raw_fields: "stream_id; grade; opening_inventory; receipts; transfers; recycle; closing_inventory; saleable_output; meter_unit; density; reference_temperature"
+      collection_method: "Calibrated mass meter or reconciled volume meter plus density, matched to tank and production records."
+      unit: "kg; source units retained"
+      frequency: "Per batch or shift; reconciled monthly"
+      temporal_coverage: "At least one representative 12-month period or every campaign for campaign production"
+      site_scope: "All included separation units and connected tanks"
+      aggregation_rule: "Reconcile feed and outputs over a common period; investigate unexplained imbalance; normalize only after allocation."
+      quality_evidence: "calibration records; tank reconciliation; laboratory release certificate; signed production ledger"
+    - protocol_id: cp_treatment_mass_balance
+      process_id: "naphtha_treatment"
+      flow_role: "naphtha input, conforming output, recycle, off-spec, and co-products"
+      record_type: "unit meters, tank gauges, laboratory records, and operating log"
+      raw_fields: "stream_id; input_mass; output_mass; recycle_mass; offspec_mass; inventory_change; treatment_route; quality_result"
+      collection_method: "Calibrated meters with batch or period mass-balance reconciliation."
+      unit: "kg"
+      frequency: "Per batch or shift; reconciled monthly"
+      temporal_coverage: "Same period as represented treatment campaign"
+      site_scope: "Every included treatment unit"
+      aggregation_rule: "Reconcile all hydrocarbon inputs and outputs; retain off-spec and recycle separately."
+      quality_evidence: "meter calibration; laboratory analysis; operating log; reconciliation approval"
+    - protocol_id: cp_treatment_inputs
+      process_id: "naphtha_treatment"
+      flow_role: "hydrogen, treatment chemicals, water, and treatment utilities"
+      record_type: "flow meters, utility meters, issue records, purchase records, and stock ledger"
+      raw_fields: "input_id; quantity; concentration; meter_start; meter_end; opening_stock; receipts; issues; closing_stock; unit"
+      collection_method: "Direct metering by carrier or substance preferred; otherwise reconcile purchases, issues, and stock change for the represented treatment unit."
+      unit: "kg; m3; kWh; MJ; source units retained"
+      frequency: "Continuous or per issue; reconciled monthly"
+      temporal_coverage: "Same period as represented treatment campaign"
+      site_scope: "Every included treatment unit and its dedicated input storage"
+      aggregation_rule: "Calculate net consumption separately by carrier or substance; keep recovered or returned material distinct and apply shared-utility allocation only after the site balance."
+      quality_evidence: "meter calibration; invoice; issue record; stocktake; utility balance; allocation record"
+    - protocol_id: cp_storage_dispatch
+      process_id: "storage_and_loading"
+      flow_role: "naphtha receipts, tank inventory, blend transfers, and dispatch"
+      record_type: "tank gauges, custody-transfer meter, bill of lading, and release certificate"
+      raw_fields: "tank_id; opening_inventory; receipts; blend_transfers; returns; closing_inventory; dispatch_mass; grade; destination; custody_point"
+      collection_method: "Custody-transfer mass meter or volume meter with stream-specific density and reference temperature."
+      unit: "kg; L or m3 with conversion evidence"
+      frequency: "Each transfer; reconciled monthly"
+      temporal_coverage: "Same reporting period as production"
+      site_scope: "All final product tanks and loading systems"
+      aggregation_rule: "Net dispatch equals measured dispatch less returns, with inventory and internal transfers reconciled."
+      quality_evidence: "meter proving; gauge records; bill of lading; quality release certificate"
+    - protocol_id: cp_energy_records
+      process_id: "refinery_separation_naphtha_treatment_storage_and_loading"
+      flow_role: "electricity, steam, heat, fuel, and recovered energy"
+      record_type: "utility meters, fuel ledger, and engineering allocation record"
+      raw_fields: "carrier; meter_start; meter_end; heating_value; import; export; recovered_energy; unit; allocation_driver"
+      collection_method: "Direct submetering preferred; otherwise documented engineering allocation from a complete site utility balance."
+      unit: "kWh; MJ; kg steam; source units retained"
+      frequency: "Continuous or shift readings; monthly reconciliation"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Included units and shared utilities"
+      aggregation_rule: "Net each carrier separately; allocate shared utilities after site balance; do not net different carriers."
+      quality_evidence: "meter calibration; invoice; utility balance; allocation workbook"
+    - protocol_id: cp_material_and_water_records
+      process_id: "refinery_separation_naphtha_treatment"
+      flow_role: "water, hydrogen, catalysts, caustic, and treatment chemicals"
+      record_type: "purchase, issue, meter, and inventory records"
+      raw_fields: "material_id; quantity; concentration; opening_stock; receipts; issues; closing_stock; recycle; unit"
+      collection_method: "Metered use or stock-change reconciliation by substance and concentration."
+      unit: "kg; m3; source units retained"
+      frequency: "Per issue or continuous meter; monthly reconciliation"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Included units and storage"
+      aggregation_rule: "Net consumption equals opening stock plus receipts minus closing stock minus documented transfers or returns."
+      quality_evidence: "invoice; meter calibration; stocktake; specification or certificate of analysis"
+    - protocol_id: cp_direct_emissions
+      process_id: "refinery_separation_naphtha_treatment"
+      flow_role: "combustion, process, vent, flare, and fugitive emissions"
+      record_type: "continuous monitoring, stack tests, leak surveys, flare and activity records, and permit calculations"
+      raw_fields: "source_id; pollutant; measured_concentration; flow_rate; duration; activity; factor; control_efficiency; downtime; method"
+      collection_method: "Use applicable direct measurement first; otherwise a documented regulatory or engineering method with current site activity data."
+      unit: "kg pollutant; source units retained"
+      frequency: "Monitoring frequency required by the applicable permit or method; at least each material operating mode"
+      temporal_coverage: "Same period as represented production, including startups, shutdowns, and abnormal events"
+      site_scope: "All attributable direct sources and shared sources after allocation"
+      aggregation_rule: "Integrate measured releases over time; calculate other releases from activity and method; subtract only verified capture or recovery."
+      quality_evidence: "monitoring QA/QC; stack test; leak-detection record; flare log; permit report; calculation file"
+    - protocol_id: cp_wastewater_releases
+      process_id: "refinery_separation_naphtha_treatment"
+      flow_role: "wastewater and final releases to water"
+      record_type: "flow meter, composite sample, laboratory result, and treatment log"
+      raw_fields: "discharge_point; volume; pollutant; concentration; sample_time; detection_limit; treatment_route; receiving_compartment"
+      collection_method: "Flow-proportional composite sampling where appropriate, paired with represented discharge volume."
+      unit: "m3; mg/L; kg"
+      frequency: "Permit frequency and after material process changes"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "All included discharge points and outsourced treatment transfers"
+      aggregation_rule: "Pollutant mass equals concentration times represented volume; handle non-detects by a disclosed rule; avoid double counting internal transfers."
+      quality_evidence: "accredited laboratory result; sampler log; flow-meter calibration; permit report"
+    - protocol_id: cp_waste_records
+      process_id: "refinery_separation_naphtha_treatment_storage_and_loading"
+      flow_role: "sludges, spent treatment materials, tank bottoms, and other wastes"
+      record_type: "weighbridge ticket, waste manifest, contractor record, and stock ledger"
+      raw_fields: "waste_id; composition; mass; date; origin_unit; destination; treatment_route; opening_stock; closing_stock"
+      collection_method: "Direct weighing preferred; otherwise documented stock-change mass balance."
+      unit: "kg"
+      frequency: "Each shipment and monthly inventory"
+      temporal_coverage: "Same period as represented production, with campaign wastes annualized only when justified"
+      site_scope: "All included units and temporary waste storage"
+      aggregation_rule: "Sum dispatched waste plus inventory change; keep recycling, recovery, treatment, and disposal routes separate."
+      quality_evidence: "weighbridge calibration; manifest; contractor certificate; stocktake"
+    - protocol_id: cp_storage_voc
+      process_id: "storage_and_loading"
+      flow_role: "tank, loading, and equipment-leak releases"
+      record_type: "tank parameters, throughput, vapor properties, loading mode, vapor-control monitor, and leak survey"
+      raw_fields: "source_id; throughput; liquid_temperature; vapor_pressure; vapor_molecular_weight; loading_mode; capture_efficiency; control_efficiency; downtime; measured_outlet; leak_rate"
+      collection_method: "Direct monitoring where required; otherwise a documented AP-42 or permit-consistent calculation using site-specific inputs."
+      unit: "kg pollutant; source units retained"
+      frequency: "Each loading event or monthly calculation; continuous control monitoring where installed"
+      temporal_coverage: "Same period as represented dispatch"
+      site_scope: "All naphtha tanks, loading racks, and associated equipment"
+      aggregation_rule: "Calculate by source and substance; add control residuals and uncontrolled downtime; keep recovered vapor internal."
+      quality_evidence: "control monitor; calculation file; leak survey; throughput and vapor-property records"
+  calculation_rules:
+    - id: calc_net_naphtha_output
+      applies_to: "each included process and final reference output"
+      rule: "Net conforming output = measured outbound transfer + closing conforming inventory - opening conforming inventory - returned or internally recycled quantity; adapt signs transparently to the site's ledger convention."
+      inputs:
+        - "outbound transfers"
+        - "opening inventory"
+        - "closing inventory"
+        - returns
+        - "internal recycle"
+        - "off-spec diversion"
+      output: "net conforming naphtha mass"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_volume_to_mass
+      applies_to: "liquid streams recorded by volume"
+      rule: "Mass = observed or reference-temperature-corrected volume × density applicable to the same stream and temperature basis."
+      inputs:
+        - volume
+        - density
+        - "measurement temperature"
+        - "reference temperature"
+        - "correction method"
+      output: "stream mass in kg"
+      source_ids:
+        - unsd-cpc-3-2025
+    - id: calc_normalized_inventory
+      applies_to: "every inventory row"
+      rule: "Normalized amount = allocated reporting-period row quantity ÷ net reporting-period conforming naphtha output × 1,000 kg."
+      inputs:
+        - "row quantity"
+        - "allocation factor"
+        - "net conforming output"
+      output: "amount per 1,000 kg reference product"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_pollutant_release
+      applies_to: "calculated elementary flows"
+      rule: "Pollutant mass = integrated measured mass rate, or activity × applicable factor adjusted by verified capture and control efficiency; method, factor version, operating mode, and downtime shall be retained."
+      inputs:
+        - "monitoring data or activity"
+        - factor
+        - "capture efficiency"
+        - "control efficiency"
+        - downtime
+      output: "pollutant mass by source and compartment"
+      source_ids:
+        - us-epa-ap42-refining-2015
+        - us-epa-ap42-petroleum-liquids-2008
+        - eu-refinery-bat-2014
+    - id: calc_allocation_factor
+      applies_to: "shared refinery unit or utility burdens"
+      rule: "Allocation factor = the naphtha-specific value of the declared allocation driver divided by the sum of that driver across all co-products; apply the same factor consistently to shared inputs, wastes, and releases and document exceptions."
+      inputs:
+        - "co-product quantities"
+        - "physical or economic driver"
+        - "prices and price period when used"
+      output: "naphtha allocation factor"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and intermediate naphtha streams"
+      requirement: "Retain grade, actual distillation range, treatment route, contractual quality results, density basis when used, and custody-transfer point; demonstrate that the output remains within the naphtha category and is not a separately classified fuel, solvent, or downstream chemical."
+      evidence: "laboratory certificate; product specification; flow identity; batch and transfer records"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Use a common representative period, normally at least 12 months unless campaign production is justified; align material, utility, emission, wastewater, and waste data and disclose shutdowns, startups, and abnormal events."
+      evidence: "period coverage table; operating calendar; reconciliation report"
+    - id: dq_technology
+      applies_to: "separation, treatment, storage, and control systems"
+      requirement: "Identify the actual fractionation, treatment, tank, loading, vapor-control, wastewater, and emission-control technologies and demonstrate that selected secondary datasets represent them."
+      evidence: "process flow diagram; equipment list; technology-to-dataset mapping"
+    - id: dq_geography
+      applies_to: "upstream datasets and direct releases"
+      requirement: "Use geography-specific upstream supply and regulatory context where material; disclose mismatches between refinery location, crude origin, electricity, hydrogen, and other upstream datasets."
+      evidence: "supplier origin; dataset metadata; geography gap assessment"
+    - id: dq_completeness
+      applies_to: "inventory and boundary"
+      requirement: "Reconcile total hydrocarbon mass, include material energy and water carriers, direct and fugitive emissions, wastewater releases, and wastes, and justify every exclusion."
+      evidence: "mass and energy balances; completeness checklist; permit-to-inventory crosswalk"
+    - id: dq_precision_uncertainty
+      applies_to: "measured, calculated, and allocated values"
+      requirement: "Retain calibration, sampling, detection-limit, factor, allocation, and uncertainty information; distinguish measured data from calculated values and assess sensitivity to material allocation choices."
+      evidence: "calibration and QA/QC records; calculation files; uncertainty and sensitivity results"
+    - id: dq_representativeness
+      applies_to: "completed foreground dataset"
+      requirement: "Assess technological, geographical, and time representativeness and precision, and report completeness and methodological consistency."
+      evidence: "documented data-quality assessment consistent with eu-pef-2021"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference product"
+    rule: "The product flow UUID, Mass property UUID, Units of mass UUID, 1,000 kg reference amount, CPC boundary, grade, distillation range, treatment route, and custody-transfer point shall all be present and mutually consistent."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_process_coverage
+    applies_to: "foreground process map"
+    rule: "Separation and final storage/loading shall be present; treatment shall be present whenever the declared product route includes stabilization, hydrotreating, sweetening, fraction adjustment, or specification blending."
+    source_ids:
+      - us-epa-ap42-refining-2015
+      - eu-refinery-bat-2014
+  - rule_id: validate_mass_balance
+    applies_to: "each process and reporting period"
+    rule: "Hydrocarbon inputs, outputs, recycle, inventory change, off-spec diversion, wastes, and unexplained imbalance shall be reconciled before normalization; unresolved material imbalance is an error."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_allocation
+    applies_to: "multifunctional refinery operations and shared utilities"
+    rule: "The selected allocation hierarchy, driver, factor, co-product set, price period if applicable, and sensitivity result shall be disclosed and applied consistently; double counting recovered energy or internal transfers is an error."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_direct_releases
+    applies_to: "air, water, and waste inventory"
+    rule: "Direct combustion and process emissions, flares, vents, fugitive leaks, storage/loading losses, final water releases, and treatment wastes shall be included by substance and destination or have a documented non-applicability determination."
+    source_ids:
+      - us-epa-ap42-refining-2015
+      - us-epa-refinery-effluent-guidelines
+      - eu-refinery-bat-2014
+  - rule_id: validate_period_and_quality
+    applies_to: "completed foreground dataset"
+    rule: "All foreground records shall cover a consistent declared period; calibration, sampling, calculation, representativeness, completeness, and uncertainty evidence shall be retained and material gaps disclosed."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground refinery-gate production dataset for naphtha."
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon footprint and LCA models needing refinery-gate naphtha as a feedstock, provided grade, route, geography, period, and allocation are compatible with the study."
+  excluded_use: "Direct comparison of unlike naphtha grades or refinery routes without harmonization; representation of motor gasoline, jet fuel, kerosene, white spirit, pyrolysis gasoline, or downstream petrochemicals; use-phase combustion without a downstream model."
+  required_metadata: "canonical PCR id; product flow UUID; grade and distillation range; treatment route; key quality specification; feed slate; refinery technology; geography; reference period; custody-transfer point; allocation hierarchy, driver and factor; included units; upstream dataset identities; data owner and review status"
+  required_quality_disclosure: "mass-balance closure; meter and laboratory QA/QC; temporal, technological and geographical representativeness; direct versus calculated data shares; emission and wastewater methods; allocation sensitivity; completeness; uncertainty; exclusions and unresolved gaps"
+  update_trigger: "Material change in feed slate, product grade or specification, fractionation or treatment route, tank/loading or control technology, allocation method, upstream supply, applicable permit method, or represented period; or a material data-quality finding."
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, p. 155, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf; retrieved 2026-08-09"
+    used_for: "CPC 33330 product boundary, naphtha identity, and distinction from motor gasoline."
+  - id: "us-epa-ap42-refining-2015"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 5.1 Petroleum Refining, April 2015, https://www.epa.gov/sites/default/files/2020-09/documents/5.1_petroleum_refining.pdf; retrieved 2026-08-09"
+    used_for: "Refinery process decomposition, separation and treatment operations, utilities, direct and fugitive emission sources, wastewater treatment, and foreground inventory coverage."
+  - id: "us-epa-ap42-petroleum-liquids-2008"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 5.2 Transportation and Marketing of Petroleum Liquids, June 2008, https://www.epa.gov/sites/default/files/2020-09/documents/5.2_transportation_and_marketing_of_petroleum_liquids.pdf; retrieved 2026-08-09"
+    used_for: "Loading-loss calculation inputs, loading modes, vapor recovery, and storage/loading emission records."
+  - id: "us-epa-refinery-effluent-guidelines"
+    type: "official_guidance"
+    reference: "U.S. EPA, Petroleum Refining Effluent Guidelines, 40 CFR Part 419 overview, https://www.epa.gov/eg/petroleum-refining-effluent-guidelines; retrieved 2026-08-09"
+    used_for: "Refinery product and process scope, wastewater boundary, discharge and treatment coverage."
+  - id: "eu-refinery-bat-2014"
+    type: "standard"
+    reference: "European Commission, Implementing Decision 2014/738/EU establishing BAT conclusions for the refining of mineral oil and gas, ELI http://data.europa.eu/eli/dec_impl/2014/738/oj; retrieved 2026-08-09"
+    used_for: "Monitoring and inclusion of air and water emissions, distillation off-gas and sour-water treatment, product treatment, storage, loading, vapor recovery, waste, and control-system records."
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, ELI http://data.europa.eu/eli/reco/2021/2279/oj; retrieved 2026-08-09"
+    used_for: "Functional unit and reference flow, completeness, multifunctionality hierarchy, allocation disclosure, data collection, representativeness, precision, and quality requirements."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:dad4936973aa66652619c01eede68fcf75be06f0230193b5744a7316b501a372"
+  generated_content_sha256: "sha256:a640c3b6bf1452bac2bfc190814ae34cd55fbf579be02ae46b99f21f54435138"

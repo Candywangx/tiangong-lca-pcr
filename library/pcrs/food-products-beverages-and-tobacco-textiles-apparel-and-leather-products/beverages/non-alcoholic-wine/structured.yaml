@@ -1,10 +1,956 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24491"
-  title: "Non-alcoholic wine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.non-alcoholic-wine"
+  classification_refs: "CPC 3.0: 24491, Non-alcoholic wine, exact mapping context"
+  covered_products: "Still or sparkling saleable beverages obtained exclusively from finished wine or special wine through permitted dealcoholisation and having actual alcoholic strength below 0.5% vol"
+  excluded_products: "Partially dealcoholised wine at or above 0.5% vol; beverages made directly from grape juice or must without first attaining wine characteristics; non-grape fermented beverages; aromatised wine products; wine vinegar"
+  representative_product: "Finished non-alcoholic wine, production mix, at plant"
+  production_route: "Qualified base wine receipt; partial vacuum evaporation, membrane technique, distillation, or a declared permitted combination; finishing and stabilisation; release; optional packaging"
+  market_state: "Saleable liquid beverage at the manufacturing plant, with packaging inclusion explicitly declared"
+functional_unit:
+  what: "A saleable non-alcoholic wine beverage meeting the declared product and jurisdictional specifications"
+  how_much: "1 kg net beverage mass"
+  how_well: "Produced from wine or special wine by a declared permitted dealcoholisation technique, with actual alcoholic strength below 0.5% vol and no organoleptic defect attributable to dealcoholisation"
+  how_long_or_cycle: "One released production lot at the factory gate; no service duration"
+  reference_flow_link: "The functional unit is realised by the single reference product flow below"
+system_boundary:
+  rules:
+    - rule_id: sb_wine_precondition
+      applies_to: "product identity and starting condition"
+      rule: "Dealcoholisation shall occur only after the input has become wine or special wine and attained the applicable wine characteristics; direct processing of juice or must does not satisfy this PCR."
+      source_ids:
+        - oiv-eco-432-2012
+        - eu-reg-2021-2117
+        - eu-commission-2024-694
+    - rule_id: sb_required_operations
+      applies_to: "foreground boundary"
+      rule: "Include accepted base-wine receipt, the declared dealcoholisation operation, associated electricity, heat or fuel, process and cleaning water, separation media or service inputs, recovered and discarded output streams, finishing and stabilisation, release testing, and foreground waste treatment or transfer."
+      source_ids:
+        - oiv-oeno-394a-2012
+        - eu-reg-2021-2117
+        - oiv-cst-431-2011
+    - rule_id: sb_permitted_techniques
+      applies_to: "dealcoholisation"
+      rule: "Identify partial vacuum evaporation, membrane technique, distillation, or the actual permitted combination. Do not use a generic undeclared “alcohol removal” process."
+      source_ids:
+        - oiv-oeno-394a-2012
+        - eu-reg-2021-2117
+    - rule_id: sb_packaging_scope
+      applies_to: "finishing and release"
+      rule: "Include primary, secondary, and tertiary packaging and packaging losses when the reference product is declared packaged; otherwise exclude packaging and state that the reference product is bulk at plant."
+      source_ids:
+        - oiv-cst-431-2011
+    - rule_id: sb_downstream_linkage
+      applies_to: "lifecycle model linkage"
+      rule: "Distribution, retail cooling, consumer use, and end-of-life remain outside this foreground package unless explicitly brought into the declared study; when included, connect them as separate downstream datasets."
+      source_ids:
+        - oiv-cst-431-2011
+boundary_abstraction:
+  declared_starting_condition: "Base wine or special wine has fully attained its applicable wine characteristics, has no organoleptic defect that would invalidate dealcoholisation, and is accepted at the foreground facility with measured mass or volume, density when needed, and alcoholic strength"
+  starting_condition_role: "Upstream product input to the non-alcoholic-wine foreground production package"
+  product_classification_scope: "The canonical semantic scope above; CPC 3.0 code 24491 is mapping context and does not define the process boundary"
+  recursive_input_rule: "Purchased or transferred non-alcoholic wine used for rework is recorded as a separate input with its own upstream dataset and is not netted against the reference output; same-lot internal recirculation is reported in process notes but not double-counted as a boundary exchange"
+  upstream_dataset_requirement: "Base-wine inputs require a linked upstream dataset covering grape production and vinification through the declared accepted-wine condition, or an explicit documented cut-off if the study does not include those stages"
+  disclosure: "Declare base-wine category and source, dealcoholisation technique or combination, incoming and final alcoholic strength, recovered aroma handling, removed-ethanol fate, finishing operations, packaging scope, allocation decisions, excluded stages, and all linked upstream and downstream datasets"
+reference_flow_definition:
+  reference_amount: "1 kg net beverage mass"
+  product_flow_ref:
+    name: "Non-alcoholic wine"
+    uuid: "014d2659-f8e8-4a23-adfa-97cbda224bab"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "base-wine category and origin"
+    - "still or sparkling state"
+    - "dealcoholisation technique or combination"
+    - "incoming and final actual alcoholic strength by volume"
+    - "residual-sugar or sweetness class where relevant"
+    - "packaging inclusion and format"
+    - "production geography"
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg of net beverage as the quantitative reference. Packaging mass is a separate inventory input and is never included in the 1 kg beverage mass."
+  - id: batch_normalisation
+    applies_to: "all foreground exchanges"
+    required_property_ref:
+      name: "Mass, energy, volume, count, or other property appropriate to the resolved flow"
+      uuid: ""
+    required_unit: "kg reference product denominator"
+    rule: "Normalize each lot or campaign total to released net beverage mass after deducting off-spec and rejected product. Preserve the original measured unit and conversion factor."
+  - id: alcoholic_strength
+    applies_to: "incoming base wine and released product"
+    required_property_ref:
+      name: "Actual alcoholic strength by volume"
+      uuid: ""
+    required_unit: "% vol"
+    rule: "Record laboratory or controlled in-line results for both incoming base wine and released product, including test method, sample time, temperature correction where applicable, and jurisdictional decision threshold."
+  - id: volume_to_mass
+    applies_to: "liquid records reported by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert volume to mass only with a measured or product-specific density for the same material state and temperature; retain the density, temperature, and source record. Do not assume water density."
+process_map:
+  - id: base_wine_acceptance
+    name: "Base-wine receipt and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, identity, and qualification"
+    quantitative_reference: "Accepted base-wine mass transferred to dealcoholisation"
+  - id: dealcoholisation
+    name: "Dealcoholisation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground ethanol separation and intermediate production"
+    quantitative_reference: "Dealcoholised intermediate transferred to finishing"
+  - id: finishing_and_release
+    name: "Finishing, stabilisation, and release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground final formulation, quality release, and reference-product production"
+    quantitative_reference: "1 kg released non-alcoholic wine"
+process_inventory:
+  - id: base_wine_acceptance
+    label: "Base-wine receipt and acceptance"
+    inputs:
+      product:
+        - row_id: base_wine_input
+          role: "Base wine accepted as the principal material input"
+          name: "Base wine or special wine, resolved for the declared category"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each base-wine lot entering the foreground facility after it has attained wine characteristics. Keep supplier or internal upstream-dataset linkage, mass or volume and density records, alcoholic strength, wine category, origin, and acceptance result."
+          amount:
+            expression: "measured accepted mass attributable to the released lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_base_wine_lots
+              source_ids:
+                - oiv-eco-432-2012
+                - eu-commission-2024-694
+            ranges:
+              - role: default_estimate
+                lower: "0.8"
+                upper: "2.0"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad first-pass estimate before site yield and removed-stream evidence are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: rejected_base_wine
+          role: "Rejected incoming wine"
+          name: "Rejected wine, destination-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record incoming wine rejected after receipt when it crosses the foreground boundary to return, treatment, or disposal. Do not subtract it from accepted base-wine input."
+          amount:
+            expression: "measured rejected mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_coproducts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending reviewed facility records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: dealcoholisation
+    label: "Dealcoholisation"
+    inputs:
+      product:
+        - row_id: accepted_wine_feed
+          role: "Accepted base wine transferred to dealcoholisation"
+          name: "Accepted base wine or special wine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted base-wine mass fed to the declared separation equipment. Internal tank transfers are reconciled but not double-counted as boundary inputs."
+          amount:
+            expression: "measured feed mass for the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dealcoholisation_feed
+              source_ids:
+                - oiv-oeno-394a-2012
+                - eu-reg-2021-2117
+            ranges:
+              - role: default_estimate
+                lower: "0.8"
+                upper: "2.0"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad first-pass estimate before site mass balance is available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dealcoholisation_electricity
+          role: "Electricity supplied to separation and aroma recovery"
+          name: "Electricity, resolved to the site supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for pumps, vacuum systems, membranes, distillation equipment, chilling, controls, and aroma recovery attributable to the lot."
+          amount:
+            expression: "metered or transparently allocated electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - oiv-cst-431-2011
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg released non-alcoholic wine"
+                basis: "deliberately broad estimate spanning different separation configurations"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dealcoholisation_thermal_energy
+          role: "Thermal energy or fuel supplied to dealcoholisation"
+          name: "Thermal energy, steam, or fuel, resolved separately by carrier"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased heat or steam and direct fuel separately by resolved flow. Preserve energy property and measured quantity; do not combine unlike carriers into an undocumented total."
+          amount:
+            expression: "metered energy or fuel-derived energy attributable to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - oiv-cst-431-2011
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "30"
+                unit: "MJ/kg released non-alcoholic wine"
+                basis: "deliberately broad estimate spanning membrane, vacuum, and distillation configurations"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dealcoholisation_water
+          role: "Process and cleaning water supplied to dealcoholisation"
+          name: "Process water, resolved to the site supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record process water and cleaning-in-place water separately where metering permits. Exclude water already contained in the accepted wine."
+          amount:
+            expression: "measured supplied water attributable to production and cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending technology- and site-specific records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dealcoholised_intermediate
+          role: "Dealcoholised wine intermediate"
+          name: "Dealcoholised wine intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net intermediate transferred to finishing together with actual alcoholic strength, mass, tank identity, and recovered-aroma recombination status."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_streams
+              source_ids:
+                - oiv-oeno-394a-2012
+                - eu-reg-2021-2117
+            ranges: []
+        - row_id: recovered_ethanol_fraction
+          role: "Recovered ethanol-rich fraction sent to beneficial use"
+          name: "Ethanol-rich recovered fraction, composition-specific product flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a recovered ethanol-rich fraction as a product output only when ownership, specification, destination, and beneficial use are documented. Otherwise use the waste row below."
+          amount:
+            expression: "measured exported mass and measured ethanol concentration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_coproducts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad mass-balance screening interval; not an allocation default"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: ethanol_containing_waste
+          role: "Ethanol-containing separation residue sent to treatment"
+          name: "Ethanol-containing liquid waste, destination-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use this row instead of the product row when the ethanol-containing fraction is discarded or sent to waste treatment. Record composition and destination."
+          amount:
+            expression: "measured transferred mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_coproducts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad mass-balance screening interval; mutually exclusive with recovered product accounting for the same material"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dealcoholisation_wastewater
+          role: "Dealcoholisation and cleaning wastewater"
+          name: "Wastewater, treatment-route-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving the foreground process by destination, with direct discharge or treatment route and relevant composition indicators retained in source records."
+          amount:
+            expression: "measured wastewater mass or volume converted with measured density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending site water balance and cleaning records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: finishing_and_release
+    label: "Finishing, stabilisation, and release"
+    inputs:
+      product:
+        - row_id: finishing_intermediate_input
+          role: "Dealcoholised intermediate transferred to finishing"
+          name: "Dealcoholised wine intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass received from dealcoholisation and reconcile it to the corresponding intermediate output without creating a second system-boundary input."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_streams
+              source_ids: []
+            ranges: []
+        - row_id: finishing_material_inputs
+          role: "Finishing and stabilisation material inputs"
+          name: "Each finishing material, resolved separately"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Create one resolved exchange for each water addition, recovered aroma, carbon dioxide, stabilising agent, filtration medium, or other permitted finishing material crossing the process boundary. Do not report an untraceable aggregate."
+          amount:
+            expression: "measured or batch-formula quantity for each material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad aggregate screening interval; dataset exchanges remain material-specific"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_electricity
+          role: "Finishing and cold-stabilisation electricity"
+          name: "Electricity, resolved to the site supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for chilling, filtration, pumping, carbonation, tank mixing, controls, and release operations."
+          amount:
+            expression: "metered or transparently allocated electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - oiv-cst-431-2011
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg released non-alcoholic wine"
+                basis: "broad first-pass estimate pending site metering"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_water
+          role: "Finishing and cleaning water"
+          name: "Process water, resolved to the site supply"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record product-contact and cleaning water separately when possible, excluding water already present in the intermediate."
+          amount:
+            expression: "measured supplied water attributable to finishing and cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending site water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials when packaged product is declared"
+          name: "Each packaging material and component, resolved separately"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When packaging is in scope, create separate exchanges for the primary container, closure, label, secondary packaging, pallet or tertiary packaging, and reusable-packaging losses. Omit this row only for explicitly declared bulk product."
+          amount:
+            expression: "component count multiplied by measured unit mass, including recorded losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg packaging/kg released non-alcoholic wine"
+                basis: "broad screening interval including bulk and heavy-container formats"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_non_alcoholic_wine
+          role: "Released non-alcoholic wine reference product"
+          name: "Non-alcoholic wine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014d2659-f8e8-4a23-adfa-97cbda224bab"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only saleable net beverage that passed product-identity, alcoholic-strength, sensory, and release checks. Packaging mass is excluded from this product-flow amount."
+          amount:
+            expression: "fixed at 1 kg as the reference product after normalization from measured released mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_release
+              source_ids:
+                - oiv-eco-432-2012
+                - eu-commission-2024-694
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg/kg reference product"
+                basis: "normalized reference product identity"
+                basis_kind: "reference_flow"
+                evidence_kind: "calculated_from_collection"
+                source_ids: []
+      waste:
+        - row_id: off_spec_finished_wine
+          role: "Off-spec or rejected finished beverage"
+          name: "Off-spec non-alcoholic wine, destination-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product failing release or packaging checks by actual reuse, rework, treatment, or disposal destination. Rework returned to the same lot is not double-counted."
+          amount:
+            expression: "measured rejected mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_coproducts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending reviewed facility records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_wastewater
+          role: "Finishing and cleaning wastewater"
+          name: "Wastewater, treatment-route-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving finishing and cleaning by destination; retain relevant composition and treatment information."
+          amount:
+            expression: "measured wastewater mass or volume converted with measured density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending site water balance and cleaning records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_waste
+          role: "Packaging scrap and damaged components"
+          name: "Packaging waste, material- and destination-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When packaging is in scope, record packaging scrap and damaged components by material and destination, net of verified same-process reuse."
+          amount:
+            expression: "measured packaging scrap by material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released non-alcoholic wine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg released non-alcoholic wine"
+                basis: "broad screening interval pending packaging-line records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid
+    applies_to: "all shared and multi-output operations"
+    rule: "First avoid allocation through process subdivision, separate metering, or expansion of the model to include the displaced function where justified by the study goal. Document the chosen approach and do not combine it with another approach for the same burden."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: alloc_internal_transfers
+    applies_to: "internal intermediate transfers and same-lot rework"
+    rule: "Do not allocate burdens between sequential internal stages. Carry measured inputs and outputs forward; do not count an internal transfer or same-lot recirculation as a new system-boundary input."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: alloc_ethanol_fraction
+    applies_to: "recovered ethanol-rich fraction or other exported co-product"
+    rule: "If subdivision or system expansion is not practicable and allocation remains necessary, use a physical relationship demonstrably governing resource or energy use; use mass only when that relationship is justified. If no physical relationship is defensible, use an economic relationship based on a representative period. Report quantities, properties, prices, period, and sensitivity."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: alloc_waste
+    applies_to: "ethanol-containing waste, wastewater, rejected wine, off-spec product, and packaging waste"
+    rule: "Waste treatment burdens remain with the foreground product until the documented point at which a secondary product with a defined function leaves the waste system. Do not assign co-product credit merely because a waste stream contains recoverable ethanol or material."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_base_wine_lots
+      process_id: "base_wine_acceptance"
+      flow_role: "incoming base wine and rejection"
+      record_type: "lot receipt and laboratory record"
+      raw_fields: "lot_id; supplier_or_internal_source; upstream_dataset_ref; wine_category; origin; mass; volume; density; temperature; actual_alcohol_pct_vol; organoleptic_acceptance; accepted_or_rejected; destination"
+      collection_method: "calibrated weighbridge, tank gauge, density record, laboratory or controlled in-line test, and signed acceptance record"
+      unit: "kg; L; kg/L; % vol"
+      frequency: "each lot"
+      temporal_coverage: "all lots in the representative period"
+      site_scope: "each foreground facility"
+      aggregation_rule: "sum accepted and rejected mass by lot and preserve source-specific linkage"
+      quality_evidence: "calibration status; test method; sample id; acceptance record; supplier or internal trace"
+    - protocol_id: cp_dealcoholisation_feed
+      process_id: "dealcoholisation"
+      flow_role: "accepted wine feed"
+      record_type: "batch and tank transfer record"
+      raw_fields: "batch_id; source_tank; destination_equipment; technique; start_time; end_time; mass; volume; density; actual_alcohol_pct_vol"
+      collection_method: "calibrated tank mass or volume measurement with density and batch linkage"
+      unit: "kg; L; kg/L; % vol"
+      frequency: "each batch"
+      temporal_coverage: "all batches in the representative period"
+      site_scope: "each dealcoholisation line"
+      aggregation_rule: "sum measured feed by released-lot linkage; exclude recirculation double counting"
+      quality_evidence: "meter calibration; tank reconciliation; batch genealogy"
+    - protocol_id: cp_utilities
+      process_id: "dealcoholisation_finishing_and_release"
+      flow_role: "electricity, heat, steam, and fuels"
+      record_type: "meter, invoice, and equipment allocation record"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; batch_or_time_period; equipment_runtime; allocation_driver"
+      collection_method: "dedicated meter preferred; otherwise documented allocation from shared meter or invoice"
+      unit: "kWh; MJ; carrier-specific physical unit"
+      frequency: "each batch or shortest available billing interval"
+      temporal_coverage: "representative operating period covering production and cleaning"
+      site_scope: "each facility and line"
+      aggregation_rule: "subtract non-production use; allocate shared use with documented driver; normalize to released mass"
+      quality_evidence: "meter class; invoice reconciliation; allocation calculation; missing-data flag"
+    - protocol_id: cp_water
+      process_id: "dealcoholisation_finishing_and_release"
+      flow_role: "process water, cleaning water, and wastewater"
+      record_type: "meter and cleaning log"
+      raw_fields: "meter_id; operation; supplied_volume_or_mass; wastewater_volume_or_mass; density_if_used; treatment_route; cleaning_cycle"
+      collection_method: "dedicated water meter and wastewater meter or reconciled tank/truck records"
+      unit: "kg; m3"
+      frequency: "each batch or cleaning cycle"
+      temporal_coverage: "representative operating period including cleaning"
+      site_scope: "each facility and discharge route"
+      aggregation_rule: "separate product-contact, cleaning, and wastewater where possible; reconcile supply, product addition, evaporation, and discharge"
+      quality_evidence: "meter calibration; cleaning log; discharge record; water-balance reconciliation"
+    - protocol_id: cp_output_streams
+      process_id: "dealcoholisation_finishing_and_release"
+      flow_role: "intermediates and internal transfers"
+      record_type: "tank transfer and laboratory record"
+      raw_fields: "batch_id; stream_id; mass; volume; density; actual_alcohol_pct_vol; ethanol_concentration; aroma_recovery_status; source_tank; destination_tank"
+      collection_method: "calibrated tank or scale measurement and laboratory analysis"
+      unit: "kg; L; kg/L; % vol"
+      frequency: "each transfer"
+      temporal_coverage: "all production lots in the representative period"
+      site_scope: "each line and tank"
+      aggregation_rule: "reconcile linked output and input records; do not count internal transfer as boundary exchange"
+      quality_evidence: "tank reconciliation; sample id; laboratory method; batch genealogy"
+    - protocol_id: cp_finishing_materials
+      process_id: "finishing_and_release"
+      flow_role: "finishing and stabilisation materials"
+      record_type: "batch formula and issue record"
+      raw_fields: "batch_id; material_id; resolved_flow_ref; lot_id; issued_mass_or_volume; returned_mass; density; purpose"
+      collection_method: "controlled recipe plus warehouse issue and return record"
+      unit: "kg; L"
+      frequency: "each batch"
+      temporal_coverage: "all production lots in the representative period"
+      site_scope: "each facility"
+      aggregation_rule: "net issued amount by material; normalize to released mass"
+      quality_evidence: "approved recipe; lot trace; scale calibration; material specification"
+    - protocol_id: cp_packaging
+      process_id: "finishing_and_release"
+      flow_role: "packaging materials and scrap"
+      record_type: "bill of materials, component mass, and line record"
+      raw_fields: "format_id; component_id; resolved_flow_ref; count_used; count_rejected; unit_mass; returned_count; reusable_cycles; scrap_mass; destination"
+      collection_method: "verified bill of materials, counted components, sampled component mass, and scrap weighing"
+      unit: "count; kg"
+      frequency: "each packaging run"
+      temporal_coverage: "representative packaging period"
+      site_scope: "each packaging line and declared format"
+      aggregation_rule: "count times verified unit mass plus measured losses; separate materials and destinations"
+      quality_evidence: "bill-of-material revision; scale calibration; count reconciliation; reuse record"
+    - protocol_id: cp_waste_and_coproducts
+      process_id: "base_wine_acceptance_dealcoholisation_finishing_and_release"
+      flow_role: "rejected wine, recovered fractions, waste, and off-spec product"
+      record_type: "transfer, weigh ticket, analysis, and destination record"
+      raw_fields: "stream_id; batch_id; mass; volume; density; composition; ethanol_concentration; product_or_waste_status; destination; ownership_transfer; revenue_if_allocation_used"
+      collection_method: "calibrated scale, tank record, laboratory analysis, and signed transfer document"
+      unit: "kg; L; % mass or % vol; currency"
+      frequency: "each transfer"
+      temporal_coverage: "all production and waste transfers in the representative period"
+      site_scope: "each facility and destination"
+      aggregation_rule: "sum by stream status and destination; prevent product/waste double classification for the same mass"
+      quality_evidence: "weigh ticket; laboratory method; destination evidence; contract or invoice"
+    - protocol_id: cp_final_release
+      process_id: "finishing_and_release"
+      flow_role: "released reference product"
+      record_type: "batch release and net-mass record"
+      raw_fields: "batch_id; product_id; net_released_mass; actual_alcohol_pct_vol; residual_sugar_or_sweetness; still_or_sparkling; sensory_result; package_scope; release_time; disposition"
+      collection_method: "calibrated tank or filling-line mass balance, laboratory test, sensory release, and quality authorisation"
+      unit: "kg; % vol"
+      frequency: "each released lot"
+      temporal_coverage: "all released lots in the representative period"
+      site_scope: "each facility and product format"
+      aggregation_rule: "sum only conforming released net beverage mass; exclude packaging mass, rejects, and unreleased stock"
+      quality_evidence: "signed release; laboratory method; calibration; product specification; lot trace"
+  calculation_rules:
+    - id: calc_reference_normalisation
+      applies_to: "all foreground exchanges"
+      rule: "Normalized exchange = attributable exchange quantity / measured released net beverage mass. Convert the denominator to kg before division and retain the original quantity and conversion."
+      inputs:
+        - "exchange quantity"
+        - "released net beverage mass"
+        - "density or unit conversion where needed"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_shared_utility
+      applies_to: "shared electricity, heat, fuel, water, and cleaning services"
+      rule: "Prefer dedicated metering. If shared, subtract independently measured non-product loads and allocate the remainder using a documented causal driver such as equipment runtime, throughput, or measured load; mass allocation is not an automatic default."
+      inputs:
+        - "shared total"
+        - "excluded loads"
+        - "causal driver by product lot"
+      output: "attributable utility quantity"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_packaging_mass
+      applies_to: "packaging inputs"
+      rule: "Packaging mass = sum for each component of net component count multiplied by verified unit mass, plus separately measured uncounted scrap; report each material separately."
+      inputs:
+        - "component count"
+        - "returned count"
+        - "unit mass"
+        - "scrap mass"
+      output: "kg packaging material per kg reference product"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "base wine, additions, intermediate, released product, recovered fraction, waste, and wastewater"
+      rule: "Reconcile measured input and output masses at batch level. Report measured evaporation or vented material when known and disclose unexplained imbalance within the combined measurement uncertainty; do not force balance by changing the reference output."
+      inputs:
+        - "measured inputs"
+        - outputs
+        - "stock change"
+        - "evaporation or vented loss"
+        - "measurement uncertainty"
+      output: "documented mass-balance reconciliation"
+      source_ids: []
+    - id: calc_allocation
+      applies_to: "exported co-products and shared operations"
+      rule: "Apply the selected allocation hierarchy once, using the collected physical or economic driver and documenting sensitivity where the allocation materially affects results."
+      inputs:
+        - "subdivided burdens"
+        - "exported quantities and properties"
+        - "representative prices if used"
+      output: "allocated foreground exchanges and disclosed allocation factor"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and base-wine lots"
+      requirement: "Preserve product identity, wine category, origin, upstream-dataset linkage, still or sparkling state, and dealcoholisation technique for every included lot."
+      evidence: "batch genealogy, supplier or internal record, product specification"
+    - id: dq_measurement
+      applies_to: "mass, volume, density, alcoholic strength, utilities, and waste"
+      requirement: "Use calibrated or controlled measurement systems appropriate to the quantity. Retain method, calibration status, sampling point, time, and any conversion factor."
+      evidence: "calibration certificate, laboratory method, meter record, conversion worksheet"
+    - id: dq_representativeness
+      applies_to: "foreground period"
+      requirement: "Use a period covering the technologies, product formats, cleaning cycles, start-ups, shutdowns, and seasonal or campaign conditions represented by the dataset; explain exclusions and missing-data substitutions."
+      evidence: "production schedule, batch list, coverage assessment, missing-data log"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Account for accepted and rejected wine, all material additions, electricity, heat or fuel, water, released product, recovered and discarded ethanol fractions, wastewater, packaging when in scope, off-spec product, and directly measured emissions or losses."
+      evidence: "process map, material and water balances, utility reconciliation, waste register"
+    - id: dq_allocation
+      applies_to: "shared services and co-products"
+      requirement: "Retain the unallocated totals, allocation hierarchy decision, driver data, calculation, and sensitivity needed to reproduce every allocation."
+      evidence: "allocation worksheet and source records"
+    - id: dq_product_release
+      applies_to: "final reference product"
+      requirement: "Retain actual alcoholic strength, sample and method, release decision, sensory conformity, minimum-durability determination where applicable, and packaging-scope declaration."
+      evidence: "laboratory certificate, signed release, sensory record, label or specification review"
+    - id: dq_provisional_ranges
+      applies_to: "all reasoned estimates"
+      requirement: "Treat every reasoned_estimate range as provisional authoring and QA guidance only. Replace it with reviewed foreground or source-backed evidence, or document explicit reviewer acceptance, before publication."
+      evidence: "range-evidence review record"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "foreground package"
+    rule: "Fail identity validation if the product was not obtained from wine or special wine that first attained its applicable characteristics, or if the dataset represents a directly fermented juice, partially dealcoholised wine, or another excluded beverage."
+    source_ids:
+      - oiv-eco-432-2012
+      - eu-reg-2021-2117
+      - eu-commission-2024-694
+  - rule_id: val_reference
+    applies_to: "reference flow"
+    rule: "Require exactly one reference output of 1 kg net beverage using product flow UUID 014d2659-f8e8-4a23-adfa-97cbda224bab, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg. Packaging mass shall not be included in the reference amount."
+    source_ids: []
+  - rule_id: val_alcoholic_strength
+    applies_to: "released product"
+    rule: "Require a recorded actual alcoholic strength below 0.5% vol for this canonical scope, plus test method and release evidence. A jurisdiction-specific threshold shall be declared and may impose additional requirements, but shall not broaden this PCR to partially dealcoholised wine."
+    source_ids:
+      - oiv-eco-432-2012
+      - eu-commission-2024-694
+  - rule_id: val_technique
+    applies_to: "dealcoholisation process"
+    rule: "Require a declared permitted technique or combination and evidence that dealcoholisation did not create an organoleptic defect. Flag simultaneous alcohol removal and compensating increase of sugar in the corresponding must as nonconforming."
+    source_ids:
+      - oiv-oeno-394a-2012
+      - eu-reg-2021-2117
+  - rule_id: val_mass_balance
+    applies_to: "each production lot"
+    rule: "Require linked input, output, stock-change, and waste records and a documented reconciliation within combined measurement uncertainty. Report unexplained imbalance; do not manufacture a balancing exchange."
+    source_ids: []
+  - rule_id: val_stream_classification
+    applies_to: "removed ethanol and other secondary streams"
+    rule: "The same stream mass shall not be reported simultaneously as recovered product and waste. Require composition, destination, ownership transfer, and allocation treatment."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: val_allocation
+    applies_to: "shared and multi-output processes"
+    rule: "Require avoidance or subdivision to be considered first. If allocation remains, require the chosen physical or economic relationship, period, factor calculation, and sensitivity to be reproducible."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: val_packaging
+    applies_to: "declared packaged product"
+    rule: "When packaging is declared in scope, require material-specific packaging inputs and packaging waste; when bulk is declared, require packaging exchanges to be absent and the bulk condition to be explicit."
+    source_ids: []
+  - rule_id: val_provisional_ranges
+    applies_to: "candidate quantitative guidance"
+    rule: "Report every value outside a provisional range for review, but do not treat a reasoned_estimate as a legal or publication-critical conformity limit."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for finished non-alcoholic wine at plant"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product footprints and lifecycle models that explicitly link appropriate upstream base-wine production and declared downstream stages; comparison only when scope, product state, packaging, geography, technology, reference period, and allocation are equivalent"
+  excluded_use: "Direct representation of partially dealcoholised wine, grape juice beverages, non-grape fermented beverages, or a complete cradle-to-grave product system without linked upstream and downstream datasets"
+  required_metadata: "canonical PCR id; reference flow UUID and mass property; production geography and period; base-wine category and source; still or sparkling state; dealcoholisation technique; incoming and final alcoholic strength; packaging scope and format; allocation method; linked datasets"
+  required_quality_disclosure: "measurement and calibration coverage; laboratory and sensory methods; temporal and facility coverage; mass, water, and utility reconciliation; missing data; provisional ranges used; co-product and waste destinations; allocation sensitivity"
+  update_trigger: "Change in product definition or legal threshold; change in dealcoholisation technology or energy system; material change in base-wine sourcing, formulation, packaging, yield, co-product fate, allocation, facility coverage, or reference period; replacement of provisional ranges with reviewed evidence"
+data_sources:
+  - id: "oiv-eco-432-2012"
+    type: "official_guidance"
+    reference: "OIV Resolution OIV-ECO 432-2012, “Beverage obtained by dealcoholisation of wine”, https://www.oiv.int/de/node/3304 (retrieved 2026-08-11)"
+    used_for: "canonical product definition, exclusive wine input, below-0.5% vol scope"
+  - id: "oiv-oeno-394a-2012"
+    type: "official_guidance"
+    reference: "OIV Resolution OIV-OENO 394A-2012, “Dealcoholisation of wines”, https://www.oiv.int/node/3274 (retrieved 2026-08-11)"
+    used_for: "process decomposition, permitted separation techniques, organoleptic and operating restrictions"
+  - id: "eu-reg-2021-2117"
+    type: "standard"
+    reference: "Regulation (EU) 2021/2117, ELI https://eur-lex.europa.eu/eli/reg/2021/2117/oj (retrieved 2026-08-11)"
+    used_for: "requirement that wine first attain its characteristics, permitted techniques, process and labelling boundary"
+  - id: "eu-commission-2024-694"
+    type: "official_guidance"
+    reference: "European Commission Notice C/2024/694, “Questions and answers on the implementation of EU rules on the de-alcoholisation of wines”, ELI https://data.europa.eu/eli/C/2024/694/oj (retrieved 2026-08-11)"
+    used_for: "distinction from partially dealcoholised wine, alcoholic-strength and release disclosures, minimum-durability responsibility"
+  - id: "oiv-cst-431-2011"
+    type: "official_guidance"
+    reference: "OIV Resolution OIV-CST 431-2011, “General principles of the OIV greenhouse gas accounting protocol for the vine and wine sector”, https://www.oiv.int/node/3309 (retrieved 2026-08-11)"
+    used_for: "energy and direct/indirect activity coverage, boundary and linked-stage disclosure"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, Clause 4.3.4"
+    used_for: "allocation hierarchy, subdivision, physical and other allocation relationships"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fe7e75fdac3875c2846d915b138cf2c4108e1c9d59d7b28ec434f31935aa4312"
+  generated_content_sha256: "sha256:8939342c968dc4726ae0e6c3624f480bbdbf3024e551af72f6f0dc9027c03e94"

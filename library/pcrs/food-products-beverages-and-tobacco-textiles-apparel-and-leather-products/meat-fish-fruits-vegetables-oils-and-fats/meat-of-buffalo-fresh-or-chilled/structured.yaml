@@ -1,10 +1,1879 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21112"
-  title: "Meat of buffalo, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-buffalo-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21112, exact"
+  covered_products: "Buffalo meat released fresh or chilled as carcasses, sides, quarters, bone-in cuts, or boneless cuts within CPC 21112"
+  excluded_products: "Frozen buffalo meat; edible and non-edible offal; meat of cattle or other species; farming; transport; retail; preparation; consumption; end of life"
+  representative_product: "A declared buffalo-meat cut or carcass presentation identified by species, cut, bone state, fat trim, net mass, fresh-or-chilled state, release temperature, packaging inclusion, facility, production period, and batch"
+  production_route: "Live-animal receiving; slaughter and dressing; evisceration, standard cutting and optional deboning; chilling and refrigerated holding; final inspection and conditional packaging; conditional on-site wastewater treatment"
+  market_state: "Net accepted buffalo meat at the slaughterhouse or meat-processing facility gate, fresh or chilled and not frozen"
+functional_unit:
+  what: "Provide hygienically accepted buffalo meat in a declared carcass or cut presentation"
+  how_much: "1 kg net accepted product"
+  how_well: "Declared buffalo species, cut, bone state, fat trim, fresh-or-chilled state, release temperature, and packaging inclusion; conforming to the producer's release specification"
+  how_long_or_cycle: "One production batch at facility-gate release; no use-stage service duration"
+  reference_flow_link: "accepted_reference_product_output in final_inspection_and_sale_packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_live_animal_gate
+      applies_to: "foreground_start"
+      rule: "The foreground starts with live buffalo accepted at the slaughterhouse gate plus materials, utilities, chemicals, refrigerant, and packaging crossing an included process boundary."
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - rule_id: boundary_upstream_exclusions
+      applies_to: "farming_and_transport"
+      rule: "Buffalo farming and inbound transport are outside the foreground boundary and require separately identified upstream datasets; retail, preparation, consumption, and end of life are downstream exclusions."
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - rule_id: boundary_product_state
+      applies_to: "cpc_21112_scope"
+      rule: "Only buffalo meat released fresh or chilled is the reference product; frozen meat and edible or non-edible offal are excluded from its mass and recorded separately when produced."
+      source_ids:
+        - unsd-cpc-3-0-21112
+        - ec-jrc-sa-bref-jrc135916
+    - rule_id: boundary_conditional_operations
+      applies_to: "conditional_technology"
+      rule: "Purchased steam, hot water, each fuel, R717 ammonia, treatment chemicals, on-site wastewater treatment, and packaging are included only when the declared facility actually uses them."
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - rule_id: boundary_direct_releases
+      applies_to: "air_and_water_emissions"
+      rule: "Record direct air or water releases only from monitoring or a verified foreground balance; never infer a release solely because an input is present."
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Live buffalo accepted at the slaughterhouse gate with species, origin, supplier, receipt time, animal count, net live mass, and acceptance status recorded"
+  starting_condition_role: "Foreground input whose farming and inbound transport burdens are supplied by separately identified upstream datasets"
+  product_classification_scope: "CPC 3.0 subclass 21112 only: buffalo meat, fresh or chilled"
+  recursive_input_rule: "Any purchased fresh or chilled buffalo meat entering an in-scope packing or processing operation remains a separately measured product input with supplier, cut, state, mass, and upstream dataset disclosed; it is not silently merged with the facility's own output"
+  upstream_dataset_requirement: "Identify datasets for live-buffalo farming and inbound transport plus production of water, electricity, steam, hot water, fuels, chemicals, refrigerant, and packaging; preserve geography, technology, period, and allocation compatibility"
+  disclosure: "Declare facility, process configuration, included operations, buffalo species, product presentation, fresh-or-chilled state, release temperature, production period, packaging inclusion, wastewater route, refrigerant, fuels, co-product status, waste destinations, allocation, and all proxies"
+reference_flow_definition:
+  reference_amount: "1 kg net accepted fresh or chilled buffalo meat"
+  product_flow_ref:
+    name: "Meat of buffalo, fresh or chilled"
+    uuid: "e96ba1cf-ce0b-4a35-ac5b-8cabebb56116"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Buffalo species"
+    - "carcass or cut"
+    - "bone-in or boneless"
+    - "fat-trim specification"
+    - "fresh or chilled state"
+    - "release temperature"
+    - "net mass basis"
+    - "packaging inclusion"
+    - "facility and country"
+    - "production period"
+    - batch
+    - "allocation method"
+    - "co-product and waste destinations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "accepted reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference amount is exactly 1 kg net accepted buffalo meat; exclude packaging, offal, frozen meat, rejects, free liquid, and transport containers."
+  - id: live_and_product_mass
+    applies_to: "live animal, carcass, meat, co-products, wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated net mass and retain gross, tare, stock, moisture, and disposition records needed for reconciliation."
+  - id: electricity_energy
+    applies_to: "each stage electricity row"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve stage-specific metering; convert only with documented factors and never merge electricity with steam or fuel."
+  - id: thermal_and_fuel_energy
+    applies_to: "purchased steam and natural gas"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain measured physical quantity and heating or enthalpy basis used to calculate MJ."
+  - id: liquid_and_refrigerant_mass
+    applies_to: "water, wastewater, diesel, LPG, chemicals, ammonia, and emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use measured mass or documented density/concentration conversion; retain solution concentration and environmental compartment where relevant."
+  - id: temperature_state
+    applies_to: "fresh-or-chilled meat"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Retain measured entry and release temperature and the declared fresh-or-chilled state; this rule sets no unsupported default temperature limit."
+process_map:
+  - id: animal_receiving_slaughter_and_dressing
+    name: "Animal receiving, slaughter, and carcass dressing"
+    inclusion: "required"
+    inclusion_condition: "Required for a slaughterhouse dataset beginning with live buffalo received at the facility."
+    role: "Foreground slaughter and primary dressing"
+    quantitative_reference: "per 1 kg accepted dressed buffalo carcass transferred"
+  - id: evisceration_cutting_and_deboning
+    name: "Evisceration, standard cutting, and deboning"
+    inclusion: "required"
+    inclusion_condition: "Required for converting dressed buffalo carcasses into declared meat cuts."
+    role: "Foreground meat-cut preparation and co-product separation"
+    quantitative_reference: "per 1 kg accepted buffalo meat before chilling"
+  - id: chilling_and_cold_storage
+    name: "Meat chilling and cold storage"
+    inclusion: "required"
+    inclusion_condition: "Required to place accepted buffalo meat in the declared fresh or chilled market state."
+    role: "Foreground temperature conditioning and refrigerated holding"
+    quantitative_reference: "per 1 kg accepted chilled buffalo meat transferred"
+  - id: wastewater_treatment
+    name: "Slaughterhouse wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when slaughter, cutting, or defrost wastewater is treated within the foreground facility; otherwise record transfer to the actual external treatment dataset."
+    role: "Foreground treatment of process-specific wastewater"
+    quantitative_reference: "per 1 kg treated slaughterhouse wastewater"
+  - id: final_inspection_and_sale_packaging
+    name: "Final inspection and sale packaging"
+    inclusion: "required"
+    inclusion_condition: "Final inspection is required; each packaging input is conditional on the declared sale format."
+    role: "Foreground release, reference-product normalization, and sale packaging"
+    quantitative_reference: "per 1 kg net accepted reference product"
+process_inventory:
+  - id: animal_receiving_slaughter_and_dressing
+    label: "Animal receiving, slaughter, and carcass dressing"
+    inputs:
+      product:
+        - row_id: live_buffalo_input
+          role: "Live buffalo received"
+          name: "Live buffalo"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Live buffalo as one separate exchange when always record the live animal crossing the slaughterhouse gate; farming and transport remain upstream. Its quantity is obtained as follows: Net live mass received from calibrated weighbridge or animal-receipt records."
+          amount:
+            expression: "Net live mass received from calibrated weighbridge or animal-receipt records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_animal_receipts
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: process_water_slaughter_input
+          role: "Process water for slaughter and dressing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Process water as one separate exchange when record only water crossing this process boundary. Its quantity is obtained as follows: Metered water attributed to lairage, slaughter, hide removal, carcass washing, and equipment rinsing."
+          amount:
+            expression: "Metered water attributed to lairage, slaughter, hide removal, carcass washing, and equipment rinsing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_slaughter_input
+          role: "Electricity for slaughter and dressing"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when record electricity used by restraining, stunning, hoisting, conveyors, pumps, and ventilation. Its quantity is obtained as follows: Submetered electricity or calculated allocation from a documented slaughter-area meter."
+          amount:
+            expression: "Submetered electricity or calculated allocation from a documented slaughter-area meter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: purchased_steam_slaughter_input
+          role: "Purchased steam for slaughter and dressing"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Purchased steam as one separate exchange when record conditionally when purchased steam supplies process heat across the boundary. Its quantity is obtained as follows: Supplier-metered steam converted with documented pressure, condensate state, and enthalpy."
+          amount:
+            expression: "Supplier-metered steam converted with documented pressure, condensate state, and enthalpy"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: purchased_hot_water_slaughter_input
+          role: "Purchased hot water for slaughter and dressing"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Hot water as one separate exchange when record conditionally when hot water is purchased and crosses the process boundary. Its quantity is obtained as follows: Metered supplied hot-water mass with supply and return temperatures retained."
+          amount:
+            expression: "Metered supplied hot-water mass with supply and return temperatures retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: natural_gas_slaughter_input
+          role: "Natural gas for on-site slaughter heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record Natural gas as one separate exchange when record conditionally when natural gas is combusted on site for in-scope heat. Its quantity is obtained as follows: Metered natural-gas energy attributed to the slaughter-area boiler or heater."
+          amount:
+            expression: "Metered natural-gas energy attributed to the slaughter-area boiler or heater"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_fuel_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: diesel_backup_generator_input
+          role: "Diesel for slaughter backup generator"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Diesel fuel as one separate exchange when record conditionally when a diesel generator actually supplies the slaughter process. Its quantity is obtained as follows: Tank issue and return balance assigned to hours serving in-scope slaughter loads."
+          amount:
+            expression: "Tank issue and return balance assigned to hours serving in-scope slaughter loads"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_fuel_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: lpg_forklift_input
+          role: "Liquefied petroleum gas for slaughter handling"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Liquefied petroleum gas as one separate exchange when record conditionally when LPG-powered equipment handles carcasses or slaughter materials. Its quantity is obtained as follows: Cylinder or bulk-tank issue balance assigned to in-scope handling equipment."
+          amount:
+            expression: "Cylinder or bulk-tank issue balance assigned to in-scope handling equipment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_fuel_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_buffalo_carcass_output
+          role: "Dressed buffalo carcass transferred"
+          name: "Dressed buffalo carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Dressed buffalo carcass as one separate exchange when record the accepted dressed carcass as the single intermediate product transfer. Its quantity is obtained as follows: Measured accepted carcass mass transferred to evisceration and cutting."
+          amount:
+            expression: "Measured accepted carcass mass transferred to evisceration and cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: buffalo_blood_output
+          role: "Recovered buffalo blood"
+          name: "Buffalo blood"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo blood as one separate exchange when record only blood collected as a separately managed co-product; otherwise classify the actual waste destination. Its quantity is obtained as follows: Measured mass collected separately for declared edible or technical use."
+          amount:
+            expression: "Measured mass collected separately for declared edible or technical use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: buffalo_hide_output
+          role: "Recovered buffalo hide"
+          name: "Buffalo hide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo hide as one separate exchange when record hides leaving dressing as one separately managed co-product. Its quantity is obtained as follows: Measured hide mass transferred for further processing."
+          amount:
+            expression: "Measured hide mass transferred for further processing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: buffalo_gut_contents_waste_output
+          role: "Buffalo gut contents waste"
+          name: "Buffalo gut contents waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo gut contents waste as one separate exchange when record gut contents separately from tissue residues and wastewater. Its quantity is obtained as follows: Measured container mass or calculated mass difference sent to the documented treatment destination."
+          amount:
+            expression: "Measured container mass or calculated mass difference sent to the documented treatment destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: non_edible_slaughter_tissue_waste_output
+          role: "Non-edible buffalo slaughter tissue waste"
+          name: "Non-edible buffalo slaughter tissue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Non-edible buffalo slaughter tissue waste as one separate exchange when record non-edible tissue separately from blood, hide, gut contents, and cutting waste. Its quantity is obtained as follows: Measured separately collected tissue mass sent to the documented destination."
+          amount:
+            expression: "Measured separately collected tissue mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: slaughter_wastewater_output
+          role: "Slaughter and dressing wastewater"
+          name: "Slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Slaughterhouse wastewater as one separate exchange when record this wastewater transfer separately from cutting and chiller wastewater. Its quantity is obtained as follows: Metered wastewater mass transferred from slaughter and dressing to wastewater treatment."
+          amount:
+            expression: "Metered wastewater mass transferred from slaughter and dressing to wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_fossil_slaughter_output
+          role: "Fossil carbon dioxide from slaughter-area combustion"
+          name: "Carbon dioxide, fossil"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Carbon dioxide, fossil as one separate exchange when record only direct fossil carbon dioxide released from on-site natural gas, diesel, or LPG combustion. Its quantity is obtained as follows: Fuel-specific carbon balance or monitored mass attributed to in-scope combustion."
+          amount:
+            expression: "Fuel-specific carbon balance or monitored mass attributed to in-scope combustion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: nitrogen_oxides_slaughter_output
+          role: "Nitrogen oxides from slaughter-area combustion"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen oxides as one separate exchange when record direct nitrogen oxides to air as one emission distinct from carbon dioxide. Its quantity is obtained as follows: Stack monitoring or fuel- and equipment-specific calculation attributed to in-scope combustion."
+          amount:
+            expression: "Stack monitoring or fuel- and equipment-specific calculation attributed to in-scope combustion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed buffalo carcass transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: evisceration_cutting_and_deboning
+    label: "Evisceration, standard cutting, and deboning"
+    inputs:
+      product:
+        - row_id: dressed_buffalo_carcass_input
+          role: "Dressed buffalo carcass received for cutting"
+          name: "Dressed buffalo carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Dressed buffalo carcass as one separate exchange when record the carcass entering evisceration and cutting as one intermediate input. Its quantity is obtained as follows: Measured carcass transfer mass received from dressing."
+          amount:
+            expression: "Measured carcass transfer mass received from dressing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: process_water_cutting_input
+          role: "Process water for cutting and deboning"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Process water as one separate exchange when record water supplied to this cutting process separately from slaughter and sanitation water. Its quantity is obtained as follows: Metered water attributed to carcass rinsing, cutting, deboning, and equipment rinsing."
+          amount:
+            expression: "Metered water attributed to carcass rinsing, cutting, deboning, and equipment rinsing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_cutting_input
+          role: "Electricity for cutting and deboning"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when record electricity for saws, knives, conveyors, extraction, and room services. Its quantity is obtained as follows: Submetered electricity or calculated allocation from documented cutting-room equipment loads."
+          amount:
+            expression: "Submetered electricity or calculated allocation from documented cutting-room equipment loads"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: purchased_hot_water_cutting_input
+          role: "Purchased hot water for cutting hygiene"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Hot water as one separate exchange when record conditionally when purchased hot water crosses the cutting-process boundary. Its quantity is obtained as follows: Metered hot-water mass used within the cutting process with temperatures retained."
+          amount:
+            expression: "Metered hot-water mass used within the cutting process with temperatures retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner_cutting_input
+          role: "Sodium hydroxide cleaner for cutting equipment"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Sodium hydroxide solution as one separate exchange when record conditionally when a sodium-hydroxide cleaner is used in this process. Its quantity is obtained as follows: Chemical issue mass corrected for returned stock and solution concentration."
+          amount:
+            expression: "Chemical issue mass corrected for returned stock and solution concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_chemical_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: peracetic_acid_disinfectant_cutting_input
+          role: "Peracetic acid disinfectant for cutting equipment"
+          name: "Peracetic acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Peracetic acid solution as one separate exchange when record conditionally when peracetic acid is the documented disinfectant. Its quantity is obtained as follows: Chemical issue mass corrected for returned stock and active concentration."
+          amount:
+            expression: "Chemical issue mass corrected for returned stock and active concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_chemical_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fresh_buffalo_meat_before_chilling_output
+          role: "Fresh buffalo meat before chilling"
+          name: "Fresh buffalo meat before chilling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Fresh buffalo meat before chilling as one separate exchange when record the declared bone-in or boneless meat cuts before chilling as one intermediate output. Its quantity is obtained as follows: Measured accepted meat mass transferred to chilling."
+          amount:
+            expression: "Measured accepted meat mass transferred to chilling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: edible_buffalo_liver_output
+          role: "Edible buffalo liver"
+          name: "Buffalo liver, edible"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo liver, edible as one separate exchange when record edible liver separately as a co-product and never include it in the CPC 21112 reference meat output. Its quantity is obtained as follows: Measured liver mass separately accepted for food use."
+          amount:
+            expression: "Measured liver mass separately accepted for food use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: edible_buffalo_heart_output
+          role: "Edible buffalo heart"
+          name: "Buffalo heart, edible"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo heart, edible as one separate exchange when record edible heart separately as a co-product and exclude it from the reference meat mass. Its quantity is obtained as follows: Measured heart mass separately accepted for food use."
+          amount:
+            expression: "Measured heart mass separately accepted for food use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: buffalo_fat_output
+          role: "Separated buffalo fat"
+          name: "Buffalo fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo fat as one separate exchange when record separated fat as one co-product when it has a documented further use. Its quantity is obtained as follows: Measured separately collected fat mass transferred for food or technical processing."
+          amount:
+            expression: "Measured separately collected fat mass transferred for food or technical processing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: buffalo_bones_output
+          role: "Separated buffalo bones"
+          name: "Buffalo bones"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Buffalo bones as one separate exchange when record bones as one separately managed co-product when a further-use destination is documented. Its quantity is obtained as follows: Measured separately collected bone mass transferred for further processing."
+          amount:
+            expression: "Measured separately collected bone mass transferred for further processing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_output_mass_balance
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: non_edible_buffalo_tissue_cutting_waste_output
+          role: "Non-edible buffalo cutting tissue waste"
+          name: "Non-edible buffalo cutting tissue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Non-edible buffalo cutting tissue waste as one separate exchange when record this cutting residue separately from edible organs, fat, bones, and rejected meat. Its quantity is obtained as follows: Measured tissue residue mass sent to the documented treatment destination."
+          amount:
+            expression: "Measured tissue residue mass sent to the documented treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: cutting_wastewater_output
+          role: "Cutting and deboning wastewater"
+          name: "Meat cutting wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Meat cutting wastewater as one separate exchange when record cutting wastewater separately from slaughter and chiller wastewater. Its quantity is obtained as follows: Metered wastewater mass transferred from cutting and deboning to treatment."
+          amount:
+            expression: "Metered wastewater mass transferred from cutting and deboning to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: rejected_buffalo_meat_cutting_waste_output
+          role: "Rejected buffalo meat from cutting"
+          name: "Rejected buffalo meat waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected buffalo meat waste as one separate exchange when record rejected meat separately from routine trim and non-edible tissue. Its quantity is obtained as follows: Measured rejected meat mass by disposition code."
+          amount:
+            expression: "Measured rejected meat mass by disposition code"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted buffalo meat before chilling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: chilling_and_cold_storage
+    label: "Meat chilling and cold storage"
+    inputs:
+      product:
+        - row_id: fresh_buffalo_meat_before_chilling_input
+          role: "Fresh buffalo meat entering chilling"
+          name: "Fresh buffalo meat before chilling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Fresh buffalo meat before chilling as one separate exchange when record the meat transfer entering chilling as one product input. Its quantity is obtained as follows: Measured accepted transfer mass entering the chilling system."
+          amount:
+            expression: "Measured accepted transfer mass entering the chilling system"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_product_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_chilling_input
+          role: "Electricity for chilling and cold storage"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when record refrigeration electricity separately from slaughter, cutting, wastewater, and packaging electricity. Its quantity is obtained as follows: Submetered electricity or calculated allocation from compressor, fan, pump, and cold-room loads."
+          amount:
+            expression: "Submetered electricity or calculated allocation from compressor, fan, pump, and cold-room loads"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: ammonia_refrigerant_replenishment_input
+          role: "Ammonia refrigerant replenishment"
+          name: "Ammonia"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Ammonia as one separate exchange when record conditionally only when the in-scope refrigeration system uses R717 ammonia and receives a recharge. Its quantity is obtained as follows: Measured maintenance recharge assigned to the refrigeration system and reporting period."
+          amount:
+            expression: "Measured maintenance recharge assigned to the refrigeration system and reporting period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: process_water_chilling_input
+          role: "Process water for chilling and defrosting"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Process water as one separate exchange when record only water supplied to chilling and cold-storage equipment. Its quantity is obtained as follows: Metered water attributed to in-scope chilling, glazing if applicable, and defrosting."
+          amount:
+            expression: "Metered water attributed to in-scope chilling, glazing if applicable, and defrosting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_utility_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_buffalo_meat_output
+          role: "Accepted chilled buffalo meat transferred"
+          name: "Chilled buffalo meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Chilled buffalo meat as one separate exchange when record only accepted buffalo meat in the declared fresh or chilled state; frozen meat is excluded. Its quantity is obtained as follows: Measured net accepted meat mass released from chilling to final inspection or packaging."
+          amount:
+            expression: "Measured net accepted meat mass released from chilling to final inspection or packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_product_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: chiller_defrost_wastewater_output
+          role: "Chiller defrost wastewater"
+          name: "Chiller defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Chiller defrost wastewater as one separate exchange when record defrost wastewater separately from slaughter and cutting wastewater. Its quantity is obtained as follows: Metered defrost wastewater mass transferred to treatment."
+          amount:
+            expression: "Metered defrost wastewater mass transferred to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: spoiled_buffalo_meat_cold_storage_waste_output
+          role: "Spoiled buffalo meat from cold storage"
+          name: "Spoiled buffalo meat waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Spoiled buffalo meat waste as one separate exchange when record cold-storage spoilage separately from cutting rejects and packaging rejects. Its quantity is obtained as follows: Measured spoiled or temperature-deviated meat mass by disposition record."
+          amount:
+            expression: "Measured spoiled or temperature-deviated meat mass by disposition record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        - row_id: ammonia_refrigerant_to_air_output
+          role: "Ammonia refrigerant emitted to air"
+          name: "Ammonia"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Ammonia as one separate exchange when record direct ammonia release only when monitoring or a verified balance demonstrates a loss; input presence alone is insufficient. Its quantity is obtained as follows: Leak monitoring or verified refrigerant inventory balance assigned to the reporting period."
+          amount:
+            expression: "Leak monitoring or verified refrigerant inventory balance assigned to the reporting period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted chilled buffalo meat transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: wastewater_treatment
+    label: "Slaughterhouse wastewater treatment"
+    inputs:
+      product:
+        - row_id: electricity_wastewater_treatment_input
+          role: "Electricity for wastewater treatment"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when record wastewater-treatment electricity separately from production-stage electricity. Its quantity is obtained as follows: Submetered electricity or calculated allocation from pumps, aeration, mixing, and dewatering loads."
+          amount:
+            expression: "Submetered electricity or calculated allocation from pumps, aeration, mixing, and dewatering loads"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: ferric_chloride_wastewater_input
+          role: "Ferric chloride for wastewater treatment"
+          name: "Ferric chloride solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Ferric chloride solution as one separate exchange when record conditionally when ferric chloride is actually dosed for coagulation or phosphorus removal. Its quantity is obtained as follows: Chemical issue mass corrected for returned stock and active concentration."
+          amount:
+            expression: "Chemical issue mass corrected for returned stock and active concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: sodium_hydroxide_wastewater_input
+          role: "Sodium hydroxide for wastewater pH control"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Sodium hydroxide solution as one separate exchange when record conditionally when sodium hydroxide is actually dosed for pH control. Its quantity is obtained as follows: Chemical issue mass corrected for returned stock and solution concentration."
+          amount:
+            expression: "Chemical issue mass corrected for returned stock and solution concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: slaughter_wastewater_treatment_input
+          role: "Slaughter and dressing wastewater entering treatment"
+          name: "Slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Slaughterhouse wastewater as one separate exchange when record the waste transfer from slaughter and dressing separately. Its quantity is obtained as follows: Metered slaughter wastewater mass entering on-site treatment."
+          amount:
+            expression: "Metered slaughter wastewater mass entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_influent_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: cutting_wastewater_treatment_input
+          role: "Cutting and deboning wastewater entering treatment"
+          name: "Meat cutting wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Meat cutting wastewater as one separate exchange when record the waste transfer from cutting and deboning separately. Its quantity is obtained as follows: Metered cutting wastewater mass entering on-site treatment."
+          amount:
+            expression: "Metered cutting wastewater mass entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_influent_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: chiller_defrost_wastewater_treatment_input
+          role: "Chiller defrost wastewater entering treatment"
+          name: "Chiller defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Chiller defrost wastewater as one separate exchange when record the defrost waste transfer separately from slaughter and cutting wastewater. Its quantity is obtained as follows: Metered chiller defrost wastewater mass entering on-site treatment."
+          amount:
+            expression: "Metered chiller defrost wastewater mass entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_influent_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_treatment_sludge_output
+          role: "Slaughterhouse wastewater-treatment sludge"
+          name: "Slaughterhouse wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Slaughterhouse wastewater-treatment sludge as one separate exchange when record sludge separately from screenings and liquid effluent. Its quantity is obtained as follows: Measured dewatered sludge mass with dry-matter content and destination retained."
+          amount:
+            expression: "Measured dewatered sludge mass with dry-matter content and destination retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_output_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: wastewater_screenings_output
+          role: "Slaughterhouse wastewater screenings"
+          name: "Slaughterhouse wastewater screenings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Slaughterhouse wastewater screenings as one separate exchange when record screenings as one solid waste distinct from sludge. Its quantity is obtained as follows: Measured screenings mass sent to the documented treatment destination."
+          amount:
+            expression: "Measured screenings mass sent to the documented treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_output_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        - row_id: chemical_oxygen_demand_to_water_output
+          role: "Chemical oxygen demand discharged to water"
+          name: "Chemical oxygen demand"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Chemical oxygen demand as one separate exchange when record COD to water as one monitored emission when treated effluent is directly discharged. Its quantity is obtained as follows: Effluent concentration multiplied by compliant discharge volume for the matching period."
+          amount:
+            expression: "Effluent concentration multiplied by compliant discharge volume for the matching period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: total_nitrogen_to_water_output
+          role: "Total nitrogen discharged to water"
+          name: "Nitrogen, total"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Nitrogen, total as one separate exchange when record total nitrogen to water separately from COD and phosphorus. Its quantity is obtained as follows: Effluent total-nitrogen concentration multiplied by compliant discharge volume for the matching period."
+          amount:
+            expression: "Effluent total-nitrogen concentration multiplied by compliant discharge volume for the matching period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: total_phosphorus_to_water_output
+          role: "Total phosphorus discharged to water"
+          name: "Phosphorus, total"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record Phosphorus, total as one separate exchange when record total phosphorus to water separately from COD and nitrogen. Its quantity is obtained as follows: Effluent total-phosphorus concentration multiplied by compliant discharge volume for the matching period."
+          amount:
+            expression: "Effluent total-phosphorus concentration multiplied by compliant discharge volume for the matching period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg treated slaughterhouse wastewater"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+  - id: final_inspection_and_sale_packaging
+    label: "Final inspection and sale packaging"
+    inputs:
+      product:
+        - row_id: chilled_buffalo_meat_packaging_input
+          role: "Chilled buffalo meat entering final inspection"
+          name: "Chilled buffalo meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Chilled buffalo meat as one separate exchange when record the chilled meat entering final inspection as one product input. Its quantity is obtained as follows: Measured accepted transfer mass entering final inspection."
+          amount:
+            expression: "Measured accepted transfer mass entering final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: electricity_packaging_input
+          role: "Electricity for final inspection and packaging"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record Electricity as one separate exchange when record this electricity separately from chilling and other production-stage electricity. Its quantity is obtained as follows: Submetered electricity or calculated allocation from inspection, sealing, labelling, and packing equipment."
+          amount:
+            expression: "Submetered electricity or calculated allocation from inspection, sealing, labelling, and packing equipment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: polyethylene_film_packaging_input
+          role: "Polyethylene food-contact film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Polyethylene packaging film as one separate exchange when record conditionally when polyethylene film is included in the declared sale format. Its quantity is obtained as follows: Net film mass issued to conforming sale packs."
+          amount:
+            expression: "Net film mass issued to conforming sale packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: corrugated_carton_packaging_input
+          role: "Corrugated fibreboard meat carton"
+          name: "Corrugated fibreboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Corrugated fibreboard carton as one separate exchange when record conditionally when a corrugated carton is included in the declared sale format. Its quantity is obtained as follows: Net carton mass issued to conforming sale packs."
+          amount:
+            expression: "Net carton mass issued to conforming sale packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: paper_label_packaging_input
+          role: "Paper product label"
+          name: "Paper product label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Paper product label as one separate exchange when record conditionally when a paper label is attached to the declared sale pack. Its quantity is obtained as follows: Net paper-label mass issued to conforming sale packs."
+          amount:
+            expression: "Net paper-label mass issued to conforming sale packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_input_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_reference_product_output
+          role: "Accepted meat of buffalo, fresh or chilled"
+          name: "Meat of buffalo, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e96ba1cf-ce0b-4a35-ac5b-8cabebb56116"
+          property_unit: "Mass / kg"
+          description: "Record Meat of buffalo, fresh or chilled as one separate exchange when record exactly the CPC 21112 product released at the facility gate; exclude frozen meat, offal, packaging mass, and rejected product. Its quantity is obtained as follows: Fixed reference amount of 1 kg net accepted fresh or chilled buffalo meat."
+          amount:
+            expression: "Fixed reference amount of 1 kg net accepted fresh or chilled buffalo meat"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-21112
+            ranges: []
+      waste:
+        - row_id: polyethylene_film_scrap_output
+          role: "Polyethylene packaging-film scrap"
+          name: "Polyethylene packaging-film scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Polyethylene packaging-film scrap as one separate exchange when record packaging-film scrap separately from carton and label scrap. Its quantity is obtained as follows: Measured film scrap mass by documented recovery or disposal destination."
+          amount:
+            expression: "Measured film scrap mass by documented recovery or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: corrugated_carton_scrap_output
+          role: "Corrugated fibreboard carton scrap"
+          name: "Corrugated fibreboard carton scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Corrugated fibreboard carton scrap as one separate exchange when record carton scrap separately from film and label scrap. Its quantity is obtained as follows: Measured carton scrap mass by documented recovery or disposal destination."
+          amount:
+            expression: "Measured carton scrap mass by documented recovery or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: paper_label_scrap_output
+          role: "Paper product-label scrap"
+          name: "Paper product-label scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Paper product-label scrap as one separate exchange when record label scrap separately from film and carton scrap. Its quantity is obtained as follows: Measured label scrap mass by documented recovery or disposal destination."
+          amount:
+            expression: "Measured label scrap mass by documented recovery or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+        - row_id: rejected_packaged_buffalo_meat_waste_output
+          role: "Rejected buffalo meat at final inspection"
+          name: "Rejected buffalo meat waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Rejected buffalo meat waste as one separate exchange when record final-inspection rejects separately from cutting rejects and cold-storage spoilage. Its quantity is obtained as follows: Measured rejected meat mass by final-inspection disposition code."
+          amount:
+            expression: "Measured rejected meat mass by final-inspection disposition code"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste_records
+              source_ids:
+                - ec-jrc-sa-bref-jrc135916
+                - eu-recommendation-2021-2279
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "separately_metered_processes"
+    rule: "First avoid allocation by subdividing slaughter, cutting, chilling, wastewater treatment, and packaging when their inputs and outputs are separately measured."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_mass_balance
+    applies_to: "all_material_outputs"
+    rule: "Reconcile live mass and each process transfer against reference meat, blood, hide, liver, heart, fat, bones, wastes, stock change, moisture change, and measured losses before allocating burdens."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_co_products
+    applies_to: "blood_hide_organs_fat_bones"
+    rule: "When subdivision cannot isolate burdens, apply and disclose a product-specific physical causal relation; if no defensible physical relation exists, use documented economic allocation with matching-period prices and sensitivity disclosure."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_waste_status
+    applies_to: "waste_and_recovered_outputs"
+    rule: "Classify each output as product, waste, or emission from its actual legal and operational destination; revenue or avoided treatment alone does not justify silently changing flow type."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared_meters"
+    rule: "Allocate shared utilities using a documented causal driver such as equipment submetering, operating time and rated load, treated volume, or refrigerated mass-time; disclose residual unallocated use."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_live_animal_receipts
+      process_id: "animal_receiving_slaughter_and_dressing"
+      flow_role: "live buffalo"
+      record_type: "weighbridge ticket and animal receipt"
+      raw_fields: "batch id; species; animal count; origin; supplier; arrival time; gross, tare, and net mass; calibration id"
+      collection_method: "Reconcile calibrated scale tickets to animal-receipt and acceptance records"
+      unit: "kg"
+      frequency: "each received lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "receiving area"
+      aggregation_rule: "Sum accepted net live mass by lot; retain rejected or dead-on-arrival animals separately"
+      quality_evidence: "scale calibration; signed receipt; animal identity and health acceptance"
+    - protocol_id: cp_slaughter_utility_records
+      process_id: "animal_receiving_slaughter_and_dressing"
+      flow_role: "water, electricity, steam, and hot water"
+      record_type: "meters, supplier invoices, and operating logs"
+      raw_fields: "meter id; opening and closing readings; timestamps; pressure; temperatures; condensate state; production hours"
+      collection_method: "Use dedicated meters where available; otherwise calculate from documented shared-meter drivers"
+      unit: "kg; kWh; MJ"
+      frequency: "daily or batch"
+      temporal_coverage: "representative full production period"
+      site_scope: "slaughter and dressing area"
+      aggregation_rule: "Subtract non-production use and normalize to accepted carcass transfer mass"
+      quality_evidence: "meter calibration; invoices; boundary diagram; allocation calculation"
+    - protocol_id: cp_slaughter_fuel_records
+      process_id: "animal_receiving_slaughter_and_dressing"
+      flow_role: "natural gas, diesel, and LPG"
+      record_type: "fuel meters, tank balance, cylinder issues, and equipment logs"
+      raw_fields: "fuel identity; opening stock; receipts; issues; returns; closing stock; heating value; equipment hours"
+      collection_method: "Reconcile fuel inventory and assign only consumption serving in-scope equipment"
+      unit: "kg; MJ"
+      frequency: "daily or delivery cycle"
+      temporal_coverage: "complete reporting period"
+      site_scope: "on-site slaughter heat and handling equipment"
+      aggregation_rule: "Calculate net consumption and normalize to accepted carcass transfer mass"
+      quality_evidence: "fuel invoice; tank reconciliation; equipment log; heating-value record"
+    - protocol_id: cp_slaughter_output_mass_balance
+      process_id: "animal_receiving_slaughter_and_dressing"
+      flow_role: "carcass, blood, and hide"
+      record_type: "calibrated scales and transfer records"
+      raw_fields: "batch id; output identity; gross; tare; net mass; acceptance status; destination; timestamp"
+      collection_method: "Weigh each separately managed output and reconcile with received live mass"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "slaughter and dressing line"
+      aggregation_rule: "Sum accepted output by identity; retain stock and moisture changes separately"
+      quality_evidence: "scale calibration; transfer ticket; destination record; mass-balance review"
+    - protocol_id: cp_slaughter_waste_records
+      process_id: "animal_receiving_slaughter_and_dressing"
+      flow_role: "gut contents, tissue waste, and slaughter wastewater"
+      record_type: "waste scales, containers, flow meters, and consignment records"
+      raw_fields: "waste identity; gross; tare; net mass; meter reading; moisture; destination; treatment code"
+      collection_method: "Measure each waste stream separately and reconcile internal wastewater transfer"
+      unit: "kg"
+      frequency: "each batch or removal"
+      temporal_coverage: "complete reporting period"
+      site_scope: "slaughter and dressing line"
+      aggregation_rule: "Sum by row identity and destination; do not combine solid waste with wastewater"
+      quality_evidence: "scale or meter calibration; consignment record; treatment acceptance"
+    - protocol_id: cp_combustion_emissions
+      process_id: "animal_receiving_slaughter_and_dressing"
+      flow_role: "fossil carbon dioxide and nitrogen oxides"
+      record_type: "fuel balance, stack monitoring, and equipment factors"
+      raw_fields: "fuel consumed; carbon content; heating value; monitored concentration; gas flow; operating hours"
+      collection_method: "Use matched-period monitoring or fuel- and equipment-specific calculations"
+      unit: "kg"
+      frequency: "reporting period"
+      temporal_coverage: "same period as fuel records"
+      site_scope: "on-site combustion equipment"
+      aggregation_rule: "Attribute direct emissions using documented equipment service and normalize to process output"
+      quality_evidence: "monitoring QA; fuel certificate; calculation workbook; equipment log"
+    - protocol_id: cp_cutting_input_records
+      process_id: "evisceration_cutting_and_deboning"
+      flow_role: "dressed carcass"
+      record_type: "transfer scale record"
+      raw_fields: "batch id; gross; tare; net mass; temperature; acceptance status; transfer time"
+      collection_method: "Reconcile received carcass transfer to the upstream accepted output"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "cutting and deboning line"
+      aggregation_rule: "Sum accepted incoming carcass mass by batch"
+      quality_evidence: "scale calibration; matched transfer record; temperature record"
+    - protocol_id: cp_cutting_utility_records
+      process_id: "evisceration_cutting_and_deboning"
+      flow_role: "water, electricity, and hot water"
+      record_type: "meters and operating logs"
+      raw_fields: "meter id; readings; timestamps; temperatures; equipment hours; production batch"
+      collection_method: "Use dedicated meters or documented equipment-load allocation"
+      unit: "kg; kWh"
+      frequency: "daily or batch"
+      temporal_coverage: "representative full production period"
+      site_scope: "cutting and deboning rooms"
+      aggregation_rule: "Subtract idle and unrelated use; normalize to accepted meat before chilling"
+      quality_evidence: "meter calibration; load study; boundary diagram; production log"
+    - protocol_id: cp_cutting_chemical_records
+      process_id: "evisceration_cutting_and_deboning"
+      flow_role: "sodium hydroxide and peracetic acid"
+      record_type: "chemical issue, return, and concentration records"
+      raw_fields: "chemical identity; formulation; active concentration; opening stock; issues; returns; closing stock; batch"
+      collection_method: "Reconcile each chemical separately and calculate solution or active mass consistently"
+      unit: "kg"
+      frequency: "daily or sanitation cycle"
+      temporal_coverage: "complete reporting period"
+      site_scope: "cutting equipment sanitation attributable to the process"
+      aggregation_rule: "Calculate net issued mass by chemical and normalize to accepted meat before chilling"
+      quality_evidence: "supplier specification; stock ledger; dosing record; concentration check"
+    - protocol_id: cp_cutting_output_mass_balance
+      process_id: "evisceration_cutting_and_deboning"
+      flow_role: "meat, liver, heart, fat, and bones"
+      record_type: "calibrated scales and transfer records"
+      raw_fields: "batch id; output identity; net mass; edible status; destination; timestamp"
+      collection_method: "Weigh each accepted output separately and reconcile with incoming carcass mass"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "cutting and deboning line"
+      aggregation_rule: "Sum by output identity; retain stock, moisture, and rework separately"
+      quality_evidence: "scale calibration; disposition record; mass-balance review"
+    - protocol_id: cp_cutting_waste_records
+      process_id: "evisceration_cutting_and_deboning"
+      flow_role: "tissue waste, cutting wastewater, and rejected meat"
+      record_type: "waste scales, flow meters, and disposition records"
+      raw_fields: "row identity; mass or meter reading; rejection reason; contamination; destination; timestamp"
+      collection_method: "Measure each waste separately and link it to its treatment or disposition"
+      unit: "kg"
+      frequency: "each batch or removal"
+      temporal_coverage: "complete reporting period"
+      site_scope: "cutting and deboning line"
+      aggregation_rule: "Sum by row identity and destination; reconcile with process mass balance"
+      quality_evidence: "scale or meter calibration; waste consignment; rejection log"
+    - protocol_id: cp_chilling_product_records
+      process_id: "chilling_and_cold_storage"
+      flow_role: "fresh meat input and chilled meat output"
+      record_type: "transfer scales, temperature logs, and release records"
+      raw_fields: "batch id; cut; bone state; net mass; entry and release temperatures; timestamps; acceptance"
+      collection_method: "Match incoming and released mass to continuous temperature records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "chilling and cold rooms"
+      aggregation_rule: "Account for stock change, drip loss, rejected mass, and transfer timing"
+      quality_evidence: "scale calibration; temperature calibration; release authorization; stock record"
+    - protocol_id: cp_chilling_utility_records
+      process_id: "chilling_and_cold_storage"
+      flow_role: "electricity and water"
+      record_type: "submeters, equipment logs, and water meters"
+      raw_fields: "meter id; readings; timestamps; compressor and fan hours; room temperatures; water use"
+      collection_method: "Use dedicated refrigeration meters or documented load allocation"
+      unit: "kWh; kg"
+      frequency: "daily"
+      temporal_coverage: "representative seasonal production period"
+      site_scope: "chilling and cold-storage system"
+      aggregation_rule: "Allocate by measured equipment load and refrigerated mass-time; normalize to released chilled meat"
+      quality_evidence: "meter calibration; load study; temperature log; allocation workbook"
+    - protocol_id: cp_refrigerant_records
+      process_id: "chilling_and_cold_storage"
+      flow_role: "R717 ammonia input and air release"
+      record_type: "refrigerant inventory and maintenance records"
+      raw_fields: "refrigerant identity; opening charge; additions; recoveries; closing charge; service event; leak test"
+      collection_method: "Reconcile system-specific inventory; calculate release only from verified loss or monitoring"
+      unit: "kg"
+      frequency: "each service event and annual balance"
+      temporal_coverage: "complete reporting period"
+      site_scope: "in-scope refrigeration system"
+      aggregation_rule: "Assign verified recharge and loss to released chilled meat; disclose balance residual"
+      quality_evidence: "maintenance certificate; cylinder weights; leak test; inventory reconciliation"
+    - protocol_id: cp_chilling_waste_records
+      process_id: "chilling_and_cold_storage"
+      flow_role: "defrost wastewater and spoiled meat"
+      record_type: "water meter, waste scale, and disposition records"
+      raw_fields: "row identity; mass; timestamp; rejection cause; destination; batch"
+      collection_method: "Measure each waste separately and link it to treatment"
+      unit: "kg"
+      frequency: "each defrost event or batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "chilling and cold-storage area"
+      aggregation_rule: "Sum by row identity; normalize to released chilled meat"
+      quality_evidence: "meter or scale calibration; disposition record; temperature-deviation report"
+    - protocol_id: cp_wastewater_influent_records
+      process_id: "wastewater_treatment"
+      flow_role: "process-specific wastewater inputs"
+      record_type: "source flow meters and transfer logs"
+      raw_fields: "source process; meter id; volume or mass; temperature; sampling time; solids or fat indicator"
+      collection_method: "Measure each source stream separately before mixing"
+      unit: "kg"
+      frequency: "daily"
+      temporal_coverage: "complete reporting period"
+      site_scope: "on-site wastewater-treatment inlet"
+      aggregation_rule: "Sum by source process; retain unmetered inflow and stormwater separately"
+      quality_evidence: "meter calibration; source map; sampling record"
+    - protocol_id: cp_wastewater_treatment_input_records
+      process_id: "wastewater_treatment"
+      flow_role: "electricity and treatment chemicals"
+      record_type: "submeters, stock ledgers, and dosing logs"
+      raw_fields: "meter readings; chemical identity; concentration; issues; returns; closing stock; dosing time"
+      collection_method: "Measure electricity and reconcile each chemical separately"
+      unit: "kWh; kg"
+      frequency: "daily"
+      temporal_coverage: "complete reporting period"
+      site_scope: "on-site wastewater-treatment plant"
+      aggregation_rule: "Normalize inputs to treated wastewater mass; disclose bypasses"
+      quality_evidence: "meter calibration; supplier specification; dosing record; stock reconciliation"
+    - protocol_id: cp_wastewater_treatment_output_records
+      process_id: "wastewater_treatment"
+      flow_role: "sludge and screenings"
+      record_type: "scales and waste consignment records"
+      raw_fields: "waste identity; gross; tare; net mass; dry matter; destination; removal time"
+      collection_method: "Weigh sludge and screenings separately and retain destination evidence"
+      unit: "kg"
+      frequency: "each removal"
+      temporal_coverage: "complete reporting period"
+      site_scope: "on-site wastewater-treatment plant"
+      aggregation_rule: "Sum by waste identity and destination; normalize to treated wastewater mass"
+      quality_evidence: "scale calibration; laboratory dry matter; consignment record"
+    - protocol_id: cp_effluent_monitoring
+      process_id: "wastewater_treatment"
+      flow_role: "COD, total nitrogen, and total phosphorus to water"
+      record_type: "compliant sampling and discharge-flow records"
+      raw_fields: "parameter; method; sample time; concentration; discharge volume; discharge point; QA result"
+      collection_method: "Multiply matched-period compliant concentration by discharge volume for each parameter"
+      unit: "kg"
+      frequency: "permit or monitoring frequency"
+      temporal_coverage: "complete reporting period"
+      site_scope: "declared direct discharge point"
+      aggregation_rule: "Calculate each pollutant separately; treat non-detects and missing samples transparently"
+      quality_evidence: "laboratory accreditation; chain of custody; flow-meter calibration; permit report"
+    - protocol_id: cp_final_product_records
+      process_id: "final_inspection_and_sale_packaging"
+      flow_role: "chilled meat input and accepted reference output"
+      record_type: "transfer scales, inspection, release, and product specifications"
+      raw_fields: "batch id; species; cut; bone state; fat trim; net mass; temperature; acceptance; packaging inclusion"
+      collection_method: "Weigh net product and verify CPC 21112 state before release"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "final inspection and dispatch gate"
+      aggregation_rule: "Exclude packaging, offal, frozen meat, and rejects; normalize accepted output to exactly 1 kg"
+      quality_evidence: "scale calibration; product specification; release authorization; batch traceability"
+    - protocol_id: cp_packaging_input_records
+      process_id: "final_inspection_and_sale_packaging"
+      flow_role: "electricity and each packaging component"
+      record_type: "submeter, packaging issue, return, and specification records"
+      raw_fields: "meter readings; packaging identity; grade; opening stock; issues; returns; closing stock; batch"
+      collection_method: "Reconcile electricity and each packaging material separately"
+      unit: "kWh; kg"
+      frequency: "daily or batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "final inspection and packing area"
+      aggregation_rule: "Calculate net input by row identity and normalize to 1 kg net accepted product"
+      quality_evidence: "meter calibration; packaging specification; stock ledger; batch packing record"
+    - protocol_id: cp_packaging_waste_records
+      process_id: "final_inspection_and_sale_packaging"
+      flow_role: "packaging scrap and rejected meat"
+      record_type: "waste scales and disposition records"
+      raw_fields: "row identity; gross; tare; net mass; rejection reason; contamination; destination; batch"
+      collection_method: "Weigh each scrap or reject separately and retain treatment destination"
+      unit: "kg"
+      frequency: "each batch or removal"
+      temporal_coverage: "complete reporting period"
+      site_scope: "final inspection and packing area"
+      aggregation_rule: "Sum by row identity and destination; normalize to 1 kg net accepted product"
+      quality_evidence: "scale calibration; rejection log; waste consignment"
+  calculation_rules:
+    - id: calc_net_material_issue
+      applies_to: "materials_chemicals_packaging"
+      rule: "net input = opening stock + receipts - returns - closing stock - documented transfers outside the boundary"
+      inputs:
+        - "stock ledger"
+        - receipts
+        - returns
+        - "closing stock"
+        - "boundary transfers"
+      output: "net row-specific foreground input"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_reference_normalization
+      applies_to: "all_process_inventory"
+      rule: "normalized amount = attributed row amount / net accepted reference-product mass"
+      inputs:
+        - "attributed row amount"
+        - "net accepted CPC 21112 mass"
+      output: "amount per 1 kg net accepted reference product"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_process_normalization
+      applies_to: "intermediate_process_inventory"
+      rule: "process-normalized amount = attributed row amount / accepted quantitative-reference output"
+      inputs:
+        - "attributed row amount"
+        - "accepted process output"
+      output: "amount per declared process output"
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - id: calc_mass_balance
+      applies_to: "slaughter_cutting_chilling"
+      rule: "mass-balance residual = inputs + opening stock - products - co-products - wastes - closing stock - documented moisture change"
+      inputs:
+        - "all measured input"
+        - transfer
+        - output
+        - waste
+        - stock
+        - "and moisture records"
+      output: "process residual and reconciliation status"
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - id: calc_shared_utility
+      applies_to: "shared_utility_meters"
+      rule: "allocated utility = shared-meter net use × documented causal driver share"
+      inputs:
+        - "meter readings"
+        - "equipment load or operating time"
+        - "throughput or mass-time"
+      output: "row-specific allocated utility"
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - id: calc_effluent_emission
+      applies_to: "direct_water_emissions"
+      rule: "emitted mass = matched-period compliant concentration × direct-discharge volume with unit conversion"
+      inputs:
+        - "laboratory concentration"
+        - "discharge flow"
+        - "time coverage"
+        - "unit conversion"
+      output: "kg of one pollutant released to water"
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "ammonia_refrigerant"
+      rule: "verified loss = opening charge + additions - recoveries - closing charge - documented transfers; use monitoring when superior"
+      inputs:
+        - "system inventory"
+        - "maintenance additions"
+        - recoveries
+        - "charge records"
+        - "leak monitoring"
+      output: "kg ammonia released to air, or zero when no verified loss"
+      source_ids:
+        - ec-jrc-sa-bref-jrc135916
+        - eu-recommendation-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain buffalo species, cut, bone state, fat trim, fresh-or-chilled state, net mass, release temperature, facility, period, and batch linkage."
+      evidence: "product specification; release record; traceability record; calibrated scale and thermometer"
+    - id: dq_primary_data
+      applies_to: "foreground processes"
+      requirement: "Use company-specific records for material, utility, chemical, refrigerant, product, co-product, waste, and direct-emission rows; disclose every proxy and unmeasured share."
+      evidence: "meter and scale records; stock ledgers; supplier invoices; monitoring reports; proxy register"
+    - id: dq_temporal_completeness
+      applies_to: "reporting period"
+      requirement: "Cover a representative complete production period including seasonal refrigeration load, shutdowns, rejected batches, maintenance, and inventory change."
+      evidence: "production calendar; downtime log; maintenance log; stock reconciliation"
+    - id: dq_mass_balance
+      applies_to: "material flows"
+      requirement: "Reconcile each process and the overall facility without hiding residuals in a combined co-product or waste row."
+      evidence: "signed mass-balance workbook; scale calibration; stock and moisture records"
+    - id: dq_measurement_quality
+      applies_to: "meters_and_laboratories"
+      requirement: "Retain calibration status, measurement method, detection limits, sampling representativeness, and laboratory accreditation where applicable."
+      evidence: "calibration certificates; sampling plan; laboratory QA; chain of custody"
+    - id: dq_allocation_transparency
+      applies_to: "shared_processes_and_co_products"
+      requirement: "Disclose subdivision attempts, allocation drivers, quantities, prices if used, period matching, allocation shares, and sensitivity results."
+      evidence: "allocation workbook; meter map; production and price records; sensitivity calculation"
+    - id: dq_uuid_gaps
+      applies_to: "unresolved_tiangong_flows"
+      requirement: "Keep non-reference UUIDs blank until dual verification and preserve row-specific unresolved-flow metadata."
+      evidence: "manifest unresolved_flow_references; reviewer resolution record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Require exactly one 1 kg net accepted CPC 21112 reference output using the verified product-flow UUID, Mass property, Units of mass group, and kg; reject frozen meat, offal, packaging mass, and rejected meat in the reference amount."
+    source_ids:
+      - unsd-cpc-3-0-21112
+  - rule_id: validate_scope_and_traceability
+    applies_to: "buffalo_product"
+    rule: "Require buffalo species, facility, production period, cut, bone state, fat trim, fresh-or-chilled state, release temperature, and batch linkage."
+    source_ids:
+      - unsd-cpc-3-0-21112
+      - ec-jrc-sa-bref-jrc135916
+  - rule_id: validate_atomic_flows
+    applies_to: "process_inventory"
+    rule: "Reject collection labels and combined exchanges; every live-animal input, water stream, stage electricity, steam, hot water, fuel, refrigerant, chemical, packaging material, co-product, waste, and emission must remain separate."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+  - rule_id: validate_mass_balance
+    applies_to: "slaughter_and_cutting"
+    rule: "Require stepwise reconciliation of received live mass, carcass transfers, meat, each co-product, each waste, stock change, moisture change, and rejected product."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+  - rule_id: validate_conditional_inputs
+    applies_to: "conditional_routes"
+    rule: "Require evidence of actual use before recording purchased steam, purchased hot water, natural gas, diesel, LPG, R717 ammonia, ferric chloride, sodium hydroxide, peracetic acid, or sale packaging."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+  - rule_id: validate_wastewater_and_releases
+    applies_to: "wastewater"
+    rule: "Require process-specific wastewater transfers, matched-period treatment records, and monitored discharge concentration and volume for each water emission."
+    source_ids:
+      - ec-jrc-sa-bref-jrc135916
+      - eu-recommendation-2021-2279
+  - rule_id: validate_uuid_resolution
+    applies_to: "tiangong_references"
+    rule: "Reject any non-reference UUID lacking both identity confirmation and a public state-100 direct read; unresolved identities remain blank with row-specific manifest metadata."
+    source_ids: []
+  - rule_id: validate_translation_alignment
+    applies_to: "bilingual_pcr"
+    rule: "Require identical ordered process_id, row_id, Selected flow, controlled-token, source-id, boundary-rule, allocation-rule, and validation-rule sequences in English and Chinese."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific foreground slaughter, cutting, chilling, and release dataset for CPC 21112 buffalo meat, fresh or chilled"
+  downstream_use: "secondary_dataset; background_dataset only when species, product presentation, geography, facility technology, period, allocation, refrigerated state, and unresolved-flow limitations match the downstream study"
+  allowed_use: "Slaughterhouse-gate LCI, supplier-specific data exchange, product-footprint modelling, and downstream process or lifecycle-model projection with all qualifiers retained"
+  excluded_use: "Buffalo farming or transport; frozen buffalo meat; edible or non-edible offal as reference product; retail, preparation, consumption, or end-of-life claims; unqualified comparison across different cuts or allocation methods; automatic filling of unresolved UUIDs or quantities"
+  required_metadata: "PCR id and version; buffalo species; facility and country; production period; batch; carcass or cut; bone and fat-trim state; fresh-or-chilled state; release temperature; net mass; process configuration; meters and scales; cleaning chemicals; refrigerant; fuels; packaging; wastewater route; co-product and waste destinations; allocation; source and proxy list"
+  required_quality_disclosure: "Company-specific data coverage; temporal, geographic, and technological representativeness; meter, scale, thermometer, and laboratory QA; mass-balance residuals; allocation shares and sensitivity; unmeasured flows; conditional operations; direct-emission basis; upstream substitutions; unresolved Tiangong identities; data gaps and uncertainty"
+  update_trigger: "Change in CPC scope, reference-flow identity, buffalo species, product cut or state, facility, slaughter or cutting technology, refrigeration system, fuel, chemical, packaging, wastewater treatment, co-product destination, allocation, or material foreground evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-21112"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21112, official structure entry and CPC_Ver_3.0_Structure_30Jun2025.csv. https://unstats.un.org/unsd/classifications/Econ"
+    used_for: "Exact fresh-or-chilled buffalo-meat scope and exclusion of frozen meat and offal from the reference product"
+  - id: "ec-jrc-sa-bref-jrc135916"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and/or Edible Co-products Industries, JRC135916, DOI 10.2760/18199. https://publications.jrc.ec.europa.eu/repository/handle/JRC135916"
+    used_for: "Animal receiving, slaughter, dressing, standard cutting, chilling, sanitation, utilities, wastewater, emissions, blood, hide, fat, bone, organ, waste, monitoring, and process-data structure"
+  - id: "eu-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, consolidated text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Product-specific company data, complete LCI, allocation, completeness, transparency, data quality, calculation, and verification rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2e6865b5a983a44781243d9f6f4354a3e2b87c738b1b1431fecffc3fc60927ba"
+  generated_content_sha256: "sha256:6063328d9852c37e942b8b0d82faebc5f76a0eaf7672bb23522bba96473b9a65"

@@ -11,7 +11,10 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
+import {
+  hasDeclaredUnresolvedReferenceProductFlow,
+  materialProjectionCompletenessIssues,
+} from "../../packages/pcr-core/src/projection-completeness.mjs";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
 import {
   AMOUNT_RANGE_ROLE_VALUES as AMOUNT_RANGE_ROLE_VALUE_LIST,
@@ -29,6 +32,7 @@ import {
   structuredProjectionYaml,
 } from "./markdown-projection.mjs";
 import { inspectPublishedRevisionState } from "./published-revision-state.mjs";
+import { checkMeasurementConsistency } from "./measurement-consistency.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { REQUIRED_DIRS } from "./builder-constants.mjs";
 import { validateBuilderContract } from "./schema-contracts.mjs";
@@ -51,6 +55,36 @@ const RANGE_ROLE_VALUES = new Set(AMOUNT_RANGE_ROLE_VALUE_LIST);
 const EVIDENCE_KIND_VALUES = new Set(EVIDENCE_KIND_VALUE_LIST);
 const RECURSIVE_ORIGIN_TERM_PATTERN =
   /\b(first[- ]generation|previous[- ]generation)\b|第一代|上一代/giu;
+const CHINESE_FLOW_NAME_GAP_PATTERN =
+  /天工(?:平台)?.*(?:未提供|没有|缺少).*中文(?:名称|名)|中文(?:名称|名).*(?:不可用|缺失)/u;
+const ATOMIC_FLOW_COLLECTION_PATTERNS = [
+  /\b(?:energy carriers?|utility flows?|utilities)\b/iu,
+  /\b(?:route-specific (?:preservation )?materials?|packaging materials?|recipe ingredients|cheesemaking ingredients|cleaning and sanitation materials)\b/iu,
+  /\bpackaging (?:product )?flow\b.*\bmaterial-specific\b|\bpackaging waste\b.*\bmaterial-specific\b/iu,
+  /\b(?:material|substance|chemical|carrier|compartment|destination)[- ]specific\b.*\b(?:flow|material|waste|emission)s?\b/iu,
+  /\b(?:flow|material|waste|emission)s?\b.*\b(?:material|substance|chemical|carrier|compartment|destination)[- ]specific\b/iu,
+  /^(?:exact|unresolved)\b.*\bflows?\b/iu,
+  /\bselect(?:ed)?\b.*\bflows?\b/iu,
+  /\b(?:spent brine|wastewater)\s*(?:,|and|or)\s*(?:wastewater|spent brine|residues?|rejects?|wastes?)\b/iu,
+  /\b(?:residues?|rejects?|wastes?)\s*(?:,|and|or)\s*(?:wastewater|spent brine)\b/iu,
+  /^(?:select|actual)\b.*\bflows?\b/iu,
+  /\belectricity\b.*\b(?:and|or)\b.*\bfuel(?:s)?\b|\bfuel(?:s)?\b.*\b(?:and|or)\b.*\belectricity\b/iu,
+  /(?:路线|场址|材料|物质|化学品|载体|隔室|去向)特定.*(?:流|材料|废物|排放)/u,
+  /(?:选择|选定|实际|待确认).*(?:流|材料|废物|排放)/u,
+  /(?:能源载体|公用工程流|包装材料|配方成分|清洗和卫生材料)/u,
+  /电力.*(?:、|和|或).*(?:蒸汽|热能|燃料)|(?:蒸汽|热能|燃料).*(?:、|和|或).*电力/u,
+  /(?:废盐水|废水).*(?:、|和|或).*(?:废水|废盐水|残渣|不合格品|废物)/u,
+];
+const ATOMIC_ENERGY_FLOW_TERMS = [
+  /\belectricity\b/iu,
+  /\bsteam\b/iu,
+  /\b(?:purchased|district) heat\b|^heat(?=\s+(?!from\s+steam\b))/iu,
+  /\bnatural gas\b/iu,
+  /\bdiesel\b/iu,
+  /\b(?:fuel oil|lpg|liquefied petroleum gas)\b/iu,
+  /\b(?:refrigeration|cooling energy)\b/iu,
+  /\bcompressed air\b/iu,
+];
 const IMPORTANT_RANGE_PATTERNS = [
   {
     reason: "water or liquid waste",
@@ -234,6 +268,19 @@ function inventoryRows(processInventory) {
   return rows;
 }
 
+function isCollectionFlowName(name) {
+  const text = String(name ?? "").trim();
+  if (ATOMIC_FLOW_COLLECTION_PATTERNS.some((pattern) => pattern.test(text))) {
+    return true;
+  }
+  return ATOMIC_ENERGY_FLOW_TERMS.filter((pattern) => pattern.test(text)).length > 1;
+}
+
+function isLikelyTranslatableEnglishFlowName(name) {
+  const text = String(name ?? "").trim();
+  return !/\p{Script=Han}/u.test(text) && /[a-z]{3,}/u.test(text);
+}
+
 function topLevelValue(text, key) {
   const value = parseYaml(text)[key];
   return value === undefined || value === null ? null : String(value);
@@ -309,7 +356,7 @@ function validatePcrProjection(
   problems,
   warnings,
   root,
-  { material = false, rangePolicy = "ignore" } = {},
+  { material = false, rangePolicy = "ignore", enforceAtomicFlows = false } = {},
   markdown = "",
 ) {
   const relativePath = toRepoRelative(root, markdownPath);
@@ -357,6 +404,14 @@ function validatePcrProjection(
     }
     if (!FLOW_TYPE_VALUES.has(row.flow_type)) {
       problems.push(`${context} has invalid flow_type "${row.flow_type}"`);
+    }
+    if (material && isCollectionFlowName(row.name)) {
+      const finding =
+        `${context}: Selected flow "${row.name}" is a collection label, not one atomic inventory flow; ` +
+        "split electricity, steam or heat, each fuel, each material, each waste, and each elementary emission into separate flow cards";
+      if (enforceAtomicFlows) {
+        problems.push(finding);
+      }
     }
     const amount = row.amount ?? {};
     if (!AMOUNT_VALUE_MODE_VALUES.has(amount.value_mode)) {
@@ -574,7 +629,18 @@ function inspectChineseMarkdown(root, markdownPath, markdown, manifest, problems
   return envelope.body.trim() ? parsePcrMarkdownToStructured(markdown) : null;
 }
 
-function validateBilingualRuleAlignment(root, zhPath, english, chinese, problems) {
+function validateBilingualRuleAlignment(
+  root,
+  zhPath,
+  english,
+  chinese,
+  problems,
+  {
+    enforceInventoryAlignment = false,
+    localizationPolicy = "ignore",
+    warnings = [],
+  } = {},
+) {
   if (!chinese) {
     return;
   }
@@ -593,6 +659,57 @@ function validateBilingualRuleAlignment(root, zhPath, english, chinese, problems
       );
     }
   }
+
+  if (enforceInventoryAlignment) {
+    const inventoryEntries = (projection) =>
+      inventoryRows(projection.processInventory).map(({ processEntry, direction, flowType, row }) => ({
+        process_id: processEntry.id,
+        direction,
+        flow_type: flowType,
+        row_id: row.row_id,
+        uuid: row.uuid || null,
+        name: String(row.name ?? "").trim(),
+        description: String(row.description ?? "").trim(),
+      }));
+    const englishInventory = inventoryEntries(english);
+    const chineseInventory = inventoryEntries(chinese);
+    const identityFields = (entries) => entries.map(({ name: _name, description: _description, ...identity }) => identity);
+    if (JSON.stringify(identityFields(englishInventory)) !== JSON.stringify(identityFields(chineseInventory))) {
+      problems.push(
+        `${relativePath}: inventory ordered row identities do not match canonical English; ` +
+          "process_id, direction, flow_type, row_id, order, and UUID must align",
+      );
+      return;
+    }
+
+    const unlocalizedEntries = [];
+    for (let index = 0; index < englishInventory.length; index += 1) {
+      const englishEntry = englishInventory[index];
+      const chineseEntry = chineseInventory[index];
+      if (
+        englishEntry.name === chineseEntry.name &&
+        isLikelyTranslatableEnglishFlowName(chineseEntry.name) &&
+        !CHINESE_FLOW_NAME_GAP_PATTERN.test(chineseEntry.description)
+      ) {
+        unlocalizedEntries.push(chineseEntry);
+      }
+    }
+    if (localizationPolicy === "error") {
+      for (const entry of unlocalizedEntries) {
+        problems.push(
+          `${relativePath}: process ${entry.process_id} flow ${entry.row_id}: ` +
+            `Selected flow "${entry.name}" is not localized for Chinese readers; ` +
+            "use Tiangong's exact official Chinese baseName, translate a concrete non-UUID name, or explicitly document that Tiangong provides no Chinese name",
+        );
+      }
+    } else if (localizationPolicy === "warning" && unlocalizedEntries.length > 0) {
+      warnings.push(
+        `${relativePath}: Chinese-flow localization migration has ${unlocalizedEntries.length} untranslated ` +
+          "Selected flow displays; localize them and declare " +
+          "review_metadata.inventory_contract.localized_flow_names: tiangong_zh_v1",
+      );
+    }
+  }
 }
 
 export function inspectPcrDirectory({
@@ -603,11 +720,16 @@ export function inspectPcrDirectory({
   structuredText: structuredTextOverride,
   checkManifestLifecycle = true,
   checkBilingualRuleAlignment = false,
+  measurementPolicy = "report",
 } = {}) {
+  if (!["report", "enforce"].includes(measurementPolicy)) {
+    throw new Error('measurementPolicy must be "report" or "enforce".');
+  }
   const resolvedRoot = rootFromOptions({ root });
   const directory = path.resolve(String(pcrDir));
   const problems = [];
   const warnings = [];
+  let measurement = null;
   const manifestPath = path.join(directory, manifestFileName);
   const inputSpecifications = [
     {
@@ -658,6 +780,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: false,
     };
@@ -689,6 +812,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: false,
     };
@@ -699,6 +823,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: true,
     };
@@ -723,6 +848,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: true,
     };
@@ -746,9 +872,22 @@ export function inspectPcrDirectory({
     {
       material,
       rangePolicy: rangePolicyFromManifest(manifestText),
+      enforceAtomicFlows: manifest.review_metadata?.inventory_contract?.atomic_flows === "v1",
     },
     markdownText,
   );
+  if (material && manifest.review_metadata?.inventory_contract?.atomic_flows !== "v1") {
+    const collectionRows = inventoryRows(projection.processInventory).filter(({ row }) =>
+      isCollectionFlowName(row.name),
+    );
+    if (collectionRows.length > 0) {
+      warnings.push(
+        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: legacy atomic-flow migration has ` +
+          `${collectionRows.length} collection-label inventory rows; split them and declare ` +
+          "review_metadata.inventory_contract.atomic_flows: v1",
+      );
+    }
+  }
 
   if (["active", "published"].includes(manifest.status)) {
     inspectCanonicalMarkdown(
@@ -777,13 +916,26 @@ export function inspectPcrDirectory({
         manifest,
         problems,
       );
-      if (checkBilingualRuleAlignment || ["active", "published"].includes(manifest.status)) {
+      if (
+        checkBilingualRuleAlignment ||
+        ["active", "published"].includes(manifest.status) ||
+        manifest.review_metadata?.inventory_contract?.atomic_flows === "v1"
+      ) {
         validateBilingualRuleAlignment(
           resolvedRoot,
           chineseMarkdownPath,
           projection,
           chineseProjection,
           problems,
+          {
+            enforceInventoryAlignment:
+              manifest.review_metadata?.inventory_contract?.atomic_flows === "v1",
+            localizationPolicy:
+              manifest.review_metadata?.inventory_contract?.localized_flow_names === "tiangong_zh_v1"
+                ? "error"
+                : "warning",
+            warnings,
+          },
         );
       }
     }
@@ -792,10 +944,40 @@ export function inspectPcrDirectory({
   const expectedStructuredText = structuredProjectionYaml(projection, {
     sourceMarkdown: markdownText,
   });
+  const measurementProblems = [];
   if (material) {
+    measurement = checkMeasurementConsistency({
+      english: markdownText,
+      chinese: inputTexts.get(PCR_ZH_FILE),
+    });
+    if (measurementPolicy === "report" && measurement.status !== "pass") {
+      warnings.push(
+        `${toRepoRelative(resolvedRoot, directory)}: MEASUREMENT_REPORT: ` +
+          `status=${measurement.status}; findings=${measurement.findings.length}; ` +
+          `skipped=${measurement.coverage.skipped.length}; details are available in inspection.measurement`,
+      );
+    } else if (measurementPolicy === "enforce") {
+      for (const finding of measurement.findings) {
+        measurementProblems.push(
+          `${toRepoRelative(resolvedRoot, directory)}: ${finding.code} ` +
+            `(${finding.language}${finding.row_id ? `; row ${finding.row_id}` : ""}): ${finding.message}`,
+        );
+      }
+      problems.push(...measurementProblems);
+    }
+  }
+  if (material) {
+    const expectedProjection = parseYaml(expectedStructuredText);
     for (const issue of materialProjectionCompletenessIssues(
-      parseYaml(expectedStructuredText),
-      { expectedPcrId: manifest.id },
+      expectedProjection,
+      {
+        expectedPcrId: manifest.id,
+        allowUnresolvedProductFlowUuid:
+          hasDeclaredUnresolvedReferenceProductFlow(
+            expectedProjection,
+            manifest,
+          ),
+      },
     )) {
       problems.push(
         `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: ${issue.message}`,
@@ -830,6 +1012,12 @@ export function inspectPcrDirectory({
   return {
     problems,
     warnings,
+    measurement,
+    // Only unresolved measurement semantics may request manual review. Definite
+    // Schema, lifecycle, projection or other Builder errors take precedence.
+    measurementReviewRequired: measurement?.status === "manual_review"
+      && measurementProblems.length > 0
+      && problems.length === measurementProblems.length,
     projection,
     expectedStructuredText,
     managedInputsSafe: true,
