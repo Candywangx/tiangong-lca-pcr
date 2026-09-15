@@ -26,12 +26,21 @@ import {
   FLOW_TYPE_VALUES as FLOW_TYPE_VALUE_LIST,
   PROCESS_INCLUSION_VALUES as PROCESS_INCLUSION_VALUE_LIST,
 } from "../../packages/pcr-core/src/generated/controlled-vocabulary.mjs";
+import {
+  REQUIRED_PCR_LANGUAGES,
+  declaredPcrLanguages,
+  pcrMarkdownFile,
+} from "../../packages/pcr-core/src/languages.mjs";
 import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
   parsePcrMarkdownToStructured,
   structuredProjectionYaml,
 } from "./markdown-projection.mjs";
 import { inspectPublishedRevisionState } from "./published-revision-state.mjs";
+import {
+  PCR_MARKDOWN_FILE_PATTERN,
+  resolvePcrLanguageFiles,
+} from "./pcr-language-files.mjs";
 import { checkMeasurementConsistency } from "./measurement-consistency.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { REQUIRED_DIRS } from "./builder-constants.mjs";
@@ -712,6 +721,132 @@ function validateBilingualRuleAlignment(
   }
 }
 
+function declaredLanguageFiles(markdown, language) {
+  if (!String(markdown ?? "").trim()) {
+    return [];
+  }
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error || !envelope.frontmatter) {
+    return [];
+  }
+  const pcrId = envelope.frontmatter.pcr_id;
+  if (typeof pcrId !== "string" || !pcrId) {
+    return [];
+  }
+  return [
+    {
+      fileName: `pcr.${language}.md`,
+      language: envelope.frontmatter.language,
+      pcrId,
+      syncWith: envelope.frontmatter.sync_with,
+    },
+  ];
+}
+
+function languageFromMarkdownFileName(fileName) {
+  const match = /^pcr\.([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.md$/u.exec(String(fileName ?? ""));
+  return match ? match[1] : null;
+}
+
+/**
+ * When a caller injects manifest text instead of a manifest file, the language
+ * file set must still be derived from that declaration. Undeclared language
+ * files fail closed; every declared language requires its file.
+ */
+function resolveOverriddenLanguageArtifacts({ manifestText, directory, inputTexts, inputStates, root, problems }) {
+  let declaredLanguages;
+  try {
+    declaredLanguages = declaredPcrLanguages(parseYaml(manifestText));
+  } catch {
+    declaredLanguages = [...REQUIRED_PCR_LANGUAGES];
+  }
+  const optional = [];
+  for (const language of declaredLanguages) {
+    if (REQUIRED_PCR_LANGUAGES.includes(language)) {
+      continue;
+    }
+    const fileName = pcrMarkdownFile(language);
+    const filePath = path.join(directory, fileName);
+    const state = inputStates.get(fileName) ?? canonicalRegularFileState(filePath, root, problems, {
+      missingMessage: `${toRepoRelative(root, filePath)}: required file is missing`,
+    });
+    if (!state.exists || !state.safe) {
+      if (!state.exists) {
+        problems.push(
+          `${toRepoRelative(root, filePath)}: declared language Markdown file is missing; ` +
+            `manifest.languages.available declares ${language}, so its file is required, or remove the declaration`,
+        );
+      }
+      continue;
+    }
+    const text = inputTexts.get(fileName) ?? readCanonicalRegularFile(filePath, root, problems);
+    if (text === null) {
+      continue;
+    }
+    optional.push({ language, fileName, filePath, text });
+  }
+  for (const fileName of readdirSync(directory).sort()) {
+    const language = languageFromMarkdownFileName(fileName);
+    if (language === null || declaredLanguages.includes(language)) {
+      continue;
+    }
+    const state = inputStates.get(fileName);
+    if (state && !state.exists) {
+      continue;
+    }
+    problems.push(
+      `${toRepoRelative(root, path.join(directory, fileName))}: language Markdown file is not declared in manifest.languages.available`,
+    );
+  }
+  return { optional };
+}
+
+/**
+ * Optional language Markdown is validated whenever its file is present: it must
+ * be declared, carry a non-empty canonical language frontmatter, identify the
+ * same PCR, and sync with the canonical English file. Missing declared artifacts
+ * are errors; absent undeclared languages never block the required languages.
+ */
+function inspectDeclaredLanguageFiles({ root, manifest, resolved, problems }) {
+  for (const entry of resolved.optional ?? []) {
+    const language = entry.language;
+    const relativePath = toRepoRelative(root, entry.filePath);
+    if (!String(entry.text ?? "").trim()) {
+      problems.push(`${relativePath}: declared language Markdown file must not be empty`);
+      continue;
+    }
+    validateMarkdownFrontmatterContract(root, entry.filePath, entry.text, problems);
+    const envelope = parseMarkdownEnvelope(entry.text);
+    if (envelope.error) {
+      problems.push(`${relativePath}: ${envelope.error}`);
+      continue;
+    }
+    if (!envelope.body.trim()) {
+      problems.push(`${relativePath}: declared language Markdown requires content after frontmatter`);
+    }
+    for (const [field, expected] of [
+      ["pcr_id", manifest?.id],
+      ["language", language],
+    ]) {
+      const actual = envelope.frontmatter?.[field];
+      if (actual !== expected) {
+        problems.push(
+          `${relativePath}: frontmatter ${field} must be "${expected}"; found "${actual ?? "(missing)"}"`,
+        );
+      }
+    }
+    // Every dependent translation is derived from the canonical English source;
+    // an arbitrary sibling locale is not an acceptable sync target.
+    const syncWith = envelope.frontmatter?.sync_with;
+    if (syncWith !== PCR_EN_FILE) {
+      problems.push(
+        `${relativePath}: frontmatter sync_with must be "${PCR_EN_FILE}" because the canonical source is the ` +
+          `English revision; found "${syncWith ?? "(missing)"}"`,
+      );
+    }
+  }
+}
+
 export function inspectPcrDirectory({
   root,
   pcrDir,
@@ -816,6 +951,37 @@ export function inspectPcrDirectory({
       expectedStructuredText: null,
       managedInputsSafe: false,
     };
+  }
+
+  // Every language file present in this workspace must be declared, and every
+  // declared language file that is present is validated below.
+  let languageInspection = { optional: [] };
+  if (manifestTextOverride !== undefined) {
+    languageInspection = resolveOverriddenLanguageArtifacts({
+      manifestText: manifestTextOverride,
+      directory,
+      inputTexts,
+      inputStates,
+      root: resolvedRoot,
+      problems,
+    });
+  } else if (inputTexts.has(manifestFileName)) {
+    try {
+      languageInspection = resolvePcrLanguageFiles({
+        manifest: parseYaml(inputTexts.get(manifestFileName)),
+        directory,
+        displayRoot: resolvedRoot,
+      });
+      problems.push(...languageInspection.problems);
+    } catch (error) {
+      // A malformed declaration is reported by the manifest checks; the
+      // language files must not turn it into an unhandled failure.
+      problems.push(`${toRepoRelative(resolvedRoot, manifestPath)}: ${error.message}`);
+    }
+  }
+
+  for (const entry of languageInspection.optional ?? []) {
+    inputTexts.set(entry.fileName, entry.text);
   }
 
   if (!inputTexts.has(manifestFileName)) {
@@ -940,6 +1106,13 @@ export function inspectPcrDirectory({
       }
     }
   }
+
+  inspectDeclaredLanguageFiles({
+    root: resolvedRoot,
+    manifest,
+    resolved: languageInspection,
+    problems,
+  });
 
   const expectedStructuredText = structuredProjectionYaml(projection, {
     sourceMarkdown: markdownText,

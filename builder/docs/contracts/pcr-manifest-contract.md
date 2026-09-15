@@ -25,6 +25,64 @@ Before a PCR becomes `active` or `published`, every required identity field must
 include both `en-US` and `zh-CN`. The manifest `id` must exactly match `canonical_pcr_id` in the English Product
 Category Identity table.
 
+## Language Declaration
+
+`en-US` and `zh-CN` are always required. Any further canonical BCP 47 language is optional and is declared in
+`languages.available`:
+
+```yaml
+languages:
+  canonical: en-US
+  available:
+    - en-US
+    - zh-CN
+    - de-DE
+translation_status:
+  zh-CN: reviewed
+  de-DE: out_of_sync
+title:
+  en-US: "Wheat seed production"
+  zh-CN: "小麦种子生产"
+  de-DE: "Weizen-Saatgutproduktion"
+```
+
+A declared optional language must also declare a non-empty `title.<language>` and a `translation_status.<language>`
+from the controlled vocabulary. Language codes must be the canonical BCP 47 spelling (`de-DE`, not `de-de` or `DE`);
+the builder rejects a code that `Intl.getCanonicalLocales` would respell. No `title` or `translation_status` entry
+may be declared for a language that `languages.available` does not list.
+
+The two required codes are `en-US` and `zh-CN`; they are reserved as exact codes only. Every other region, script,
+and variant subtag is available, including `en-*` and `zh-*` siblings such as `en-GB`, `zh-TW`, `zh-Hant-TW`, and
+canonical variants such as `de-1996`. The JSON Schema checks the broad BCP 47 shape and the builder applies the
+canonical-spelling check, so a syntactically valid but non-canonical code is rejected as a semantic finding rather
+than a schema error.
+
+Declaring an optional language is a binding declaration: `languages.available` is the exact set of languages the
+record includes, so a declared language must have its `pcr.<language>.md` file. A declared language whose file is
+missing fails validation and publication — the builder never drops the declaration, the title, the translation
+status, or the hash silently. To publish without a language, remove its entry from `languages.available`, its
+`title`, and its `translation_status`, and delete the file. A language file that is present must be declared: an
+undeclared `pcr.*.md` file in a PCR directory fails lint. Undeclared optional locales therefore never block English
+or Chinese work; a declared one always must be complete.
+
+`translation_status.<language>` names one of the controlled values in `builder/vocab/`; the canonical `en-US` source
+may additionally be marked `canonical`, which is not a dependent-translation state.
+
+## Artifact Schema Versions
+
+`schema_version` selects the artifact-fingerprint contract:
+
+| schema_version | languages | `release_artifacts` |
+| --- | --- | --- |
+| `1` | exactly `en-US` and `zh-CN` | `pcr_en_us_sha256`, `pcr_zh_cn_sha256`, `structured_sha256` |
+| `2` | `en-US`, `zh-CN`, and every declared optional language | `markdown_sha256` keyed by language, `structured_sha256` |
+
+Schema v1 is the legacy two-language contract and stays valid and byte-stable; it cannot declare an optional
+language. Use `schema_version: 2` as soon as an optional language is declared, and list every language file in
+`languages.available` — publication refuses an optional language file while the manifest is v1, and it refuses a
+declared optional language whose file is missing. Declaring optional languages is the migration step; omitting a
+language means undeclaring it.
+
 ## Classification References
 
 Classification references may appear in `classification_refs`, but classification systems do not own PCR identity.
@@ -72,7 +130,9 @@ Status and maturity are validated as one state:
 
 Moving to `active` requires an aligned or reviewed Chinese translation and a material PCR preflight. Publication is a
 separate transition from `active`: it requires reviewed methodology, `translation_status.zh-CN: reviewed`, valid
-semver, current structured output, and no non-empty unresolved or blocking field in `review_metadata`.
+semver, current structured output, and no non-empty unresolved or blocking field in `review_metadata`. Every
+declared optional language whose Markdown file is part of the release must also be `reviewed`; the builder never
+promotes an unreviewed or out-of-sync translation into a published snapshot and never translates content itself.
 
 Use the lifecycle CLI to update review and translation state:
 
@@ -82,8 +142,8 @@ npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-matu
 
 `pcr:lifecycle` updates `updated_at_utc` but does not regenerate `structured.yaml` and cannot assign published state.
 Use `pcr:publish` only when assigning a published version and `published_at_utc`; failed publication preflight leaves
-the managed PCR directory unchanged. After publication, `release_artifacts` records the exact-byte SHA-256 of both
-current Markdown files and `structured.yaml`. Published and deprecated manifests require that digest set.
+the managed PCR directory unchanged. After publication, `release_artifacts` records the exact-byte SHA-256 of every
+current language Markdown file and `structured.yaml`. Published and deprecated manifests require that digest set.
 
 `pcr:bump` cannot mutate a `published` / `published_methodology` or deprecated record. A new version of an audited
 published record must be opened with an explicit target version and edited through the audited revision contract:

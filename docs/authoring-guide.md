@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 0e5bb2920a5185663bc6339a73cb38b93bcfc87d
-lastReviewedNote: "Reviewed PCR #14 / PR #13 additional batch: bilingual candidate methodology, projection checks and report-only measurement findings preserve the existing authoring and publication boundaries."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
 ---
 
 # Authoring Guide
@@ -55,6 +55,19 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
   pcr.zh-CN.md
   structured.yaml
 ```
+
+English `en-US` and Chinese `zh-CN` are mandatory. To add an optional reading
+language, declare its canonical BCP 47 code in `languages.available`, provide its
+title, translation state and `pcr.<language>.md` file. The declaration is the exact
+included file set: a declared missing file is an error. Every dependent translation
+uses `sync_with: pcr.en-US.md`; English revision marks all of them `out_of_sync`.
+Formal publication requires review of every included translation. Multilingual
+releases use schema v2 per-language hashes; existing v1 snapshots remain unchanged.
+
+The public documentation site is generated from these files. Never edit generated
+pages to correct methodology. Update the canonical source, preserve truthful
+manifest/frontmatter states, and rerun source validation and the documentation
+build. Documentation deployment does not change PCR lifecycle or translation state.
 
 Keep language-independent identity and lifecycle state in `manifest.yaml`. Keep machine-oriented rules in `structured.yaml`. Keep human-readable English and Chinese text in `pcr.en-US.md` and `pcr.zh-CN.md`.
 

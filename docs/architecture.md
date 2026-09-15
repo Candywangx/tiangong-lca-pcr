@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 0e5bb2920a5185663bc6339a73cb38b93bcfc87d
-lastReviewedNote: "Reviewed PCR #14 / PR #13 additional batch: canonical content matches fixed source 8fcb20e; accepted mappings, alias/catalog bindings and material/coverage indexes validate. Current inventory facts remain sourced from canonical files."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
 ---
 
 # PCR 资料库架构
@@ -97,6 +97,7 @@ feedback -> issue template / feedback draft -> maintainer intake -> builder work
 | `classifications/` | 外部分类体系 source、accepted mapping、retired-id alias 和派生 coverage | `classifications/systems/**`、`classifications/mappings/**`、`classifications/aliases/**`、`classifications/indexes/**` | 不定义 PCR 目录结构，不用外部 code 充当 PCR identity |
 | `packages/pcr-core/` | 共享只读消费核心 | catalog read、classification resolve、Markdown read、guidance projection、validation、feedback draft | 不直接修改 PCR 文件 |
 | `packages/tiangong-pcr-cli/` | 外部用户和 AI agent 的命令行入口 | CLI command、help、output formatting、exit behavior | 不复制 `pcr-core` 的 library traversal 规则，不修改 PCR truth |
+| `packages/pcr-docs/` | 公共 Fumadocs 文档站 | 完整 Markdown 静态 HTML、YAML 字段视图、原始下载、多语言导航及 SEO | 不修改规范源文件，不把网页部署视为方法学发布 |
 | `packages/pcr-viewer/` | 本地静态预览界面 | viewer build、static UI、local server | 不成为 PCR editor，不成为另一套 PCR database |
 | `skills/tiangong-pcr/` | 指导外部 AI agent 使用 PCR CLI 和反馈流程 | 使用流程、CLI 指南、agent checklist | 不复制 PCR 方法学细节 |
 | `.github/ISSUE_TEMPLATE/` | 结构化反馈入口 | missing PCR、mapping gap、UUID issue、range evidence、translation 等反馈模板 | 不直接改变 canonical PCR |
@@ -485,3 +486,19 @@ current/latest 一致性。
 
 pull request 和 main 分支 push 通过 GitHub Actions 运行 `npm run validate`，使本地合同、投影
 freshness 和自动测试成为合并门禁的统一入口。
+
+## 公共静态文档站
+
+`packages/pcr-docs/` 是与本地 viewer 并列的消费界面。当前文档和复用模块由
+`pcr-core` 的完整只读 bundle 提供；历史版本复用 Builder 已有发布链验证器，
+通过 `builder/lib/pcr-document-history.mjs` 返回完整模型和原始字节，避免复制一套
+发布校验逻辑。内部 revision 正文不会被公开。
+
+生成器绑定 Git 源提交，独立建立源段落、列表关系、表格单元格、代码与链接清单，
+再预渲染 CommonMark/GFM 为 HTML。Fumadocs 使用小型 StaticSource 元数据；完整
+正文在静态页面 HTML 中，完整字段数据只在读者请求后进入客户端。全文搜索在
+Web Worker 中按语言加载。特别长的正文按章节拆页，并保留完整导航与源节点映射。
+
+网站采用 Next.js SSG / static export，EdgeOne 托管 `packages/pcr-docs/out`。
+部署配置、无损检查、语言及索引边界以
+[公共文档站契约](pcr-documentation-site-contract.md) 为准。

@@ -13,6 +13,10 @@ Each PCR directory must contain:
 
 `pcr.en-US.md` is the canonical authored source. `pcr.zh-CN.md` is an aligned rendering of the same rule. New scaffolds should use the language-specific templates `builder/templates/pcr.en-US.md.hbs` and `builder/templates/pcr.zh-CN.md.hbs`.
 
+A further declared optional language (for example `de-DE`) adds one sibling `pcr.<language>.md` file. The file name
+uses the canonical BCP 47 spelling from `manifest.languages.available`. A declaration without its file is an error:
+to publish without the language, remove the declaration together with the file.
+
 For active and published PCRs, canonical English Markdown must contain authored content and declare the manifest
 identity, canonical language, and bilingual relationship in frontmatter:
 
@@ -43,8 +47,24 @@ sync_with: pcr.en-US.md
 ---
 ```
 
+Optional language Markdown follows the same frontmatter shape, with its own declared language and `sync_with: pcr.en-US.md`. Every dependent translation is derived from the canonical English source, so a sibling locale is not an acceptable sync target:
+
+```yaml
+---
+pcr_id: <manifest.id>
+language: de-DE
+sync_with: pcr.en-US.md
+---
+```
+
+Every declared language file is read and validated: a missing file, malformed frontmatter, an empty body, a
+`language` that does not match the file name, a `pcr_id` that does not match the manifest, an undeclared language
+file, and a `sync_with` other than `pcr.en-US.md` are all rejected. Optional translations are not auto-generated and
+are never marked reviewed automatically; they enter a release only when a reviewer marks them reviewed in
+`manifest.yaml`.
+
 Active and publication preflights reject an empty Chinese file, missing or malformed frontmatter, or any mismatch in
-these three fields.
+these three fields. They apply the same checks to every declared optional language file, plus a missing file.
 
 ## Required Sections
 

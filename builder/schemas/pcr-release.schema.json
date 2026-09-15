@@ -12,7 +12,7 @@
     "artifacts"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "enum": [1, 2] },
     "pcr_id": { "$ref": "#/$defs/pcrId" },
     "version": { "$ref": "#/$defs/semver" },
     "published_at_utc": { "$ref": "#/$defs/utcTimestamp" },
@@ -24,22 +24,101 @@
     },
     "artifacts": {
       "type": "object",
-      "required": [
-        "manifest_snapshot_sha256",
-        "pcr_en_us_sha256",
-        "pcr_zh_cn_sha256",
-        "structured_sha256"
-      ],
       "properties": {
         "manifest_snapshot_sha256": { "$ref": "#/$defs/sha256" },
         "pcr_en_us_sha256": { "$ref": "#/$defs/sha256" },
         "pcr_zh_cn_sha256": { "$ref": "#/$defs/sha256" },
-        "structured_sha256": { "$ref": "#/$defs/sha256" }
+        "structured_sha256": { "$ref": "#/$defs/sha256" },
+        "markdown_sha256": {
+          "type": "object",
+          "$comment": "One Markdown hash per released language; the builder requires the key set to equal the snapshot manifest languages.available exactly.",
+          "minProperties": 2,
+          "properties": {
+            "en-US": true,
+            "zh-CN": true
+          },
+          "patternProperties": {
+            "^(?!(?:en-US$|zh-CN$))[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+              "$ref": "#/$defs/sha256"
+            }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "properties": {
+                "en-US": { "$ref": "#/$defs/sha256" },
+                "zh-CN": { "$ref": "#/$defs/sha256" }
+              }
+            }
+          ]
+        }
       },
       "additionalProperties": false
     }
   },
   "additionalProperties": false,
+  "allOf": [
+    {
+      "$comment": "Schema v1 is the immutable two-language release contract; its snapshot bytes and hash semantics never change.",
+      "if": {
+        "properties": { "schema_version": { "const": 1 } },
+        "required": ["schema_version"]
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "type": "object",
+            "required": [
+              "manifest_snapshot_sha256",
+              "pcr_en_us_sha256",
+              "pcr_zh_cn_sha256",
+              "structured_sha256"
+            ],
+            "properties": {
+              "manifest_snapshot_sha256": true,
+              "pcr_en_us_sha256": true,
+              "pcr_zh_cn_sha256": true,
+              "structured_sha256": true,
+              "markdown_sha256": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Schema v2 fingerprints one Markdown artifact per language key plus the snapshot manifest. The builder additionally requires the key set to equal the snapshot manifest languages.available exactly. Historical v1 release snapshots stay valid and are never rewritten.",
+      "if": {
+        "properties": { "schema_version": { "const": 2 } },
+        "required": ["schema_version"]
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "type": "object",
+            "required": [
+              "manifest_snapshot_sha256",
+              "markdown_sha256",
+              "structured_sha256"
+            ],
+            "properties": {
+              "manifest_snapshot_sha256": true,
+              "markdown_sha256": {
+                "type": "object",
+                "required": ["en-US", "zh-CN"],
+                "properties": {
+                  "en-US": true,
+                  "zh-CN": true
+                }
+              },
+              "structured_sha256": true,
+              "pcr_en_us_sha256": false,
+              "pcr_zh_cn_sha256": false
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "pcrId": {
       "type": "string",

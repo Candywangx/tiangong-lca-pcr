@@ -1,4 +1,9 @@
 import {
+  REQUIRED_PCR_LANGUAGES,
+  assertPcrLanguageCode,
+  declaredPcrLanguages,
+} from "../../packages/pcr-core/src/languages.mjs";
+import {
   CONTENT_MATURITY_VALUES,
   PCR_STATUS_VALUES,
   TRANSLATION_STATUS_VALUES,
@@ -197,13 +202,103 @@ export function manifestIdentityProblems(manifest) {
   if (!Array.isArray(availableLanguages) || availableLanguages.length === 0) {
     problems.push("manifest requires non-empty languages.available array");
   } else {
-    for (const language of ["en-US", "zh-CN"]) {
+    for (const language of REQUIRED_PCR_LANGUAGES) {
       if (!availableLanguages.includes(language)) {
         problems.push(`languages.available must include "${language}"`);
       }
     }
+    for (const language of availableLanguages) {
+      if (typeof language !== "string") {
+        problems.push(`languages.available entries must be language strings; found ${JSON.stringify(language)}`);
+        continue;
+      }
+      try {
+        assertPcrLanguageCode(language);
+      } catch (error) {
+        problems.push(error.message);
+      }
+    }
   }
 
+  problems.push(...declaredLanguageProblems(manifest));
+  return problems;
+}
+
+/**
+ * The canonical declaration contract: every declared language carries a title
+ * and a translation status, and no title or translation status is declared for
+ * a language the manifest does not declare.
+ */
+function declaredLanguageProblems(manifest) {
+  let languages;
+  try {
+    languages = declaredPcrLanguages(manifest);
+  } catch {
+    // The identity checks already report a missing or malformed declaration.
+    return [];
+  }
+  const concerns = [
+    ["title", manifest?.title],
+    ["translation_status", manifest?.translation_status],
+  ];
+  const problems = [];
+  for (const [field, value] of concerns) {
+    if (!isPlainObject(value)) {
+      continue;
+    }
+    for (const language of Object.keys(value)) {
+      if (!languages.includes(language)) {
+        problems.push(`${field}.${language} is not declared in languages.available`);
+      }
+    }
+  }
+  for (const language of languages) {
+    if (language === manifest?.languages?.canonical) {
+      continue;
+    }
+    if (!hasNonEmptyScalar(manifest?.title?.[language])) {
+      problems.push(`manifest requires non-empty title.${language} for declared language ${language}`);
+    }
+    if (!TRANSLATION_STATUS_VALUES.includes(manifest?.translation_status?.[language])) {
+      problems.push(`manifest requires translation_status.${language} for declared language ${language}`);
+    }
+  }
+  return problems;
+}
+
+/**
+ * Release gates for a published or deprecated manifest. `languages.available` is
+ * the exact declared included set, so English is the canonical source and every
+ * declared translation must be reviewed before it can enter an immutable
+ * snapshot; the Chinese translation keeps its mandatory reviewed gate.
+ */
+export function manifestReleaseLanguageProblems(manifest) {
+  const problems = [];
+  let languages;
+  try {
+    languages = declaredPcrLanguages(manifest);
+  } catch {
+    // A malformed declaration is reported by the lifecycle problems that own it.
+    return [];
+  }
+  const translationStatus = manifest?.translation_status;
+
+  if (translationStatus?.["zh-CN"] !== "reviewed") {
+    problems.push("status \"published\" requires translation_status.zh-CN to be reviewed");
+  }
+  for (const language of languages) {
+    if (REQUIRED_PCR_LANGUAGES.includes(language)) {
+      continue;
+    }
+    const status = translationStatus?.[language];
+    if (status === "reviewed") {
+      continue;
+    }
+    problems.push(
+      `released language ${language} requires translation_status.${language} to be reviewed; ` +
+        "review the translation before publishing, or remove the language file and its declaration",
+    );
+  }
   return problems;
 }
 
@@ -224,9 +319,15 @@ export function manifestLifecycleProblems(manifest) {
   const translationStatus = manifest?.translation_status ?? {};
   if (isPlainObject(translationStatus)) {
     for (const [language, translation] of Object.entries(translationStatus)) {
-      if (!TRANSLATION_STATUS_VALUES.includes(translation)) {
-        problems.push(`invalid translation_status.${language} "${translation}"`);
+      if (TRANSLATION_STATUS_VALUES.includes(translation)) {
+        continue;
       }
+      // The canonical source may be marked as the canonical rendering rather
+      // than pretending to be one of its own dependent translations.
+      if (language === manifest?.languages?.canonical && translation === "canonical") {
+        continue;
+      }
+      problems.push(`invalid translation_status.${language} "${translation}"`);
     }
   } else if (translationStatus !== null) {
     problems.push("translation_status must be a map");
@@ -261,9 +362,7 @@ export function manifestLifecycleProblems(manifest) {
   }
 
   if (status === "published") {
-    if (translationStatus?.["zh-CN"] !== "reviewed") {
-      problems.push("status \"published\" requires translation_status.zh-CN to be reviewed");
-    }
+    problems.push(...manifestReleaseLanguageProblems(manifest));
     if (!isValidSemver(manifest?.version)) {
       problems.push("published PCR requires a valid semver version");
     }

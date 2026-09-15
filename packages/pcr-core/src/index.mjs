@@ -38,6 +38,12 @@ import {
 } from "./read-context.mjs";
 import { parseYaml } from "./yaml-lite.mjs";
 import {
+  declaredPcrLanguages,
+  expectedPcrArtifactHashes,
+  LEGACY_PCR_ARTIFACT_HASH_FIELDS,
+  pcrArtifactFiles,
+} from "./languages.mjs";
+import {
   CLASSIFICATION_MAPPING_RELATION_VALUES,
   CONTENT_MATURITY_VALUES,
   FEEDBACK_TYPE_VALUES,
@@ -77,11 +83,7 @@ const METHODOLOGY_MATURITIES = new Set(
 
 const CURRENT_SNAPSHOT_MAX_ATTEMPTS = 3;
 const pcrCatalogCache = new Map();
-const RELEASE_ARTIFACTS = Object.freeze({
-  pcr_en_us_sha256: "pcr.en-US.md",
-  pcr_zh_cn_sha256: "pcr.zh-CN.md",
-  structured_sha256: "structured.yaml",
-});
+const RELEASE_ARTIFACTS = LEGACY_PCR_ARTIFACT_HASH_FIELDS;
 const GUIDANCE_MATURITIES = new Set([
   "authored_methodology",
   "reviewed_methodology",
@@ -608,6 +610,59 @@ export function readPcrMarkdown({ root, pcrId, language = "en-US", context = nul
   return artifact.bytes.toString("utf8");
 }
 
+/** A complete current document, read once through the same integrity boundary as guidance. */
+export function readPcrDocumentBundle({ root, pcrId, context = null }) {
+  root = root ?? context?.root;
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId, context });
+  const { pcr, manifest, manifestBytes, structured } = snapshot;
+  assertPcrUsable({ pcr, operation: "guidance" });
+  const languages = declaredPcrLanguages(manifest);
+  if (![1, 2].includes(manifest.schema_version)) throw new Error(`Unsupported document manifest schema: ${manifest.schema_version}`);
+  for (const language of languages) if (typeof manifest.title?.[language] !== "string" || !manifest.title[language].trim()) throw new Error(`Document requires a nonempty ${language} title.`);
+  const artifacts = {};
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  for (const name of ["manifest.yaml", ...pcrArtifactFiles(manifest)]) {
+    const bytes = name === "manifest.yaml" ? manifestBytes : snapshot.artifacts[name]?.bytes;
+    if (!bytes) throw new Error(`PCR document artifact is unavailable: ${pcr.path}/${name}`);
+    // A copy prevents consumers from changing a cached snapshot through Buffer aliasing.
+    const copy = Buffer.from(bytes);
+    const text = decoder.decode(copy);
+    if (!text.trim()) throw new Error(`PCR document artifact is empty: ${pcr.path}/${name}`);
+    artifacts[name] = {
+      path: `${pcr.path}/${name}`,
+      bytes: copy,
+      text,
+      sha256: exactByteSha256(copy),
+    };
+  }
+  return {
+    schema_version: 1,
+    workspace: "current",
+    pcr: structuredClone(pcr),
+    manifest: structuredClone(manifest),
+    structured: structuredClone(structured),
+    languages,
+    artifacts,
+  };
+}
+
+/** Complete referenced legacy module source; scaffold status remains explicit. */
+export function readPcrModuleDocumentBundle({ root, group, moduleId }) {
+  for (const value of [group, moduleId]) if (typeof value !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value)) throw new Error("Invalid PCR module identity.");
+  const relativePath = `library/modules/${group}/${moduleId}.md`;
+  const filePath = path.join(root, relativePath);
+  const read = () => readControlledRepositoryFileBytes({ root, filePath, relativePath, label: "PCR module" });
+  const bytes = read();
+  const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  const envelope = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u.exec(text);
+  if (!envelope) throw new Error(`Module requires frontmatter: ${relativePath}`);
+  const frontmatter = parseYaml(envelope[1]);
+  if (frontmatter.id !== `module.${group}.${moduleId}` || frontmatter.module_type !== group) throw new Error(`Module identity mismatch: ${relativePath}`);
+  if (!text.slice(envelope[0].length).trim()) throw new Error(`Module body is empty: ${relativePath}`);
+  if (!bytes.equals(read())) throw new Error(`Module changed during read: ${relativePath}`);
+  return { frontmatter, language: frontmatter.language ?? "en-US", artifact: { path: relativePath, bytes: Buffer.from(bytes), text, sha256: exactByteSha256(bytes) } };
+}
+
 export function buildGuidance({ root, pcrId, context = null }) {
   return buildGuidanceForOperation({ root: root ?? context?.root, pcrId, operation: "guidance", context });
 }
@@ -1022,7 +1077,13 @@ function currentPcrSnapshot(root, entry, context = null) {
     structuredAvailable: projection.structuredAvailable,
     projectionCompletenessIssues: projection.completenessIssues,
   });
-  return { pcr, artifacts: snapshotFiles.artifacts, ...projection };
+  return {
+    pcr,
+    manifest: snapshotFiles.manifest,
+    manifestBytes: snapshotFiles.manifestBytes,
+    artifacts: snapshotFiles.artifacts,
+    ...projection,
+  };
 }
 
 function readConsistentSnapshotFiles({ root, entry, context = null }) {
@@ -1043,7 +1104,7 @@ function readConsistentSnapshotFiles({ root, entry, context = null }) {
       const managedMarkersA = currentManagedStateMarkers(locationA.pcrDir);
       assertManagedSnapshotHashesDeclared({ manifest, managedMarkers: managedMarkersA });
       const artifacts = Object.fromEntries(
-        Object.values(RELEASE_ARTIFACTS).map((filename) => [
+        pcrArtifactFiles(manifest, { strict: false }).map((filename) => [
           filename,
           readObservedPcrArtifact({ root, context, pcrDir: locationA.pcrDir, filename }),
         ]),
@@ -1075,7 +1136,7 @@ function readConsistentSnapshotFiles({ root, entry, context = null }) {
           { manifest_status: manifest.status ?? null, artifacts: releaseFailures },
         );
       }
-      return { manifest, artifacts };
+      return { manifest, manifestBytes: manifestABytes, artifacts };
     } catch (error) {
       lastFailure = snapshotFailureDetails(error);
     }
@@ -1104,13 +1165,13 @@ function releaseArtifactFailures({ manifest, artifacts }) {
   if (!Object.hasOwn(manifest, "release_artifacts")) {
     return [];
   }
-  const expectedHashes = isRecord(manifest.release_artifacts)
-    ? manifest.release_artifacts
-    : {};
+  const expectedHashes = expectedPcrArtifactHashes(manifest);
   const failures = [];
-  for (const [hashField, filename] of Object.entries(RELEASE_ARTIFACTS)) {
+  for (const [filename, expected] of Object.entries(expectedHashes)) {
+    const hashField = manifest.schema_version === 2 && filename !== "structured.yaml"
+      ? `markdown_sha256.${filename.slice(4, -3)}`
+      : Object.entries(RELEASE_ARTIFACTS).find(([, file]) => file === filename)?.[0];
     const artifact = artifacts[filename];
-    const expected = expectedHashes[hashField];
     if (!artifact?.bytes) {
       failures.push({
         artifact: filename,

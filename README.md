@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 0e5bb2920a5185663bc6339a73cb38b93bcfc87d
-lastReviewedNote: "Reviewed PCR #14 / PR #13 additional batch: canonical content matches fixed source 8fcb20e; accepted mappings, alias/catalog bindings and material/coverage indexes validate. Current inventory facts remain sourced from canonical files."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
 ---
 
 # TianGong LCA PCR Library
@@ -49,6 +49,7 @@ PCR records are canonical methodology documents. Classification systems such as 
 - `classifications/aliases/`: deterministic terminal locators for retired leaf-derived PCR ids.
 - `classifications/indexes/`: derived classification coverage read models for the CLI and viewer.
 - `builder/`: CLI, implementation modules, scripts, schemas, templates, controlled vocabularies, and builder documentation for constructing and validating the PCR library.
+- `packages/pcr-docs/`: generated public Fumadocs documentation at https://pcr.tiangong.earth.
 - `packages/pcr-core/`: shared library for reading PCR catalog, mapping, guidance, validation, and feedback draft data.
 - `packages/tiangong-pcr-cli/`: public Agent-facing CLI for consuming PCR guidance during foreground data package construction.
 - `skills/tiangong-pcr/`: thin Agent skill for selecting PCRs, using guidance, validating drafts, and creating feedback.
@@ -250,6 +251,35 @@ PCR guidance is dataset-production first. `process` and `lifecyclemodel` remain 
 Use `npm --silent run tiangong-pcr -- --help` for the global Agent workflow and `npm --silent run tiangong-pcr -- <command> --help` for command-specific options, output shape, and next-step guidance.
 
 Formats are enforced per command: `resolve`, `guidance`, and validation are JSON; `show` is Markdown; `tree` supports JSON or Markdown; `list` supports JSON, Markdown, or table output; feedback drafts support JSON or Markdown. With `--format json`, usage or runtime failures leave stdout empty and return a stable `{ "error": { "code", "message", "details", "exit_code" } }` envelope on stderr.
+
+## Public PCR Documentation
+
+The public site in `packages/pcr-docs/` reads the canonical library through the core
+consistent document API and the shared immutable-history verifier. It renders
+ordinary Markdown as complete semantic HTML in a Next.js static export. Fumadocs
+provides the documentation layout, navigation and search dialog. EdgeOne builds
+production from `main`; there is no request-time SSR or preview deployment.
+
+```bash
+npm ci
+npm --prefix packages/pcr-docs ci
+npm run docs:build
+```
+
+`docs:build` generates the full library, builds Next.js, then checks exported text,
+source blocks, original-download hashes, routes, SEO and provider budgets. Use
+`npm run docs:dev` for local work. Generated `.generated/`, `public/generated/`,
+`.next/` and `out/` are ignored and must never be hand-authored.
+
+English and Chinese are required for every material PCR. Optional languages use
+canonical BCP 47 identities and must be explicitly declared; a declared missing
+file fails validation. Valid optional translations receive real localized routes.
+Candidate methodology and pending translation states remain visible; rendering
+never grants review or publication approval. Raw YAML and Markdown retain their
+original bytes, and the field inspector exposes complete parsed data.
+
+See [the documentation site contract](docs/pcr-documentation-site-contract.md)
+for source coverage, multilingual history, splitting, SEO and production gates.
 
 ## Local PCR Viewer
 

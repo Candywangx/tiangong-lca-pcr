@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 1be27716d6f1fab0abeec6e64d73deaebba3844b
-lastReviewedNote: "Reviewed PCR PR #9 CLI dispatch and consumption changes: the new check command leaves publish/revise/recover dispatch, immutable release snapshots, bilingual hashes and publication gates unchanged."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
 title: PCR Library Release Policy
 docType: contract
 scope: repo
@@ -66,3 +66,22 @@ npm run validate
 Use `--force-stale-lock` only when ordinary recovery explicitly requires it and after verifying that no writer is
 active. Never create or edit `revision/`, `releases/`, `release-history.yaml`, or builder transaction state manually.
 Run `npm run validate` before and after publication or recovery.
+
+## Optional languages and public document history
+
+English and Chinese remain mandatory. Optional reading languages are explicit
+members of `languages.available`; a missing declared artifact fails publication,
+while an undeclared absent language never blocks the bilingual pair. Every included
+translation must be reviewed. Revising English marks every dependent translation
+out of sync and carries its file into the internal revision workspace.
+
+A bilingual release retains schema v1 and its exact legacy artifact hashes. A
+release containing additional languages uses schema v2 `markdown_sha256` keyed by
+exactly the declared languages, plus structured and snapshot-manifest hashes.
+Existing immutable snapshots are never rewritten to adopt the new format.
+
+Public documentation reuses `inspectPublishedRevisionState` through the read-only
+`readPcrDocumentHistory` bundle API. Every historical artifact is checked against
+the validated release chain and returned with its original bytes. Internal revision
+bodies are excluded. Website production is a separate deployment and does not
+constitute a PCR publication or review action.

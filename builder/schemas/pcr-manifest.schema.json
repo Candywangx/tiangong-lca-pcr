@@ -12,7 +12,7 @@
     "content_maturity"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
+    "schema_version": { "enum": [1, 2] },
     "id": { "type": "string", "pattern": "^pcr\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$" },
     "version": {
       "type": "string",
@@ -28,12 +28,27 @@
     },
     "title": {
       "type": "object",
+      "$comment": "Any canonical BCP 47 language may carry a title; the builder additionally enforces Intl.getCanonicalLocales spelling. Only the two exact required codes are reserved, and the allOf entry below pins their shape: en-US must be a non-empty string.",
       "required": ["en-US", "zh-CN"],
       "properties": {
-        "en-US": { "type": "string", "minLength": 1 },
-        "zh-CN": { "type": ["string", "null"] }
+        "en-US": true,
+        "zh-CN": true
       },
-      "additionalProperties": false
+      "patternProperties": {
+        "^(?!(?:en-US$|zh-CN$))[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+          "type": ["string", "null"]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$comment": "The two reserved codes are pinned in a nested schema so the language pattern stays open to en-* and zh-* siblings such as en-GB and zh-TW.",
+          "properties": {
+            "en-US": { "type": "string", "minLength": 1 },
+            "zh-CN": { "type": ["string", "null"] }
+          }
+        }
+      ]
     },
     "status": {
       "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/pcr_status"
@@ -85,22 +100,38 @@
             { "contains": { "const": "en-US" } },
             { "contains": { "const": "zh-CN" } }
           ],
-          "items": { "type": "string", "minLength": 1 }
+          "items": {
+            "$comment": "en-US and zh-CN are always required; any other canonical BCP 47 language is optional and requires schema_version 2. The builder's declaredPcrLanguages enforces Intl.getCanonicalLocales spelling beyond this shape.",
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+          }
         }
       },
       "additionalProperties": false
     },
     "translation_status": {
       "type": "object",
+      "$comment": "One controlled translation status per declared language; the allOf entry below pins en-US to the canonical marker.",
       "required": ["zh-CN"],
       "properties": {
-        "zh-CN": {
+        "en-US": true,
+        "zh-CN": true
+      },
+      "patternProperties": {
+        "^(?!(?:en-US$|zh-CN$))[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
           "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/translation_status"
         }
       },
-      "additionalProperties": {
-        "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/translation_status"
-      }
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "properties": {
+            "zh-CN": {
+              "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/translation_status"
+            }
+          }
+        }
+      ]
     },
     "classification_refs": {
       "type": "array",
@@ -109,15 +140,33 @@
     "review_metadata": { "type": "object" },
     "release_artifacts": {
       "type": "object",
-      "required": [
-        "pcr_en_us_sha256",
-        "pcr_zh_cn_sha256",
-        "structured_sha256"
-      ],
       "properties": {
         "pcr_en_us_sha256": { "$ref": "#/$defs/sha256" },
         "pcr_zh_cn_sha256": { "$ref": "#/$defs/sha256" },
-        "structured_sha256": { "$ref": "#/$defs/sha256" }
+        "structured_sha256": { "$ref": "#/$defs/sha256" },
+        "markdown_sha256": {
+          "type": "object",
+          "$comment": "One Markdown hash per declared language. Schema version 2 additionally requires the en-US and zh-CN keys.",
+          "minProperties": 2,
+          "properties": {
+            "en-US": true,
+            "zh-CN": true
+          },
+          "patternProperties": {
+            "^(?!(?:en-US$|zh-CN$))[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+              "$ref": "#/$defs/sha256"
+            }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "properties": {
+                "en-US": { "$ref": "#/$defs/sha256" },
+                "zh-CN": { "$ref": "#/$defs/sha256" }
+              }
+            }
+          ]
+        }
       },
       "additionalProperties": false
     }
@@ -125,6 +174,25 @@
   "additionalProperties": false,
   "allOf": [
     {
+      "$comment": "Pins the shape of the two required languages: a non-empty English title, a Chinese title, and the canonical English status marker. They are pinned in a nested schema so the language pattern stays open to every other canonical BCP 47 code, including en-* and zh-* siblings.",
+      "properties": {
+        "title": {
+          "type": "object",
+          "required": ["en-US"],
+          "properties": {
+            "en-US": { "type": "string", "minLength": 1 }
+          }
+        },
+        "translation_status": {
+          "type": "object",
+          "properties": {
+            "en-US": { "const": "canonical" }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A managed published or deprecated manifest owns release_artifacts; an unpublished workspace does not.",
       "if": {
         "properties": {
           "status": { "enum": ["published", "deprecated"] }
@@ -137,6 +205,79 @@
       },
       "else": {
         "properties": { "release_artifacts": false }
+      }
+    },
+    {
+      "$comment": "Schema v1 is the legacy two-language contract: no optional language may be declared or fingerprinted. The builder refuses to publish an optional language file while the manifest is v1.",
+      "if": {
+        "properties": { "schema_version": { "const": 1 } },
+        "required": ["schema_version"]
+      },
+      "then": {
+        "properties": {
+          "languages": {
+            "type": "object",
+            "properties": {
+              "available": {
+                "type": "array",
+                "maxItems": 2,
+                "items": { "enum": ["en-US", "zh-CN"] }
+              }
+            }
+          },
+          "translation_status": {
+            "type": "object",
+            "properties": {
+              "en-US": { "const": "canonical" },
+              "zh-CN": true
+            }
+          },
+          "release_artifacts": {
+            "type": "object",
+            "required": [
+              "pcr_en_us_sha256",
+              "pcr_zh_cn_sha256",
+              "structured_sha256"
+            ],
+            "properties": {
+              "pcr_en_us_sha256": true,
+              "pcr_zh_cn_sha256": true,
+              "structured_sha256": true,
+              "markdown_sha256": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Schema v2 fingerprints every declared Markdown language by language key and binds the structured projection. The builder additionally requires the hash key set to equal languages.available exactly.",
+      "if": {
+        "properties": {
+          "schema_version": { "const": 2 },
+          "release_artifacts": { "type": "object" }
+        },
+        "required": ["schema_version", "release_artifacts"]
+      },
+      "then": {
+        "properties": {
+          "release_artifacts": {
+            "type": "object",
+            "required": ["markdown_sha256", "structured_sha256"],
+            "properties": {
+              "markdown_sha256": {
+                "type": "object",
+                "required": ["en-US", "zh-CN"],
+                "properties": {
+                  "en-US": true,
+                  "zh-CN": true
+                }
+              },
+              "structured_sha256": true,
+              "pcr_en_us_sha256": false,
+              "pcr_zh_cn_sha256": false
+            }
+          }
+        }
       }
     }
   ],
