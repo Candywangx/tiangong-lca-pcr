@@ -24,6 +24,8 @@ import { randomBytes } from "node:crypto";
 
 export const RELOCATE_ENV = "PCR_BUILD_RELOCATE";
 export const IN_SCRATCH_ENV = "PCR_BUILD_IN_SCRATCH";
+/** Opt-in for provider pre-built assets when relocation was not triggered automatically. */
+export const PREBUILT_ASSETS_ENV = "PCR_EDGEONE_PREBUILT_ASSETS";
 
 /** Memory-backed filesystem types as reported by the kernel mount table. */
 const MEMORY_FILESYSTEMS = new Set(["tmpfs", "ramfs", "devtmpfs", "hugetlbfs", "shm"]);
@@ -36,11 +38,14 @@ const SHARED_MEMORY_PREFIXES = ["/dev/shm/", "/run/shm/"];
  * worktree `.git` file — travels with the checkout so the build needs no network and keeps the
  * exact Git identity it started with.
  */
+const PACKAGE_PREFIX = "packages/pcr-docs/";
 const DERIVED_PATHS = [
   "packages/pcr-docs/.next",
   "packages/pcr-docs/out",
   "packages/pcr-docs/.generated",
   "packages/pcr-docs/public/generated",
+  // The provider clears and rebuilds its own asset directory around the build command.
+  ".edgeone",
 ];
 
 /** Evidence from the failed provider build: about 3.5 GB of derived output on a fresh run. */
@@ -191,11 +196,16 @@ export function requiredScratchBytes({ copyBytes, outputBytes }) {
   return Math.ceil((copyBytes + outputs) * SAFETY_FACTOR) + HEADROOM_BYTES;
 }
 
-/** Size of the derived output a previous run left behind, when one is present to measure. */
+/**
+ * Size of the derived output a previous run left behind, when one is present to measure. Only
+ * this package's own outputs count: provider assets live at the repository root and are hard
+ * links, so they neither occupy scratch space nor indicate how large an export will be.
+ */
 export function measureOutputBytes(app) {
   let total = 0;
   for (const relative of DERIVED_PATHS) {
-    const target = path.join(app, relative.slice("packages/pcr-docs/".length));
+    if (!relative.startsWith(PACKAGE_PREFIX)) continue;
+    const target = path.join(app, relative.slice(PACKAGE_PREFIX.length));
     if (!fs.existsSync(target)) continue;
     total += summarizeTree(target).bytes;
   }
@@ -332,7 +342,12 @@ export function scratchEnvironment(env = {}) {
 
 /** Presence-only report for the variables the build depends on; never the values. */
 export function describeEnvironment(env = {}) {
-  const names = ["PCR_GOOGLE_SITE_VERIFICATION", "NODE_OPTIONS", "NEXT_TELEMETRY_DISABLED"];
+  const names = [
+    "PCR_GOOGLE_SITE_VERIFICATION",
+    PREBUILT_ASSETS_ENV,
+    "NODE_OPTIONS",
+    "NEXT_TELEMETRY_DISABLED",
+  ];
   return Object.fromEntries(names.map((name) => [name, env[name] === undefined ? "absent" : "set"]));
 }
 
@@ -356,11 +371,68 @@ function assertNoSymlinks(root) {
 }
 
 /**
+ * Stage the provider's pre-built assets.
+ *
+ * The provider clears `.edgeone/assets` before running the build command and, when that directory
+ * exists afterwards, skips its own copy of the export into it. That copy is the step that ran out
+ * of space, so this build places its verified export there itself — as **hard links**, which cost
+ * no second copy and leave every file byte- and inode-identical to the published export. Each link
+ * is verified against its source before the directory is offered for publication.
+ */
+function stageProviderAssets({ providerRoot, outStage, token }) {
+  const providerDir = path.join(providerRoot, ".edgeone");
+  if (fs.lstatSync(providerDir, { throwIfNoEntry: false })?.isSymbolicLink())
+    throw new Error("Refusing to publish provider assets through a symlinked directory: " + providerDir);
+  const assets = path.join(providerDir, "assets");
+  if (fs.lstatSync(assets, { throwIfNoEntry: false }))
+    throw new Error("Refusing to replace provider assets this build did not create: " + assets);
+  const stage = path.join(providerDir, ".pcr-assets-stage-" + token);
+  if (fs.lstatSync(stage, { throwIfNoEntry: false })) throw new Error("Refusing to reuse an existing assets stage: " + stage);
+  let files = 0;
+  let bytes = 0;
+  try {
+    const walk = (from, to) => {
+      fs.mkdirSync(to, { recursive: true });
+      for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+        const source = path.join(from, entry.name);
+        const stats = fs.lstatSync(source);
+        if (stats.isSymbolicLink() || !(stats.isFile() || stats.isDirectory()))
+          throw new Error(`Provider assets require regular files: ${path.relative(outStage, source)}`);
+        if (stats.isDirectory()) {
+          walk(source, path.join(to, entry.name));
+          continue;
+        }
+        const target = path.join(to, entry.name);
+        fs.linkSync(source, target);
+        const linked = fs.lstatSync(target);
+        if (linked.dev !== stats.dev || linked.ino !== stats.ino)
+          throw new Error(`Provider asset is not a hard link: ${path.relative(outStage, source)}`);
+        files += 1;
+        bytes += stats.size;
+      }
+    };
+    walk(outStage, stage);
+    return { stage, target: assets, files, bytes };
+  } catch (error) {
+    fs.rmSync(stage, { recursive: true, force: true, maxRetries: 3 });
+    throw error;
+  }
+}
+
+/**
  * Publish the scratch export by staging a full copy next to the live one and renaming it into
  * place. The previous export survives every failure before the final rename, and only directories
  * this call created are ever removed.
  */
-export function publishOutput({ app, scratchApp, token, freeBytes = null, beforeSwap = () => {} }) {
+export function publishOutput({
+  app,
+  scratchApp,
+  token,
+  freeBytes = null,
+  beforeSwap = () => {},
+  providerRoot = null,
+  rename = fs.renameSync,
+}) {
   const scratchOut = path.join(scratchApp, "out");
   if (!fs.existsSync(scratchOut)) throw new Error("Relocated build produced no export directory.");
   if (fs.lstatSync(scratchOut).isSymbolicLink())
@@ -392,6 +464,8 @@ export function publishOutput({ app, scratchApp, token, freeBytes = null, before
     throw new Error("Refusing to reuse an existing stage or previous-export path.");
 
   let swapped = false;
+  let assetsSwapped = false;
+  let assets = null;
   try {
     fs.cpSync(scratchOut, stage, { recursive: true, dereference: false, force: false, errorOnExist: true });
     const staged = summarizeTree(stage);
@@ -401,24 +475,49 @@ export function publishOutput({ app, scratchApp, token, freeBytes = null, before
           `found ${staged.files} files / ${staged.bytes} bytes.`,
       );
     assertNoSymlinks(stage);
-    // Last gate before anything replaces the live export: every copy is complete and measured, so
-    // a budget failure here still leaves the previous export exactly as it was.
+    // Assets are staged before the last gate, so the gate covers everything this publish will
+    // commit and a budget failure still leaves both the export and the provider assets as they were.
+    assets = providerRoot
+      ? stageProviderAssets({ providerRoot, outStage: stage, token: suffix })
+      : null;
     beforeSwap();
     const hadPrevious = fs.existsSync(target);
-    if (hadPrevious) fs.renameSync(target, previous);
+    if (hadPrevious) rename(target, previous);
     try {
-      fs.renameSync(stage, target);
+      rename(stage, target);
       swapped = true;
     } catch (error) {
-      if (hadPrevious && !fs.existsSync(target)) fs.renameSync(previous, target);
+      if (hadPrevious && !fs.existsSync(target)) rename(previous, target);
       throw error;
+    }
+    if (assets) {
+      // Both artifacts commit together: the previous export is held until the assets rename has
+      // succeeded, and a rejected assets rename restores the export (or removes this build's new
+      // one when there was nothing before), so no partial provider state is ever left behind.
+      try {
+        rename(assets.stage, assets.target);
+        assetsSwapped = true;
+      } catch (error) {
+        if (fs.existsSync(target)) fs.rmSync(target, { recursive: true, force: true, maxRetries: 3 });
+        if (hadPrevious) rename(previous, target);
+        throw error;
+      }
     }
     // The previous export is released by the `finally` below, so nothing after the swap can fail
     // in a way that would suggest the old export was kept.
-    return { files: measured.files, bytes: measured.bytes, staged: true };
+    return {
+      files: measured.files,
+      bytes: measured.bytes,
+      staged: true,
+      ...(assets
+        ? { providerAssets: { mode: "hardlink", files: assets.files, bytes: assets.bytes } }
+        : {}),
+    };
   } finally {
     fs.rmSync(stage, { recursive: true, force: true, maxRetries: 3 });
-    if (swapped) fs.rmSync(previous, { recursive: true, force: true, maxRetries: 3 });
+    if (assets) fs.rmSync(assets.stage, { recursive: true, force: true, maxRetries: 3 });
+    if (swapped && (assetsSwapped || !assets))
+      fs.rmSync(previous, { recursive: true, force: true, maxRetries: 3 });
   }
 }
 
@@ -528,6 +627,10 @@ export async function runRelocatedBuild({
     repoRoot, constraint, requiredBytes, env, scratchParent, facts, log,
   });
   const scratchRepo = path.join(scratchRoot, "repo");
+  // A memory-backed origin is the provider clone whose own asset copy ran out of space, so the
+  // handoff is automatic there; anywhere else it stays an explicit operator choice.
+  const providerRoot =
+    isMemoryBacked(constraint) || env[PREBUILT_ASSETS_ENV] === "1" ? repoRoot : null;
   let published = null;
   try {
     log(JSON.stringify({ event: "build-scratch-selected", sourceCommit: headBefore,
@@ -563,6 +666,7 @@ export async function runRelocatedBuild({
       app,
       scratchApp,
       token,
+      providerRoot,
       // Measured after the copy back into the destination, immediately before the swap.
       beforeSwap: () => {
         sample();

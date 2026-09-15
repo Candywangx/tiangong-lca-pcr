@@ -91,6 +91,8 @@ test("only derived build output is excluded from the copy", () => {
     "packages/pcr-docs/.generated/site.json",
     "packages/pcr-docs/public/generated/search/x.json",
     "packages/pcr-docs/.generated-stage-ab12",
+    ".edgeone",
+    ".edgeone/assets/index.html",
   ])
     assert.equal(isDerivedPath(derived), true, derived);
   for (const kept of [
@@ -243,6 +245,7 @@ test("the copy keeps a worktree git identity and leaves derived output behind", 
     write(path.join(fixture.worktree, "packages/pcr-docs/out/old.html"), "<html>old</html>");
     write(path.join(fixture.worktree, "packages/pcr-docs/.generated/site.json"), "{}");
     write(path.join(fixture.worktree, "packages/pcr-docs/public/generated/raw/x.md"), "raw");
+    write(path.join(fixture.worktree, ".edgeone/assets/index.html"), "provider");
     fs.mkdirSync(path.join(fixture.worktree, "packages/pcr-docs/node_modules/.bin"), {
       recursive: true,
     });
@@ -267,6 +270,7 @@ test("the copy keeps a worktree git identity and leaves derived output behind", 
       "packages/pcr-docs/out",
       "packages/pcr-docs/.generated",
       "packages/pcr-docs/public/generated",
+      ".edgeone",
     ])
       assert.equal(fs.existsSync(path.join(target, derived)), false, derived);
     assert.equal(fs.existsSync(path.join(target, "library/catalog.yaml")), true);
@@ -771,4 +775,206 @@ test("a candidate that becomes unsuitable after its write probe leaves no scratc
         availableBytes: target === candidate ? 1e9 : 0 }) }), /insufficient capacity/u);
     assert.deepEqual(fs.readdirSync(candidate), []);
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+/* ------------------------------------------------------------------ provider assets */
+
+/** A provider-shaped root: the repository whose `.edgeone` the platform consumes. */
+function providerFixture(outFiles) {
+  const root = tempRoot("provider");
+  const app = path.join(root, "app");
+  write(path.join(app, "out/index.html"), "PREVIOUS-GOOD");
+  const scratchApp = scratchAppWithExport(path.join(root, "scratch"), outFiles);
+  return { root, app, scratchApp, providerRoot: root };
+}
+
+function inode(file) {
+  const stats = fs.lstatSync(file);
+  return { dev: stats.dev, ino: stats.ino, links: stats.nlink, bytes: stats.size };
+}
+
+test("provider assets are hard links of the published export, not a second copy", () => {
+  const fixture = providerFixture({ "index.html": "PAGE", "topics/a.json": "TOPIC" });
+  try {
+    const published = publishOutput({
+      app: fixture.app,
+      scratchApp: fixture.scratchApp,
+      token: "assets1",
+      providerRoot: fixture.providerRoot,
+    });
+    // "PAGE" + "TOPIC": the stats are the linked files themselves, not a directory listing.
+    assert.deepEqual(published.providerAssets, { mode: "hardlink", files: 2, bytes: 9 });
+
+    for (const relative of ["index.html", "topics/a.json"]) {
+      const exported = path.join(fixture.app, "out", relative);
+      const asset = path.join(fixture.providerRoot, ".edgeone/assets", relative);
+      assert.equal(fs.lstatSync(asset).isFile(), true, relative);
+      const [from, to] = [inode(exported), inode(asset)];
+      assert.deepEqual(to, { ...to, dev: from.dev, ino: from.ino }, relative);
+      assert.ok(to.links >= 2, "the asset shares its inode with the export");
+      assert.equal(fs.readFileSync(asset, "utf8"), fs.readFileSync(exported, "utf8"));
+    }
+    assert.deepEqual(
+      fs.readdirSync(path.join(fixture.providerRoot, ".edgeone")).filter((n) => n.startsWith(".")),
+      [],
+      "no assets stage is left behind",
+    );
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("existing or symlinked provider state is refused without touching the export", () => {
+  for (const [label, prepare, expected] of [
+    [
+      "existing assets",
+      (root) => write(path.join(root, ".edgeone/assets/index.html"), "SOMEONE-ELSE"),
+      /assets this build did not create/u,
+    ],
+    [
+      "symlinked .edgeone",
+      (root) => {
+        fs.mkdirSync(path.join(root, "elsewhere"), { recursive: true });
+        fs.symlinkSync(path.join(root, "elsewhere"), path.join(root, ".edgeone"));
+      },
+      /symlinked directory/u,
+    ],
+  ]) {
+    const fixture = providerFixture({ "index.html": "PAGE" });
+    try {
+      prepare(fixture.root);
+      assert.throws(
+        () =>
+          publishOutput({
+            app: fixture.app,
+            scratchApp: fixture.scratchApp,
+            token: "assets2",
+            providerRoot: fixture.providerRoot,
+          }),
+        expected,
+        label,
+      );
+      assert.equal(
+        fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"),
+        "PREVIOUS-GOOD",
+        label,
+      );
+      assert.deepEqual(fs.readdirSync(fixture.app).sort(), ["out"], label);
+    } finally {
+      fs.rmSync(fixture.root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("a budget failure after asset staging leaves export and provider assets untouched", () => {
+  const fixture = providerFixture({ "index.html": "PAGE" });
+  try {
+    assert.throws(
+      () =>
+        publishOutput({
+          app: fixture.app,
+          scratchApp: fixture.scratchApp,
+          token: "assets3",
+          providerRoot: fixture.providerRoot,
+          beforeSwap: () => {
+            throw new Error("budget exceeded");
+          },
+        }),
+      /budget exceeded/u,
+    );
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.equal(fs.existsSync(path.join(fixture.providerRoot, ".edgeone/assets")), false);
+    assert.deepEqual(fs.readdirSync(path.join(fixture.providerRoot, ".edgeone")), []);
+    assert.deepEqual(fs.readdirSync(fixture.app).sort(), ["out"]);
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("a rejected assets rename rolls the export back, or leaves a first build unpublished", () => {
+  for (const hadPrevious of [true, false]) {
+    const fixture = providerFixture({ "index.html": "PAGE" });
+    try {
+      if (!hadPrevious) fs.rmSync(path.join(fixture.app, "out"), { recursive: true, force: true });
+      const refusing = (from, to) => {
+        if (path.basename(to) === "assets") throw new Error("assets rename refused");
+        return fs.renameSync(from, to);
+      };
+      assert.throws(
+        () =>
+          publishOutput({
+            app: fixture.app,
+            scratchApp: fixture.scratchApp,
+            token: hadPrevious ? "assets4" : "assets5",
+            providerRoot: fixture.providerRoot,
+            rename: refusing,
+          }),
+        /assets rename refused/u,
+      );
+      if (hadPrevious) {
+        assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+        assert.deepEqual(fs.readdirSync(fixture.app).sort(), ["out"]);
+      } else {
+        assert.deepEqual(fs.readdirSync(fixture.app), [], "a first build publishes nothing");
+      }
+      assert.equal(fs.existsSync(path.join(fixture.providerRoot, ".edgeone/assets")), false);
+      assert.deepEqual(fs.readdirSync(path.join(fixture.providerRoot, ".edgeone")), []);
+    } finally {
+      fs.rmSync(fixture.root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("the provider handoff happens for a memory-backed origin or an explicit opt-in only", async () => {
+  for (const [label, env, memoryBacked, expectedAssets] of [
+    ["opt-in", { [RELOCATE_ENV]: "1", PCR_EDGEONE_PREBUILT_ASSETS: "1" }, false, true],
+    ["memory-backed origin", { [RELOCATE_ENV]: "1" }, true, true],
+    ["neither", { [RELOCATE_ENV]: "1" }, false, false],
+  ]) {
+    const fixture = orchestrationFixture();
+    const scratchParent = tempRoot("scratchparent");
+    try {
+      const result = await runRelocatedBuild({
+        app: fixture.app,
+        repoRoot: fixture.worktree,
+        env,
+        facts: (target) => memoryBacked && target === fixture.worktree
+          ? fakeFacts({ path: target, device: "provider-shm", fileSystemType: "tmpfs" })
+          : filesystemFacts(target),
+        scratchParent,
+        log: silent,
+        token: `provider-${label}`,
+        runPipeline: async ({ cwd }) => {
+          writePipelineEvidence(cwd, fixture.head);
+          write(path.join(cwd, "out/topics/a.json"), "TOPIC");
+        },
+      });
+      const assets = path.join(fixture.worktree, ".edgeone/assets");
+      assert.equal(fs.existsSync(assets), expectedAssets, label);
+      assert.equal(Boolean(result.published.providerAssets), expectedAssets, label);
+      if (expectedAssets) {
+        const exported = path.join(fixture.app, "out/index.html");
+        assert.deepEqual(inode(path.join(assets, "index.html")).ino, inode(exported).ino, label);
+      }
+    } finally {
+      fs.rmSync(fixture.base, { recursive: true, force: true });
+      fs.rmSync(scratchParent, { recursive: true, force: true });
+    }
+  }
+});
+
+test("dangling provider targets remain untouched when handoff is refused", () => {
+  for (const name of ["assets", ".pcr-assets-stage-dangling"]) {
+    const fixture = providerFixture({ "index.html": "PAGE" });
+    try {
+      const directory = path.join(fixture.providerRoot, ".edgeone");
+      fs.mkdirSync(directory, { recursive: true });
+      const link = path.join(directory, name), missing = path.join(fixture.root, "missing");
+      fs.symlinkSync(missing, link);
+      assert.throws(() => publishOutput({ app: fixture.app, scratchApp: fixture.scratchApp,
+        token: "dangling", providerRoot: fixture.providerRoot }), /Refusing/u);
+      assert.equal(fs.readlinkSync(link), missing);
+      assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    } finally { fs.rmSync(fixture.root, { recursive: true, force: true }); }
+  }
 });
