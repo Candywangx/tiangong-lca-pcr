@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
-lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
+lastReviewedCommit: 9fe6486d985d1a093eb5e50fea307d221bd12e70
+lastReviewedNote: "Reviewed for PCR #17: build-storage adapter addresses observed EdgeOne shared-memory ENOSPC while retaining canonical source, language, fidelity, SEO and resource gates. CI exercises relocated full-corpus builds; local and production results remain tracked in the Issue. No PCR authoring, lifecycle, release or consumption API behavior changes."
 ---
 
 # TianGong LCA PCR Library

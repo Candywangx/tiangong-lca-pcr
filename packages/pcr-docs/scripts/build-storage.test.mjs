@@ -1,0 +1,698 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { execFileSync } from "node:child_process";
+import {
+  HEADROOM_BYTES,
+  MAX_OUTPUT_BYTES,
+  RELOCATE_ENV,
+  DEFAULT_OUTPUT_BYTES,
+  assertScratchSuitable,
+  copySourceTree,
+  describeEnvironment,
+  filesystemFacts,
+  gitHead,
+  isDerivedPath,
+  measureOutputBytes,
+  mountEntries,
+  publishOutput,
+  relocationRequested,
+  requiredScratchBytes,
+  runRelocatedBuild,
+  scratchEnvironment,
+  summarizeTree,
+} from "./build-storage.mjs";
+
+const silent = () => {};
+
+function tempRoot(label) {
+  return fs.mkdtempSync(path.join(os.tmpdir(), `pcr-${label}-`));
+}
+
+function write(file, content) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, content);
+}
+
+function git(args, cwd) {
+  return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+}
+
+function commit(cwd, message) {
+  git(["add", "-A"], cwd);
+  git(
+    ["-c", "user.email=fixture@example.invalid", "-c", "user.name=Fixture", "commit", "-m", message],
+    cwd,
+  );
+  return git(["rev-parse", "HEAD"], cwd);
+}
+
+/**
+ * A real repository with a real linked worktree, so `.git` is a file rather than a directory —
+ * the shape the provider clone and every local task worktree actually has.
+ */
+function worktreeFixture() {
+  const base = tempRoot("fixture");
+  const main = path.join(base, "main");
+  fs.mkdirSync(main, { recursive: true });
+  git(["init", "--quiet", "."], main);
+  write(path.join(main, "library", "catalog.yaml"), "schema_version: 1\n");
+  write(path.join(main, "packages", "pcr-docs", "package.json"), '{"name":"fixture"}\n');
+  git(["add", "-A"], main);
+  const head = commit(main, "fixture");
+  const worktree = path.join(base, "worktree");
+  git(["worktree", "add", "--quiet", "--detach", worktree, head], main);
+  return { base, main, worktree, head };
+}
+
+function fakeFacts(overrides = {}) {
+  return {
+    path: "path" in overrides ? overrides.path : "/scratch",
+    device: "device" in overrides ? overrides.device : "1",
+    mountPoint: "mountPoint" in overrides ? overrides.mountPoint : "/scratch",
+    fileSystemType: "fileSystemType" in overrides ? overrides.fileSystemType : "ext4",
+    availableBytes: "availableBytes" in overrides ? overrides.availableBytes : 100 * 1024 ** 3,
+    totalBytes: "totalBytes" in overrides ? overrides.totalBytes : 200 * 1024 ** 3,
+  };
+}
+
+/* ------------------------------------------------------------------ derived paths */
+
+test("only derived build output is excluded from the copy", () => {
+  for (const derived of [
+    "packages/pcr-docs/.next",
+    "packages/pcr-docs/.next/cache/x",
+    "packages/pcr-docs/out",
+    "packages/pcr-docs/out/index.html",
+    "packages/pcr-docs/.generated",
+    "packages/pcr-docs/.generated/site.json",
+    "packages/pcr-docs/public/generated/search/x.json",
+    "packages/pcr-docs/.generated-stage-ab12",
+  ])
+    assert.equal(isDerivedPath(derived), true, derived);
+  for (const kept of [
+    "library/catalog.yaml",
+    "packages/pcr-docs/app/page.tsx",
+    "packages/pcr-docs/public/logo-light.svg",
+    "packages/pcr-docs/node_modules/next/package.json",
+    ".git",
+    "node_modules/.bin/next",
+  ])
+    assert.equal(isDerivedPath(kept), false, kept);
+});
+
+/* ------------------------------------------------------------------ decision */
+
+test("relocation is requested only for a memory-backed checkout or an explicit opt-in", () => {
+  const disk = fakeFacts({ fileSystemType: "ext4", path: "/work/repo" });
+  const shm = fakeFacts({ fileSystemType: "tmpfs", path: "/dev/shm/repo" });
+
+  assert.deepEqual(relocationRequested({ repoRoot: "/work/repo", env: {}, facts: () => disk }), {
+    relocate: false,
+    forced: false,
+    reason: "ordinary-checkout",
+    facts: disk,
+  });
+  assert.equal(
+    relocationRequested({ repoRoot: "/dev/shm/repo", env: {}, facts: () => shm }).reason,
+    "memory-backed-checkout",
+  );
+  assert.equal(
+    relocationRequested({ repoRoot: "/work/repo", env: { [RELOCATE_ENV]: "1" }, facts: () => disk })
+      .forced,
+    true,
+  );
+  assert.equal(
+    relocationRequested({
+      repoRoot: "/dev/shm/repo",
+      env: { PCR_BUILD_IN_SCRATCH: "1" },
+      facts: () => shm,
+    }).relocate,
+    false,
+  );
+});
+
+test("a shared-memory path is memory-backed even without a mount table", () => {
+  const unproven = fakeFacts({ fileSystemType: null, path: "/dev/shm/repo" });
+  assert.equal(
+    relocationRequested({ repoRoot: "/dev/shm/repo", env: {}, facts: () => unproven }).relocate,
+    true,
+  );
+});
+
+/* ------------------------------------------------------------------ filesystem facts */
+
+test("mount entries decode kernel escapes and the longest mount wins", () => {
+  const mounts = mountEntries({
+    read: () =>
+      [
+        "/dev/sda1 / ext4 rw 0 0",
+        "tmpfs /dev/shm tmpfs rw,nosuid 0 0",
+        "/dev/sdb1 /mnt/data\\040disk ext4 rw 0 0",
+      ].join("\n"),
+  });
+  assert.deepEqual(mounts[1], { source: "tmpfs", mountPoint: "/dev/shm", fileSystemType: "tmpfs" });
+  assert.equal(mounts[2].mountPoint, "/mnt/data disk");
+
+  const scratch = tempRoot("facts");
+  const facts = filesystemFacts(scratch, { mounts });
+  assert.equal(facts.fileSystemType, "ext4");
+  assert.equal(facts.mountPoint, "/");
+  assert.ok(facts.availableBytes > 0 && facts.totalBytes > 0);
+  assert.equal(typeof facts.device, "string");
+  fs.rmSync(scratch, { recursive: true, force: true });
+});
+
+/* ------------------------------------------------------------------ capacity */
+
+test("required scratch space scales with the copy and the measured output", () => {
+  const copyBytes = 700 * 1024 ** 2;
+  const withDefault = requiredScratchBytes({ copyBytes, outputBytes: 0 });
+  assert.ok(withDefault >= (copyBytes + DEFAULT_OUTPUT_BYTES) * 1.25);
+  const measured = requiredScratchBytes({ copyBytes, outputBytes: 3 * 1024 ** 3 });
+  assert.equal(measured, withDefault, "partial prior output cannot lower the safe estimate");
+  assert.ok(requiredScratchBytes({ copyBytes, outputBytes: 5 * 1024 ** 3 }) > withDefault);
+});
+
+test("an insufficient or unusable scratch is refused with diagnostics", () => {
+  const constraint = fakeFacts({ path: "/dev/shm/repo", device: "7", fileSystemType: "tmpfs" });
+  const requiredBytes = 5 * 1024 ** 3;
+
+  assert.throws(
+    () =>
+      assertScratchSuitable({
+        constraint,
+        scratch: fakeFacts({ availableBytes: 1024, device: "8" }),
+        requiredBytes,
+        warn: silent,
+      }),
+    /insufficient capacity: needs 5368709120 bytes/u,
+  );
+  assert.throws(
+    () =>
+      assertScratchSuitable({
+        constraint,
+        scratch: fakeFacts({ device: "8", fileSystemType: "tmpfs", path: "/tmp" }),
+        requiredBytes,
+        warn: silent,
+      }),
+    /memory-backed/u,
+  );
+  assert.throws(
+    () =>
+      assertScratchSuitable({
+        constraint,
+        scratch: fakeFacts({ device: "7", fileSystemType: "ext4" }),
+        requiredBytes,
+        warn: silent,
+      }),
+    /same constrained filesystem/u,
+  );
+  assert.throws(
+    () =>
+      assertScratchSuitable({
+        constraint,
+        scratch: fakeFacts({ device: "8", fileSystemType: null }),
+        requiredBytes,
+        warn: silent,
+      }),
+    /could not be proven/u,
+  );
+  const warnings = [];
+  const suitable = assertScratchSuitable({
+    constraint,
+    scratch: fakeFacts({ device: "8", fileSystemType: null }),
+    requiredBytes,
+    forced: true,
+    warn: (message) => warnings.push(message),
+  });
+  assert.equal(suitable.sameDevice, false);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /unproven/u);
+});
+
+/* ------------------------------------------------------------------ copy fidelity */
+
+test("the copy keeps a worktree git identity and leaves derived output behind", () => {
+  const fixture = worktreeFixture();
+  try {
+    write(path.join(fixture.worktree, "packages/pcr-docs/.next/server/app/x.html"), "<html></html>");
+    write(path.join(fixture.worktree, "packages/pcr-docs/out/old.html"), "<html>old</html>");
+    write(path.join(fixture.worktree, "packages/pcr-docs/.generated/site.json"), "{}");
+    write(path.join(fixture.worktree, "packages/pcr-docs/public/generated/raw/x.md"), "raw");
+    fs.mkdirSync(path.join(fixture.worktree, "packages/pcr-docs/node_modules/.bin"), {
+      recursive: true,
+    });
+    fs.symlinkSync(
+      "../next/dist/bin/next",
+      path.join(fixture.worktree, "packages/pcr-docs/node_modules/.bin/next"),
+    );
+
+    const scratch = tempRoot("copy");
+    const target = path.join(scratch, "repo");
+    const copied = copySourceTree({ from: fixture.worktree, to: target });
+
+    assert.equal(fs.lstatSync(path.join(target, ".git")).isFile(), true, ".git stays a file");
+    assert.equal(gitHead(target), fixture.head, "the copy resolves the same commit");
+    assert.equal(
+      fs.lstatSync(path.join(target, "packages/pcr-docs/node_modules/.bin/next")).isSymbolicLink(),
+      true,
+      "dependency symlinks are preserved, not dereferenced",
+    );
+    for (const derived of [
+      "packages/pcr-docs/.next",
+      "packages/pcr-docs/out",
+      "packages/pcr-docs/.generated",
+      "packages/pcr-docs/public/generated",
+    ])
+      assert.equal(fs.existsSync(path.join(target, derived)), false, derived);
+    assert.equal(fs.existsSync(path.join(target, "library/catalog.yaml")), true);
+    const expected = summarizeTree(fixture.worktree, isDerivedPath);
+    assert.deepEqual(
+      { files: copied.files, bytes: copied.bytes, links: copied.links },
+      expected,
+    );
+    assert.deepEqual(copied.links, ["packages/pcr-docs/node_modules/.bin/next"]);
+    assert.equal(
+      fs.readlinkSync(path.join(target, "packages/pcr-docs/node_modules/.bin/next")),
+      "../next/dist/bin/next",
+      "the link target is reproduced verbatim, not rewritten to an absolute path",
+    );
+    fs.rmSync(scratch, { recursive: true, force: true });
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+  }
+});
+
+test("an incomplete copy is refused rather than built on", () => {
+  const fixture = worktreeFixture();
+  try {
+    const scratch = tempRoot("copyfail");
+    const target = path.join(scratch, "repo");
+    let skipped = false;
+    assert.throws(
+      () =>
+        copySourceTree({
+          from: fixture.worktree,
+          to: target,
+          // A copy that silently drops a file must not become a build input.
+          cp: (source, destination, options) =>
+            fs.cpSync(source, destination, {
+              ...options,
+              filter: (candidate) => {
+                if (!options.filter(candidate)) return false;
+                if (!skipped && candidate.endsWith("catalog.yaml")) {
+                  skipped = true;
+                  return false;
+                }
+                return true;
+              },
+            }),
+        }),
+      /Source copy is incomplete/u,
+    );
+    fs.rmSync(scratch, { recursive: true, force: true });
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+  }
+});
+
+/* ------------------------------------------------------------------ publishing */
+
+function scratchAppWithExport(root, files) {
+  const app = path.join(root, "repo", "packages/pcr-docs");
+  for (const [name, content] of Object.entries(files)) write(path.join(app, "out", name), content);
+  return app;
+}
+
+test("publishing replaces the export and removes its own staging directories", () => {
+  const root = tempRoot("publish");
+  try {
+    const app = path.join(root, "app");
+    write(path.join(app, "out/index.html"), "OLD");
+    const scratchApp = scratchAppWithExport(path.join(root, "scratch"), { "index.html": "NEW" });
+    const published = publishOutput({ app, scratchApp, token: "test1" });
+    assert.deepEqual(published, { files: 1, bytes: 3, staged: true });
+    assert.equal(fs.readFileSync(path.join(app, "out/index.html"), "utf8"), "NEW");
+    assert.deepEqual(fs.readdirSync(app).sort(), ["out"]);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publishing refuses symlinked exports and insufficient destination space", () => {
+  const root = tempRoot("publish-guard");
+  try {
+    const app = path.join(root, "app");
+    fs.mkdirSync(app, { recursive: true });
+    const elsewhere = path.join(root, "elsewhere");
+    write(path.join(elsewhere, "index.html"), "OLD");
+    fs.symlinkSync(elsewhere, path.join(app, "out"));
+    const scratchApp = scratchAppWithExport(path.join(root, "scratch"), { "index.html": "NEW" });
+    assert.throws(() => publishOutput({ app, scratchApp, token: "test2" }), /symlinked export/u);
+
+    fs.rmSync(path.join(app, "out"));
+    write(path.join(app, "out/index.html"), "OLD");
+    assert.throws(
+      () => publishOutput({ app, scratchApp, token: "test3", freeBytes: 1 }),
+      /cannot stage the export/u,
+    );
+    assert.equal(fs.readFileSync(path.join(app, "out/index.html"), "utf8"), "OLD");
+
+    fs.symlinkSync("../elsewhere/index.html", path.join(scratchApp, "out/link.html"));
+    assert.throws(() => publishOutput({ app, scratchApp, token: "test4" }), /contains a symlink/u);
+    assert.equal(fs.readFileSync(path.join(app, "out/index.html"), "utf8"), "OLD");
+    assert.deepEqual(fs.readdirSync(app).sort(), ["out"]);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("an oversized export is refused before anything is swapped", () => {
+  const root = tempRoot("publish-budget");
+  try {
+    const app = path.join(root, "app");
+    write(path.join(app, "out/index.html"), "OLD");
+    const scratchApp = scratchAppWithExport(path.join(root, "scratch"), { "index.html": "NEW" });
+    const exportBytes = summarizeTree(path.join(scratchApp, "out")).bytes;
+    assert.ok(exportBytes < MAX_OUTPUT_BYTES);
+    assert.throws(
+      () =>
+        publishOutput({
+          app,
+          scratchApp,
+          token: "test5",
+          freeBytes: exportBytes + HEADROOM_BYTES - 1,
+        }),
+      /cannot stage the export/u,
+    );
+    assert.equal(fs.readFileSync(path.join(app, "out/index.html"), "utf8"), "OLD");
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+/* ------------------------------------------------------------------ environment */
+
+test("the scratch environment preserves the verification marker and never logs values", () => {
+  const env = {
+    PCR_GOOGLE_SITE_VERIFICATION: "marker-value",
+    SOME_TOKEN: "super-secret-value",
+  };
+  const forwarded = scratchEnvironment(env);
+  assert.equal(forwarded.PCR_GOOGLE_SITE_VERIFICATION, "marker-value");
+  assert.equal(forwarded.SOME_TOKEN, "super-secret-value");
+  assert.equal(forwarded.PCR_BUILD_IN_SCRATCH, "1");
+  assert.equal(forwarded.NEXT_TELEMETRY_DISABLED, "1");
+  const described = JSON.stringify(describeEnvironment(env));
+  assert.match(described, /PCR_GOOGLE_SITE_VERIFICATION":"set/u);
+  assert.doesNotMatch(described, /marker-value|super-secret-value/u);
+  assert.equal(describeEnvironment({}).PCR_GOOGLE_SITE_VERIFICATION, "absent");
+});
+
+/* ------------------------------------------------------------------ orchestration */
+
+/** Everything the real pipeline leaves behind that ties the export to a commit. */
+function writePipelineEvidence(cwd, commit, content = "NEW-EXPORT") {
+  write(path.join(cwd, "out/index.html"), content);
+  write(path.join(cwd, ".generated/site.json"), JSON.stringify({ sourceCommit: commit }));
+  write(path.join(cwd, "out/generated/version.json"), JSON.stringify({ sourceCommit: commit }));
+}
+
+function orchestrationFixture() {
+  const fixture = worktreeFixture();
+  const app = path.join(fixture.worktree, "packages/pcr-docs");
+  write(path.join(app, "out/index.html"), "PREVIOUS-GOOD");
+  return { ...fixture, app };
+}
+
+test("a relocated build publishes the verified export and cleans up its scratch", async () => {
+  const fixture = orchestrationFixture();
+  const scratchParent = tempRoot("scratchparent");
+  try {
+    let observed = null;
+    const result = await runRelocatedBuild({
+      app: fixture.app,
+      repoRoot: fixture.worktree,
+      env: { [RELOCATE_ENV]: "1", PCR_GOOGLE_SITE_VERIFICATION: "marker" },
+      scratchParent,
+      log: silent,
+      token: "run1",
+      runPipeline: async ({ cwd, env }) => {
+        observed = { cwd, env };
+        writePipelineEvidence(cwd, fixture.head);
+      },
+    });
+
+    assert.equal(result.relocated, true);
+    assert.equal(result.sourceCommit, fixture.head);
+    assert.equal(result.published.files, 2);
+    assert.equal(observed.cwd.startsWith(fs.realpathSync(scratchParent) + path.sep), true, "the pipeline ran on scratch");
+    assert.equal(observed.env.PCR_BUILD_IN_SCRATCH, "1", "recursion is disabled in the child");
+    assert.equal(observed.env.PCR_GOOGLE_SITE_VERIFICATION, "marker");
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "NEW-EXPORT");
+    assert.deepEqual(
+      fs.readdirSync(fixture.app).filter((name) => name.startsWith("out.")),
+      [],
+      "no staging leftovers",
+    );
+    assert.deepEqual(fs.readdirSync(scratchParent), [], "scratch removed");
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+    fs.rmSync(scratchParent, { recursive: true, force: true });
+  }
+});
+
+test("a failed build retains the previous export and removes only its own scratch", async () => {
+  const fixture = orchestrationFixture();
+  const scratchParent = tempRoot("scratchparent");
+  try {
+    await assert.rejects(
+      runRelocatedBuild({
+        app: fixture.app,
+        repoRoot: fixture.worktree,
+        env: { [RELOCATE_ENV]: "1" },
+        scratchParent,
+        log: silent,
+        token: "run2",
+        runPipeline: async ({ cwd }) => {
+          write(path.join(cwd, "out/index.html"), "PARTIAL");
+          throw new Error("pipeline exploded");
+        },
+      }),
+      /pipeline exploded/u,
+    );
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.deepEqual(fs.readdirSync(fixture.app).filter((name) => name.startsWith("out.")), []);
+    assert.deepEqual(fs.readdirSync(scratchParent), []);
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+    fs.rmSync(scratchParent, { recursive: true, force: true });
+  }
+});
+
+test("a source commit that moves mid-build blocks publication", async () => {
+  const fixture = orchestrationFixture();
+  const scratchParent = tempRoot("scratchparent");
+  try {
+    await assert.rejects(
+      runRelocatedBuild({
+        app: fixture.app,
+        repoRoot: fixture.worktree,
+        env: { [RELOCATE_ENV]: "1" },
+        scratchParent,
+        log: silent,
+        token: "run3",
+        runPipeline: async ({ cwd }) => {
+          writePipelineEvidence(cwd, fixture.head);
+          // A concurrent commit lands on the source branch while the export is being built.
+          write(path.join(fixture.worktree, "library/late.yaml"), "late: true\n");
+          commit(fixture.worktree, "concurrent commit");
+        },
+      }),
+      // The scratch copy resolves through the same object database, so the re-check after the
+      // pipeline sees the concurrent commit and refuses to publish.
+      /moved during the build/u,
+    );
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.deepEqual(fs.readdirSync(scratchParent), []);
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+    fs.rmSync(scratchParent, { recursive: true, force: true });
+  }
+});
+
+test("an export recording a different commit than the checkout blocks publication", async () => {
+  const fixture = orchestrationFixture();
+  const scratchParent = tempRoot("scratchparent");
+  try {
+    await assert.rejects(
+      runRelocatedBuild({
+        app: fixture.app,
+        repoRoot: fixture.worktree,
+        env: { [RELOCATE_ENV]: "1" },
+        scratchParent,
+        log: silent,
+        token: "run4",
+        runPipeline: async ({ cwd }) => {
+          writePipelineEvidence(cwd, "0".repeat(40));
+        },
+      }),
+      /Generated manifest records commit/u,
+    );
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.deepEqual(fs.readdirSync(scratchParent), []);
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+    fs.rmSync(scratchParent, { recursive: true, force: true });
+  }
+});
+
+test("publication requires the generated identity evidence to be present and matching", async () => {
+  for (const [label, prepare, expected] of [
+    [
+      "missing manifest",
+      (cwd, commit) => {
+        write(path.join(cwd, "out/index.html"), "NEW");
+        write(path.join(cwd, "out/generated/version.json"), JSON.stringify({ sourceCommit: commit }));
+      },
+      /Generation manifest .* is missing/u,
+    ],
+    [
+      "missing version document",
+      (cwd, commit) => {
+        write(path.join(cwd, "out/index.html"), "NEW");
+        write(path.join(cwd, ".generated/site.json"), JSON.stringify({ sourceCommit: commit }));
+      },
+      /version document generated\/version.json is missing/u,
+    ],
+    [
+      "version document from another commit",
+      (cwd, commit) => {
+        write(path.join(cwd, "out/index.html"), "NEW");
+        write(path.join(cwd, ".generated/site.json"), JSON.stringify({ sourceCommit: commit }));
+        write(path.join(cwd, "out/generated/version.json"), JSON.stringify({ sourceCommit: "1".repeat(40) }));
+      },
+      /Export version document records commit/u,
+    ],
+  ]) {
+    const fixture = orchestrationFixture();
+    const scratchParent = tempRoot("scratchparent");
+    try {
+      await assert.rejects(
+        runRelocatedBuild({
+          app: fixture.app,
+          repoRoot: fixture.worktree,
+          env: { [RELOCATE_ENV]: "1" },
+          scratchParent,
+          log: silent,
+          token: "evidence",
+          runPipeline: async ({ cwd }) => prepare(cwd, fixture.head),
+        }),
+        expected,
+        label,
+      );
+      assert.equal(
+        fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"),
+        "PREVIOUS-GOOD",
+        label,
+      );
+      assert.deepEqual(fs.readdirSync(scratchParent), [], label);
+    } finally {
+      fs.rmSync(fixture.base, { recursive: true, force: true });
+      fs.rmSync(scratchParent, { recursive: true, force: true });
+    }
+  }
+});
+
+test("the last budget gate runs after staging and before the swap", () => {
+  const root = tempRoot("preswap");
+  try {
+    const app = path.join(root, "app");
+    write(path.join(app, "out/index.html"), "PREVIOUS-GOOD");
+    const scratchApp = scratchAppWithExport(path.join(root, "scratch"), {
+      "index.html": "NEW-EXPORT",
+      "version.json": "{}",
+    });
+    const order = [];
+    assert.throws(
+      () =>
+        publishOutput({
+          app,
+          scratchApp,
+          token: "preswap1",
+          beforeSwap: () => {
+            order.push(fs.existsSync(path.join(app, "out.stage-preswap1")) ? "staged" : "unstaged");
+            throw new Error("budget exceeded before the swap");
+          },
+        }),
+      /budget exceeded before the swap/u,
+    );
+    assert.deepEqual(order, ["staged"], "the gate runs on the staged export");
+    assert.equal(fs.readFileSync(path.join(app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.deepEqual(fs.readdirSync(app).sort(), ["out"], "staging cleaned up");
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a scratch that cannot hold the build stops before anything is copied", async () => {
+  const fixture = orchestrationFixture();
+  const scratchParent = tempRoot("scratchparent");
+  try {
+    let ran = false;
+    await assert.rejects(
+      runRelocatedBuild({
+        app: fixture.app,
+        repoRoot: fixture.worktree,
+        env: {},
+        scratchParent,
+        log: silent,
+        token: "run5",
+        facts: (target) =>
+          target === fixture.worktree
+            ? fakeFacts({ path: "/dev/shm/repo", device: "7", fileSystemType: "tmpfs", availableBytes: 1024 })
+            : fakeFacts({ device: "8", fileSystemType: "ext4", availableBytes: 1024 }),
+        runPipeline: async () => {
+          ran = true;
+        },
+      }),
+      /insufficient capacity/u,
+    );
+    assert.equal(ran, false, "the pipeline never starts");
+    assert.deepEqual(fs.readdirSync(scratchParent), []);
+  } finally {
+    fs.rmSync(fixture.base, { recursive: true, force: true });
+    fs.rmSync(scratchParent, { recursive: true, force: true });
+  }
+});
+
+test("previous generated directories are measured without assuming a complete build", () => {
+  const root = tempRoot("measure");
+  try {
+    const app = path.join(root, "packages/pcr-docs");
+    write(path.join(app, "out/index.html"), "x".repeat(2048));
+    write(path.join(app, ".generated/site.json"), "y".repeat(1024));
+    write(path.join(app, ".next/server/app/index.html"), "z".repeat(512));
+    assert.equal(measureOutputBytes(app), 2048 + 1024 + 512);
+    assert.equal(measureOutputBytes(path.join(root, "absent")), 0);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+
+test("a scratch parent inside the repository is refused before recursive copying", async () => {
+  const fixture = orchestrationFixture();
+  try {
+    await assert.rejects(runRelocatedBuild({
+      app: fixture.app, repoRoot: fixture.worktree,
+      env: { [RELOCATE_ENV]: "1" }, scratchParent: fixture.worktree,
+      runPipeline: async () => assert.fail("must not build inside source"), log: silent,
+    }), /outside the source repository/u);
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+    assert.equal(fs.readdirSync(fixture.worktree).some(name => name.startsWith("pcr-build-")), false);
+  } finally { fs.rmSync(fixture.base, { recursive: true, force: true }); }
+});
