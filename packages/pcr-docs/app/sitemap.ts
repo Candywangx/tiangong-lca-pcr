@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next';
 export const dynamic = 'force-static';
 import { getSiteManifest } from '@/lib/generated';
 import { pageLastModified } from '@/lib/source';
+import { publicHomeLanguages } from '@/lib/home-policy.mjs';
 
 /**
  * Indexable surfaces only: the entry home, the localized homes, and the document pages the
@@ -21,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   };
 
   push(`${manifest.origin}/`, 1);
-  for (const language of manifest.languages) if (language.route !== manifest.defaultLocale) push(`${manifest.origin}/${language.route}/`, 0.8);
+  for (const language of publicHomeLanguages(manifest)) if (language.route !== manifest.defaultLocale) push(`${manifest.origin}/${language.route}/`, 0.8);
 
   for (const page of manifest.pages) {
     if (!page.indexable) continue;

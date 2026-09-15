@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseHTML, DOMParser } from "linkedom";
 import { verifyHostingContract } from "./hosting-contract.mjs";
+import { publicHomeLanguages, canonicalHome } from "../lib/home-policy.mjs";
 import {
   inventoryMarkdown,
   verifyRenderedBlocks,
@@ -105,13 +106,11 @@ for (const source of report.documents) {
     "Source block order changed " + source.sourcePath,
   );
 }
+const publicHomes = publicHomeLanguages(manifest);
 const homeAlternates = Object.fromEntries(
-  manifest.languages.map((language) => [
+  publicHomes.map((language) => [
     language.code,
-    manifest.origin +
-      (language.route === manifest.defaultLocale
-        ? "/"
-        : "/" + language.route + "/"),
+    canonicalHome(manifest, language),
   ]),
 );
 for (const route of [
@@ -126,7 +125,7 @@ for (const route of [
       (language) => language.route === manifest.defaultLocale,
     );
   const document = readPage(route),
-    canonical = homeAlternates[language.code];
+    canonical = canonicalHome(manifest, language);
   requireThat(
     document.documentElement.lang === language.code,
     "Wrong home language " + route,
@@ -136,10 +135,18 @@ for (const route of [
       canonical,
     "Wrong home canonical " + route,
   );
-  for (const [code, url] of Object.entries({
-    ...homeAlternates,
-    "x-default": manifest.origin + "/",
-  })) {
+  const indexable = publicHomes.some((home) => home.code === language.code);
+  if (!indexable)
+    requireThat(
+      document
+        .querySelector('meta[name="robots"]')
+        ?.getAttribute("content")
+        .includes("noindex"),
+      "Unavailable locale home must be noindex " + route,
+    );
+  for (const [code, url] of Object.entries(
+    indexable ? { ...homeAlternates, "x-default": manifest.origin + "/" } : {},
+  )) {
     const alternate = [
       ...document.querySelectorAll('link[rel="alternate"]'),
     ].find(
@@ -295,6 +302,12 @@ const sitemap = new DOMParser().parseFromString(
 const locations = [...sitemap.querySelectorAll("url > loc")].map(
   (n) => n.textContent,
 );
+for (const language of manifest.languages)
+  requireThat(
+    locations.includes(canonicalHome(manifest, language)) ===
+      publicHomes.some((home) => home.code === language.code),
+    "Home sitemap availability differs " + language.code,
+  );
 const sitemapDates = new Map(
   [...sitemap.querySelectorAll("url")].map((node) => [
     node.querySelector("loc")?.textContent,

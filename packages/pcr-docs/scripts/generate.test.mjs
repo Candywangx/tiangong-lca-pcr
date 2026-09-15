@@ -3,6 +3,7 @@ import {
   recordPages,
   recordNavigationNode,
 } from "../lib/record-navigation.mjs";
+import { publicHomeLanguages } from "../lib/home-policy.mjs";
 import { createDocumentSource } from "../lib/content-source.mjs";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -172,6 +173,10 @@ test("real generator preserves multilingual released snapshots and excludes open
         ["1.0.0", "1.1.0"],
       );
     const source = createDocumentSource(site);
+    assert.deepEqual(
+      publicHomeLanguages(site).map((language) => language.code),
+      ["zh-CN", "en-US"],
+    );
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
       const currentPages = recordPages(site, site.records[0], language);
       assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);

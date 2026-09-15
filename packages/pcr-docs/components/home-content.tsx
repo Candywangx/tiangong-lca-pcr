@@ -92,9 +92,9 @@ function utcDate(value: string): string {
 }
 
 /** Newest authored record wins; ties break on id so the landing page stays deterministic. */
-function featuredRecord(manifest: SiteManifest): PcrRecord | undefined {
+function featuredRecord(manifest: SiteManifest, code: string): PcrRecord | undefined {
   return [...manifest.records]
-    .filter((record) => record.status !== 'scaffold')
+    .filter((record) => record.status !== 'scaffold' && Boolean(record.urls[code]))
     .sort((a, b) => {
       const left = a.updatedAt ?? '';
       const right = b.updatedAt ?? '';
@@ -170,7 +170,7 @@ export function HomeContent({
   const code = languageCodeFor(manifest, locale);
   const fallback = manifest.defaultLocale;
   const domains = buildDomainNav(locale);
-  const record = featuredRecord(manifest);
+  const record = featuredRecord(manifest, code);
   const library = libraryUrl(locale);
   const coverage = coveragePage(locale)?.url;
 

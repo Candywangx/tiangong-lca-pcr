@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import type { DocPage, SiteManifest } from '@/lib/types';
+import { publicHomeLanguages, canonicalHome } from './home-policy.mjs';
+import type { DocPage, Language, SiteManifest } from '@/lib/types';
 import { languageFor } from '@/lib/source';
 
 export type PageStrings = {
@@ -120,8 +121,9 @@ export function homeMetadata(
 ): Metadata {
   // Homes are route files, not generated pages, so their counterparts are the sibling homes.
   const languages: Record<string, string> = {};
-  for (const language of manifest.languages) languages[language.code] = language.route === manifest.defaultLocale ? `${manifest.origin}/` : `${manifest.origin}/${language.route}/`;
-  languages['x-default'] = `${manifest.origin}/`;
+  const homes = publicHomeLanguages(manifest);
+  const indexable = homes.some((language: Language) => language.route === locale);
+  if(indexable){for (const language of homes) languages[language.code] = canonicalHome(manifest,language);languages['x-default'] = `${manifest.origin}/`;}
   const title = `${routeName(locale)} | TianGong PCR`;
   const canonical = canonicalOverride === '/' ? `${manifest.origin}/` : canonicalOverride ?? `${manifest.origin}/${locale}/`;
 
@@ -132,6 +134,7 @@ export function homeMetadata(
         ? '天工 LCA 产品类别规则（PCR）库：中英双语记录、分类覆盖与逐字节可校验源文件。'
         : 'The TianGong LCA product category rules library: bilingual records, classification coverage and byte-verifiable sources.',
     alternates: { canonical, languages },
+    robots: indexable ? undefined : {index:false,follow:true},
     openGraph: {
       type: 'website',
       siteName: 'TianGong PCR',

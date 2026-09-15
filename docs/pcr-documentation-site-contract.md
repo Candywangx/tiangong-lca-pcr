@@ -204,3 +204,8 @@ For an authorized Search Console URL-prefix property, production may set the pub
 emits the corresponding verification tag and the output gate checks it. An unset
 variable emits no ownership marker. Changing this binding and verifying ownership
 is a separate authorized operation from deploying the documentation code.
+
+A language retained only by historical releases keeps its immutable document URLs,
+search entries and version navigation. Its empty current catalog and locale home
+are noindex, and the home is omitted from sitemap and home hreflang. Home examples
+are selected only from current records available in the requested language.
