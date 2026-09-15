@@ -22,8 +22,8 @@ checkPaths:
   - builder/**
   - classifications/**
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 09d9c2ea9d3b678cb96f648a500404ee6e6d032c
-lastReviewedNote: "Reviewed inventory-source consistency against PCR PR #9: current membership and counts resolve from canonical mappings, manifests, material/coverage indexes and the catalog alias binding."
+lastReviewedCommit: 0e5bb2920a5185663bc6339a73cb38b93bcfc87d
+lastReviewedNote: "Reviewed PCR #14 / PR #13 additional batch: canonical content matches fixed source 8fcb20e; accepted mappings, alias/catalog bindings and material/coverage indexes validate. Current inventory facts remain sourced from canonical files."
 ---
 
 # Classification Policy
