@@ -1,10 +1,511 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41431"
-  title: "Unwrought aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.unwrought-aluminium"
+  classification_refs: "CPC 3.0: 41431, Unwrought aluminium"
+  covered_products: "Solid non-alloy aluminium and aluminium alloys in unwrought cast primary forms"
+  excluded_products: "Alumina; aluminium powders or flakes; semi-finished wrought products; fabricated articles; liquid aluminium sold without solidification"
+  representative_product: "Cast aluminium ingot at the casting-facility gate"
+  production_route: "Holding, optional in-furnace treatment, and casting of primary, secondary, or mixed route-specific liquid aluminium"
+  market_state: "Solid unwrought cast form meeting the declared alloy, purity, dimensions, and quality specification"
+functional_unit:
+  what: "Supply of solid unwrought aluminium in a declared alloy or purity grade and cast primary form"
+  how_much: "1,000 kg net conforming product at the casting-facility gate"
+  how_well: "Meets the declared chemical composition, cast form, dimensional, surface, and acceptance specification"
+  how_long_or_cycle: "One production accounting period; no use duration is assigned to a material product"
+  reference_flow_link: "cast_unwrought_aluminium_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground system includes liquid-metal receipt, holding, optional alloy adjustment or furnace treatment, casting or continuous casting into an unwrought primary form, cooling, dross removal, and internal handling through the product gate. Facility utilities and directly generated emissions and wastes are included when they cross the boundary. The verified source material describes transfer of primary aluminium to holding furnaces and casting, and secondary aluminium melting, refining, skimming, and pouring."
+      source_ids: []
+    - rule_id: boundary_liquid_metal_start
+      applies_to: "foreground_start"
+      rule: "Begin the foreground inventory at route-specific liquid aluminium entering the holding or casting operation; do not represent liquid aluminium as burden-free."
+      source_ids:
+        - us-epa-ap42-primary-aluminium-1998
+        - us-epa-ap42-secondary-aluminium-1986
+    - rule_id: boundary_actual_operations
+      applies_to: "included_operations"
+      rule: "Include each on-site holding, treatment, casting, cooling, dross-handling, and utility operation actually used; disclose omitted listed operations as not applicable."
+      source_ids:
+        - us-epa-ap42-primary-aluminium-1998
+        - us-epa-ap42-secondary-aluminium-1986
+        - eu-jrc-nfm-bref-2016
+    - rule_id: boundary_upstream_linkage
+      applies_to: "upstream_inputs"
+      rule: "Link the liquid-metal input and all purchased energy and materials to upstream datasets that match product state, production route, geography, technology, and reference year."
+      source_ids:
+        - iai-lifecycle
+    - rule_id: boundary_direct_emissions
+      applies_to: "direct_emissions"
+      rule: "Record only direct emissions from foreground operations; keep upstream electricity and material emissions in their linked upstream datasets."
+      source_ids:
+        - us-epa-ap42-primary-aluminium-1998
+        - us-epa-ap42-secondary-aluminium-1986
+boundary_abstraction:
+  declared_starting_condition: "Route-specific liquid aluminium at the holding or casting operation, with composition, temperature, source facility, and primary, secondary, or mixed share declared"
+  starting_condition_role: "Upstream product input whose production burden is represented by a linked dataset"
+  product_classification_scope: "Solid unwrought cast aluminium and aluminium alloys; downstream semi-finished and fabricated products are outside scope"
+  recursive_input_rule: "Record any same-category solid unwrought aluminium remelted on site as a separate product input and link it to its upstream dataset; do not recursively reproduce this PCR for the same input"
+  upstream_dataset_requirement: "Require route-, state-, geography-, technology-, and time-representative datasets for liquid aluminium, electricity, fuels, oxygen, water, and any additional material inputs"
+  disclosure: "Declare liquid-metal route shares, scrap attribution embedded in upstream datasets, alloy or purity grade, cast form, furnace and casting technology, geographic and temporal coverage, internal returns, dross treatment, and cut-offs"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Unwrought aluminium"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alloy or purity grade"
+    - "cast form"
+    - primary
+    - secondary
+    - "and mixed liquid-metal shares"
+    - "liquid-metal source datasets"
+    - "casting technology"
+    - geography
+    - "reference year"
+    - "product quality specification"
+    - "inclusion of surface treatment or packaging"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "conforming unwrought aluminium output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net dry product mass after solidification and removal of non-product dross; normalize all inventory exchanges to 1,000 kg conforming output."
+  - id: liquid_metal_mass
+    applies_to: "liquid aluminium input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure liquid-metal input by calibrated weighing or a documented mass-balance method and preserve its primary, secondary, and mixed route shares."
+  - id: gas_volume_conditions
+    applies_to: "gaseous natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State the temperature, pressure, moisture basis, and conversion used for all gas volumes; do not combine natural gas and oxygen."
+  - id: electricity_conversion
+    applies_to: "purchased or generated electricity crossing the process boundary"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kWh"
+    rule: "Retain metered kWh; if another energy unit is recorded, document the conversion factor and source before normalization."
+  - id: water_net_input
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product-water input crossing the boundary and state whether recirculated water is excluded or measured separately."
+process_map:
+  - id: unwrought_casting
+    name: "Liquid aluminium holding and casting"
+    inclusion: "required"
+    inclusion_condition: "Always included for solid unwrought aluminium covered by this PCR"
+    role: "Foreground production and solidification"
+    quantitative_reference: "1,000 kg conforming unwrought aluminium output"
+process_inventory:
+  - id: unwrought_casting
+    label: "Liquid aluminium holding and casting"
+    inputs:
+      product:
+        - row_id: cast_liquid_aluminium
+          role: "Route-specific liquid aluminium"
+          name: "Liquid aluminium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquid aluminium enters from a separately modelled primary, secondary, or mixed production route. Its composition, temperature, mass, source, and route shares are retained with the foreground records."
+          amount:
+            expression: "measured liquid aluminium charged to holding and casting, adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_material_balance
+              source_ids:
+                - us-epa-ap42-primary-aluminium-1998
+                - us-epa-ap42-secondary-aluminium-1986
+            ranges: []
+        - row_id: cast_electricity
+          role: "Electricity supplied to holding and casting"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Electricity crossing the foreground boundary is recorded independently from fuels and oxygen. Metered electricity covers the included holding, casting, cooling, and internal handling equipment."
+          amount:
+            expression: "metered electricity consumed by included foreground operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_electricity
+              source_ids:
+                - iai-lifecycle
+            ranges: []
+        - row_id: cast_natural_gas
+          role: "Gaseous natural gas for fuel-fired equipment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Natural gas is recorded only when fuel-fired holding, treatment, or casting equipment consumes it. Reference conditions and the meter boundary shall be declared."
+          amount:
+            expression: "metered gaseous natural gas consumed by included foreground equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_fuel_gases
+              source_ids:
+                - us-epa-ap42-primary-aluminium-1998
+                - us-epa-ap42-secondary-aluminium-1986
+            ranges: []
+        - row_id: cast_industrial_oxygen
+          role: "Industrial oxygen for oxygen-enriched combustion"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Industrial oxygen is recorded only when oxygen-enriched or oxy-fuel combustion is used. It is not combined with combustion air or natural gas."
+          amount:
+            expression: "metered industrial oxygen supplied to included fuel-fired equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_fuel_gases
+              source_ids:
+                - eu-jrc-nfm-bref-2016
+            ranges: []
+        - row_id: cast_process_water
+          role: "Process water crossing the foreground boundary"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Process water is recorded when it is supplied for direct cooling, equipment cooling, or another included foreground use. Recirculated internal water is not double counted."
+          amount:
+            expression: "net metered process-water input crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_water
+              source_ids:
+                - eu-jrc-nfm-bref-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cast_unwrought_aluminium_output
+          role: "Conforming unwrought aluminium"
+          name: "Unwrought aluminium"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The reference product is the net solid cast aluminium or aluminium-alloy primary form that meets the declared product specification at the facility gate."
+          amount:
+            expression: "weighed net conforming product output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_material_balance
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - us-epa-ap42-primary-aluminium-1998
+                - us-epa-ap42-secondary-aluminium-1986
+            ranges: []
+      waste:
+        - row_id: cast_aluminium_dross
+          role: "Aluminium dross leaving the foreground boundary"
+          name: "Aluminium dross"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Aluminium dross is recorded as a waste output only when it leaves the foreground system for treatment, disposal, or recovery. Internally returned metal is recorded in the material balance and is not counted as an external waste flow."
+          amount:
+            expression: "weighed aluminium dross exported from the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_material_balance
+              source_ids:
+                - us-epa-ap42-primary-aluminium-1998
+                - us-epa-ap42-secondary-aluminium-1986
+            ranges: []
+      elementary:
+        - row_id: cast_fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide from foreground fuel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only fossil carbon dioxide emitted directly by fuel combustion in the included foreground equipment is recorded here. Upstream electricity and fuel-supply emissions remain in linked upstream datasets. Additional actual atomic material, energy, waste, and elementary exchanges shall be added to the foreground data package when they cross the declared boundary. They shall not be combined into umbrella rows, and their identity, quantity, applicability, and upstream dataset shall be documented separately."
+          amount:
+            expression: "calculated from foreground fuel consumption and a documented facility-approved carbon-content and oxidation factor, or measured directly"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming unwrought aluminium output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_casting_combustion_emissions
+              source_ids:
+                - us-epa-ap42-primary-aluminium-1998
+                - us-epa-ap42-secondary-aluminium-1986
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared_casting_operations"
+    rule: "Subdivide or meter operations by product grade, cast form, production line, or campaign before applying allocation."
+    source_ids: []
+  - rule_id: allocation_internal_returns
+    applies_to: "internal_metal_returns"
+    rule: "Treat internally returned liquid metal and recovered in-process metal as internal loops; do not assign them an external co-product credit or count them again as new liquid-metal input."
+    source_ids: []
+  - rule_id: allocation_shared_mass
+    applies_to: "inseparable_shared_operations"
+    rule: "When subdivision is not feasible, allocate shared foreground inputs, direct emissions, and wastes among conforming unwrought products by measured net product mass; disclose the products, period, quantities, and allocation result."
+    source_ids: []
+  - rule_id: allocation_exported_recovery
+    applies_to: "exported_dross_or_residues"
+    rule: "Keep exported dross or residues as waste outputs and document the selected downstream recovery or disposal model; do not apply an avoided-burden credit inside this foreground process unless the study goal explicitly requires and discloses a separate consequential scenario."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_casting_material_balance
+      process_id: "unwrought_casting"
+      flow_role: "liquid metal, conforming output, dross, stock change, internal returns"
+      record_type: "weighbridge, batch, inventory, and quality-release records"
+      raw_fields: "input mass; output mass; dross mass; return mass; opening and closing stock; alloy or purity; cast form; accepted and rejected mass"
+      collection_method: "calibrated weighing reconciled to batch and accounting-period stock"
+      unit: "kg"
+      frequency: "each batch, aggregated monthly and annually"
+      temporal_coverage: "representative consecutive 12-month period or declared campaign"
+      site_scope: "all included holding and casting lines"
+      aggregation_rule: "sum by grade and route, reconcile stock change, then normalize to conforming output"
+      quality_evidence: "calibration certificates; batch tickets; inventory reconciliation; quality-release records"
+    - protocol_id: cp_casting_electricity
+      process_id: "unwrought_casting"
+      flow_role: "electricity"
+      record_type: "utility and submeter records"
+      raw_fields: "meter id; opening and closing reading; import; export; allocation key; downtime"
+      collection_method: "calibrated meter reading"
+      unit: "kWh"
+      frequency: "continuous or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included equipment and common utilities"
+      aggregation_rule: "net imports minus documented exports, allocated after subdivision, then normalized"
+      quality_evidence: "invoices; meter calibration; submeter coverage map"
+    - protocol_id: cp_casting_fuel_gases
+      process_id: "unwrought_casting"
+      flow_role: "natural gas and industrial oxygen"
+      record_type: "supplier invoice and calibrated meter records"
+      raw_fields: "separate gas volumes; temperature; pressure; moisture basis; meter id; equipment; operating hours"
+      collection_method: "separate calibrated meters or reconciled supplier records"
+      unit: "m3"
+      frequency: "batch or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included fuel-fired equipment"
+      aggregation_rule: "convert each gas separately to declared reference conditions and normalize"
+      quality_evidence: "invoices; calibration; reference-condition calculation; equipment log"
+    - protocol_id: cp_casting_water
+      process_id: "unwrought_casting"
+      flow_role: "process water"
+      record_type: "intake and discharge meter records"
+      raw_fields: "intake mass or volume; discharge; recirculation; source; use; density conversion"
+      collection_method: "calibrated metering and water-balance reconciliation"
+      unit: "kg"
+      frequency: "monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included cooling and process-water users"
+      aggregation_rule: "calculate net boundary input, exclude internal recirculation, then normalize"
+      quality_evidence: "meter calibration; water balance; density and conversion record"
+    - protocol_id: cp_casting_combustion_emissions
+      process_id: "unwrought_casting"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "fuel records, supplier analysis, stack measurement, or approved factor record"
+      raw_fields: "fuel amount; carbon content; oxidation factor; measured CO2; method version"
+      collection_method: "direct measurement or calculation from foreground fuel records"
+      unit: "kg CO2"
+      frequency: "batch or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included combustion sources"
+      aggregation_rule: "sum source-level direct emissions and normalize; exclude upstream supply emissions"
+      quality_evidence: "measurement QA record or approved factor, supplier analysis, and calculation worksheet"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "every inventory exchange"
+      rule: "normalized quantity = accounting-period exchange quantity × 1,000 kg / accounting-period net conforming product mass"
+      inputs:
+        - "exchange quantity"
+        - "net conforming output mass"
+      output: "exchange quantity per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_casting_mass_balance
+      applies_to: "aluminium-bearing material balance"
+      rule: "liquid aluminium input + opening aluminium stock = conforming output + exported aluminium dross + rejected output + closing aluminium stock, after separately reporting documented internal returns"
+      inputs:
+        - "all aluminium-bearing masses and stock changes"
+      output: "reconciled casting-period mass balance and unexplained difference"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "cast_fossil_carbon_dioxide"
+      rule: "use direct measured CO2 where valid; otherwise sum fuel quantity × documented carbon-content factor × oxidation factor × 44/12 for each fossil fuel source"
+      inputs:
+        - "foreground fuel quantities"
+        - "facility-approved factors"
+      output: "direct fossil CO2 mass"
+      source_ids:
+        - us-epa-ap42-primary-aluminium-1998
+        - us-epa-ap42-secondary-aluminium-1986
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Declare alloy or purity, cast form, product specification, acceptance criteria, and excluded off-spec mass."
+      evidence: "product specification; laboratory certificate; release record"
+    - id: dq_route_identity
+      applies_to: "liquid aluminium input"
+      requirement: "Declare primary, secondary, and mixed shares and link each share to a product-state-, geography-, technology-, and time-representative upstream dataset."
+      evidence: "supplier declaration; mass-balance record; upstream dataset metadata"
+    - id: dq_measurement
+      applies_to: "all foreground quantities"
+      requirement: "Use calibrated meters or reconciled records and retain conversions, allocation keys, stock adjustments, and uncertainty or data-gap treatment."
+      evidence: "calibration and reconciliation records; calculation worksheet"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Use a representative consecutive 12-month period unless a shorter campaign is justified and disclosed; align all exchange and product totals to the same period."
+      evidence: "production calendar; coverage statement; campaign justification"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Include every actual atomic exchange crossing the boundary; reconcile aluminium mass and explain omitted, estimated, or below-detection exchanges."
+      evidence: "completeness review; mass balance; omission log"
+    - id: dq_direct_upstream_split
+      applies_to: "emissions and upstream datasets"
+      requirement: "Keep direct foreground emissions separate from upstream electricity, fuel, liquid-metal, water, and material burdens."
+      evidence: "process boundary diagram; exchange mapping; dataset links"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Confirm that the output is a solid unwrought cast primary form and that its alloy or purity, form, specification, and net mass are declared."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference_flow"
+    rule: "Confirm that all exchanges are normalized to exactly 1,000 kg net conforming output and that rejected or dross mass is excluded from the reference amount."
+    source_ids: []
+  - rule_id: validate_route_linkage
+    applies_to: "liquid_metal_input"
+    rule: "Reject a dataset that leaves liquid aluminium burden-free or omits primary, secondary, and mixed shares and their upstream dataset links."
+    source_ids:
+      - iai-lifecycle
+  - rule_id: validate_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Confirm that electricity, each fuel gas, oxygen, water, each waste, and each direct elementary emission are represented as separate atomic exchanges when applicable."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "aluminium_balance"
+    rule: "Require a reconciled accounting-period aluminium mass balance and disclosure of the unexplained difference."
+    source_ids: []
+  - rule_id: validate_gas_conditions
+    applies_to: "gas_inputs"
+    rule: "Confirm that natural-gas and oxygen volumes use separately declared reference conditions and are not combined."
+    source_ids: []
+  - rule_id: validate_direct_emissions
+    applies_to: "direct_emissions"
+    rule: "Confirm that cast_fossil_carbon_dioxide contains only direct foreground fossil CO2 and excludes upstream electricity and supply-chain emissions."
+    source_ids:
+      - us-epa-ap42-primary-aluminium-1998
+      - us-epa-ap42-secondary-aluminium-1986
+  - rule_id: validate_unresolved_identities
+    applies_to: "uuid_references"
+    rule: "Before review or publication, resolve or explicitly review every UUID-empty inventory row and confirm the exact product state, flow type, property, and unit group."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review and publication"
+  downstream_use: "Attributional foreground data packages, process datasets, and lifecycle models requiring unwrought aluminium at the casting-facility gate"
+  allowed_use: "Use when product grade, cast form, liquid-metal route shares, technology, geography, time, system boundary, and data quality match the study"
+  excluded_use: "Do not use for alumina, liquid aluminium sold without casting, semi-finished or fabricated aluminium, or an upstream route represented as burden-free"
+  required_metadata: "canonical PCR id; product grade and form; reference mass; facility and geography; reference period; primary, secondary, and mixed shares; linked upstream datasets; casting technology; allocation; cut-offs; review status"
+  required_quality_disclosure: "measurement coverage and calibration; material-balance closure; meter allocation; data gaps and estimates; route-share evidence; direct-versus-upstream emission split; unresolved identities"
+  update_trigger: "Change in liquid-metal route mix, alloy or cast form, furnace or casting technology, energy supply, facility boundary, allocation, upstream dataset, geography, or representative period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official category identity and distinction from alumina and semi-finished aluminium"
+  - id: "china-sat-unwrought-aluminium-terminology"
+    type: "official_guidance"
+    reference: "Ministry of Finance and State Tax Administration of China, official export-refund notice, 13 October 2003, https://www.chinatax.gov.cn/n810341/n810765/n812198/n813051/c1205357/content.html"
+    used_for: "Professional Chinese terminology for HS heading 7601, 未锻轧铝"
+  - id: "us-epa-ap42-primary-aluminium-1998"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 12.1 Primary Aluminum Production, https://www.epa.gov/sites/production/files/2020-11/documents/c12s01.pdf"
+    used_for: "Primary liquid-metal production context, holding and casting process, direct emissions, and dross formation"
+  - id: "us-epa-ap42-secondary-aluminium-1986"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 12.8 Secondary Aluminum Operations, https://www.epa.gov/sites/default/files/2020-11/documents/c12s08.pdf"
+    used_for: "Secondary melting, refining, skimming, pouring, combustion emissions, and dross context"
+  - id: "eu-jrc-nfm-bref-2016"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, adopted June 2016, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf"
+    used_for: "Primary and secondary non-ferrous-metal scope, process and utility completeness, and conditional oxygen-enrichment and casting-cooling-water requirements"
+  - id: "iai-lifecycle"
+    type: "official_guidance"
+    reference: "International Aluminium Institute, Lifecycle work area, https://international-aluminium.org/work-areas/lifecycle/"
+    used_for: "Upstream cradle-to-gate linkage from bauxite mining through ingot manufacture and inventory completeness context"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1f267128858785c1136c02cfb40fc9eb74d4360989879c31f417fab5e2216203"
+  generated_content_sha256: "sha256:6d2d117f764b00322d669de412b30ef6fa20db712ba84cfbf8dbb678f974c12a"

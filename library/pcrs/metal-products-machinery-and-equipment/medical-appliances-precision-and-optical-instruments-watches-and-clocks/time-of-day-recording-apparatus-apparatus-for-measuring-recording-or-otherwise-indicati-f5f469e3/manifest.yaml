@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.time-of-day-recording-apparatus-apparatus-for-measuring-recording-or-otherwise-indicati-f5f469e3
 title:
   en-US: "Time of day recording apparatus, apparatus for measuring, recording or otherwise indicating intervals of time, and time switches, with clock or watch movement or with synchronous motor"
-  zh-CN: null
-status: scaffold
+  zh-CN: "时间记录器以及测量、记录或指示时间间隔的装置，装有钟、表机芯或同步电动机的定时开关"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,67 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "48430"
     title: "Time of day recording apparatus, apparatus for measuring, recording or otherwise indicating intervals of time, and time switches, with clock or watch movement or with synchronous motor"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    outcome: distinct_finished_apparatus_boundary
+    explanation: "This PCR covers finished CPC 48430 apparatus at the factory gate. The existing watch-or-clock-movements PCR covers a purchased component and does not cover the finished recording, interval-indicating, or time-switch apparatus."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: synchronous_motor_input
+        reason_code: no_exact_candidate
+        explanation: "Receipt b600cd32-252e-4608-8e58-e4efecee578d returned no exact public state-100 synchronous-motor product flow; the ranked candidates were finished apparatus or semantically different products."
+      - row_id: populated_control_board_input
+        reason_code: no_exact_candidate
+        explanation: "Receipt e05cf6d4-cd8d-4c8b-974a-f74b55a6648b returned no exact atomic populated control-board assembly; candidates were bare boards, combined umbrella flows, computing subassemblies, unspecified components, or display modules."
+      - row_id: fabricated_steel_enclosure_input
+        reason_code: no_exact_candidate
+        explanation: "Receipt 65ddaef6-7c68-4126-b5a1-d762700d87ee returned no exact fabricated steel apparatus enclosure; junction boxes, complete control equipment, and an aluminium shell were rejected."
+      - row_id: moulded_abs_enclosure_input
+        reason_code: product_state_mismatch
+        explanation: "Receipt 82df05b4-5ff3-4d2e-98ef-98ef8b3b477c returned ABS polymer in primary form, not a moulded ABS enclosure supplied to final assembly."
+      - row_id: rejected_finished_apparatus_output
+        reason_code: no_exact_candidate
+        explanation: "Receipt 5c22d1af-950b-4f5a-8bf9-d6c74ca9a93e returned generic rejects, a different off-spec product, generic metal scrap, or mixed production scrap; none exactly identified rejected finished CPC 48430 apparatus."
+    range_evidence_needs:
+      - range_id: clock_movement_input_range
+        row_id: clock_movement_input
+        explanation: "No two independent, boundary-compatible original sources were verified for purchased movement mass per kilogram of finished apparatus; collect batch receipt and output-mass records."
+      - range_id: synchronous_motor_input_range
+        row_id: synchronous_motor_input
+        explanation: "No two independent, boundary-compatible original sources were verified for synchronous-motor mass per kilogram of finished apparatus; collect supplier and batch records."
+      - range_id: populated_control_board_input_range
+        row_id: populated_control_board_input
+        explanation: "No two independent, boundary-compatible original sources were verified for populated control-board mass across apparatus configurations; collect supplier and batch records."
+      - range_id: fabricated_steel_enclosure_input_range
+        row_id: fabricated_steel_enclosure_input
+        explanation: "No two independent, boundary-compatible original sources were verified for fabricated steel enclosure mass; collect supplier and receiving records for the declared model."
+      - range_id: moulded_abs_enclosure_input_range
+        row_id: moulded_abs_enclosure_input
+        explanation: "No two independent, boundary-compatible original sources were verified for moulded ABS enclosure mass; collect supplier and receiving records for the declared model."
+      - range_id: electricity_input_range
+        row_id: electricity_input
+        explanation: "No two independent, boundary-compatible original sources were verified for assembly and test electricity across mechanical, electromechanical, and electronic apparatus; collect submeter or equipment-runtime records."
+      - range_id: corrugated_box_input_range
+        row_id: corrugated_box_input
+        explanation: "No two independent, boundary-compatible original sources were verified for corrugated-box mass across apparatus sizes and sales-packaging designs; collect packaging bills of materials and receiving records."
+      - range_id: rejected_finished_apparatus_output_range
+        row_id: rejected_finished_apparatus_output
+        explanation: "No two independent, boundary-compatible original sources were verified for finished-apparatus rejection rates; collect quality disposition and rejected-unit mass records."

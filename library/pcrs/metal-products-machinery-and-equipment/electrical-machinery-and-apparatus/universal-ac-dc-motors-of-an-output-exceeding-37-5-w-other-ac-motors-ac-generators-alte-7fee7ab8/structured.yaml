@@ -1,10 +1,987 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46112"
-  title: "Universal AC/DC motors of an output exceeding 37.5 W; other AC motors; AC generators (alternators) other than photovoltaic generators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.universal-ac-dc-motors-of-an-output-exceeding-37-5-w-other-ac-motors-ac-generators-alte-7fee7ab8"
+  classification_refs: "CPC 3.0 46112"
+  covered_products: "Complete universal AC/DC motors above 37.5 W; other complete AC motors; complete non-photovoltaic AC generators/alternators"
+  excluded_products: "Small motors at or below 37.5 W; other DC motors and DC generators; photovoltaic generators; generating sets; rotary converters; separately sold parts"
+  representative_product: "One declared finished rotating electrical machine configuration belonging to CPC 46112"
+  production_route: "Purchased-material/component receipt through component manufacture, assembly, final test, and packaging"
+  market_state: "Finished, tested, saleable machine packaged at the manufacturing-site gate"
+functional_unit:
+  what: "Finished rotating electrical machine in one declared CPC 46112 configuration"
+  how_much: "1 kg net finished product"
+  how_well: "Meets the manufacturer's declared rating and applicable final-test acceptance criteria"
+  how_long_or_cycle: "Production of the reported manufacturing batch or representative reporting period"
+  reference_flow_link: "finished_rotating_electrical_machine"
+system_boundary:
+  rules:
+    - rule_id: sb_include_factory
+      applies_to: "Both foreground processes"
+      rule: "Include receipt, component manufacture, applicable winding/impregnation, assembly, final testing, and packaging to the site gate."
+      source_ids:
+        - fleischer-et-al-2025-electric-mobility-production
+        - iec-60034-1-2026
+        - mahmouditabar-et-al-2025-ipm-lca
+    - rule_id: sb_background_inputs
+      applies_to: "Purchased inputs"
+      rule: "Keep upstream extraction and manufacture outside foreground but require linked background datasets."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: sb_exclude_downstream
+      applies_to: "Dataset"
+      rule: "Exclude installation, use, maintenance, outbound distribution, and end-of-life."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: sb_outsourcing
+      applies_to: "Outsourced in-scope operations"
+      rule: "Include through a supplier process dataset or documented service input; do not omit because it occurs off site."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components as received at the manufacturing site"
+  starting_condition_role: "Foreground gate; upstream production is represented by linked background datasets"
+  product_classification_scope: "One actual complete machine within CPC 3.0 46112"
+  recursive_input_rule: "Record a purchased complete CPC 46112 machine incorporated without transformation as a product input; do not unfold it inside this foreground boundary"
+  upstream_dataset_requirement: "Link each purchased input and delivered energy carrier to representative supply data; disclose unresolved proxies"
+  disclosure: "Declare processes, outsourcing, sites, period, allocation, cut-offs, configuration, test regime, packaging state, and deviations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Finished rotating electrical machine"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - Function
+    - topology
+    - "rated output"
+    - voltage
+    - frequency
+    - "phase count"
+    - "pole count or speed"
+    - duty
+    - cooling
+    - protection
+    - efficiency
+    - "test standard"
+    - "net product mass"
+    - "manufacturing geography and period"
+    - "permanent-magnet and mechanical-commutation presence"
+    - "packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_mass_inputs_outputs
+    applies_to: "Solid/liquid materials, products, packaging, wastes, and mass emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record calibrated net mass crossing the boundary; exclude tare and reusable internal work-in-process."
+  - id: mu_electricity
+    applies_to: "manufacturing_electricity, testing_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh using 3.6 MJ/kWh; do not add upstream grid emissions to foreground elementary flows."
+  - id: mu_gases
+    applies_to: "natural_gas, industrial_oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Disclose reference temperature, pressure, and conversion; do not mix standard and operating volumes."
+  - id: mu_reference_product
+    applies_to: "finished_rotating_electrical_machine"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use net mass of accepted finished machines before external transport; report packaging separately."
+  - id: mu_normalization
+    applies_to: "Every row"
+    required_property_ref:
+      name: "Row property"
+      uuid: ""
+    required_unit: "Row unit per kg product"
+    rule: "Aggregate within one period and boundary, then divide by accepted reference-product mass from the same period."
+process_map:
+  - id: component_manufacture_and_assembly
+    name: "Component manufacture and machine assembly"
+    inclusion: "required"
+    inclusion_condition: "Always; record only operations and conditional exchanges used by the declared route"
+    role: "Transforms purchased inputs into an assembled machine"
+    quantitative_reference: "Accepted assembled-machine mass transferred to final test"
+  - id: final_test_and_packaging
+    name: "Final testing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging rows apply only to materials in the declared gate state"
+    role: "Tests and prepares the accepted reference product"
+    quantitative_reference: "1 kg accepted finished rotating electrical machine"
+process_inventory:
+  - id: component_manufacture_and_assembly
+    label: "Component manufacture and machine assembly"
+    inputs:
+      product:
+        - row_id: electrical_steel_sheet
+          role: "Non-oriented electrical steel sheet"
+          name: "Non-oriented electrical steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased electrical steel entering lamination or core manufacture."
+          amount:
+            expression: "Net measured receipt allocated to accepted product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - fleischer-et-al-2025-electric-mobility-production
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: magnet_wire
+          role: "Winding conductor"
+          name: "Magnet wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2bf8a4db-b29e-404a-ae6c-402adbb77af4"
+          property_unit: "Mass / kg"
+          description: "Record insulated conductor consumed in stator or rotor winding."
+          amount:
+            expression: "Measured issued mass less documented reusable return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_issues
+              source_ids:
+                - fleischer-et-al-2025-electric-mobility-production
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: aluminium_ingot
+          role: "Aluminium casting-alloy ingot for housing or rotor"
+          name: "Aluminium casting-alloy ingot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specified casting-alloy ingot only when the route casts aluminium parts on site."
+          amount:
+            expression: "Measured furnace charge allocated to the declared product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_issues
+              source_ids:
+                - fleischer-et-al-2025-electric-mobility-production
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: carbon_steel_bar
+          role: "Shaft steel"
+          name: "Carbon Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b3b18433-8fd1-4298-98f5-8af11eb64762"
+          property_unit: "Mass / kg"
+          description: "Record carbon-steel bar consumed in on-site shaft manufacture."
+          amount:
+            expression: "Measured issued mass less documented reusable return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_issues
+              source_ids:
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: rolling_bearing
+          role: "Rolling bearings"
+          name: "Ball or roller bearings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+          property_unit: "Mass / kg"
+          description: "Record purchased rolling bearings installed in accepted machines."
+          amount:
+            expression: "Installed mass plus attributable rejected-bearing mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: electrical_insulation_paper
+          role: "Electrical insulation paper"
+          name: "Electrical insulation paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record electrical-grade paper or pressboard installed in slots or windings."
+          amount:
+            expression: "Measured issued mass less clean reusable offcut return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_issues
+              source_ids:
+                - fleischer-et-al-2025-electric-mobility-production
+            ranges: []
+        - row_id: epoxy_resin
+          role: "Impregnation resin"
+          name: "Epoxy resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2bab6ae-d42f-4fca-bab5-ae9c6692f105"
+          property_unit: "Mass / kg"
+          description: "Record epoxy only when used for impregnation, potting, bonding, or coating."
+          amount:
+            expression: "Mixed resin charged less documented recoverable return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resin_batch_records
+              source_ids:
+                - fleischer-et-al-2025-electric-mobility-production
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: ndfeb_magnet
+          role: "Permanent magnet"
+          name: "NdFeB magnet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a598b760-108c-4d70-93f9-59098959141e"
+          property_unit: "Mass / kg"
+          description: "Record installed NdFeB magnets only for a declared permanent-magnet topology."
+          amount:
+            expression: "Installed mass plus attributable rejected-magnet mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids:
+                - mahmouditabar-et-al-2025-ipm-lca
+            ranges: []
+        - row_id: carbon_brush
+          role: "Carbon brush"
+          name: "Carbon brush"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record installed carbon brushes only for a machine with mechanical commutation."
+          amount:
+            expression: "Installed mass plus attributable rejected-brush mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_installation
+              source_ids: []
+            ranges: []
+        - row_id: manufacturing_electricity
+          role: "Manufacturing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered electricity used by included operations and supporting equipment."
+          amount:
+            expression: "Metered consumption allocated to included operations and converted using 3.6 MJ/kWh"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for on-site thermal operations"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when directly consumed by included furnaces, ovens, or heating."
+          amount:
+            expression: "Metered volume allocated to included operations at disclosed reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_meters
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Oxygen for oxy-fuel operation"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record oxygen only when an included cutting, welding, or thermal operation consumes it."
+          amount:
+            expression: "Metered or cylinder-inventory consumption at disclosed reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_meters
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water for cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water only when aqueous cleaning or another included wet operation is used."
+          amount:
+            expression: "Metered use with disclosed volume-to-mass conversion; exclude recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when the route uses an alkaline cleaning bath."
+          amount:
+            expression: "Active NaOH mass from solution mass and verified concentration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_cleaning_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "db39c2c0-61a0-4dde-8d68-db5777fe25a8"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel scrap leaving included cutting, stamping, and machining."
+          amount:
+            expression: "Weighed outbound mass net of returned reusable stock"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Record segregated conductor scrap leaving winding or connection operations."
+          amount:
+            expression: "Weighed outbound mass allocated to the declared product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium scrap only when included casting or machining generates it."
+          amount:
+            expression: "Weighed outbound mass allocated to the declared product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record wastewater sent to treatment only when included aqueous cleaning generates it."
+          amount:
+            expression: "Metered or mass-balanced discharge excluding recirculated bath volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: uncured_epoxy_waste
+          role: "Uncured epoxy waste"
+          name: "Uncured epoxy resin waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discarded uncured mixed epoxy only when an applicable resin operation generates it."
+          amount:
+            expression: "Weighed discarded mixed resin allocated to the declared product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct on-site fossil CO2 from combustion; exclude upstream electricity emissions."
+          amount:
+            expression: "Stack measurement or documented fuel-carbon balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+        - row_id: nmvoc_to_air
+          role: "Non-methane volatile organic compounds"
+          name: "non-methane volatile organic compounds"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct NMVOC only when solvent-bearing resin, coating, or cleaning occurs inside the boundary."
+          amount:
+            expression: "Stack/fugitive measurement or solvent balance net of captured transfer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: final_test_and_packaging
+    label: "Final testing and packaging"
+    inputs:
+      product:
+        - row_id: testing_electricity
+          role: "Electricity for final testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered electricity consumed by final routine or acceptance testing and auxiliaries."
+          amount:
+            expression: "Metered test-cell electricity, converted using 3.6 MJ/kWh"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_test
+              source_ids:
+                - iec-60034-1-2026
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record corrugated boxes used in the declared gate packaging state."
+          amount:
+            expression: "Issued mass less documented reusable return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_issues
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Record pallets supplied with the product; exclude returnable pallets that do not leave as packaging."
+          amount:
+            expression: "Net issued non-returnable pallet mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_issues
+              source_ids: []
+            ranges: []
+        - row_id: pe_ld_film
+          role: "Low-density polyethylene film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record PE-LD film used to wrap or protect accepted product only when present."
+          amount:
+            expression: "Net issued film mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished rotating electrical machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_issues
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_rotating_electrical_machine
+          role: "Accepted finished rotating electrical machine"
+          name: "Finished rotating electrical machine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted product crossing the factory gate; one data package covers one declared configuration."
+          amount:
+            expression: "Calibrated net mass of accepted finished machines; reference amount is 1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1 kg accepted finished rotating electrical machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_test
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - iec-60034-1-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_avoid
+    applies_to: "Shared operations and utilities"
+    rule: "Prefer meters, batches, machine time, or direct material tracing that avoids allocation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: al_physical
+    applies_to: "Unavoidable shared exchanges"
+    rule: "Use a documented causal physical driver such as machine time, furnace charge, processed mass, or test time; do not default to revenue."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: al_scrap
+    applies_to: "Recoverable waste outputs"
+    rule: "Report waste mass at the boundary without avoided-burden credit; disclose downstream recycling separately."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: al_rejects
+    applies_to: "Rework and rejects"
+    rule: "Include attributable burdens in the accepted-product denominator; retain energy and losses from internal rework."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Electrical steel"
+      record_type: "Invoice and stock ledger"
+      raw_fields: "mass, grade, lot, stocks, returns"
+      collection_method: "Reconcile receipts and inventory"
+      unit: "kg"
+      frequency: "Each lot; monthly close"
+      temporal_coverage: "Continuous 12 months or justified batch"
+      site_scope: "Included sites"
+      aggregation_rule: "Net consumption by direct trace"
+      quality_evidence: "Invoices, stock reconciliation"
+    - protocol_id: cp_material_issues
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Metals, conductor, insulation"
+      record_type: "Issue and return records"
+      raw_fields: "issued/returned mass, grade, order"
+      collection_method: "Direct order trace"
+      unit: "kg"
+      frequency: "Each issue"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Included sites"
+      aggregation_rule: "Net issues by product"
+      quality_evidence: "ERP, weights, BOM"
+    - protocol_id: cp_component_installation
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Bearings, magnets, brushes"
+      record_type: "BOM and reject records"
+      raw_fields: "count, unit mass, rejects"
+      collection_method: "Count times verified mass or weighing"
+      unit: "kg"
+      frequency: "Each order"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Assembly sites"
+      aggregation_rule: "Installed plus rejects"
+      quality_evidence: "BOM, scale, reject log"
+    - protocol_id: cp_resin_batch_records
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Epoxy"
+      record_type: "Mixing sheets"
+      raw_fields: "component mass, returns, discard"
+      collection_method: "Weigh each batch"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Resin operations"
+      aggregation_rule: "Net mixed input"
+      quality_evidence: "Batch sheet, calibration"
+    - protocol_id: cp_energy_meters
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Electricity"
+      record_type: "Meter intervals"
+      raw_fields: "meter, time, kWh, driver"
+      collection_method: "Reconcile submeter to site meter"
+      unit: "MJ"
+      frequency: "Continuous"
+      temporal_coverage: "Continuous 12 months or justified batch"
+      site_scope: "Included operations"
+      aggregation_rule: "Convert and allocate physically"
+      quality_evidence: "Calibration, reconciliation"
+    - protocol_id: cp_gas_meters
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Gas and oxygen"
+      record_type: "Meter/cylinder records"
+      raw_fields: "volume, conditions, operation"
+      collection_method: "Meter or inventory difference"
+      unit: "m3"
+      frequency: "Each delivery/interval"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Thermal operations"
+      aggregation_rule: "Normalize conditions and allocate"
+      quality_evidence: "Certificate, delivery record"
+    - protocol_id: cp_water_and_cleaning_records
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Water, NaOH, wastewater"
+      record_type: "Meter and bath records"
+      raw_fields: "water, solution, concentration, discharge"
+      collection_method: "Meter plus bath balance"
+      unit: "kg"
+      frequency: "Each bath; monthly close"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Wet operations"
+      aggregation_rule: "Exclude recirculation"
+      quality_evidence: "Calibration, tests, discharge record"
+    - protocol_id: cp_waste_dispatch
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "Wastes"
+      record_type: "Transfer records"
+      raw_fields: "type, net mass, destination, date"
+      collection_method: "Weighed dispatch"
+      unit: "kg"
+      frequency: "Each dispatch"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Included sites"
+      aggregation_rule: "Outbound mass by causal operation"
+      quality_evidence: "Ticket, transfer note"
+    - protocol_id: cp_direct_emissions
+      process_id: "component_manufacture_and_assembly"
+      flow_role: "CO2 and NMVOC"
+      record_type: "Test or balance"
+      raw_fields: "concentration, flow, fuel carbon, solvent, capture"
+      collection_method: "Measurement or documented balance"
+      unit: "kg"
+      frequency: "Test/balance period"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Emission points"
+      aggregation_rule: "Direct releases only"
+      quality_evidence: "Test, fuel, solvent logs"
+    - protocol_id: cp_final_test
+      process_id: "final_test_and_packaging"
+      flow_role: "Test energy and output"
+      record_type: "Test record"
+      raw_fields: "product, result, kWh, mass, rejects"
+      collection_method: "Link serial/batch to meters/scales"
+      unit: "MJ; kg"
+      frequency: "Each unit/batch"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Test sites"
+      aggregation_rule: "Accepted output plus reject burden"
+      quality_evidence: "Reports, calibrations"
+    - protocol_id: cp_packaging_issues
+      process_id: "final_test_and_packaging"
+      flow_role: "Packaging"
+      record_type: "Issue/return records"
+      raw_fields: "type, count, mass, returnability"
+      collection_method: "Direct trace"
+      unit: "kg"
+      frequency: "Each shipment batch"
+      temporal_coverage: "Output-matched period"
+      site_scope: "Packaging sites"
+      aggregation_rule: "Gate-state packaging only"
+      quality_evidence: "Logs, specifications"
+  calculation_rules:
+    - id: calc_net_material
+      applies_to: "Material inputs"
+      rule: "Net consumption = receipts or issues + opening stock - closing stock - reusable returns"
+      inputs:
+        - "Mass and stock records"
+      output: "kg input"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_normalize
+      applies_to: "All rows"
+      rule: "Normalized amount = allocated period amount / accepted product mass"
+      inputs:
+        - "Row amount"
+        - "product mass"
+      output: "row unit per kg product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_electricity
+      applies_to: "Electricity"
+      rule: "MJ = kWh × 3.6"
+      inputs:
+        - kWh
+      output: "MJ"
+      source_ids: []
+    - id: calc_solution_active
+      applies_to: "sodium_hydroxide"
+      rule: "Active mass = solution mass × measured mass fraction"
+      inputs:
+        - "Solution and concentration"
+      output: "kg NaOH"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Major materials"
+      rule: "Input = incorporation + waste + inventory change + documented emissions/losses; investigate residual"
+      inputs:
+        - "Input/output/stock"
+      output: "Reconciled mass"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_direct_co2
+      applies_to: "fossil_co2"
+      rule: "Measurement, or fuel × carbon content × oxidation × 44/12"
+      inputs:
+        - "Fuel/carbon data"
+      output: "kg fossil CO2"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_temporal
+      applies_to: "Foreground rows"
+      requirement: "Use one consistent period, normally 12 continuous months; justify shorter campaigns and exclusions."
+      evidence: "Dated records and reconciliation"
+    - id: dq_technology
+      applies_to: "Dataset"
+      requirement: "Match topology, rating, process route, controls, and test regime; do not generalize traction-specific evidence."
+      evidence: "Specification and routing"
+    - id: dq_geography
+      applies_to: "Foreground/background"
+      requirement: "Identify sites and choose upstream data matching supplier geography and technology."
+      evidence: "Site list and selection log"
+    - id: dq_completeness
+      applies_to: "Exchanges"
+      requirement: "Reconcile inputs, output, wastes, and stocks; document every cut-off."
+      evidence: "Mass/energy balance and cut-off log"
+    - id: dq_units
+      applies_to: "Measurements"
+      requirement: "Retain raw units, factors, gas conditions, concentration, and calibration status."
+      evidence: "Raw export and certificates"
+    - id: dq_uuid
+      applies_to: "Linked flows"
+      requirement: "Preserve audited identity, type, property, unit group, and state; keep six gaps unresolved until audited."
+      evidence: "Search receipts and direct reads"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "Product identity"
+    rule: "Product is one complete CPC 46112 machine and not an excluded product or part."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: val_reference
+    applies_to: "Reference flow"
+    rule: "Reference output is 1 kg accepted product and all required qualifiers are disclosed."
+    source_ids:
+      - iec-60034-1-2026
+  - rule_id: val_processes
+    applies_to: "Process map"
+    rule: "Both processes exist; conditional rows are included when applicable or evidenced not applicable."
+    source_ids: []
+  - rule_id: val_atomicity
+    applies_to: "Inventory"
+    rule: "Every row is one atomic exchange; no umbrella utility, packaging, waste, or emission row is used."
+    source_ids: []
+  - rule_id: val_units
+    applies_to: "Inventory"
+    rule: "UUID-bearing rows use audited property/unit group; electricity is MJ, gases m3, mass rows kg."
+    source_ids: []
+  - rule_id: val_balance
+    applies_to: "Inventory"
+    rule: "Product and material records reconcile within disclosed tolerance; residuals are investigated."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: val_direct_emissions
+    applies_to: "Elementary outputs"
+    rule: "Foreground CO2 and NMVOC are direct releases and do not duplicate upstream emissions."
+    source_ids: []
+  - rule_id: val_allocation
+    applies_to: "Shared operations"
+    rule: "Shared-operation allocation uses a documented causal physical driver."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: val_ranges
+    applies_to: "External ranges"
+    rule: "Publish no external range without two independent original, boundary-compatible sources."
+    source_ids: []
+  - rule_id: val_uuid_gaps
+    applies_to: "UUID-empty rows"
+    rule: "Keep six UUID-empty rows unresolved; do not fill with unaudited proxies."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground inventory rule for one declared CPC 46112 machine"
+  downstream_use: "TianGong flow, process, and lifecycle-model construction and review"
+  allowed_use: "Mass-normalized inventory and comparisons only after separate functional-equivalence review"
+  excluded_use: "Unqualified comparisons across function, rating, duty, efficiency, life, or technology; downstream claims"
+  required_metadata: "Qualifiers, specification, sites/period, process coverage, outsourcing, allocation, cut-offs, background choices, UUID status"
+  required_quality_disclosure: "Primary-data coverage, calibration, balance residuals, allocation, gaps, proxies, uncertainty, and no external ranges"
+  update_trigger: "Change in topology, rating, manufacturing route, site, energy, controls, testing, packaging, or UUID/range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 46112 identity and adjacent exclusions"
+  - id: "iec-60034-1-2026"
+    type: "standard"
+    reference: "IEC 60034-1:2026, Rotating electrical machines — Part 1: Rating and performance. https://webstore.iec.ch/en/publication/89961"
+    used_for: "Rating qualifiers and final testing"
+  - id: "fleischer-et-al-2025-electric-mobility-production"
+    type: "literature"
+    reference: "Fleischer et al. (2025), Production technologies and systems for electric mobility, CIRP Annals 74, 1047–1072. https://doi.org/10.1016/j.cirp.2025.05.001"
+    used_for: "Qualitative motor manufacturing sequence"
+  - id: "mahmouditabar-et-al-2025-ipm-lca"
+    type: "literature"
+    reference: "Mahmouditabar et al. (2025), Multi-Physics LCA-Based Design Optimization of an Interior Permanent Magnet Motor for EVs, Energies 18, 6167. https://doi.org/10.3390/en18236167"
+    used_for: "Qualitative component identities"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines. https://committee.iso.org/standard/38498.html"
+    used_for: "LCA scope, inventory, reporting, consistency, and review framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:763cee0f86ebfa76fb719555bfd1a823bec530559c6d754430b2d00f9f34cbac"
+  generated_content_sha256: "sha256:5f7fec24f3d4574e8feaa0a8ba23975b8224f3e962f85f8ca5c54e6b4f54f727"

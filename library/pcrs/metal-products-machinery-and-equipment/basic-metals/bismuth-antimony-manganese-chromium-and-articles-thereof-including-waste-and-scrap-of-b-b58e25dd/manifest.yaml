@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.bismuth-antimony-manganese-chromium-and-articles-thereof-including-waste-and-scrap-of-b-b58e25dd
 title:
   en-US: "Bismuth, antimony, manganese, chromium and articles thereof; including waste and scrap of bismuth or manganese"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铋、锑、锰、铬及其制品，包括铋或锰的废料和碎屑"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,73 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41603"
     title: "Bismuth, antimony, manganese, chromium and articles thereof; including waste and scrap of bismuth or manganese"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_identity:
+    decision: promote_legacy
+    reviewed_boundary: "Bismuth, antimony, manganese or chromium metal and articles made predominantly from one of those metals, plus bismuth or manganese waste and scrap, with product metal, form, grade, route and market state declared."
+    exclusions: "Ferro-manganese, ferro-chromium, compounds sold as chemicals, ores and concentrates sold without metal production, antimony or chromium waste and scrap, other metals, and downstream products classified by their own function."
+    rationale: "The official CPC 3.0 structure defines this combined non-ferrous-metal category but assigns ferro-manganese, ferro-chromium, and antimony/chromium scrap to separate subclasses. No existing material PCR with the same semantic boundary was identified. A bismuth-metal recovery route is used only as the representative foreground model; alternative covered metals and product forms require declared route-specific exchanges."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: output_bismuth_metal
+      flow: "Bismuth metal, unwrought"
+      issue: "reference product flow UUID has no exact public candidate"
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: input_bismuth_crust
+        reason_code: no_exact_candidate
+        explanation: "Receipt 1017a53a-50ea-4d3e-baa8-9c6c670ee4ec returned nickel, cobalt, fertilizer and generic component intermediates; none exactly denotes bismuth crust from lead refining."
+      - row_id: output_bismuth_metal
+        reason_code: no_exact_candidate
+        explanation: "Receipt 95d74e99-4390-49db-8936-a5baa7d03068 returned mixed antimony/chromium scrap, manganese nitride and an organic chemical; none exactly denotes unwrought bismuth metal."
+      - row_id: output_bismuth_refining_slag
+        reason_code: no_exact_candidate
+        explanation: "Receipt eb20a5ba-e27e-4f07-b221-ad3013f7690d returned iron, aluminium, boiler and generic slags without exact bismuth-refining origin."
+      - row_id: output_bismuth_refining_dust
+        reason_code: no_exact_candidate
+        explanation: "Receipt 1a51ef56-0217-4bc4-90a6-1da8d03edb4f returned generic grinding dust and unrelated asphalt, tobacco and bauxite residues; none exactly denotes bismuth-refining dust."
+      - row_id: output_bismuth_refining_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Receipt f0a42646-7955-451a-bc86-0b1a5ab02670 returned generic wastewater, waste battery-management equipment and petroleum-refinery sludge; none exactly denotes bismuth-refining wastewater."
+    range_evidence_needs:
+      - row_id: input_bismuth_crust
+        explanation: "Two independent original sources with compatible bismuth-recovery boundary, product state and mass basis are needed before an external feed-rate range can be inferred."
+      - row_id: input_sulfuric_acid
+        explanation: "Two independent original sources for a compatible hydrometallurgical bismuth route are needed before an acid-consumption range can be inferred."
+      - row_id: input_sodium_hydroxide
+        explanation: "Two independent original sources for a compatible solution-treatment route are needed before a sodium-hydroxide range can be inferred."
+      - row_id: input_industrial_oxygen
+        explanation: "Two independent original sources for a compatible oxidative-refining route are needed before an oxygen-use range can be inferred."
+      - row_id: input_electricity
+        explanation: "Two independent original sources for the same product state, route and plant-gate boundary are needed before an electricity range can be inferred."
+      - row_id: input_natural_gas
+        explanation: "Two independent original sources for the same product state, route and plant-gate boundary are needed before a natural-gas range can be inferred."
+      - row_id: input_process_water
+        explanation: "Two independent original sources for the same product state, route and plant-gate boundary are needed before a process-water range can be inferred."
+      - row_id: output_bismuth_metal
+        explanation: "A source-backed recovery or yield range needs at least two independent boundary-compatible original sources; until then net conforming output is a foreground record."
+      - row_id: output_bismuth_refining_slag
+        explanation: "Two independent original sources with compatible residue definitions and treatment boundaries are needed before a slag-generation range can be inferred."
+      - row_id: output_bismuth_refining_dust
+        explanation: "Two independent original sources with compatible capture boundaries are needed before a captured-dust range can be inferred."
+      - row_id: output_bismuth_refining_wastewater
+        explanation: "Two independent original sources with compatible water balance and treatment boundaries are needed before a wastewater range can be inferred."
+      - row_id: output_fossil_carbon_dioxide
+        explanation: "Two independent original sources with compatible fuel and reductant boundaries are needed before a direct fossil-carbon-dioxide range can be inferred."

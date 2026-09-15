@@ -1,10 +1,538 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45130"
-  title: "Electronic calculators and pocket-size data recording, reproducing and displaying machines with calculating functions"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.electronic-calculators-and-pocket-size-data-recording-reproducing-and-displaying-machin-ab87fa21"
+  classification_refs: "CPC 3.0: 45130 (exact)"
+  covered_products: "Electronic desktop, handheld and pocket calculators; pocket-size data recording, reproducing and displaying machines with calculating functions"
+  excluded_products: "Accounting machines, cash registers, postage-franking machines, ticket-issuing machines, point-of-sale terminals, ATMs, general-purpose computers, stand-alone storage units, parts sold separately, covers and carrying cases"
+  representative_product: "A non-printing electronic calculator with a populated printed-circuit-board assembly, LCD module, keypad, enclosure and declared battery and/or photovoltaic power configuration"
+  production_route: "Assembly and functional testing from purchased components at the calculator manufacturing site"
+  market_state: "Conforming, unpackaged finished calculator at the factory gate"
+functional_unit:
+  what: "Production of a conforming electronic calculator or covered pocket-size calculating machine"
+  how_much: "1 kg of net conforming unpackaged finished product"
+  how_well: "Complete declared model configuration; passed recorded display, keypad and calculating-function tests"
+  how_long_or_cycle: "One reporting-period production output; no use-stage service life is represented"
+  reference_flow_link: "finished_calculator_product"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The factory-gate boundary and exclusions below are declared PCR modelling choices. IEC 63366 is cited only for its public scope description; no compliance with its unexamined full requirements is asserted. The electronics manual supports generic value-chain decomposition, not calculator-specific component quantities or technologies."
+      source_ids: []
+    - rule_id: boundary_rule_1
+      applies_to: "cradle-to-factory-gate model"
+      rule: "Include linked upstream datasets for purchased components and electricity plus foreground component installation, final assembly, functional testing, conforming output and rejects."
+      source_ids:
+        - unep-eco-i-electronics-2022
+    - rule_id: boundary_rule_2
+      applies_to: "excluded stages"
+      rule: "Exclude packaging, distribution, use, repair and end-of-life from this factory-gate foreground dataset and state these exclusions in dataset metadata."
+      source_ids: []
+    - rule_id: boundary_rule_3
+      applies_to: "conditional power routes"
+      rule: "Include button-cell installation only for models receiving a button cell and photovoltaic-cell installation only for models receiving a photovoltaic cell; dual-power products include both."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased populated circuit-board assemblies, display modules, keypads, enclosures and applicable power components received at the calculator assembly site"
+  starting_condition_role: "Foreground factory-entry condition; upstream component manufacture is represented by linked upstream product datasets"
+  product_classification_scope: "Electronic calculators and pocket-size data recording, reproducing and displaying machines with calculating functions; excludes transaction machines and general-purpose computers"
+  recursive_input_rule: "If a complete calculator or same-category subassembly is purchased, record it once as a disclosed upstream input and do not recursively expand it again inside the same foreground system"
+  upstream_dataset_requirement: "Each purchased component and electricity flow requires a geographically and technologically representative upstream dataset or a disclosed proxy"
+  disclosure: "Declare model family, power configuration, component supply boundary, site geography, reporting period, test operations, excluded packaging and any proxy datasets"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Electronic calculators and pocket-size data recording, reproducing and displaying machines with calculating functions"
+    uuid: "1ac055b2-f5e3-46e4-9d11-31402df2ed75"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "calculator model or model family"
+    - "calculation-function class"
+    - "display type"
+    - "power-source configuration"
+    - "battery chemistry and form when applicable"
+    - "photovoltaic-cell technology when applicable"
+    - "net product mass"
+    - "unpackaged factory-gate state"
+    - "manufacturing site and geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-based component rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass excluding packaging. Calibrate scales and retain tare, sample and aggregation records."
+  - id: electricity_energy
+    applies_to: "assembly electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter unit in raw records and convert to MJ with a validated unit conversion in the data system; do not mix purchased electricity with on-site fuel or heat."
+  - id: item_count_normalization
+    applies_to: "photovoltaic-cell input"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count installed cells by applicable model, including cells in assembled rejects leaving the process, and normalize by net conforming output mass."
+  - id: production_normalization
+    applies_to: "all foreground rows"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "row-specific unit"
+    rule: "Normalize reporting-period inputs and outputs by net conforming unpackaged product mass from the same site and period; report data gaps and inventory reconciliation differences."
+process_map:
+  - id: calculator_final_assembly
+    name: "Calculator component and final assembly"
+    inclusion: "required"
+    inclusion_condition: "Always included for foreground calculator production"
+    role: "Foreground assembly and functional testing"
+    quantitative_reference: "Per 1 kg net conforming unpackaged finished product"
+  - id: button_cell_installation
+    name: "Button-cell battery installation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared calculator model receives a primary button-cell battery"
+    role: "Conditional power-component installation"
+    quantitative_reference: "Per 1 kg net conforming unpackaged finished product"
+  - id: photovoltaic_cell_installation
+    name: "Photovoltaic-cell installation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared calculator model receives a photovoltaic cell"
+    role: "Conditional power-component installation"
+    quantitative_reference: "Per 1 kg net conforming unpackaged finished product"
+process_inventory:
+  - id: calculator_final_assembly
+    label: "Calculator component and final assembly"
+    inputs:
+      product:
+        - row_id: pcba_input
+          role: "Populated printed-circuit-board assembly"
+          name: "Electronic components and PCB assemblies"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1e37f859-cb9b-47ff-8b0b-5b47d65fa236"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of purchased populated board assemblies consumed in released and rejected calculator production."
+          amount:
+            expression: "measured net mass issued to the assembly line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom_mass
+              source_ids:
+                - unep-eco-i-electronics-2022
+            ranges: []
+        - row_id: lcd_module_input
+          role: "Assembled liquid-crystal display module"
+          name: "LCD module, assembled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "daedcb7b-760e-4acf-9a1c-3adb472c4eba"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of calculator LCD modules consumed in released and rejected production."
+          amount:
+            expression: "measured or bill-of-materials mass issued to assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom_mass
+              source_ids:
+                - unep-eco-i-electronics-2022
+            ranges: []
+        - row_id: silicone_keypad_input
+          role: "Moulded silicone-rubber calculator keypad"
+          name: "Moulded silicone-rubber calculator keypad"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only the finished keypad component crossing the assembly boundary; do not combine it with other rubber parts."
+          amount:
+            expression: "measured or bill-of-materials mass issued to assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom_mass
+              source_ids:
+                - unep-eco-i-electronics-2022
+            ranges: []
+        - row_id: abs_enclosure_input
+          role: "Injection-moulded ABS calculator enclosure"
+          name: "Injection-moulded ABS calculator enclosure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the finished ABS enclosure component received for assembly, not ABS resin used at an upstream moulding supplier."
+          amount:
+            expression: "measured or bill-of-materials mass issued to assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom_mass
+              source_ids:
+                - unep-eco-i-electronics-2022
+            ranges: []
+        - row_id: assembly_electricity_input
+          role: "Purchased electricity for assembly and testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record purchased electricity metered or allocated to component installation, final assembly and functional testing."
+          amount:
+            expression: "metered electricity or documented allocation from an assembly-area meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_calculator_product
+          role: "Conforming unpackaged finished calculator"
+          name: "Electronic calculators and pocket-size data recording, reproducing and displaying machines with calculating functions"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1ac055b2-f5e3-46e4-9d11-31402df2ed75"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net conforming product mass released after functional testing, excluding packaging."
+          amount:
+            expression: "1 kg reference product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: rejected_calculator_waste
+          role: "Rejected finished electronic calculator"
+          name: "Rejected finished electronic calculator"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected assembled calculators when they leave the foreground process as waste; units returned for rework within the reporting period are not waste."
+          amount:
+            expression: "measured mass of rejected assembled units sent to waste treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: button_cell_installation
+    label: "Button-cell battery installation"
+    inputs:
+      product:
+        - row_id: button_cell_battery_input
+          role: "Primary button-cell battery"
+          name: "Primary button-cell battery"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this row only for calculator models receiving a new primary button-cell battery; otherwise the conditional process is absent."
+          amount:
+            expression: "measured installed battery mass including the cell casing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product for applicable models"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom_mass
+              source_ids:
+                - unep-eco-i-electronics-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: photovoltaic_cell_installation
+    label: "Photovoltaic-cell installation"
+    inputs:
+      product:
+        - row_id: photovoltaic_cell_input
+          role: "Monocrystalline-silicon photovoltaic cell"
+          name: "Mono-Si PV cell"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c447c8a4-7c92-4dc9-adb6-12e3d7af67b8"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s)"
+          description: "Record this row only for calculator models receiving a monocrystalline-silicon photovoltaic cell; otherwise the conditional process is absent."
+          amount:
+            expression: "counted cells installed in released and rejected production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming unpackaged finished product for applicable models"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power_component_count
+              source_ids:
+                - unep-eco-i-electronics-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "shared assembly equipment and site utilities"
+    rule: "Prefer sub-metering and process subdivision. When direct measurement is unavailable, allocate electricity using a documented causal driver such as machine operating time; do not allocate by revenue."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "multiple calculator models"
+    rule: "Aggregate only models with the same declared product boundary and power-route logic. Otherwise calculate model-specific inventories before any production-weighted combination."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "rejects and recovered material"
+    rule: "Report rejected calculators as waste at measured mass. Do not credit avoided virgin production inside this factory-gate dataset unless an explicitly expanded boundary and substitution method are separately declared."
+    source_ids: []
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "No co-product is expected from calculator assembly. If a site reports a saleable co-product, subdivide the producing operation or document the physical causal allocation method and the unallocated result."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom_mass
+      process_id: "calculator_final_assembly_button_cell_installation"
+      flow_role: "mass of each purchased component consumed"
+      record_type: "approved bill of materials, receiving record, issue record and component mass measurement"
+      raw_fields: "model_id; supplier_part_id; component_flow; unit_mass; issued_quantity; returned_quantity; rejected_quantity; scale_id"
+      collection_method: "Reconcile approved BOM with material issues and returns; verify unit mass by calibrated weighing"
+      unit: "kg"
+      frequency: "each production lot, aggregated monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all lines producing covered models at the declared site"
+      aggregation_rule: "sum net issued mass by atomic component and divide by net conforming output mass"
+      quality_evidence: "BOM revision, purchase/issue records, scale calibration and reconciliation sign-off"
+    - protocol_id: cp_assembly_electricity
+      process_id: "calculator_final_assembly"
+      flow_role: "electricity for assembly and functional testing"
+      record_type: "meter readings and equipment operating records"
+      raw_fields: "meter_id; opening_reading; closing_reading; meter_unit; covered_equipment; operating_time; allocation_driver; excluded_loads"
+      collection_method: "Read dedicated meter or allocate an assembly-area meter using documented operating time"
+      unit: "meter unit and MJ after validated conversion"
+      frequency: "at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "declared assembly and testing equipment"
+      aggregation_rule: "subtract excluded loads, apply documented causal allocation and divide by net conforming output mass"
+      quality_evidence: "meter identification, reading log, conversion record and allocation worksheet"
+    - protocol_id: cp_finished_product_mass
+      process_id: "calculator_final_assembly"
+      flow_role: "conforming unpackaged finished product"
+      record_type: "release quantity and verified net unit mass"
+      raw_fields: "model_id; released_quantity; sampled_unit_mass; packaging_tare; scale_id; release_status"
+      collection_method: "Weigh unpackaged product samples by model and reconcile with released quantities"
+      unit: "kg"
+      frequency: "each model and reporting period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "declared production site"
+      aggregation_rule: "sum released quantity multiplied by verified net unit mass"
+      quality_evidence: "release records, sampling plan, scale calibration and tare record"
+    - protocol_id: cp_reject_waste_mass
+      process_id: "calculator_final_assembly"
+      flow_role: "rejected finished calculator waste"
+      record_type: "reject and waste-disposition records"
+      raw_fields: "model_id; reject_quantity; measured_mass; rework_return; disposition; waste_ticket"
+      collection_method: "Weigh assembled rejects leaving the process and exclude units returned to in-period rework"
+      unit: "kg"
+      frequency: "each waste shipment or production lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "declared production site"
+      aggregation_rule: "sum disposed reject mass and divide by net conforming output mass"
+      quality_evidence: "reject log, weighing record and waste-transfer evidence"
+    - protocol_id: cp_power_component_count
+      process_id: "photovoltaic_cell_installation"
+      flow_role: "installed photovoltaic-cell count"
+      record_type: "approved BOM and released/rejected unit counts"
+      raw_fields: "model_id; power_configuration; cells_per_unit; released_quantity; rejected_quantity; BOM_revision"
+      collection_method: "Multiply verified cells per unit by units assembled for applicable models"
+      unit: "Item(s)"
+      frequency: "each production lot, aggregated monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all applicable covered models"
+      aggregation_rule: "sum installed cell count and divide by net conforming output mass"
+      quality_evidence: "BOM approval, route declaration and production-count reconciliation"
+  calculation_rules:
+    - id: calc_component_mass
+      applies_to: "mass-based component inputs"
+      rule: "Net component mass per reference flow = (issued mass - same-state return-to-stock mass) / net conforming unpackaged product mass"
+      inputs:
+        - "component issue and return records"
+        - "net conforming output mass"
+      output: "kg component/kg reference product"
+      source_ids: []
+    - id: calc_electricity
+      applies_to: "assembly electricity"
+      rule: "Electricity per reference flow = allocated assembly and testing electricity / net conforming unpackaged product mass"
+      inputs:
+        - "meter readings"
+        - "excluded loads"
+        - "allocation driver"
+        - "validated unit conversion"
+        - "output mass"
+      output: "MJ/kg reference product"
+      source_ids: []
+    - id: calc_product_mass
+      applies_to: "reference product output"
+      rule: "Net conforming mass = sum by model of released quantity multiplied by verified unpackaged unit mass"
+      inputs:
+        - "release quantities"
+        - "sampled unit mass"
+        - "packaging tare"
+      output: "kg conforming product"
+      source_ids: []
+    - id: calc_pv_count
+      applies_to: "photovoltaic-cell input"
+      rule: "Cell count per reference flow = sum of installed cells for applicable models / net conforming unpackaged product mass"
+      inputs:
+        - "cells per unit"
+        - "assembled unit counts"
+        - "output mass"
+      output: "Item(s)/kg reference product"
+      source_ids: []
+    - id: calc_reject_mass
+      applies_to: "rejected calculator waste"
+      rule: "Reject waste per reference flow = disposed assembled-reject mass / net conforming unpackaged product mass"
+      inputs:
+        - "reject weighing and disposition records"
+        - "output mass"
+      output: "kg waste/kg reference product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and component identity"
+      requirement: "Retain model, supplier part, component state, power configuration and Tiangong UUID or documented unresolved status for every atomic row."
+      evidence: "BOM, supplier specification, UUID audit and model-family declaration"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Cover one complete representative reporting period and disclose shutdowns, start-ups, engineering lots and abnormal rejects."
+      evidence: "dated production, meter and waste records"
+    - id: dq_mass
+      applies_to: "mass-based rows"
+      requirement: "Use calibrated weighing or documented unit-mass sampling and reconcile issued component mass, conforming output and reject disposition."
+      evidence: "calibration certificates, sampling records and reconciliation worksheet"
+    - id: dq_electricity
+      applies_to: "electricity"
+      requirement: "Identify meter boundary, excluded loads, conversion and allocation driver; use a geography- and voltage-appropriate upstream electricity dataset."
+      evidence: "meter diagram, readings, allocation worksheet and dataset metadata"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Report all nine PCR rows as present, zero/not applicable under the declared conditional route, or explicitly unresolved; do not merge atomic components or waste."
+      evidence: "completed inventory checklist and route declaration"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "product identity"
+    rule: "Confirm CPC 45130 scope and reject accounting machines, transaction terminals, general-purpose computers, stand-alone storage units and separately sold parts."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_rule_2
+    applies_to: "reference flow"
+    rule: "Confirm that the dataset output is exactly 1 kg net conforming unpackaged finished product and that all required qualifiers are present."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "process and route completeness"
+    rule: "Confirm final assembly is present and that button-cell and photovoltaic rows agree with the declared power configuration; dual-power models include both conditional processes."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "inventory identity"
+    rule: "Confirm every selected flow is one atomic exchange, UUID-bearing Chinese names match state-100 direct reads, and the four UUID-empty rows remain explicitly unresolved until exact identities are audited."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "normalization and reconciliation"
+    rule: "Confirm numerator records and net conforming output cover the same site and period; explain component-mass, product-mass and reject reconciliation differences without treating electricity as mass."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "external ranges"
+    rule: "Confirm no external empirical range is asserted until two independent original sources with compatible boundary, unit and product state support a synthesis."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Factory-gate input for product LCAs, component supply-chain models and lifecyclemodel projections of covered calculator products"
+  allowed_use: "Use for the declared model family, power configuration, site geography, technology and reporting period, or as a disclosed proxy after representativeness review"
+  excluded_use: "Stand-alone representation of packaging, distribution, use, repair, end-of-life, accounting machines, POS terminals, ATMs, general-purpose computers or separately sold components"
+  required_metadata: "canonical PCR id; product model or family; CPC reference; calculation-function class; display type; power configuration; battery and photovoltaic qualifiers; net mass; factory-gate unpackaged state; site; geography; technology; reporting period; upstream datasets; allocation method; unresolved UUIDs"
+  required_quality_disclosure: "meter and scale coverage; BOM revision; sampling and calibration; production and reject reconciliation; conditional-route applicability; proxy datasets; exclusions; temporal, geographical and technological representativeness"
+  update_trigger: "Change in model family, PCB or display architecture, enclosure material, power configuration, supplier mix, assembly technology, site, electricity supply, allocation method or reporting period that materially changes the inventory"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-08)"
+    used_for: "Product classification identity and exclusions"
+  - id: "iec-63366-2025"
+    type: "standard"
+    reference: "IEC 63366:2025, Product category rules for life cycle assessment of electrical and electronic products and systems, https://webstore.iec.ch/en/publication/67691 (retrieved 2026-09-08)"
+    used_for: "Public scope description only: generic EEPS LCA and product-specific-rule context; full standard requirements not verified"
+  - id: "unep-eco-i-electronics-2022"
+    type: "handbook"
+    reference: "SAICM Secretariat (2022), Eco—i Manual: Electronics Supplement, commissioned by UNEP in collaboration with World Resources Forum, p. 21, Figure PR.1-6, https://saicmknowledge.org/sites/default/files/resources/UNEP_Eco%E2%80%94i_Manual_Electronics_Supplement_.pdf (retrieved 2026-09-08)"
+    used_for: "Electronics value-chain and component/assembly process decomposition"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d80f42fb3c84a7ab76093b2fd39fb59b7181e1b69d3b274b163d60cecbfa37d0"
+  generated_content_sha256: "sha256:52f432dd5699fe2884636a48b8a27ce6c6e899cb5094278a423aed3986b336f0"

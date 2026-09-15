@@ -1,10 +1,321 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48282"
-  title: "Parts and accessories for the goods of subclass 48261"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.parts-and-accessories-for-the-goods-of-subclass-48261"
+  classification_refs: "CPC 3.0: 48282 — Parts and accessories for the goods of subclass 48261"
+  covered_products: "Dedicated parts and accessories for microscopes other than optical microscopes and for diffraction apparatus"
+  excluded_products: "Complete instruments; optical microscopes and their parts; general-purpose supplies; services; distribution packaging"
+  representative_product: "Precision-machined stainless-steel component dedicated to a non-optical microscope or diffraction apparatus"
+  production_route: "Receipt of stainless-steel sheet, precision machining, inspection, and release at the manufacturing gate"
+  market_state: "Finished, quality-released, unpackaged part or accessory at the manufacturing gate"
+functional_unit:
+  what: "Provide a finished part or accessory dedicated to the function of a non-optical microscope or diffraction apparatus"
+  how_much: "1 kg of conforming finished product"
+  how_well: "Meets the declared drawing, material grade, dimensional tolerances, surface condition, cleanliness, and acceptance criteria"
+  how_long_or_cycle: "One production period represented by the foreground data, with no use-life equivalence claimed"
+  reference_flow_link: "The output row finished_reference_product realizes the functional unit after normalization to conforming output mass"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when identified stainless-steel sheet is received by the manufacturing site and ends when the conforming unpackaged part is quality-released at the site gate. It includes precision machining, in-process handling, inspection, and directly attributable facility energy. Upstream production of purchased material and electricity shall be represented by suitable upstream datasets. Capital equipment, buildings, employee travel, distribution, use, maintenance, and end-of-life are outside the default boundary unless the study goal explicitly includes them."
+      source_ids: []
+    - rule_id: boundary_01
+      applies_to: "foreground manufacturing"
+      rule: "Include all site operations and direct exchanges needed to machine, inspect, and release the declared product during the represented period."
+      source_ids: []
+    - rule_id: boundary_02
+      applies_to: "route variation"
+      rule: "Record every additional route-specific material, energy, waste, and elementary exchange as a separate atomic row; absence shall be supported by process records."
+      source_ids: []
+    - rule_id: boundary_03
+      applies_to: "purchased inputs"
+      rule: "Model upstream burdens with suitable upstream datasets and do not duplicate those burdens as foreground elementary flows."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Stainless-steel sheet received at the manufacturing site, identified by supplier, grade, form, and net mass"
+  starting_condition_role: "Purchased product input at the foreground gate"
+  product_classification_scope: "Dedicated parts and accessories for the complete goods classified in CPC 3.0 subclass 48261"
+  recursive_input_rule: "A purchased input already within this PCR category is recorded once as an upstream product input; do not recursively reopen its foreground manufacture inside the same dataset"
+  upstream_dataset_requirement: "Use geography-, technology-, grade-, and delivery-representative upstream datasets for each purchased input and document substitutions"
+  disclosure: "Declare product configuration, material grade, route, outsourced operations, site, period, excluded operations, and whether any same-category input occurs"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Parts and accessories for the goods of subclass 48261"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "instrument family and dedicated function"
+    - "part number or drawing revision"
+    - "material grade"
+    - "manufacturing route"
+    - "dimensional and surface acceptance criteria"
+    - "cleanliness requirement"
+    - "site geography"
+    - "production period"
+    - "allocation method"
+    - "excluded operations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net conforming product mass, excluding distribution packaging. Normalize period totals to 1 kg of conforming output."
+  - id: electricity_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity and convert kWh to MJ with 1 kWh = 3.6 MJ; disclose voltage level, grid geography, supplier mix, and whether losses are included."
+process_map:
+  - id: precision_part_manufacturing
+    name: "Precision part manufacturing and release"
+    inclusion: "required"
+    inclusion_condition: "Always included for the representative route; adapt the atomic exchange set to the declared product route"
+    role: "Foreground production"
+    quantitative_reference: "1 kg conforming unpackaged product"
+process_inventory:
+  - id: precision_part_manufacturing
+    label: "Precision part manufacturing and release"
+    inputs:
+      product:
+        - row_id: stainless_steel_sheet
+          role: "Stainless-steel sheet"
+          name: "Stainless-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Stainless-steel sheet crosses the site gate as the material stock for the representative machined component. Record the actual purchased grade and net mass consumed, adjusted for opening and closing stock."
+          amount:
+            expression: "Net stainless-steel sheet consumed from purchase and stock records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity crosses the site boundary to power machining, handling, inspection, and directly attributable support equipment. Record submetered consumption where available and document any allocation from a shared meter."
+          amount:
+            expression: "Metered electricity attributable to the represented production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_reference_product
+          role: "Conforming finished part or accessory"
+          name: "Parts and accessories for the goods of subclass 48261"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The quality-released unpackaged part or accessory is the reference output. Record conforming net mass separately from rejects and work in progress."
+          amount:
+            expression: "1 kg after normalization from measured conforming output mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: stainless_steel_scrap
+          role: "Stainless-steel machining scrap"
+          name: "Stainless-steel machining scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stainless-steel offcuts, chips, and turnings leaving the foreground boundary as one segregated material stream are recorded by net mass. Contaminated or mixed wastes shall be represented by separate atomic rows rather than combined with this stream."
+          amount:
+            expression: "Measured segregated stainless-steel scrap leaving the site, adjusted for stored scrap inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_01
+    applies_to: "foreground operations"
+    rule: "Prefer subdivision and direct metering so exchanges are assigned to the declared product without allocation."
+    source_ids: []
+  - rule_id: allocation_02
+    applies_to: "shared operations"
+    rule: "When subdivision is not feasible, allocate shared electricity and material losses using a documented physical driver that reflects causality, such as machine time or processed mass; report the driver and allocated share."
+    source_ids: []
+  - rule_id: allocation_03
+    applies_to: "stainless-steel scrap"
+    rule: "Report scrap as a waste output and disclose its destination. Do not credit recycling or avoided primary material inside the foreground inventory unless the study applies and documents a separate consistent end-of-life method."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "precision_part_manufacturing"
+      flow_role: "stainless-steel sheet input"
+      record_type: "purchase, receiving, issue, and stock records"
+      raw_fields: "supplier; grade; form; received mass; issued mass; opening stock; closing stock; product link"
+      collection_method: "Reconcile traceable material records to the represented product and period"
+      unit: "kg"
+      frequency: "each receipt and issue; period close"
+      temporal_coverage: "Same production period as output"
+      site_scope: "All included production areas at the site"
+      aggregation_rule: "issued mass plus opening stock minus closing stock, net of documented transfers"
+      quality_evidence: "purchase documents; material certificates; stock reconciliation; scale calibration"
+    - protocol_id: cp_electricity_meter
+      process_id: "precision_part_manufacturing"
+      flow_role: "purchased electricity input"
+      record_type: "utility invoice, main meter, and submeter records"
+      raw_fields: "meter id; opening reading; closing reading; multiplier; kWh; production link; shared-meter driver"
+      collection_method: "Read calibrated meters and reconcile submeters to the site total"
+      unit: "kWh, converted to MJ"
+      frequency: "continuous or at least monthly"
+      temporal_coverage: "Same production period as output"
+      site_scope: "Included equipment and directly attributable support loads"
+      aggregation_rule: "sum validated readings, subtract excluded loads, then apply documented shared-meter allocation"
+      quality_evidence: "invoices; meter logs; calibration or verification records; allocation worksheet"
+    - protocol_id: cp_output_mass
+      process_id: "precision_part_manufacturing"
+      flow_role: "conforming reference output"
+      record_type: "production and quality-release records"
+      raw_fields: "part number; drawing revision; batch; accepted quantity; unit net mass or batch net mass; rejected quantity"
+      collection_method: "Weigh accepted output or multiply verified unit net mass by accepted count"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Same production period as inputs"
+      site_scope: "All conforming output from the included site"
+      aggregation_rule: "sum conforming net mass; exclude packaging, rejects, and unfinished work"
+      quality_evidence: "calibrated scale record; release record; count-to-mass check"
+    - protocol_id: cp_scrap_mass
+      process_id: "precision_part_manufacturing"
+      flow_role: "stainless-steel scrap output"
+      record_type: "scrap scale tickets and scrap-stock records"
+      raw_fields: "waste stream id; material grade; measured mass; opening stock; closing stock; destination"
+      collection_method: "Weigh segregated scrap and reconcile stored scrap inventory"
+      unit: "kg"
+      frequency: "each dispatch and period close"
+      temporal_coverage: "Same production period as output"
+      site_scope: "All included production areas at the site"
+      aggregation_rule: "dispatched mass plus closing stock minus opening stock, net of documented transfers"
+      quality_evidence: "scale ticket; segregation record; inventory reconciliation; destination record"
+  calculation_rules:
+    - id: calc_01
+      applies_to: "all period inventory rows"
+      rule: "normalized amount = validated period amount / conforming period output mass"
+      inputs:
+        - "validated row amount"
+        - "conforming output mass from cp_output_mass"
+      output: "row amount per 1 kg reference flow"
+      source_ids: []
+    - id: calc_02
+      applies_to: "electricity"
+      rule: "electricity MJ = validated electricity kWh × 3.6"
+      inputs:
+        - "validated kWh from cp_electricity_meter"
+      output: "MJ of purchased electricity"
+      source_ids: []
+    - id: calc_03
+      applies_to: "stainless-steel mass balance"
+      rule: "unaccounted steel = net steel input − conforming product steel mass − stainless-steel scrap output − net work-in-progress change; disclose components not made of steel"
+      inputs:
+        - material
+        - output
+        - scrap
+        - "and work-in-progress records"
+      output: "reported mass-balance reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_01
+      applies_to: "product identity"
+      requirement: "Link every reported batch to the dedicated instrument function, part number or drawing revision, material grade, and release status."
+      evidence: "drawing; bill of materials; material certificate; release record"
+    - id: dq_02
+      applies_to: "temporal consistency"
+      requirement: "Use the same production period for material, electricity, output, and scrap records; explain shutdowns, start-up batches, and stock corrections."
+      evidence: "dated records and period reconciliation"
+    - id: dq_03
+      applies_to: "completeness"
+      requirement: "Reconcile purchased material and electricity to included operations and identify excluded loads, transfers, rejects, work in progress, and unmetered estimates."
+      evidence: "mass balance; energy reconciliation; exclusion log"
+    - id: dq_04
+      applies_to: "representativeness"
+      requirement: "Declare site geography, production technology, capacity utilization, supplier geography, electricity supply, and whether the period is representative."
+      evidence: "dataset metadata and production report"
+validation_rules:
+  - rule_id: validation_01
+    applies_to: "reference flow"
+    rule: "Confirm that the output is a dedicated part or accessory for a non-optical microscope or diffraction apparatus and that 1 kg excludes distribution packaging."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_02
+    applies_to: "inventory completeness"
+    rule: "Confirm that English and Chinese inventories contain the same ordered row ids and UUIDs, and that every additional route exchange is recorded as one atomic flow."
+    source_ids: []
+  - rule_id: validation_03
+    applies_to: "normalization"
+    rule: "Recalculate every inventory amount against conforming output mass and verify the 3.6 MJ/kWh electricity conversion."
+    source_ids: []
+  - rule_id: validation_04
+    applies_to: "balances and allocation"
+    rule: "Review material-balance reconciliation, scrap destination, shared-meter allocation, stock changes, exclusions, and data-quality evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after review of representativeness"
+  downstream_use: "Foreground process modelling and downstream lifecycle models for non-optical microscope or diffraction-apparatus parts"
+  allowed_use: "Products within the declared dedicated function, material, route, geography, technology, and production-period qualifiers"
+  excluded_use: "Complete instruments, optical-microscope parts, materially different routes without added atomic exchanges, use-stage claims, and end-of-life claims"
+  required_metadata: "canonical PCR id; part identity; dedicated function; drawing revision; material grade; route; site geography; technology; production period; reference mass; electricity supply; upstream dataset choices; allocation; exclusions"
+  required_quality_disclosure: "primary-data share; meter and scale quality; temporal coverage; material balance; shared-load allocation; unresolved UUIDs; missing range evidence; data gaps and substitutions"
+  update_trigger: "Drawing or material change; manufacturing-route or site change; electricity-supply change; allocation change; material data gap closure; UUID resolution; or new independent range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official classification identity and the link from CPC 48282 to the goods of subclass 48261"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d55b2456e9a4446b2315edb0e1a14d1dcaecbdbb1112bf8926b7c21dbc4daf64"
+  generated_content_sha256: "sha256:680ac8bce41a05562c3a756a323200111d11192a35d455955521924a66bb1280"

@@ -1,10 +1,985 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47620"
-  title: "Films and other video content on discs, tape or other physical media"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.films-and-other-video-content-on-discs-tape-or-other-physical-media"
+  classification_refs: "CPC 3.0: 47620; classification context only"
+  covered_products: "Physical carriers containing recorded films or other video content, supplied as goods"
+  excluded_products: "Blank media; audio-only media; software; players; online video; retail/reproduction services; originals sold with all property rights"
+  representative_product: "Saleable single-sided, single-layer DVD-Video of one declared edition"
+  production_route: "Physical-edition preparation; replication with a purchased stamper or conditional DVD-R recording; verification; packing"
+  market_state: "Finished readable recorded carrier at producer dispatch gate; packaging separately measured"
+functional_unit:
+  what: "Supply the declared video edition on a readable physical carrier at the producer gate"
+  how_much: "1 kg net recorded carrier; also report corresponding copy count and playable content duration"
+  how_well: "Correct complete edition and language; declared format, compatibility and quality acceptance tests passed"
+  how_long_or_cycle: "One production and release cycle; no assumed viewing count or archival lifetime"
+  reference_flow_link: "reference_video_dvd"
+system_boundary:
+  rules:
+    - rule_id: sb_identity
+      applies_to: "product_scope"
+      rule: "Apply the goods boundary and exclusions in sections 1–2; originals with all rights and reproduction services have distinct category identities."
+      source_ids:
+        - un-cpc-3-0-explanatory-notes-2025
+    - rule_id: sb_routes
+      applies_to: "disc_production"
+      rule: "Include molding, metallization and bonding for replication. Complete blank DVD-R supply instead requires writing/finalization and upstream blank-media manufacture; do not duplicate its embedded resin, metal or adhesive as foreground inputs."
+      source_ids:
+        - nist-sp-500-252-2003
+    - rule_id: sb_operations
+      applies_to: "site_operations"
+      rule: "Include attributable edition preparation, test runs, rejects, rework, standby, line support and packing according to section 8 protocols."
+      source_ids: []
+    - rule_id: sb_stamper
+      applies_to: "purchased_tools"
+      rule: "Include the purchased finished stamper's upstream manufacture. Onsite mastering/electroforming instead requires a measured extension covering the actual glass-master, photoresist, plating, rinse and species-specific discharge exchanges, replacing the purchased-stamper operation."
+      source_ids: []
+    - rule_id: sb_complete
+      applies_to: "route_instantiation"
+      rule: "Confirm every inclusion_condition by recipe, meter or waste record. Add separate atomic exchanges for actual additional chemicals, fuels, refrigerant losses, transport and treatment; absence from this representative list never proves zero use."
+      source_ids: []
+    - rule_id: sb_supply
+      applies_to: "upstream_links"
+      rule: "Include inbound transport and offsite treatment through matched supplier/route datasets and check overlap. Onsite treatment needs its own measured inventory; a waste transfer is not an elementary emission."
+      source_ids:
+        - us-epa-life-cycle-cd-dvd
+    - rule_id: sb_claims
+      applies_to: "downstream_use"
+      rule: "Label results as physical-copy production data. Do not infer total video-service impacts, comparative streaming benefits or viewing lifetime without compatible additional modules."
+      source_ids:
+        - shehabi-video-streaming-2014
+boundary_abstraction:
+  declared_starting_condition: "Existing authorized edited video master; purchased materials and finished stampers for replication, or complete purchased blank DVD-R for duplication"
+  starting_condition_role: "Foreground handover for physical-copy production; not proof of zero upstream burden"
+  product_classification_scope: "Recorded-video physical goods; a separate service identity does not exclude that service's manufacturing operations from producing the good"
+  recursive_input_rule: "Expand purchased inputs through matching upstream datasets. Do not recursively treat the finished edition as its own input. Link internal transfers once and cancel only on aggregation."
+  upstream_dataset_requirement: "Link material, finished-stamper, blank-media, packaging, energy and offsite-treatment supply chains at their actual handover states; disclose time, geography, technology and completeness. Purchased blanks replace embedded carrier manufacturing, not recording."
+  disclosure: "Distinguish foreground and upstream coverage. Film origination, casting, shooting, creative editing and rights acquisition are outside this physical-copy module; complete content-product claims require a separately justified contribution. Post-dispatch distribution, playback and postconsumer treatment require additional modules."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Prerecorded video DVD"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Carrier/recording format"
+    - "edition identifier"
+    - "duration per copy"
+    - language
+    - "sides/layers"
+    - "read-only or recordable state"
+    - "compatibility and region restrictions"
+    - "acceptance test and sampling plan"
+    - "net mass per carrier"
+    - "copies per sale unit"
+    - "packaging bill and mass"
+    - route
+    - "master/stamper handover boundaries"
+    - "site/geography/reporting period"
+    - "yield/rejects"
+    - "electricity delivery conditions"
+    - "upstream coverage and exclusions"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_net_mass
+    applies_to: "Reference and intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh bare recorded carriers. Exclude cases, inserts, wrap and shipping boxes from the denominator; retain their masses as inputs."
+  - id: mu_count_mass
+    applies_to: "Count records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Multiply accepted copy count by measured representative bare-carrier mass; retain sampling/calibration records. Count each carrier in a multi-disc set."
+  - id: mu_electricity
+    applies_to: "Electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the audited energy property; exact conversion is 1 kWh = 3.6 MJ. Record grid, voltage, losses and handover boundary; purchased electricity is distinct from primary energy."
+  - id: mu_water
+    applies_to: "Make-up and discharge"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert volume only with a documented density and measurement conditions; never count circulating water repeatedly as external supply."
+  - id: mu_formulations
+    applies_to: "Ink, adhesive and gas"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Separate purchased formulation from active or cured solids. Record chemistry and curing state. Gas-volume conversion requires density at recorded temperature and pressure."
+  - id: mu_tools
+    applies_to: "Stamper and target service"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile weighed receipts, retirement and stock changes with service allocation. Raw metal alone does not represent a manufactured tool."
+process_map:
+  - id: edition_preparation
+    name: "Edition preparation and file verification"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground production"
+    quantitative_reference: "Work apportioned to 1 kg final accepted carrier"
+  - id: disc_production
+    name: "Disc production and quality control"
+    inclusion: "required"
+    inclusion_condition: "Lot route selects replication or DVD-R recording through individual exchange conditions"
+    role: "foreground production"
+    quantitative_reference: "Accepted unpackaged DVD mass transferred to packing"
+  - id: packing
+    name: "Packing and dispatch release"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "conditioning"
+    quantitative_reference: "1 kg net saleable recorded DVD, packaging separately measured"
+process_inventory:
+  - id: edition_preparation
+    label: "Edition preparation and file verification"
+    inputs:
+      product:
+        - row_id: edition_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always; attributable physical-edition preparation only"
+          amount:
+            expression: "Metered preparation electricity allocated over documented released copies, converted to MJ and divided by final net carrier mass M."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_edition
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: disc_production
+    label: "Disc production and quality control"
+    inputs:
+      product:
+        - row_id: polycarbonate
+          role: "Polycarbonate granulate"
+          name: "Polycarbonate granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f4ad7c9a-3141-4c38-b932-45b7e67e05c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Replication route using a purchased finished stamper"
+          amount:
+            expression: "Purchased granulate consumption from stock balance / M; declare optical grade and recycled fraction; exclude internal regrind recirculation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_disc
+              source_ids:
+                - nist-sp-500-252-2003
+            ranges: []
+        - row_id: aluminium_target
+          role: "Aluminium sputtering target"
+          name: "Aluminium sputtering target"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Replication route using a purchased finished stamper"
+          amount:
+            expression: "Lot-attributable finished-target mass from tool and stock records / M; retain unused stock and separately record retired aluminium."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_tools
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: nickel_stamper
+          role: "Finished nickel DVD stamper"
+          name: "Finished nickel DVD stamper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Replication route using a purchased finished stamper"
+          amount:
+            expression: "Manufactured stamper mass apportioned by its recorded service shots / M; supplier boundary includes mastering and electroforming."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_tools
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: bonding_adhesive
+          role: "UV-curable acrylic DVD bonding adhesive"
+          name: "UV-curable acrylic DVD bonding adhesive"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Replication with this documented bonding formulation"
+          amount:
+            expression: "Wet purchased formulation consumed / M; record solids, curing process, cured retention and uncured waste separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_disc
+              source_ids:
+                - nist-sp-500-252-2003
+            ranges: []
+        - row_id: printing_ink
+          role: "Ink"
+          name: "Ink"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7627af63-d2c2-4245-906f-023847c7739f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Onsite disc printing using the declared ink formulation"
+          amount:
+            expression: "Purchased ink formulation consumption / M; retain the recipe, cure state and printing method; separate different formulations in the instantiated dataset."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_disc
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: argon_gas
+          role: "Argon gas"
+          name: "Argon gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Argon sputtering is operated and gaseous argon crosses the handover boundary"
+          amount:
+            expression: "Metered gas mass / M; volume conversion requires supplier density at recorded temperature and pressure."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Purchased process water is supplied as make-up"
+          amount:
+            expression: "Measured fresh make-up / M; exclude circulating loop volume and disclose water quality."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: production_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always; declared replication or recording route"
+          amount:
+            expression: "Metered line, test, standby and attributable cooling/compressed-air electricity converted to MJ / M; avoid overlapping meters."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: blank_dvd_r
+          role: "Unrecorded DVD-R disc"
+          name: "Unrecorded DVD-R disc"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: DVD-R duplication replaces replication materials for the same carrier"
+          amount:
+            expression: "Count of purchased blank discs consumed multiplied by measured bare-disc mass / M; link the complete blank-media supply chain."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_disc
+              source_ids:
+                - nist-sp-500-252-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpackaged_dvd_out
+          role: "Unpackaged prerecorded video DVD"
+          name: "Unpackaged prerecorded video DVD"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always; accepted carriers transferred to packing"
+          amount:
+            expression: "Measured accepted transfer mass / M; reconcile by lot with unpackaged_dvd_in and work-in-progress stock."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_disc
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: polycarbonate_sprue_waste
+          role: "Waste polycarbonate molding sprues"
+          name: "Waste polycarbonate molding sprues"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Segregated clean sprues leave the replication boundary"
+          amount:
+            expression: "Weighed external polycarbonate sprue scrap / M; internal regrind remains internal."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: dvd_reject_waste
+          role: "Rejected composite DVD discs"
+          name: "Rejected composite DVD discs"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Irrecoverable recorded or partly processed discs are discarded, including packing rejects returned to this ledger"
+          amount:
+            expression: "Weighed composite disc rejects / M; record constituent bill, cure state and receiver; exclude recovered rework."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: nickel_stamper_waste
+          role: "Retired nickel DVD stamper"
+          name: "Retired nickel DVD stamper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A finished nickel stamper retires and leaves the site"
+          amount:
+            expression: "Weighed retired stamper mass apportioned consistently with its actual service / M."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_tools
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_target_scrap
+          role: "Aluminium Scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Separated aluminium from a retired target leaves the site; no backing plate or mixed waste included"
+          amount:
+            expression: "Weighed segregated aluminium scrap / M; reconcile target erosion, remaining stock and scrap."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_tools
+              source_ids: []
+            ranges: []
+        - row_id: uncured_adhesive_waste
+          role: "Waste uncured acrylic bonding adhesive"
+          name: "Waste uncured acrylic bonding adhesive"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Uncured bonding adhesive is separately discarded"
+          amount:
+            expression: "Weighed uncured adhesive sent to treatment / M; exclude cured adhesive retained on discarded discs."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: cooling_blowdown
+          role: "Noncontact cooling-water blowdown"
+          name: "Noncontact cooling-water blowdown"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Noncontact cooling blowdown crosses the boundary for offsite treatment"
+          amount:
+            expression: "Measured blowdown mass / M, with chemistry and receiving treatment recorded; direct discharge requires separate elementary species."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: argon_to_air
+          role: "Argon emitted to air"
+          name: "Argon emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Verified argon release from the sputtering system to ambient air"
+          amount:
+            expression: "Verified supplied argon less stock increase and recovered gas / M; declare receiving compartment and balance evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: water_vapour
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Evaporative water release occurs; receiving air subcompartment is unspecified"
+          amount:
+            expression: "Measured or justified evaporative loss / M; unexplained water-balance residual is not automatically assigned to vapour."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+  - id: packing
+    label: "Packing and dispatch release"
+    inputs:
+      product:
+        - row_id: unpackaged_dvd_in
+          role: "Unpackaged prerecorded video DVD"
+          name: "Unpackaged prerecorded video DVD"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always; internal transfer from disc_production"
+          amount:
+            expression: "Measured internal transfer mass / M; reconcile with unpackaged_dvd_out and inventory movements."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: dvd_case
+          role: "Polypropylene DVD case"
+          name: "Polypropylene DVD case"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The actual edition uses a purchased polypropylene case"
+          amount:
+            expression: "Measured finished-case mass consumed / M; supplier link includes case molding, not just resin production."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: paper_insert
+          role: "Packaging, paper insert"
+          name: "Packaging, paper insert"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b4681b7b-ff95-4df8-804a-fff06aa3c3aa"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A purchased printed paper information leaflet is included"
+          amount:
+            expression: "Measured finished printed-insert mass / M; include upstream printing and paper production."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: ldpe_wrap
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The edition uses LDPE wrapping film"
+          amount:
+            expression: "Measured film stock consumption / M; distinguish retained wrap and segregated trim."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: corrugated_box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Corrugated shipping boxes are used"
+          amount:
+            expression: "Measured finished-box mass allocated by actual contents / M; record board construction and reuse if applicable."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids:
+                - us-epa-life-cycle-cd-dvd
+            ranges: []
+        - row_id: packing_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always where electricity is used for packing and wrapping"
+          amount:
+            expression: "Metered packing electricity including attributable standby, converted to MJ / M."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_video_dvd
+          role: "Prerecorded video DVD"
+          name: "Prerecorded video DVD"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always; final saleable recorded DVD at dispatch"
+          amount:
+            expression: "M / M = 1 kg net accepted recorded carrier; retain released counts and component-wise packaging masses separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: polyethylene_film_waste
+          role: "Waste polyethylene"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7e78f0a8-c042-47ca-a742-3bac92be1477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Segregated polyethylene film trim leaves the site"
+          amount:
+            expression: "Weighed polyethylene film trim / M; record receiver and exclude mixed-polymer waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net final saleable recorded carrier, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "These PCR bookkeeping rules use measured production records from section 8."
+    source_ids: []
+  - rule_id: al_subdivide
+    applies_to: "shared_operations"
+    rule: "Prefer separate lot meters. Allocate residual shared electricity by measured machine time multiplied by representative power and reconcile to the meter; sales revenue is not the default driver."
+    source_ids: []
+  - rule_id: al_edition
+    applies_to: "edition_preparation"
+    rule: "Spread physical-edition preparation over documented released copies in the actual campaign; reconcile repeat runs and revise the denominator. Do not assume unlimited future copies."
+    source_ids: []
+  - rule_id: al_tools
+    applies_to: "stamper_service"
+    rule: "Allocate finished-stamper manufacture and retirement by identified tool and actual service shots, including failed copies. Their burden remains with accepted output. Disclose provisional remaining service for tools still in use."
+    source_ids: []
+  - rule_id: al_rework
+    applies_to: "internal_transfers"
+    rule: "Keep rework energy and losses. Cancel internal DVD and clean-polycarbonate recirculation only in aggregate models, retaining reconciliation records. Only outgoing material is external waste."
+    source_ids: []
+  - rule_id: al_scrap
+    applies_to: "recovered_material"
+    rule: "Record actual waste transfers and treatment without automatic avoided-virgin-material credit. Any separate recycling-credit scenario requires explicit boundaries and no overlap with upstream credits."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_edition
+      process_id: "edition_preparation"
+      flow_role: "Edition electricity"
+      record_type: "Meter and job log"
+      raw_fields: "edition_id; job_id; meter_start; meter_end; preparation_hours; released_copies; campaign_id"
+      collection_method: "Meter preparation workstation/server and attributable support energy; link jobs to the physical edition."
+      unit: "kWh; h; copy"
+      frequency: "Each job and campaign close"
+      temporal_coverage: "Complete preparation campaign including revisions"
+      site_scope: "Preparation site and contracted preparation supplier"
+      aggregation_rule: "Sum attributable energy; apportion by documented released copies; normalize by M."
+      quality_evidence: "Meter calibration; job reports; denominator reconciliation"
+    - protocol_id: cp_disc
+      process_id: "disc_production"
+      flow_role: "Material, blank and intermediate records"
+      record_type: "Lot bill, scales and QA log"
+      raw_fields: "lot_id; route; recipe; grade; opening_stock; receipts; returns; closing_stock; accepted_count; rejected_count; sample_mass; rework_mass; transferred_mass"
+      collection_method: "Weigh stock/consumption; count and sample-weigh carriers; identify formulations and supplied states."
+      unit: "kg; copy"
+      frequency: "Each lot and stock reconciliation"
+      temporal_coverage: "All production including startup, rejects and rework in the declared period"
+      site_scope: "Production line and supplier handovers"
+      aggregation_rule: "Reconcile material use and accepted transfer by lot; normalize by final released net mass M."
+      quality_evidence: "Scale checks; supplier specifications/SDS; test results; stock ledger"
+    - protocol_id: cp_tools
+      process_id: "disc_production"
+      flow_role: "Stamper and target service"
+      record_type: "Serialized tool ledger"
+      raw_fields: "tool_id; material; received_mass; retired_mass; remaining_mass; shots_by_lot; recovered_mass; supplier"
+      collection_method: "Weigh tools and identify lot service shots and target erosion."
+      unit: "kg; shot"
+      frequency: "Installation, service and retirement"
+      temporal_coverage: "Actual tool campaign with remaining-service disclosure"
+      site_scope: "Replication line and tool supplier"
+      aggregation_rule: "Allocate stamper input/retirement consistently by service; reconcile target supply, retention and scrap."
+      quality_evidence: "Tool identity; upstream boundary; scale and shot records"
+    - protocol_id: cp_utilities
+      process_id: "disc_production"
+      flow_role: "Electricity, argon and water balances"
+      record_type: "Meter, supplier and balance records"
+      raw_fields: "meter_id; start; end; line_hours; gas_mass; temperature; pressure; density; water_makeup; blowdown; evaporative_loss; stock_change"
+      collection_method: "Meter line electricity and fresh make-up; weigh gas or convert volume at documented conditions; close separate balances."
+      unit: "kWh; kg; m3; h"
+      frequency: "Each metered lot; period reconciliation"
+      temporal_coverage: "Production, idle and auxiliaries throughout the period"
+      site_scope: "Line including attributable cooling and compressed-air electricity"
+      aggregation_rule: "Assign shared demand by measured drivers; exclude circulation; normalize each exchange separately."
+      quality_evidence: "Calibrations; bills; balance residual explanation; reference conditions"
+    - protocol_id: cp_waste
+      process_id: "disc_production"
+      flow_role: "Specific solid/liquid waste"
+      record_type: "Segregated waste ledger"
+      raw_fields: "stream_id; chemistry; contamination; mass; stock_change; receiver; treatment_route; transport_boundary"
+      collection_method: "Weigh each distinct stream and reconcile transfers/storage; sample liquid composition as needed."
+      unit: "kg"
+      frequency: "Each transfer and period end"
+      temporal_coverage: "Same production period adjusted for waste stocks"
+      site_scope: "Site boundary and identified receiver"
+      aggregation_rule: "Normalize each stream independently by M; distinguish waste treatment from direct releases."
+      quality_evidence: "Transfer records; scale calibration; waste analysis; acceptance by receiver"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "Discs, packaging, dispatch and film trim"
+      record_type: "Packing bill and release QA"
+      raw_fields: "lot_id; incoming_disc_mass; released_count; net_mass_per_disc; component_mass; damaged_disc_mass; film_trim; stock_change; package_design"
+      collection_method: "Weigh each component; count released carriers; reconcile transfers, rework and dispatch."
+      unit: "kg; copy"
+      frequency: "Each packing lot and dispatch release"
+      temporal_coverage: "All attributable packing and rejects in the period"
+      site_scope: "Packing line and dispatch gate"
+      aggregation_rule: "Normalize components by bare-carrier M; route damaged discs to the disc reject/rework ledger once."
+      quality_evidence: "Packaging specifications; calibrated samples; dispatch/stock reconciliation"
+    - protocol_id: cp_pack_energy
+      process_id: "packing"
+      flow_role: "Packing electricity"
+      record_type: "Submeter and line log"
+      raw_fields: "meter_start; meter_end; runtime; standby; lot_id"
+      collection_method: "Meter wrapping, sealing and packing including attributable standby."
+      unit: "kWh; h"
+      frequency: "Each lot or allocated meter interval"
+      temporal_coverage: "Same packing period"
+      site_scope: "Packing line"
+      aggregation_rule: "Sum or allocate by measured energy drivers; divide by M."
+      quality_evidence: "Calibration; line logs; reconciliation to purchased electricity"
+  calculation_rules:
+    - id: calc_net_output
+      applies_to: "All rows"
+      rule: "M = accepted released copy count × measured bare-carrier mass for one homogeneous edition; require M > 0."
+      inputs:
+        - cp_disc
+        - cp_packing
+      output: "Final net carrier mass M in kg"
+      source_ids: []
+    - id: calc_normalize
+      applies_to: "External exchanges"
+      rule: "q_i = attributable period quantity Q_i / M. Apply allocation before normalization. Reference product is exactly 1 kg by definition."
+      inputs:
+        - "Relevant protocol"
+        - M
+      output: "Exchange per 1 kg net carrier"
+      source_ids: []
+    - id: calc_stocks
+      applies_to: "Material consumption"
+      rule: "Q = opening stock + receipts - closing stock - unused supplier returns. Reconcile retained material, losses and waste; track internal recirculation separately."
+      inputs:
+        - cp_disc
+        - cp_tools
+        - cp_packing
+        - cp_waste
+      output: "Net input and material balance"
+      source_ids: []
+    - id: calc_transfer
+      applies_to: "Internal DVD transfers"
+      rule: "Transfer out = transfer in after documented inter-period inventory adjustment; count returned rework once."
+      inputs:
+        - cp_disc
+        - cp_packing
+      output: "Linked intermediate mass"
+      source_ids: []
+    - id: calc_energy
+      applies_to: "Electricity"
+      rule: "E_MJ = 3.6 × E_kWh; sum preparation, production and packing after checking meter-boundary overlap."
+      inputs:
+        - cp_edition
+        - cp_utilities
+        - cp_pack_energy
+      output: "Purchased electricity MJ"
+      source_ids: []
+    - id: calc_tool_share
+      applies_to: "Stamper"
+      rule: "Lot tool share = tool burden × lot shots / documented total service shots. Disclose and update provisional remaining-service estimates."
+      inputs:
+        - cp_tools
+      output: "Lot-attributable tool input/waste"
+      source_ids: []
+    - id: calc_water_balance
+      applies_to: "Water and vapour"
+      rule: "Make-up + opening stock = blowdown + evaporation + other measured departures + closing stock. Explain residuals with measurement uncertainty; do not assign them automatically to evaporation."
+      inputs:
+        - cp_utilities
+        - cp_waste
+      output: "Verified water balance and vapour"
+      source_ids: []
+    - id: calc_argon_balance
+      applies_to: "Argon release"
+      rule: "Purchased gas + opening stock - closing stock - unused returns = recovered gas + verified air release."
+      inputs:
+        - cp_utilities
+      output: "Argon release by mass"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_scope
+      applies_to: "Dataset identity"
+      requirement: "Declare carrier, edition, route, handover states, period and original-content/downstream exclusions."
+      evidence: "BOM; supplier boundaries; reference qualifiers"
+    - id: dq_measurement
+      applies_to: "All rows"
+      requirement: "Separate measured, allocated and calculated quantities with uncertainty, calibration and missing-data treatment."
+      evidence: "Protocol-linked records and calculation workbook"
+    - id: dq_coverage
+      applies_to: "Reporting period"
+      requirement: "Cover the complete campaign or reporting period including startup and rejects; explain representativeness and extrapolation."
+      evidence: "Campaign and meter coverage logs"
+    - id: dq_readability
+      applies_to: "Finished carriers"
+      requirement: "Retain content-integrity, readability, compatibility and defect acceptance evidence; handling guidance does not establish a guaranteed lifetime."
+      evidence: "Site QA; nist-sp-500-252-2003 sections 4–5"
+    - id: dq_waste
+      applies_to: "Waste and emissions"
+      requirement: "Distinguish waste transfers from environmental releases; identify chemistry, receiver and compartment. Missing identity is not zero quantity."
+      evidence: "Transfers; analyses; balances; release records"
+    - id: dq_other_media
+      applies_to: "Non-DVD routes"
+      requirement: "Provide a complete carrier-specific exchange list and quality basis before applying these rules to tape, Blu-ray or Video-CD."
+      evidence: "Actual carrier bill, recording route and acceptance tests"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "reference_flow"
+    rule: "Require all qualifiers, positive accepted net mass and a recorded-video good; blank and software media cannot be the final reference."
+    source_ids:
+      - un-cpc-3-0-explanatory-notes-2025
+  - rule_id: val_route
+    applies_to: "inventory"
+    rule: "Check one route per lot; replication materials and complete blank supply cannot both represent the same carrier manufacture."
+    source_ids:
+      - nist-sp-500-252-2003
+  - rule_id: val_rows
+    applies_to: "flow_identity"
+    rule: "Each row is one atomic exchange with correct type, physical state, property, unit and compartment. Keep blank UUIDs explicitly unresolved; no silent proxy substitution."
+    source_ids: []
+  - rule_id: val_records
+    applies_to: "amounts"
+    rule: "Require protocol-linked records, drivers, conversions and calculations. Reject unexplained negative quantities, missing conditional evidence and unsourced replacement defaults."
+    source_ids: []
+  - rule_id: val_balances
+    applies_to: "balances"
+    rule: "Reconcile copy counts, carrier and packaging mass, wastes, tool stocks, water/argon balances, transfers and meters against documented uncertainty; no universal percentage tolerance is prescribed."
+    source_ids: []
+  - rule_id: val_quality
+    applies_to: "final_product"
+    rule: "Require traceable content/readability tests and handling-damage records. Rejects and destroyed copies are excluded from saleable output."
+    source_ids:
+      - nist-sp-500-252-2003
+  - rule_id: val_claims
+    applies_to: "dataset_use"
+    rule: "Disclose upstream coverage and excluded creative-production, distribution, use and end-of-life stages; prohibit viewing-service comparisons without compatible added modules."
+    source_ids:
+      - shehabi-video-streaming-2014
+published_dataset_profile:
+  dataset_role: "secondary_dataset for a documented site, edition and route; background_dataset only after independent representativeness and upstream-completeness review"
+  downstream_use: "Physical-media supply modelling and separately assembled video-service lifecycle models"
+  allowed_use: "Scaling for matching carrier, quality, route and supply boundary; explicit contribution to wider lifecycle models"
+  excluded_use: "Undisclosed transfer to other carriers; complete film-production claims; comparisons per viewing hour without use data; blank/software substitution"
+  required_metadata: "Reference qualifiers; supplier/site geography; dates; route; BOM; mass/count; boundaries; protocols; allocation; waste destinations; background links"
+  required_quality_disclosure: "Uncertainty, extrapolation, missing records, unresolved identities, absent external ranges, test acceptance, balance residuals and upstream completeness"
+  update_trigger: "Carrier/layer or packaging redesign; new chemistry; route/supplier/grid changes; campaign-denominator revision; material QA or yield change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC 3.0 structure, 30 June 2025, row 47620. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; accessed 2026-09-09"
+    used_for: "Original CSV title/hierarchy verified; SHA-256 matches supplied cache receipt."
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC 3.0 explanatory notes, 30 June 2025, printed p. 261, subclass 47620. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf; accessed 2026-09-09"
+    used_for: "Original page verified: recorded-video goods, audio-only, service and original-rights distinctions."
+  - id: "us-epa-life-cycle-cd-dvd"
+    type: "official_guidance"
+    reference: "US EPA, Life Cycle of a CD or DVD, poster P1001UU0, Materials Acquisition, Manufacturing and Packaging panels. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P1001UU0.TXT; accessed 2026-09-09"
+    used_for: "Original official text verified for qualitative process decomposition; no numerical defaults or lifetime ranges adopted."
+  - id: "nist-sp-500-252-2003"
+    type: "official_guidance"
+    reference: "Fred R. Byers, Care and Handling of CDs and DVDs: A Guide for Librarians and Archivists, NIST SP 500-252 / CLIR, 2003, sections 3–5, especially pp. 5–11. https://nvlpubs.nist.gov/nistpubs/legacy/sp/NISTspecialpublication500-252.pdf ; https://doi.org/10.6028/NIST.SP.500-252; accessed 2026-09-09"
+    used_for: "Original structure text and layer diagram verified: replicated/recordable distinction, bonding and handling/readability. Guidance is not a conformance standard."
+  - id: "shehabi-video-streaming-2014"
+    type: "literature"
+    reference: "Arman Shehabi, Ben Walker and Eric Masanet, The energy and greenhouse-gas implications of internet video streaming in the United States, Environmental Research Letters 9 (2014) 054007. https://doi.org/10.1088/1748-9326/9/5/054007 ; full text https://files.ifi.uzh.ch/hilty/t/Literature_by_RQs/RQ%20100/2014_Shehabi_Walker_Masanet_Energy_and_greenhouse-gas_implications_of_internet_video_streaming_in_US.pdf; accessed 2026-09-09"
+    used_for: "Original Approach, DVD system assumptions and Figure 1 verified; separates production, transport, viewing and devices. Historical US scenarios do not establish transferable empirical ranges."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7a9c229e4252e06a31a274dbf2101fbb1a1795bcdd1101029f34d61dc0d54136"
+  generated_content_sha256: "sha256:907592c8c46f50c65a852aba9e0209fbc8efe870b6b529da3fcb6bb616d87d4c"

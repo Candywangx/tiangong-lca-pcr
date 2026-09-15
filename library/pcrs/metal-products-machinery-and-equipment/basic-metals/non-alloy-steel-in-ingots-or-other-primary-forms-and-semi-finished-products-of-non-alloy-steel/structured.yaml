@@ -1,10 +1,932 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41121"
-  title: "Non-alloy steel in ingots or other primary forms, and semi-finished products of non-alloy steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.non-alloy-steel-in-ingots-or-other-primary-forms-and-semi-finished-products-of-non-alloy-steel"
+  classification_refs: "CPC 3.0: 41121, exact classification reference"
+  covered_products: "Non-alloy steel ingots; other primary forms of non-alloy steel; non-alloy steel billets, blooms, and slabs before downstream rolling or fabrication"
+  excluded_products: "Alloy steel and stainless steel; pig iron; direct-reduced iron sold as such; steel powders; scrap ingots; rolled, forged, drawn, coated, machined, or fabricated steel products"
+  representative_product: "Continuously cast non-alloy steel slab for flat rolling"
+  production_route: "Declared BF-BOF or EAF route, with actual iron-bearing charge, secondary metallurgy, and ingot or continuous-casting state disclosed"
+  market_state: "Unrolled, uncoated non-alloy crude steel at the producing steelworks gate; temperature, dimensions, grade, and surface-conditioning state declared"
+functional_unit:
+  what: "Supply a declared non-alloy crude-steel primary or semi-finished form suitable for subsequent metal processing"
+  how_much: "1,000 kg net saleable product at the producing steelworks gate"
+  how_well: "Meets the declared non-alloy grade, chemistry, dimensions, surface condition, and acceptance specification"
+  how_long_or_cycle: "One production campaign represented by the data package's stated temporal coverage"
+  reference_flow_link: "The reference amount equals the net mass of the declared saleable product; exclude attached dunnage and separately supplied packaging"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The intended inventory is cradle-to-factory-gate. Foreground records cover steelworks-controlled operations for the declared route, while purchased materials, fuels, electricity, oxygen, and water retain linked upstream provider datasets. Downstream rolling and product fabrication are outside the boundary."
+      source_ids: []
+    - rule_id: sb_cradle_to_gate
+      applies_to: "complete product system"
+      rule: "Include upstream resource and energy provision through the producing steelworks factory gate; do not include downstream rolling or fabrication unless it occurs before the declared reference-product gate."
+      source_ids:
+        - worldsteel-life-cycle-thinking
+    - rule_id: sb_route_operations
+      applies_to: "foreground steelworks"
+      rule: "Include the actual route operations among ironmaking, BF-BOF or EAF steelmaking, ladle metallurgy, slag handling, and ingot or continuous casting; disclose every omitted operation."
+      source_ids:
+        - eu-jrc-iron-steel-bref-2013
+    - rule_id: sb_inventory_coverage
+      applies_to: "foreground and linked upstream inventory"
+      rule: "Record all measured material, non-mass energy, water, direct emission, by-product, and waste exchanges without substituting a route-average carrier bundle."
+      source_ids:
+        - worldsteel-life-cycle-thinking
+boundary_abstraction:
+  declared_starting_condition: "Supplier-gate iron-bearing materials, reductants, fluxes, gases, electricity, and water entering the first steelworks-controlled operation, linked to appropriate upstream datasets"
+  starting_condition_role: "foreground steelworks gate with upstream provider linkage"
+  product_classification_scope: "Non-alloy crude steel in ingot, other primary, billet, bloom, or slab form before downstream rolling or fabrication"
+  recursive_input_rule: "Purchased input already within this PCR category is recorded once as a product input with its own upstream provider dataset; its production is not recursively reconstructed inside the receiving foreground system."
+  upstream_dataset_requirement: "Link each purchased material and energy input to a geography-, technology-, and state-compatible upstream dataset, or disclose the unresolved provider gap."
+  disclosure: "Declare route, product form, grade, charge mix, casting state, site geography, temporal coverage, internal recycling, exported energy, co-product status, and any excluded steelworks operation."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Continuously cast steel slab for flat rolling"
+    uuid: "fa93b446-0340-4d7b-9f4d-e3f78789ea94"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual product form"
+    - "non-alloy grade or chemistry specification"
+    - "BF-BOF or EAF route"
+    - "iron-bearing charge shares"
+    - "casting route"
+    - "hot or cold delivery state"
+    - "surface-conditioning state"
+    - "plant geography"
+    - "production technology"
+    - "temporal coverage"
+    - "recycled-content accounting approach"
+    - "co-product treatment approach"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1,000 kg of net saleable steel, excluding dunnage, external packaging, scale removed before the gate, and separately reported residues."
+  - id: wet_dry_mass
+    applies_to: "ores, coke, fluxes, dust, sludge, scale, and slag"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "State whether each mass is wet or dry; retain moisture observations and convert to dry mass only with measured moisture content."
+  - id: gas_reference_state
+    applies_to: "oxygen and gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "State temperature and absolute pressure for every gas volume; do not mix normal-volume and actual-volume records without an explicit conversion."
+  - id: electricity_energy
+    applies_to: "alternating-current electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert only by the exact identity 1 kWh = 3.6 MJ; disclose voltage and treatment of transmission and distribution losses."
+  - id: internal_flow_consistency
+    applies_to: "molten steel and return scrap"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use identical flow identities and quantities at the sending and receiving process boundaries; do not count an internal transfer as an external input or output."
+process_map:
+  - id: bf_bof_route
+    name: "Integrated BF-BOF ironmaking and steelmaking"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared product is made through an integrated blast-furnace/basic-oxygen-furnace route."
+    role: "foreground ironmaking, steelmaking, and secondary metallurgy"
+    quantitative_reference: "molten non-alloy steel transferred to casting"
+  - id: eaf_route
+    name: "Electric-arc-furnace steelmaking"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared product is made through an electric-arc-furnace route; record DRI only when actually charged."
+    role: "foreground melting, steelmaking, and secondary metallurgy"
+    quantitative_reference: "molten non-alloy steel transferred to casting"
+  - id: casting
+    name: "Ingot or continuous casting and product handling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the product is solidified before the declared gate; identify ingot, billet, bloom, or slab casting and exclude continuous-casting mould powder for ingot casting."
+    role: "foreground solidification and factory-gate preparation"
+    quantitative_reference: "1,000 kg declared saleable product"
+process_inventory:
+  - id: bf_bof_route
+    label: "Integrated BF-BOF ironmaking and steelmaking"
+    inputs:
+      product:
+        - row_id: bf_iron_ore_pellets
+          role: "Iron ore pellets charged to the integrated route"
+          name: "Iron ore pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Iron ore pellets charged to the integrated route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry mass of blast-furnace-grade pellets crossing the supplier-to-site boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_metallurgical_coke
+          role: "Metallurgical coke charged to the integrated route"
+          name: "Metallurgical coke"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Metallurgical coke charged to the integrated route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry mass of metallurgical coke charged"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_steel_scrap
+          role: "Prepared ferrous scrap charged to the BOF"
+          name: "Prepared ferrous scrap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared ferrous scrap charged to the BOF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass of external prepared scrap charged; internal returns are recorded separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_burnt_lime
+          role: "Burnt lime flux charged to steelmaking"
+          name: "Burnt lime"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Burnt lime flux charged to steelmaking is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry mass of burnt lime charged"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_oxygen
+          role: "Industrial oxygen supplied to ironmaking and BOF"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 (Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66)"
+          description: "Industrial oxygen supplied to ironmaking and BOF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered normal-volume oxygen supplied; disclose purity, reference conditions, pressure, and on-site generation boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_electricity
+          role: "Alternating-current electricity consumed by the integrated route"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Alternating-current electricity consumed by the integrated route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered purchased and on-site electricity consumed, net of separately reported exports"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_process_water
+          role: "Process-water make-up supplied to the integrated route"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process-water make-up supplied to the integrated route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered fresh and externally supplied make-up water; exclude recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bf_molten_steel
+          role: "Molten non-alloy steel transferred to casting"
+          name: "Molten non-alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Molten non-alloy steel transferred to casting is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass transferred from the BF-BOF route to the declared casting process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: bf_slag
+          role: "BF-BOF slag sent to treatment"
+          name: "BF-BOF steelmaking slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "BF-BOF slag sent to treatment is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured wet or dry mass leaving the steelmaking process; disclose moisture and whether later recovered as a co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+        - row_id: bf_dust
+          role: "Collected BF-BOF dust and sludge"
+          name: "BF-BOF dust and sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collected BF-BOF dust and sludge is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry solids collected by off-gas and water-treatment systems"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: bf_co2_fossil
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg (Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "Direct fossil carbon dioxide to air is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured or carbon-balance-calculated direct fossil CO2 released to air; keep the compartment as air, unspecified unless stack conditions justify a more specific flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bf_bof_balance
+              source_ids: []
+            ranges: []
+  - id: eaf_route
+    label: "Electric-arc-furnace steelmaking"
+    inputs:
+      product:
+        - row_id: eaf_steel_scrap
+          role: "Prepared ferrous scrap charged to the EAF"
+          name: "Prepared ferrous scrap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared ferrous scrap charged to the EAF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass of external prepared scrap charged; disclose grade and residual-element controls"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_direct_reduced_iron
+          role: "Direct-reduced iron charged to the EAF"
+          name: "Direct-reduced iron"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Direct-reduced iron charged to the EAF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass charged when this iron-bearing feed is used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_burnt_lime
+          role: "Burnt lime flux charged to the EAF"
+          name: "Burnt lime"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Burnt lime flux charged to the EAF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry mass of burnt lime charged"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_graphite_electrode
+          role: "Graphite electrodes consumed by the EAF"
+          name: "Graphite electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Graphite electrodes consumed by the EAF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "stock-change or purchase-and-inventory-balance mass consumed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_oxygen
+          role: "Industrial oxygen supplied to the EAF"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 (Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66)"
+          description: "Industrial oxygen supplied to the EAF is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered normal-volume oxygen supplied; disclose purity, reference conditions, pressure, and on-site generation boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_electricity
+          role: "Alternating-current electricity consumed by the EAF route"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Alternating-current electricity consumed by the EAF route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered purchased and on-site electricity consumed, net of separately reported exports"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_natural_gas
+          role: "Gaseous natural gas consumed by the EAF route"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 (Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66)"
+          description: "Gaseous natural gas consumed by the EAF route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered gaseous natural gas at the consumption boundary; disclose supplier geography and standard reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_process_water
+          role: "Process-water make-up supplied to the EAF route"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process-water make-up supplied to the EAF route is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered fresh and externally supplied make-up water; exclude recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: eaf_molten_steel
+          role: "Molten non-alloy steel transferred to casting"
+          name: "Molten non-alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Molten non-alloy steel transferred to casting is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass transferred from the EAF route to the declared casting process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: eaf_slag
+          role: "EAF slag sent to treatment"
+          name: "Electric-arc-furnace slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "EAF slag sent to treatment is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured wet or dry mass leaving the EAF process; disclose moisture and whether later recovered as a co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+        - row_id: eaf_dust
+          role: "Collected EAF off-gas dust"
+          name: "Electric-arc-furnace dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collected EAF off-gas dust is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry solids collected by the EAF off-gas treatment system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: eaf_co2_fossil
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg (Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "Direct fossil carbon dioxide to air is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured or carbon-balance-calculated direct fossil CO2 released to air; keep the compartment as air, unspecified unless stack conditions justify a more specific flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_eaf_balance
+              source_ids: []
+            ranges: []
+  - id: casting
+    label: "Ingot or continuous casting and product handling"
+    inputs:
+      product:
+        - row_id: casting_molten_steel
+          role: "Molten non-alloy steel received for solidification"
+          name: "Molten non-alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Molten non-alloy steel received for solidification is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass received from the selected steelmaking route; use the same internal linking flow at both ends"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+        - row_id: casting_mould_powder
+          role: "Casting mould powder consumed"
+          name: "Continuous-casting mould powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Casting mould powder consumed is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "purchase-and-inventory-balance mass consumed when continuous casting is used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+        - row_id: casting_electricity
+          role: "Alternating-current electricity consumed in casting"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Alternating-current electricity consumed in casting is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered purchased and on-site electricity consumed by casting and product handling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+        - row_id: casting_process_water
+          role: "Process-water make-up supplied to casting"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process-water make-up supplied to casting is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered fresh and externally supplied make-up water; exclude recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Declared representative non-alloy steel slab"
+          name: "Continuously cast steel slab for flat rolling"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fa93b446-0340-4d7b-9f4d-e3f78789ea94"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg (Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "Declared representative non-alloy steel slab is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured saleable slab output normalized to 1,000 kg; other covered forms require a form-specific product flow rather than relabelling this UUID"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: casting_scale
+          role: "Iron-oxide scale from casting and handling"
+          name: "Iron-oxide scale from steel casting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Iron-oxide scale from casting and handling is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured dry mass leaving the process for treatment or recovery"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+        - row_id: casting_return_scrap
+          role: "Casting return scrap"
+          name: "Steel casting return scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Casting return scrap is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass returned internally or transferred to another process; record the destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+        - row_id: casting_wastewater
+          role: "Wastewater from casting operations"
+          name: "Steel-casting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from casting operations is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "metered wastewater leaving the casting process before or after treatment, with treatment state disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+        - row_id: casting_slag
+          role: "Casting residue slag sent to treatment"
+          name: "Steel-casting residue slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Casting residue slag sent to treatment is recorded as one atomic exchange when it crosses this process boundary."
+          amount:
+            expression: "measured mass of tundish, ladle, or casting residue leaving the process for treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared reference product at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "independently metered route processes"
+    rule: "Avoid allocation by subdividing ironmaking, steelmaking, gas use, casting, and treatment operations wherever their inputs and outputs are separately measured."
+    source_ids:
+      - worldsteel-life-cycle-thinking
+  - rule_id: allocation_coproducts
+    applies_to: "exported slag, process gas, steam, heat, or electricity"
+    rule: "Identify whether each output is a co-product or waste. Use system expansion for a functionally equivalent displaced product when the study program permits it; otherwise apply the program-required allocation method and disclose the factor and sensitivity."
+    source_ids:
+      - worldsteel-life-cycle-thinking
+  - rule_id: allocation_internal_returns
+    applies_to: "internally recycled steel, dust, scale, slag, process gas, water, and heat"
+    rule: "Keep burdens within the foreground system and record the internal transfer consistently at both process boundaries; do not award an external avoided-product credit for an internal loop."
+    source_ids:
+      - worldsteel-life-cycle-thinking
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bf_bof_balance
+      process_id: "bf_bof_route"
+      flow_role: "every listed atomic input and output"
+      record_type: "calibrated meters, weighbridge tickets, stock records, laboratory moisture tests, off-gas monitoring, and waste transfer records"
+      raw_fields: "quantity; unit; wet_or_dry; moisture; gas_reference_state; source_or_destination; meter_id; timestamp; batch_id"
+      collection_method: "reconcile purchase, stock-change, charge, transfer, monitoring, and dispatch records by campaign"
+      unit: "native record unit plus normalized kg, m3, or MJ"
+      frequency: "per heat or shift, aggregated monthly"
+      temporal_coverage: "at least 12 consecutive representative months"
+      site_scope: "all BF-BOF units supplying the declared product"
+      aggregation_rule: "sum each atomic exchange separately, remove internal transfers from external totals, then normalize by net saleable output"
+      quality_evidence: "calibration certificates, laboratory results, stock reconciliation, meter coverage, and signed mass-balance review"
+    - protocol_id: cp_eaf_balance
+      process_id: "eaf_route"
+      flow_role: "every listed atomic input and output"
+      record_type: "calibrated meters, weighbridge tickets, charge records, stock records, off-gas monitoring, and waste transfer records"
+      raw_fields: "quantity; unit; scrap_grade; DRI_grade; gas_reference_state; source_or_destination; meter_id; timestamp; heat_id"
+      collection_method: "reconcile purchase, stock-change, charge, transfer, monitoring, and dispatch records by heat and campaign"
+      unit: "native record unit plus normalized kg, m3, or MJ"
+      frequency: "per heat or shift, aggregated monthly"
+      temporal_coverage: "at least 12 consecutive representative months"
+      site_scope: "all EAF and ladle-metallurgy units supplying the declared product"
+      aggregation_rule: "sum each atomic exchange separately, remove internal transfers from external totals, then normalize by net saleable output"
+      quality_evidence: "calibration certificates, charge sheets, stock reconciliation, meter coverage, and signed mass-balance review"
+    - protocol_id: cp_casting_balance
+      process_id: "casting"
+      flow_role: "every listed atomic input and output"
+      record_type: "ladle and tundish weights, caster production reports, meters, stock records, quality release records, and waste transfer records"
+      raw_fields: "quantity; unit; product_form; grade; dimensions; temperature_state; source_or_destination; meter_id; timestamp; campaign_id"
+      collection_method: "reconcile molten-steel receipts, consumables, saleable product, returns, residues, and wastewater by campaign"
+      unit: "native record unit plus normalized kg, m3, or MJ"
+      frequency: "per heat or campaign, aggregated monthly"
+      temporal_coverage: "at least 12 consecutive representative months"
+      site_scope: "every casting line supplying the declared product"
+      aggregation_rule: "sum each atomic exchange separately and normalize by net saleable product mass"
+      quality_evidence: "scale calibration, product release records, yield reconciliation, meter coverage, and signed mass-balance review"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = campaign exchange quantity × 1,000 / campaign net saleable product mass"
+      inputs:
+        - "campaign exchange quantity"
+        - "campaign net saleable product mass"
+      output: "exchange amount per 1,000 kg reference product"
+      source_ids:
+        - "—"
+    - id: calc_dry_mass
+      applies_to: "wet ore, coke, dust, sludge, scale, or slag records"
+      rule: "dry mass = wet mass × (1 - measured moisture mass fraction)"
+      inputs:
+        - "wet mass"
+        - "measured moisture mass fraction"
+      output: "dry mass in kg"
+      source_ids:
+        - "—"
+    - id: calc_electricity_mj
+      applies_to: "electricity records"
+      rule: "electricity MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "electricity in MJ"
+      source_ids:
+        - "—"
+    - id: calc_route_mix
+      applies_to: "multi-route site average"
+      rule: "combine only separately complete route inventories using each route's net saleable product mass share; retain route-specific results alongside the average"
+      inputs:
+        - "complete BF-BOF inventory"
+        - "complete EAF inventory"
+        - "route output masses"
+      output: "disclosed site-average inventory"
+      source_ids:
+        - "—"
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain grade or chemistry, form, dimensions, temperature state, surface state, and release specification for every represented product family."
+      evidence: "laboratory certificate, product release record, and product master data"
+    - id: dq_route_identity
+      applies_to: "process system"
+      requirement: "Demonstrate the represented BF-BOF or EAF route and identify all supplying units and internal transfers."
+      evidence: "process map, charge records, meter map, and site flow diagram"
+    - id: dq_measurement
+      applies_to: "measured exchanges"
+      requirement: "Use calibrated instruments or reconciled stock records and state wet/dry and gas reference conditions."
+      evidence: "calibration certificates, stock reconciliation, moisture tests, and gas conditions"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Cover at least 12 consecutive representative months or justify a shorter campaign and its seasonality, outages, and product-mix limitations."
+      evidence: "dated production and maintenance records"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile product, metallic, carbon, water, and waste balances; document missing meters, estimates, and excluded minor inputs."
+      evidence: "signed reconciliation and completeness register"
+    - id: dq_upstream
+      applies_to: "linked providers"
+      requirement: "Match geography, technology, product state, and temporal representativeness for major upstream materials and energy."
+      evidence: "provider metadata and representativeness review"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference product"
+    rule: "Reject a package that omits the actual product form, non-alloy grade or chemistry basis, route, plant geography, or factory-gate state, or that relabels the representative slab UUID as another form."
+    source_ids:
+      - un-cpc-v3-structure-2025
+  - rule_id: validation_route
+    applies_to: "process map"
+    rule: "Require at least one declared steelmaking route; require casting when the reference product is an ingot, billet, bloom, or slab; prohibit DRI, mould powder, or another conditional row when the declared route does not use it."
+    source_ids:
+      - eu-jrc-iron-steel-bref-2013
+  - rule_id: validation_internal_links
+    applies_to: "molten steel and internal returns"
+    rule: "Require equal sending and receiving quantities and identical linking-flow identities after normalization; report any unmatched internal transfer."
+    source_ids:
+      - "—"
+  - rule_id: validation_mass_balance
+    applies_to: "metallic inputs and outputs"
+    rule: "Reconcile metallic charge with saleable steel, internal returns, slag metal, dust, scale, and other measured losses; investigate and disclose every imbalance rather than forcing closure."
+    source_ids:
+      - "—"
+  - rule_id: validation_coproducts
+    applies_to: "slag and exported energy carriers"
+    rule: "Require declared product-or-waste status, destination, allocation or substitution method, factor, and sensitivity where material."
+    source_ids:
+      - worldsteel-life-cycle-thinking
+  - rule_id: validation_data_quality
+    applies_to: "complete package"
+    rule: "Require traceable raw records, temporal coverage, site coverage, calibration or reconciliation evidence, and explicit unresolved provider or UUID gaps."
+    source_ids:
+      - worldsteel-life-cycle-thinking
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset derived from a reviewed foreground steelworks package"
+  downstream_use: "Product systems requiring non-alloy crude steel ingot, primary-form, billet, bloom, or slab inputs, with route and form compatibility checked"
+  allowed_use: "Attributional cradle-to-gate modelling and route-specific supply-chain modelling where geography, technology, grade, product form, allocation, and recycled-content conventions are compatible"
+  excluded_use: "Direct comparison of steel routes or materials without harmonized boundaries; substitution for alloy or stainless steel; substitution for downstream rolled or fabricated steel; undisclosed relabelling of the representative slab UUID"
+  required_metadata: "Product form; grade or chemistry; dimensions; temperature and surface state; steelmaking and casting route; charge shares; site geography; technology; reference period; provider geography; co-product method; recycled-content convention; data-quality evidence"
+  required_quality_disclosure: "Meter and stock-record coverage; wet/dry conversions; gas reference conditions; internal transfer reconciliation; metallic, carbon, water, and waste balances; missing data; estimates; unresolved UUIDs; upstream representativeness"
+  update_trigger: "Material change in route, furnace, charge mix, product form, grade family, energy supply, co-product treatment, provider data, site coverage, or reference period"
+data_sources:
+  - id: "un-cpc-v3-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 41121 classification identity and distinction from alloy steel"
+  - id: "eu-jrc-iron-steel-bref-2013"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Iron and Steel Production BREF, published January 2013, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/iron-and-steel-production"
+    used_for: "BF-BOF and EAF process decomposition, ladle metallurgy, slag processing, and continuous casting"
+  - id: "worldsteel-life-cycle-thinking"
+    type: "official_guidance"
+    reference: "World Steel Association, About life cycle thinking, https://worldsteel.org/wider-sustainability/life-cycle-thinking/about-lca-lci/"
+    used_for: "Cradle-to-gate boundary, upstream inventory coverage, foreground data quality, recycling, and co-product system expansion"
+  - id: "chinaisa-steel-products-pcr-2022"
+    type: "standard"
+    reference: "中国钢铁工业协会，《钢铁产品产品种类规则》中文文件，https://www.chinaisa.org.cn/gxportalFile/attach/2022/01/12/0000000000065419.pdf"
+    used_for: "Professional Chinese terminology for UNCPC 41121 only; no methodology or numeric values copied"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bc241b155cc2dbd5c06e2b23f8227f841ef49a3a8d88b9d3c01744908ee46cf8"
+  generated_content_sha256: "sha256:3adb8dd0612fe047bd9ec69cb3883fb44ba2f1e7de1925af36b9a1c9918f9335"

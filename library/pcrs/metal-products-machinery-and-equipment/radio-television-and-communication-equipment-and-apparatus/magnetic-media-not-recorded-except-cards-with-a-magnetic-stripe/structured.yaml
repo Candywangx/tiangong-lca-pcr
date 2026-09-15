@@ -1,10 +1,781 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47530"
-  title: "Magnetic media, not recorded, except cards with a magnetic stripe"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.magnetic-media-not-recorded-except-cards-with-a-magnetic-stripe"
+  classification_refs: "CPC 3.0 47530"
+  covered_products: "Unrecorded flexible magnetic tape and disks, including integral cassette/cartridge assemblies."
+  excluded_products: "Hard-disk drives; optical and solid-state media; recorded media; magnetic-stripe cards; storage services."
+  representative_product: "One specified unrecorded particulate-coated magnetic tape format at factory gate."
+  production_route: "Purchased film and formulation ingredients → dispersion/coating → drying → calendering/slitting → testing and packing; purchased coated-web finishing is conditional."
+  market_state: "New, accepted, unrecorded medium; declare bulk roll, bare disk or assembled cassette/cartridge separately."
+functional_unit:
+  what: "Supply of one declared magnetic recording medium ready for subsequent recording."
+  how_much: "1 kg net accepted medium at factory gate; integral housing included only for an assembled product; shipping packaging excluded."
+  how_well: "Meets declared format, dimensions, magnetic/read-write acceptance tests and blank-state specification; native capacity or recording duration is supplementary, never assumed from mass."
+  how_long_or_cycle: "One manufacturing delivery; no assumed archival lifetime, reuse count or storage-service duration."
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacturing
+      applies_to: "foreground"
+      rule: "Include actual preparation, coating, drying, finishing and acceptance testing, with attributable cleanroom and solvent-management demand. For floppy disks use punching and the declared orientation treatment; do not assume the tape orientation step."
+      source_ids:
+        - epa-ap42-magnetic-tape
+    - rule_id: boundary_solvents
+      applies_to: "solvent_control"
+      rule: "Include storage, mixing, coating, cleaning, waste handling and recovery losses; distinguish internal captured solvent from final releases and exported waste."
+      source_ids:
+        - epa-magnetic-tape-risk-review
+    - rule_id: boundary_extension
+      applies_to: "dataset_instantiation"
+      rule: "The cards are a representative starting inventory. Reconcile against the actual recipe, utility meters, waste ledger and emissions permit: add each actual lubricant, crosslinker, pigment, packaging component, refrigerant leak and combustion pollutant as its own atomic exchange where present. Absence requires records; an omitted card is not a cut-off."
+      source_ids:
+        - quantegy-magnetic-tape-components
+    - rule_id: boundary_downstream
+      applies_to: "lifecycle"
+      rule: "Stop at dispatch of accepted blank media. Downstream recording, storage drives, data-centre operation and end-of-life require separate scenarios; no avoided storage-energy credit in manufacturing. Include external production-waste treatment through linked datasets."
+      source_ids:
+        - un-cpc-2-1-magnetic-media-note
+boundary_abstraction:
+  declared_starting_condition: "Receipt of film, formulation constituents and components, or purchased coated magnetic web, at the declared manufacturing site."
+  starting_condition_role: "Foreground gate-to-gate manufacturing entry; supplier production remains upstream."
+  product_classification_scope: "CPC 3.0 47530"
+  recursive_input_rule: "Purchased same-category coated web retains supplier output state and upstream dataset; trace once to the declared supplier boundary. Never link the final process back to itself or re-add purchased web ingredients in foreground."
+  upstream_dataset_requirement: "Link representative supplier datasets for each purchased exchange and delivered energy; include delivery transport once, explicitly inside or outside supplier coverage."
+  disclosure: "State integrated coating versus finishing-only, captured versus emitted solvent, internal recycling, outsourced operations, packaging, utilities and treatment boundaries; distinguish gate-to-gate results from linked cradle-to-gate results."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Magnetic media, not recorded, except cards with a magnetic stripe"
+    uuid: "40bcd8b1-541d-4314-9e57-fc1250fd692e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "format and intended recording function"
+    - "bulk/bare/assembled state"
+    - "net mass and packaging boundary"
+    - "film polymer and thickness"
+    - "pigment and binder formulation"
+    - "tape width and length or disk dimensions"
+    - "native uncompressed capacity or recording duration with test conditions"
+    - "blank-state definition including any factory servo information"
+    - "acceptance tests and rejected yield"
+    - "coating/deposition/finishing route"
+    - site
+    - "geography and reporting period"
+    - "solvent capture/recovery/destruction system"
+    - "upstream boundary."
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "Accepted product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use measured accepted net mass M, separating integral housing from removable shipping packaging. Convert counts with measured same-format mean mass; film area uses measured areal mass."
+  - id: formulation_basis
+    applies_to: "Coating ingredients"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each polymer, pigment and solvent separately; reconcile wet deliveries with measured solids/composition and inventory changes. Do not record both a supplied solution and all its constituents as additional inputs."
+  - id: energy_conversion
+    applies_to: "Electricity and gas"
+    required_property_ref:
+      name: "Energy; Volume"
+      uuid: ""
+    required_unit: "MJ; m3"
+    rule: "Electricity: 1 kWh = 3.6 MJ exactly. Gas volume must declare temperature, pressure, dry/wet state and any volume correction; use supplier calorific value only when converting gas to energy."
+  - id: solvent_species
+    applies_to: "Solvent balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use species mass, not total VOC mass, for each solvent input and emission. Convert concentration and exhaust volume to a common temperature, pressure and moisture basis."
+process_map:
+  - id: manufacture
+    name: "Media coating and finishing"
+    inclusion: "required"
+    inclusion_condition: "All datasets; actual route declared."
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted medium"
+  - id: utilities
+    name: "Shared site utilities and direct carbon"
+    inclusion: "required"
+    inclusion_condition: "All datasets; each absent exchange documented."
+    role: "attributable support"
+    quantitative_reference: "Same accepted medium"
+  - id: solvent_control
+    name: "Solvent recovery and final releases"
+    inclusion: "conditional"
+    inclusion_condition: "Solvent-bearing coating, cleaning or recovered solvent is handled onsite."
+    role: "waste and emissions accounting"
+    quantitative_reference: "Same accepted medium"
+process_inventory:
+  - id: manufacture
+    label: "Media coating and finishing"
+    inputs:
+      product:
+        - row_id: pet_base_film
+          role: "Base web"
+          name: "Polyethylene terephthalate base film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: PET web coated on site; exclude purchased coated-web mass."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - quantegy-magnetic-tape-components
+            ranges: []
+        - row_id: barium_ferrite
+          role: "Magnetic pigment"
+          name: "Barium ferrite magnetic pigment powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Barium-ferrite particulate formulation only; record pigment grade and purity."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - fujifilm-recording-media
+            ranges: []
+        - row_id: polyester_urethane
+          role: "Binder solids"
+          name: "Polyester polyurethane binder resin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Only when this polymer is present; count dry resin separately from each solvent in a supplied solution."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - loc-magnetic-tape-binder-research
+            ranges: []
+        - row_id: carbon_black
+          role: "Backcoat carbon"
+          name: "Carbon black"
+          flow_type: "product"
+          flow_ref:
+            uuid: "104238ef-9017-45d1-a77e-556271cd3f60"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Carbon-black backcoat or conductive additive is actually used."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: mek_input
+          role: "Fresh coating and cleaning solvent"
+          name: "Methyl ethyl ketone"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: MEK used for coating or cleaning; include solvent supplied in resin solutions; exclude internal recovery turnover."
+          amount:
+            expression: "Collect the attributable period quantity under cp_solvents and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvents
+              source_ids:
+                - epa-ap42-magnetic-tape
+            ranges: []
+        - row_id: toluene_input
+          role: "Fresh coating and cleaning solvent"
+          name: "Toluene"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Toluene used for coating or cleaning; include solvent in supplied mixtures; exclude internal recovery turnover."
+          amount:
+            expression: "Collect the attributable period quantity under cp_solvents and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvents
+              source_ids:
+                - epa-ap42-magnetic-tape
+            ranges: []
+        - row_id: purchased_coated_web
+          role: "Purchased coated magnetic web"
+          name: "Magnetic media, not recorded, except cards with a magnetic stripe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "40bcd8b1-541d-4314-9e57-fc1250fd692e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Finishing from purchased unrecorded coated web; specify roll state and omit upstream coating operations from foreground only."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: cartridge_housing
+          role: "Purchased integral housing"
+          name: "Empty plastic magnetic tape cartridge housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Tape cartridge assembled at this site; record housing bill of materials and supplier boundary."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - epa-magnetic-tape-risk-review
+            ranges: []
+        - row_id: corrugated_box
+          role: "Shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Corrugated box crosses the dispatch boundary; packaging mass is excluded from reference product mass."
+          amount:
+            expression: "Collect the attributable period quantity under cp_materials and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted unrecorded medium"
+          name: "Magnetic media, not recorded, except cards with a magnetic stripe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "40bcd8b1-541d-4314-9e57-fc1250fd692e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always; one declared format and delivery state per dataset."
+          amount:
+            expression: "Accepted output M / M = 1; retain measured M and format-specific rejected yield."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: coated_tape_trim
+          role: "Coated web reject"
+          name: "Waste magnetic-coated PET tape offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Coated PET trim or rejected tape leaves the site for treatment; exclude internal rework."
+          amount:
+            expression: "Collect the attributable period quantity under cp_waste and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-ap42-magnetic-tape
+            ranges: []
+        - row_id: coating_sludge
+          role: "Rejected coating solids"
+          name: "Waste magnetic coating sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Discarded pigment/binder coating sludge; measure wet mass, dry solids and solvent content."
+          amount:
+            expression: "Collect the attributable period quantity under cp_waste and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-magnetic-tape-risk-review
+            ranges: []
+      elementary:
+        []
+  - id: utilities
+    label: "Shared site utilities and direct carbon"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Always where purchased; include cleanroom, drying, finishing, testing, recovery and refrigeration demand once."
+          amount:
+            expression: "Collect the attributable period quantity under cp_utilities and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Combustion fuel"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "inclusion_condition: Gas-fired drying, heating or oxidizer support fuel is used."
+          amount:
+            expression: "Collect the attributable period quantity under cp_utilities and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Purchased process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Water supplied for cleaning, humidification or cooling makeup; count makeup rather than circulation."
+          amount:
+            expression: "Collect the attributable period quantity under cp_utilities and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Onsite fuel combustion or oxidation of fossil solvent; include both carbon sources once; exclude upstream power emissions."
+          amount:
+            expression: "Apply carbon_balance to measured fuel and destroyed-solvent fossil carbon, then divide by M."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_carbon
+              source_ids: []
+            ranges: []
+  - id: solvent_control
+    label: "Solvent recovery and final releases"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_solvent
+          role: "Discarded liquid solvent"
+          name: "Spent non-halogenated MEK-toluene coating solvent mixture"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: This mixed spent-solvent stream is transferred for external recovery or treatment; record composition; separate sludge."
+          amount:
+            expression: "Collect the attributable period quantity under cp_waste and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-magnetic-tape-risk-review
+            ranges: []
+        - row_id: recovery_wastewater
+          role: "Solvent-bearing aqueous effluent"
+          name: "Wastewater from magnetic tape solvent recovery"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Aqueous condensate or recovery water leaves for wastewater treatment; record water mass and individual dissolved solvents."
+          amount:
+            expression: "Collect the attributable period quantity under cp_waste and divide by accepted output M using normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-magnetic-tape-risk-review
+            ranges: []
+      elementary:
+        - row_id: mek_air
+          role: "MEK released to air"
+          name: "methyl ethyl ketone"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-afc7-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: MEK is released after capture/control, including fugitive and cleaning sources."
+          amount:
+            expression: "Use cp_solvents species measurements or solvent_balance, with capture_control only as a non-additive alternative, then divide by M."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvents
+              source_ids:
+                - epa-ap42-magnetic-tape
+            ranges: []
+        - row_id: toluene_air
+          role: "Toluene released to air"
+          name: "Toluene"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Toluene is released after capture/control, including fugitive and cleaning sources."
+          amount:
+            expression: "Use cp_solvents species measurements or solvent_balance, with capture_control only as a non-additive alternative, then divide by M."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted medium of the declared format"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvents
+              source_ids:
+                - epa-ap42-magnetic-tape
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared_processes"
+    rule: "Use cp_allocation to assign dedicated material and energy records directly. Allocate shared utilities with measured machine demand and run time; coating-line demand may use coated area and metered drying load when causal. Record the allocation driver and sensitivity. Mass-only allocation across different tape formats requires justification."
+    source_ids: []
+  - rule_id: allocation_recovery
+    applies_to: "solvent_reuse"
+    rule: "Internal solvent recovery reduces fresh solvent purchases but is neither a sale nor an avoided-product credit. Record recovery burdens and external recovered-solvent exports separately; if exports have a product function, add a specific product exchange and document the treatment/allocation convention without an automatic substitution credit."
+    source_ids:
+      - epa-ap42-magnetic-tape
+  - rule_id: allocation_rejects
+    applies_to: "accepted_yield"
+    rule: "All production and rework burdens remain with accepted output M. Track rejected coated film and coating sludge separately; no negative raw-material input for scrap. Document any external recycling allocation explicitly."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "manufacture"
+      flow_role: "Accepted reference medium"
+      record_type: "Batch acceptance record"
+      raw_fields: "format; batch_id; gross_mass; tare_mass; housing_mass; accepted_count; rejected_mass; tape_area; native_capacity; test_method; blank_state"
+      collection_method: "Calibrated weighing and format-specific release test"
+      unit: "kg; m2; count"
+      frequency: "Each batch"
+      temporal_coverage: "All batches in declared reporting year or disclosed representative campaign"
+      site_scope: "Manufacturing and dispatch site"
+      aggregation_rule: "Sum accepted net mass M by format; retain rejected mass and test failures"
+      quality_evidence: "Scale calibration, product specification, release certificate"
+    - protocol_id: cp_materials
+      process_id: "manufacture"
+      flow_role: "Each material and component"
+      record_type: "Stock and batch ledger"
+      raw_fields: "row_id; supplier; grade; opening_stock; receipts; closing_stock; returns; dry_fraction; composition; area; component_mass"
+      collection_method: "Weighing, warehouse reconciliation, supplier composition records"
+      unit: "kg; m2"
+      frequency: "Each receipt and batch; period stocktake"
+      temporal_coverage: "Same period as cp_output"
+      site_scope: "Declared site plus named component suppliers"
+      aggregation_rule: "Consumption = opening + receipts - closing - returns; separate each constituent; normalize by M"
+      quality_evidence: "Invoices, SDS, bill of materials, supplier scope and balance closure"
+    - protocol_id: cp_solvents
+      process_id: "solvent_control"
+      flow_role: "MEK and toluene individually"
+      record_type: "Species solvent ledger and emissions records"
+      raw_fields: "species; fresh_input; opening_stock; closing_stock; recovered_internal; exported_solvent; waste_species_mass; residual_in_product; destroyed_mass; exhaust_flow; concentration; capture_fraction; destruction_fraction; uptime"
+      collection_method: "Composition analysis, mass meters, matched stack concentration/flow measurements, leak survey"
+      unit: "kg; kg/m3; m3"
+      frequency: "Each batch ledger; representative operating and upset emission tests"
+      temporal_coverage: "Same production period; align purchases, stocks and waste shipments"
+      site_scope: "All solvent-handling areas and control outlets onsite"
+      aggregation_rule: "Species balance or measured emissions / M; do not treat internal recovery as an external loss"
+      quality_evidence: "Analytical calibration, capture tests, control uptime, inventory reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "utilities"
+      flow_role: "Electricity, gas and makeup water separately"
+      record_type: "Submeter records"
+      raw_fields: "meter_id; opening_reading; closing_reading; unit; gas_temperature; gas_pressure; water_density; operation_hours; allocation_fraction; supplier_boundary"
+      collection_method: "Read calibrated submeters; reconcile to invoices"
+      unit: "MJ; kWh; m3; kg"
+      frequency: "Shift or continuous readings; monthly reconciliation"
+      temporal_coverage: "Same period as cp_output, including startup and downtime loads"
+      site_scope: "All attributable production and support equipment"
+      aggregation_rule: "Net attributable meter differences / M after documented conversion"
+      quality_evidence: "Meter calibration, bills, allocation evidence"
+    - protocol_id: cp_waste
+      process_id: "manufacture"
+      flow_role: "Each discharged waste stream"
+      record_type: "Waste transfer record and analysis"
+      raw_fields: "row_id; wet_mass; dry_solids; solvent_species_fraction; destination; treatment; opening_stock; closing_stock; internal_rework"
+      collection_method: "Weigh each stream and analyse representative composition"
+      unit: "kg"
+      frequency: "Each shipment; samples covering recipe changes"
+      temporal_coverage: "Same period; correct temporary waste storage changes"
+      site_scope: "Site outlet and receiving treatment operator"
+      aggregation_rule: "Generated and transferred quantities reconciled; each stream / M; water and solvent fractions remain within its wet mass"
+      quality_evidence: "Transfer documents, laboratory results, treatment identity"
+    - protocol_id: cp_carbon
+      process_id: "utilities"
+      flow_role: "Direct fossil carbon dioxide"
+      record_type: "Fuel and solvent carbon record"
+      raw_fields: "fuel_carbon; oxidized_solvent_carbon; fossil_fraction; unoxidized_carbon; stack_co2; carbon_in_co; reporting_period"
+      collection_method: "Fuel composition and solvent destruction analysis, cross-check stack measurement"
+      unit: "kg C; kg CO2"
+      frequency: "Matched production campaigns and fuel changes"
+      temporal_coverage: "Same period as cp_output"
+      site_scope: "Onsite combustion and solvent oxidation"
+      aggregation_rule: "CO2 from oxidized fossil carbon using molecular mass ratio; divide by M"
+      quality_evidence: "Composition certificates and closed carbon balance"
+    - protocol_id: cp_allocation
+      process_id: "utilities"
+      flow_role: "Shared burden assignment"
+      record_type: "Production scheduling and meter attribution"
+      raw_fields: "equipment_id; product_format; run_hours; measured_power; coated_area; drying_load; allocation_driver; allocated_fraction"
+      collection_method: "Join production logs with shared meter totals"
+      unit: "h; m2; MJ; fraction"
+      frequency: "Each campaign; period reconciliation"
+      temporal_coverage: "Same period as cp_output"
+      site_scope: "Shared equipment and control systems"
+      aggregation_rule: "Fractions sum to unity for shared burden; retain unattributed load and investigate"
+      quality_evidence: "Causal driver justification and sensitivity result"
+  calculation_rules:
+    - id: normalize
+      applies_to: "All rows"
+      rule: "q_i = attributed period quantity_i / M; M > 0. Reference output = M/M = 1 kg/kg. Keep period totals and allocation fractions."
+      inputs:
+        - cp_output
+        - cp_allocation
+        - "linked row protocol"
+      output: "q_i"
+      source_ids: []
+    - id: film_conversion
+      applies_to: "Base film and coated web"
+      rule: "mass = measured area × measured areal mass of the same film state; width × length gives tape area. Include only measured coating and housing in final mass."
+      inputs:
+        - cp_materials
+        - cp_output
+      output: "kg"
+      source_ids: []
+    - id: solvent_balance
+      applies_to: "MEK; toluene"
+      rule: "Air release = fresh external input + opening stock - closing stock - external recovered export - solvent in exported waste - solvent retained in accepted product - destroyed solvent. Internal recovery cancels. A negative residual requires investigation; it is not a zero emission. With incomplete stocks or destruction data use measured releases instead."
+      inputs:
+        - cp_solvents
+        - cp_waste
+        - cp_materials
+      output: "kg species"
+      source_ids:
+        - epa-ap42-magnetic-tape
+    - id: capture_control
+      applies_to: "Controlled solvent sources"
+      rule: "For a separately measured evaporated species load L, outlet-plus-fugitive release = L × (1 - capture_fraction × removal_fraction). Use actual uptime and uncaptured sources. Recovery is removal, not chemical destruction; residual captured solvent requires stock/waste accounting. Do not add this estimate to a plantwide mass-balance estimate."
+      inputs:
+        - cp_solvents
+      output: "kg species"
+      source_ids:
+        - epa-ap42-magnetic-tape
+    - id: carbon_balance
+      applies_to: "Fossil carbon dioxide"
+      rule: "CO2 = fossil carbon actually oxidized to CO2 × molecular mass(CO2)/atomic mass(C). Account separately for fuel and destroyed solvent; subtract carbon remaining as CO, organics or solids; retain chosen atomic-weight convention."
+      inputs:
+        - cp_carbon
+      output: "kg CO2"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_completeness
+      applies_to: "Foreground package"
+      requirement: "Reconcile all actual recipe ingredients, packaging and emissions with the representative cards; retain atomic extensions and documented absence decisions."
+      evidence: "cp_materials; cp_waste; cp_solvents"
+    - id: quality_representativeness
+      applies_to: "All measured amounts"
+      requirement: "Disclose time, site and technology coverage, sampling, uncertainty, detection limits, missing periods and supplier proxies. Do not substitute historical EPA factors for site measurements."
+      evidence: "Linked protocols and source applicability assessment"
+    - id: quality_ranges
+      applies_to: "Quantitative priors"
+      requirement: "No external numeric priors are prescribed. Any later inferred range requires at least two independent original-text sources with compatible boundary, unit and product state, plus geographic/technological synthesis. Retain measured values and uncertainty meanwhile."
+      evidence: "Foreground protocols and independence assessment"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_product"
+    rule: "Require complete qualifiers, a single declared output state, positive accepted mass, and evidence of blank-media acceptance. A generic flow name alone does not define an interchangeable recording service."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reconciliation
+    applies_to: "inventory"
+    rule: "Each physical exchange needs one concrete identity, compatible unit, source records and matching process. Confirm total accepted output plus rejects and stock changes against inputs; investigate balance residuals using measurement uncertainty rather than a fabricated tolerance."
+    source_ids: []
+  - rule_id: validate_solvents
+    applies_to: "solvent_control"
+    rule: "Check species completeness, capture versus removal, internal recovery cancellation, residual-in-waste and destruction accounting. Do not publish both full solvent volatilization and full oxidation of that same solvent."
+    source_ids:
+      - epa-ap42-magnetic-tape
+  - rule_id: validate_boundaries
+    applies_to: "upstream_links"
+    rule: "Reject circular coated-web links, duplicated utility or transport burdens, and missing external waste treatment. Require explicit treatment of conditional operations and actual exchanges absent from the representative cards."
+    source_ids: []
+  - rule_id: validate_comparisons
+    applies_to: "downstream_use"
+    rule: "Allow manufacturing comparison only after matching format, output state, capacity/quality, boundary and allocation. Storage-service comparison requires a separate functional scenario and cannot follow from kg-normalized results alone."
+    source_ids:
+      - quantegy-magnetic-tape-components
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Supplier media-manufacturing input to a separately specified recording/storage model."
+  allowed_use: "Matching format/state manufacturing process, with supplier and waste-treatment links and disclosed uncertainty."
+  excluded_use: "Unqualified interchange of tape, floppy disk, optical disk, SSD or hard-disk drive; data-centre operational savings; universal archive lifetime."
+  required_metadata: "All reference qualifiers; reporting period; operator; geography; net output; process route; packaging; suppliers; allocation; transport and treatment boundaries."
+  required_quality_disclosure: "Primary data share, missing exchanges, proxy identities, measurement uncertainty, solvent/carbon closure, conditional exclusions and range-evidence limitations."
+  update_trigger: "Format, formulation, substrate, supplier, manufacturing route, control system, utility mix or acceptance specification changes."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "[CPC 3.0 structure, 30 June 2025](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv); retrieved 2026-09-09; independence_key: un-cpc-3-0-structure-2025"
+    used_for: "CPC 3.0 product title and neighbouring category distinctions; row 47530."
+  - id: "un-cpc-2-1-magnetic-media-note"
+    type: "official_guidance"
+    reference: "[CPC Version 2.1, subclass 47530 explanatory note](https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/47530); retrieved 2026-09-09; independence_key: un-cpc-2-1-47530"
+    used_for: "Historical detailed scope: tapes, cartridges, cassettes, floppy disks; excludes hard disks, recorded media and stripe cards. Used as semantic context alongside the current 3.0 title, not represented as 3.0 explanatory notes."
+  - id: "epa-ap42-magnetic-tape"
+    type: "official_guidance"
+    reference: "[AP-42 Section 4.2.2.13 Magnetic Tape Manufacturing, September 1990, reformatted January 1995](https://www.epa.gov/sites/default/files/2020-10/documents/c4s02_2n.pdf); retrieved 2026-09-09; independence_key: epa-ap42-4-2-2-13-1990"
+    used_for: "Sections 4.2.2.13.1-3 and process diagram: coating and finishing, solvent capture versus destruction, solvent balance. Historical US guidance supports mechanisms only; no default consumption or control efficiencies adopted."
+  - id: "epa-magnetic-tape-risk-review"
+    type: "official_guidance"
+    reference: "[Hazardous Air Pollutant Emissions From Magnetic Tape Manufacturing Operations: Background Information for Technology and Residual Risk Review](https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=9100923X.TXT); retrieved 2026-09-09; independence_key: epa-9100923x"
+    used_for: "Chapter 2, sections 2.1.1 and 2.1.3: mix preparation, cleaning, casings, solvent recovery, waste and wastewater origins. No legal limits or historical emission proportions adopted."
+  - id: "quantegy-magnetic-tape-components"
+    type: "literature"
+    reference: "[A View of Preservation from a Magnetic Tape Manufacturer's Perspective, Quantegy, hosted by Library of Congress](https://www.loc.gov/static/programs/national-film-preservation-board/documents/tvquantegy.pdf); retrieved 2026-09-09; independence_key: quantegy-view-preservation"
+    used_for: "Pages 1-2: PET base film, backcoat, binder, lubricant and magnetic layer distinctions; format-specific physical design. No service-life values adopted."
+  - id: "loc-magnetic-tape-binder-research"
+    type: "official_guidance"
+    reference: "[Magnetic Tape Sticky Shed Research: Characterization, Diagnosis, and Treatment](https://www.loc.gov/preservation/scientists/projects/sticky_shed.html); retrieved 2026-09-09; independence_key: loc-sticky-shed-research"
+    used_for: "Background and project description verified in downloaded official HTML: polyester-urethane binder in historical audio/video tapes; supports conditional binder identity, not a universal modern recipe or lifetime."
+  - id: "fujifilm-recording-media"
+    type: "literature"
+    reference: "[Recording Media, Fujifilm Global](https://global.fujifilm.com/en/about/corporate/field/storage); retrieved 2026-09-09; independence_key: fujifilm-global-recording-media"
+    used_for: "Magnetic recording tape for computers section: commercial barium-ferrite tape route. No performance or lifetime claim imported."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7c16f148454014130ac1abb77b320a116b44d1220b4393e6b102c09857edf9bb"
+  generated_content_sha256: "sha256:ccc186c61235170f62b2f5938be73e8424074e773ee9749067d7c023bf239549"

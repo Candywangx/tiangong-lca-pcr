@@ -1,10 +1,630 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48261"
-  title: "Microscopes (except optical microscopes) and diffraction apparatus"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.microscopes-except-optical-microscopes-and-diffraction-apparatus"
+  classification_refs: "CPC 3.0: 48261, exact classification context"
+  covered_products: "Complete non-optical microscopes, including electron microscopes; complete diffraction apparatus, including laboratory X-ray diffraction and scattering systems"
+  excluded_products: "Compound optical microscopes; separately supplied parts and accessories; sample-preparation equipment; instruments outside CPC 48261"
+  representative_product: "One complete configured electron microscope or one complete configured laboratory X-ray diffraction apparatus"
+  production_route: "Receipt of purchased components and subassemblies; route-specific integration; conditional precision cleaning; final assembly; factory acceptance testing and calibration; dispatch packaging"
+  market_state: "New, complete, factory-tested apparatus ready for dispatch at the manufacturing-site gate"
+functional_unit:
+  what: "Provide the declared microscopy or diffraction measurement function for the specified instrument family and configuration"
+  how_much: "One complete apparatus"
+  how_well: "Meets the manufacturer's declared resolution, measurement range, detector configuration, safety features, and documented factory acceptance criteria"
+  how_long_or_cycle: "One new apparatus at factory gate; service life and use-stage duty cycle are disclosed only if downstream stages are added"
+  reference_flow_link: "The reference amount is the measured net mass of the one declared apparatus, excluding dispatch packaging and separately supplied spares"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "All foreground datasets"
+      rule: "Include received components and their upstream supply, on-site integration, conditional precision cleaning, final assembly, acceptance testing/calibration, and dispatch packaging through release at the manufacturing-site gate."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_route_configuration
+      applies_to: "Route-specific modelling"
+      rule: "Model one declared electron-microscope or diffraction-apparatus configuration. Include only the source, detector, vacuum, cooling, and control components actually installed; do not average mutually exclusive routes."
+      source_ids:
+        - thermo-fisher-talos-l120c-g2-2022
+        - bruker-d8-advance-family
+    - rule_id: sb_downstream_exclusion
+      applies_to: "Distribution, installation, use, service, and end-of-life"
+      rule: "Exclude downstream stages from the core result. If added, report them separately and declare duty cycle, service life, installation utilities, maintenance, and end-of-life scenario."
+      source_ids:
+        - thermo-fisher-electron-microscope-sustainable-design
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, subassemblies, packaging, and facility utilities are received at the manufacturing site with upstream datasets attached"
+  starting_condition_role: "Cradle-to-gate foreground starting condition for instrument integration and factory release"
+  product_classification_scope: "Complete CPC 48261 apparatus only; separately supplied parts/accessories and optical microscopes remain outside this PCR"
+  recursive_input_rule: "A purchased complete CPC 48261 apparatus incorporated into another delivered configuration is recorded once as an upstream product input and is not recursively decomposed with this PCR"
+  upstream_dataset_requirement: "Every purchased component, subassembly, material, packaging item, and utility crossing the boundary requires a representative upstream dataset or an explicit data gap"
+  disclosure: "Declare the instrument family, configuration, make-versus-buy boundary, included factory operations, allocation method, packaging, geography, production period, and any downstream stage added beyond factory gate"
+reference_flow_definition:
+  reference_amount: "Measured net mass in kg of one complete declared apparatus"
+  product_flow_ref:
+    name: "Microscopes (except optical microscopes) and diffraction apparatus"
+    uuid: "dd0f6b31-a7ef-48f9-b3aa-b4bfe44ec36d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "instrument family"
+    - "model and configuration"
+    - "net product mass"
+    - "electron or X-ray source type"
+    - "accelerating voltage or generator power as applicable"
+    - "detector type and count"
+    - "vacuum and cooling configuration"
+    - "declared performance and factory acceptance criteria"
+    - "manufacturing site and production period"
+    - "dispatch packaging configuration"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_mass
+    applies_to: "Reference product and reference_product_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or derive from a verified as-built bill of materials the net mass of the complete accepted apparatus; exclude pallet, protective foam, shipping crate, and separately supplied spares."
+  - id: mu_component_mass
+    applies_to: "Component, subassembly, and packaging inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record installed or dispatched mass by stable part number and configuration; do not substitute purchase value or item count without a documented mass conversion."
+  - id: mu_electricity_energy
+    applies_to: "integration_electricity and acceptance_test_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter readings in kWh and convert to MJ with 1 kWh = 3.6 MJ; identify the meter, allocation window, and excluded non-production loads."
+  - id: mu_water_mass
+    applies_to: "precision_cleaning_water and precision_cleaning_wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records; when volume is metered, record temperature or the declared density factor used to convert volume to mass."
+process_map:
+  - id: component_integration
+    name: "Component and subassembly integration"
+    inclusion: "required"
+    inclusion_condition: "Always; route-specific rows apply only to the declared configuration"
+    role: "Foreground production"
+    quantitative_reference: "Per one accepted apparatus"
+  - id: precision_cleaning
+    name: "Precision cleaning before final closure"
+    inclusion: "conditional"
+    inclusion_condition: "Include when parts or assemblies are cleaned on-site and water crosses the foreground boundary"
+    role: "Foreground conditioning"
+    quantitative_reference: "Per one accepted apparatus"
+  - id: final_acceptance_packaging
+    name: "Final assembly, acceptance testing, calibration, and dispatch packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging rows apply only when dispatched with the product"
+    role: "Foreground production and release"
+    quantitative_reference: "Net kg of one accepted apparatus"
+process_inventory:
+  - id: component_integration
+    label: "Component and subassembly integration"
+    inputs:
+      product:
+        - row_id: electron_optical_column
+          role: "Electron-optical column assembly"
+          name: "Electron-optical column assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the installed electron-optical column only for an electron-microscope configuration. The source type, accelerating-voltage range, lens configuration, and installed mass must be traceable to the as-built record."
+          amount:
+            expression: "measured installed mass when the electron-microscope route applies; otherwise document not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - thermo-fisher-talos-l120c-g2-2022
+            ranges: []
+        - row_id: xray_source_assembly
+          role: "X-ray source assembly"
+          name: "X-ray diffraction source assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the installed X-ray tube and generator source assembly only for a diffraction-apparatus configuration. Keep source target/material, focus, generator power, cooling arrangement, and installed mass with the configuration record."
+          amount:
+            expression: "measured installed mass when the diffraction-apparatus route applies; otherwise document not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - bruker-d8-advance-family
+            ranges: []
+        - row_id: vacuum_pump
+          role: "Vacuum pump"
+          name: "Vacuum pump"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the installed vacuum pump when the declared configuration uses it. Disclose pump technology and whether it is already included within another purchased subassembly to prevent double counting."
+          amount:
+            expression: "measured installed mass when a vacuum pump is within the declared make-versus-buy boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - thermo-fisher-talos-l120c-g2-2022
+            ranges: []
+        - row_id: detector_module
+          role: "Radiation detector module"
+          name: "Radiation detector module"
+          flow_type: "product"
+          flow_ref:
+            uuid: "57ac0224-60f1-4a27-a61e-96f632f61703"
+          property_unit: "Mass / kg"
+          description: "Record installed detector modules by actual configuration, aggregating only multiple units with this same Tiangong identity. Detector technology and count remain required qualifiers."
+          amount:
+            expression: "total measured mass of installed detector modules with this identity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - thermo-fisher-talos-l120c-g2-2022
+                - bruker-d8-advance-family
+            ranges: []
+        - row_id: control_workstation
+          role: "Control workstation"
+          name: "Instrument control workstation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the configured computer workstation dispatched as part of the apparatus. Exclude general office computers not supplied with the product."
+          amount:
+            expression: "measured dispatched mass of the configured control workstation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - thermo-fisher-talos-l120c-g2-2022
+                - bruker-d8-advance-family
+            ranges: []
+        - row_id: steel_enclosure
+          role: "Fabricated steel instrument enclosure"
+          name: "Fabricated steel instrument enclosure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the installed safety and stability enclosure as one fabricated steel product input. If another material dominates, add the actual material-specific enclosure as a separate dataset exchange and do not relabel this row."
+          amount:
+            expression: "measured installed mass of the fabricated steel enclosure"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - thermo-fisher-talos-l120c-g2-2022
+                - bruker-d8-advance-family
+            ranges: []
+        - row_id: integration_electricity
+          role: "Integration electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy consumed by component integration and final mechanical/electrical assembly before acceptance testing. Exclude acceptance-test electricity recorded separately."
+          amount:
+            expression: "work-order electricity meter reading converted from kWh to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: precision_cleaning
+    label: "Precision cleaning before final closure"
+    inputs:
+      product:
+        - row_id: precision_cleaning_water
+          role: "Precision-cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied to aqueous precision cleaning when that operation occurs on-site. Upstream supplier water and customer-site cooling water are outside this row."
+          amount:
+            expression: "measured process-water mass supplied to in-scope precision cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: precision_cleaning_wastewater
+          role: "Precision-cleaning wastewater"
+          name: "Non-hazardous instrument-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-hazardous wastewater discharged from in-scope aqueous cleaning. If testing shows it is hazardous, replace this row with the exact classified waste flow."
+          amount:
+            expression: "measured discharged mass from the in-scope precision-cleaning operation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: final_acceptance_packaging
+    label: "Final assembly, acceptance testing, calibration, and dispatch packaging"
+    inputs:
+      product:
+        - row_id: acceptance_test_electricity
+          role: "Acceptance-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy used to evacuate, energize, stabilize, calibrate, and perform factory acceptance tests. Exclude electricity already assigned to integration."
+          amount:
+            expression: "acceptance-test meter reading converted from kWh to MJ"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_electricity
+              source_ids:
+                - bruker-d8-advance-family
+            ranges: []
+        - row_id: wooden_pallet
+          role: "EURO wooden pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Record the EURO-format wooden pallet only when it is dispatched with the product. Apply a reuse count only for a controlled reusable-pallet pool."
+          amount:
+            expression: "measured pallet mass divided by documented reuse count; otherwise full pallet mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one dispatched apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dispatch_packaging
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_foam
+          role: "Polyethylene protective foam"
+          name: "Polyethylene foam protective packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene foam remaining with the dispatched apparatus as one packaging input. Add other protective materials as separate material-specific exchanges."
+          amount:
+            expression: "measured dispatched mass of polyethylene protective foam"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one dispatched apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Accepted reference apparatus"
+          name: "Microscopes (except optical microscopes) and diffraction apparatus"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd0f6b31-a7ef-48f9-b3aa-b4bfe44ec36d"
+          property_unit: "Mass / kg"
+          description: "Record only apparatus that pass the declared factory acceptance test. The quantity is the verified net product mass of one complete configured apparatus."
+          amount:
+            expression: "verified net mass of one accepted apparatus, excluding dispatch packaging and separately supplied spares"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "one complete accepted apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_mass_acceptance
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - thermo-fisher-talos-l120c-g2-2022
+                - bruker-d8-advance-family
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_subdivision
+    applies_to: "Work-order-specific component, cleaning, assembly, testing, and packaging records"
+    rule: "Prefer subdivision and direct work-order measurement. Assign materials and utilities to the serial-numbered apparatus or homogeneous batch that consumed them."
+    source_ids: []
+  - rule_id: alloc_shared_utility
+    applies_to: "Shared factory utilities and services"
+    rule: "When direct measurement is unavailable, use a documented causal driver such as equipment operating time, metered sub-area load, or process time. Use floor area only for genuinely space-driven loads."
+    source_ids: []
+  - rule_id: alloc_rework
+    applies_to: "Rework and failed acceptance tests"
+    rule: "Assign rework materials, utilities, and treatment outputs to accepted apparatus from the same batch; do not create an avoided-product credit for an internal reject."
+    source_ids: []
+  - rule_id: alloc_recycling
+    applies_to: "Recycled material or reusable packaging"
+    rule: "Report recycled-content and recycling assumptions separately. Do not subtract an unverified recycling credit; divide reusable packaging only by a documented reuse count."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "component_integration"
+      flow_role: "Installed component and subassembly mass"
+      record_type: "As-built BOM and supplier mass record"
+      raw_fields: "serial/model; configuration; part_number; flow_role; quantity; unit_mass_kg; installed_mass_kg; supplier; upstream_dataset_id"
+      collection_method: "Reconcile the released as-built BOM to supplier specifications or verified weighing"
+      unit: "kg"
+      frequency: "Each accepted apparatus or homogeneous configuration batch"
+      temporal_coverage: "Same production period as the dataset"
+      site_scope: "All manufacturing sites in scope"
+      aggregation_rule: "Sum quantity × verified unit mass by row_id; exclude parts included within another purchased subassembly"
+      quality_evidence: "Released BOM revision, configuration record, supplier specification or calibrated scale record, reconciliation sign-off"
+    - protocol_id: cp_factory_electricity
+      process_id: "component_integration_final_acceptance_packaging"
+      flow_role: "Integration and acceptance-test electricity"
+      record_type: "Submeter or work-order energy log"
+      raw_fields: "meter_id; opening_kWh; closing_kWh; timestamps; process_state; apparatus_serial; shared_load_driver; excluded_loads"
+      collection_method: "Read dedicated meters or allocate a validated submeter total using a causal driver"
+      unit: "kWh"
+      frequency: "Each work order or test campaign"
+      temporal_coverage: "Representative consecutive production period, normally at least 12 months for annual datasets"
+      site_scope: "Each manufacturing site"
+      aggregation_rule: "Net kWh by process and accepted apparatus, then convert to MJ; keep the two electricity rows separate"
+      quality_evidence: "Meter calibration, interval data, work-order timestamps, allocation worksheet, completeness reconciliation"
+    - protocol_id: cp_precision_cleaning
+      process_id: "precision_cleaning"
+      flow_role: "Process water and wastewater"
+      record_type: "Water meter, batch record, and discharge record"
+      raw_fields: "operation_id; apparatus_serial; water_mass_kg_or_volume; temperature; density_factor; wastewater_mass_kg_or_volume; retained_water_kg; evaporation_kg; waste_classification"
+      collection_method: "Meter input and discharge separately or document a closed mass-balance calculation"
+      unit: "kg"
+      frequency: "Each cleaning batch"
+      temporal_coverage: "Same production period as the dataset"
+      site_scope: "Each site performing aqueous precision cleaning"
+      aggregation_rule: "Allocate batch totals by recorded batch membership; convert volume to mass with documented density"
+      quality_evidence: "Meter calibration, batch traveler, discharge classification, mass-balance reconciliation"
+    - protocol_id: cp_dispatch_packaging
+      process_id: "final_acceptance_packaging"
+      flow_role: "Dispatched pallet and protective foam"
+      record_type: "Packaging BOM and packing record"
+      raw_fields: "apparatus_serial; packaging_part_number; material; quantity; unit_mass_kg; dispatched_mass_kg; reuse_count"
+      collection_method: "Weigh or use verified supplier unit masses and reconcile to the packing list"
+      unit: "kg"
+      frequency: "Each dispatched configuration or homogeneous packaging design"
+      temporal_coverage: "Current packaging design during the dataset period"
+      site_scope: "Each dispatch site"
+      aggregation_rule: "Sum dispatched mass by material-specific row; divide pallet mass only by documented reuse count"
+      quality_evidence: "Released packaging drawing/BOM, supplier mass specification, packing record, reuse-pool log"
+    - protocol_id: cp_product_mass_acceptance
+      process_id: "final_acceptance_packaging"
+      flow_role: "Reference product output and acceptance status"
+      record_type: "Final weighing/BOM record and factory acceptance report"
+      raw_fields: "apparatus_serial; model; configuration; gross_mass_kg; packaging_mass_kg; spare_mass_kg; net_product_mass_kg; acceptance_test_id; acceptance_result"
+      collection_method: "Verify net apparatus mass and link it to a passed acceptance-test record"
+      unit: "kg"
+      frequency: "Every accepted apparatus or verified homogeneous model configuration"
+      temporal_coverage: "Same production period as the dataset"
+      site_scope: "Each manufacturing site"
+      aggregation_rule: "Net mass = gross mass - dispatch packaging - separately supplied spares; include only accepted units"
+      quality_evidence: "Calibrated scale or reconciled as-built BOM, signed acceptance report, serial-number traceability"
+  calculation_rules:
+    - id: calc_component_mass
+      applies_to: "Component and subassembly rows"
+      rule: "installed_mass_kg = quantity × verified unit_mass_kg; sum only identical flow identities and disclose nested components"
+      inputs:
+        - "cp_component_bom records"
+      output: "kg per accepted apparatus by row_id"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "integration_electricity; acceptance_test_electricity"
+      rule: "electricity_MJ = net_kWh × 3.6"
+      inputs:
+        - "cp_factory_electricity net kWh"
+      output: "MJ per accepted apparatus"
+      source_ids: []
+    - id: calc_cleaning_balance
+      applies_to: "precision_cleaning_water; precision_cleaning_wastewater"
+      rule: "water_input_kg = wastewater_output_kg + retained_water_kg + evaporation_kg + measured_other_outputs; investigate and disclose residual"
+      inputs:
+        - "cp_precision_cleaning records"
+      output: "Reconciled kg per accepted apparatus"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "wooden_pallet; polyethylene_foam"
+      rule: "packaging_mass_kg = quantity × unit_mass_kg; divide reusable pallet mass only by documented completed uses"
+      inputs:
+        - "cp_dispatch_packaging records"
+      output: "kg per dispatched apparatus"
+      source_ids: []
+    - id: calc_reference_product_mass
+      applies_to: "reference_product_output"
+      rule: "net_product_mass_kg = gross_mass_kg - dispatch_packaging_mass_kg - separately_supplied_spares_mass_kg"
+      inputs:
+        - "cp_product_mass_acceptance records"
+      output: "kg of accepted apparatus"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and route-specific rows"
+      requirement: "Product family, model, serial/configuration, source, detector, vacuum/cooling configuration, and acceptance criteria must be unambiguous and mutually consistent."
+      evidence: "Released configuration and factory acceptance report"
+    - id: dq_bom_completeness
+      applies_to: "Purchased components and packaging"
+      requirement: "Reconcile as-built and packaging BOMs to the reference product; disclose mass lacking upstream datasets and prevent double counting of nested subassemblies."
+      evidence: "BOM reconciliation and upstream dataset crosswalk"
+    - id: dq_metering
+      applies_to: "Electricity and water"
+      requirement: "Use calibrated meters or documented allocation from calibrated totals; retain raw readings, timestamps, and conversion factors."
+      evidence: "Calibration records and signed allocation worksheet"
+    - id: dq_temporal
+      applies_to: "All foreground records"
+      requirement: "Use records from the declared period and identify design, supplier, process, or packaging changes that make older records non-representative."
+      evidence: "Coverage table and change-control log"
+    - id: dq_conditional_routes
+      applies_to: "Conditional component, cleaning, and packaging rows"
+      requirement: "State whether every conditional row applies. A zero quantity without an applicability decision is incomplete."
+      evidence: "Configuration record, process traveler, and packing record"
+    - id: dq_source_traceability
+      applies_to: "External source use"
+      requirement: "Preserve stable source ids and show which identity, architecture, boundary, or quality decision each source supports; do not treat examples as ranges."
+      evidence: "Source cross-reference review"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "Confirm the Tiangong reference product UUID, Mass property, kg unit, CPC 48261 identity, and net mass of exactly one accepted apparatus."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: val_bilingual_qualifiers
+    applies_to: "Product metadata"
+    rule: "Confirm all required qualifiers are populated and consistent with the declared electron-microscope or diffraction-apparatus route."
+    source_ids:
+      - thermo-fisher-talos-l120c-g2-2022
+      - bruker-d8-advance-family
+  - rule_id: val_inventory_atomicity
+    applies_to: "Process inventory"
+    rule: "Confirm each exchange is one concrete product, waste, or energy flow; reject combined utilities, component collections, packaging collections, and generic waste groupings."
+    source_ids: []
+  - rule_id: val_route_exclusivity
+    applies_to: "electron_optical_column; xray_source_assembly"
+    rule: "Do not assign mutually exclusive route components together unless the delivered apparatus demonstrably contains both functions and the product description explains them."
+    source_ids: []
+  - rule_id: val_electricity_separation
+    applies_to: "Electricity rows"
+    rule: "Confirm non-overlapping meter intervals or an auditable split of one total and conversion from kWh to MJ."
+    source_ids: []
+  - rule_id: val_cleaning_balance
+    applies_to: "Conditional precision cleaning"
+    rule: "Reconcile water input to wastewater, retained water, evaporation, and other measured outputs; classify hazardous wastewater with a different exact flow."
+    source_ids: []
+  - rule_id: val_mass_and_packaging
+    applies_to: "Reference product and packaging"
+    rule: "Confirm reference product mass excludes pallet, foam, and separately supplied spares, while all dispatched packaging is reported as separate atomic exchanges."
+    source_ids: []
+  - rule_id: val_unresolved_uuid
+    applies_to: "UUID-empty rows"
+    rule: "Keep UUID empty and manifest unresolved record present until a public state-100 candidate passes semantic, classification, state, property, and unit review."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset derived from verified foreground manufacturing records"
+  downstream_use: "Cradle-to-gate modelling for a declared non-optical microscope or diffraction apparatus; link separately modelled downstream stages when needed"
+  allowed_use: "Comparisons and supply-chain models with compatible family, configuration, performance, geography, period, boundary, and data quality"
+  excluded_use: "Optical microscopes; separately supplied parts; an average of mutually exclusive routes; use-stage or cradle-to-grave claims without downstream inventories"
+  required_metadata: "PCR id/version; product UUID; family/model/configuration; net mass; source and detector configuration; vacuum/cooling configuration; acceptance criteria; sites; period; allocation; packaging; geography; upstream dataset versions; data gaps"
+  required_quality_disclosure: "BOM and packaging coverage; metering coverage; conditional-row applicability; allocation shares; water balance; acceptance-test evidence; source crosswalk; unresolved UUIDs and range needs"
+  update_trigger: "Product redesign; new route; material or detector/source change; supplier/site change; altered test cycle; packaging redesign; changed energy/water mix; improved UUID/range evidence; elapsed representativeness period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 48261 identity and separation from optical microscopes and separately classified parts/accessories"
+  - id: "china-mof-2021-tariff-annex"
+    type: "official_guidance"
+    reference: "State Council Tariff Commission / Ministry of Finance of China, 2021 Tariff Adjustment Plan Annex 1, https://gss.mof.gov.cn/gzdt/zhengcefabu/202012/P020201223606577665704.pdf"
+    used_for: "Professional Chinese terminology and complete-product versus parts distinction for tariff items 90121000/90129000"
+  - id: "thermo-fisher-talos-l120c-g2-2022"
+    type: "handbook"
+    reference: "Thermo Fisher Scientific, Talos L120C G2 (S)TEM brochure, BR0157-EN-11-2022, https://documents.thermofisher.com/TFS-Assets/MSD/brochures/talos-120c-g2-stem-br0157.pdf"
+    used_for: "Electron-microscope architecture, electron source, accelerator, vacuum pump, detectors, enclosure, configuration, and performance qualifiers"
+  - id: "thermo-fisher-electron-microscope-sustainable-design"
+    type: "handbook"
+    reference: "Thermo Fisher Scientific, Electron Microscopes - Sustainable Design, https://www.thermofisher.com/us/en/home/electron-microscopy/manufacturing-sustainability/product-sustainability.html"
+    used_for: "Lifecycle-stage disclosure and separation of manufacturing, shipping, operation, take-back, and end-of-life considerations"
+  - id: "bruker-d8-advance-family"
+    type: "handbook"
+    reference: "Bruker, D8 ADVANCE Family product page, https://www.bruker.com/en/products-and-solutions/diffractometers-and-x-ray-microscopes/x-ray-diffractometers/d8-advance-family.html"
+    used_for: "Diffraction-apparatus architecture, enclosure, X-ray tube, optics, sample stage, detector, cooling configuration, and factory performance verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c73b68986c1411c684fe8ae6fc806309d4f339bb0feafa9bf00098e1f1063a9a"
+  generated_content_sha256: "sha256:cd551cab6ab527788892b72fd0f11212216cc08cba8b10a08fa39304f8055885"

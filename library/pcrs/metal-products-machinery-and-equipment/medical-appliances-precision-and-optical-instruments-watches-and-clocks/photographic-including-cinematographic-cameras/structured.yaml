@@ -1,10 +1,642 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48322"
-  title: "Photographic (including cinematographic) cameras"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.photographic-including-cinematographic-cameras"
+  classification_refs: "CPC 3.0: 48322, exact candidate mapping context"
+  covered_products: "Finished still-film cameras; finished motion-picture film cameras; finished single-use film cameras"
+  excluded_products: "Digital cameras; television and professional video cameras; video camera recorders and web cameras; separately sold objective lenses; projectors; photographic film and chemicals; separately sold camera parts and accessories"
+  representative_product: "One accepted photographic or cinematographic film camera in the declared factory-gate package state"
+  production_route: "Receipt of purchased components and process materials; component preparation when performed at the reporting site; assembly; cleaning; functional testing; primary packing"
+  market_state: "Finished, accepted, factory-gate camera, declared as body-only, fixed-lens, or supplied kit and with package contents identified"
+functional_unit:
+  what: "A camera device that exposes a declared photosensitive film format to still or motion-picture images according to its declared optical and mechanical performance"
+  how_much: "One accepted finished camera in the declared factory-gate package state"
+  how_well: "Conforming to the manufacturer's model-specific exposure, shutter, film-transport, optical, safety, and final-inspection requirements"
+  how_long_or_cycle: "One manufactured camera; use-phase exposures and service life are outside this factory-gate functional unit"
+  reference_flow_link: "Output row finished_camera normalized by the measured mass of one accepted camera"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "foreground system boundary"
+      rule: "Include receipt and handling of purchased inputs, all on-site preparation, assembly, cleaning, testing, rework, reject handling, and primary packing up to transfer of the accepted packaged camera at the factory gate."
+      source_ids:
+        - us-epa-camera-manufacturing-1977
+    - rule_id: sb_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent the production of purchased components, process materials, utilities, and packaging with linked upstream datasets; do not silently absorb them into the foreground camera process."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_operation_completeness
+      applies_to: "site operations"
+      rule: "Reconcile the declared operation list to production routing, equipment, meters, solvent records, waste manifests, and final inspection so that an on-site molding, forming, machining, polishing, plating, coating, cleaning, or packing operation is not omitted."
+      source_ids:
+        - us-epa-camera-manufacturing-1977
+    - rule_id: sb_atomic_additions
+      applies_to: "additional exchanges"
+      rule: "Add every additional crossing exchange as one concrete product, waste, or elementary flow and state the condition under which it occurs; do not use an umbrella material, utility, waste, or emission row."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased camera components, process materials, utilities, and packaging delivered to the reporting manufacturing site; their supplier, delivered state, and upstream dataset links are declared"
+  starting_condition_role: "Factory-gate foreground starting condition for camera assembly, on-site component preparation, cleaning, testing, and packing"
+  product_classification_scope: "Finished photographic and cinematographic film cameras within the semantic boundary stated in sections 1 and 2"
+  recursive_input_rule: "A camera input already satisfying this PCR boundary is recorded as a purchased product input with its own upstream dataset and is not recursively decomposed inside the same foreground process"
+  upstream_dataset_requirement: "Link each purchased component, process material, electricity supply, water supply, and packaging product to a geography-, technology-, and product-state-representative upstream dataset; disclose any proxy"
+  disclosure: "Declare site, reporting period, camera model family, film format, body and lens configuration, included accessories, package contents, on-site operations, outsourced operations, electricity supply, water source, solvent recovery, waste destinations, and direct-emission measurement or calculation method"
+reference_flow_definition:
+  reference_amount: "Measured mass in kg of one accepted finished camera in the declared package state"
+  product_flow_ref:
+    name: "Photographic (including cinematographic) cameras"
+    uuid: "62021d26-e0c1-433c-90b7-0cee3dbced9a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "camera type: still-film or cinematographic"
+    - "film format"
+    - body-only
+    - fixed-lens
+    - "or kit configuration"
+    - "included lens and accessories"
+    - "power configuration"
+    - "primary package contents"
+    - "net camera mass and packaged mass"
+    - "accepted-product test specification"
+    - "production geography"
+    - "manufacturing technology"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted cameras in the declared package state or sum verified net-product and included-package masses; report the number of cameras represented and divide all foreground exchanges by accepted output mass."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered energy record; when records are in kWh, convert to MJ using 1 kWh = 3.6 MJ and retain the original reading."
+  - id: water_mass_conversion
+    applies_to: "process water and cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records; when water is metered by volume, convert with measured or declared density for the recorded temperature and retain the volume, density, and conversion basis."
+process_map:
+  - id: camera_manufacturing
+    name: "Camera component preparation, assembly, cleaning, testing, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always include; individual conditional exchanges are recorded only when present in the declared camera configuration and site route"
+    role: "Foreground manufacture of the factory-gate reference camera"
+    quantitative_reference: "Accepted finished-camera mass in kg"
+process_inventory:
+  - id: camera_manufacturing
+    label: "Camera component preparation, assembly, cleaning, testing, and packing"
+    inputs:
+      product:
+        - row_id: camera_housing_component
+          role: "Camera housing component"
+          name: "Camera housing component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the one housing component or housing subassembly installed in accepted and rejected cameras. Declare its material construction, supplier, delivered state, and whether fabrication occurs at the reporting site."
+          amount:
+            expression: "measured or verified bill-of-material mass entering the camera manufacturing process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-camera-manufacturing-1977
+            ranges: []
+        - row_id: optical_lens_element
+          role: "Photographic-camera optical lens element"
+          name: "Photographic camera optical lens element"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the optical lens element installed in the declared fixed-lens camera or supplied camera kit. For a body-only camera with no lens included, document non-applicability; separately sold objective lenses remain outside the product boundary."
+          amount:
+            expression: "measured or supplier-verified mass of the included optical lens element"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-camera-manufacturing-1977
+            ranges: []
+        - row_id: camera_shutter_assembly
+          role: "Photographic-camera shutter assembly"
+          name: "Photographic camera shutter assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the one shutter assembly installed in accepted and rejected cameras, including the declared mechanical or electromechanical shutter state but excluding unrelated structural assemblies."
+          amount:
+            expression: "measured or supplier-verified shutter assembly mass issued to production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-camera-manufacturing-1977
+            ranges: []
+        - row_id: film_transport_mechanism
+          role: "Photographic-camera film transport mechanism"
+          name: "Photographic camera film transport mechanism"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the one film transport mechanism installed in accepted and rejected cameras. Declare manual or powered transport and the supported film format."
+          amount:
+            expression: "measured or supplier-verified film transport mechanism mass issued to production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-camera-manufacturing-1977
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to the camera-production operations, including allocated line support and testing loads but excluding upstream generation emissions from the foreground elementary-flow inventory."
+          amount:
+            expression: "metered or invoice-reconciled electricity attributable to camera production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water delivered for on-site cleaning, plating, polishing, or other camera-production operations. Sanitary and unrelated building water is excluded unless directly attributable."
+          amount:
+            expression: "measured process-water mass attributable to camera production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids:
+                - us-epa-camera-manufacturing-1977
+            ranges: []
+        - row_id: isopropanol_input
+          role: "Isopropanol cleaning solvent"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Record Isopropanol crossing the foreground boundary for camera or component cleaning. Declare purity, recovery and return status, and whether quantities are issued, recovered, or purchased net."
+          amount:
+            expression: "net measured Isopropanol input after documented returns and recovered solvent carried across the reporting-period boundary"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_isopropanol
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the corrugated board box included in the declared primary package. Other packaging components, when present, shall be added as separate material-specific product flows."
+          amount:
+            expression: "measured or supplier-specified mass of corrugated board boxes used for accepted cameras"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_camera
+          role: "Accepted finished photographic or cinematographic camera"
+          name: "Photographic (including cinematographic) cameras"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62021d26-e0c1-433c-90b7-0cee3dbced9a"
+          property_unit: "Mass / kg"
+          description: "Record only cameras that passed the declared final inspection and are in the declared factory-gate package state. Keep accepted output separate from reworked, rejected, or work-in-progress units."
+          amount:
+            expression: "measured accepted finished-camera mass in the declared package state"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "one accepted camera represented by its measured kg output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_camera_assembly
+          role: "Rejected complete camera assembly"
+          name: "Rejected photographic camera assembly"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the mass of complete camera assemblies rejected from final inspection and transferred to recycling, rework outside the reporting period, treatment, or disposal. Do not combine this row with lens scrap, packaging waste, or mixed manufacturing waste."
+          amount:
+            expression: "measured mass of rejected complete camera assemblies leaving the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejected_camera
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Wastewater generated by cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record cleaning wastewater when it leaves the foreground process for on-site or off-site treatment. Declare composition, hazardous status, treatment destination, and whether the amount is measured directly or derived from a water balance."
+          amount:
+            expression: "measured or water-balance-derived mass of cleaning wastewater transferred for treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - us-epa-camera-manufacturing-1977
+            ranges: []
+      elementary:
+        - row_id: isopropanol_to_air
+          role: "Isopropanol emitted to air"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct Isopropanol releases to unspecified air from foreground cleaning, drying, handling, and storage after subtracting documented recovery and waste transfers. Do not include upstream emissions from solvent production."
+          amount:
+            expression: "measured direct air release or solvent-balance residual assigned to air with documented assumptions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished camera output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_isopropanol_air
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared camera-production operations"
+    rule: "Avoid allocation by metering or otherwise subdividing camera lines, operations, and support loads wherever direct attribution is feasible."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "unavoidable shared burdens"
+    rule: "When subdivision is not feasible, use a documented causal physical relationship such as machine time, measured energy, water use, solvent issue, occupied production time, or accepted product mass; justify why the driver represents the shared burden."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_economic_last_resort
+    applies_to: "burdens lacking a defensible physical relationship"
+    rule: "Economic allocation may be used only after documenting why subdivision, system expansion, and a causal physical relationship are infeasible; report prices, currency, averaging period, and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_waste_and_rework
+    applies_to: "rejects, rework, recycling, and waste transfers"
+    rule: "Assign burdens through the point of rejection to the reporting-period camera production; subtract neither waste nor recyclable material burdens unless a separately documented downstream system-expansion or allocation model is applied."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_mass
+      process_id: "camera_manufacturing"
+      flow_role: "housing, lens, shutter, and film-transport component inputs"
+      record_type: "bill of materials, issue records, supplier specifications, and verification weights"
+      raw_fields: "component identity; material; supplier; delivered state; mass per component; units issued; returns; rejects; camera model"
+      collection_method: "reconcile production issues and returns to the approved bill of materials; verify representative component masses on calibrated scales"
+      unit: "kg"
+      frequency: "each model or bill-of-material revision; aggregate monthly"
+      temporal_coverage: "complete reporting period with opening and closing work-in-progress reconciled"
+      site_scope: "every reporting site and outsourced operation included in the foreground boundary"
+      aggregation_rule: "sum net issued mass by component and model, then divide by accepted output mass"
+      quality_evidence: "approved bill of materials; supplier specification; calibration record; issue-return reconciliation"
+    - protocol_id: cp_electricity
+      process_id: "camera_manufacturing"
+      flow_role: "purchased electricity input"
+      record_type: "submeter readings and reconciled electricity invoices"
+      raw_fields: "meter id; opening and closing reading; unit; line; downtime; shared-load driver; invoice total"
+      collection_method: "read dedicated meters where available and reconcile to site invoices; allocate shared loads under section 7"
+      unit: "kWh and MJ"
+      frequency: "at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all camera-production and attributable support equipment at each site"
+      aggregation_rule: "convert kWh to MJ, sum attributable energy, and divide by accepted output mass"
+      quality_evidence: "meter calibration or utility record; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_water
+      process_id: "camera_manufacturing"
+      flow_role: "process water input"
+      record_type: "water meter, batch record, and water-source record"
+      raw_fields: "meter id; volume or mass; temperature; density if converted; operation; source; reuse; discharge link"
+      collection_method: "meter process water or reconcile batch additions and returns; exclude unrelated sanitary water"
+      unit: "kg and m3"
+      frequency: "each batch or at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included cleaning, plating, polishing, and other wet operations"
+      aggregation_rule: "convert volume to mass when needed, subtract documented closed-loop carryover only, and divide by accepted output mass"
+      quality_evidence: "meter calibration; batch sheet; density basis; water balance"
+    - protocol_id: cp_isopropanol
+      process_id: "camera_manufacturing"
+      flow_role: "Isopropanol product input"
+      record_type: "purchase, issue, return, recovery, and stock records"
+      raw_fields: "purity; beginning stock; purchases; issues; returns; recovered stock; ending stock; waste transfer"
+      collection_method: "perform a reporting-period solvent inventory by material identity and reconcile storage changes"
+      unit: "kg"
+      frequency: "each issue and monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included cleaning stations, storage, and recovery units"
+      aggregation_rule: "beginning stock plus purchases minus ending stock, documented returns, and exported recovered solvent; divide net input by accepted output mass"
+      quality_evidence: "stock ledger; purchase records; issue tickets; recovery records"
+    - protocol_id: cp_packaging
+      process_id: "camera_manufacturing"
+      flow_role: "corrugated board box input"
+      record_type: "packaging bill of materials, supplier specification, and verification weights"
+      raw_fields: "box grade; dimensions; mass per box; boxes issued; returns; damaged boxes; cameras packed"
+      collection_method: "reconcile boxes issued and returned; verify representative mass on a calibrated scale"
+      unit: "kg"
+      frequency: "each packaging revision; aggregate monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every packing line in the foreground boundary"
+      aggregation_rule: "multiply verified box mass by net boxes used and divide by accepted output mass"
+      quality_evidence: "packaging specification; scale calibration; issue-return reconciliation"
+    - protocol_id: cp_finished_output
+      process_id: "camera_manufacturing"
+      flow_role: "accepted finished camera output"
+      record_type: "final inspection, packing, count, and mass records"
+      raw_fields: "model; serial or lot; accepted count; rejected count; net mass; packaged mass; package contents; inspection status"
+      collection_method: "count only passed units and weigh a representative sample or every unit under a documented sampling plan"
+      unit: "kg and item"
+      frequency: "each lot or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all final inspection and packing points"
+      aggregation_rule: "sum accepted packaged mass by declared configuration; use as the normalization denominator"
+      quality_evidence: "final inspection record; scale calibration; sampling plan; packing record"
+    - protocol_id: cp_rejected_camera
+      process_id: "camera_manufacturing"
+      flow_role: "rejected complete camera assembly output"
+      record_type: "nonconformance, rework, and waste transfer records"
+      raw_fields: "model; reject reason; mass; disposition; rework return date; destination"
+      collection_method: "segregate complete-camera rejects from component scrap and packaging waste; weigh transfers"
+      unit: "kg"
+      frequency: "each event; aggregate monthly"
+      temporal_coverage: "complete reporting period including unresolved rework stock"
+      site_scope: "all final inspection and rework areas"
+      aggregation_rule: "sum complete-camera rejects leaving the process and divide by accepted output mass"
+      quality_evidence: "nonconformance report; scale calibration; transfer manifest; rework reconciliation"
+    - protocol_id: cp_cleaning_wastewater
+      process_id: "camera_manufacturing"
+      flow_role: "cleaning wastewater output"
+      record_type: "discharge meter, tank transfer, composition analysis, and water balance"
+      raw_fields: "mass or volume; density; operation; contaminants; hazardous status; destination; treatment route"
+      collection_method: "meter or weigh each transfer; if calculated, reconcile water inputs, retained moisture, evaporation, and other documented outlets"
+      unit: "kg and m3"
+      frequency: "each transfer or at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every cleaning operation and wastewater transfer point"
+      aggregation_rule: "sum transferred mass or calculate from a closed water balance, then divide by accepted output mass"
+      quality_evidence: "meter or scale record; laboratory analysis; transfer manifest; water-balance worksheet"
+    - protocol_id: cp_isopropanol_air
+      process_id: "camera_manufacturing"
+      flow_role: "direct Isopropanol emission to air"
+      record_type: "stack or workplace emission measurement and solvent balance"
+      raw_fields: "measured concentration and flow or solvent input; recovered mass; product retention; wastewater and waste mass; stock change; abatement efficiency"
+      collection_method: "prefer representative emission measurement; otherwise calculate the residual of a reconciled Isopropanol balance and document the share assigned to air"
+      unit: "kg"
+      frequency: "measurement campaign plus monthly balance"
+      temporal_coverage: "representative operating conditions and complete reporting period"
+      site_scope: "all included cleaning, drying, storage, and abatement points"
+      aggregation_rule: "sum measured releases or calculated air residual and divide by accepted output mass"
+      quality_evidence: "analytical report; flow calibration; solvent-balance closure; abatement operating record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period exchange amount / accepted finished-camera mass in the declared package state"
+      inputs:
+        - "exchange amount"
+        - "accepted finished-camera mass"
+      output: "exchange per kg reference product"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity input"
+      rule: "electricity MJ = metered kWh × 3.6; retain both values before normalization"
+      inputs:
+        - "metered kWh"
+      output: "electricity MJ"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "process water and cleaning wastewater"
+      rule: "water mass = measured volume × measured or declared density at the recorded condition"
+      inputs:
+        - volume
+        - density
+        - temperature
+        - "direct mass when available"
+      output: "water or wastewater mass in kg"
+      source_ids: []
+    - id: calc_isopropanol_input
+      applies_to: "Isopropanol input"
+      rule: "net Isopropanol input = beginning stock + purchases + transferred-in recovered solvent − ending stock − supplier returns − exported recovered solvent"
+      inputs:
+        - "stock and transaction records by purity-adjusted mass"
+      output: "net Isopropanol product input in kg"
+      source_ids: []
+    - id: calc_isopropanol_air
+      applies_to: "Isopropanol direct air emission"
+      rule: "air release = net Isopropanol input − mass retained in product − mass in wastewater − mass in exported solvent waste − other measured outputs; negative or materially unclosed balances are invalid"
+      inputs:
+        - "net input"
+        - "product retention"
+        - wastewater
+        - "waste transfer"
+        - "measured outputs"
+      output: "Isopropanol emitted to air in kg"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "product and waste mass"
+      rule: "reconcile purchased component and packaging mass with accepted output, rejects, measured wastes, stock changes, and documented emissions; investigate material imbalance instead of assigning it to an unspecified flow"
+      inputs:
+        - "component inputs"
+        - "packaging inputs"
+        - output
+        - rejects
+        - wastes
+        - "stock change"
+        - "direct emissions"
+      output: "mass-balance closure statement"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Identify camera type, film format, model family, body and optical configuration, included accessories, package contents, product state, and production route."
+      evidence: "product specification; packaging bill of materials; final inspection record"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Cover a continuous representative reporting period and disclose shutdowns, start-up, abnormal production, model changeovers, and opening or closing work-in-progress that materially affect results."
+      evidence: "dated meter, production, inventory, and quality records"
+    - id: dq_completeness
+      applies_to: "inventory completeness"
+      requirement: "Reconcile purchasing, issue, meter, production, waste, and emission records; add each material crossing flow omitted from the minimum inventory as one atomic exchange."
+      evidence: "reconciliation worksheet; operation map; bill of materials; waste manifests"
+    - id: dq_measurement
+      applies_to: "mass, water, electricity, solvent, and emissions"
+      requirement: "Use calibrated instruments or traceable supplier and utility records; retain original units, conversions, sampling plans, detection limits, and allocation drivers."
+      evidence: "calibration certificates; invoices; supplier specifications; laboratory reports"
+    - id: dq_upstream_representativeness
+      applies_to: "linked background datasets"
+      requirement: "Match component or material identity, delivered state, geography, technology, and time; disclose and justify every proxy."
+      evidence: "dataset metadata; supplier declaration; proxy assessment"
+    - id: dq_uncertainty
+      applies_to: "calculated and allocated values"
+      requirement: "Document measurement uncertainty, sampling variability, balance closure, and sensitivity to material allocation choices; do not replace missing foreground values with uncited typical ranges."
+      evidence: "uncertainty calculation; sensitivity record; reviewer note"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "product category and reference flow"
+    rule: "Confirm that the output is a finished photographic or cinematographic film camera and not a digital camera, video camera, separately sold lens, projector, film, chemical, part, or accessory."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-3-0-explanatory-notes-2025
+  - rule_id: validation_reference_mass
+    applies_to: "functional unit and normalization"
+    rule: "Confirm that one accepted camera is represented by measured kg in the declared package state and that every normalized amount uses the same accepted-output denominator."
+    source_ids: []
+  - rule_id: validation_inventory_reconciliation
+    applies_to: "foreground inventory"
+    rule: "Confirm that production routing, bills of materials, meters, solvent records, waste manifests, and final inspection reconcile to the 12 minimum rows plus separately declared additional atomic exchanges."
+    source_ids:
+      - us-epa-camera-manufacturing-1977
+  - rule_id: validation_electricity
+    applies_to: "electricity input"
+    rule: "Confirm original kWh or MJ readings, the 3.6 MJ/kWh conversion when used, invoice reconciliation, and the allocation driver for shared loads."
+    source_ids: []
+  - rule_id: validation_water_and_wastewater
+    applies_to: "process water and cleaning wastewater"
+    rule: "Confirm source, original meter basis, density conversion, cleaning origin, treatment destination, and water-balance consistency."
+    source_ids:
+      - us-epa-camera-manufacturing-1977
+  - rule_id: validation_solvent_balance
+    applies_to: "Isopropanol input and air emission"
+    rule: "Confirm chemical identity, purity adjustment, stocks, purchases, recovery, wastewater or waste transfers, abatement, air measurement or calculation, and nonnegative solvent-balance closure."
+    source_ids: []
+  - rule_id: validation_rejects
+    applies_to: "rejected camera assemblies"
+    rule: "Confirm that complete-camera rejects are measured separately from reworked units, component scrap, lens scrap, packaging waste, and mixed manufacturing waste."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "shared processes"
+    rule: "Confirm that subdivision was attempted first and that any remaining allocation uses a disclosed, reproducible causal driver or a fully justified last-resort economic basis."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_evidence_gaps
+    applies_to: "ranges and unresolved UUIDs"
+    rule: "Confirm that UUID-empty rows remain registered in manifest review metadata and that absent empirical ranges are not replaced with single-study values, snippets, or invented bounds."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for a declared photographic or cinematographic film camera configuration"
+  downstream_use: "May be used as a secondary_dataset or background_dataset for systems consuming a camera at the factory gate when identity, geography, technology, time, and package state are representative"
+  allowed_use: "Cradle-to-gate camera production studies; supply-chain inventories for film-based imaging equipment; comparative studies only when functional unit, included lens and accessories, package state, and boundary are equivalent"
+  excluded_use: "Digital-camera production; television or video camera production; separately sold lens or part production; camera use, film consumption, developing, image processing, maintenance, or end-of-life without additional life-cycle modules"
+  required_metadata: "PCR id and version; camera type; film format; model family; body and lens configuration; included accessories; package contents; net and packaged mass; production geography; technology; reporting period; on-site and outsourced operations; upstream dataset links; allocation methods; UUID gaps"
+  required_quality_disclosure: "Foreground coverage; meter and scale basis; bill-of-material reconciliation; sample sizes; balance closure; solvent recovery and air-emission method; wastewater composition and destination; reject disposition; proxies; uncertainty; unresolved range evidence"
+  update_trigger: "Change in camera configuration, film format, included lens or accessories, package design, component supplier or delivered state, production site or route, energy or water supply, cleaning solvent or recovery, waste treatment, allocation driver, or data older than the declared representativeness period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48322 identity and hierarchy; distinct sibling product identities"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-07)"
+    used_for: "Product-boundary separation from digital cameras, television cameras, video camera recorders, lenses, projectors, film, chemicals, parts, and accessories"
+  - id: "un-cpc-1-1-chinese-2010"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/cpc_v1_1_complete%28pdf%29_chinese.zip (retrieved 2026-09-07)"
+    used_for: "Verified professional Chinese rendering of stable code 48322 as 照相机（包括电影摄影机）"
+  - id: "us-epa-camera-manufacturing-1977"
+    type: "official_guidance"
+    reference: "Clark, R.; Burch, J.; Ayers, R.; Brown, D.; Dick, R.; Henning, H. J.; Hooie, D.; Sharp, R. Potential Environmental Impact of Compounding and Fabricating Industries: A Preliminary Assessment. U.S. EPA, EPA-600/2-77-160, August 1977. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=9100PHTX.TXT (retrieved 2026-09-07)"
+    used_for: "Camera-manufacturing process decomposition; molding, metal forming, assembly, plating and cleaning water, and lens-processing waste checkpoints"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, 15 December 2021, consolidated English text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-09-07)"
+    used_for: "System-boundary linkage, data representativeness, and multifunctionality decision hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f388e6c6a18cb1050eb59072361b944e6282229483a3c6bc18e3614431512d22"
+  generated_content_sha256: "sha256:a75113848d22cfa033e1a7fd4b7f1d38c2c4de3f17c25ea779109e61ae3da958"

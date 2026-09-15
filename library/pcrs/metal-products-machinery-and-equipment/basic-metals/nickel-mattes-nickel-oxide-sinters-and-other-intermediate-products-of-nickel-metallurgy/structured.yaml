@@ -1,10 +1,834 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41421"
-  title: "Nickel mattes, nickel oxide sinters and other intermediate products of nickel metallurgy"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.nickel-mattes-nickel-oxide-sinters-and-other-intermediate-products-of-nickel-metallurgy"
+  classification_refs: "CPC 3.0: 41421 (exact classification context); HS 7501 terminology corroboration"
+  covered_products: "Low- or high-grade nickel matte; nickel oxide sinter; hydrometallurgical nickel intermediate; another nickel-bearing intermediate demonstrably sold for further nickel metallurgy"
+  excluded_products: "Nickel ore or concentrate; ferro-nickel; nickel pig iron; unwrought refined nickel; finished nickel alloy; final-market nickel sulfate, nickel carbonate, or other nickel chemical"
+  representative_product: "A declared nickel metallurgy intermediate at the production-site gate"
+  production_route: "Declared sulphidic pyrometallurgical, laterite pyrometallurgical, oxide roasting/sintering, hydrometallurgical precipitation, or specifically documented combined route"
+  market_state: "As-shipped solid, granulate, sinter, filter cake, or slurry; moisture, dry solids, nickel content, sulfur content, and co-metal content declared as applicable"
+functional_unit:
+  what: "Nickel-bearing metallurgical intermediate supplied for further nickel or co-metal recovery or refining"
+  how_much: "1,000 kg of declared product as shipped at the production-site gate"
+  how_well: "Product form, dry-solids fraction, nickel content, sulfur content, major co-metals, and key impurity specification are measured for the represented lot or campaign"
+  how_long_or_cycle: "One declared production campaign or reporting period, with lot-weighted output normalized to 1,000 kg"
+  reference_flow_link: "out_reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_selection
+      applies_to: "Foreground route"
+      rule: "Include the actual preparation, thermal, hydrometallurgical, conditioning, off-gas, and water-treatment operations used to produce the declared intermediate; do not substitute an average of unmeasured routes."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Purchased inputs"
+      rule: "Stop the foreground boundary at the site gate and link each purchased feed, energy carrier, water, oxygen, and reagent to an upstream dataset."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_direct_releases
+      applies_to: "Air and water emissions"
+      rule: "Include measured or calculated direct releases after on-site abatement; upstream electricity-generation emissions shall not be duplicated as foreground emissions."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_recovery_loops
+      applies_to: "Slag, dust, sulfur, and heat recovery"
+      rule: "Model on-site returns as internal loops and report only net site-gate exchanges; disclose transfers to another site as technosphere outputs or wastes according to their actual status."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+boundary_abstraction:
+  declared_starting_condition: "Nickel-bearing ore, concentrate, or specifically identified secondary feed received at the production-site gate with mass, moisture, nickel assay, and route-relevant composition recorded"
+  starting_condition_role: "Foreground input boundary for conversion to the declared nickel metallurgy intermediate"
+  product_classification_scope: "Nickel mattes, nickel oxide sinters, and other intermediate products of nickel metallurgy; excludes ores/concentrates and refined nickel products"
+  recursive_input_rule: "If an input is itself a covered nickel metallurgy intermediate, record that exact input as a separate product exchange with an upstream dataset and do not recursively include its prior production in this foreground process."
+  upstream_dataset_requirement: "Every purchased feed, fuel, electricity, oxygen, water, and reagent crossing the site gate requires a geography-, technology-, and product-state-appropriate upstream dataset."
+  disclosure: "Declare route, feed type, preparation state, recovered heat, oxygen plant boundary, off-gas sulfur recovery, slag cleaning and recycle, dust recycle, water recycle, wastewater treatment, direct-release compartments, and any excluded shared infrastructure."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Nickel metallurgy intermediate product (UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Product name and form"
+    - route
+    - "ore/feed class"
+    - "as-shipped mass"
+    - "dry-solids fraction or moisture"
+    - "nickel content"
+    - "sulfur content"
+    - "cobalt and copper content when material"
+    - "impurity specification"
+    - "site and geography"
+    - "reporting period"
+    - "recovered-acid treatment"
+    - "slag and dust recycle status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-based exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory to 1,000 kg of product as shipped; retain unrounded measured mass before normalization."
+  - id: dry_mass_disclosure
+    applies_to: "Product and nickel-bearing feed"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report as-shipped mass and measured moisture or dry-solids fraction; calculate dry mass without silently changing the reference flow to dry product."
+  - id: contained_nickel
+    applies_to: "Product, feed, slag, and dust"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg Ni"
+    rule: "Calculate contained nickel from the measured material mass and representative nickel assay; state whether the assay is wet- or dry-basis."
+  - id: gas_volume_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume and its temperature, pressure, and dry/wet reference condition; do not combine unlike volume reference conditions."
+  - id: energy_conversion
+    applies_to: "Alternating-current electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered energy record and document any kWh-to-MJ conversion using 1 kWh = 3.6 MJ."
+process_map:
+  - id: nickel_intermediate_production
+    name: "Nickel intermediate production and on-site treatment"
+    inclusion: "required"
+    inclusion_condition: "Include the measured unit operations for the declared route; route-specific rows apply only when that exchange crosses the selected foreground boundary."
+    role: "Foreground conversion, product conditioning, off-gas treatment, water treatment, and residue management"
+    quantitative_reference: "1,000 kg declared product as shipped"
+process_inventory:
+  - id: nickel_intermediate_production
+    label: "Nickel intermediate production and on-site treatment"
+    inputs:
+      product:
+        - row_id: in_nickel_sulfide_concentrate
+          role: "Nickel sulphide concentrate"
+          name: "Nickel sulphide concentrate (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a route receiving a concentrated sulphidic nickel feed."
+          amount:
+            expression: "Net measured concentrate mass crossing the site gate"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_nickel_laterite_ore
+          role: "Nickel laterite ore"
+          name: "Nickel laterite ore (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a route receiving oxidic laterite, including a declared limonite or saprolite state."
+          amount:
+            expression: "Net measured laterite mass crossing the site gate"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_silica_sand
+          role: "Silica flux"
+          name: "silica sand"
+          flow_type: "product"
+          flow_ref:
+            uuid: "854527a0-1a8f-43af-b7c5-8c20d22e61ff"
+          property_unit: "Mass / kg"
+          description: "Record silica sand when used as flux in the declared thermal route."
+          amount:
+            expression: "Net measured silica sand charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_sulfur
+          role: "Sulfur addition"
+          name: "Sulfur"
+          flow_type: "product"
+          flow_ref:
+            uuid: "36a73796-51c8-44d6-9615-c4bc338274ec"
+          property_unit: "Mass / kg"
+          description: "Record elemental sulfur only when it is added to form a sulphide matte or for another declared metallurgical reaction."
+          amount:
+            expression: "Net measured elemental sulfur charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_metallurgical_coke
+          role: "Metallurgical coke"
+          name: "metallurgical coke"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a94c42b1-7fa9-42f3-a9d1-1e7353e8490d"
+          property_unit: "Mass / kg"
+          description: "Record metallurgical coke only when used as reductant or furnace fuel."
+          amount:
+            expression: "Net measured metallurgical coke charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record purchased gaseous natural gas combusted in dryers, kilns, furnaces, or auxiliary units."
+          amount:
+            expression: "Net metered natural-gas volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Record net imported alternating-current electricity for process and auxiliary equipment."
+          amount:
+            expression: "Net metered imported electricity after deducting separately metered site-gate exports"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record purchased or over-the-fence industrial oxygen; exclude on-site oxygen-production electricity only when that production is represented by a separate upstream dataset."
+          amount:
+            expression: "Net metered oxygen volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net make-up process water after measured internal water recycle."
+          amount:
+            expression: "Net measured process-water input crossing the site gate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_sulfuric_acid
+          role: "Sulfuric acid input"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid only when purchased or transferred into a hydrometallurgical route; do not net it against recovered sulfuric acid output."
+          amount:
+            expression: "Net measured sulfuric-acid solution mass, with concentration declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_aqueous_ammonia
+          role: "Aqueous ammonia"
+          name: "Aqueous ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "058124f8-5e84-4070-b6c0-4bacac3a0024"
+          property_unit: "Mass / kg"
+          description: "Record aqueous ammonia only for an ammonia-leach or precipitation route."
+          amount:
+            expression: "Net measured aqueous-ammonia solution mass, with concentration declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_hydrogen_sulfide
+          role: "Hydrogen sulfide reagent"
+          name: "Hydrogen sulfide (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hydrogen sulfide only when supplied as the precipitation reagent for a nickel-cobalt sulphide intermediate."
+          amount:
+            expression: "Net measured hydrogen-sulfide mass, excluding carrier gas mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when used for pH control, precipitation, scrubbing, or water treatment within the foreground boundary."
+          amount:
+            expression: "Net measured sodium-hydroxide solution or solid mass, with concentration and physical state declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_reference_product
+          role: "Declared nickel metallurgy intermediate"
+          name: "Nickel metallurgy intermediate product (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the category-wide reference product; its exact product name and state shall be declared because no single public UUID covers every included intermediate."
+          amount:
+            expression: "1,000 kg after normalizing measured dispatch mass for the declared reporting period"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg declared product as shipped"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_dispatch
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - china-mof-tariff-2013
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: out_sulfuric_acid
+          role: "Recovered sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid exported from an on-site off-gas acid plant as a co-product; do not record internally consumed acid as a gross output."
+          amount:
+            expression: "Net measured sulfuric-acid solution mass crossing the site gate, with concentration declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_dispatch
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: out_nickel_smelter_slag
+          role: "Nickel smelter slag"
+          name: "nickel smelter slag"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fcb4fe9-a429-4de3-aaf0-a0ed897fd4ce"
+          property_unit: "Mass / kg"
+          description: "Record net nickel smelter slag leaving the site after internal slag cleaning and returns; disclose recovery or disposal destination and nickel assay."
+          amount:
+            expression: "Net measured slag mass crossing the site gate"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: out_nickel_flue_gas_dust
+          role: "Nickel-bearing collected flue-gas dust"
+          name: "Nickel-bearing flue-gas dust (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record net captured nickel-bearing flue-gas dust transferred off site after subtracting measured internal recycle."
+          amount:
+            expression: "Net measured captured-dust mass crossing the site gate"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: out_carbon_dioxide_fossil
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from on-site combustion and carbon reductant oxidation; exclude upstream electricity emissions."
+          amount:
+            expression: "Stack measurement or carbon-balance calculation for direct foreground sources"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: out_sulfur_dioxide_air
+          role: "Direct sulfur dioxide to air"
+          name: "Sulfur dioxide to air, unspecified (UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record atomic sulfur dioxide released to the ordinary unspecified-air compartment after capture and acid production; do not substitute a sulfur-oxides umbrella flow."
+          amount:
+            expression: "Measured stack and diffuse sulfur dioxide after on-site abatement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: out_nickel_air
+          role: "Nickel to air, unspecified"
+          name: "nickel"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96c8-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record total measured nickel mass released to air after on-site capture, using the unspecified-air compartment only when a more specific receiving compartment is unavailable."
+          amount:
+            expression: "Measured stack plus quantified diffuse nickel emissions after abatement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: out_nickel_water
+          role: "Nickel to water, unspecified"
+          name: "nickel"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ce-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record total measured nickel mass in direct treated-water releases, using the unspecified-water compartment only when the receiving water is not available."
+          amount:
+            expression: "Discharge volume multiplied by flow-weighted nickel concentration after on-site treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared product as shipped"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Separately measured route units and outputs"
+    rule: "Avoid allocation by subdividing separately metered preparation, smelting, leaching, gas-treatment, acid-production, and residue-treatment operations."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_internal_returns
+    applies_to: "On-site matte, slag, dust, water, acid, and heat returns"
+    rule: "Treat measured on-site returns as internal loops; assign their treatment burdens to the foreground process and report only net site-gate exchanges."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_coproducts
+    applies_to: "Exported sulfuric acid or another valuable co-product"
+    rule: "First use a documented physical causal relationship such as sulfur converted to exported acid; if no defensible causal relationship exists, use revenue-based allocation with the price period, currency, and sensitivity to zero-credit treatment disclosed."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_recovered_metals
+    applies_to: "Slag, dust, cake, or residue sent for metal recovery"
+    rule: "Do not assign avoided primary-metal credits inside the foreground inventory unless the study applies an explicitly documented substitution model; disclose recoverable nickel and co-metal content separately."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "nickel_intermediate_production"
+      flow_role: "Feed, flux, sulfur, and coke inputs"
+      record_type: "Weighbridge, belt scale, batch ticket, invoice, and assay"
+      raw_fields: "gross mass; tare; moisture; dry solids; Ni; S; Co; Cu; material state; lot id"
+      collection_method: "Reconcile calibrated receipt and charge records to inventory change"
+      unit: "kg and mass fraction"
+      frequency: "Each lot and monthly reconciliation"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All included site units"
+      aggregation_rule: "Sum net consumed mass and normalize by dispatch output"
+      quality_evidence: "Scale calibration, stock reconciliation, sampling plan, assay certificate"
+    - protocol_id: cp_energy_and_gas
+      process_id: "nickel_intermediate_production"
+      flow_role: "Natural gas, electricity, and oxygen inputs"
+      record_type: "Custody meter and submeter records"
+      raw_fields: "meter start/end; import; export; pressure; temperature; gas condition; oxygen purity; outage"
+      collection_method: "Reconcile site-gate meters with route-unit submeters"
+      unit: "m3 and MJ"
+      frequency: "Continuous or each billing interval"
+      temporal_coverage: "At least one representative production campaign and the reporting period"
+      site_scope: "All included site units"
+      aggregation_rule: "Net imports divided by qualifying product output"
+      quality_evidence: "Meter calibration, invoice reconciliation, missing-data log"
+    - protocol_id: cp_water_records
+      process_id: "nickel_intermediate_production"
+      flow_role: "Net process-water input"
+      record_type: "Intake and recycle meter records"
+      raw_fields: "make-up water; returned water; inventory change; source; quality"
+      collection_method: "Water balance using calibrated meters"
+      unit: "kg"
+      frequency: "Daily or continuous, monthly reconciliation"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "Foreground water system"
+      aggregation_rule: "Site-gate make-up water divided by qualifying output"
+      quality_evidence: "Meter calibration and water-balance closure"
+    - protocol_id: cp_reagent_records
+      process_id: "nickel_intermediate_production"
+      flow_role: "Acid, ammonia, hydrogen sulfide, and sodium hydroxide inputs"
+      record_type: "Tank level, flow meter, batch ticket, invoice, concentration assay"
+      raw_fields: "delivered mass; opening/closing stock; concentration; purity; physical state; return"
+      collection_method: "Reconcile purchases, stock change, and batch dosing"
+      unit: "kg solution and mass fraction"
+      frequency: "Each delivery and batch, monthly reconciliation"
+      temporal_coverage: "Same reporting period as applicable route output"
+      site_scope: "Reagent storage and included route units"
+      aggregation_rule: "Net pure or solution mass as explicitly labelled, normalized by output"
+      quality_evidence: "Tank calibration, concentration certificate, dosing reconciliation"
+    - protocol_id: cp_product_dispatch
+      process_id: "nickel_intermediate_production"
+      flow_role: "Reference product and exported acid"
+      record_type: "Dispatch scale, tank meter, product assay, inventory"
+      raw_fields: "product mass; acid mass; moisture; dry solids; Ni; S; Co; Cu; acid concentration; lot"
+      collection_method: "Reconcile production, inventory change, and dispatch"
+      unit: "kg and mass fraction"
+      frequency: "Each lot or transfer"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All product finishing and dispatch points"
+      aggregation_rule: "Lot-weighted mass and assays; normalize reference product to 1,000 kg"
+      quality_evidence: "Scale calibration, assay QA/QC, inventory reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "nickel_intermediate_production"
+      flow_role: "Slag and captured dust outputs"
+      record_type: "Scale tickets, containers, inventory, transfer manifests, assays"
+      raw_fields: "mass; Ni; Co; Cu; moisture; origin; internal return; destination; waste status"
+      collection_method: "Reconcile generated, internally returned, stored, and transferred quantities"
+      unit: "kg and mass fraction"
+      frequency: "Each transfer, monthly reconciliation"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All included collection and treatment units"
+      aggregation_rule: "Report net site-gate waste after internal returns"
+      quality_evidence: "Manifest, scale calibration, representative assay, stock reconciliation"
+    - protocol_id: cp_air_emissions
+      process_id: "nickel_intermediate_production"
+      flow_role: "Direct carbon dioxide, sulfur dioxide, and nickel to air"
+      record_type: "Continuous monitor, stack test, fuel/carbon record, diffuse survey"
+      raw_fields: "gas flow; concentration; operating hours; fuel carbon; coke carbon; captured sulfur; detection limit"
+      collection_method: "Integrate valid measurements; use documented carbon balance only for carbon dioxide gaps"
+      unit: "kg"
+      frequency: "Continuous where available and each required test"
+      temporal_coverage: "Representative operating states across the reporting period"
+      site_scope: "All included stacks and quantified diffuse sources"
+      aggregation_rule: "Sum direct releases after abatement and normalize by output"
+      quality_evidence: "Monitor calibration, valid-data coverage, stack-test report, carbon-balance closure"
+    - protocol_id: cp_water_emissions
+      process_id: "nickel_intermediate_production"
+      flow_role: "Nickel to water"
+      record_type: "Discharge meter and flow-proportional sample"
+      raw_fields: "discharge volume; Ni concentration; detection limit; bypass; receiving water"
+      collection_method: "Multiply integrated discharge by flow-weighted concentration"
+      unit: "kg"
+      frequency: "Continuous flow and permit-consistent sampling"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All direct foreground discharge points"
+      aggregation_rule: "Sum post-treatment direct releases and normalize by output"
+      quality_evidence: "Laboratory accreditation, blanks, duplicates, meter calibration, permit record"
+  calculation_rules:
+    - id: calc_normalize_output
+      applies_to: "Every inventory row"
+      rule: "normalized amount = reporting-period net exchange / reporting-period qualifying product mass × 1,000 kg"
+      inputs:
+        - "Net exchange"
+        - "qualifying product dispatch mass"
+      output: "Exchange per 1,000 kg product"
+      source_ids: []
+    - id: calc_dry_mass
+      applies_to: "Feed, product, slag, and dust"
+      rule: "dry mass = as-shipped mass × (1 − moisture mass fraction), or as-shipped mass × measured dry-solids fraction"
+      inputs:
+        - "As-shipped mass"
+        - "representative moisture or dry-solids fraction"
+      output: "Dry mass with basis label"
+      source_ids: []
+    - id: calc_contained_nickel
+      applies_to: "Nickel-bearing materials"
+      rule: "contained Ni = material mass on the assay basis × measured nickel mass fraction"
+      inputs:
+        - "Material mass"
+        - "assay basis"
+        - "Ni fraction"
+      output: "kg Ni"
+      source_ids: []
+    - id: calc_gas_reference
+      applies_to: "Natural gas and oxygen"
+      rule: "Convert volume only with recorded temperature, absolute pressure, compressibility treatment, and wet/dry basis; retain original metered value."
+      inputs:
+        - "Metered volume and reference conditions"
+      output: "Comparable m3 at declared conditions"
+      source_ids: []
+    - id: calc_direct_co2
+      applies_to: "out_carbon_dioxide_fossil"
+      rule: "Prefer measured direct CO2; otherwise apply a documented carbon balance to consumed fossil fuel and reductant carbon, subtracting measured carbon retained in products or wastes."
+      inputs:
+        - "Fuel and coke carbon"
+        - "retained carbon"
+        - "measured CO2"
+      output: "kg direct fossil CO2"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_nickel_water
+      applies_to: "out_nickel_water"
+      rule: "nickel release = sum of discharge volume interval × flow-weighted nickel concentration interval; handle below-detection values by the declared laboratory rule."
+      inputs:
+        - "Discharge volume"
+        - "nickel concentration"
+        - "detection limit"
+      output: "kg nickel to water"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_mass_balance
+      applies_to: "Ni, S, Co, and Cu balance"
+      rule: "Reconcile measured inputs, product, co-products, wastes, emissions, and inventory change; investigate material imbalance before publication."
+      inputs:
+        - "Assays and masses for all relevant exchanges"
+      output: "Element balance and closure statement"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Product form and intended further-metallurgy use shall demonstrate inclusion in this PCR and exclusion from ore/concentrate, ferro-nickel, and refined-nickel categories."
+      evidence: "Product specification, contract, process description, and classification record"
+    - id: dq_route
+      applies_to: "Foreground process"
+      requirement: "Route, furnace or reactor type, feed state, preparation, conditioning, and abatement units shall match the reported inventory rows."
+      evidence: "Process flow diagram and unit-operation list"
+    - id: dq_assay
+      applies_to: "Nickel-bearing materials"
+      requirement: "Use representative sampling and traceable Ni, S, Co, Cu, moisture, and impurity analyses on the stated wet or dry basis."
+      evidence: "Sampling plan, laboratory method, certificates, QA/QC results"
+    - id: dq_temporal
+      applies_to: "All rows"
+      requirement: "Align input, output, stock-change, and emission records to the same period and disclose shutdown, start-up, bypass, and campaign changes."
+      evidence: "Period reconciliation and operating log"
+    - id: dq_completeness
+      applies_to: "Site boundary"
+      requirement: "Reconcile site-gate meters, receipts, dispatch, wastes, and direct releases; explain excluded flows and missing data."
+      evidence: "Mass, element, energy, and water balance checks"
+    - id: dq_background
+      applies_to: "Upstream datasets"
+      requirement: "Match geography, technology, product state, concentration, electricity voltage/grid, oxygen boundary, and gas volume conditions."
+      evidence: "Dataset metadata and mapping note"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Product category"
+    rule: "Reject a dataset that represents ore/concentrate, ferro-nickel, nickel pig iron, unwrought refined nickel, or a final-market nickel chemical instead of a declared metallurgy intermediate."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - china-mof-tariff-2013
+  - rule_id: validate_reference
+    applies_to: "Reference flow"
+    rule: "Require exactly 1,000 kg as-shipped reference product and all required product, composition, route, site, and period qualifiers."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_route_rows
+    applies_to: "Inventory"
+    rule: "Require every applied row to match the declared route and every actual material, energy, waste, and direct-emission exchange to be represented by one atomic flow."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm flow type, base name, property, unit group, compartment, and physical state; do not substitute a broader species group or a route-specific product for another row."
+    source_ids: []
+  - rule_id: validate_internal_loops
+    applies_to: "Recycle and recovery"
+    rule: "Reject double counting of internally returned matte, slag, dust, water, acid, or heat as both gross output and new input."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_direct_emissions
+    applies_to: "Air and water outputs"
+    rule: "Require direct foreground emissions after abatement and exclude upstream electricity and purchased-input production emissions from direct rows."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_balances
+    applies_to: "Material accounting"
+    rule: "Require disclosed Ni and S balance closure and explanations for all material discrepancies above the site-defined measurement uncertainty."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_ranges
+    applies_to: "Quantity screening"
+    rule: "Treat all inventory amounts as foreground values; no external QA range is approved until two independent, original-text-verified, boundary-compatible sources support it."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset eligible for review as a secondary_dataset or background_dataset after all unresolved identities and evidence needs are addressed"
+  downstream_use: "Product systems requiring a declared nickel matte, nickel oxide sinter, or other nickel metallurgy intermediate"
+  allowed_use: "Use for the reported product form, route, feed class, site geography, composition, technology, abatement, and reporting period, or for a justified close match with all differences disclosed"
+  excluded_use: "Do not use as a proxy for nickel ore/concentrate, ferro-nickel, nickel pig iron, refined nickel, final-market nickel chemicals, or a different intermediate route without documented representativeness"
+  required_metadata: "PCR id and version; product name and form; route; site and geography; reporting period; feed class; mass/moisture/dry solids; Ni/S/Co/Cu assays; energy and oxygen boundaries; slag/dust/water recycle; direct-release compartments; allocation method; upstream dataset identities"
+  required_quality_disclosure: "Temporal and technological representativeness; measurement and assay methods; meter and laboratory QA/QC; data completeness; mass and element balance closure; missing-data treatment; allocation sensitivity; unresolved UUID and range-evidence status"
+  update_trigger: "Change in product form, feed class, route, furnace/reactor, energy or oxygen supply boundary, sulfur capture, slag/dust recycle, wastewater treatment, allocation, or a material shift in mass or element balances"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure*, 30 June 2025, code 41421. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official English category identity and classification scope"
+  - id: "china-mof-tariff-2013"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2013 tariff schedule table, lines 75011000, 75012010, and 75012090. https://gss.mof.gov.cn/gzdt/zhengcefabu/201306/P020130708509079068339.pdf (retrieved 2026-09-04)"
+    used_for: "Professional Chinese terminology and HS 7501 boundary corroboration"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "Cusano, G. et al., *Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries*, European Commission JRC, EUR 28648 EN, JRC107041, 2017, doi:10.2760/8224. https://publications.jrc.ec.europa.eu/repository/handle/JRC107041 (retrieved 2026-09-04)"
+    used_for: "Nickel route decomposition, foreground exchanges, recovery loops, direct-emission boundary, collection, and quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a20e7c690f991ad000f85f036a19f651a92542a1bcc235bd396dd36b5c478a42"
+  generated_content_sha256: "sha256:81172efa5bfc3bea8b47f732c141975548ad170052d7085d7a551eb54c5e88d6"

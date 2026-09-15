@@ -1,10 +1,560 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45263"
-  title: "Inkjet printers used with data processing machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.inkjet-printers-used-with-data-processing-machines"
+  classification_refs: "CPC 3.0: 45263 (un-cpc-3-0-structure-2025)"
+  covered_products: "New single-function computer-connected inkjet printers"
+  excluded_products: "Multifunction devices; non-inkjet printers; standalone presses; consumables alone; remanufactured printers"
+  representative_product: "A declared model with purchased housing, chassis, controller, printhead, motor and power supply"
+  production_route: "Purchased-component assembly and testing, then packing"
+  market_state: "Accepted new printer at factory gate, including declared supplied ink and accessories; packaging separately quantified"
+functional_unit:
+  what: "Provide the production inventory of a printer accepting electronic input and producing specified printed output"
+  how_much: "Declared production unit: 1 kg net configured printer; one printer equals its measured net mass m kg"
+  how_well: "Declare model, media format, resolution, colour capability, duplexing and acceptance test; mass alone does not establish functional equivalence"
+  how_long_or_cycle: "One declared production reporting period. A downstream service comparison must independently declare lifetime, page count, print coverage and duty cycle"
+  reference_flow_link: "All production amounts divided by accepted net printer output Q kg; multiply by m for one printer. This is not a lifetime printing-service functional unit"
+system_boundary:
+  rules:
+    - rule_id: production_boundary
+      applies_to: "foreground"
+      rule: "Include purchased component assembly, production support, priming, test rework and packing; disclose exclusions and retain upstream dataset links for each purchased flow."
+      source_ids:
+        - ghg-protocol-product-standard
+    - rule_id: component_boundary
+      applies_to: "purchased_parts"
+      rule: "Supplier datasets must include the actual supplied state: moulding for housing, forming for chassis, mounted components for the controller and fabrication for the printhead. Raw resin, sheet steel or a bare board cannot substitute for finished components."
+      source_ids: []
+    - rule_id: lifecycle_extension
+      applies_to: "downstream_use"
+      rule: "Distribution, customer electricity, replacement ink and paper, maintenance and end-of-life are outside this production module and must be added for a full lifecycle. Do not claim full-product footprint or service equivalence from production-only results."
+      source_ids:
+        - ghg-protocol-product-standard
+    - rule_id: ink_boundary
+      applies_to: "priming_testing"
+      rule: "Include measured factory priming and test ink. Page-yield labels do not quantify factory consumption; retained purge ink is not an air emission."
+      source_ids:
+        - epson-ink-yields
+boundary_abstraction:
+  declared_starting_condition: "Purchased finished components and formulated ink received at the assembly plant"
+  starting_condition_role: "Foreground entry boundary"
+  product_classification_scope: "Computer-connected single-function inkjet printer, CPC 45263"
+  recursive_input_rule: "Do not recursively expand the internal tested-printer transfer. A purchased complete printer is not a component input for this new-assembly route and requires a separate declared route review."
+  upstream_dataset_requirement: "Link geographically and technologically representative supplied-component, ink, paper, electricity and packaging datasets; disclose missing suppliers and transport coverage."
+  disclosure: "Declare outsourced manufacturing, onsite operations, reporting period, yield, rework, component mass closure, packaging and all omitted stages."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Inkjet printers used with data processing machines"
+    uuid: "02f03b13-dc7c-4249-be05-1a895cc160b6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "single-function status"
+    - "inkjet technology"
+    - "supplied configuration"
+    - "net mass per unit"
+    - "ink formulation and fill"
+    - "media format"
+    - resolution
+    - "colour and duplex capability"
+    - "test protocol"
+    - "factory and country"
+    - "reporting period"
+    - "supplier boundaries"
+    - "packaging mass"
+    - "grid voltage and geography"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "Printer output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Exclude transport packaging from reference mass; record supplied ink and accessories consistently with component inputs. Retain count and net mass measurement."
+  - id: electricity_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert measured kWh to MJ using 3.6 MJ/kWh; do not infer electricity from equipment rated power without measured time and load."
+  - id: ink_mass
+    applies_to: "Ink input"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use formulated ink mass; convert volume only with formulation-specific density and temperature. Account separately for shipped ink, test deposition and captured purge ink."
+process_map:
+  - id: assembly_test
+    name: "Assembly, priming and testing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground production"
+    quantitative_reference: "Accepted unpacked printer mass"
+  - id: packing
+    name: "Packing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Factory-gate delivery"
+    quantitative_reference: "1 kg net configured printer"
+process_inventory:
+  - id: assembly_test
+    label: "Assembly, priming and testing"
+    inputs:
+      product:
+        - row_id: housing
+          role: "Moulded ABS printer housing"
+          name: "Moulded ABS printer housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Housing mass from the component bill of materials; include moulding in its supplier dataset."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: chassis
+          role: "Steel printer chassis"
+          name: "Steel printer chassis"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the purchased formed chassis mass and supplier fabrication boundary; not raw steel sheet."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: pcb
+          role: "Populated printer controller circuit board"
+          name: "Populated printer controller circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the populated controller board mass, including mounted components; exclude separately counted power supply."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: head
+          role: "Inkjet printhead"
+          name: "Inkjet printhead"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record printhead mass and thermal or piezoelectric technology. Record attached fluid-path parts in its supplied configuration."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: motor
+          role: "Small electric motor"
+          name: "Small electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "60ce5b4c-0a5b-4ee5-9f5a-ac3d2b69681c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record installed drive motor mass and rated power; sum identical motors without combining different identities."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: supply
+          role: "Printer AC DC power supply"
+          name: "Printer AC DC power supply"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record complete power supply mass and supplied cable boundary; avoid counting the same circuit board twice."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: ink
+          role: "inkjet ink"
+          name: "inkjet ink"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Measure ink issued minus returned stock, separating shipped fill from priming and test consumption. Instantiate each formulation separately; cartridge shells are not ink mass."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: paper
+          role: "Uncoated woodfree printing paper"
+          name: "paper, woodfree, uncoated"
+          flow_type: "product"
+          flow_ref:
+            uuid: "58075527-56bb-4c6a-a78a-7d1a3f1db2da"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Weigh test paper or convert sheet counts with measured sheet area and grammage. Count test reprints."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter assembly, firmware loading, priming, testing and allocated production support electricity; preserve grid geography and voltage."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tested_printer_out
+          role: "Tested unpacked inkjet printer"
+          name: "Tested unpacked inkjet printer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Weigh accepted unpacked printers with declared supplied configuration; transfer to packing without a second upstream burden."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_paper
+          role: "Waste printed test paper"
+          name: "Waste printed test paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Weigh discarded test sheets including deposited ink; record receiving treatment and exclude retained test records."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: waste_printer
+          role: "Rejected inkjet printer for recycling"
+          name: "Rejected inkjet printer for recycling"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: complete assembled printers rejected and sent off site. Record mass and treatment destination; internal rework is not a waste export."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Packing"
+    inputs:
+      product:
+        - row_id: tested_printer_in
+          role: "Tested unpacked inkjet printer"
+          name: "Tested unpacked inkjet printer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Use the matched assembly transfer quantity; reconcile work-in-progress inventory changes."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "Corrugated cardboard box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record purchased box mass per shipped unit, including packing losses; disclose cushioning separately in the complete bill of materials."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+        - row_id: bag
+          role: "Low density polyethylene packaging film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: LDPE protective film is used. Record film mass and thickness; resin pellets are not converted film."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Inkjet printers used with data processing machines"
+          name: "Inkjet printers used with data processing machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02f03b13-dc7c-4249-be05-1a895cc160b6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted shipped printer mass excluding transport packaging; retain item count and net mass per configured unit."
+          amount:
+            expression: "Collect the process-period quantity under the linked protocol, reconcile stock and normalize to accepted output Q."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net configured printer at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "shared_operations"
+    rule: "Subdivide directly measured operations first. Allocate remaining shared production electricity with a documented causal driver such as metered machine time; use economic allocation only if physical relationships cannot be established, and disclose sensitivity."
+    source_ids:
+      - ghg-protocol-product-standard
+  - rule_id: reject_burden
+    applies_to: "rejects_rework"
+    rule: "Retain failed-test and rework burdens in the accepted-output denominator. Internal transfer carries its upstream burden once. Waste without economic value receives no production allocation; report treatment and any recycling convention explicitly, without an automatic avoided-production credit."
+    source_ids:
+      - ghg-protocol-product-standard
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_assembly_test
+      process_id: "assembly_test"
+      flow_role: "Each component, ink, paper, electricity, transfer and waste row"
+      record_type: "BOM, meters, batch and waste records"
+      raw_fields: "part identity; supplier state; quantity; stock change; net unit mass; accepted and rejected count; meter readings; test ink split; destination; time"
+      collection_method: "Weigh components and outputs; reconcile purchase and issue records; read calibrated electricity meter; retain full BOM and test logs"
+      unit: "kg; MJ"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "One declared representative reporting period including normal losses and rework"
+      site_scope: "Named assembly plant and supplier interfaces"
+      aggregation_rule: "Sum net quantities by atomic identity; divide by Q; reconcile internal transfers and stock"
+      quality_evidence: "Calibration; invoices; supplier BOM; test acceptance; waste receipts; mass closure"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "Transfer, box, film and accepted output"
+      record_type: "Packing and dispatch records"
+      raw_fields: "incoming printer mass; output count and net mass; box and film mass; losses; inventory"
+      collection_method: "Weigh individual packing components; reconcile dispatch count and accepted printer mass"
+      unit: "kg"
+      frequency: "Each dispatch batch"
+      temporal_coverage: "Same reporting period as assembly"
+      site_scope: "Named packing plant"
+      aggregation_rule: "Net packaging issued divided by Q; packaging excluded from Q"
+      quality_evidence: "Scales; packing BOM; dispatch reconciliation"
+  calculation_rules:
+    - id: normalization
+      applies_to: "All exchanges"
+      rule: "q_i = A_i / Q; Q = sum of accepted shipped net configured printer mass. Keep the same reporting period and account for inventory changes."
+      inputs:
+        - A_i
+        - Q
+      output: "Quantity per kg printer"
+      source_ids: []
+    - id: unit_conversion
+      applies_to: "One printer"
+      rule: "q_item = q_i × m"
+      inputs:
+        - q_i
+        - m
+      output: "Quantity per configured printer"
+      source_ids: []
+    - id: paper_conversion
+      applies_to: "Test paper"
+      rule: "Paper kg = sheet count × area in m2 × grammage in g/m2 / 1000"
+      inputs:
+        - Count
+        - area
+        - grammage
+      output: "kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: bom_closure
+      applies_to: "Purchased assemblies"
+      requirement: "Reconcile full component mass plus shipped ink against net printer mass. Document boundaries of each assembly and add missing concrete exchanges before dataset completion; do not invent a balancing flow."
+      evidence: "Supplier BOM and weighing records"
+    - id: period_scope
+      applies_to: "All rows"
+      requirement: "Retain geography, technology, measurement uncertainty and period. Distinguish measured zero, absent exchange and missing data. No unsupported external ranges are prescribed."
+      evidence: "Linked collection protocols"
+    - id: ink_closure
+      applies_to: "Ink"
+      requirement: "Reconcile issued ink with shipped ink, printed test deposition, captured purge and stock change. Add separately measured discarded ink or pads when exported."
+      evidence: "Ink balance and waste receipts"
+validation_rules:
+  - rule_id: identity_check
+    applies_to: "reference_flow"
+    rule: "Reject missing model qualifiers or a multifunction/non-inkjet product. Verify reference product state, net mass and the item-to-mass conversion."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: inventory_check
+    applies_to: "inventory"
+    rule: "Require one atomic exchange per row, matching property and unit, a linked protocol and either verified UUID or an explicit unresolved identity. Check complete BOM, positive Q and internal transfer balance."
+    source_ids: []
+  - rule_id: boundary_check
+    applies_to: "dataset"
+    rule: "Reject duplicate component/upstream burdens, packaging included in net reference mass, or production-only results labelled as a full lifecycle. Record external range evidence needs without fabricated bounds."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Factory production module for the declared configuration; upstream-linked production modelling after completeness checks"
+  excluded_use: "Standalone comparative service claims; complete product footprints without use and end-of-life; extrapolation to multifunction or remanufactured devices"
+  required_metadata: "All reference qualifiers; BOM; supplier links; production period; measurement and allocation methods; boundaries"
+  required_quality_disclosure: "UUID gaps; omitted exchanges; upstream coverage; uncertainty; unresolved range evidence; data representativeness"
+  update_trigger: "Model, configuration, supplier, process, grid or packaging change; new primary evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations, CPC 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-08"
+    used_for: "Classification identity"
+  - id: "epa-energy-star-imaging-equipment-3-2"
+    type: "standard"
+    reference: "EPA, ENERGY STAR Imaging Equipment Version 3.2 Final Specification, definitions 1.A–1.C. https://www.energystar.gov/sites/default/files/ENERGY%20STAR%20Imaging%20Equipment%20Version%203.2%20Final%20Specification.pdf; retrieved 2026-09-08"
+    used_for: "Printer and inkjet definitions; operating-mode terminology, not empirical consumption ranges"
+  - id: "ghg-protocol-product-standard"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard, chapters 7–9. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf; retrieved 2026-09-08"
+    used_for: "Boundary disclosure, primary data and allocation hierarchy; this partial production dataset is not a complete product carbon footprint"
+  - id: "epson-ink-yields"
+    type: "handbook"
+    reference: "Epson, Ink Yields, Initial Ink and Printhead Maintenance sections. https://epson.com/ink-yield-cartridge-info; retrieved 2026-09-08"
+    used_for: "Distinguish initial fill, maintenance consumption and residual ink from page yield"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9d1db94b8ce90b8fe5983ec881da4247779c570a4b177760e3198e17071369a3"
+  generated_content_sha256: "sha256:bcf1e92c7834ffe6e7489200e13931eee0a52e8a8e89e3331e8fd09f9487b1d9"

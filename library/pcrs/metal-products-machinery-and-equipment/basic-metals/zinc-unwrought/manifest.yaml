@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.zinc-unwrought
 title:
   en-US: "Zinc, unwrought"
-  zh-CN: null
-status: scaffold
+  zh-CN: "未锻轧锌"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,70 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41442"
     title: "Zinc, unwrought"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    result: canonical_identity_required
+    explanation: "No material canonical PCR covers unwrought zinc at a zinc-production facility gate. Zinc powders, fabricated zinc products, zinc compounds, and zinc scrap are distinct product or waste boundaries."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: in_electricity
+        reason_code: property_or_unit_mismatch
+        explanation: "The ranked alternating-current candidates have internally inconsistent property and unit-group support; no exact delivered-electricity UUID was adopted."
+      - row_id: out_unwrought_zinc
+        reason_code: classification_mismatch
+        explanation: "The only zinc-ingot candidate is classified as fabricated CPC 41545 zinc products rather than CPC 41442 unwrought zinc; no exact reference-product UUID was adopted."
+      - row_id: out_zinc_leach_residue
+        reason_code: no_exact_candidate
+        explanation: "Ranked waste candidates were zinc scrap and unspecified zinc slag, neither of which exactly identifies hydrometallurgical zinc-bearing leach residue."
+      - row_id: out_sulfur_dioxide_air
+        reason_code: no_exact_candidate
+        explanation: "The bounded and expanded searches returned wrong compartments or unrelated substances, not sulfur dioxide to air, unspecified."
+    range_evidence_needs:
+      - row_id: in_zinc_concentrate
+        explanation: "Two independent, original-text-verified sources with compatible facility-gate boundary, feed state, and normalization were not available for a concentration-input empirical range; collect foreground mass and zinc grade."
+      - row_id: in_sulfuric_acid
+        explanation: "No two compatible independent original sources support an empirical net sulfuric-acid consumption range across the declared routes; collect purchased, generated, recycled, and sold quantities separately."
+      - row_id: in_process_water
+        explanation: "No two compatible independent original sources support a facility-gate process-water range; collect metered withdrawal and exclude once-through pass-through water unless consumed."
+      - row_id: in_electricity
+        explanation: "No two compatible independent original sources support a route-compatible purchased-electricity range; collect revenue-meter and onsite-generation records."
+      - row_id: in_natural_gas
+        explanation: "No two compatible independent original sources support a route-compatible natural-gas range; collect fuel-meter data and net calorific value."
+      - row_id: in_metallurgical_coke
+        explanation: "A single IPCC source gives process-specific values but does not satisfy the two-independent-source rule for an empirical PCR range; collect coke mass, moisture, ash, and carbon content."
+      - row_id: in_zinc_scrap
+        explanation: "No two compatible independent original sources support a secondary-feed range across scrap qualities; collect received mass and zinc content."
+      - row_id: out_sulfuric_acid
+        explanation: "No two compatible independent original sources support a facility-specific sulfuric-acid co-product range; collect produced, internally recycled, and exported mass and concentration."
+      - row_id: out_zinc_slag
+        explanation: "No two compatible independent original sources support a route-compatible zinc-slag output range; collect wet and dry mass plus zinc content."
+      - row_id: out_zinc_leach_residue
+        explanation: "No two compatible independent original sources support a route-compatible leach-residue range; collect wet and dry mass, moisture, and zinc content."
+      - row_id: out_fossil_carbon_dioxide
+        explanation: "IPCC process factors are a single-source method and route-specific, not a two-source empirical range; prefer measured emissions or a facility carbon balance."
+      - row_id: out_sulfur_dioxide_air
+        explanation: "Available AP-42 values do not have a compatible independent source for an empirical facility-gate range; collect controlled stack and fugitive emissions."
+      - row_id: out_zinc_air
+        explanation: "No two compatible independent original sources support an empirical zinc-to-air range; collect measured controlled and fugitive emissions."
+      - row_id: out_zinc_water
+        explanation: "No two compatible independent original sources support an empirical zinc-to-water range; collect treated-effluent flow and zinc concentration."
+  unresolved_flow_identities:
+    - out_unwrought_zinc

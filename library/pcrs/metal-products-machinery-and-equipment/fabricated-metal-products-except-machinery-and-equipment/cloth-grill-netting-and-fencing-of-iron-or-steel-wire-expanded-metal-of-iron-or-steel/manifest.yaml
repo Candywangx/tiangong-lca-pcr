@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.cloth-grill-netting-and-fencing-of-iron-or-steel-wire-expanded-metal-of-iron-or-steel
 title:
   en-US: "Cloth, grill, netting and fencing, of iron or steel wire; expanded metal of iron or steel"
-  zh-CN: null
-status: scaffold
+  zh-CN: "钢铁丝制的布、格栅、网及围栏；网眼钢铁板"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T21:45:53Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,74 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42943"
     title: "Cloth, grill, netting and fencing, of iron or steel wire; expanded metal of iron or steel"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  queue_action: promote_legacy
+  semantic_boundary_review:
+    result: promote_legacy
+    rationale: "The retained target is the only canonical identity found for factory-gate iron-or-steel wire cloth, grill, netting, fencing, and expanded metal. Nearby fencing services and barbed-wire products have different service or product boundaries."
+    evidence_source_ids:
+      - un-cpc-3-0-structure-2025
+      - usitc-standard-steel-welded-wire-mesh-2021
+      - eu-jrc-ferrous-metals-processing-2022
+      - ppg-expanded-metal-process-2018
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: steel_wire_rod_input
+        reason_code: semantic_mismatch
+        explanation: "No public candidate passed the bilingual identity audit for hot-rolled low-carbon steel wire rod; the closest record had a Chinese baseName for steel angle. Receipt: 826883b3-4494-477e-a90e-446bf7e892f5."
+      - row_id: steel_sheet_input
+        reason_code: semantic_mismatch
+        explanation: "No public flat steel sheet candidate passed the bilingual identity audit; the leading candidates had Chinese baseNames for alloy-steel rod or silver plate. Receipt: 8700dd40-96d6-4545-a2b5-873ac8fe2a11."
+      - row_id: spent_pickling_liquor_output
+        reason_code: no_exact_candidate
+        explanation: "The search returned umbrella waste acid and chemically different wastes, not spent hydrochloric-acid steel-pickling liquor. Receipt: f7bc5e90-8f89-4d27-8530-779a9a1d8488."
+      - row_id: zinc_dross_output
+        reason_code: no_exact_candidate
+        explanation: "No public waste flow exactly identified zinc dross from galvanising; candidates were copper waste, mill scale, steelmaking slag, or unspecified steel-production waste. Receipt: 743900f5-5806-49b9-961d-4f4678f83eba."
+    range_evidence_needs:
+      - row_id: steel_wire_rod_input
+        explanation: "Obtain at least two independent, boundary-compatible original-text sources or reviewed foreground batches for wire-rod consumption per kg product; until then collect site-specific mass."
+      - row_id: steel_wire_input
+        explanation: "Obtain at least two independent, boundary-compatible original-text sources or reviewed foreground batches for purchased steel-wire consumption per kg product; until then collect site-specific mass."
+      - row_id: steel_sheet_input
+        explanation: "Obtain at least two independent, boundary-compatible original-text sources or reviewed foreground batches for flat steel sheet/coil consumption per kg expanded metal; until then collect site-specific mass."
+      - row_id: electricity_input
+        explanation: "Obtain independent route-resolved electricity benchmarks with compatible factory-gate boundaries; until then use metered foreground electricity."
+      - row_id: lubricating_oil_input
+        explanation: "Obtain independent wire-drawing lubricant-consumption evidence for compatible technology and recovery practice; until then use purchase and inventory records."
+      - row_id: hydrochloric_acid_30_input
+        explanation: "Obtain independent pickling-acid consumption evidence compatible with the declared 30% supply concentration, bath management, and product route; until then collect purchased mass."
+      - row_id: zinc_metal_input
+        explanation: "Obtain independent zinc-consumption evidence compatible with product coating mass and galvanising technology; until then use bath make-up and inventory records."
+      - row_id: process_water_input
+        explanation: "Obtain independent water-use evidence compatible with the included cleaning, rinsing, cooling, and recirculation boundary; until then use metered foreground water."
+      - row_id: natural_gas_input
+        explanation: "Obtain independent fuel-use evidence compatible with included drying, heat treatment, and zinc-bath heating; until then use metered foreground gas."
+      - row_id: reference_product_output
+        explanation: "Establish reviewed route-specific production-yield distributions from foreground batches before defining a yield QA range."
+      - row_id: steel_scrap_output
+        explanation: "Obtain independent route- and geometry-compatible scrap-fraction evidence or reviewed foreground batches; until then weigh segregated post-industrial scrap."
+      - row_id: spent_pickling_liquor_output
+        explanation: "Obtain independent evidence compatible with acid chemistry, bath life, regeneration, and waste boundary; until then weigh or meter the specific spent liquor."
+      - row_id: zinc_dross_output
+        explanation: "Obtain independent evidence compatible with bath practice and the zinc-dross definition; until then weigh the segregated dross leaving the process."
+      - row_id: fossil_co2_output
+        explanation: "Obtain independent direct-emission benchmarks compatible with the same included combustion units and fuel basis; until then use site stack records."

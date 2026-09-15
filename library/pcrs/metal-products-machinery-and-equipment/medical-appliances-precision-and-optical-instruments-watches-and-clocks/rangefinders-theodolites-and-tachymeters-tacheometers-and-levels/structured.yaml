@@ -1,10 +1,428 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48212"
-  title: "Rangefinders, theodolites and tachymeters (tacheometers) and levels"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.rangefinders-theodolites-and-tachymeters-tacheometers-and-levels"
+  classification_refs: "CPC 3.0 48212, Rangefinders, theodolites and tachymeters (tacheometers) and levels"
+  covered_products: "complete rangefinders; theodolites; tacheometers/electronic tacheometers/total stations; spirit, compensator, digital and laser surveying levels"
+  excluded_products: "separately sold tripods, staffs and prisms; GNSS receivers; photogrammetric instruments; handheld length gauges; surveying services"
+  representative_product: "one complete total station with its installed battery when supplied and its corrugated-board sales box"
+  production_route: "receipt of specified materials and components; housing fabrication where performed; optical/electronic integration; assembly; calibration and functional test; packaging"
+  market_state: "accepted, calibrated, saleable instrument at the manufacturing site gate"
+functional_unit:
+  what: "provision of a complete surveying instrument capable of the declared distance, angle, coordinate, or elevation measurement function"
+  how_much: "one saleable instrument"
+  how_well: "accepted against the manufacturer's declared model specification and applicable precision verification procedure"
+  how_long_or_cycle: "one production output at the factory gate; service life is declared metadata and is not normalized by this cradle-to-gate PCR"
+  reference_flow_link: "finished_surveying_instrument"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include receipt and issue of listed materials and components, directly controlled housing work, optical/electronic integration, assembly, calibration, functional testing and saleable packaging through the manufacturing-site gate."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Link each purchased material, component, battery, electricity and packaging input to a geographically and technologically representative upstream dataset; do not restate upstream emissions as foreground exchanges."
+      source_ids: []
+    - rule_id: boundary_quality_test
+      applies_to: "calibration and functional testing"
+      rule: "Retain model-specific calibration, functional-test, precision-test and acceptance evidence; identify the applied test procedure and do not represent a partial precision check as comprehensive product acceptance."
+      source_ids: []
+    - rule_id: boundary_exclusions
+      applies_to: "default study boundary"
+      rule: "Exclude capital equipment, buildings, employee travel, product use, maintenance and end-of-life unless the declared study scope explicitly includes them."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "specified materials and components received at the instrument manufacturing site"
+  starting_condition_role: "foreground manufacturing input condition"
+  product_classification_scope: "complete goods in CPC 3.0 48212; separately supplied parts and accessories remain outside this product identity"
+  recursive_input_rule: "a complete CPC 48212 instrument received for integration or resale is recorded as a same-category product input with its upstream dataset and is not recursively decomposed inside this foreground process"
+  upstream_dataset_requirement: "each purchased input requires a supplier-specific dataset when available, otherwise a documented representative dataset matching material/component state, geography and technology"
+  disclosure: "declare make-or-buy boundary, model and instrument family, manufacturing geography, production period, included battery/accessories, packaging configuration, test procedure, allocation and data coverage"
+reference_flow_definition:
+  reference_amount: "1 Item(s)"
+  product_flow_ref:
+    name: "Rangefinder, theodolite, tacheometer/total station, or level"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "instrument family"
+    - "manufacturer and model"
+    - "measurement function"
+    - "optical/digital/laser configuration"
+    - "declared precision or uncertainty"
+    - "included battery and accessories"
+    - "net instrument mass"
+    - "packaging configuration"
+    - "manufacturing site and geography"
+    - "production period"
+    - "factory gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item_count
+    applies_to: "accepted finished surveying instrument"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Normalize the dataset to exactly one accepted saleable instrument; rejected or reworked units are not reference output."
+  - id: material_mass_measurement
+    applies_to: "aluminium alloy, optical components, printed wire board and corrugated-board box inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net mass crossing the foreground boundary and exclude reusable transport packaging unless it is transferred with the product."
+  - id: electricity_energy_conversion
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity quantity and convert kWh to MJ using 1 kWh = 3.6 MJ; do not add upstream generation emissions as foreground elementary flows."
+  - id: battery_item_count
+    applies_to: "installed lithium-ion battery"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count only batteries transferred with the reference product and disclose rated capacity, chemistry and pack configuration."
+process_map:
+  - id: instrument_fabrication_assembly_test_packaging
+    name: "Instrument fabrication, assembly, testing and packaging"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground production"
+    quantitative_reference: "one accepted saleable surveying instrument"
+process_inventory:
+  - id: instrument_fabrication_assembly_test_packaging
+    label: "Instrument fabrication, assembly, testing and packaging"
+    inputs:
+      product:
+        - row_id: aluminium_alloy_input
+          role: "Aluminium alloy for structural instrument parts"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d2335464-e0fd-574c-b56f-83fdf8c65b0c"
+          property_unit: "Mass / kg"
+          description: "Record aluminium alloy consumed in housings, frames or structural parts made within the declared foreground boundary."
+          amount:
+            expression: "measured issued mass minus verified returned reusable stock, normalized to accepted instrument output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted saleable surveying instrument"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_component_issue
+              source_ids: []
+            ranges: []
+        - row_id: optical_components_input
+          role: "Optical components incorporated in the instrument"
+          name: "Optical components"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b76ef84-1faf-4be8-9f8a-0dbc2b56a030"
+          property_unit: "Mass / kg"
+          description: "Record the mass of optical component blanks or finished optical components transferred into the instrument; declare the supplied state."
+          amount:
+            expression: "measured or supplier-declared net mass incorporated in accepted instruments"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted saleable surveying instrument"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_component_issue
+              source_ids: []
+            ranges: []
+        - row_id: printed_wire_board_input
+          role: "Printed wire board incorporated in the instrument"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record the mass of each printed wire board crossing the foreground boundary, aggregated for the reference model."
+          amount:
+            expression: "supplier-declared or measured net board mass multiplied by boards installed in accepted instruments"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted saleable surveying instrument"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_component_issue
+              source_ids: []
+            ranges: []
+        - row_id: lithium_ion_battery_input
+          role: "Lithium-ion battery transferred with the instrument"
+          name: "Lithium Ion Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5554faa4-1ae2-459a-959a-b2180ab3cedc"
+          property_unit: "Number of items / Item(s)"
+          description: "Include this flow only for a model delivered with a rechargeable lithium-ion battery; models without such a battery record the row as not applicable in the produced dataset."
+          amount:
+            expression: "count batteries installed in or packaged with accepted instruments"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted saleable surveying instrument"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_issue
+              source_ids: []
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased electricity used in foreground manufacturing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity used for machining, assembly, environmental control, charging, calibration, testing and packaging inside the declared foreground boundary."
+          amount:
+            expression: "metered kWh attributable to the process multiplied by 3.6 and normalized to accepted instrument output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted saleable surveying instrument"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_metering
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box_input
+          role: "Corrugated-board sales box transferred with the instrument"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record only the corrugated-board box transferred with the reference product; reusable inbound crates are excluded from this row."
+          amount:
+            expression: "measured or supplier-declared net box mass multiplied by boxes transferred with accepted instruments"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted saleable surveying instrument"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_issue
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_surveying_instrument
+          role: "Accepted packaged surveying instrument"
+          name: "Rangefinder, theodolite, tacheometer/total station, or level"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record each complete instrument only after model-specific calibration, functional test and acceptance; the unresolved Tiangong product-flow UUID remains empty."
+          amount:
+            expression: "counted accepted packaged instruments"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output reconciled to the reference amount of 1 Item(s)"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_instrument_acceptance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_models
+    applies_to: "multiple instrument models or product families"
+    rule: "Prefer model-, batch- or line-level subdivision using BOM, issue, meter and accepted-output records."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "shared electricity and common operations"
+    rule: "When subdivision is not feasible, allocate shared burdens using a documented causal driver such as machine time, test time or occupied production time; disclose the driver and perform a sensitivity check against item-count allocation."
+    source_ids: []
+  - rule_id: allocation_rework_scrap
+    applies_to: "rework, rejects and recyclable scrap"
+    rule: "Assign rework burdens to the accepted output that required them; record any exported recyclable material as a separate waste or co-product exchange and disclose the applied cut-off or substitution convention without netting it from input quantities."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_component_issue
+      process_id: "instrument_fabrication_assembly_test_packaging"
+      flow_role: "aluminium alloy, optical component, printed wire board and battery inputs"
+      record_type: "BOM, supplier specification, receipt and issue records"
+      raw_fields: "model; part id; flow identity; supplied state; quantity; net mass where mass-based; return quantity; accepted output count"
+      collection_method: "reconcile approved BOM with calibrated weighing or supplier net-mass data and issue/return records"
+      unit: "kg or Item(s)"
+      frequency: "per lot or production batch"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign"
+      site_scope: "declared manufacturing site and model"
+      aggregation_rule: "sum net issues by atomic flow and divide by accepted output count"
+      quality_evidence: "approved BOM revision; supplier specification; scale calibration; issue and return records"
+    - protocol_id: cp_electricity_metering
+      process_id: "instrument_fabrication_assembly_test_packaging"
+      flow_role: "purchased electricity"
+      record_type: "electricity meter and production-time records"
+      raw_fields: "meter id; opening and closing reading; kWh; process share; allocation driver; accepted output count"
+      collection_method: "dedicated submeter where available, otherwise reconcile facility meter to documented causal allocation"
+      unit: "kWh"
+      frequency: "monthly and each production campaign"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign"
+      site_scope: "declared foreground process at the manufacturing site"
+      aggregation_rule: "sum attributable kWh, multiply by 3.6 MJ/kWh and divide by accepted output count"
+      quality_evidence: "meter calibration or utility invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_packaging_issue
+      process_id: "instrument_fabrication_assembly_test_packaging"
+      flow_role: "corrugated-board sales box"
+      record_type: "packaging BOM and issue records"
+      raw_fields: "box specification; quantity issued; net mass per box; returned quantity; accepted output count"
+      collection_method: "reconcile packaging BOM with supplier mass declaration or calibrated weighing and issue records"
+      unit: "kg"
+      frequency: "per packaging lot or batch"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign"
+      site_scope: "declared packaging operation"
+      aggregation_rule: "net box mass issued divided by accepted output count"
+      quality_evidence: "packaging specification; scale calibration; issue record"
+    - protocol_id: cp_finished_instrument_acceptance
+      process_id: "instrument_fabrication_assembly_test_packaging"
+      flow_role: "accepted packaged surveying instrument"
+      record_type: "calibration, functional-test and release records"
+      raw_fields: "serial number; model; instrument family; test procedure; result; accepted or rejected state; acceptance date; packaging configuration"
+      collection_method: "count unique serial-numbered units passing the declared model acceptance procedure"
+      unit: "Item(s)"
+      frequency: "each unit"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign"
+      site_scope: "declared assembly and test operation"
+      aggregation_rule: "count accepted units only and reconcile to inventory, sales-release and rework records"
+      quality_evidence: "signed or electronic test record; calibration status; release record"
+  calculation_rules:
+    - id: calculate_net_material_per_item
+      applies_to: "mass-based material and component inputs"
+      rule: "(issued mass - verified returned mass) / accepted finished instruments"
+      inputs:
+        - cp_material_component_issue
+        - cp_finished_instrument_acceptance
+      output: "kg input per Item(s) reference flow"
+      source_ids: []
+    - id: calculate_battery_items_per_item
+      applies_to: "lithium-ion battery input"
+      rule: "batteries transferred with accepted instruments / accepted finished instruments"
+      inputs:
+        - cp_material_component_issue
+        - cp_finished_instrument_acceptance
+      output: "Item(s) battery per Item(s) reference flow"
+      source_ids: []
+    - id: calculate_electricity_per_item
+      applies_to: "purchased electricity"
+      rule: "attributable metered kWh × 3.6 / accepted finished instruments"
+      inputs:
+        - cp_electricity_metering
+        - cp_finished_instrument_acceptance
+      output: "MJ electricity per Item(s) reference flow"
+      source_ids: []
+    - id: calculate_box_mass_per_item
+      applies_to: "corrugated-board box input"
+      rule: "net box mass issued / accepted finished instruments"
+      inputs:
+        - cp_packaging_issue
+        - cp_finished_instrument_acceptance
+      output: "kg box per Item(s) reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Identify instrument family, manufacturer, model, measurement function, included battery/accessories, packaging and serial-number population; do not mix models without disclosed subdivision or allocation."
+      evidence: "BOM revision, model specification and release records"
+    - id: dq_temporal_coverage
+      applies_to: "foreground inventory"
+      requirement: "Use a representative continuous 12-month period; a shorter complete production campaign is allowed only when dates, seasonality and representativeness are disclosed."
+      evidence: "dated meter, issue, production and acceptance records"
+    - id: dq_mass_energy_traceability
+      applies_to: "material, component, packaging and electricity rows"
+      requirement: "Retain calibrated measurement, supplier specification or invoice evidence and reconcile issue, return and allocation records to the declared site boundary."
+      evidence: "calibration certificates, supplier declarations, invoices and reconciliation worksheets"
+    - id: dq_test_traceability
+      applies_to: "finished instrument output"
+      requirement: "Retain the declared test procedure, calibration status, result and acceptance state for each counted output; distinguish a partial precision check from comprehensive acceptance testing."
+      evidence: "serial-numbered test and release record; controlled test-procedure identifier and revision"
+    - id: dq_completeness
+      applies_to: "all foreground exchanges"
+      requirement: "Report any additional model-specific atomic material, component, consumable, waste or direct-emission exchange that is material to the declared study even when it is not a predefined row in this PCR."
+      evidence: "BOM-to-inventory reconciliation and documented completeness review"
+validation_rules:
+  - rule_id: validate_reference_output
+    applies_to: "reference flow and finished output"
+    rule: "Exactly one accepted saleable instrument must be the normalized reference output; rejected, reworked or incomplete units must not be counted."
+    source_ids: []
+  - rule_id: validate_uuid_identity
+    applies_to: "UUID-bearing exchanges"
+    rule: "Verify each UUID against the declared flow name, flow type, property and unit group; keep the reference-product UUID empty until an exact CPC 48212 instrument flow is confirmed."
+    source_ids: []
+  - rule_id: validate_bom_completeness
+    applies_to: "foreground inventory"
+    rule: "Reconcile listed and additional atomic inputs to the approved model BOM, packaging BOM, issue/return records and accepted output population; disclose omitted exchanges and cut-off rationale."
+    source_ids: []
+  - rule_id: validate_electricity
+    applies_to: "purchased electricity"
+    rule: "Reconcile attributable electricity to meter or invoice totals, preserve the allocation driver and verify the 3.6 MJ/kWh conversion."
+    source_ids: []
+  - rule_id: validate_test_evidence
+    applies_to: "finished surveying instrument"
+    rule: "Confirm that the declared model-specific acceptance evidence exists, identifies the applied test procedure and covers the instrument functions represented by the declared product specification."
+    source_ids: []
+  - rule_id: validate_range_status
+    applies_to: "important flows"
+    rule: "Do not substitute an external default range for missing foreground data while the manifest records an unresolved range-evidence need."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "cradle-to-gate datasets for complete CPC 48212 surveying instruments matching the declared family, model, technology, included accessories, packaging, geography and production period"
+  excluded_use: "separately supplied accessories, other surveying instruments, use-stage services, maintenance or end-of-life without an explicitly extended boundary"
+  required_metadata: "PCR id; instrument family; manufacturer and model; measurement function; precision or uncertainty declaration; test procedure; included battery/accessories; net mass; packaging; geography; site; production period; make-or-buy boundary; allocation; reference-product UUID status"
+  required_quality_disclosure: "record coverage; measurement and supplier-data basis; meter allocation; model mixing; additional exchanges; cut-offs; unresolved UUID and range evidence; deviations from the required protocols"
+  update_trigger: "material change in product identity, technology, BOM, battery or packaging configuration, manufacturing site, allocation, test procedure, source evidence or Tiangong flow identity"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "official CPC 3.0 classification identity and category boundary"
+  - id: "samr-total-station"
+    type: "standard"
+    reference: "https://std.samr.gov.cn/gb/search/gbDetailed?id=JiO74cSBHwA%3D&mode=p"
+    used_for: "verified Chinese term 全站仪"
+  - id: "samr-electronic-theodolite"
+    type: "standard"
+    reference: "https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D82B27D3A7E05397BE0A0AB82A"
+    used_for: "verified Chinese term 电子经纬仪 and national-standard catalogue context"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:62fb006f3693eb30b87cbd7f72edbff586016723be23c29d3280b8738427cd12"
+  generated_content_sha256: "sha256:dee7b20b4c193365a77e6653ae66951fdeb903a0995b81961f00a2a3784f85b3"

@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.platinum-unwrought-or-in-semi-manufactured-forms-or-in-powder-form
 title:
   en-US: "Platinum, unwrought or in semi-manufactured forms, or in powder form"
-  zh-CN: null
-status: scaffold
+  zh-CN: "未锻造、半制成或粉末状的铂"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +22,82 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41330"
     title: "Platinum, unwrought or in semi-manufactured forms, or in powder form"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: platinum_product
+      reason: "No exact Tiangong reference product flow covers the complete unwrought, semi-manufactured, and powder-form platinum boundary."
+  semantic_boundary:
+    conclusion: "One canonical PCR is warranted for saleable platinum metal in unwrought, semi-manufactured, or powder form; platinum ores, concentrates, compounds, catalysts, scrap, and fabricated articles are distinct product boundaries."
+    existing_material_pcr_found: false
+    source_ids:
+      - un-cpc-3-structure-2025
+      - china-mof-research-goods-list-2026
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: pt_refinery_feed
+        reason_code: no_exact_candidate
+        explanation: "The only ranked candidate was gold-silver bullion; no exact public state-100 flow represents the declared assayed platinum-bearing refinery feed lot."
+      - row_id: purchased_electricity
+        reason_code: manual_review_required
+        explanation: "Two generic alternating-current UUIDs were indistinguishable in public fields and neither records the required voltage, geography, or supply technology."
+      - row_id: platinum_product
+        reason_code: no_exact_candidate
+        explanation: "The only CPC 41330 candidate is Platinum Wire Material, which is narrower than the PCR product-state set and cannot represent unwrought, powder, and other semi-manufactured platinum."
+      - row_id: platinum_filter_cake
+        reason_code: no_exact_candidate
+        explanation: "All ranked waste candidates describe other spent materials or chemical wastes; none is platinum-bearing hydroxide filter cake."
+      - row_id: acidic_chloride_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Ranked candidates were generic waste acid, citric-acid residue, or printing-plate wastewater and do not establish the required chloride composition and platinum-refinery origin."
+    range_evidence_needs:
+      - range_id: pt_refinery_feed_amount
+        row_id: pt_refinery_feed
+        explanation: "Compatible independent original sources do not provide a transferable feed-mass and assay range across primary and secondary refinery campaigns; collect campaign-specific mass and assay records."
+      - range_id: hydrochloric_acid_30_amount
+        row_id: hydrochloric_acid_30
+        explanation: "No two independent boundary-compatible original sources support a 30% hydrochloric-acid consumption range per kg of declared platinum product; collect purchase, make-up, and recycle-loop records."
+      - range_id: chlorine_gas_amount
+        row_id: chlorine_gas
+        explanation: "No two independent boundary-compatible original sources support a chlorine consumption range for the route-conditioned dissolution step; collect metered make-up and recovered-loop quantities."
+      - range_id: sodium_hydroxide_amount
+        row_id: sodium_hydroxide
+        explanation: "No two independent boundary-compatible original sources support a sodium-hydroxide consumption range across feed chemistries and wastewater-neutralisation configurations; collect foreground records."
+      - range_id: process_water_amount
+        row_id: process_water
+        explanation: "Available sources identify water as an inventory item but do not provide two independent compatible consumption ranges for the declared refinery boundary; collect metered make-up water."
+      - range_id: purchased_electricity_amount
+        row_id: purchased_electricity
+        explanation: "Published primary and secondary PGM results have incompatible upstream boundaries and do not isolate the declared foreground refinery-and-finishing electricity range; collect meter records."
+      - range_id: gaseous_natural_gas_amount
+        row_id: gaseous_natural_gas
+        explanation: "No two independent compatible original sources isolate natural-gas use for the conditional foreground melting and thermal-treatment operations; collect calibrated fuel records."
+      - range_id: platinum_product_yield
+        row_id: platinum_product
+        explanation: "Product yield depends on feed assay, campaign routing, internal recycle, and release form; no transferable independent-source range was verified, so calculate it from foreground mass and assay records."
+      - range_id: platinum_filter_cake_amount
+        row_id: platinum_filter_cake
+        explanation: "Filter-cake generation and retained platinum depend on wastewater treatment and recovery configuration; collect weighed mass and laboratory composition instead of inferring a range."
+      - range_id: acidic_chloride_wastewater_amount
+        row_id: acidic_chloride_wastewater
+        explanation: "Wastewater generation depends on closed-loop recovery and treatment configuration; no two independent compatible empirical ranges were verified, so collect flow and composition records."
+      - range_id: fossil_carbon_dioxide_amount
+        row_id: fossil_carbon_dioxide
+        explanation: "Direct fossil CO2 is calculated from foreground fuel quantity and carbon data; a generic external empirical range would obscure the site-specific combustion balance."

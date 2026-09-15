@@ -1,10 +1,794 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41412"
-  title: "Unrefined copper; copper anodes for electrolytic refining"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.unrefined-copper-copper-anodes-for-electrolytic-refining"
+  classification_refs: "CPC 3.0: 41412, Unrefined copper; copper anodes for electrolytic refining (un-cpc-3-0-2025)"
+  covered_products: "Fire-refined unrefined copper leaving the declared refining gate; cast copper anodes intended for electrolytic refining"
+  excluded_products: "Copper matte and cement copper; refined cathode copper; refined copper alloys and master alloys; copper powder and semi-finished copper products"
+  representative_product: "Anode copper suitable for transfer to electrolytic refining"
+  production_route: "Fire refining of declared blister copper, with conditional secondary copper-scrap feed; oxidation followed by reduction or poling; conditional anode casting"
+  market_state: "Solid unrefined copper or solid cast copper anodes at the producer gate; temperature, copper assay, impurity profile, dimensions, and acceptance status declared"
+functional_unit:
+  what: "Supply of declared fire-refined unrefined copper product for further copper refining"
+  how_much: "1,000 kg net conforming product at the producer gate"
+  how_well: "Meets the purchaser or refinery acceptance specification for copper assay, impurity profile, physical form, and, for anodes, geometry and integrity"
+  how_long_or_cycle: "One completed production lot; no use-duration function is assigned"
+  reference_flow_link: "Net conforming mass leaving the foreground boundary, excluding off-spec material returned internally"
+system_boundary:
+  rules:
+    - rule_id: boundary_feed_gate
+      applies_to: "foreground starting boundary"
+      rule: "Start at metered receipt of declared blister copper or copper scrap; exclude ore extraction, concentrate preparation, matte smelting, and converting unless an expanded dataset reports them separately."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+        - us-epa-ap42-primary-copper-smelting-1986
+    - rule_id: boundary_refining_operations
+      applies_to: "foreground operations"
+      rule: "Include oxidation, reduction or poling, slag removal, furnace and fugitive off-gas capture and treatment, and directly attributable utilities and emissions."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+        - us-epa-ap42-primary-copper-smelting-1986
+    - rule_id: boundary_anode_casting
+      applies_to: "product-form condition"
+      rule: "Include anode casting, cooling, reject handling, and casting emissions when the output is copper anodes; mark not applicable only for a declared non-anode output."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - rule_id: boundary_electrorefining_exclusion
+      applies_to: "downstream boundary"
+      rule: "End at net conforming product at the producer gate; exclude electrolytic refining, cathode production, semi-fabrication, downstream transport, use, and end-of-life."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+        - us-epa-ap42-primary-copper-smelting-1986
+boundary_abstraction:
+  declared_starting_condition: "Blister copper or copper scrap received at the fire-refining boundary, with mass, copper assay, impurity profile, physical state, temperature, origin, and upstream dataset identity declared"
+  starting_condition_role: "Upstream copper-bearing product input to foreground fire refining"
+  product_classification_scope: "Fire-refined unrefined copper and copper anodes intended for electrolytic refining; CPC 3.0 code 41412 is classification context rather than canonical identity"
+  recursive_input_rule: "Record externally supplied same-category unrefined copper with its upstream dataset; record facility-internal fire-refined copper and off-spec anodes as internal transfers and do not recursively attach this PCR"
+  upstream_dataset_requirement: "Each external blister-copper or copper-scrap input requires a named upstream dataset or documented cut-off, geography, technology, temporal coverage, assay, and allocation status"
+  disclosure: "Declare feed route and shares, melting inclusion, reduction agent, oxygen enrichment, furnace type, off-gas controls, casting technology, cooling-water mode, internal recycling, product form, and excluded operations"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Anode copper"
+    uuid: "23b431ee-f7a0-4788-b2e2-7361cd48d4ad"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "declared product form"
+    - "copper assay and analytical basis"
+    - "impurity profile"
+    - primary
+    - secondary
+    - "or mixed feed route"
+    - "physical state and temperature at gate"
+    - "anode dimensions and acceptance specification when applicable"
+    - "site and geography"
+    - "reporting period"
+    - "allocation method"
+    - "upstream dataset identity and boundary for each external copper feed"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net conforming output mass on a calibrated scale. Exclude casting rejects and internal returns from the reference amount."
+  - id: copper_mass_balance
+    applies_to: "copper-bearing inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record as-received mass and copper assay basis separately; do not substitute contained-copper mass for physical flow mass."
+  - id: gas_reference_conditions
+    applies_to: "natural gas, propane, compressed air, and industrial oxygen"
+    required_property_ref:
+      name: "Volume or Mass as assigned to the selected flow"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Preserve the selected flow property. For volume records, declare temperature, pressure, dry or wet basis, and standard-condition conversion."
+  - id: electricity_energy
+    applies_to: "alternating current"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter kWh in the source record and convert to MJ using 1 kWh = 3.6 MJ; disclose voltage level and supply geography."
+  - id: water_accounting
+    applies_to: "cooling water and wastewater"
+    required_property_ref:
+      name: "Mass or Volume as assigned to the selected flow"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Distinguish gross recirculation, make-up, evaporation, and discharged water. Only water crossing the foreground boundary is an exchange."
+process_map:
+  - id: fire_refining
+    name: "Fire refining and off-gas handling"
+    inclusion: "required"
+    inclusion_condition: "Always required for the declared product boundary"
+    role: "Foreground oxidation, reduction or poling, slag removal, and off-gas handling"
+    quantitative_reference: "Net fire-refined copper transferred to casting or sold as declared unrefined copper"
+  - id: anode_casting
+    name: "Anode casting and cooling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is a copper anode; otherwise document non-applicability"
+    role: "Foreground casting, cooling, inspection, and reject return"
+    quantitative_reference: "1,000 kg net conforming anode copper at the producer gate"
+process_inventory:
+  - id: fire_refining
+    label: "Fire refining and off-gas handling"
+    inputs:
+      product:
+        - row_id: fr_blister_copper
+          role: "Primary-route blister copper feed"
+          name: "Blister Copper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ca87ab19-c076-4ccf-9cbd-b76cb932a880"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record blister copper crossing the fire-refining gate for a primary or mixed feed route."
+          amount:
+            expression: "measured as-received blister-copper mass charged during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_feed_mass
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+        - row_id: fr_copper_scrap
+          role: "Secondary-route copper scrap feed"
+          name: "Scrap copper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "096e8470-e8e1-4aa9-b35e-c5b4350f145e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record copper scrap when secondary feed crosses the boundary; declare grade, origin, contamination, preparation, and ownership transfer."
+          amount:
+            expression: "measured accepted copper-scrap mass charged; zero and not applicable for routes without scrap feed"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_feed_mass
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: fr_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record natural gas crossing the boundary as furnace fuel or reducing agent."
+          amount:
+            expression: "metered natural-gas volume allocated to refining and associated afterburning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_reductant
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+        - row_id: fr_propane
+          role: "Propane"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record propane only when it crosses the boundary as the declared poling agent or fuel."
+          amount:
+            expression: "measured delivered propane mass attributable to refining; zero and not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_reductant
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: fr_compressed_air
+          role: "Compressed oxidation air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record metered compressed air supplied to oxidation, combustion, or afterburning."
+          amount:
+            expression: "metered compressed-air volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+        - row_id: fr_industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record industrial oxygen only when supplied across the boundary for oxygen enrichment."
+          amount:
+            expression: "metered oxygen volume at declared reference conditions; zero and not applicable without enrichment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: fr_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record metered electricity for furnace drives, gas handling, pumps, fans, controls, and refining auxiliaries."
+          amount:
+            expression: "metered or submetered electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fr_unrefined_copper_output
+          role: "Fire-refined unrefined copper output"
+          name: "Fire-refined unrefined copper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fire-refined unrefined copper sold at this gate or transferred internally to casting. No exact Tiangong UUID is confirmed for the generic non-anode state."
+          amount:
+            expression: "measured net fire-refined copper mass after subtracting residues and furnace returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refining_outputs
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+      waste:
+        - row_id: fr_anode_furnace_slag
+          role: "Copper-bearing anode-furnace slag"
+          name: "Copper-containing slag"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "199d719c-1505-4223-886f-cfef1f9c6392"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record slag removed during oxidation and declare internal return, external recovery, or treatment destination."
+          amount:
+            expression: "measured slag mass leaving refining before external treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_outputs
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+        - row_id: fr_filter_dust
+          role: "Captured copper-bearing filter dust"
+          name: "Captured copper-bearing anode-furnace filter dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record dry particulate collected from anode-furnace gas controls separately from residual air emissions. No exact Tiangong UUID is confirmed."
+          amount:
+            expression: "measured collected filter-dust mass leaving the control unit or returned internally"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_outputs
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: fr_fossil_co2
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only direct fossil carbon dioxide from foreground fuel combustion, reduction or poling, and afterburning."
+          amount:
+            expression: "measured direct emission or verified site carbon-balance result"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: fr_sulfur_dioxide
+          role: "Direct sulfur dioxide to air"
+          name: "Sulfur dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sulfur dioxide measured from the anode-furnace stack and attributable fugitive sources. No exact Tiangong UUID is confirmed for unspecified outdoor air."
+          amount:
+            expression: "measured sulfur-dioxide mass after foreground controls"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+        - row_id: fr_particulate
+          role: "Residual particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record particle-size-unspecified residual particulate after controls when no measured size split is available; exclude collected filter dust."
+          amount:
+            expression: "measured stack plus attributable fugitive particulate mass after controls"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+  - id: anode_casting
+    label: "Anode casting and cooling"
+    inputs:
+      product:
+        - row_id: ac_fire_refined_copper_input
+          role: "Internal fire-refined copper transfer"
+          name: "Fire-refined copper for anode casting"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured internal transfer from fire refining to casting. It requires a facility-specific intermediate identity."
+          amount:
+            expression: "measured molten or solid fire-refined copper mass entering casting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming anode copper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_mass
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: ac_cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df413bba-3c03-412b-a80a-c6082b6b9b33"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record make-up or once-through cooling water crossing the boundary; exclude gross internal recirculation."
+          amount:
+            expression: "metered make-up plus once-through cooling-water mass attributable to casting"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming anode copper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_water
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: ac_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for caster drives, pumps, cooling, inspection, and directly attributable auxiliaries."
+          amount:
+            expression: "metered or submetered electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming anode copper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ac_anode_copper
+          role: "Conforming copper anodes"
+          name: "Anode copper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23b431ee-f7a0-4788-b2e2-7361cd48d4ad"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only anodes accepted for transfer to electrolytic refining as reference output."
+          amount:
+            expression: "measured net conforming anode mass leaving casting"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net conforming anode copper"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_casting_mass
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+                - us-epa-ap42-primary-copper-smelting-1986
+            ranges: []
+        - row_id: ac_offspec_anode_copper
+          role: "Off-spec copper anodes returned internally"
+          name: "Off-spec copper anodes"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected anodes as a distinct internal intermediate; do not count them as reference output."
+          amount:
+            expression: "measured rejected-anode mass returned internally"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming anode copper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_mass
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: ac_wastewater
+          role: "Direct-cooling wastewater"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d4117728-768b-4cbe-8a3b-45b2ad87f2ab"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record wastewater when cooling water leaves casting for treatment or discharge; declare copper, suspended solids, temperature, and treatment status."
+          amount:
+            expression: "metered wastewater volume sent to treatment or discharge; zero and not applicable for a closed loop without purge"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming anode copper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_water
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "independently measurable operations"
+    rule: "Avoid allocation by separately metering fire refining, off-gas treatment, and casting and assigning direct exchanges to the process that causes them."
+    source_ids: []
+  - rule_id: allocation_internal_recycling
+    applies_to: "slag, dust, fire-refined copper, and off-spec anodes returned within the site"
+    rule: "Treat internal returns as internal transfers without upstream burden credit, avoided-product credit, or double counting; retain mass in the process balance."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+      - us-epa-ap42-primary-copper-smelting-1986
+  - rule_id: allocation_external_recovery
+    applies_to: "residues leaving for external recovery"
+    rule: "Model the residue transfer explicitly. Apply no substitution credit unless the governing study method requires one; disclose later system expansion outside this inventory."
+    source_ids: []
+  - rule_id: allocation_multiple_products
+    applies_to: "unavoidable joint production of marketed products"
+    rule: "First use a documented physical causal relation. If none can be demonstrated, use net revenue at the gate and disclose prices, currency, period, and sensitivity; never allocate internal transfers as products."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_copper_feed_mass
+      process_id: "fire_refining"
+      flow_role: "blister copper and copper scrap"
+      record_type: "weighbridge, charge, assay, and inventory records"
+      raw_fields: "timestamp; batch; source; flow identity; net mass; copper assay; impurity profile; moisture basis; inventory"
+      collection_method: "Reconcile deliveries and stock movement to charge records"
+      unit: "kg and mass fraction"
+      frequency: "each delivery and charge"
+      temporal_coverage: "full reporting period"
+      site_scope: "all refining units"
+      aggregation_rule: "Sum each atomic feed, adjust inventory change, normalize to net product"
+      quality_evidence: "calibration; assay; tickets; charge log; reconciliation"
+    - protocol_id: cp_fuel_and_reductant
+      process_id: "fire_refining"
+      flow_role: "natural gas and propane"
+      record_type: "meter, tank, and invoice records"
+      raw_fields: "timestamp; fuel identity; meter; mass or volume; reference conditions; allocation tag"
+      collection_method: "Read dedicated meters or reconcile shared meters"
+      unit: "m3 or kg"
+      frequency: "batch or daily"
+      temporal_coverage: "full reporting period"
+      site_scope: "furnace and afterburner"
+      aggregation_rule: "Sum by concrete fuel and normalize; do not aggregate fuels"
+      quality_evidence: "calibration; invoices; fuel specification"
+    - protocol_id: cp_process_gases
+      process_id: "fire_refining"
+      flow_role: "compressed air and industrial oxygen"
+      record_type: "flowmeter and operating records"
+      raw_fields: "timestamp; gas; volume; pressure; temperature; humidity; purity; stage"
+      collection_method: "Read flowmeters and retain condition conversion"
+      unit: "m3"
+      frequency: "batch or continuous"
+      temporal_coverage: "full reporting period"
+      site_scope: "furnace and gas system"
+      aggregation_rule: "Sum each gas separately and normalize"
+      quality_evidence: "calibration; gas certificate; operating log"
+    - protocol_id: cp_electricity
+      process_id: "fire_refining"
+      flow_role: "electricity"
+      record_type: "meter records"
+      raw_fields: "timestamp; meter; process; kWh; voltage; geography; shared-load allocation"
+      collection_method: "Read submeters; document shared-load allocation"
+      unit: "kWh source and MJ reported"
+      frequency: "hourly, batch, or monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "each process"
+      aggregation_rule: "Sum kWh by process, multiply by 3.6, normalize"
+      quality_evidence: "calibration; invoice; allocation worksheet"
+    - protocol_id: cp_refining_outputs
+      process_id: "fire_refining"
+      flow_role: "unrefined copper, slag, and dust"
+      record_type: "scales, batch, residue, assay, and inventory records"
+      raw_fields: "batch; identity; mass; assay; destination; return flag; inventory"
+      collection_method: "Weigh outputs or reconcile calibrated vessel and inventory"
+      unit: "kg"
+      frequency: "each tap or transfer"
+      temporal_coverage: "full reporting period"
+      site_scope: "furnace and gas controls"
+      aggregation_rule: "Sum each output; retain internal returns; normalize"
+      quality_evidence: "calibration; assay; transfer ticket; manifest"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "fire_refining"
+      flow_role: "carbon dioxide, sulfur dioxide, and particulate"
+      record_type: "stack test, continuous monitor, fugitive estimate, emissions report"
+      raw_fields: "source; pollutant; concentration; flow; duration; moisture; oxygen correction; conditions; control; uncertainty"
+      collection_method: "Use approved measurement or verified mass balance; trace stack and fugitive parts"
+      unit: "kg"
+      frequency: "continuous or campaign"
+      temporal_coverage: "representative campaigns and full-period operations"
+      site_scope: "all attributable sources"
+      aggregation_rule: "Integrate by source, exclude overlap, normalize"
+      quality_evidence: "calibration; method report; detection limit; uncertainty"
+    - protocol_id: cp_casting_mass
+      process_id: "anode_casting"
+      flow_role: "transfer, conforming anodes, and off-spec anodes"
+      record_type: "transfer scale, batch, inspection, and rejection records"
+      raw_fields: "batch; transferred mass; count; mass; acceptance; rejection; destination; inventory"
+      collection_method: "Reconcile transferred copper with conforming, rejected, and inventory mass"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "all casting lines"
+      aggregation_rule: "Sum conforming and rejected separately; normalize"
+      quality_evidence: "calibration; specification; reconciliation"
+    - protocol_id: cp_casting_water
+      process_id: "anode_casting"
+      flow_role: "cooling water and wastewater"
+      record_type: "make-up, circulation, purge, and discharge meters"
+      raw_fields: "meter; amount; source; temperature; recirculation; purge; evaporation; destination; quality"
+      collection_method: "Meter boundary-crossing make-up and discharge; exclude recirculation"
+      unit: "kg input and m3 output"
+      frequency: "daily or continuous"
+      temporal_coverage: "full reporting period"
+      site_scope: "casting cooling system"
+      aggregation_rule: "Sum input and output separately and normalize"
+      quality_evidence: "calibration; water balance; discharge record; laboratory results"
+  calculation_rules:
+    - id: calc_normalization
+      applies_to: "all inventory rows"
+      rule: "reported amount = period exchange / period net conforming product mass × 1,000 kg"
+      inputs:
+        - exchange
+        - "net product mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "fr_electricity; ac_electricity"
+      rule: "electricity MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ"
+      source_ids: []
+    - id: calc_casting_output
+      applies_to: "ac_anode_copper"
+      rule: "net conforming mass = gross cast mass - off-spec mass - closing work-in-process increase + opening work-in-process decrease"
+      inputs:
+        - "gross cast"
+        - "rejected mass"
+        - "inventory change"
+      output: "net conforming anode mass"
+      source_ids: []
+    - id: calc_copper_reconciliation
+      applies_to: "both processes"
+      rule: "input copper = output copper + copper in residues + inventory change + quantified unaccounted difference"
+      inputs:
+        - masses
+        - assays
+        - inventory
+      output: "closure and unaccounted difference"
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - id: calc_water_balance
+      applies_to: "casting cooling"
+      rule: "boundary input = wastewater + evaporation + carry-out + inventory change + quantified unaccounted difference"
+      inputs:
+        - make-up
+        - discharge
+        - evaporation
+        - carry-out
+        - inventory
+      output: "water-balance closure"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "copper-bearing flows"
+      requirement: "Declare physical state, assay, impurities, source or destination, return status, and exact identity; do not use the conforming-anode UUID for blister copper or off-spec anodes."
+      evidence: "assays; master data; batch and transfer records"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Cover at least 95% of operating days and reconcile all exchange records for the full period; disclose exclusions."
+      evidence: "coverage matrix; missing-data log; reconciliations"
+    - id: dq_measurement
+      applies_to: "measured amounts"
+      requirement: "Use calibrated meters or scales and retain calibration, detection limits, and reference conditions."
+      evidence: "certificates; instrument register; laboratory QA"
+    - id: dq_temporal
+      applies_to: "all records"
+      requirement: "Use one reporting period, normally 12 consecutive months or a justified representative campaign including material start-up and shutdown effects."
+      evidence: "calendar; campaign justification; operating log"
+    - id: dq_geography_technology
+      applies_to: "external inputs and background links"
+      requirement: "Match geography, voltage, fuel state, oxygen boundary, water source, furnace, and controls or disclose limitations."
+      evidence: "supplier data; technology description; dataset metadata"
+    - id: dq_uncertainty
+      applies_to: "calculated and allocated amounts"
+      requirement: "Document raw-data and allocation uncertainty and mass-balance closure; do not replace foreground data with unresolved external ranges."
+      evidence: "uncertainty worksheet; sensitivity; review sign-off"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Require 1,000 kg net conforming product and use the Anode copper UUID only for conforming anodes; keep non-anode output explicitly unresolved."
+    source_ids:
+      - un-cpc-3-0-2025
+  - rule_id: validation_process_condition
+    applies_to: "process map"
+    rule: "Require fire_refining; require anode_casting for anode product and a documented non-applicability reason for non-anode product."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: validation_atomic_flows
+    applies_to: "inventory"
+    rule: "Reject combined fuel, utility, residue, wastewater, or emission labels; each row must be one exchange with its own amount, property, unit, and applicability."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "copper-bearing flows"
+    rule: "Require physical-mass and contained-copper reconciliation for each process; investigate and disclose unaccounted differences rather than forcing closure."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: validation_no_double_count
+    applies_to: "residues and emissions"
+    rule: "Confirm internal returns carry no duplicated burden, captured dust is not also emitted particulate, and upstream electricity or fuel emissions are not direct foreground emissions."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+      - us-epa-ap42-primary-copper-smelting-1986
+  - rule_id: validation_records
+    applies_to: "data package"
+    rule: "Require protocol linkage, temporal coverage, calibration, source and destination metadata, and disclosure for estimated, allocated, missing, or not-applicable values."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate secondary dataset for fire-refined unrefined copper or copper-anode production"
+  downstream_use: "Background input to electrolytic-refining, copper-product, or lifecycle models when product state, geography, technology, period, and allocation are compatible"
+  allowed_use: "Attributional modelling within the declared boundary; aggregation with compatible upstream datasets; scenario analysis with disclosed route shares"
+  excluded_use: "Ore-to-cathode representation without compatible linked datasets; use as cathode copper; unverified sulfur-dioxide or internal-intermediate UUIDs; undisclosed recovery credit"
+  required_metadata: "PCR id and version; product form; reference UUID applicability; site; geography; period; feed shares and assays; furnace and casting technology; reduction agent; oxygen enrichment; energy, water, and controls; allocation; upstream datasets; unresolved identities"
+  required_quality_disclosure: "Coverage; missing data; calibration; assay methods; mass, copper, and water balances; emission methods; reference conditions; allocation and sensitivity; representativeness; uncertainty; recycling treatment"
+  update_trigger: "Material change in feed route or assay, furnace or casting technology, product specification, energy or oxygen supply, controls, allocation, geography, or more than three years since the representative period"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 41412 identity"
+  - id: "ec-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, JRC107041, 2017. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf (retrieved 2026-09-04)"
+    used_for: "Fire-refining boundary, inputs, slag, anode casting and cooling, internal recycling, off-gas and dust controls"
+  - id: "us-epa-ap42-primary-copper-smelting-1986"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 12.3, Primary Copper Smelting, October 1986, reformatted January 1995. https://www.epa.gov/sites/default/files/2020-11/documents/c12s03.pdf (retrieved 2026-09-04)"
+    used_for: "Independent primary-route process decomposition, fuel, air, slag, particulate, and sulfur-dioxide exchanges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:63e1c50eb8a3a4fac41cd3bff0af60d2f157745dc48fc67eae0eeb463e05f509"
+  generated_content_sha256: "sha256:1eab14a63539b9a14c20aed32de73d88c11831bf2bc283654f1ae2cec01ac2be"

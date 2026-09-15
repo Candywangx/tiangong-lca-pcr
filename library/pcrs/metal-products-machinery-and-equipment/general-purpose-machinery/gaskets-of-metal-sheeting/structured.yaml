@@ -1,10 +1,821 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43924"
-  title: "Gaskets of metal sheeting"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.gaskets-of-metal-sheeting"
+  classification_refs: "CPC 3.0: 43924, Gaskets of metal sheeting; semantic boundary informed by CN 8484 10 00"
+  covered_products: "Finished gaskets and similar joints of metal sheeting combined with another material or made from two or more metal layers, including applicable spiral-wound, metal-jacketed, and grooved or layered constructions"
+  excluded_products: "Mechanical seals; gasket assortments; non-metallic flat gaskets; elastomeric O-rings; solid machined ring-joint gaskets without metal-sheet or multilayer construction"
+  representative_product: "A finished spiral-wound or metal-jacketed gasket made from declared metal sheet or strip and, when used, one declared filler material"
+  production_route: "Sheet or strip cutting and blanking; edge finishing; conditional forming, profiling, winding, jacketing, or assembly; conditional aqueous alkaline cleaning; inspection; marking when required; and packing"
+  market_state: "Finished, inspected gasket at the manufacturing-site gate, with declared construction, material grades, dimensions, applicable standard or drawing, and packaging state"
+functional_unit:
+  what: "Factory-gate provision of finished metal-sheeting gaskets capable of sealing the joint for which their declared design is specified"
+  how_much: "1 kg net mass of conforming finished gaskets, excluding non-integral packaging"
+  how_well: "Meets the declared drawing or gasket standard, dimensions and tolerances, material grades, construction, pressure class where applicable, and inspection acceptance criteria"
+  how_long_or_cycle: "One documented production lot at the factory gate; service life and use-stage sealing performance are not included"
+  reference_flow_link: "The conforming finished-product output finished_metal_sheeting_gasket normalized to 1 kg net product mass"
+system_boundary:
+  rules:
+    - rule_id: sb_gate_scope
+      applies_to: "foreground manufacturing"
+      rule: "Include cutting or blanking, edge finishing, route-specific forming, profiling, winding or jacketing, assembly, cleaning when performed, inspection, marking when required, and packing through the factory gate."
+      source_ids:
+        - asme-b16-20-2023
+        - moeller-spiral-wound-winding
+        - valqua-n580-metal-jacketed-gasket
+    - rule_id: sb_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Link cradle-to-gate background datasets for every purchased metal, filler, process auxiliary, electricity, water, and packaging input; do not duplicate those upstream processes in the foreground."
+      source_ids: []
+    - rule_id: sb_direct_outputs
+      applies_to: "wastes and emissions"
+      rule: "Record segregated metal scrap, filler offcuts, spent cutting fluid, spent alkaline liquor, and direct particulate emissions when they cross the foreground boundary."
+      source_ids: []
+    - rule_id: sb_exclusions
+      applies_to: "outside-gate stages"
+      rule: "Exclude distribution, installation, use-stage leakage and maintenance, and end-of-life. Disclose any study-specific extension beyond the factory gate as a separate model."
+      source_ids:
+        - eu-cn-2021-hs-8484-10
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Metal sheet or strip, route-specific filler, process auxiliaries, and packaging received at the manufacturing site with supplier, grade, form, and upstream dataset identifiers declared"
+  starting_condition_role: "Purchased input gate to foreground gasket manufacture"
+  product_classification_scope: "Finished gaskets and similar joints of metal sheeting combined with another material or of two or more metal layers; CPC 3.0 43924"
+  recursive_input_rule: "When a purchased gasket blank or other same-category semi-finished product enters the foreground, record it once as a product input at its received state and require an upstream dataset ending at that state; do not recursively reopen the supplier process."
+  upstream_dataset_requirement: "Use geography-, technology-, grade-, and form-representative upstream datasets for metal sheet or strip, filler, electricity, water, chemicals, and packaging; disclose proxies and recycled-content conventions."
+  disclosure: "Declare product construction, alloy and filler grades, route, site and period, included cleaning and packaging operations, internal-transfer treatment, scrap destination and allocation convention, and all boundary deviations."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Gaskets of metal sheeting"
+    uuid: "566e5c48-5523-4e69-98c9-0a8ad67d24d4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "gasket construction"
+    - "metal alloy and grade"
+    - "filler identity"
+    - grade
+    - "and mass fraction when present"
+    - "nominal dimensions and net mass"
+    - "applicable standard or drawing and pressure class"
+    - "surface treatment or coating"
+    - "manufacturing geography and reference period"
+    - "inspection acceptance basis"
+    - "packaging state"
+    - "recycled-content and scrap-allocation convention"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass of conforming finished gaskets after final inspection. Exclude corrugated boxes, plastic film, pallets, and other non-integral packaging from reference-product mass and report each included packaging material as a separate input."
+  - id: material_mass
+    applies_to: "metal, filler, auxiliary, waste, and packaging rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each material and waste separately by declared grade or composition. Correct stock changes to the same production period before normalizing to 1 kg reference product."
+  - id: electricity_energy
+    applies_to: "purchased electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter data and conversion provenance. Convert kWh to MJ using 1 kWh = 3.6 MJ and do not mix purchased electricity with generated electricity or other energy carriers."
+  - id: internal_blank_transfer
+    applies_to: "metal gasket blank output and input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the same transferred intermediate at both process boundaries on a consistent dry-mass basis; reconcile inter-process stock change and avoid treating the internal transfer as an external product."
+process_map:
+  - id: sheet_preparation
+    name: "Metal-sheet cutting, blanking, and edge preparation"
+    inclusion: "required"
+    inclusion_condition: "Applies to every covered product; document the actual cutting, blanking, punching, laser cutting, or equivalent route."
+    role: "foreground material preparation"
+    quantitative_reference: "Mass of transferred metal gasket blanks"
+  - id: forming_assembly_finishing
+    name: "Forming, winding or jacketing, assembly, cleaning, inspection, and packing"
+    inclusion: "required"
+    inclusion_condition: "Include only the declared construction-specific operations and record conditional filler, cleaning, and packaging rows separately."
+    role: "foreground gasket completion"
+    quantitative_reference: "Net mass of conforming finished gaskets"
+process_inventory:
+  - id: sheet_preparation
+    label: "Metal-sheet cutting, blanking, and edge preparation"
+    inputs:
+      product:
+        - row_id: carbon_steel_sheet
+          role: "Cold-rolled carbon steel sheet"
+          name: "Cold-rolled carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record carbon or non-alloy steel sheet only for lots whose declared metal construction uses it."
+          amount:
+            expression: "Measured issued mass corrected for returned sheet and stock change; record zero only when the declared alloy route does not use carbon steel sheet."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet_materials
+              source_ids:
+                - asme-b16-20-2023
+                - valqua-n580-metal-jacketed-gasket
+            ranges: []
+        - row_id: stainless_steel_sheet
+          role: "Cold-rolled stainless steel sheet"
+          name: "Cold-rolled stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record stainless sheet or strip only for lots whose declared construction uses it; preserve alloy grade and thickness."
+          amount:
+            expression: "Measured issued mass corrected for returned sheet and stock change; record zero only when the declared alloy route does not use stainless steel sheet."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet_materials
+              source_ids:
+                - asme-b16-20-2023
+                - valqua-n580-metal-jacketed-gasket
+            ranges: []
+        - row_id: sheet_preparation_electricity
+          role: "Purchased electricity for sheet preparation"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered or defensibly allocated to cutting, blanking, punching, edge finishing, local extraction, and associated controls."
+          amount:
+            expression: "Metered electricity for the sheet-preparation process, converted from kWh when necessary and corrected for the production-period output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet_preparation_energy
+              source_ids: []
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting fluid used in sheet preparation"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record cutting fluid when it is applied in cutting, machining, or edge finishing; declare formulation and recirculation."
+          amount:
+            expression: "Purchases plus opening stock minus closing stock minus recovered fluid leaving as product, normalized to output; record zero when the dry route is documented."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_fluid
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: metal_gasket_blank_output
+          role: "Metal gasket blanks transferred to assembly"
+          name: "Metal gasket blanks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02789a7c-41a2-46e6-a41d-2fa6fd4191ed"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of cut or blanked gasket intermediates transferred from sheet preparation."
+          amount:
+            expression: "Measured transferred blank mass adjusted for work-in-progress stock change."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet_preparation_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Segregated ferrous sheet scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b973529f-a945-4cb9-9600-ecbcc745a4c6"
+          property_unit: "Mass / kg"
+          description: "Record steel skeletons, punchings, and edge offcuts leaving the process as a segregated ferrous waste flow; disclose recycling destination and contamination."
+          amount:
+            expression: "Weighed scrap dispatch plus closing scrap stock minus opening scrap stock, assigned to the production period."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sheet_preparation_outputs
+              source_ids: []
+            ranges: []
+        - row_id: spent_cutting_fluid
+          role: "Spent cutting fluid"
+          name: "Spent coolant"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "62b6a738-fb6a-4570-a95a-9255ec0dcb2b"
+          property_unit: "Mass / kg"
+          description: "Record spent coolant or cutting fluid when it leaves for treatment or recovery; do not combine it with unrelated waste oil."
+          amount:
+            expression: "Weighed or documented treatment-dispatch mass corrected for on-site waste-fluid stock change; record zero when no fluid is used or none leaves in the period."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sheet_preparation_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: particulate_matter_air
+          role: "Direct airborne particulate matter"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after control from cutting or edge finishing when measured or calculated as a direct emission; do not include captured dust dispatched as waste in this row."
+          amount:
+            expression: "Stack or workplace-exhaust measurement, or documented captured-versus-released mass calculation, for the production period."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sheet_preparation_outputs
+              source_ids: []
+            ranges: []
+  - id: forming_assembly_finishing
+    label: "Forming, winding or jacketing, assembly, cleaning, inspection, and packing"
+    inputs:
+      product:
+        - row_id: metal_gasket_blank_input
+          role: "Metal gasket blanks received from sheet preparation"
+          name: "Metal gasket blanks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02789a7c-41a2-46e6-a41d-2fa6fd4191ed"
+          property_unit: "Mass / kg"
+          description: "Record the same intermediate transferred from sheet_preparation; reconcile process-level work-in-progress changes."
+          amount:
+            expression: "Measured received blank mass adjusted for work-in-progress stock change."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids: []
+            ranges: []
+        - row_id: expanded_graphite_sheet
+          role: "Expanded graphite sheet filler"
+          name: "Expanded graphite sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record expanded graphite sheet or strip only when the declared spiral-wound, jacketed, or covered construction uses it."
+          amount:
+            expression: "Measured issued mass corrected for returned material and stock change; record zero only when the declared construction has no graphite filler."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - moeller-spiral-wound-winding
+                - valqua-n580-metal-jacketed-gasket
+            ranges: []
+        - row_id: ptfe_sheet
+          role: "Polytetrafluoroethylene sheet filler"
+          name: "Polytetrafluoroethylene (PTFE)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7cacbf87-9707-4f6d-9ff8-830158c75b20"
+          property_unit: "Mass / kg"
+          description: "Record PTFE sheet or strip only when the declared gasket construction uses it; preserve virgin or filled grade and thickness."
+          amount:
+            expression: "Measured issued mass corrected for returned material and stock change; record zero only when the declared construction has no PTFE filler."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - moeller-spiral-wound-winding
+                - valqua-n580-metal-jacketed-gasket
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Purchased electricity for assembly and finishing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered or defensibly allocated to forming, profiling, winding, welding when present, assembly, cleaning, inspection, extraction, and packing equipment."
+          amount:
+            expression: "Metered electricity for assembly and finishing, converted from kWh when necessary and corrected for production-period output."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_energy
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water for aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when aqueous cleaning or rinsing occurs inside the gate; identify source and water-quality basis."
+          amount:
+            expression: "Metered or batch-record water input corrected for recirculated water; record zero when no aqueous cleaning or rinsing occurs."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide product mass only when it is added to an alkaline cleaning bath; declare solution concentration separately."
+          amount:
+            expression: "Pure-product-equivalent sodium hydroxide issued to cleaning, calculated from solution mass and measured concentration; record zero when no sodium hydroxide is used."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board boxes for dispatch"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record finished corrugated boxes used to dispatch the reference product; do not combine them with other packaging materials."
+          amount:
+            expression: "Issued box count multiplied by verified average box mass, corrected for unused returns."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene film for dispatch"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record PE-LD film used as a separate wrapping or protective packaging component."
+          amount:
+            expression: "Weighed issued film or film length multiplied by verified mass per length, corrected for unused returns."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_metal_sheeting_gasket
+          role: "Conforming finished gaskets of metal sheeting"
+          name: "Gaskets of metal sheeting"
+          flow_type: "product"
+          flow_ref:
+            uuid: "566e5c48-5523-4e69-98c9-0a8ad67d24d4"
+          property_unit: "Mass / kg"
+          description: "Record only products that pass the declared dimensional, material, construction, marking, and inspection criteria."
+          amount:
+            expression: "1 kg after normalization from measured net mass of conforming finished gaskets."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net mass of conforming finished gaskets"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - eu-cn-2021-hs-8484-10
+                - asme-b16-20-2023
+            ranges: []
+      waste:
+        - row_id: expanded_graphite_offcuts
+          role: "Expanded graphite filler offcuts"
+          name: "Expanded graphite offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated expanded graphite sheet or strip offcuts when graphite filler is cut or trimmed."
+          amount:
+            expression: "Weighed offcut dispatch plus closing stock minus opening stock; record zero when no graphite filler is used."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_outputs
+              source_ids:
+                - moeller-spiral-wound-winding
+                - valqua-n580-metal-jacketed-gasket
+            ranges: []
+        - row_id: ptfe_offcuts
+          role: "PTFE filler offcuts"
+          name: "Polytetrafluoroethylene offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated PTFE sheet or strip offcuts when PTFE filler is cut or trimmed."
+          amount:
+            expression: "Weighed offcut dispatch plus closing stock minus opening stock; record zero when no PTFE filler is used."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_outputs
+              source_ids:
+                - moeller-spiral-wound-winding
+                - valqua-n580-metal-jacketed-gasket
+            ranges: []
+        - row_id: waste_alkaline_liquor
+          role: "Spent alkaline cleaning liquor"
+          name: "Waste Alkaline Liquor"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ca310225-50c8-4d41-8353-4338b41e19a1"
+          property_unit: "Mass / kg"
+          description: "Record spent alkaline cleaning solution sent to treatment when the route uses an alkaline bath; preserve pH, dissolved-metal, oil, and treatment information."
+          amount:
+            expression: "Weighed or documented treatment-dispatch mass corrected for bath inventory change; record zero when no alkaline cleaning liquor leaves the process."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished gasket output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "foreground processes"
+    rule: "Prefer direct metering, lot records, and process subdivision. Keep internal metal-gasket-blank transfers neutral in the combined product system and do not assign upstream burden twice."
+    source_ids: []
+  - rule_id: allocation_shared_resources
+    applies_to: "shared electricity and auxiliaries"
+    rule: "When direct measurement is unavailable, allocate shared resources using a documented causal driver such as machine operating time, measured power multiplied by operating time, or processed mass; use product mass only when no more causal driver is available."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "recyclable metal scrap"
+    rule: "Report segregated scrap as a waste output at the plant gate. Apply no avoided-burden credit in the foreground unless the chosen background database and study method explicitly require it; disclose any recycled-content or end-of-life allocation convention and prevent double credit."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "internal rejects and rework"
+    rule: "Return internal rework to the consuming operation without treating it as a co-product; include its additional energy and material use and report only rejects that leave the system as waste."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_sheet_materials
+      process_id: "sheet_preparation"
+      flow_role: "carbon and stainless sheet inputs"
+      record_type: "purchase, issue, return, and stock records"
+      raw_fields: "material grade; thickness; supplier; opening stock; issued mass; returned mass; closing stock; lot id"
+      collection_method: "calibrated scale and inventory reconciliation by material grade"
+      unit: "kg"
+      frequency: "each lot with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or all lots in the declared shorter campaign"
+      site_scope: "all included sheet-preparation lines"
+      aggregation_rule: "sum net issued mass by grade and assign to conforming output lots"
+      quality_evidence: "scale calibration; supplier certificate; stock reconciliation; lot traceability"
+    - protocol_id: cp_sheet_preparation_energy
+      process_id: "sheet_preparation"
+      flow_role: "purchased electricity"
+      record_type: "meter and machine-operation records"
+      raw_fields: "meter start and end; kWh; machine id; operating time; lot id; output mass"
+      collection_method: "dedicated meter or documented submeter allocation"
+      unit: "kWh and MJ"
+      frequency: "each shift or lot"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included cutting and edge-preparation equipment plus local controls"
+      aggregation_rule: "sum kWh, subtract unrelated loads, convert to MJ, and divide by conforming output mass"
+      quality_evidence: "meter calibration; allocation worksheet; production log"
+    - protocol_id: cp_cutting_fluid
+      process_id: "sheet_preparation"
+      flow_role: "cutting fluid input"
+      record_type: "purchase, top-up, recovery, and stock records"
+      raw_fields: "formulation; opening stock; purchases; recovered product; closing stock; lot id"
+      collection_method: "mass tickets or container mass with inventory balance"
+      unit: "kg"
+      frequency: "each addition with monthly reconciliation"
+      temporal_coverage: "same period as product output"
+      site_scope: "all wet cutting and edge-finishing equipment"
+      aggregation_rule: "purchases plus opening stock minus closing stock minus recovered product"
+      quality_evidence: "purchase invoices; stock ledger; formulation data sheet"
+    - protocol_id: cp_sheet_preparation_outputs
+      process_id: "sheet_preparation"
+      flow_role: "blanks, steel scrap, spent coolant, and particulate emissions"
+      record_type: "transfer tickets, scrap and waste manifests, emission tests, and control records"
+      raw_fields: "blank mass; work-in-progress stock; scrap mass; spent coolant mass; measured or captured dust mass; control efficiency; lot and date"
+      collection_method: "calibrated scales, manifests, and applicable emission measurement or mass-balance calculation"
+      unit: "kg"
+      frequency: "each lot or dispatch; emissions at the applicable monitoring frequency"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included sheet-preparation lines and controls"
+      aggregation_rule: "reconcile blank transfer and each output stock change separately; calculate released particulate without combining captured waste"
+      quality_evidence: "scale calibration; signed manifests; test report; control-maintenance record"
+    - protocol_id: cp_assembly_materials
+      process_id: "forming_assembly_finishing"
+      flow_role: "gasket blanks and filler inputs"
+      record_type: "transfer, issue, return, and stock records"
+      raw_fields: "blank mass; filler identity and grade; thickness; opening stock; issued mass; returned mass; closing stock; lot id"
+      collection_method: "calibrated scale and inventory reconciliation by filler identity"
+      unit: "kg"
+      frequency: "each lot with monthly reconciliation"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included forming, winding, jacketing, and assembly lines"
+      aggregation_rule: "sum net input by atomic material flow and reconcile internal blank transfer"
+      quality_evidence: "scale calibration; supplier data sheet; stock reconciliation; lot traceability"
+    - protocol_id: cp_assembly_energy
+      process_id: "forming_assembly_finishing"
+      flow_role: "purchased electricity"
+      record_type: "meter and machine-operation records"
+      raw_fields: "meter start and end; kWh; machine id; operating time; lot id; output mass"
+      collection_method: "dedicated meter or documented submeter allocation"
+      unit: "kWh and MJ"
+      frequency: "each shift or lot"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included assembly, cleaning, inspection, extraction, and packing equipment"
+      aggregation_rule: "sum kWh, subtract unrelated loads, convert to MJ, and divide by conforming output mass"
+      quality_evidence: "meter calibration; allocation worksheet; production log"
+    - protocol_id: cp_cleaning_inputs
+      process_id: "forming_assembly_finishing"
+      flow_role: "process water and sodium hydroxide"
+      record_type: "water meter, batch recipe, chemical issue, concentration, and stock records"
+      raw_fields: "water mass or volume; solution mass; sodium hydroxide concentration; opening and closing stock; batch id"
+      collection_method: "calibrated meter or scale plus concentration record"
+      unit: "kg and mass fraction"
+      frequency: "each cleaning batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included aqueous alkaline cleaning baths and rinses"
+      aggregation_rule: "subtract recirculated water; calculate pure-product-equivalent sodium hydroxide from solution mass and concentration"
+      quality_evidence: "meter calibration; batch sheet; chemical certificate; concentration test"
+    - protocol_id: cp_packaging
+      process_id: "forming_assembly_finishing"
+      flow_role: "corrugated boxes and PE-LD film"
+      record_type: "packaging issue, count, mass-per-item, and return records"
+      raw_fields: "box count and mass; film mass or length and mass per length; returned quantity; product lot"
+      collection_method: "count plus verified average mass or direct weighing"
+      unit: "kg"
+      frequency: "each packed lot"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included packing stations"
+      aggregation_rule: "calculate net issued mass separately for each packaging flow and divide by conforming product mass"
+      quality_evidence: "scale calibration; packaging specification; issue and return records"
+    - protocol_id: cp_final_outputs
+      process_id: "forming_assembly_finishing"
+      flow_role: "finished product, filler offcuts, and spent alkaline liquor"
+      record_type: "final inspection, net-mass, waste dispatch, and stock records"
+      raw_fields: "accepted product mass; rejected mass; offcut identity and mass; liquor dispatch mass; bath stock change; lot id"
+      collection_method: "calibrated scales, inspection records, and treatment manifests"
+      unit: "kg"
+      frequency: "each lot or dispatch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included finishing lines, waste stores, and cleaning baths"
+      aggregation_rule: "sum conforming product net mass; reconcile each waste separately; normalize all rows to 1 kg product"
+      quality_evidence: "scale calibration; inspection release; signed waste manifest; stock reconciliation"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "every inventory row"
+      rule: "normalized amount = period amount attributable to the product divided by net mass of conforming finished gasket output"
+      inputs:
+        - "attributable period amount"
+        - "conforming finished-product net mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_electricity_conversion
+      applies_to: "electricity rows"
+      rule: "electricity in MJ = metered electricity in kWh multiplied by 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ of purchased electricity"
+      source_ids:
+        - si-energy-conversion
+    - id: calc_pure_naoh
+      applies_to: "sodium hydroxide row"
+      rule: "pure-product-equivalent sodium hydroxide = cleaning-solution mass multiplied by measured sodium hydroxide mass fraction"
+      inputs:
+        - "solution mass"
+        - "sodium hydroxide mass fraction"
+      output: "kg sodium hydroxide product equivalent"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_internal_transfer
+      applies_to: "metal gasket blank rows"
+      rule: "transferred blank output plus closing work-in-progress minus opening work-in-progress must reconcile with blank input to assembly over the same period"
+      inputs:
+        - "blank output"
+        - "blank input"
+        - "opening and closing work-in-progress"
+      output: "reconciled internal transfer difference"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_material_balance
+      applies_to: "each process and full foreground"
+      rule: "input mass = product mass plus separately identified waste and emission mass plus closing stock minus opening stock; investigate rather than force unexplained difference to zero"
+      inputs:
+        - "atomic material inputs"
+        - products
+        - wastes
+        - emissions
+        - "stock changes"
+      output: "disclosed mass-balance difference"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and material inputs"
+      requirement: "Preserve product construction, metal alloy, filler identity, dimensions, standard or drawing, pressure class when applicable, and lot traceability."
+      evidence: "final inspection release, drawing or standard declaration, supplier certificates, and lot records"
+    - id: dq_measurement
+      applies_to: "all measured rows"
+      requirement: "Use calibrated meters or scales and retain raw readings, conversion factors, stock corrections, and allocation worksheets."
+      evidence: "calibration certificates, meter exports, scale tickets, and signed calculation files"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Prefer a continuous 12-month period; a shorter campaign is acceptable only when it covers the declared product and route and seasonality or production variability is discussed."
+      evidence: "production calendar, lot list, and representativeness assessment"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile every required process, every declared conditional route, internal transfers, materials, packaging, wastes, and direct emissions; explain exclusions and mass-balance differences."
+      evidence: "completed flow checklist, process mass balances, and exclusion log"
+    - id: dq_background
+      applies_to: "linked upstream datasets"
+      requirement: "Match geography, technology, alloy or polymer grade, product form, recycled content, and temporal representativeness as closely as available; disclose every proxy."
+      evidence: "dataset metadata and proxy justification"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference flow"
+    rule: "Reject a dataset whose canonical PCR id, finished product UUID, reference amount, mass property, unit group, or required qualifiers are missing or inconsistent."
+    source_ids: []
+  - rule_id: validation_processes
+    applies_to: "process map and inventory"
+    rule: "Require both sheet_preparation and forming_assembly_finishing inventories, with each row located under the correct direction and flow type and each conditional zero supported by route evidence."
+    source_ids: []
+  - rule_id: validation_internal_transfer
+    applies_to: "metal gasket blanks"
+    rule: "Require the same blank UUID and mass basis for output and input, reconcile work-in-progress stock change, and prevent the internal transfer from appearing as an external reference product."
+    source_ids: []
+  - rule_id: validation_balance
+    applies_to: "mass-bearing rows"
+    rule: "Recalculate process and full-foreground mass balances from raw records; investigate and disclose unexplained differences without creating an unspecified material or waste flow."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_energy
+    applies_to: "electricity rows"
+    rule: "Verify that purchased electricity is reported separately for the two processes, converted consistently to MJ, and not combined with other energy carriers."
+    source_ids:
+      - si-energy-conversion
+  - rule_id: validation_wastes
+    applies_to: "waste and emission outputs"
+    rule: "Verify that steel scrap, graphite offcuts, PTFE offcuts, spent coolant, spent alkaline liquor, and particulate emissions are kept atomic and that omitted conditional rows are demonstrably absent."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "dataset scope"
+    rule: "Confirm that upstream supplies are linked once, distribution and use are excluded, and any extension beyond the factory gate is separately disclosed."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-cn-2021-hs-8484-10
+published_dataset_profile:
+  dataset_role: "foreground gate-to-gate production dataset with linked cradle-to-gate upstream inputs"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product- and route-specific cradle-to-gate studies of declared metal-sheeting gasket constructions when required qualifiers, geography, technology, allocation, and data quality are compatible"
+  excluded_use: "Mechanical seals, non-metallic gaskets, solid machined ring-joint gaskets without sheet construction, use-stage leakage or service-life claims, and products with undisclosed metal or filler composition"
+  required_metadata: "canonical PCR id; product and intermediate UUIDs; construction; alloy and filler grades; dimensions; standard or drawing; pressure class when applicable; site geography; reference period; route; packaging state; recycled content; scrap allocation; background dataset identifiers"
+  required_quality_disclosure: "primary-data share; meter and scale coverage; allocation drivers; mass-balance differences; conditional routes; proxies; unresolved flow UUIDs; excluded flows; temporal and technological representativeness"
+  update_trigger: "Change in gasket construction, alloy or filler grade, manufacturing route, cleaning chemistry, packaging system, site energy mix, scrap or recycling convention, production technology, or a material shift in foreground intensity"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-06"
+    used_for: "Official CPC 43924 identity and classification context"
+  - id: "eu-cn-2021-hs-8484-10"
+    type: "official_guidance"
+    reference: "European Commission Implementing Regulation (EU) 2020/1577, Combined Nomenclature 2021, code 8484 10 00, https://eur-lex.europa.eu/eli/reg_impl/2020/1577/oj/eng/pdf, retrieved 2026-09-06"
+    used_for: "Semantic boundary for metal sheeting combined with another material or two or more metal layers and distinction from mechanical seals"
+  - id: "asme-b16-20-2023"
+    type: "standard"
+    reference: "ASME B16.20-2023, Metallic Gaskets for Pipe Flanges, https://www.asme.org/codes-standards/find-codes-standards/b16-20-metallic-gaskets-pipe-flanges/2023, retrieved 2026-09-06"
+    used_for: "Covered metallic gasket constructions and required material, dimension, tolerance, and marking qualifiers"
+  - id: "moeller-spiral-wound-winding"
+    type: "handbook"
+    reference: "Möller-Metalldichtungen GmbH, Winding, https://www.moeller-metalldichtungen.de/range-and-services/manufactoring-processes/winding.html, retrieved 2026-09-06"
+    used_for: "Spiral-wound process decomposition, connection to inner and outer rings, and graphite or PTFE filler identities"
+  - id: "valqua-n580-metal-jacketed-gasket"
+    type: "handbook"
+    reference: "VALQUA, Ltd., Metal Jacketed Gasket N580, https://www.seal.valqua.co.jp/en/metaljacketed/n580/, retrieved 2026-09-06"
+    used_for: "Metal-jacketed construction, metal and cushion-material alternatives, and sheet folding into final shape"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass applied to foreground period records and stock changes"
+    used_for: "Normalization, pure-product-equivalent calculation, internal-transfer reconciliation, and mass-balance validation"
+  - id: "si-energy-conversion"
+    type: "method_factor"
+    reference: "SI energy conversion identity: 1 kWh = 3.6 MJ"
+    used_for: "Electricity unit conversion and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:04b52e34fbe0c85b1bf8b198834f1ba3377d6d11093eca29c0548b8a90dbfd67"
+  generated_content_sha256: "sha256:2fcaca57535df451af017928f13c870581dc95e9c4b0c1bf7801c4fb04a3e2ce"

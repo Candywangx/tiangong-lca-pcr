@@ -1,10 +1,681 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41536"
-  title: "Tubes, pipes and tube or pipe fittings, of aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tubes-pipes-and-tube-or-pipe-fittings-of-aluminium"
+  classification_refs: "CPC 3.0: 41536, exact"
+  covered_products: "Aluminium or aluminium-alloy tubes and pipes; aluminium tube or pipe fittings; mill-finished or further drawn, welded, cut, bent, machined, joined, heat-treated, or surface-treated forms when sold as the declared product"
+  excluded_products: "Copper, nickel, iron, steel, plastics, or rubber tubes and fittings; aluminium structural assemblies whose identity is no longer a tube, pipe, or fitting; installation and use services"
+  representative_product: "Factory-gate aluminium tube, pipe, or tube/pipe fitting conforming to the declared alloy, temper, geometry, tolerance, and surface condition"
+  production_route: "Declare one actual route: billet extrusion, extrusion followed by drawing, rolled-strip forming and longitudinal welding, or fitting fabrication from aluminium semi-finished feedstock; declare all subsequent cutting, forming, machining, joining, heat treatment, and surface treatment"
+  market_state: "Accepted saleable product at the producing factory gate, net of removable process scrap and rejected product"
+functional_unit:
+  what: "Provide the declared geometry and connection function of an aluminium tube, pipe, or tube/pipe fitting"
+  how_much: "1,000 kg of accepted saleable product"
+  how_well: "Meets the declared alloy, temper, dimensions, wall thickness, tolerances, mechanical properties, joining features, and surface condition"
+  how_long_or_cycle: "One production lot represented by the dataset; no use-life service is included"
+  reference_flow_link: "Net accepted product mass at the producing factory gate"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with receipt of the declared aluminium feedstock and all purchased energy, water, lubricants, and surface-treatment chemicals. It includes route-specific billet or strip preparation; extrusion or strip forming and welding; drawing, straightening, cutting, bending, machining, joining, heat treatment, cleaning, anodizing, other declared surface treatment, inspection, internal scrap handling, wastewater treatment, and direct releases when these occur at the producing site. It ends with accepted product at the producing factory gate."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "all foreground packages"
+      rule: "Include all on-site operations from receipt of aluminium feedstock through accepted product at the producing factory gate; exclude downstream distribution, installation, use, and end of life."
+      source_ids:
+        - usitc-aluminium-extrusions-2022
+        - european-aluminium-profile-report-2015
+    - rule_id: boundary_route_disclosure
+      applies_to: "forming route"
+      rule: "Identify whether the product follows billet extrusion, post-extrusion drawing, rolled-strip forming and longitudinal welding, or fitting fabrication, and include only exchanges that actually cross that route boundary."
+      source_ids:
+        - usitc-aluminium-extrusions-2022
+        - european-aluminium-automotive-manual-2002
+    - rule_id: boundary_surface_treatment
+      applies_to: "surface treatment"
+      rule: "Include caustic cleaning and sulfuric-acid anodizing exchanges only when those operations occur within the producing site; otherwise identify the mill-finished state or the upstream/downstream finishing dataset used."
+      source_ids:
+        - usitc-aluminium-extrusions-2022
+boundary_abstraction:
+  declared_starting_condition: "Purchased aluminium extrusion billet, aluminium strip, or another disclosed aluminium semi-finished feedstock arrives at the producing site with alloy, recycled-content basis, mass, supplier, and delivery state identified"
+  starting_condition_role: "foreground_gate_input"
+  product_classification_scope: "Aluminium tubes, pipes, and tube or pipe fittings represented by CPC 3.0 code 41536; classification is contextual and does not replace the semantic product qualifiers"
+  recursive_input_rule: "If an aluminium tube, pipe, or fitting from the same category is purchased for further fabrication, record it once as a product input with its upstream dataset and do not recursively reproduce its manufacture inside the same process"
+  upstream_dataset_requirement: "Use supplier-specific upstream datasets where available; otherwise use geographically, technologically, alloy-, product-state-, and recycled-content-representative datasets and disclose substitutions"
+  disclosure: "Declare starting feedstock form, supplier or data-source basis, alloy, primary/recycled content, route, all included finishing steps, internal scrap loop, direct emission compartments, and excluded off-site operations"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Tubes, pipes and tube or pipe fittings, of aluminium"
+    uuid: "ecc836aa-a727-46bb-ad13-4dd96e1c6f56"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "alloy designation"
+    - "primary/recycled aluminium content basis"
+    - temper
+    - "outside and inside dimensions or nominal size"
+    - "wall thickness"
+    - "fitting type and connection geometry where applicable"
+    - "tolerance/specification"
+    - "surface condition"
+    - "manufacturing route"
+    - "production geography"
+    - technology
+    - "factory-gate condition"
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "accepted reference product and all aluminium material balance rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass after removal of packaging, transferable racks, process scrap, and rejected product; scale the accepted output to exactly 1,000 kg."
+  - id: gas_volume_basis
+    applies_to: "natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered gas volume at the supplier or meter reference temperature and pressure; disclose those reference conditions and do not combine gas volume with energy without a documented conversion."
+  - id: electricity_energy_basis
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity before conversion; when converting kWh to MJ, use 1 kWh = 3.6 MJ and disclose whether transformer and on-site distribution losses are included."
+  - id: solution_active_mass
+    applies_to: "sodium hydroxide and sulfuric acid solutions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record delivered solution mass and concentration separately; report both as-received solution mass and calculated active-substance mass without substituting one for the other."
+process_map:
+  - id: aluminium_tube_pipe_fitting_manufacturing
+    name: "Aluminium tube, pipe, and fitting manufacturing"
+    inclusion: "required"
+    inclusion_condition: "Always; individual exchange cards apply only when their stated route or operation occurs"
+    role: "Aggregated foreground manufacturing from identified aluminium feedstock through forming, optional drawing/welding/fabrication/heat treatment/surface treatment, inspection, and accepted factory-gate output"
+    quantitative_reference: "1,000 kg accepted aluminium tube, pipe, or fitting output"
+process_inventory:
+  - id: aluminium_tube_pipe_fitting_manufacturing
+    label: "Aluminium tube, pipe, and fitting manufacturing"
+    inputs:
+      product:
+        - row_id: in_aluminium_extrusion_billet
+          role: "Aluminium extrusion billet"
+          name: "Aluminium extrusion billet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of aluminium extrusion billet when the declared product route begins with billet extrusion. Do not use this row for rolled-strip welded tube or for a purchased same-category tube subsequently fabricated into a fitting."
+          amount:
+            expression: "Measured net billet mass charged to production, less any billet returned unused, allocated to accepted output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+                - european-aluminium-profile-report-2015
+            ranges: []
+        - row_id: in_aluminium_strip
+          role: "Aluminium strip for welded tube"
+          name: "Aluminum strip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eac52b0-66e2-4fe0-9329-655d6ee0a1c2"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a route that forms aluminium strip into a tube and longitudinally welds the strip edges."
+          amount:
+            expression: "Measured net aluminium strip mass issued to the welded-tube line, less unused returns, allocated to accepted output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - european-aluminium-automotive-manual-2002
+            ranges: []
+        - row_id: in_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered purchased electricity used by included forming, welding, drawing, machining, heat-treatment, surface-treatment, abatement, water-treatment, and auxiliary operations."
+          amount:
+            expression: "Metered electricity for included operations, allocated to accepted output and converted under electricity_energy_basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - european-aluminium-profile-report-2015
+            ranges: []
+        - row_id: in_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record this input when natural gas is burned on site for billet heating, aging, heat treatment, drying, or another included thermal operation."
+          amount:
+            expression: "Metered natural-gas volume for included operations at disclosed reference conditions, allocated to accepted output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - european-aluminium-profile-report-2015
+            ranges: []
+        - row_id: in_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water crossing the site boundary for quenching, cooling makeup, cleaning, rinsing, surface treatment, or wastewater-treatment preparation. Do not combine recirculated internal water with boundary input."
+          amount:
+            expression: "Metered or invoiced process-water mass entering the boundary, using measured density when converted from volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - european-aluminium-profile-report-2015
+            ranges: []
+        - row_id: in_lubricating_oil
+          role: "Lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Record lubricating oil consumed by drawing, forming, cutting, machining, and other included equipment. Hydraulic oil retained in equipment is excluded unless make-up or replacement crosses the boundary during the reference period."
+          amount:
+            expression: "Purchased plus opening stock minus closing stock and recoverable unused oil, allocated to accepted output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumable_stock_records
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+        - row_id: in_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when an included alkaline cleaning or etching bath consumes it; declare delivered solution concentration and active mass."
+          amount:
+            expression: "As-received solution mass and active sodium-hydroxide mass consumed by included baths, allocated to accepted output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_chemical_records
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+        - row_id: in_sulfuric_acid
+          role: "Sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid only when an included sulfuric-acid anodizing bath consumes it; declare delivered solution concentration and active mass."
+          amount:
+            expression: "As-received solution mass and active sulfuric-acid mass consumed by included anodizing baths, allocated to accepted output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_chemical_records
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_reference_product
+          role: "Accepted aluminium tube, pipe, or fitting"
+          name: "Tubes, pipes and tube or pipe fittings, of aluminium"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ecc836aa-a727-46bb-ad13-4dd96e1c6f56"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after inspection and rejection handling. The declared product qualifiers determine which member of the category the dataset represents."
+          amount:
+            expression: "Net accepted product mass scaled to 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - src_unsd_cpc_3_0_2025
+            ranges: []
+        - row_id: out_aluminium_process_scrap
+          role: "Segregated aluminium process scrap for recycling"
+          name: "Segregated aluminium process scrap for recycling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record clean billet ends, extrusion discard, saw chips, trim, weld-bead scarfing, machining chips, and rejected aluminium only after they are weighed as one chemically compatible segregated aluminium scrap stream sent to recycling. Separately record materially different or contaminated streams in the foreground package."
+          amount:
+            expression: "Measured net mass of segregated aluminium process scrap leaving the foreground boundary for recycling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - european-aluminium-profile-report-2015
+            ranges: []
+      waste:
+        - row_id: out_used_lubricating_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass / kg"
+          description: "Record used lubricating oil transferred to a waste manager when lubricant replacement or oil-bearing maintenance occurs within the reference period."
+          amount:
+            expression: "Measured mass on waste transfer records, net of separately recovered usable oil"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_transfer_records
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+        - row_id: out_aluminium_hydroxide_sludge
+          role: "Aluminium-hydroxide surface-treatment sludge"
+          name: "Aluminium-hydroxide surface-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this chemically specific sludge only when included caustic cleaning, etching, anodizing, rinsing, or wastewater neutralization produces an aluminium-hydroxide-rich sludge sent off site."
+          amount:
+            expression: "Measured wet sludge mass and separately measured or laboratory-determined dry-solids fraction on waste transfer records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_transfer_records
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+      elementary:
+        - row_id: out_fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from on-site fuel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide crossing the site-to-air boundary from on-site combustion; exclude upstream electricity emissions and biogenic carbon dioxide."
+          amount:
+            expression: "Site stack measurement allocated to included operations and accepted output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - european-aluminium-profile-report-2015
+            ranges: []
+        - row_id: out_nitrogen_oxides
+          role: "Nitrogen oxides from on-site combustion"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "191b44d4-90c9-465a-8802-93a651b4fd52"
+          property_unit: "Mass / kg"
+          description: "Record direct nitrogen oxides only when the monitored release is assigned to non-urban air or a high stack. Do not use this row for indoor or urban-ground-level compartments."
+          amount:
+            expression: "Site stack measurement for included combustion sources, allocated to accepted output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - european-aluminium-profile-report-2015
+            ranges: []
+        - row_id: out_aluminium_to_air
+          role: "Aluminium released to air, unspecified"
+          name: "aluminium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a72e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured aluminium mass crossing the site-to-air boundary from cutting, machining, grinding, polishing, or other included operations after abatement. Use this row only when the receiving air compartment is unspecified."
+          amount:
+            expression: "Measured aluminium mass in direct air releases after on-site abatement, allocated to accepted output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+        - row_id: out_aluminium_to_fresh_water
+          role: "Aluminium released to fresh water"
+          name: "aluminium"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a732-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured aluminium mass crossing the site boundary in a direct freshwater discharge after on-site treatment. Exclude sewer transfers and sea-water or unspecified-water releases from this row."
+          amount:
+            expression: "Measured aluminium mass in direct treated freshwater discharge, allocated to accepted output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_water_emissions
+              source_ids:
+                - usitc-aluminium-extrusions-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "route, line, and finishing operations"
+    rule: "Prefer process subdivision and direct metering. Allocate shared electricity, fuel, water, consumables, wastes, and releases to the declared product using documented causal measures such as machine time, metered energy, bath loading, treated surface area, or accepted mass."
+    source_ids: []
+  - rule_id: allocation_scrap_output
+    applies_to: "aluminium process scrap"
+    rule: "Record segregated aluminium scrap as an explicit output and report its destination. Do not silently subtract scrap from billet or strip input, and do not add avoided-primary-aluminium credit inside the foreground gate-to-gate inventory."
+    source_ids:
+      - european-aluminium-profile-report-2015
+  - rule_id: allocation_residual_choice
+    applies_to: "unavoidable multi-product operation"
+    rule: "If subdivision and causal allocation are not feasible, use accepted product mass for physically similar outputs; disclose the allocation factor, affected exchanges, co-products, and sensitivity. Use economic allocation only when physical relations are demonstrably unsuitable."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "aluminium feedstock, accepted product, and segregated aluminium scrap"
+      record_type: "calibrated scales, production orders, inventory movements, and scrap dispatch records"
+      raw_fields: "opening stock; receipts; returns; charged mass; accepted mass; rejected mass; segregated scrap mass; closing stock; alloy; lot; route"
+      collection_method: "reconcile lot or campaign weights to inventory movements and scale tickets"
+      unit: "kg"
+      frequency: "each lot or campaign; reconcile monthly"
+      temporal_coverage: "at least 12 representative months or the full shorter production period"
+      site_scope: "all included lines at the producing site"
+      aggregation_rule: "sum by compatible alloy and route, apply documented allocation, then normalize to 1,000 kg accepted product"
+      quality_evidence: "scale calibration, lot reconciliation, inventory variance, and scrap transfer tickets"
+    - protocol_id: cp_energy_records
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "purchased electricity and natural gas"
+      record_type: "submeter, main meter, utility invoice, and operating log"
+      raw_fields: "meter start/end; invoice quantity; reference conditions; equipment/line; operating hours; downtime; allocation driver"
+      collection_method: "prefer process submetering; reconcile submeters to site invoices"
+      unit: "MJ electricity; m3 natural gas"
+      frequency: "continuous or each shift; reconcile monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included forming, thermal, finishing, abatement, and auxiliary operations"
+      aggregation_rule: "subtract excluded loads, allocate shared loads causally, convert units under section 4, normalize to reference output"
+      quality_evidence: "meter calibration, invoice reconciliation, and load-allocation record"
+    - protocol_id: cp_water_records
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "process water input"
+      record_type: "water meter, invoice, tank-level, and make-up log"
+      raw_fields: "source; meter start/end; make-up; blowdown; density; reuse/recirculation; operation served"
+      collection_method: "meter boundary make-up by source and exclude internal recirculation"
+      unit: "kg"
+      frequency: "continuous or daily; reconcile monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "producing site and included water systems"
+      aggregation_rule: "sum boundary inputs by source, allocate by metered use or causal driver, normalize to reference output"
+      quality_evidence: "meter calibration, water balance, invoice, and reuse-loop reconciliation"
+    - protocol_id: cp_consumable_stock_records
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "lubricating oil"
+      record_type: "purchase, issue, return, and stock records"
+      raw_fields: "opening stock; purchases; issued mass; recoverable return; closing stock; oil grade; operation"
+      collection_method: "stock-balance calculation cross-checked to issue tickets"
+      unit: "kg"
+      frequency: "each issue; reconcile monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "included forming and machining equipment"
+      aggregation_rule: "opening plus purchases minus recoverable returns and closing stock, then allocate and normalize"
+      quality_evidence: "stock count, purchase invoice, issue ticket, and variance investigation"
+    - protocol_id: cp_surface_chemical_records
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "sodium hydroxide and sulfuric acid"
+      record_type: "bath make-up log, dosing meter, purchase record, and concentration test"
+      raw_fields: "chemical identity; solution mass; concentration; bath addition; bath discard; product lot; treated surface or mass"
+      collection_method: "reconcile dosing and inventory; calculate active mass from measured concentration"
+      unit: "kg solution and kg active substance"
+      frequency: "each addition; reconcile by batch and monthly"
+      temporal_coverage: "same period as included surface treatment"
+      site_scope: "all included cleaning, etching, and anodizing baths"
+      aggregation_rule: "calculate active mass separately for each chemical, allocate by bath loading or treated mass, normalize to reference output"
+      quality_evidence: "concentration test, dosing calibration, batch log, SDS, and stock reconciliation"
+    - protocol_id: cp_waste_transfer_records
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "used lubricating oil and aluminium-hydroxide sludge"
+      record_type: "container scale, waste manifest, laboratory report, and transfer record"
+      raw_fields: "waste identity; gross/tare/net mass; destination; treatment route; dry-solids fraction; hazardous status; date"
+      collection_method: "use net transfer mass and keep each chemically distinct waste separate"
+      unit: "kg"
+      frequency: "each shipment; reconcile monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included on-site waste collection points"
+      aggregation_rule: "sum by exact waste identity, allocate shared batches by causal production measure, normalize to reference output"
+      quality_evidence: "signed manifest, scale calibration, laboratory result, and contractor acceptance"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "fossil carbon dioxide, nitrogen oxides, and aluminium to air"
+      record_type: "continuous monitor, stack test, or validated site mass balance"
+      raw_fields: "pollutant; concentration; gas flow; duration; stack; compartment; operating state; abatement; uncertainty"
+      collection_method: "use measured direct releases and exclude upstream electricity and supplier emissions"
+      unit: "kg"
+      frequency: "continuous monitoring or each compliant test campaign"
+      temporal_coverage: "representative operating period aligned to production"
+      site_scope: "all included direct site emission points"
+      aggregation_rule: "integrate pollutant mass, allocate by source operation, normalize to reference output"
+      quality_evidence: "monitor calibration, test report, operating log, and abatement record"
+    - protocol_id: cp_direct_water_emissions
+      process_id: "aluminium_tube_pipe_fitting_manufacturing"
+      flow_role: "aluminium to fresh water"
+      record_type: "discharge-flow meter and accredited effluent analysis"
+      raw_fields: "aluminium concentration; flow; date/time; receiving compartment; treatment status; detection limit; uncertainty"
+      collection_method: "multiply measured concentration by matched discharge flow only for direct freshwater release"
+      unit: "kg"
+      frequency: "each discharge composite or permit-monitoring interval"
+      temporal_coverage: "representative period aligned to production"
+      site_scope: "included direct freshwater outfalls"
+      aggregation_rule: "sum measured aluminium mass, allocate to included production, normalize to reference output"
+      quality_evidence: "laboratory accreditation, chain of custody, flow-meter calibration, and outfall identity"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period amount × 1,000 kg / net accepted reference-product mass in the same period"
+      inputs:
+        - "period exchange amount"
+        - "net accepted output mass"
+      output: "exchange amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_active_chemical_mass
+      applies_to: "sodium hydroxide and sulfuric acid"
+      rule: "active-substance mass = as-received solution mass × measured mass fraction"
+      inputs:
+        - "solution mass"
+        - "laboratory or supplier concentration"
+      output: "kg active substance and kg as-received solution"
+      source_ids: []
+    - id: calc_material_reconciliation
+      applies_to: "aluminium mass balance"
+      rule: "unresolved balance = aluminium feedstock mass − accepted product mass − segregated aluminium scrap mass − measured aluminium waste/release mass − closing work-in-process change"
+      inputs:
+        - "aluminium inputs"
+        - product
+        - scrap
+        - "wastes/releases"
+        - "and work-in-process change"
+      output: "reconciled aluminium mass-balance variance"
+      source_ids: []
+    - id: calc_direct_discharge_mass
+      applies_to: "aluminium to fresh water"
+      rule: "discharge mass = matched aluminium concentration × discharge volume, with unit conversion and non-detect treatment disclosed"
+      inputs:
+        - "concentration result"
+        - "matched flow"
+        - "detection-limit rule"
+      output: "kg aluminium released to fresh water"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Link every reported lot to product form, alloy, temper, geometry, tolerance/specification, surface condition, route, and acceptance record."
+      evidence: "production order, certificate of analysis/conformity, drawing or specification, and inspection release"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground records"
+      requirement: "Use a continuous period that captures normal route and finishing variability; justify shutdowns, start-ups, campaigns, or a period shorter than 12 months."
+      evidence: "dated meter, production, inventory, laboratory, and waste records"
+    - id: dq_completeness
+      applies_to: "inventory boundary"
+      requirement: "Reconcile material, energy, water, chemical, waste, and emission records to the same product output and explain missing meters, estimates, exclusions, and data gaps."
+      evidence: "signed reconciliation and data-gap log"
+    - id: dq_route_specificity
+      applies_to: "conditional exchanges"
+      requirement: "Mark every billet, strip, fuel, chemical, waste, and emission card as applicable or not applicable based on the declared manufacturing route; zero is not a substitute for an applicability decision."
+      evidence: "process flow diagram, equipment list, operating logs, and route declaration"
+    - id: dq_uncertainty
+      applies_to: "measured and calculated values"
+      requirement: "Retain calibration status, sampling design, detection limits, allocation uncertainty, and conversion inputs sufficient to reproduce each normalized result."
+      evidence: "calibration certificates, laboratory reports, calculation workbook, and reviewer trace"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference product"
+    rule: "Confirm that the output is an aluminium tube, pipe, or tube/pipe fitting and that every required qualifier in section 3 is present and consistent with production and inspection records."
+    source_ids:
+      - src_unsd_cpc_3_0_2025
+  - rule_id: validation_inventory_accounting
+    applies_to: "inventory rows"
+    rule: "Require every applicable row to carry one atomic flow, property, unit, amount rule, evidence kind, collection protocol, and normalization basis; require documented not-applicable decisions for route-conditional rows."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "aluminium inputs and outputs"
+    rule: "Investigate the reconciled aluminium balance whenever input cannot be explained by accepted product, segregated scrap, measured aluminium wastes/releases, and work-in-process change; disclose the final variance and treatment."
+    source_ids:
+      - european-aluminium-profile-report-2015
+  - rule_id: validation_energy_water
+    applies_to: "electricity, natural gas, and process water"
+    rule: "Reconcile process records to site invoices or main meters, check conversion and reference conditions, and prevent double counting of internal recirculation or upstream emissions."
+    source_ids: []
+  - rule_id: validation_compartments
+    applies_to: "direct releases"
+    rule: "Confirm that fossil carbon dioxide excludes electricity-chain emissions, nitrogen oxides use the non-urban/high-stack compartment, aluminium-to-air uses unspecified air, and aluminium-to-water uses direct fresh water; use different flow identities when compartments differ."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground manufacturing dataset suitable, after review, for publication as a secondary_dataset or background_dataset"
+  downstream_use: "product carbon footprint, life-cycle inventory, process dataset, and lifecyclemodel studies requiring factory-gate aluminium tube, pipe, or fitting production"
+  allowed_use: "Use when product form, alloy, temper, dimensions, surface condition, route, geography, technology, recycled-content basis, time period, and boundary are representative or explicitly adjusted"
+  excluded_use: "Do not use as a generic primary-aluminium dataset, as a use-phase or installation model, for non-aluminium tubes/fittings, or for a route/finish whose conditional exchanges are unrepresented"
+  required_metadata: "PCR id and version; product qualifiers; reference flow UUID; site and geography; reference period; route and equipment; surface treatment; primary/recycled-content basis; upstream dataset choices; allocation; completeness; uncertainty; verification status"
+  required_quality_disclosure: "Foreground coverage; meter and scale calibration; material-balance variance; allocation shares; missing data and estimates; direct-release measurement method; waste destinations; representativeness and limitations"
+  update_trigger: "Material change in alloy/feedstock or recycled content, forming or welding route, heat treatment, surface treatment, energy or water system, abatement, allocation, site geography, supplier datasets, or production technology; otherwise review at the organization’s documented dataset-review interval"
+data_sources:
+  - id: "src_unsd_cpc_3_0_2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure, 30 June 2025, code 41536. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official product classification identity and scope anchor"
+  - id: "usitc-aluminium-extrusions-2022"
+    type: "official_guidance"
+    reference: "U.S. International Trade Commission, *Aluminum Extrusions from China*, Publication 5375, October 2022. https://www.usitc.gov/publications/701_731/pub5375.pdf (retrieved 2026-09-04)"
+    used_for: "Billet extrusion, drawn tubing, cooling, stretching, cutting, aging, anodizing, chemical pretreatment, and fabrication process decomposition"
+  - id: "european-aluminium-profile-report-2015"
+    type: "dataset"
+    reference: "European Aluminium, *Environmental Profile Report for the European Aluminium Industry*, data year 2015. https://european-aluminium.eu/wp-content/uploads/2022/10/environmental-profile-report-for-the-european-aluminium-industry.pdf (retrieved 2026-09-04)"
+    used_for: "Extrusion boundary, billet input, energy/water input categories, direct output categories, and separate process-scrap recycling flow"
+  - id: "european-aluminium-automotive-manual-2002"
+    type: "handbook"
+    reference: "European Aluminium Association, *The Aluminium Automotive Manual: Special Materials Production*, version 2002, section 6.2.2. https://european-aluminium.eu/wp-content/uploads/2022/11/aam-materials-6-special-materials-production.pdf (retrieved 2026-09-04)"
+    used_for: "Rolled-strip input and HF-welded aluminium tube sequence: slitting, edge preparation, roll forming, resistance welding, bead removal, cooling, sizing, cutting, and transfer"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8c970374e511f53665b6b38c902391494476aa040d56888007444b3307e433db"
+  generated_content_sha256: "sha256:070637ed2f6170aa912ff26c5c7252b83013b0b91eaa2c820d5b220eb2d82c41"

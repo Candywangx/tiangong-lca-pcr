@@ -1,10 +1,957 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41283"
-  title: "Other tubes and pipes, of circular cross-section, seamless"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.other-tubes-and-pipes-of-circular-cross-section-seamless"
+  classification_refs: "CPC 3.0: 41283, exact semantic candidate pending mapping acceptance"
+  covered_products: "Other seamless steel tubes and pipes of circular cross-section, including hot-finished or cold-finished non-alloy, alloy, and high-chromium steel products"
+  excluded_products: "Seamless line pipe for oil or gas pipelines; seamless casing, tubing, and drill pipe for oil or gas drilling; welded or open-seam pipe; non-circular seamless profiles; cast or non-ferrous tube; fittings"
+  representative_product: "Uncoated and unpackaged circular-section seamless steel tube at the producing mill gate"
+  production_route: "Steel billet, bloom, or round bar heating, piercing, elongation, final rolling or sizing, cooling, and declared conditional heat treatment or cold reduction"
+  market_state: "Finished, uncoated, unpackaged tube or pipe at factory gate, with steel grade, dimensions, heat-treatment state, and hot- or cold-finished state declared"
+functional_unit:
+  what: "Production of a declared circular-section seamless steel tube or pipe meeting the specified grade, dimensions, and delivery condition"
+  how_much: "1,000 kg net mass of conforming product"
+  how_well: "Meets the declared steel grade, outside diameter, wall thickness, length, dimensional tolerance, heat-treatment state, surface condition, and applicable customer specification"
+  how_long_or_cycle: "One production batch or campaign ending at the factory gate; no use-stage service life is represented"
+  reference_flow_link: "The net weighed conforming output after all included hot forming and declared conditional finishing, excluding packaging mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_hot_forming
+      applies_to: "all datasets"
+      rule: "Include input heating, piercing, elongation or stretching, final rolling or sizing, cooling, direct utilities, generated mill scale and scrap, and direct furnace emissions from the received steel semi-finished input through hot-finished tube output."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_conditional_finishing
+      applies_to: "heat-treated or cold-finished products"
+      rule: "Include separate heat treatment and cold reduction only when performed for the declared reference product; identify interprocess tube transfers so they are not double counted as purchased inputs."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_upstream_and_downstream
+      applies_to: "linked supply and excluded stages"
+      rule: "Represent upstream input production with linked datasets. Exclude coating, galvanising, packaging, outbound transport, use, and end-of-life unless a later study layer adds them transparently."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel billet, bloom, or round bar delivered at the seamless-tube mill gate, with steel grade, input form, mass, temperature state, and supplier dataset declared"
+  starting_condition_role: "Upstream semi-finished steel product entering foreground tube manufacture"
+  product_classification_scope: "Circular-section seamless steel tubes and pipes other than the excluded oil-and-gas line-pipe and drilling categories"
+  recursive_input_rule: "A tube input transferred between included foreground processes is an internal intermediate and is not linked to an additional same-category upstream dataset; purchased same-category tube entering only finishing is disclosed and linked to its upstream production dataset once"
+  upstream_dataset_requirement: "Link datasets for steel semi-finished input, each applicable fuel, electricity supply, process water, and each rolling oil at their actual supply geography and technology"
+  disclosure: "Declare included hot-forming, heat-treatment, and cold-finishing processes; furnace fuel; steel grade; input temperature; product state; recovery destinations; excluded coating, packaging, and transport; and any process operated outside the reporting site"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Other tubes and pipes, of circular cross-section, seamless; UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "steel grade and alloy family"
+    - billet
+    - bloom
+    - "or round-bar input form"
+    - "outside diameter"
+    - "wall thickness"
+    - "product length"
+    - "hot-finished or cold-finished state"
+    - "piercing and rolling technology"
+    - "heat-treatment state"
+    - "surface condition"
+    - "furnace fuel"
+    - "production site and geography"
+    - "production period"
+    - "allocation treatment"
+    - "excluded coating and packaging confirmation"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product and interprocess tube transfers"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated net product mass after removing rejected pieces, loose scale, process liquids, and packaging. Normalize all process totals to 1,000 kg conforming reference product."
+  - id: electricity_energy_conversion
+    applies_to: "alternating-current electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the site meter reading and convert kWh to MJ using 1 kWh = 3.6 MJ; do not add upstream electricity emissions as foreground elementary flows."
+  - id: fuel_quantity_basis
+    applies_to: "gaseous natural gas and heavy fuel oil"
+    required_property_ref:
+      name: "Volume for natural gas; Mass for heavy fuel oil"
+      uuid: ""
+    required_unit: "m3; kg"
+    rule: "Record natural gas at the site's declared reference conditions and heavy fuel oil by mass. Do not combine the two fuels; include only the atomic fuel rows that apply to the declared furnace route."
+  - id: water_mass_basis
+    applies_to: "supplied process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record process water crossing the mill boundary by mass. If a volume meter is used, retain the measured volume, water temperature, and site density conversion."
+process_map:
+  - id: hot_tube_forming
+    name: "Hot seamless-tube forming"
+    inclusion: "required"
+    inclusion_condition: "Always required for production from steel billet, bloom, or round bar"
+    role: "Foreground production"
+    quantitative_reference: "1,000 kg hot-finished conforming tube transferred or sold"
+  - id: separate_heat_treatment
+    name: "Separate heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when normalising, tempering, or another separate thermal cycle is required after hot rolling"
+    role: "Foreground conditioning"
+    quantitative_reference: "1,000 kg heat-treated conforming tube transferred or sold"
+  - id: cold_tube_finishing
+    name: "Cold tube finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when cold drawing or cold pilgering reduces diameter or wall thickness or establishes the declared finish"
+    role: "Foreground conditioning"
+    quantitative_reference: "1,000 kg cold-finished conforming tube"
+process_inventory:
+  - id: hot_tube_forming
+    label: "Hot seamless-tube forming"
+    inputs:
+      product:
+        - row_id: hf_steel_billet
+          role: "Steel billet or bloom feed"
+          name: "Steel billet or bloom; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Received grade-specific billet, bloom, or round bar crosses the foreground boundary before reheating and piercing."
+          amount:
+            expression: "measured received net mass allocated to the production batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_material_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity powers the piercing, rolling, sizing, pumps, fans, handling, and cooling equipment assigned to hot forming."
+          amount:
+            expression: "submetered electricity converted from kWh to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hot_electricity
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas is recorded only when it crosses the boundary as fuel for input heating or in-line reheating."
+          amount:
+            expression: "metered consumed volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_fuels
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_heavy_fuel_oil
+          role: "Heavy fuel oil"
+          name: "heavy fuel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9490cf0e-a790-44a1-9c2f-3793bbdb452d"
+          property_unit: "Mass / kg"
+          description: "Heavy fuel oil is recorded only for an oil-fired input-heating or reheating furnace; it is not combined with natural gas."
+          amount:
+            expression: "tank-balance or invoice mass consumed by the assigned furnace"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_fuels
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_process_water
+          role: "Supplied process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Supplied process water used for scale removal, equipment cooling, or direct-contact cooling is recorded as one concrete water product crossing the mill boundary; internal recirculation is not counted again."
+          amount:
+            expression: "metered make-up water entering the assigned hot-forming water circuits"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_hot_rolling_oil
+          role: "Hot rolling oil"
+          name: "Hot rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b6d54639-2da8-49b3-89d2-e14324bb14c8"
+          property_unit: "Mass / kg"
+          description: "Hot rolling oil consumed by the rolling or mandrel-lubrication system is recorded net of recovered oil returned to the same system."
+          amount:
+            expression: "issued mass minus unused returned mass during the batch"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hot_oil
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Hot-finished seamless steel tube"
+          name: "Other tubes and pipes, of circular cross-section, seamless; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The weighed hot-finished circular seamless steel tube is the process output, sold directly or transferred to declared heat treatment or cold finishing."
+          amount:
+            expression: "measured conforming net output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per hot-forming production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_material_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: hf_mill_scale
+          role: "Recovered mill scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aad763e2-78ab-4fcb-8a3b-8d8525c9e6ca"
+          property_unit: "Mass / kg"
+          description: "Oxide scale physically removed from the heated and rolled steel and recovered from dry collection or the water circuit is recorded by mass."
+          amount:
+            expression: "measured dry or as-received mass with moisture and oil content declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_wastes
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Crop ends, cuttings, pierced rejects, and rejected hot-formed tube sections leaving the foreground as steel scrap are recorded separately from mill scale."
+          amount:
+            expression: "weighed scrap mass assigned to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_wastes
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: hf_carbon_dioxide
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide released by the hot-forming furnaces is recorded as a direct foreground emission; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "site-measured mass or calculated mass from collected fuel carbon content and oxidation records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hot_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hf_nitrogen_oxides
+          role: "Direct nitrogen oxides"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from input-heating and reheating furnace stacks are recorded at the monitored site compartment; the generic PCR uses unspecified air."
+          amount:
+            expression: "monitored or permit-method mass assigned to the batch from measured concentration and dry-gas flow"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg hot-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hot_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+  - id: separate_heat_treatment
+    label: "Separate heat treatment"
+    inputs:
+      product:
+        - row_id: ht_seamless_tube_input
+          role: "Seamless tube entering heat treatment"
+          name: "Circular-section seamless steel tube before heat treatment; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Hot-finished seamless tube crosses into a separately metered normalising, tempering, or other declared heat-treatment process."
+          amount:
+            expression: "measured input transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg heat-treated conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: ht_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity assigned to the heat-treatment furnace auxiliaries, fans, pumps, handling, and controls is recorded separately from hot forming."
+          amount:
+            expression: "submetered electricity converted from kWh to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg heat-treated conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_electricity
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: ht_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas is recorded only when used by the separate heat-treatment furnace."
+          amount:
+            expression: "metered consumed volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg heat-treated conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_fuels
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: ht_heavy_fuel_oil
+          role: "Heavy fuel oil"
+          name: "heavy fuel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9490cf0e-a790-44a1-9c2f-3793bbdb452d"
+          property_unit: "Mass / kg"
+          description: "Heavy fuel oil is recorded only when used by the separate heat-treatment furnace and is not combined with natural gas."
+          amount:
+            expression: "tank-balance or invoice mass consumed by the assigned furnace"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg heat-treated conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_fuels
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ht_finished_tube
+          role: "Heat-treated seamless steel tube"
+          name: "Other tubes and pipes, of circular cross-section, seamless; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The conforming tube leaving the separate thermal cycle is weighed before transfer or sale."
+          amount:
+            expression: "measured conforming net output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per heat-treatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: ht_carbon_dioxide
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide released by the separate heat-treatment furnace is assigned only to that process."
+          amount:
+            expression: "site-measured mass or calculated mass from collected fuel carbon content and oxidation records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg heat-treated conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: ht_nitrogen_oxides
+          role: "Direct nitrogen oxides"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "f79d0f8f-2b0e-49cb-bed0-b1ea0fbd8625"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides released by the separate heat-treatment furnace are assigned from the applicable stack record."
+          amount:
+            expression: "monitored or permit-method mass calculated from measured concentration and dry-gas flow"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg heat-treated conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+  - id: cold_tube_finishing
+    label: "Cold tube finishing"
+    inputs:
+      product:
+        - row_id: cf_seamless_tube_input
+          role: "Seamless tube entering cold finishing"
+          name: "Circular-section seamless steel tube before cold finishing; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Hot-finished or heat-treated seamless tube crosses into cold drawing or cold pilgering as a measured interprocess input."
+          amount:
+            expression: "measured input transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg cold-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: cf_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity assigned to cold drawing or pilgering, handling, and auxiliary equipment is separately submetered."
+          amount:
+            expression: "submetered electricity converted from kWh to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg cold-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_electricity
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: cf_cold_rolling_oil
+          role: "Cold rolling oil"
+          name: "cold rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a9417245-6f45-4df3-8f04-227ed8a1be58"
+          property_unit: "Mass / kg"
+          description: "Cold rolling oil entering the cold reduction system is recorded net of unused oil returned to storage."
+          amount:
+            expression: "issued mass minus unused returned mass during the batch"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg cold-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_oil
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cf_finished_tube
+          role: "Cold-finished seamless steel tube"
+          name: "Other tubes and pipes, of circular cross-section, seamless; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The conforming cold-finished circular seamless steel tube is weighed after the declared reduction and inspection."
+          amount:
+            expression: "measured conforming net output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cold-finishing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: cf_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Cold-finishing crop ends, cuttings, and rejected sections leaving the process are recorded as post-industrial steel scrap."
+          amount:
+            expression: "weighed scrap mass assigned to the cold-finishing batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg cold-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_wastes
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: cf_used_lubricating_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass / kg"
+          description: "Cold rolling oil removed from service and transferred for treatment or recovery is recorded by waste transfer mass."
+          amount:
+            expression: "measured mass removed from the cold-finishing oil circuit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg cold-finished conforming tube output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_wastes
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "separately metered process lines"
+    rule: "Prefer subdivision using the three process ids and direct meter, scale, stack, and waste records; do not allocate a separately measured process burden."
+    source_ids: []
+  - rule_id: allocation_mass_shared
+    applies_to: "unavoidable shared utilities and wastes"
+    rule: "Allocate only an unavoidable shared total by net conforming product mass over the same measurement period, unless a documented causal engineering parameter better represents consumption. Disclose the parameter, denominator, and affected rows."
+    source_ids: []
+  - rule_id: allocation_recovered_material
+    applies_to: "mill scale, steel scrap, and used oil"
+    rule: "Record the full generated waste mass and destination. Do not subtract a recycling credit or avoided product from the foreground inventory; any downstream substitution belongs to the selected system model and must be disclosed separately."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_hot_material_mass
+      process_id: "hot_tube_forming"
+      flow_role: "billet input and hot tube output"
+      record_type: "scale and production record"
+      raw_fields: "batch_id; grade; input_form; input_mass_kg; output_mass_kg; reject_mass_kg"
+      collection_method: "calibrated receiving and product scales reconciled to batch records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "hot tube line"
+      aggregation_rule: "sum assigned masses and normalize by conforming output"
+      quality_evidence: "scale calibration; batch reconciliation; reject log"
+    - protocol_id: cp_hot_electricity
+      process_id: "hot_tube_forming"
+      flow_role: "alternating-current electricity"
+      record_type: "submeter"
+      raw_fields: "meter_start_kWh; meter_end_kWh; downtime_kWh; batch_output_kg"
+      collection_method: "read dedicated meter or documented engineering submeter"
+      unit: "kWh"
+      frequency: "shift and batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "hot-forming equipment"
+      aggregation_rule: "net kWh multiplied by 3.6 and divided by conforming output"
+      quality_evidence: "meter calibration; assignment log"
+    - protocol_id: cp_hot_fuels
+      process_id: "hot_tube_forming"
+      flow_role: "natural gas or heavy fuel oil"
+      record_type: "meter, tank, or invoice"
+      raw_fields: "fuel_identity; meter_or_mass_start; meter_or_mass_end; reference_conditions; assigned_output_kg"
+      collection_method: "dedicated gas meter or tank mass balance"
+      unit: "m3 or kg"
+      frequency: "shift and delivery"
+      temporal_coverage: "full reporting period"
+      site_scope: "hot-forming furnaces"
+      aggregation_rule: "aggregate each fuel separately and normalize by conforming output"
+      quality_evidence: "meter calibration; tank reconciliation; invoice"
+    - protocol_id: cp_hot_water
+      process_id: "hot_tube_forming"
+      flow_role: "supplied process water"
+      record_type: "make-up water meter"
+      raw_fields: "meter_start; meter_end; unit; temperature; density_if_converted; assigned_output_kg"
+      collection_method: "meter external make-up only and exclude recirculated internal water"
+      unit: "m3 or kg"
+      frequency: "shift"
+      temporal_coverage: "full reporting period"
+      site_scope: "assigned hot-forming water circuits"
+      aggregation_rule: "convert to kg when needed and normalize by conforming output"
+      quality_evidence: "meter calibration; circuit diagram; conversion record"
+    - protocol_id: cp_hot_oil
+      process_id: "hot_tube_forming"
+      flow_role: "hot rolling oil"
+      record_type: "stores and return record"
+      raw_fields: "issued_mass_kg; returned_unused_mass_kg; recovered_internal_mass_kg; batch_output_kg"
+      collection_method: "reconcile issued and returned inventory"
+      unit: "kg"
+      frequency: "batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "hot-forming lubrication system"
+      aggregation_rule: "issued minus unused returned; do not recount internal recovery"
+      quality_evidence: "stores ledger; return ticket"
+    - protocol_id: cp_hot_wastes
+      process_id: "hot_tube_forming"
+      flow_role: "mill scale and steel scrap"
+      record_type: "scale and waste transfer record"
+      raw_fields: "waste_identity; gross_mass_kg; tare_mass_kg; moisture; oil_content; destination; batch_id"
+      collection_method: "weigh each segregated waste stream"
+      unit: "kg"
+      frequency: "container or batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "hot-forming line"
+      aggregation_rule: "net each waste separately and normalize by output"
+      quality_evidence: "calibrated scale; transfer note; composition sample"
+    - protocol_id: cp_hot_emissions
+      process_id: "hot_tube_forming"
+      flow_role: "direct furnace emissions"
+      record_type: "stack monitoring and fuel record"
+      raw_fields: "stack_id; pollutant; concentration; dry_gas_flow; operating_hours; fuel_carbon; fuel_mass_or_volume; oxidation_basis"
+      collection_method: "site monitoring or documented mass-balance calculation"
+      unit: "kg"
+      frequency: "monitoring interval and batch"
+      temporal_coverage: "representative operating period covering reporting period"
+      site_scope: "hot-forming furnaces only"
+      aggregation_rule: "calculate pollutant mass, assign by operating record, and normalize by output"
+      quality_evidence: "monitor calibration; laboratory report; calculation sheet"
+    - protocol_id: cp_heat_mass
+      process_id: "separate_heat_treatment"
+      flow_role: "tube input and output"
+      record_type: "scale and batch record"
+      raw_fields: "batch_id; grade; input_mass_kg; output_mass_kg; reject_mass_kg"
+      collection_method: "calibrated process scales"
+      unit: "kg"
+      frequency: "each heat-treatment batch"
+      temporal_coverage: "all included batches"
+      site_scope: "separate heat-treatment line"
+      aggregation_rule: "reconcile input, output, and rejects; normalize by conforming output"
+      quality_evidence: "scale calibration; batch record"
+    - protocol_id: cp_heat_electricity
+      process_id: "separate_heat_treatment"
+      flow_role: "alternating-current electricity"
+      record_type: "submeter"
+      raw_fields: "meter_start_kWh; meter_end_kWh; batch_output_kg"
+      collection_method: "dedicated meter"
+      unit: "kWh"
+      frequency: "batch"
+      temporal_coverage: "all included batches"
+      site_scope: "heat-treatment line"
+      aggregation_rule: "net kWh multiplied by 3.6 and normalized by output"
+      quality_evidence: "meter calibration; batch assignment"
+    - protocol_id: cp_heat_fuels
+      process_id: "separate_heat_treatment"
+      flow_role: "natural gas or heavy fuel oil"
+      record_type: "meter, tank, or invoice"
+      raw_fields: "fuel_identity; meter_or_mass_start; meter_or_mass_end; reference_conditions; batch_output_kg"
+      collection_method: "dedicated gas meter or tank mass balance"
+      unit: "m3 or kg"
+      frequency: "batch"
+      temporal_coverage: "all included batches"
+      site_scope: "heat-treatment furnace"
+      aggregation_rule: "aggregate each fuel separately and normalize by output"
+      quality_evidence: "meter calibration; invoice; tank reconciliation"
+    - protocol_id: cp_heat_emissions
+      process_id: "separate_heat_treatment"
+      flow_role: "direct furnace emissions"
+      record_type: "stack monitoring and fuel record"
+      raw_fields: "stack_id; pollutant; concentration; dry_gas_flow; operating_hours; fuel_carbon; oxidation_basis"
+      collection_method: "site monitoring or documented mass-balance calculation"
+      unit: "kg"
+      frequency: "monitoring interval and batch"
+      temporal_coverage: "representative operating period"
+      site_scope: "heat-treatment furnace only"
+      aggregation_rule: "calculate pollutant mass and normalize by heat-treated output"
+      quality_evidence: "monitor calibration; laboratory report; calculation sheet"
+    - protocol_id: cp_cold_mass
+      process_id: "cold_tube_finishing"
+      flow_role: "tube input and output"
+      record_type: "scale and production record"
+      raw_fields: "batch_id; grade; input_mass_kg; output_mass_kg; reject_mass_kg"
+      collection_method: "calibrated process scales"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all included batches"
+      site_scope: "cold-finishing line"
+      aggregation_rule: "reconcile input, output, and rejects; normalize by conforming output"
+      quality_evidence: "scale calibration; production log"
+    - protocol_id: cp_cold_electricity
+      process_id: "cold_tube_finishing"
+      flow_role: "alternating-current electricity"
+      record_type: "submeter"
+      raw_fields: "meter_start_kWh; meter_end_kWh; batch_output_kg"
+      collection_method: "dedicated or documented engineering submeter"
+      unit: "kWh"
+      frequency: "shift and batch"
+      temporal_coverage: "all included batches"
+      site_scope: "cold-finishing line"
+      aggregation_rule: "net kWh multiplied by 3.6 and normalized by output"
+      quality_evidence: "meter calibration; assignment log"
+    - protocol_id: cp_cold_oil
+      process_id: "cold_tube_finishing"
+      flow_role: "cold rolling oil"
+      record_type: "stores and return record"
+      raw_fields: "issued_mass_kg; returned_unused_mass_kg; recovered_internal_mass_kg; batch_output_kg"
+      collection_method: "reconcile issued and returned inventory"
+      unit: "kg"
+      frequency: "batch"
+      temporal_coverage: "all included batches"
+      site_scope: "cold-finishing oil system"
+      aggregation_rule: "issued minus unused returned; do not recount internal recovery"
+      quality_evidence: "stores ledger; return ticket"
+    - protocol_id: cp_cold_wastes
+      process_id: "cold_tube_finishing"
+      flow_role: "steel scrap and used lubricating oil"
+      record_type: "scale and waste transfer record"
+      raw_fields: "waste_identity; gross_mass_kg; tare_mass_kg; contamination; destination; batch_id"
+      collection_method: "weigh each segregated waste stream"
+      unit: "kg"
+      frequency: "container or batch"
+      temporal_coverage: "all included batches"
+      site_scope: "cold-finishing line"
+      aggregation_rule: "net each waste separately and normalize by output"
+      quality_evidence: "calibrated scale; waste transfer note"
+  calculation_rules:
+    - id: calc_electricity_mj
+      applies_to: "all electricity rows"
+      rule: "Electricity MJ = net metered kWh × 3.6"
+      inputs:
+        - "meter start and end"
+        - "excluded downtime"
+        - "output mass"
+      output: "MJ per process output basis"
+      source_ids: []
+    - id: calc_oil_consumed
+      applies_to: "hot and cold rolling oil inputs"
+      rule: "Consumed oil mass = issued oil - unused oil returned; oil recirculated within the same process is not a new input"
+      inputs:
+        - "stores issues"
+        - "unused returns"
+        - "batch output"
+      output: "kg oil per process output basis"
+      source_ids: []
+    - id: calc_furnace_pollutant_mass
+      applies_to: "direct furnace CO2 and nitrogen oxides"
+      rule: "Use site-approved fuel carbon balance or concentration × dry-gas-flow × operating-time method; document units, oxygen correction, moisture basis, and process assignment"
+      inputs:
+        - "fuel and stack records"
+      output: "kg pollutant per process output basis"
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - id: calc_process_mass_balance
+      applies_to: "each process"
+      rule: "Reconcile input tube or billet mass with conforming tube output, segregated steel scrap, mill scale where applicable, and documented inventory change; investigate unexplained imbalance rather than forcing closure"
+      inputs:
+        - "material scale records"
+        - "waste records"
+        - "inventory change"
+      output: "documented mass-balance closure"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and steel input"
+      requirement: "Retain grade certificate, input form, outside diameter, wall thickness, length, finish state, heat-treatment state, and classification rationale for every represented product family."
+      evidence: "material certificate; product specification; batch traveller"
+    - id: dq_measurement
+      applies_to: "all foreground quantities"
+      requirement: "Use calibrated meters or scales, retain raw readings and conversions, and state detection limits and substitution methods for missing records."
+      evidence: "calibration certificate; raw log; calculation sheet"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Cover a representative continuous period that includes all declared routes and grades; disclose shutdown, start-up, trial, and abnormal-operation treatment."
+      evidence: "production calendar; route coverage check"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile each process mass balance and check that every applicable fuel, electricity, water, rolling oil, waste, and direct furnace-emission row is present or explicitly not applicable."
+      evidence: "mass-balance review; applicability checklist"
+    - id: dq_upstream_links
+      applies_to: "purchased inputs"
+      requirement: "Match upstream datasets to steel grade and semi-finished state, electricity geography, fuel supply, water supply, and rolling-oil identity; disclose proxies."
+      evidence: "supplier record; dataset link register"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "The reference output must equal 1,000 kg net conforming uncoated and unpackaged circular-section seamless steel tube, and all required qualifiers must be present."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_process_applicability
+    applies_to: "process map"
+    rule: "Hot forming must be included. Heat treatment and cold finishing must agree with the declared delivery state, and excluded processes must carry no foreground amounts."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+  - rule_id: validate_atomic_energy
+    applies_to: "furnace and electricity inputs"
+    rule: "Natural gas, heavy fuel oil, and alternating-current electricity must remain separate rows; only fuels actually used by the declared process may have amounts."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+  - rule_id: validate_mass_balance
+    applies_to: "each process"
+    rule: "Input and output mass records must reconcile after accounting for conforming output, steel scrap, mill scale where applicable, and inventory change; unexplained imbalance requires review."
+    source_ids: []
+  - rule_id: validate_direct_emissions
+    applies_to: "fossil carbon dioxide and nitrogen oxides"
+    rule: "Direct furnace emissions must reconcile to site fuel and stack records and must exclude upstream electricity or fuel-supply emissions."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+  - rule_id: validate_uuid_gaps
+    applies_to: "unresolved product flows"
+    rule: "Do not replace the unresolved reference product, steel billet, or interprocess tube UUIDs with an excluded sibling, grade-specific proxy, or non-ferrous flow."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+published_dataset_profile:
+  dataset_role: "Gate-to-gate secondary_dataset or background_dataset for declared circular-section seamless steel tube production"
+  downstream_use: "Linked production input for process and lifecyclemodel construction where upstream semi-finished steel and utility datasets are added separately"
+  allowed_use: "Studies matching the declared steel grade, dimensions, hot- or cold-finished state, heat-treatment route, furnace fuel, site geography, time period, and uncoated unpackaged factory-gate boundary"
+  excluded_use: "Seamless oil or gas line pipe; drilling casing, tubing, or drill pipe; welded, cast, non-circular, coated, packaged, or non-ferrous tube; cradle-to-gate use without upstream links"
+  required_metadata: "PCR id and version; product and grade specification; dimensions; delivery condition; process applicability; furnace fuels; input state; geography; technology; period; allocation; upstream dataset links; unresolved UUID disclosure"
+  required_quality_disclosure: "Meter and scale coverage; mass-balance closure; stack method; fuel reference conditions; water conversion; missing-data treatment; route and grade coverage; proxy use; recovery destinations"
+  update_trigger: "Change in steel grade family, input form or temperature, piercing or rolling technology, heat-treatment or cold-finishing route, furnace fuel, site, reporting period, allocation method, or any material input, waste, emission, or exact UUID evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-04"
+    used_for: "Official product identity, steel parent hierarchy, and separation from line pipe, drilling pipe, welded pipe, and non-circular seamless profiles"
+  - id: "ec-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, EUR 31321 EN, JRC131649, 2022, DOI 10.2760/196475, https://publications.jrc.ec.europa.eu/repository/handle/JRC131649, retrieved 2026-09-04"
+    used_for: "Tube-mill process decomposition; billet or bloom inputs; natural-gas or oil firing; conditional separate heat treatment and cold finishing; water, oil, waste, and direct furnace-emission collection candidates"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:943d4ca638b8a22b78ca105eeb1f88d96ba06bfd3f5ec974e8ea22e0cf9087c5"
+  generated_content_sha256: "sha256:9497aa33fbf446a35459ef5071100f8f3b5f71ea56011ebb6dc73d97ecdb97bc"

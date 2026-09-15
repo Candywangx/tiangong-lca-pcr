@@ -1,10 +1,568 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45180"
-  title: "Parts and accessories for the goods of subclasses 45141, 45142 and 45160 (except covers, carrying cases and the like)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.parts-and-accessories-for-the-goods-of-subclasses-45141-45142-and-45160-except-covers-c-f1ce13cf"
+  classification_refs: "CPC 3.0: 45180"
+  covered_products: "Dedicated functional parts of the stated office and transaction machines"
+  excluded_products: "Complete hosts; covers; carrying cases; typewriter, pocket-calculator and general computing parts"
+  representative_product: "Empty ATM banknote recycling cassette, one declared model"
+  production_route: "Conditional ABS moulding and steel forming; assembly, testing and packing"
+  market_state: "New, accepted functional part ready for incorporation; no banknotes"
+functional_unit:
+  what: "Provide a compatible operational replacement or incorporation part"
+  how_much: "1 kg net accepted parts of one part number; also report item count and unit mass"
+  how_well: "Drawing revision, interface fit and functional acceptance demonstrated by test records"
+  how_long_or_cycle: "One factory-gate production delivery; no service-life equivalence assumed. Declare rated cycles and warranty basis when claimed."
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_partial
+      applies_to: "system_boundary"
+      rule: "Use a disclosed partial production boundary; host operation and final disposal are separate downstream scenarios."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: boundary_complete
+      applies_to: "foreground"
+      rule: "Include actual fabrication, outsourced finishing, testing, rework, packing, inbound delivery and production-waste treatment. Extend the atomic inventory for every actual material, chemical and emission absent below; never hide it in a category row."
+      source_ids: []
+    - rule_id: boundary_transfer
+      applies_to: "internal_transfers"
+      rule: "Pair housing and chassis transfers by batch and mass; internal quantities cancel at the aggregated boundary. Purchased parts require upstream datasets and exclude their on-site fabrication route."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received identified material stocks and purchased finished components"
+  starting_condition_role: "Foreground entry condition, not burden-free raw material"
+  product_classification_scope: "CPC 3.0: 45180"
+  recursive_input_rule: "Record a purchased same-category part once with supplier dataset; internal transfers are linked, not recursively purchased again."
+  upstream_dataset_requirement: "Link production, delivery and waste-treatment datasets matching material state, geography and technology."
+  disclosure: "Disclose make/buy split, supplier boundaries, treatment destinations, exclusions and separate gate-to-gate from cradle-to-gate totals."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "ATM banknote recycling cassette"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number"
+    - revision
+    - "host function and model"
+    - interface
+    - "net mass and count"
+    - "material grades"
+    - "electronics presence"
+    - "acceptance test"
+    - "rated duty where claimed"
+    - "new or remanufactured state"
+    - site
+    - period
+    - "manufacturing route"
+    - "packaging mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use accepted net part mass M; exclude packaging, banknotes and failed units from M."
+  - id: count_conversion
+    applies_to: "count records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Mass = count × measured mean unit mass for the same revision; retain sample count and dispersion."
+  - id: energy_conversion
+    applies_to: "electricity meters"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert kWh to MJ using 3.6 MJ/kWh; reconcile submeter totals with allocated invoice consumption."
+process_map:
+  - id: moulding
+    name: "Housing moulding"
+    inclusion: "conditional"
+    inclusion_condition: "ABS housing manufactured on site"
+    role: "foreground_production"
+    quantitative_reference: "1 kg accepted net final part"
+  - id: forming
+    name: "Chassis forming"
+    inclusion: "conditional"
+    inclusion_condition: "Steel chassis manufactured on site"
+    role: "foreground_production"
+    quantitative_reference: "1 kg accepted net final part"
+  - id: assembly
+    name: "Assembly, acceptance and packing"
+    inclusion: "required"
+    inclusion_condition: "All declared parts; single-piece parts undergo acceptance and packing"
+    role: "foreground_production"
+    quantitative_reference: "1 kg accepted net final part"
+process_inventory:
+  - id: moulding
+    label: "Housing moulding"
+    inputs:
+      product:
+        - row_id: abs_granulate
+          role: "ABS granulate"
+          name: "Acrylonitrile-butadiene-styrene (ABS) copolymer, granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8f1317c1-aa51-4524-8692-74079c923e2c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: ABS housing is moulded on site."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_moulding
+              source_ids: []
+            ranges: []
+        - row_id: moulding_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: The moulding route operates; include drying and closed-loop cooling power."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_moulding
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: housing_output
+          role: "Moulded ABS ATM cash cassette housing"
+          name: "Moulded ABS ATM cash cassette housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Transfer accepted housings to assembly, with paired transfer records."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_moulding
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: abs_scrap
+          role: "ABS moulding scrap for off-site treatment"
+          name: "ABS moulding scrap for off-site treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: ABS scrap leaves the site; exclude internally reground runners."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_moulding
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: forming
+    label: "Chassis forming"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Cold-rolled low-carbon steel sheet"
+          name: "Cold-rolled low-carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Steel chassis is formed on site from sheet."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+        - row_id: forming_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Sheet cutting and bending operate; include attributable auxiliary power."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chassis_output
+          role: "Formed steel ATM cash cassette chassis"
+          name: "Formed steel ATM cash cassette chassis"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Transfer accepted chassis to assembly, with paired transfer records."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_offcuts
+          role: "Low-carbon steel sheet offcuts for off-site recycling"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Offcuts leave the site as waste; document recipient and recovery route."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly
+    label: "Assembly, acceptance and packing"
+    inputs:
+      product:
+        - row_id: housing_input
+          role: "Moulded ABS ATM cash cassette housing"
+          name: "Moulded ABS ATM cash cassette housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: The declared cassette uses an ABS housing; identify internal or purchased origin."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: chassis_input
+          role: "Formed steel ATM cash cassette chassis"
+          name: "Formed steel ATM cash cassette chassis"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: The declared cassette uses a steel chassis; identify internal or purchased origin."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: steel_screws
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: The actual bill of materials specifies steel screws."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: steel_spring
+          role: "Steel compression spring"
+          name: "Steel compression spring"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: The actual bill of materials specifies a steel compression spring."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Meter assembly, functional testing, rework and attributable facility electricity."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated cardboard box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: The finished part is shipped in a corrugated cardboard box."
+          amount:
+            expression: "Net batch quantity Q divided by accepted final part mass M; record stock changes, rework and any allocation before normalization."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "ATM banknote recycling cassette"
+          name: "ATM banknote recycling cassette"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition: Accepted, empty operational cassette at factory gate, excluding packaging mass."
+          amount:
+            expression: "M/M = 1 kg; M is accepted net mass from cp_assembly."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net final part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_processes"
+    rule: "Prefer metered subdivision; use a documented causal physical driver, then a justified economic basis if no physical relation is defensible."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_rework
+    applies_to: "part_batches"
+    rule: "Charge failed production and rework to accepted output. Keep internal regrind separate from purchased recycled resin. Report recovery conventions and do not subtract hypothetical avoided virgin production."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_moulding
+      process_id: "moulding"
+      flow_role: "Each atomic exchange and output"
+      record_type: "Batch ledger and metering"
+      raw_fields: "part revision; batch; Q; M; stock change; item count; unit mass; rejects; rework; supplier; route; meter start/end; driver share"
+      collection_method: "Weigh issues, returns, transfers and wastes; read submeters; reconcile invoice and acceptance records"
+      unit: "kg; kWh; MJ; count"
+      frequency: "Each batch and meter period"
+      temporal_coverage: "One declared consecutive production year; disclose shorter startup coverage"
+      site_scope: "Named site and outsourced route"
+      aggregation_rule: "Sum net Q and accepted M for identical part revision, then Q/M; no averaging of batch ratios"
+      quality_evidence: "Calibration; invoices; BOM; transfer pairs; acceptance tests; waste tickets"
+    - protocol_id: cp_forming
+      process_id: "forming"
+      flow_role: "Each atomic exchange and output"
+      record_type: "Batch ledger and metering"
+      raw_fields: "part revision; batch; Q; M; stock change; item count; unit mass; rejects; rework; supplier; route; meter start/end; driver share"
+      collection_method: "Weigh issues, returns, transfers and wastes; read submeters; reconcile invoice and acceptance records"
+      unit: "kg; kWh; MJ; count"
+      frequency: "Each batch and meter period"
+      temporal_coverage: "One declared consecutive production year; disclose shorter startup coverage"
+      site_scope: "Named site and outsourced route"
+      aggregation_rule: "Sum net Q and accepted M for identical part revision, then Q/M; no averaging of batch ratios"
+      quality_evidence: "Calibration; invoices; BOM; transfer pairs; acceptance tests; waste tickets"
+    - protocol_id: cp_assembly
+      process_id: "assembly"
+      flow_role: "Each atomic exchange and output"
+      record_type: "Batch ledger and metering"
+      raw_fields: "part revision; batch; Q; M; stock change; item count; unit mass; rejects; rework; supplier; route; meter start/end; driver share"
+      collection_method: "Weigh issues, returns, transfers and wastes; read submeters; reconcile invoice and acceptance records"
+      unit: "kg; kWh; MJ; count"
+      frequency: "Each batch and meter period"
+      temporal_coverage: "One declared consecutive production year; disclose shorter startup coverage"
+      site_scope: "Named site and outsourced route"
+      aggregation_rule: "Sum net Q and accepted M for identical part revision, then Q/M; no averaging of batch ratios"
+      quality_evidence: "Calibration; invoices; BOM; transfer pairs; acceptance tests; waste tickets"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all rows"
+      rule: "q_i = sum(Q_i after allocation and stock correction)/sum(M); M > 0"
+      inputs:
+        - Q_i
+        - M
+      output: "q_i"
+      source_ids: []
+    - id: transfer_balance
+      applies_to: "housing and chassis"
+      rule: "Internal output = internal receipt + transfer stock change; exclude purchased receipts from this equation"
+      inputs:
+        - "paired transfer ledger"
+      output: "balance residual"
+      source_ids: []
+    - id: material_balance
+      applies_to: "fabrication and assembly"
+      rule: "Net material inputs = accepted net output + external waste + inventory change + separately measured losses; internal regrind is not a new external input. Investigate residual against instrument uncertainty."
+      inputs:
+        - "material ledger"
+      output: "mass residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "part and upstream datasets"
+      requirement: "Verify exact part revision and compatible supplier boundary; generic data require a declared sensitivity check."
+      evidence: "BOM; supplier declarations"
+    - id: coverage
+      applies_to: "collection period"
+      requirement: "Record geography, period, technology, completeness and uncertainty."
+      evidence: "ghg-protocol-product-standard-2011"
+    - id: quantity
+      applies_to: "all quantities"
+      requirement: "Retain raw observations and conversion factors. Missing records are unknown, not zero; investigate with supplier or site measurements."
+      evidence: "Meter and batch evidence"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "reference_flow"
+    rule: "Require all qualifiers and host compatibility evidence. Reject complete hosts, transport cases and unqualified mixed-part averages."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_inventory
+    applies_to: "inventory"
+    rule: "Check every applicable row has a quantity or explicit missing-data finding; reconcile BOM and actual route against added atomic rows. Missing UUIDs do not waive collection."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "quantities"
+    rule: "Require positive accepted mass, consistent units, paired internal transfers and explained balance residuals. Count rework once and packaging separately."
+    source_ids: []
+  - rule_id: validate_use
+    applies_to: "downstream_use"
+    rule: "Do not infer host energy savings, lifetime or recovery credits from cassette mass or manufacturer marketing claims."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Part manufacture or replacement input to a separately defined host system"
+  allowed_use: "Compatible part number, revision, material route and gate boundary"
+  excluded_use: "Whole-ATM claims; direct comparison of unlike parts; unmodelled use-stage savings"
+  required_metadata: "Qualifiers; site; period; net mass; count; BOM; supplier datasets; allocation; process map; boundary"
+  required_quality_disclosure: "Measured share; missing data; unresolved identities; uncertainty; exclusions; range limitations"
+  update_trigger: "Part revision, material supplier, route, tooling, energy mix or test specification changes"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 structure (30 June 2025). [Original source](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv). Retrieved 2026-09-08; independence_key: un-cpc-3-0-structure-2025"
+    used_for: "Official rows 45141, 45142, 45160 and 45180; category identity and exclusions."
+  - id: "cbp-hq-086537-1990"
+    type: "official_guidance"
+    reference: "HQ 086537, Internal Advice 8/90 (17 April 1990). [Original source](https://rulings.cbp.gov/api/ruling/086537). Retrieved 2026-09-08; independence_key: cbp-hq-086537-1990"
+    used_for: "Facts and holding: currency cassettes function with banknote dispensing mechanisms; historical product-boundary example, not current tariff advice."
+  - id: "diebold-nixdorf-cash-cassette-flexibility"
+    type: "literature"
+    reference: "Flexibility is the New Standard for Cash Cassettes. [Original source](https://www.dieboldnixdorf.com/en-us/banking/insights/blog/new-standard-for-cash-cassettes/). Retrieved 2026-09-08; independence_key: diebold-nixdorf-cash-cassette-flexibility"
+    used_for: "Manufacturer description of cassette functions and configuration; compatibility qualifiers only, no bill of materials or quantitative inventory."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "Product Life Cycle Accounting and Reporting Standard, chapters 7–9. [Original source](https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf). Retrieved 2026-09-08; independence_key: ghg-protocol-product-standard-2011"
+    used_for: "Partial life-cycle boundary disclosure, allocation hierarchy and data-quality principles; applied here as methodological guidance, not full-standard conformance."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b1a5afdf5cfba16cac43d265bc9ace1d15b5943891f35b0a4e4c72bb8e621657"
+  generated_content_sha256: "sha256:e86c9b01c5786c2d941ad26c5de30ea41025778c0d598af8e1bf50317e63c2cd"

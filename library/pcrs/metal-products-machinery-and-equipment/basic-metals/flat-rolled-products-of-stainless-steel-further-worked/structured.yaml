@@ -1,10 +1,1345 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41232"
-  title: "Flat-rolled products of stainless steel, further worked"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-stainless-steel-further-worked"
+  classification_refs: "CPC 3.0: 41232, exact classification context"
+  covered_products: "Stainless-steel strip, sheet, plate, or coil sold in a flat-rolled form after at least one declared further-working operation beyond a merely hot-rolled or merely cold-rolled state"
+  excluded_products: "Merely hot-rolled or merely cold-rolled stainless-steel flat products; non-stainless steel; silicon-electrical or high-speed steel; long products, tubes, wire, cast products, and fabricated articles"
+  representative_product: "Saleable stainless-steel flat-rolled strip, sheet, plate, or coil in the producer-declared grade, dimensions, surface finish, and delivery condition"
+  production_route: "Site-specific sequence selected from feed preparation, annealing and descaling, acid pickling and rinsing, cold reduction, temper or skin-pass rolling, mechanical surface finishing, and final conversion and packing; identify at least one operation after the final primary hot or cold rolling step that establishes the further-worked state"
+  market_state: "Dry, inspected producer-gate product in the declared coil, sheet, strip, or plate form; packaging is reported separately and is excluded from net product mass"
+functional_unit:
+  what: "Provision of a stainless-steel flat-rolled product in a declared further-worked market state"
+  how_much: "1,000 kg net saleable product, excluding packaging"
+  how_well: "Conforming to the declared stainless-steel grade, thickness, width, surface finish, edge condition, dimensional tolerance, and delivery condition"
+  how_long_or_cycle: "One production lot at the producer gate; no use-stage duration is assigned"
+  reference_flow_link: "output_reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_definition
+      applies_to: "foreground_system_boundary"
+      rule: "Include every on-site process that changes the received stainless-steel flat-rolled feed into the declared further-worked product, including associated line utilities, recirculation, abatement, and directly generated wastes; identify at least one operation after the final primary hot or cold rolling step that establishes the further-worked state."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+        - un-cpc-v3-explanatory-notes-2025
+    - rule_id: boundary_upstream_separation
+      applies_to: "upstream_product_system"
+      rule: "Model primary steelmaking, casting, and production of purchased feed through linked upstream datasets unless those processes are explicitly inside the reporting organization and separately inventoried without double counting."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_outsourced_operations
+      applies_to: "outsourced_further_working"
+      rule: "Include an outsourced route-defining operation through a supplier-specific process dataset or a documented representative dataset, and preserve mass linkage to the returned product."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_pollution_control
+      applies_to: "line_pollution_control"
+      rule: "Include electricity, water, reagents, recovered materials, wastes, wastewater, and direct releases from pickling fume control, acid recovery, emulsion treatment, filtration, and wastewater treatment when operated for the declared product route."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+        - us-epa-iron-steel-effluent-2002
+boundary_abstraction:
+  declared_starting_condition: "Stainless-steel flat-rolled feed at site receipt, with grade, mass, dimensions, surface state, and prior hot-rolled or cold-rolled condition declared"
+  starting_condition_role: "Purchased or transferred upstream flat-rolled feed entering the foreground further-working route"
+  product_classification_scope: "Stainless-steel flat-rolled products matching the semantic boundary of CPC 3.0 subclass 41232; classification is contextual and does not replace the product-state declaration"
+  recursive_input_rule: "When an input is itself a further-worked stainless-steel flat-rolled product, record it once as an upstream product flow and link a separately bounded upstream dataset; do not recursively reproduce this PCR inside the same foreground process"
+  upstream_dataset_requirement: "Use supplier-specific data when available; otherwise use a geographically, technologically, grade-, and product-state-representative upstream dataset for the incoming flat-rolled feed"
+  disclosure: "Declare included unit operations, combined-line aggregation, outsourced operations, feed state, product state, scrap destinations, acid recovery, water recirculation, air and water abatement, packaging, and exclusions"
+reference_flow_definition:
+  reference_amount: "1,000 kg net saleable product"
+  product_flow_ref:
+    name: "Flat-rolled products of stainless steel, further worked"
+    uuid: "add37984-82d6-4c91-85e3-9911c0135944"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "stainless-steel grade and composition standard"
+    - "input and output product state"
+    - "route-defining further-working operations"
+    - "thickness and width"
+    - coil
+    - sheet
+    - strip
+    - "or plate form"
+    - "surface finish"
+    - "edge condition"
+    - "annealing atmosphere"
+    - "pickling chemistry"
+    - "net product moisture or surface-liquid condition"
+    - "producer geography"
+    - "reporting period"
+    - "allocation approach"
+    - "packaging configuration"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net saleable product mass after trimming and inspection and before adding packaging; normalize all inventory to 1,000 kg of this product."
+  - id: intermediate_mass_linking
+    applies_to: "Internal stainless-steel intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Link consecutive unit processes with the same measured or mass-balanced intermediate amount and do not count an internal transfer as an external input or output."
+  - id: electricity_energy
+    applies_to: "Electricity inputs"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the supplier billing unit in raw records and convert to MJ with the declared exact conversion; disclose voltage, provider, geography, supply technology, delivery boundary, and treatment of line losses."
+  - id: gas_volume_conditions
+    applies_to: "Natural-gas input"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record supplier-metered gas volume together with temperature, pressure, dry or wet basis, and conversion to the declared reference conditions; do not substitute an energy amount without retaining the conversion basis."
+  - id: acid_solution_mass
+    applies_to: "Pickling acids and neutralizer"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record purchased or make-up solution mass and concentration separately; report the selected-flow amount as solution mass and retain active-substance mass as a calculated field."
+process_map:
+  - id: feed_preparation
+    name: "Feed receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included from receipt, inspection, joining, cropping, and routing to the first further-working unit"
+    role: "Foreground preparation and mass reconciliation"
+    quantitative_reference: "Per 1,000 kg net saleable reference product"
+  - id: annealing_and_descaling
+    name: "Annealing and thermal descaling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared route heats the strip for annealing, scale conditioning, or metallurgical-property control"
+    role: "Foreground heat treatment"
+    quantitative_reference: "Per 1,000 kg net saleable reference product"
+  - id: acid_pickling_and_rinsing
+    name: "Acid pickling, rinsing, and line treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when acid pickling or chemical descaling/passivation occurs on site"
+    role: "Foreground chemical surface treatment and associated abatement"
+    quantitative_reference: "Per 1,000 kg net saleable reference product"
+  - id: cold_rolling_and_temper
+    name: "Cold reduction and temper rolling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when cold reduction, skin-pass, or temper rolling occurs; declare whether it is primary cold reduction or a post-rolling operation that contributes to the further-worked state"
+    role: "Foreground mechanical reduction"
+    quantitative_reference: "Per 1,000 kg net saleable reference product"
+  - id: mechanical_surface_finishing
+    name: "Mechanical surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when grinding, polishing, brushing, or abrasive finishing occurs on site"
+    role: "Foreground surface finishing"
+    quantitative_reference: "Per 1,000 kg net saleable reference product"
+  - id: product_finalization
+    name: "Final conversion, inspection, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always include final slitting or cutting when performed, inspection, net-mass determination, and actual packing"
+    role: "Foreground product finalization"
+    quantitative_reference: "1,000 kg net saleable reference product"
+process_inventory:
+  - id: feed_preparation
+    label: "Feed receipt and preparation"
+    inputs:
+      product:
+        - row_id: input_stainless_flat_rolled_feed
+          role: "Received stainless-steel flat-rolled feed"
+          name: "Stainless-steel flat-rolled feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The weighed incoming coil, sheet, strip, or plate crosses the foreground boundary with grade, dimensions, and surface state declared."
+          amount:
+            expression: "Measured received mass attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_and_scrap_mass
+              source_ids: []
+            ranges: []
+        - row_id: input_preparation_electricity
+          role: "Preparation-line electricity"
+          name: "Alternating-current electricity supplied to feed preparation"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Electricity used by handling, joining, cropping, inspection, and preparation equipment is recorded as a separate supplied energy flow."
+          amount:
+            expression: "Submetered use or allocated feeder-meter use for the preparation line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_prepared_strip_intermediate
+          role: "Prepared strip intermediate"
+          name: "Prepared stainless-steel flat-rolled strip intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The prepared material is linked to the next included unit process as a site-specific internal product flow."
+          amount:
+            expression: "Calculated from incoming mass minus weighed preparation scrap and documented stock change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feed_and_scrap_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: output_preparation_scrap
+          role: "Preparation stainless-steel scrap"
+          name: "Stainless-steel preparation scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cropping, weld-tab, and preparation losses are weighed as one physically specific stainless-steel scrap stream; destinations are disclosed separately."
+          amount:
+            expression: "Weighed scrap leaving feed preparation, net of any documented internal return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_and_scrap_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: annealing_and_descaling
+    label: "Annealing and thermal descaling"
+    inputs:
+      product:
+        - row_id: input_strip_before_annealing
+          role: "Strip before annealing"
+          name: "Stainless-steel strip before annealing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The actual stainless-steel strip state entering the furnace is linked from the preceding included process."
+          amount:
+            expression: "Linked measured or mass-balanced intermediate mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_annealing_natural_gas
+          role: "Natural gas for furnace firing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "This flow is recorded only for a fuel-fired furnace and uses supplier volume at disclosed reference conditions."
+          amount:
+            expression: "Supplier-metered or dedicated-submeter volume attributable to included annealing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_annealing_electricity
+          role: "Annealing-line electricity"
+          name: "Alternating-current electricity supplied to annealing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Electric furnace power, drives, fans, controls, and recirculation electricity are recorded for the included annealing route."
+          amount:
+            expression: "Submetered line use or documented allocation from a common feeder"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_nitrogen_protective_gas
+          role: "Nitrogen protective gas"
+          name: "Industrial nitrogen gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Nitrogen supplied to the furnace is recorded when the declared annealing atmosphere uses it."
+          amount:
+            expression: "Metered purchased or on-site-supplied nitrogen at disclosed pressure and reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_hydrogen_protective_gas
+          role: "Hydrogen protective gas"
+          name: "Industrial hydrogen gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Hydrogen supplied to the furnace is recorded when present in the declared protective atmosphere."
+          amount:
+            expression: "Metered purchased or on-site-supplied hydrogen at disclosed pressure and reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_annealed_strip_intermediate
+          role: "Annealed strip intermediate"
+          name: "Annealed stainless-steel strip intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The annealed strip is linked to the next included operation with its furnace exit state declared."
+          amount:
+            expression: "Measured or mass-balanced furnace output mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: output_fossil_carbon_dioxide_to_air
+          role: "Fossil carbon dioxide from furnace combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Fossil carbon dioxide from on-site fuel combustion is measured or calculated without claiming a more specific air compartment."
+          amount:
+            expression: "Stack measurement or calculation from foreground fuel carbon and documented oxidation assumptions"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_annealing_records
+              source_ids: []
+            ranges: []
+  - id: acid_pickling_and_rinsing
+    label: "Acid pickling, rinsing, and line treatment"
+    inputs:
+      product:
+        - row_id: input_strip_before_pickling
+          role: "Strip before pickling"
+          name: "Stainless-steel strip before pickling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The stainless-steel strip entering the actual pickling sequence is linked from the preceding included operation."
+          amount:
+            expression: "Linked measured or mass-balanced intermediate mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_nitric_acid
+          role: "Nitric acid solution"
+          name: "Nitric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nitric acid make-up is recorded only when it is an actual component of the declared stainless-steel pickling bath."
+          amount:
+            expression: "Purchased or tank-mass-balance solution mass with concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_hydrofluoric_acid
+          role: "Hydrofluoric acid solution"
+          name: "Hydrofluoric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Hydrofluoric acid make-up is recorded only when it is an actual component of the declared pickling bath."
+          amount:
+            expression: "Purchased or tank-mass-balance solution mass with concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_pickling_process_water
+          role: "Pickling process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Fresh or externally supplied water used for bath make-up, rinsing, and fume treatment is recorded net of internal recycle."
+          amount:
+            expression: "Metered make-up water entering the included pickling and abatement system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_pickling_electricity
+          role: "Pickling-line electricity"
+          name: "Alternating-current electricity supplied to pickling"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Electricity for strip handling, pumps, ventilation, recovery, and wastewater treatment is recorded for the included system."
+          amount:
+            expression: "Submetered use or documented allocation from the relevant feeder"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_calcium_hydroxide
+          role: "Calcium hydroxide neutralizer"
+          name: "Slaked lime"
+          flow_type: "product"
+          flow_ref:
+            uuid: "49bf5000-b2da-4a30-8349-b0bb44171616"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Calcium hydroxide is recorded when actually used for treatment of the declared pickling wastewater or spent bath."
+          amount:
+            expression: "Purchased or issued mass attributable to the pickling treatment system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_pickled_strip_intermediate
+          role: "Pickled strip intermediate"
+          name: "Pickled stainless-steel strip intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The rinsed and dried pickled strip is linked to the next included operation."
+          amount:
+            expression: "Measured or mass-balanced pickling-line output mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: output_spent_pickle_liquor
+          role: "Spent mixed-acid pickle liquor"
+          name: "Spent nitric-hydrofluoric pickle liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent nitric-hydrofluoric pickle liquor leaving the foreground for recovery, treatment, or disposal is recorded separately from rinse water."
+          amount:
+            expression: "Weighed or tank-level mass balance of liquor crossing the site boundary"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: output_pickling_sludge
+          role: "Pickling neutralization sludge"
+          name: "Stainless-steel pickling neutralization sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wet sludge generated by neutralization and solids separation is reported with dry-solids content and destination."
+          amount:
+            expression: "Weighed wet mass with sampled dry-solids fraction"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+        - row_id: output_acidic_rinse_wastewater
+          role: "Acidic pickling rinse wastewater"
+          name: "Acidic stainless-steel pickling rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rinse wastewater discharged to on-site or off-site treatment is recorded net of internal countercurrent recycle."
+          amount:
+            expression: "Discharge flow measurement converted to mass at measured density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: output_hydrogen_fluoride_to_air
+          role: "Hydrogen fluoride released to air"
+          name: "Hydrogen fluoride to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Hydrogen fluoride crossing the air-emission boundary after capture and treatment is recorded when the mixed-acid route is used."
+          amount:
+            expression: "Measured concentration multiplied by dry standardized exhaust-gas volume for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pickling_records
+              source_ids: []
+            ranges: []
+  - id: cold_rolling_and_temper
+    label: "Cold reduction and temper rolling"
+    inputs:
+      product:
+        - row_id: input_pickled_strip_for_rolling
+          role: "Pickled strip for rolling"
+          name: "Pickled stainless-steel strip for cold rolling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The cleaned strip entering cold reduction or temper rolling is linked from the preceding operation."
+          amount:
+            expression: "Linked measured or mass-balanced intermediate mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_cold_rolling_electricity
+          role: "Cold-rolling electricity"
+          name: "Alternating-current electricity supplied to cold rolling"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Electricity for roll drives, strip transport, hydraulics, filtration, and controls is recorded for the included line."
+          amount:
+            expression: "Submetered line use or documented allocation from a common feeder"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_cold_rolling_oil
+          role: "Cold-rolling oil"
+          name: "cold rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a9417245-6f45-4df3-8f04-227ed8a1be58"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The specific rolling oil or lubricant formulation issued to the line is recorded net of recovered oil returned to the same system."
+          amount:
+            expression: "Purchase and issue records reconciled with opening stock, closing stock, and recovered oil"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+        - row_id: input_rolling_emulsion_water
+          role: "Rolling-emulsion make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Externally supplied make-up water is recorded when a water-based rolling emulsion is used."
+          amount:
+            expression: "Metered make-up water net of recovered water returned to the emulsion system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_cold_rolled_strip_intermediate
+          role: "Cold-rolled strip intermediate"
+          name: "Cold-rolled stainless-steel strip intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The rolled strip is linked to the next included operation with thickness reduction and temper state declared."
+          amount:
+            expression: "Measured or mass-balanced rolling-line output mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: output_spent_rolling_emulsion
+          role: "Spent rolling emulsion"
+          name: "Spent stainless-steel cold-rolling emulsion"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent water-oil rolling emulsion leaving the foreground for treatment or disposal is recorded as a distinct waste stream."
+          amount:
+            expression: "Weighed transfer or tank mass balance of emulsion leaving the line"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+        - row_id: output_oily_metal_fines_sludge
+          role: "Oily metal-fines sludge"
+          name: "Oily stainless-steel fines sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge removed from rolling-fluid filtration is weighed and characterized for moisture and oil content."
+          amount:
+            expression: "Weighed wet mass leaving the rolling-fluid treatment system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: mechanical_surface_finishing
+    label: "Mechanical surface finishing"
+    inputs:
+      product:
+        - row_id: input_strip_before_mechanical_finishing
+          role: "Strip before mechanical finishing"
+          name: "Stainless-steel strip before mechanical surface finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The strip entering grinding, polishing, brushing, or abrasive finishing is linked from the preceding operation."
+          amount:
+            expression: "Linked measured or mass-balanced intermediate mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_mechanical_finishing_electricity
+          role: "Mechanical-finishing electricity"
+          name: "Alternating-current electricity supplied to mechanical finishing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Electricity for grinding, polishing, brushing, extraction, filtration, and wet-finishing circulation is recorded."
+          amount:
+            expression: "Submetered line use or documented allocation from a common feeder"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_aluminium_oxide_abrasive
+          role: "Aluminium oxide abrasive"
+          name: "Aluminium oxide abrasive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium oxide abrasive issued to the line is recorded when used for the declared finish."
+          amount:
+            expression: "Issued abrasive mass net of unused material returned to stock"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+        - row_id: input_wet_finishing_water
+          role: "Wet-finishing process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Externally supplied make-up water is recorded when the actual grinding or polishing route is wet."
+          amount:
+            expression: "Metered make-up water net of internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_surface_finished_strip_intermediate
+          role: "Surface-finished strip intermediate"
+          name: "Surface-finished stainless-steel strip intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The surface-finished strip is linked to final conversion with the finish designation declared."
+          amount:
+            expression: "Measured or mass-balanced finishing-line output mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: output_stainless_steel_grinding_dust
+          role: "Collected stainless-steel grinding dust"
+          name: "Collected stainless-steel grinding dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dry dust captured from stainless-steel grinding or polishing is weighed separately from wet sludge."
+          amount:
+            expression: "Weighed dust removed from extraction and filtration equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+        - row_id: output_oily_grinding_sludge
+          role: "Oily grinding sludge"
+          name: "Oily stainless-steel grinding sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wet grinding sludge containing stainless-steel solids, water, and oil is weighed and its solids content retained."
+          amount:
+            expression: "Weighed wet sludge leaving the finishing system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: output_particulate_matter_to_air
+          role: "Particulate matter released to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Uncaptured particulate matter crossing the air-emission boundary is reported here only when the monitoring record does not resolve a particle-size fraction; a size-resolved measurement requires a separately audited, more specific elementary flow."
+          amount:
+            expression: "Measured concentration multiplied by standardized exhaust volume, or validated capture balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_finishing_records
+              source_ids: []
+            ranges: []
+  - id: product_finalization
+    label: "Final conversion, inspection, and packing"
+    inputs:
+      product:
+        - row_id: input_finished_strip_for_finalization
+          role: "Finished strip for finalization"
+          name: "Further-worked stainless-steel strip before finalization"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The last included further-working intermediate enters slitting, cutting, inspection, and packing."
+          amount:
+            expression: "Linked measured or mass-balanced intermediate mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalization_records
+              source_ids: []
+            ranges: []
+        - row_id: input_finalization_electricity
+          role: "Finalization electricity"
+          name: "Alternating-current electricity supplied to product finalization"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Electricity for slitting, cutting, inspection, handling, and packing equipment is recorded for the production lot."
+          amount:
+            expression: "Submetered use or documented allocation from the relevant feeder"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalization_records
+              source_ids: []
+            ranges: []
+        - row_id: input_polyethylene_protective_film
+          role: "Polyethylene protective film"
+          name: "Polyethylene protective film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Protective film remaining with the shipped product is recorded when applied on site."
+          amount:
+            expression: "Issued roll mass minus unused returned film, cross-checked by area and basis weight"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalization_records
+              source_ids: []
+            ranges: []
+        - row_id: input_steel_strapping
+          role: "Steel strapping"
+          name: "Steel packing strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel strapping remaining with the dispatch unit is recorded when used."
+          amount:
+            expression: "Issued strap mass or length converted using measured linear mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalization_records
+              source_ids: []
+            ranges: []
+        - row_id: input_wooden_pallet
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The pallet crossing the producer gate with the product is recorded when used, with reuse status declared."
+          amount:
+            expression: "Count multiplied by measured or supplier-declared pallet mass, adjusted only for documented reuse allocation"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalization_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_reference_product
+          role: "Further-worked stainless-steel flat-rolled reference product"
+          name: "Flat-rolled products of stainless steel, further worked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "add37984-82d6-4c91-85e3-9911c0135944"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This row is the net inspected saleable product linked to the reference-flow definition and the directly audited public Tiangong product flow for CPC 41232."
+          amount:
+            expression: "Normalize certified net saleable product mass to exactly 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_product_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: output_final_edge_trim_scrap
+          role: "Final stainless-steel edge-trim scrap"
+          name: "Stainless-steel final edge-trim scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Edge trim and off-size cuttings generated during final conversion are weighed as stainless-steel scrap and their destination is declared."
+          amount:
+            expression: "Weighed scrap leaving final conversion, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalization_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared_foreground_operations"
+    rule: "Subdivide or meter unit processes and product lots before applying allocation; document any combined-line period and reconcile its mass and energy balances."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: allocation_internal_scrap
+    applies_to: "internally_recycled_stainless_scrap"
+    rule: "Treat scrap returned within the declared foreground boundary as an internal loop: retain the collection and remelting burdens inside their actual processes and do not credit or count the same scrap as an external output."
+    source_ids: []
+  - rule_id: allocation_exported_scrap
+    applies_to: "exported_stainless_scrap"
+    rule: "Report exported preparation scrap, edge trim, grinding dust, or recoverable metal-bearing residue at the point it leaves the foreground; do not apply an avoided-primary-steel credit inside the foreground inventory unless the downstream study adds a separately declared consequential scenario."
+    source_ids: []
+  - rule_id: allocation_recovered_acid
+    applies_to: "recovered_acid_and_by_products"
+    rule: "Prefer physical subdivision of acid recovery. If recovered acid returns to the same line, model it as an internal loop; if a saleable by-product leaves the system, disclose the allocation variable, values, period, and sensitivity."
+    source_ids:
+      - us-epa-iron-steel-effluent-2002
+  - rule_id: allocation_packaging_reuse
+    applies_to: "reusable_shipping_items"
+    rule: "Allocate reusable pallet or stillage production over documented expected uses and include repair and return burdens only when they are inside the declared boundary; do not assume reuse without records."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feed_and_scrap_mass
+      process_id: "feed_preparation"
+      flow_role: "Incoming feed, prepared intermediate, and preparation scrap"
+      record_type: "Calibrated scale tickets and production-lot ledger"
+      raw_fields: "lot_id; grade; form; dimensions; feed_mass_kg; preparation_scrap_kg; internal_return_kg; stock_change_kg"
+      collection_method: "Reconcile receiving scales, line counters, scrap scales, and stock records"
+      unit: "kg"
+      frequency: "Each lot, aggregated monthly or over the declared reporting period"
+      temporal_coverage: "At least 12 consecutive representative months, or all lots for a shorter campaign with justification"
+      site_scope: "All preparation equipment serving the declared product"
+      aggregation_rule: "Sum attributable masses; reconcile feed = prepared intermediate + exported scrap + internal return + measured stock change"
+      quality_evidence: "Scale calibration, lot traceability, stock reconciliation, and signed exception log"
+    - protocol_id: cp_preparation_energy
+      process_id: "feed_preparation"
+      flow_role: "Preparation electricity"
+      record_type: "Electricity submeter or feeder meter"
+      raw_fields: "timestamp; meter_id; opening_MJ; closing_MJ; downtime; shared_throughput_kg"
+      collection_method: "Read dedicated meter; if shared, allocate by documented operating time and power or metered throughput"
+      unit: "MJ"
+      frequency: "Shift or daily"
+      temporal_coverage: "Same reporting period as product mass"
+      site_scope: "Preparation equipment and local extraction only"
+      aggregation_rule: "Sum readings, subtract documented unrelated loads, and divide by reference-product mass"
+      quality_evidence: "Meter calibration or utility-grade specification and allocation reconciliation"
+    - protocol_id: cp_annealing_records
+      process_id: "annealing_and_descaling"
+      flow_role: "Annealing intermediates, electricity, gas, atmosphere gases, and fossil CO2"
+      record_type: "Furnace batch log, utility meters, gas invoices, and emissions calculation or monitoring record"
+      raw_fields: "lot_id; input_mass_kg; output_mass_kg; electricity_MJ; gas_m3; gas_reference_conditions; nitrogen_m3; hydrogen_m3; fuel_carbon; stack_CO2_kg"
+      collection_method: "Link furnace logs to dedicated meters or reconciled utility records and retain the emissions method"
+      unit: "kg; MJ; m3"
+      frequency: "Each furnace batch or continuous-line shift"
+      temporal_coverage: "Same reporting period as product mass and representative operating modes"
+      site_scope: "All annealing furnaces, atmosphere supply, fans, and directly associated controls"
+      aggregation_rule: "Sum included batches; normalize to linked net product; prevent overlap between metered gas and derived energy"
+      quality_evidence: "Meter calibration, invoice reconciliation, furnace recipe, gas certificates, and emissions-method record"
+    - protocol_id: cp_pickling_records
+      process_id: "acid_pickling_and_rinsing"
+      flow_role: "Pickling intermediates, acids, water, electricity, wastes, and HF release"
+      record_type: "Bath ledger, tank levels, purchase issues, water and electricity meters, waste manifests, discharge and stack monitoring"
+      raw_fields: "lot_id; strip_mass_kg; acid_solution_kg; acid_concentration; water_kg; electricity_MJ; recovered_acid_kg; spent_liquor_kg; sludge_kg; sludge_solids; wastewater_m3; density; HF_concentration; exhaust_Nm3"
+      collection_method: "Reconcile bath make-up and recovery; meter utilities; weigh wastes; sample discharges and exhaust under the site monitoring plan"
+      unit: "kg; MJ; m3; Nm3"
+      frequency: "Each batch or shift for bath and utilities; each waste transfer; permit or campaign frequency for monitoring"
+      temporal_coverage: "Same reporting period as product mass and inclusive of start-up and maintenance events"
+      site_scope: "Pickling tanks, rinses, drying, ventilation, fume treatment, acid recovery, and directly associated wastewater treatment"
+      aggregation_rule: "Calculate net external inputs and outputs after internal recycle; normalize by linked net product mass"
+      quality_evidence: "Instrument calibration, laboratory QA/QC, chain-of-custody, bath balance closure, and waste manifests"
+    - protocol_id: cp_cold_rolling_records
+      process_id: "cold_rolling_and_temper"
+      flow_role: "Rolling intermediates, electricity, oil, make-up water, emulsion, and sludge"
+      record_type: "Coil tracking, electricity meter, stock ledger, tank balance, and waste transfer record"
+      raw_fields: "lot_id; input_mass_kg; output_mass_kg; electricity_MJ; oil_opening_kg; oil_purchased_kg; oil_closing_kg; recovered_oil_kg; make_up_water_kg; spent_emulsion_kg; sludge_kg"
+      collection_method: "Link coils to line meters and reconcile rolling-fluid stock and waste transfers"
+      unit: "kg; MJ"
+      frequency: "Each coil or shift; monthly stock reconciliation"
+      temporal_coverage: "Same reporting period as product mass and representative rolling schedules"
+      site_scope: "Included rolling stands, hydraulics, emulsion circulation, filtration, and controls"
+      aggregation_rule: "Sum linked coils; calculate net oil and water input; normalize to net product; avoid counting recirculated emulsion"
+      quality_evidence: "Meter calibration, coil traceability, inventory reconciliation, and waste manifests"
+    - protocol_id: cp_mechanical_finishing_records
+      process_id: "mechanical_surface_finishing"
+      flow_role: "Finishing intermediate, electricity, abrasive, water, dust, sludge, and particulate release"
+      record_type: "Coil or sheet route record, meters, material issues, waste weights, and exhaust monitoring"
+      raw_fields: "lot_id; input_mass_kg; output_mass_kg; finish_code; electricity_MJ; abrasive_kg; water_kg; dust_kg; sludge_kg; sludge_solids; particulate_concentration; exhaust_Nm3"
+      collection_method: "Link actual finish route to utility and material records; weigh captured waste; monitor exhaust or validate capture balance"
+      unit: "kg; MJ; Nm3"
+      frequency: "Each lot or shift; each waste transfer; monitoring-plan frequency for air releases"
+      temporal_coverage: "Same reporting period as product mass and representative finish mix"
+      site_scope: "Included grinding, polishing, brushing, extraction, filtration, and wet systems"
+      aggregation_rule: "Sum actual route records and normalize to linked net product; keep dry dust and wet sludge separate"
+      quality_evidence: "Meter calibration, material ledger, scale checks, finish traceability, and monitoring QA/QC"
+    - protocol_id: cp_finalization_records
+      process_id: "product_finalization"
+      flow_role: "Finalization intermediate, electricity, packaging, and final scrap"
+      record_type: "Lot ledger, electricity meter, packaging bill of materials, scale tickets, and reuse log"
+      raw_fields: "lot_id; input_mass_kg; saleable_mass_kg; electricity_MJ; film_kg; strap_length_m; strap_linear_mass; pallet_count; pallet_mass; pallet_reuse_count; scrap_kg"
+      collection_method: "Link slitting, cutting, inspection, and dispatch records to meters and packaging issues"
+      unit: "kg; MJ; m; count"
+      frequency: "Each lot, aggregated over reporting period"
+      temporal_coverage: "Same reporting period as product mass"
+      site_scope: "Final conversion, inspection, handling, and packing equipment"
+      aggregation_rule: "Sum only packaging that crosses the gate; calculate strap and pallet mass; normalize to net product"
+      quality_evidence: "Scale and meter calibration, bill-of-material reconciliation, dispatch records, and reuse evidence"
+    - protocol_id: cp_final_product_mass
+      process_id: "product_finalization"
+      flow_role: "Net saleable reference product"
+      record_type: "Certified dispatch scale and inspection release"
+      raw_fields: "lot_id; gross_dispatch_mass_kg; packaging_mass_kg; net_product_mass_kg; grade; dimensions; finish; edge_condition; release_status"
+      collection_method: "Determine net product mass from calibrated scale records and release only conforming product"
+      unit: "kg"
+      frequency: "Each saleable lot"
+      temporal_coverage: "Same reporting period as all foreground exchanges"
+      site_scope: "All saleable products covered by the declared data package"
+      aggregation_rule: "Sum net conforming mass and normalize to exactly 1,000 kg; exclude packaging and rejected product"
+      quality_evidence: "Scale calibration, inspection certificate, dispatch record, and mass reconciliation"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "Every foreground exchange"
+      rule: "normalized_amount = reporting_period_amount / net_saleable_product_mass × 1,000 kg"
+      inputs:
+        - reporting_period_amount
+        - net_saleable_product_mass
+      output: "Exchange per 1,000 kg net saleable product"
+      source_ids: []
+    - id: calc_internal_mass_link
+      applies_to: "Consecutive stainless-steel intermediates"
+      rule: "For each linked lot, upstream intermediate output equals downstream intermediate input after separately recorded stock change; investigate any unassigned difference"
+      inputs:
+        - upstream_output_mass
+        - downstream_input_mass
+        - stock_change
+      output: "Reconciled intermediate mass and balance exception"
+      source_ids: []
+    - id: calc_acid_active_mass
+      applies_to: "Nitric acid, hydrofluoric acid, and neutralizer"
+      rule: "active_substance_mass = solution_mass × measured_mass_fraction; retain both solution mass and active-substance mass"
+      inputs:
+        - solution_mass
+        - measured_mass_fraction
+      output: "Active-substance mass for disclosure"
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - id: calc_gas_reference_volume
+      applies_to: "Natural gas and protective gases"
+      rule: "Convert measured volume to the declared reference temperature and pressure using the site-approved compressibility method; retain measured and converted values"
+      inputs:
+        - measured_volume
+        - temperature
+        - pressure
+        - moisture_basis
+        - compressibility_factor
+      output: "Gas volume at declared reference conditions"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "Furnace fossil carbon dioxide"
+      rule: "Use validated stack measurement or calculate fossil CO2 from foreground fuel carbon and documented oxidation; do not include biogenic carbon in this flow"
+      inputs:
+        - fuel_amount
+        - fuel_carbon_content
+        - oxidation_factor
+        - stack_measurement
+      output: "Fossil CO2 to air"
+      source_ids: []
+    - id: calc_wastewater_mass
+      applies_to: "Acidic pickling rinse wastewater"
+      rule: "wastewater_mass = measured_discharge_volume × measured_or_validated_density"
+      inputs:
+        - discharge_volume
+        - density
+      output: "Wastewater mass crossing the boundary"
+      source_ids:
+        - us-epa-iron-steel-effluent-2002
+    - id: calc_air_release
+      applies_to: "HF and particulate releases"
+      rule: "release_mass = validated_concentration × dry standardized exhaust volume, with unit and moisture corrections retained"
+      inputs:
+        - concentration
+        - exhaust_volume
+        - standard_conditions
+        - moisture_correction
+      output: "Pollutant mass to air"
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - id: calc_packaging_mass
+      applies_to: "Steel strap and wooden pallet"
+      rule: "strap_mass = strap_length × measured_linear_mass; pallet_mass_allocated = pallet_count × pallet_mass / documented_expected_uses when the pallet is demonstrably reusable"
+      inputs:
+        - strap_length
+        - strap_linear_mass
+        - pallet_count
+        - pallet_mass
+        - expected_uses
+      output: "Packaging mass per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and feed"
+      requirement: "Retain grade or composition standard, form, dimensions, finish, edge condition, input state, output state, and the operation establishing further-worked status for every covered product family."
+      evidence: "Mill certificates, route cards, inspection release, and classification review"
+    - id: dq_route_completeness
+      applies_to: "Process map"
+      requirement: "Demonstrate that at least one operation after the final primary hot or cold rolling step establishes the further-worked state and that every on-site or outsourced operation for the product is represented once."
+      evidence: "Route diagram, equipment list, outsourcing records, and mass-linked process ledger"
+    - id: dq_mass_balance
+      applies_to: "Stainless-steel feed, intermediates, product, and scrap"
+      requirement: "Reconcile mass over the reporting period and investigate unexplained differences before release; disclose measured stock change and unassigned loss."
+      evidence: "Calibrated scale records, stock ledger, scrap manifests, and signed balance review"
+    - id: dq_utility_coverage
+      applies_to: "Electricity, gas, and water"
+      requirement: "Cover start-up, shutdown, idle, recirculation, abatement, and directly associated treatment loads attributable to the declared route; disclose shared-meter allocation."
+      evidence: "Meter map, calibration, operating log, and allocation workbook"
+    - id: dq_chemical_identity
+      applies_to: "Pickling and finishing chemicals"
+      requirement: "Retain product name, concentration or formulation, supplier, density where used, safety data sheet, and batch or reporting-period issue quantities."
+      evidence: "Purchase record, SDS, certificate of analysis, tank ledger, and sampling record"
+    - id: dq_emissions_and_wastes
+      applies_to: "Direct releases and waste outputs"
+      requirement: "Retain sampling method, standard conditions, detection limits, moisture basis, waste moisture or solids content, destination, and monitoring-period representativeness."
+      evidence: "Laboratory QA/QC, monitoring report, chain-of-custody, and waste transfer documentation"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground dataset"
+      requirement: "Prefer at least 12 consecutive representative months; justify shorter campaigns and document production mix, maintenance, abnormal events, and capacity utilization."
+      evidence: "Production calendar, maintenance log, event register, and coverage calculation"
+    - id: dq_no_unverified_uuid_proxy
+      applies_to: "All Tiangong references"
+      requirement: "Keep a UUID empty when an exact public state-code-100 identity is not directly verified; do not replace a missing route-, state-, geography-, or technology-specific identity with a broader proxy."
+      evidence: "UUID audit and unresolved-identity register"
+validation_rules:
+  - rule_id: validate_identity_and_state
+    applies_to: "reference_product"
+    rule: "Fail conformance when stainless-steel grade, flat-rolled form, input state, output further-worked state, or route-defining operation is missing or inconsistent with the product boundary."
+    source_ids:
+      - un-cpc-v3-structure-2025
+      - un-cpc-v3-explanatory-notes-2025
+  - rule_id: validate_reference_mass
+    applies_to: "reference_flow"
+    rule: "Confirm that the output row output_reference_product equals 1,000 kg net saleable product after normalization and excludes packaging mass."
+    source_ids: []
+  - rule_id: validate_route_presence
+    applies_to: "process_inventory"
+    rule: "Confirm that feed preparation and product finalization are present and that a declared annealing, pickling, temper or skin-pass rolling, mechanical surface finishing, or other documented operation occurring after the final primary hot or cold rolling step establishes the further-worked status; primary cold reduction alone is insufficient."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_atomic_flows
+    applies_to: "process_inventory"
+    rule: "Confirm that each row is one atomic material, energy, waste, or elementary exchange and that conditional applicability is declared by process or row rather than by a combined selector label."
+    source_ids: []
+  - rule_id: validate_mass_reconciliation
+    applies_to: "foreground_mass_balance"
+    rule: "Confirm that feed, linked intermediates, product, scrap, wastes, and measured stock changes reconcile for the reporting period; flag unexplained imbalance for review."
+    source_ids: []
+  - rule_id: validate_pickling_route
+    applies_to: "acid_pickling_and_rinsing"
+    rule: "When pickling is included, require bath chemistry and concentration, water recycle, acid recovery, fume treatment, wastewater destination, sludge solids, and monitored applicable air releases."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+      - us-epa-iron-steel-effluent-2002
+  - rule_id: validate_energy_identity
+    applies_to: "electricity_and_gas_inputs"
+    rule: "Reject unqualified electricity or gas identities that omit the required supply, geography, technology, delivery-boundary, or reference-condition disclosures."
+    source_ids: []
+  - rule_id: validate_unresolved_identities
+    applies_to: "flow_references"
+    rule: "Report every UUID-empty inventory row as unresolved and verify that no non-exact or non-public candidate has been promoted."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one declared family of further-worked stainless-steel flat-rolled products"
+  downstream_use: "secondary_dataset; background_dataset after methodology review and resolution or explicit acceptance of identity gaps"
+  allowed_use: "Attributional gate-to-gate modelling of a declared producer, route, grade family, product state, and reporting period; linking to separately modelled upstream feed production and downstream fabrication"
+  excluded_use: "Primary stainless-steel production without linked upstream datasets; generic use-stage claims; consequential scrap-credit claims; products outside the semantic boundary; substitution across undisclosed grade, finish, route, or geography"
+  required_metadata: "PCR id and version state; producer and geography; reporting period; grade family; dimensions; finish; edge and delivery condition; feed state; further-working operations; combined-line aggregation; capacity utilization; upstream dataset choices; allocation; packaging; unresolved UUIDs"
+  required_quality_disclosure: "Mass-balance closure; meter and scale coverage; shared-utility allocation; chemical concentrations; gas reference conditions; water recycle; acid recovery; abatement boundary; waste moisture and destination; emissions monitoring; temporal and technological representativeness"
+  update_trigger: "Change in grade family or product state, route-defining operation, furnace fuel, pickling chemistry, rolling or finishing technology, abatement, supplier mix, geography, allocation, packaging, or a material change in annual mass, energy, water, chemical, waste, or emission performance"
+data_sources:
+  - id: "un-cpc-v3-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-03"
+    used_for: "Official CPC 41232 classification identity"
+  - id: "un-cpc-v3-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, p. 208, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-09-03"
+    used_for: "Class and subclass context, exclusions, and semantic product boundary"
+  - id: "eu-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, December 2022, especially Chapter 3, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-12/FMP%20BREF_Final%20Version.pdf, retrieved 2026-09-03"
+    used_for: "Stainless-steel cold-rolling route, annealing and pickling sequence, process inputs and outputs, mechanical finishing, utilities, waste, emissions, recirculation, abatement, and monitoring design"
+  - id: "us-epa-iron-steel-effluent-2002"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, Development Document for Final Effluent Limitations Guidelines and Standards for the Iron and Steel Manufacturing Point Source Category, EPA-821-R-02-004, April 2002, https://www.epa.gov/sites/default/files/2015-10/documents/ironsteel_dd_2002.pdf, retrieved 2026-09-03"
+    used_for: "Steel-finishing rinse-water management, fume-scrubber recycle, acid recovery and purification, spent-liquor and sludge treatment, and wastewater collection boundary"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d476b9fed9121bfc3570c3feec1a1c1add7f906694508790e37a86ea9fc38290"
+  generated_content_sha256: "sha256:1128efe417a265732b8f3405abc96af0127ae61e01f7cc1ced5e90594f205c6f"

@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.interchangeable-tools-for-hand-tools-or-for-machine-tools-including-dies-for-drawing-or-6e18c194
 title:
   en-US: "Interchangeable tools for hand tools or for machine tools, including dies for drawing or extruding metal, and rock drilling or earth boring tools; knives for machines; plates, sticks, tips and the like for tools, unmounted, of sintered metal carbides or cermets"
-  zh-CN: null
-status: scaffold
+  zh-CN: "手工工具或机床的可互换工具，包括金属拉制或压挤模具、用于钻岩或土钻的工具；机器用刀具；烧结金属碳化物或金属陶瓷制的用作工具而未安装的板、杆及类似品"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T21:09:03Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,81 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42922"
     title: "Interchangeable tools for hand tools or for machine tools, including dies for drawing or extruding metal, and rock drilling or earth boring tools; knives for machines; plates, sticks, tips and the like for tools, unmounted, of sintered metal carbides or cermets"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary_review:
+    result: promote_legacy
+    duplicate_material_pcr_found: false
+    rationale: "The boundary is the finished CPC 42922 product family at the manufacturing gate. Nearby PCR identities cover machine tools or welding equipment used to manufacture products, not interchangeable tools, dies, machine knives, or unmounted carbide/cermet tool articles themselves."
+  cartesian_expansion_review: "Five shared, route-conditioned process stages are used; product family, material grade, coating recipe, and packaging configuration remain declared qualifiers rather than a Cartesian inventory expansion."
+  unresolved_flow_identities:
+    - row_id: out_finished_interchangeable_tool
+      reason: "No exact TianGong product flow spans the full CPC 42922 reference-product boundary."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: in_tool_steel_bar
+        reason_code: no_exact_candidate
+        explanation: "Five public state-100 candidates were directly read, but all describe wood products or road infrastructure rather than high-speed tool-steel round bar."
+      - row_id: out_prepared_tool_blank
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This route-specific internal blank is not a purchased or market product and needs a foreground internal flow identity."
+      - row_id: out_treated_tool_blank
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The heat-treated or sintered blank is an internal intermediate whose exact identity depends on the declared tool route."
+      - row_id: in_alumina_grinding_wheel
+        reason_code: no_exact_candidate
+        explanation: "Direct reads returned bauxite or alumina materials, not an assembled vitrified aluminium-oxide grinding wheel."
+      - row_id: out_machined_tool
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The machined and honed tool before optional coating and packaging is an internal foreground intermediate."
+      - row_id: out_metal_grinding_sludge
+        reason_code: no_exact_candidate
+        explanation: "Direct reads returned generic sludge, oil sludge, or waste abrasives; none exactly denotes the combined metal-bearing grinding sludge."
+      - row_id: in_cvd_hydrogen
+        reason_code: no_exact_candidate
+        explanation: "The five directly read product candidates did not include industrial hydrogen gas."
+      - row_id: in_cvd_carbon_dioxide
+        reason_code: product_state_mismatch
+        explanation: "The directly read carbon-dioxide candidates were liquid product or application-specific shielding gas, not gaseous CVD input with a compatible property."
+      - row_id: out_coated_tool
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The coated tool is an internal intermediate until the actual coating recipe and finished product identity are declared."
+      - row_id: in_polypropylene_tray
+        reason_code: semantic_mismatch
+        explanation: "The only directly read candidate was a generic plastic packaging box or container and did not establish polypropylene tray identity."
+      - row_id: out_finished_interchangeable_tool
+        reason_code: no_exact_candidate
+        explanation: "All directly read CPC 42922 product candidates were narrower by material, function, or product form than the full reference-product boundary."
+    range_evidence_needs:
+      - range_id: major_material_inputs
+        row_ids: [in_tool_steel_bar, in_tungsten_carbide_powder, in_cobalt_powder]
+        explanation: "No two mutually independent original sources with compatible tool product state, reference basis, and gate boundary were available for a defensible empirical input range; collect foreground batch mass records."
+      - range_id: process_energy_and_fuel
+        row_ids: [in_prep_electricity, in_thermal_electricity, in_thermal_natural_gas, in_machining_electricity, in_cvd_electricity, in_packaging_electricity]
+        explanation: "Published cases differ by tool geometry, plant, grid, equipment loading, and allocation basis; collect submeter or batch records instead of inferring a cross-route range."
+      - range_id: process_water_and_consumables
+        row_ids: [in_thermal_process_water, in_machining_process_water, in_cutting_fluid, in_alumina_grinding_wheel]
+        explanation: "Compatible independent range evidence was not verified; use purchase, make-up, meter, and stock-change records."
+      - range_id: coating_inputs
+        row_ids: [in_cvd_nitrogen, in_cvd_hydrogen, in_cvd_methane, in_cvd_carbon_dioxide]
+        explanation: "Coating recipes are grade- and technology-specific and the verified single plant case cannot form an empirical range; collect recipe and gas-meter records."
+      - range_id: yields_wastes_and_packaging
+        row_ids: [out_postindustrial_steel_scrap, out_metal_grinding_sludge, in_paper_box, in_polypropylene_tray, out_finished_interchangeable_tool]
+        explanation: "No two independent boundary-compatible sources were verified; derive these values from batch mass balance, dispatch, and waste transfer records."

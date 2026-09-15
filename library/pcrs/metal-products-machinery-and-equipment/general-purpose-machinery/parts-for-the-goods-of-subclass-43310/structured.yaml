@@ -1,10 +1,915 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43331"
-  title: "Parts for the goods of subclass 43310"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-for-the-goods-of-subclass-43310"
+  classification_refs: "CPC 3.0: 43331, Parts for the goods of subclass 43310; product family: parts for ball or roller bearings"
+  covered_products: "Separately supplied rolling elements, rings or races, cages, shields, seals, and other dedicated parts for ball or roller bearings"
+  excluded_products: "Complete bearings and units; housings and plain bearings; goods or parts of subclass 43320; generic stock and undedicated hardware"
+  representative_product: "One specified finished rolling-bearing part conforming to its declared drawing or product specification"
+  production_route: "Purchased stock or semi-finished part; route-specific forming or machining; conditional heat treatment; precision finishing and inspection; conditional cleaning and protection; packaging"
+  market_state: "Finished, inspected, preserved where required, and packaged for transfer at the factory gate"
+functional_unit:
+  what: "Supply one specified, market-ready part dedicated to a ball or roller bearing"
+  how_much: "One finished part"
+  how_well: "Conforming to declared drawing, material grade, dimensions, tolerances, surface condition, hardness or heat-treatment condition, and inspection criteria"
+  how_long_or_cycle: "One factory-gate delivery; service life is declared only when a downstream functional study includes the final application"
+  reference_flow_link: "Output row reference_product from packaging_and_release"
+system_boundary:
+  rules:
+    - rule_id: boundary_core_operations
+      applies_to: "foreground manufacturing"
+      rule: "Include all controlled forming, machining, heat treatment, finishing, cleaning, inspection, protection, packaging, direct emissions, and manufacturing-waste handling that apply to the declared route."
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+    - rule_id: boundary_route_conditionals
+      applies_to: "route applicability"
+      rule: "Include a conditional process only when the declared route uses it; document why each non-applicable step is absent."
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent extraction, primary production, supplier processing, purchased energy, packaging production, and inbound transport through linked upstream datasets."
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+    - rule_id: boundary_cutoff
+      applies_to: "inventory completeness"
+      rule: "Avoid cut-off; if exclusions remain, document sensitivity and demonstrate at least 95% coverage of product mass, life-cycle energy use, and each reported impact result within the study boundary."
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+    - rule_id: boundary_default_exclusions
+      applies_to: "organizational and capital activities"
+      rule: "Exclude commuting, business travel, research and development, and machinery maintenance occurring less often than once in three years unless explicitly included by the study."
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+boundary_abstraction:
+  declared_starting_condition: "Purchased alloy-steel bar or rod, alloy-steel wire, steel plate, other declared stock, or a supplier-provided semi-finished bearing part is received with auxiliaries, packaging, and energy."
+  starting_condition_role: "Foreground manufacturing gate; production before receipt remains in linked upstream datasets."
+  product_classification_scope: "Separately supplied, dedicated parts for ball or roller bearings; part type and material determine applicable route steps."
+  recursive_input_rule: "A purchased finished input in this PCR category is recorded once with its supplier dataset and is not recursively reconstructed inside the receiving process."
+  upstream_dataset_requirement: "Link supplier-specific data where available for principal stock, main semi-finished parts, electricity, fuel, auxiliaries, and packaging; otherwise use representative current attributional datasets and disclose proxy use."
+  disclosure: "Declare stock form and grade, input geography, site, controlled route, exclusions, allocation, electricity mix, gas reference conditions, waste state, and packaging boundary."
+reference_flow_definition:
+  reference_amount: "1 Item(s) of finished rolling-bearing part"
+  product_flow_ref:
+    name: "Finished rolling-bearing part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "part type"
+    - "bearing application or interface"
+    - "material and grade"
+    - "net part mass"
+    - "dimensions and tolerances"
+    - "hardness or heat-treatment state"
+    - "surface finish or coating"
+    - "preservation state"
+    - packaging
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "included route steps"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count only inspected, accepted parts in the declared market state; rejects, pending rework, and packaging pieces are not reference items."
+  - id: part_and_material_mass
+    applies_to: "part, material, waste, and packaging mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net part mass separately from packaging, retain weigh-ticket precision, and normalize batch totals by accepted item count."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert with 1 kWh = 3.6 MJ; disclose grid geography, voltage, contractual mix, and included losses."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record meter reference temperature and pressure, composition or billing calorific value, and any volume correction."
+  - id: aqueous_solution_mass
+    applies_to: "sodium-hydroxide solution and water-miscible fluids"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record solution mass and concentration separately; calculate dry substance only with a declared concentration basis."
+process_map:
+  - id: primary_forming_and_machining
+    name: "Primary forming and machining"
+    inclusion: "required"
+    inclusion_condition: "Apply the actual route: ring blanking, forging or turning; rolling-element cutting or cold heading; cage stamping or machining; or equivalent forming."
+    role: "foreground production"
+    quantitative_reference: "Per accepted finished part, traced by batch"
+  - id: heat_treatment
+    name: "Heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when annealing, hardening, carburizing, nitriding, tempering, stress relief, or another thermal treatment occurs under site control."
+    role: "foreground conditioning"
+    quantitative_reference: "Per accepted treated part"
+  - id: precision_finishing_and_inspection
+    name: "Precision finishing and inspection"
+    inclusion: "required"
+    inclusion_condition: "Include applicable grinding, honing, lapping, polishing, deburring, dimensional inspection, and acceptance."
+    role: "foreground finishing"
+    quantitative_reference: "Per accepted finished part"
+  - id: cleaning_and_surface_protection
+    name: "Cleaning and surface protection"
+    inclusion: "conditional"
+    inclusion_condition: "Include when aqueous or alkaline cleaning, corrosion protection, oiling, coating, or equivalent preparation occurs under site control."
+    role: "foreground conditioning"
+    quantitative_reference: "Per accepted treated part"
+  - id: packaging_and_release
+    name: "Packaging and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Include actual consumer or distribution packaging and release operations for the declared market state."
+    role: "foreground release"
+    quantitative_reference: "One accepted packaged part"
+process_inventory:
+  - id: primary_forming_and_machining
+    label: "Primary forming and machining"
+    inputs:
+      product:
+        - row_id: forming_alloy_steel_bar
+          role: "Alloy-steel bar or rod for rings or rollers"
+          name: "Bars and rods of alloy steel, further worked than hot- or cold-processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f72c06a2-f974-4d85-9308-b31cbb1d1b9a"
+          property_unit: "Mass / kg"
+          description: "Record this stock only for a declared ring or roller route."
+          amount:
+            expression: "delivery mass issued to the batch, net of unchanged stock returned"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: forming_alloy_steel_wire
+          role: "Alloy-steel wire for cold-formed rolling elements"
+          name: "Wire drawing, steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "461d98b3-a825-41bb-9b16-056331873326"
+          property_unit: "Mass / kg"
+          description: "Record this stock only when balls, needles, or rollers are cut or cold headed from wire."
+          amount:
+            expression: "delivery mass issued to the batch, net of unchanged wire returned"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: forming_steel_plate
+          role: "Steel plate for stamped cages"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Record steel plate only when the declared cage or shield is stamped or cut from plate."
+          amount:
+            expression: "delivery mass issued to the batch, net of unchanged plate returned"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: forming_electricity
+          role: "Electricity for forming and machining"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered or defensibly sub-metered electricity for forming, machining, controls, and directly associated extraction."
+          amount:
+            expression: "measured electricity for the traced batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: forming_process_water
+          role: "Process water for forming-fluid make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water only when added to cutting, forming, washing, or cooling circuits in this process."
+          amount:
+            expression: "measured make-up water allocated to the traced batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: forming_steel_scrap
+          role: "Segregated steel offcuts and machining chips"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record steel offcuts, chips, and rejected stock leaving for recovery or treatment; disclose contamination and end-of-waste status."
+          amount:
+            expression: "weighed scrap leaving the traced batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: forming_spent_metalworking_fluid
+          role: "Spent water-miscible metalworking fluid"
+          name: "Spent water-miscible metalworking fluid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the spent emulsion separately from scrap and cleaning wastewater."
+          amount:
+            expression: "weighed or volume-and-density-calculated waste fluid leaving the batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Heat treatment"
+    inputs:
+      product:
+        - row_id: heat_natural_gas
+          role: "Gaseous natural gas for the furnace"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gas only for a directly fired furnace or on-site heat generator serving this process."
+          amount:
+            expression: "corrected meter volume consumed for the traced batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per accepted treated part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: heat_electricity
+          role: "Electricity for heat treatment"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for electric furnaces, controls, atmosphere equipment, quench circulation, and extraction."
+          amount:
+            expression: "measured electricity for the traced batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per accepted treated part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: heat_quenching_oil
+          role: "Mineral quenching oil make-up"
+          name: "Mineral quenching oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh mineral quenching oil only when added during the reporting period."
+          amount:
+            expression: "purchased issue minus unchanged returns, allocated to the traced batch"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per accepted treated part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: heat_spent_quenching_oil
+          role: "Spent mineral quenching oil"
+          name: "Spent mineral quenching oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record contaminated quenching oil leaving site control for recovery or treatment."
+          amount:
+            expression: "weighed waste oil leaving the traced system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted treated part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      elementary:
+        - row_id: heat_fossil_co2
+          role: "Direct fossil carbon dioxide from furnace combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from metered on-site gas combustion; exclude upstream energy emissions."
+          amount:
+            expression: "measured stack mass or mass calculated from metered gas and a documented site fuel carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted treated part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+  - id: precision_finishing_and_inspection
+    label: "Precision finishing and inspection"
+    inputs:
+      product:
+        - row_id: finishing_electricity
+          role: "Electricity for finishing and inspection"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for applicable grinding, honing, lapping, polishing, deburring, extraction, and inspection equipment."
+          amount:
+            expression: "measured electricity for the traced finishing batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: finishing_process_water
+          role: "Process water for grinding-fluid make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water only when used as make-up for an aqueous finishing circuit."
+          amount:
+            expression: "measured make-up water allocated to the traced finishing batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: finishing_grinding_fluid
+          role: "Water-miscible grinding-fluid concentrate"
+          name: "Water-miscible grinding-fluid concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased concentrate separately from its water diluent."
+          amount:
+            expression: "concentrate issued minus unchanged returns, allocated to the traced batch"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: finishing_grinding_sludge
+          role: "Steel grinding sludge"
+          name: "Steel grinding sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured steel fines and grinding fluid as one characterized waste stream and retain its water, oil, and metal fractions."
+          amount:
+            expression: "wet mass weighed at removal, with dry-solids fraction retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_and_surface_protection
+    label: "Cleaning and surface protection"
+    inputs:
+      product:
+        - row_id: surface_process_water
+          role: "Process water for aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record bath make-up and final-rinse water crossing the process boundary."
+          amount:
+            expression: "measured make-up and rinse water for the traced batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted cleaned part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: surface_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only for the declared alkaline-cleaning route; preserve delivered concentration."
+          amount:
+            expression: "dry sodium-hydroxide mass calculated from issued solution mass and declared concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per accepted cleaned part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: surface_rust_preventive_oil
+          role: "Mineral rust-preventive oil"
+          name: "Mineral rust-preventive oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh rust-preventive oil only when applied to the market-ready part."
+          amount:
+            expression: "purchased issue minus recovered unchanged oil, allocated to accepted parts"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per accepted protected part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: surface_industrial_wastewater
+          role: "Aqueous wastewater from bearing-part cleaning"
+          name: "Aqueous wastewater from bearing-part cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving for on-site or off-site treatment and retain bath identity and analytical composition."
+          amount:
+            expression: "metered discharge mass or volume converted with measured density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted cleaned part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      elementary:
+        []
+  - id: packaging_and_release
+    label: "Packaging and factory-gate release"
+    inputs:
+      product:
+        - row_id: packaging_corrugated_board
+          role: "Corrugated fibreboard packaging"
+          name: "Corrugated fibreboard packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fibreboard boxes, partitions, or pads separately from polymer film."
+          amount:
+            expression: "packaging bill-of-material mass allocated to accepted packed parts"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per accepted packaged part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: packaging_polyethylene_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene bag or wrapping film separately from fibreboard."
+          amount:
+            expression: "packaging bill-of-material mass allocated to accepted packed parts"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per accepted packaged part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity for packaging and release"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for packing, labelling, and final release handling."
+          amount:
+            expression: "measured or defensibly sub-metered electricity for accepted packed parts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per accepted packaged part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted finished rolling-bearing part"
+          name: "Finished rolling-bearing part"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record the part only after inspection acceptance and completion of declared preservation and packaging."
+          amount:
+            expression: "exactly one accepted finished part"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "one declared reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - international-epd-pcr-2023-03-v1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared operations"
+    rule: "Avoid allocation by sub-metering, batch tracing, machine-time records, material issues, and separate waste weighing."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: allocation_physical
+    applies_to: "unavoidable shared operations"
+    rule: "Allocate by the physical driver: processed mass for material loss and bulk treatment, machine or furnace time for energy, bath loading for shared fluids, and item count only for demonstrably equivalent parts."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: allocation_economic_fallback
+    applies_to: "co-products without a physical relationship"
+    rule: "Use economic allocation only when no physical relationship can be established; disclose price basis and period and perform sensitivity analysis."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: allocation_waste_boundary
+    applies_to: "waste and recovered material"
+    rule: "Assign collection, conditioning, and treatment burdens to the generator until documented end-of-waste; benefits after that point remain outside unless separately reported."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_forming_records
+      process_id: "primary_forming_and_machining"
+      flow_role: "materials, electricity, water, scrap, spent fluid"
+      record_type: "issues, meters, weigh tickets, batch traveller"
+      raw_fields: "stock identity and grade; issued and returned mass; electricity; water; accepted count; scrap; spent fluid"
+      collection_method: "reconcile stores, meters, batch and waste records to one batch"
+      unit: "kg; MJ; Item(s)"
+      frequency: "each batch, monthly aggregation"
+      temporal_coverage: "representative year or declared campaign"
+      site_scope: "all controlled forming lines"
+      aggregation_rule: "sum allocated exchanges and divide by accepted parts"
+      quality_evidence: "calibrated records; certificates; batch traveller; waste record"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "heat_treatment"
+      flow_role: "gas, electricity, oil, waste oil, direct CO2"
+      record_type: "meters, furnace log, issues, waste and emissions records"
+      raw_fields: "treated count; recipe; gas conditions; electricity; oil; CO2 or factor"
+      collection_method: "link furnace loads and meters to batches"
+      unit: "m3; MJ; kg; Item(s)"
+      frequency: "each load, monthly aggregation"
+      temporal_coverage: "representative year or campaign"
+      site_scope: "all controlled heat-treatment equipment"
+      aggregation_rule: "allocate by treated mass or furnace occupancy and divide by accepted parts"
+      quality_evidence: "meters; furnace log; fuel specification; emissions evidence"
+    - protocol_id: cp_finishing_records
+      process_id: "precision_finishing_and_inspection"
+      flow_role: "electricity, water, fluid, sludge, accepted count"
+      record_type: "meters, issues, sludge ticket, inspection"
+      raw_fields: "line; batch; electricity; water; concentrate; sludge and dry fraction; counts"
+      collection_method: "reconcile line records to inspection batch"
+      unit: "MJ; kg; Item(s)"
+      frequency: "each batch, monthly aggregation"
+      temporal_coverage: "representative year or campaign"
+      site_scope: "all controlled finishing lines"
+      aggregation_rule: "divide allocated exchanges by accepted parts"
+      quality_evidence: "meters; issues; sludge analysis; inspection release"
+    - protocol_id: cp_surface_records
+      process_id: "cleaning_and_surface_protection"
+      flow_role: "water, sodium hydroxide, oil, wastewater"
+      record_type: "meters, bath log, issues, discharge, traveller"
+      raw_fields: "bath; water; solution mass and concentration; oil; wastewater and analysis; count"
+      collection_method: "reconcile bath additions and discharge to parts processed"
+      unit: "kg; Item(s)"
+      frequency: "each addition/discharge, monthly aggregation"
+      temporal_coverage: "representative year or campaign"
+      site_scope: "all controlled cleaning lines"
+      aggregation_rule: "calculate dry chemical, allocate by treated mass or area, divide by accepted parts"
+      quality_evidence: "meters; supplier certificate; bath and wastewater analysis"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_and_release"
+      flow_role: "packaging, electricity, reference product"
+      record_type: "bill of materials, meter, release record"
+      raw_fields: "packaging identity and mass; recycled content; electricity; packed count; net mass; release"
+      collection_method: "link packaging specification and energy to released lot"
+      unit: "kg; MJ; Item(s)"
+      frequency: "each released lot, monthly aggregation"
+      temporal_coverage: "representative year or campaign"
+      site_scope: "all controlled packaging operations"
+      aggregation_rule: "divide packaging and energy by accepted released parts"
+      quality_evidence: "specification; declaration; scale; release record"
+  calculation_rules:
+    - id: calc_batch_normalization
+      applies_to: "all exchanges"
+      rule: "normalized exchange = allocated batch exchange / accepted finished-part count; exclude rejects from the denominator and disclose rework"
+      inputs:
+        - "allocated exchange"
+        - "accepted count"
+      output: "exchange per Item(s)"
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+    - id: calc_electricity_conversion
+      applies_to: "electricity"
+      rule: "MJ = metered kWh × 3.6; retain original meter unit and reading"
+      inputs:
+        - kWh
+      output: "MJ"
+      source_ids: []
+    - id: calc_solution_dry_mass
+      applies_to: "sodium hydroxide and concentrates"
+      rule: "dry or concentrate mass = solution mass × declared mass fraction; density is not concentration"
+      inputs:
+        - "solution mass"
+        - "mass fraction"
+      output: "kg dry substance"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "heat_fossil_co2"
+      rule: "prefer measured stack mass; otherwise multiply corrected gas by documented site fuel carbon factor and oxidation basis, excluding upstream emissions"
+      inputs:
+        - gas
+        - "carbon factor"
+        - "oxidation basis"
+      output: "kg direct fossil CO2"
+      source_ids:
+        - international-epd-pcr-2023-03-v1
+    - id: calc_wastewater_mass
+      applies_to: "surface_industrial_wastewater"
+      rule: "wastewater mass = metered volume × measured representative density"
+      inputs:
+        - volume
+        - density
+      output: "kg wastewater"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "product and stock"
+      requirement: "Retain part specification, material certificate, stock form, net mass, route, heat-treatment state, surface state, and inspection release."
+      evidence: "drawing; certificate; traveller; inspection record"
+    - id: dq_specific_core_data
+      applies_to: "controlled operations"
+      requirement: "Use site-specific data for energy, auxiliaries, main-part manufacture, finishing, and manufacturing waste."
+      evidence: "meters; purchase, production, and waste records"
+    - id: dq_temporal_alignment
+      applies_to: "foreground records"
+      requirement: "Use one declared representative period, normally a year; identify campaigns, shutdowns, outsourcing, and abnormalities."
+      evidence: "period register; production volume; meter coverage"
+    - id: dq_meter_and_mass_balance
+      applies_to: "material, water, energy, product, waste"
+      requirement: "Document calibration, missing-data treatment, and reconciliation; investigate imbalance before publication."
+      evidence: "calibration; reconciliation; corrective action"
+    - id: dq_electricity_disclosure
+      applies_to: "electricity"
+      requirement: "Declare grid, voltage, supplier or residual/consumption mix, contractual instruments, and losses; prevent renewable-attribute double counting."
+      evidence: "invoice; supplier declaration; dataset metadata"
+    - id: dq_generic_data
+      applies_to: "upstream datasets"
+      requirement: "Use current attributional data representative of technology, geography, and time; disclose proxies and test completeness limits."
+      evidence: "dataset metadata; representativeness and proxy assessment"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "product identity"
+    rule: "Fail if part type, bearing use, material, net mass, dimensions or tolerances, route, market state, site, geography, or period is missing."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - international-epd-pcr-2023-03-v1
+  - rule_id: validation_reference_flow
+    applies_to: "reference flow"
+    rule: "Require exactly one accepted reference_product item and normalize all exchanges to its denominator and packaging boundary."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: validation_route_completeness
+    applies_to: "process map"
+    rule: "Require an applicability decision for every conditional process and conditional stock, fuel, fluid, chemical, emission, and packaging row; unexplained zero values fail."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: validation_mass_and_waste
+    applies_to: "material and waste balance"
+    rule: "Reconcile stock, accepted-part mass, scrap, sludge, spent fluids, wastewater, and declared losses for the same batch."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: validation_energy_and_emissions
+    applies_to: "energy and emissions"
+    rule: "Verify meter coverage, kWh-to-MJ conversion, gas conditions, electricity mix, and separation of direct fossil CO2 from upstream emissions."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: validation_allocation_and_cutoff
+    applies_to: "allocation and completeness"
+    rule: "Require allocation drivers, economic-allocation sensitivity when used, and evidence for 95% mass, energy, and impact coverage when cut-off is claimed."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+  - rule_id: validation_source_traceability
+    applies_to: "evidence"
+    rule: "Require stable sources or retained records for non-default rules, factors, and proxies; UUID identity evidence is not quantity evidence."
+    source_ids:
+      - international-epd-pcr-2023-03-v1
+published_dataset_profile:
+  dataset_role: "Product-specific foreground manufacturing dataset for one declared rolling-bearing part"
+  downstream_use: "secondary_dataset or background_dataset for matching complete bearings, machinery, maintenance parts, or life-cycle models"
+  allowed_use: "Attributional modelling with matching part identity, material, specification, route, geography, technology, period, preservation, and packaging"
+  excluded_use: "Generic proxy for complete bearings, housings, gears, or all parts; substitution across materially different parts or grades; unmodelled use-stage friction or service life"
+  required_metadata: "PCR id and status; part specification and type; bearing application; material and net mass; dimensions; heat-treatment and surface state; route and outsourcing; site and geography; period; allocation; electricity mix; sources; unresolved UUIDs and range needs"
+  required_quality_disclosure: "Primary-data coverage; calibration; balances; accepted/reject/rework counts; proxies; cut-off; allocation; waste treatment and end-of-waste; packaging"
+  update_trigger: "Recalculate when drawing, material, route, supplier, site, energy mix, packaging, or allocation changes materially, or any reported impact indicator changes by 10% or more"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-05"
+    used_for: "CPC 43331 identity and hierarchy"
+  - id: "international-epd-pcr-2023-03-v1"
+    type: "standard"
+    reference: "International EPD System, PCR 2023:03 Bearings, bearing units and parts thereof, version 1.0.0, https://www.environdec.com/pcr-library/pcr_c8639225-b509-4a82-6b78-08d9caad768c, retrieved 2026-09-05"
+    used_for: "Boundary, declared unit, process decomposition, operations, emissions and waste, cut-off, allocation, quality, packaging, and update rules"
+  - id: "prc-mof-2026-tariff"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2026 tariff adjustment table, https://m.mof.gov.cn/czxw/202604/P020260428407579725260.pdf, retrieved 2026-09-05"
+    used_for: "Chinese terminology cross-check for HS 84829100 rolling elements and HS 84829900 other rolling-bearing parts"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d42bdbf47e690aa758cd6cc118c860f78dc4af379232617c8b6e9822e4ba8e2c"
+  generated_content_sha256: "sha256:de647a3292f4d7b358005744e28c1f928d2c1a85d6bfa3d3e3384eaf9d4e65d2"

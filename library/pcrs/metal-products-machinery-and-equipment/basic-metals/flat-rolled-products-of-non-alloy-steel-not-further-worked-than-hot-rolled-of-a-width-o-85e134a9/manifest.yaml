@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-non-alloy-steel-not-further-worked-than-hot-rolled-of-a-width-o-85e134a9
 title:
   en-US: "Flat-rolled products of non-alloy steel, not further worked than hot-rolled, of a width of less than 600 mm"
-  zh-CN: null
-status: scaffold
+  zh-CN: "宽度小于600毫米、除热轧外未经进一步加工的非合金钢平板轧材"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +22,63 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41212"
     title: "Flat-rolled products of non-alloy steel, not further worked than hot-rolled, of a width of less than 600 mm"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    result: promote_legacy
+    rationale: "The CPC 3.0 width threshold and the JRC definition of narrow hot-rolled strip establish a material product boundary distinct from flat-rolled products with width of 600 mm or more. Identity-only material catalog review found no existing PCR with this same boundary."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  reference_flow_identity:
+    status: confirmed
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: reheating_nitrogen_oxides_to_air
+        reason_code: no_exact_candidate
+        explanation: "Receipt-backed hybrid searches c5aaccbb-d2b9-4e94-bd5e-6e807e74fd56 and d90938f1-fa7d-4680-86d9-8db3c8312fbc found no exact public state-100 aggregate nitrogen-oxides-to-air flow reported as NO2; species-specific nitrogen monoxide and nitrous oxide candidates are not substitutes."
+      - row_id: reheating_sulfur_dioxide_to_air
+        reason_code: no_exact_candidate
+        explanation: "Receipt-backed hybrid searches e39a3900-b8ab-4278-be10-546327b4a1b3, 314b1f80-dc85-4a17-8649-3d1999164d79, and 136e0acc-fb67-49cf-8580-ea2bf37d3783 found no exact public state-100 sulfur-dioxide flow in the unspecified-air compartment; returned sulfur-dioxide candidates used incompatible air or water compartments."
+      - row_id: treated_rolling_mill_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Receipt-backed hybrid search abc5ca3a-7bed-4004-8f85-56ea90328c3e found no exact public state-100 treated hot-rolling wastewater flow; the only wastewater candidate was untreated cold-rolling wastewater sent to treatment."
+    range_evidence_needs:
+      - range_id: semi_finished_feedstock_mass_range
+        row_ids: [semi_finished_non_alloy_steel_feedstock, wider_hot_rolled_non_alloy_steel_feedstock]
+        explanation: "At least two independent, boundary-compatible original sources are needed to synthesize route-specific feedstock-to-conforming-product mass-yield ranges for the semi-finished and wider hot-rolled feedstock states."
+      - range_id: reheating_natural_gas_range
+        row_ids: [reheating_natural_gas]
+        explanation: "At least two independent original sources with compatible gate-to-gate boundary, fuel volume reference conditions, technology, and product state are needed for a reheating natural-gas range."
+      - range_id: stage_electricity_ranges
+        row_ids: [reheating_electricity, hot_rolling_electricity, finishing_electricity]
+        explanation: "At least two independent sources that separately report stage electricity on the same product-mass basis and with compatible rolling technology are needed; total-mill values cannot be split mechanically."
+      - range_id: process_water_ranges
+        row_ids: [descaling_makeup_water, cooling_makeup_water]
+        explanation: "At least two independent sources must distinguish makeup water from recirculating flow and use compatible hot-rolling boundaries before a water range can be synthesized."
+      - range_id: scale_and_scrap_ranges
+        row_ids: [reheating_furnace_scale, rolling_mill_scale, hot_rolling_steel_scrap, finishing_steel_scrap]
+        explanation: "At least two independent sources with compatible accounting of internally recycled versus net exported scale and scrap are needed before empirical yield-loss ranges can be authored."
+      - range_id: reheating_air_emission_ranges
+        row_ids: [reheating_fossil_carbon_dioxide_to_air, reheating_nitrogen_oxides_to_air, reheating_sulfur_dioxide_to_air]
+        explanation: "At least two independent sources with compatible fuel mix, abatement, oxygen basis, boundary, and product normalization are needed before direct reheating-emission ranges can be synthesized."
+      - range_id: rolling_particulate_range
+        row_ids: [hot_rolling_particulate_to_air]
+        explanation: "At least two independent sources with compatible capture boundary, particle metric, abatement, and product basis are needed for a hot-rolling particulate range."
+      - range_id: treated_wastewater_range
+        row_ids: [treated_rolling_mill_wastewater]
+        explanation: "At least two independent sources with compatible definition of net discharge, recirculation, treatment boundary, and product basis are needed for a treated wastewater range."

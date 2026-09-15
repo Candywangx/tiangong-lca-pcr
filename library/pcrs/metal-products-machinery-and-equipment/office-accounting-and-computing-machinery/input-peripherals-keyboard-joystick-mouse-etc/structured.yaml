@@ -1,10 +1,480 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45261"
-  title: "Input peripherals (keyboard, joystick, mouse etc.)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.input-peripherals-keyboard-joystick-mouse-etc"
+  classification_refs: "CPC 3.0: 45261"
+  covered_products: "Separately supplied keyboards; mice; computer joysticks"
+  excluded_products: "Integrated computer assemblies; scanners; displays; software; repair services"
+  representative_product: "One finished wired keyboard model; mouse and joystick datasets use their own configuration and acceptance evidence"
+  production_route: "Purchased finished components → dry assembly → functional test → packing"
+  market_state: "New, tested, ready for shipment; model and supplied accessories declared"
+functional_unit:
+  what: "Produce a specified human-input peripheral meeting its acceptance specification"
+  how_much: "1 kg net accepted finished devices of one model; report corresponding item count"
+  how_well: "Pass declared key actuation, pointer tracking or axis response tests as applicable; declare interface compatibility"
+  how_long_or_cycle: "One manufacturing delivery cycle; no default service life. Downstream comparison requires declared lifetime and use intensity"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "assembly"
+      rule: "Include component receipt, assembly, functional test, packing, rework electricity and manufacturing rejects. Supplier moulding, board fabrication and soldering stay in linked component datasets when already included."
+      source_ids:
+        - logitech-product-lifecycle-approach
+    - rule_id: boundary_extension
+      applies_to: "dataset"
+      rule: "Add product distribution, use/recharging, replacement batteries and end-of-life in separately declared downstream scenarios before a full life-cycle claim. Do not report this assembly module as such a claim."
+      source_ids:
+        - logitech-carbon-impact-methodology
+    - rule_id: boundary_completeness
+      applies_to: "assembly"
+      rule: "Reconcile every BOM item and every site exchange to an atomic inventory row or a documented upstream inclusion. The listed conditional rows are a starting inventory, not permission to omit keycaps, feet, receivers or non-ABS housings. Add actual part-specific exchanges before dataset acceptance. Wet cleaning, soldering or moulding on site requires an expanded process map with each chemical, utility, waste and emission separately recorded."
+      source_ids:
+        - logitech-product-lifecycle-approach
+boundary_abstraction:
+  declared_starting_condition: "Finished purchased components received at assembly gate"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "CPC 3.0: 45261"
+  recursive_input_rule: "A purchased finished peripheral is a separately recorded upstream input for a declared rework route, never a zero-burden recursive copy of this output. Rework requires a separately extended process map."
+  upstream_dataset_requirement: "Link manufacturing datasets for each purchased component and inbound transport leg; record boundary, geography, technology, period and treatment links for wastes."
+  disclosure: "Report gate-to-gate assembly separately from the linked cradle-to-gate result. This production module is not a complete final-product footprint."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Input peripherals (keyboard, joystick, mouse etc.)"
+    uuid: "fc64e9b7-ebef-47f8-a44c-25b47d5a3a32"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Model and device function"
+    - "wired/wireless interface"
+    - "keyboard mechanism or sensor/axis technology"
+    - "acceptance tests"
+    - "net device mass and item count"
+    - "supplied battery chemistry/capacity"
+    - "included cable/receiver"
+    - "bill-of-material revision"
+    - "assembly site/year"
+    - "upstream component boundaries"
+    - "packaging mass separately"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize by accepted output net mass, excluding shipping packaging. Retain measured kg/item for conversion; do not use a category-average device mass."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh. Preserve grid, voltage and loss boundary."
+  - id: component_boundary
+    applies_to: "assembly"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh complete purchased subassemblies; disclose included parts so sensors, switches, connectors and battery electronics are not counted twice."
+process_map:
+  - id: assembly
+    name: "Final assembly, test and packing"
+    inclusion: "required"
+    inclusion_condition: "All models within the declared dry-assembly route"
+    role: "foreground_production"
+    quantitative_reference: "1 kg net accepted devices"
+process_inventory:
+  - id: assembly
+    label: "Final assembly, test and packing"
+    inputs:
+      product:
+        - row_id: housing
+          role: "ABS injection-moulded peripheral housing"
+          name: "ABS injection-moulded peripheral housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: When this ABS housing is fitted; identify one part number and resin grade."
+          amount:
+            expression: "Net issued housing mass, including rejected housings."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: pcb
+          role: "Populated printed circuit board"
+          name: "Populated printed circuit board"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: When a purchased populated board is fitted; specify controller, sensor and radio content already included."
+          amount:
+            expression: "Net issued populated-board mass; do not add its mounted components again."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: switch
+          role: "Keyboard key switch subassembly"
+          name: "Keyboard key-switch subassembly"
+          flow_type: "product"
+          flow_ref:
+            uuid: "941833e4-0249-45b4-abc8-1c0a6482f419"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: Mechanical keyboard route, when separately purchased."
+          amount:
+            expression: "Net issued switch subassembly mass from count and measured part mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: membrane
+          role: "Keyboard silicone rubber membrane"
+          name: "Keyboard silicone rubber membrane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: Membrane keyboard route, when separately purchased."
+          amount:
+            expression: "Net issued membrane mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: axis
+          role: "Joystick axis mechanism"
+          name: "Joystick axis mechanism"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: Joystick route; supplied as one identified electromechanical axis subassembly."
+          amount:
+            expression: "Net issued axis mechanism mass; declare included potentiometer or magnetic sensor."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: sensor
+          role: "Optical mouse sensor module"
+          name: "Optical mouse sensor module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: Optical mouse route only when sensor module is not included in the populated board."
+          amount:
+            expression: "Net issued module mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: cable
+          role: "USB cable"
+          name: "USB cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: Wired peripheral or included charging cable."
+          amount:
+            expression: "Net issued cable mass; include connectors in the cable assembly boundary."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: battery
+          role: "Lithium-ion battery"
+          name: "3C Lithium Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "000abc1e-59e3-4336-bfd6-66575a4b0bda"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: Rechargeable model with a supplied lithium-ion battery."
+          amount:
+            expression: "Net issued battery mass with chemistry, capacity and pack boundary."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: alkaline
+          role: "AA alkaline manganese dioxide battery"
+          name: "Alkaline battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b8cd9a54-b808-450f-8aa6-3ea2a037c416"
+          property_unit: "Number of items / Item(s)"
+          description: "inclusion_condition: Model supplied with AA alkaline batteries."
+          amount:
+            expression: "Net issued cell count per accepted output kg; retain measured cell mass for BOM reconciliation. Replacements during use are outside this production package."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: screw
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: When screw fastening is used."
+          amount:
+            expression: "Net issued screw mass; record steel grade and coating."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "inclusion_condition: All assembly, test and packing operations supplied with electricity."
+          amount:
+            expression: "Metered line electricity plus justified share of supporting electricity, divided by accepted output mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: carton
+          role: "Corrugated cardboard box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: When a corrugated carton is used for shipment."
+          amount:
+            expression: "Net issued carton mass including packing losses; exclude it from product net mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Input peripherals (keyboard, joystick, mouse etc.)"
+          name: "Input peripherals (keyboard, joystick, mouse etc.)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fc64e9b7-ebef-47f8-a44c-25b47d5a3a32"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: One declared peripheral model per dataset; one physical finished product exchange, never a mix of device functions."
+          amount:
+            expression: "1 kg accepted net finished-device output; supplied battery and integral cable included, retail carton excluded."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: reject
+          role: "Waste populated printed circuit board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "inclusion_condition: When failed boards are removed and sent off site."
+          amount:
+            expression: "Weighed board waste sent to the identified treatment operator."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted finished devices of the declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_shared
+    applies_to: "assembly"
+    rule: "Separate model-specific operations by submetering or engineering records. For remaining common loads, use a demonstrated physical driver such as measured test-station time; use economic allocation only when physical relationships cannot be justified, with sensitivity and rationale disclosed."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_recycling
+    applies_to: "assembly"
+    rule: "Use a disclosed recycled-content convention for linked material datasets and manufacturing scrap. Keep treatment and recovery burdens explicit; do not automatically subtract hypothetical virgin-material credits from assembly electricity or component quantities."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_assembly
+      process_id: "assembly"
+      flow_role: "Components, electricity, accepted output and board waste"
+      record_type: "BOM; stock ledger; meter; test log; waste transfer"
+      raw_fields: "model; part_id; issued/returned counts; kg/item; opening/closing stocks; meter readings; test time; accepted count/net mass; rejected count; waste kg; supplier boundary"
+      collection_method: "Weigh representative parts with calibrated balance; reconcile material ledger, accepted-device tests and waste tickets; submeter electricity"
+      unit: "kg; item; kWh; station-hour"
+      frequency: "Each production lot; meter at shift boundaries"
+      temporal_coverage: "Declare consecutive production period covering normal load, changeovers and rejects; justify representativeness"
+      site_scope: "Named assembly site and declared model revision"
+      aggregation_rule: "Sum net consumption and attributable energy over same period; divide by accepted net output kg"
+      quality_evidence: "Calibration; invoices; BOM revision; acceptance tests; meter logs; supplier declarations; waste tickets"
+  calculation_rules:
+    - id: normalize
+      applies_to: "assembly"
+      rule: "q_i = net consumed quantity_i / accepted net device mass. Reconcile net consumption using issues, returns and stock changes; do not subtract the same return twice. For the reference output q = M/M = 1."
+      inputs:
+        - "cp_assembly records"
+        - "accepted mass M > 0"
+      output: "kg/kg, Item(s)/kg or MJ/kg"
+      source_ids: []
+    - id: electricity_basis
+      applies_to: "electricity"
+      rule: "q_E = (meter kWh assigned to model × 3.6) / M; allocation shares must sum to unity over all products served."
+      inputs:
+        - "Meter differences"
+        - "physical allocation driver"
+        - M
+      output: "MJ/kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_coverage
+      applies_to: "assembly"
+      requirement: "Document technological, temporal and geographic representativeness, completeness and reliability. Retain primary measurement evidence for owned assembly operations."
+      evidence: "ghg-protocol-product-standard-2011; cp_assembly"
+    - id: quality_bom
+      applies_to: "assembly"
+      requirement: "Reconcile full device mass and packaging separately to the BOM; identify missing exchanges and upstream overlaps before acceptance. Missing data are not zero."
+      evidence: "cp_assembly"
+    - id: quality_ranges
+      applies_to: "assembly"
+      requirement: "Collect actual amounts. No external numerical range is prescribed; do not transfer a single model carbon footprint into component or energy ranges."
+      evidence: "cp_assembly"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_product"
+    rule: "Require one model, all reference qualifiers, accepted mass greater than zero and declared kg/item conversion. Reject cross-device comparisons based only on mass."
+    source_ids: []
+  - rule_id: validate_inventory
+    applies_to: "assembly"
+    rule: "Every applicable exchange must be one physical flow with a resolved or explicitly unresolved identity. Demonstrate absence for conditional rows not used. Require complete BOM and stock/output/waste reconciliation; investigate discrepancies against documented instrument uncertainty rather than an invented tolerance."
+    source_ids: []
+  - rule_id: validate_boundary
+    applies_to: "dataset"
+    rule: "Require upstream links, no component double counting and separate disclosure of gate-to-gate scope. A complete product footprint additionally requires downstream transport, use and end-of-life scenarios."
+    source_ids:
+      - logitech-carbon-impact-methodology
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Assembly module for a declared peripheral model; link upstream manufacture and downstream lifecycle scenarios"
+  allowed_use: "Production data package and process/lifecyclemodel projections with matching model and boundary"
+  excluded_use: "Unqualified full-life-cycle claims; direct ranking of keyboards against mice or joysticks; substitution for semiconductor or polymer manufacture"
+  required_metadata: "Model; BOM version; site; year; technology; output basis; component dataset links; grid; allocation; conditional-route decisions"
+  required_quality_disclosure: "Measurement provenance; completeness; representativeness; unresolved identities; omitted operations; uncertainty and absence of external ranges"
+  update_trigger: "Model/BOM, battery, supplier, site, test programme, energy mix or waste route change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-08"
+    used_for: "Classification identity, row 45261; no quantitative evidence."
+  - id: "logitech-carbon-impact-methodology"
+    type: "literature"
+    reference: "Logitech, Carbon Impact & LCA Methodology; https://www.logitech.com/en-us/sustainability/carbon-impact-methodology; retrieved 2026-09-08"
+    used_for: "Sourcing and manufacturing; separate transport, use, battery and end-of-life scenarios. No numerical benchmark transferred."
+  - id: "logitech-product-lifecycle-approach"
+    type: "literature"
+    reference: "Logitech, Product Lifecycle Approach; https://www.logitech.com/en-ae/sustainability/environment.html; retrieved 2026-09-08"
+    used_for: "Assembly/testing boundary and upstream component manufacture; recycled content and supplier specifications."
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters 7–9 and 13; https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf; retrieved 2026-09-08"
+    used_for: "Boundary disclosure, activity data quality, allocation hierarchy and reporting. Carbon-accounting source, not a claim of full LCA conformance."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0934537581bdfed33443cacece7bc1e9deaa094e1878b9cbdc53210841496f09"
+  generated_content_sha256: "sha256:15c5066e07114282490886c8b341b8f3b8e0fe3e22d5e14e477654f114d6141f"

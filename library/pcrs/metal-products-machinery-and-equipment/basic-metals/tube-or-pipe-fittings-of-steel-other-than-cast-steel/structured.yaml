@@ -1,10 +1,662 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41293"
-  title: "Tube or pipe fittings, of steel other than cast-steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tube-or-pipe-fittings-of-steel-other-than-cast-steel"
+  classification_refs: "CPC 3.0: 41293, exact mapping context"
+  covered_products: "Non-cast steel elbows, bends, tees, reducers, caps, ends, threaded fittings, socket-welding fittings, butt-welding fittings, and flanges for tube or pipe systems"
+  excluded_products: "Cast-iron or cast-steel fittings; tubes and pipes sold without conversion to fittings; valves; installation services; packaging unless separately declared"
+  representative_product: "A finished steel butt-welding elbow, tee, reducer, cap, end, or comparable fitting conforming to the declared specification"
+  production_route: "Cutting and preparation followed by pipe forming, hot forming, forging, welding, machining, heat treatment, cleaning, pickling, galvanizing, and finishing as applicable to the declared fitting"
+  market_state: "Finished, inspected, unpackaged fitting at the factory gate; steel grade, dimensions, connection type, heat-treatment state, and coating state declared"
+functional_unit:
+  what: "Provide a finished non-cast steel fitting that joins, branches, reduces, redirects, closes, or terminates a declared tube or pipe run"
+  how_much: "1 kg of conforming finished fitting at the factory gate"
+  how_well: "Meets the declared fitting geometry, connection type, steel grade, dimensions, tolerances, heat-treatment state, surface condition, and applicable quality specification"
+  how_long_or_cycle: "One factory-gate production reporting period; service life and use are not modelled"
+  reference_flow_link: "1 kg of conforming finished fitting output equals 1 kg of the reference product flow"
+system_boundary:
+  rules:
+    - rule_id: boundary_conversion_operations
+      applies_to: "on-site fitting manufacture"
+      rule: "Include on-site cutting, heating and metal treatment, pipe forming or forging, welding, machining, cooling and finishing, heat treatment, cleaning, inspection, and testing when those operations occur."
+      source_ids:
+        - eu-jrc-sf-bref-2024
+    - rule_id: boundary_surface_treatment
+      applies_to: "on-site pickling or galvanizing"
+      rule: "Include on-site degreasing, pickling, fluxing, hot-dip galvanizing, rinsing, and finishing only when performed for the declared product route; otherwise mark every related atomic flow not applicable."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Keep production of purchased steel and auxiliary inputs outside the foreground conversion gate but connect each input to an upstream dataset."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_category_exclusions
+      applies_to: "product identity"
+      rule: "Exclude cast-iron and cast-steel fittings and unconverted tube or pipe products from the reference product."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+    - rule_id: boundary_downstream
+      applies_to: "downstream life cycle"
+      rule: "Exclude distribution packaging, installation, use, maintenance, and end-of-life unless a study explicitly adds separate downstream processes."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel tube, pipe, or billet and separately identified auxiliary inputs received at the fitting plant"
+  starting_condition_role: "Foreground conversion gate; purchased-input production remains represented by linked upstream datasets"
+  product_classification_scope: "Finished non-cast steel tube or pipe fittings; cast-iron and cast-steel fittings are outside scope"
+  recursive_input_rule: "If a purchased input is itself a fitting in this PCR category, record it as a separate product input with its upstream dataset and do not recursively expand its fitting manufacture inside the same foreground process"
+  upstream_dataset_requirement: "Link each purchased steel form, electricity supply, fuel, gas, water, chemical, and zinc input to a geographically and technologically representative upstream dataset; disclose substitutions and missing datasets"
+  disclosure: "Declare steel form and grade, fitting type, route, heat treatment, joining operations, pickling and galvanizing applicability, reference conditions for gas, factory geography, reporting period, and waste destinations"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Tube or pipe fittings, of steel other than cast-steel"
+    uuid: "927f577f-735f-45ce-915c-5cac28802501"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fitting type and connection type"
+    - "nominal size and wall thickness or schedule"
+    - "steel grade and material specification"
+    - pipe-forming
+    - forging
+    - "or welded-fabrication route"
+    - "heat-treatment state"
+    - "surface and coating state"
+    - "conformance standard"
+    - "plant geography"
+    - "reporting period"
+    - "upstream steel dataset identity"
+    - "scrap and spent-acid destination"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and steel-bearing material balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh conforming, unpackaged finished fittings after final inspection; exclude rejected fittings, removable transport fixtures, and packaging."
+  - id: gas_reference_conditions
+    applies_to: "natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record the meter reference temperature and pressure and convert all reported gas volumes to one declared reference condition before aggregation."
+  - id: electricity_energy_basis
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve metered electricity in kWh; if source records use MJ, apply 1 kWh = 3.6 MJ and retain the original record and conversion."
+  - id: solution_mass_basis
+    applies_to: "sodium hydroxide and hydrochloric acid solutions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record delivered solution mass and concentration separately; do not mix solution mass with dry active-substance mass. The selected hydrochloric-acid row represents 30% delivered solution."
+  - id: mass_normalization
+    applies_to: "all mass-based inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg reference product"
+    rule: "Normalize reporting-period totals by conforming finished fitting mass from the same plant, route, and reporting period."
+process_map:
+  - id: steel_fitting_manufacture
+    name: "Integrated manufacture of non-cast steel tube or pipe fittings"
+    inclusion: "required"
+    inclusion_condition: "Required for every covered product; individual input and output cards state route conditions"
+    role: "Foreground conversion from purchased steel form to conforming finished fitting"
+    quantitative_reference: "1 kg conforming finished fitting at factory gate"
+process_inventory:
+  - id: steel_fitting_manufacture
+    label: "Integrated manufacture of non-cast steel tube or pipe fittings"
+    inputs:
+      product:
+        - row_id: input_welded_steel_pipe
+          role: "Welded circular steel pipe feedstock"
+          name: "Steel Pipe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "370d14a6-55f3-4fdd-90b2-84751125ff00"
+          property_unit: "Mass / kg"
+          description: "Record this input only when a fitting is formed or fabricated from purchased welded circular pipe stock. Match grade, diameter, wall thickness, coating state, and supplier dataset to the declared fitting."
+          amount:
+            expression: "measured mass of welded circular steel pipe entering fitting manufacture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_feedstock
+              source_ids: []
+            ranges: []
+        - row_id: input_seamless_steel_tube
+          role: "Seamless circular steel tube feedstock"
+          name: "Circular seamless steel tube feedstock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this concrete flow only for a route that forms the fitting from purchased circular seamless steel tube. Its exact Tiangong UUID remains unresolved; do not substitute oil-and-gas line pipe, casing, non-circular tube, or welded pipe."
+          amount:
+            expression: "measured mass of circular seamless steel tube entering fitting manufacture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_feedstock
+              source_ids: []
+            ranges: []
+        - row_id: input_nonalloy_steel_billet
+          role: "Non-alloy steel billet feedstock"
+          name: "Billet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7de70586-42d8-40bb-a687-e0e0c05722e4"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a forged or hot-formed non-alloy steel fitting route that begins with purchased billet."
+          amount:
+            expression: "measured mass of non-alloy steel billet entering the forging or hot-forming route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_feedstock
+              source_ids: []
+            ranges: []
+        - row_id: input_alloy_steel_billet
+          role: "Alloy steel billet feedstock"
+          name: "Alloy steel billet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this concrete flow only for a forged or hot-formed alloy-steel fitting route that begins with purchased billet. Its exact Tiangong UUID remains unresolved; an alloy-steel ingot is not a billet proxy."
+          amount:
+            expression: "measured mass of alloy steel billet entering the forging or hot-forming route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_feedstock
+              source_ids: []
+            ranges: []
+        - row_id: input_electricity
+          role: "Purchased medium-voltage electricity"
+          name: "Medium-voltage electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity consumed by cutting, forming, welding, machining, heat treatment, pumps, ventilation, surface treatment, and finishing. The supply voltage, grid geography, supplier mix, and delivery boundary must be declared."
+          amount:
+            expression: "metered purchased medium-voltage electricity consumed by the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_metering
+              source_ids: []
+            ranges: []
+        - row_id: input_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record this flow only when natural gas is combusted on site for heating, hot forming, heat treatment, or drying. State the meter reference conditions and exclude upstream supply-chain emissions from the direct-emission row."
+          amount:
+            expression: "metered gaseous natural gas delivered to the fitting-manufacture process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_metering
+              source_ids: []
+            ranges: []
+        - row_id: input_industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record this flow only for oxy-fuel cutting, heating, or another declared operation that consumes supplied industrial oxygen. Declare purity, pressure, volume reference conditions, and whether supply is delivered or generated on site."
+          amount:
+            expression: "metered or supplier-recorded industrial oxygen consumed by the process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids: []
+            ranges: []
+        - row_id: input_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water entering cooling, cleaning, rinsing, pickling-bath make-up, or galvanizing-related operations. Cooling water recirculated entirely within the plant is not counted again; only net make-up crossing the boundary is recorded."
+          amount:
+            expression: "measured net process-water input crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids: []
+            ranges: []
+        - row_id: input_sodium_hydroxide
+          role: "Sodium hydroxide solution"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record this flow only when sodium hydroxide solution is used for alkaline degreasing or cleaning. Report delivered solution mass and concentration separately."
+          amount:
+            expression: "measured delivered mass of sodium hydroxide solution consumed by on-site cleaning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: input_hydrochloric_acid_30pct
+          role: "Hydrochloric acid solution at 30%"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass / kg"
+          description: "Record this flow only when purchased 30% hydrochloric acid solution is used for on-site pickling. Other delivered concentrations require a distinct concentration-specific flow identity or a reviewed mass-of-solution conversion."
+          amount:
+            expression: "measured delivered mass of 30% hydrochloric acid solution consumed by pickling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: input_zinc_metal
+          role: "Special high grade zinc metal"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass / kg"
+          description: "Record this flow only when special-high-grade zinc metal is added to an on-site hot-dip galvanizing bath. Record total supplied metal mass, not zinc-content mass from an ore or concentrate flow."
+          amount:
+            expression: "measured mass of special-high-grade zinc metal charged to the galvanizing bath and attributable to the product"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_chemicals
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_reference_product
+          role: "Conforming finished steel fitting"
+          name: "Tube or pipe fittings, of steel other than cast-steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "927f577f-735f-45ce-915c-5cac28802501"
+          property_unit: "Mass / kg"
+          description: "Record only finished fittings that pass the declared dimensional, material, heat-treatment, surface, and quality checks. Rejected fittings are not part of this output."
+          amount:
+            expression: "measured mass of conforming unpackaged finished fittings at the factory gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - bsi-bs-en-10253-2-2021-a1-2025
+            ranges: []
+      waste:
+        - row_id: output_postindustrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record separately collected steel offcuts, machining chips, forging flash, and rejected steel generated by the plant. Keep alloy grades and contaminated scrap separate in the underlying records and declare the receiving treatment route."
+          amount:
+            expression: "measured mass of post-industrial steel scrap leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: output_spent_pickling_acid
+          role: "Spent hydrochloric-acid pickling liquor"
+          name: "Spent hydrochloric-acid steel pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this concrete waste only when a hydrochloric-acid pickling bath is removed from service and crosses the plant boundary. Record its mass, acid concentration, dissolved-metal content, and treatment destination; the exact Tiangong waste UUID remains unresolved."
+          amount:
+            expression: "measured mass of spent hydrochloric-acid pickling liquor dispatched off site"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting produced over the bath service period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: output_fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide emitted by on-site combustion assigned to fitting manufacture. Do not include upstream electricity, natural-gas supply, or purchased-material emissions in this elementary-flow row."
+          amount:
+            expression: "measured or independently verified site record of direct fossil carbon dioxide assigned to the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished fitting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "separately metered routes, lines, or batches"
+    rule: "Subdivide fitting routes, lines, and batches and assign their directly measured steel, energy, chemical, water, waste, and emission records before applying allocation."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "shared operations producing several fitting products"
+    rule: "If subdivision is not practicable, use a documented physical driver that reflects consumption, such as machine time, furnace load, metered energy, or processed mass; use mass allocation only when no more representative measured driver exists."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "post-industrial steel scrap"
+    rule: "Treat steel scrap leaving the process as a waste flow at the foreground boundary; do not apply an avoided-production credit inside this process. A downstream recycling model may represent subsequent treatment separately."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_steel_feedstock
+      process_id: "steel_fitting_manufacture"
+      flow_role: "each declared steel feedstock card"
+      record_type: "receiving scale, purchase, and production issue records"
+      raw_fields: "material identity; heat or lot; steel grade; product form; dimensions; received mass; issued mass; supplier dataset"
+      collection_method: "reconcile calibrated scale tickets and material issues to production lots"
+      unit: "kg"
+      frequency: "per receipt and production lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all lines producing the declared fitting"
+      aggregation_rule: "sum only the applicable steel-form row and normalize by conforming output mass"
+      quality_evidence: "scale calibration; heat certificates; purchase documents; lot reconciliation"
+    - protocol_id: cp_energy_metering
+      process_id: "steel_fitting_manufacture"
+      flow_role: "purchased electricity and natural gas"
+      record_type: "utility meters and invoices"
+      raw_fields: "meter id; opening and closing readings; unit; reference conditions for gas; allocation driver; downtime"
+      collection_method: "read dedicated meters or allocate a reconciled plant meter with a documented physical driver"
+      unit: "kWh; m3"
+      frequency: "continuous or at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included equipment and shared utilities"
+      aggregation_rule: "subtract verified non-production use and normalize to conforming output mass"
+      quality_evidence: "meter calibration; invoices; reconciliation; allocation worksheet"
+    - protocol_id: cp_process_gases
+      process_id: "steel_fitting_manufacture"
+      flow_role: "industrial oxygen"
+      record_type: "flow meter, cylinder, or tank delivery records"
+      raw_fields: "gas identity; purity; pressure; reference temperature; reference pressure; delivered and closing inventory"
+      collection_method: "reconcile meters or deliveries and stock change to consumed gas"
+      unit: "m3"
+      frequency: "per delivery and reporting period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "oxy-fuel operations for the declared route"
+      aggregation_rule: "consumed volume equals deliveries plus opening stock minus closing stock, converted to declared conditions"
+      quality_evidence: "supplier certificate; meter calibration; stock reconciliation"
+    - protocol_id: cp_process_water
+      process_id: "steel_fitting_manufacture"
+      flow_role: "process water"
+      record_type: "water meter and make-up records"
+      raw_fields: "meter readings; source; treatment; recirculation; make-up volume or mass; discharge linkage"
+      collection_method: "meter net make-up crossing the process boundary"
+      unit: "kg"
+      frequency: "continuous or at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "cooling, cleaning, rinsing, pickling, and galvanizing systems in scope"
+      aggregation_rule: "exclude internal recirculation and normalize net input to conforming output mass"
+      quality_evidence: "meter calibration; water balance; invoice or abstraction record"
+    - protocol_id: cp_surface_chemicals
+      process_id: "steel_fitting_manufacture"
+      flow_role: "sodium hydroxide, 30% hydrochloric acid, and SHG zinc"
+      record_type: "purchase, batch-charge, bath-analysis, and stock records"
+      raw_fields: "chemical identity; concentration or grade; delivered mass; charged mass; opening and closing stock; bath id; applicable lots"
+      collection_method: "reconcile deliveries, charges, and stock change for each separate chemical"
+      unit: "kg"
+      frequency: "per charge and reporting period"
+      temporal_coverage: "complete bath service periods overlapping the reporting period"
+      site_scope: "all cleaning, pickling, and galvanizing baths used for the declared product"
+      aggregation_rule: "attribute each chemical separately by measured product throughput through the bath"
+      quality_evidence: "supplier certificate; concentration analysis; calibrated scale; stock reconciliation"
+    - protocol_id: cp_product_output
+      process_id: "steel_fitting_manufacture"
+      flow_role: "conforming reference product"
+      record_type: "final scale, inspection, and release records"
+      raw_fields: "product id; fitting type; connection; dimensions; grade; heat treatment; coating; mass; inspection result; release date"
+      collection_method: "weigh and release only conforming unpackaged fittings"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all declared fitting production lines"
+      aggregation_rule: "sum conforming mass by homogeneous declared product and route"
+      quality_evidence: "scale calibration; inspection report; material certificate; release record"
+    - protocol_id: cp_waste_dispatch
+      process_id: "steel_fitting_manufacture"
+      flow_role: "post-industrial steel scrap and spent pickling acid"
+      record_type: "waste scale tickets, manifests, and bath replacement records"
+      raw_fields: "waste identity; alloy or contamination; mass; bath id; acid concentration; dissolved metals; date; destination; treatment"
+      collection_method: "reconcile internal collection with off-site dispatch documents for each waste"
+      unit: "kg"
+      frequency: "per dispatch and bath replacement"
+      temporal_coverage: "complete reporting period and complete bath service period"
+      site_scope: "all included operations"
+      aggregation_rule: "sum each waste separately and attribute shared bath waste by product throughput through that bath"
+      quality_evidence: "calibrated scale; waste manifest; bath analysis; licensed receiver record"
+    - protocol_id: cp_direct_emissions
+      process_id: "steel_fitting_manufacture"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "CEMS, stack-test-supported records, or verified facility emissions records"
+      raw_fields: "source id; fuel linkage; measured mass or verified reported mass; operating period; allocation driver"
+      collection_method: "use direct measurement where available and reconcile the covered combustion sources to the natural-gas record"
+      unit: "kg"
+      frequency: "continuous or reporting-period record"
+      temporal_coverage: "complete reporting period"
+      site_scope: "on-site fossil combustion assigned to fitting manufacture"
+      aggregation_rule: "subtract excluded sources and normalize the assigned mass to conforming output"
+      quality_evidence: "instrument QA records; emissions report; fuel-to-emission reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period row total divided by reporting-period conforming unpackaged fitting mass"
+      inputs:
+        - "row total"
+        - "conforming product mass"
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_gas_condition_conversion
+      applies_to: "natural gas and industrial oxygen"
+      rule: "convert reported gas volume to the single declared reference temperature and pressure using the documented meter or supplier correction method before normalization"
+      inputs:
+        - "reported volume"
+        - temperature
+        - pressure
+        - "compressibility method if used"
+      output: "m3 at declared reference conditions"
+      source_ids: []
+    - id: calc_steel_yield_check
+      applies_to: "steel-bearing inputs and outputs"
+      rule: "compare total applicable steel feedstock mass with conforming fitting mass plus steel scrap and other separately documented steel-bearing stock changes or residues"
+      inputs:
+        - "steel feedstock"
+        - "conforming fitting"
+        - "steel scrap"
+        - "stock changes"
+        - "separately documented residues"
+      output: "disclosed steel mass-balance difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Fitting type, connection, dimensions, steel grade, manufacturing route, heat-treatment state, coating state, and conformance specification are complete and internally consistent."
+      evidence: "release record; drawing; material certificate; inspection report"
+    - id: dq_temporal_match
+      applies_to: "all inventory rows"
+      requirement: "Input, output, waste, and direct-emission records cover the same declared reporting period; bath-service allocations state any period mismatch."
+      evidence: "reporting-period reconciliation and bath-service worksheet"
+    - id: dq_metering
+      applies_to: "energy, gases, water, and mass records"
+      requirement: "Meters and scales have current calibration or a documented accuracy check; estimated substitutions are flagged and justified."
+      evidence: "calibration certificates; invoice reconciliation; uncertainty note"
+    - id: dq_route_completeness
+      applies_to: "conditional operations"
+      requirement: "Every forming, forging, welding, heat-treatment, pickling, and galvanizing operation is declared present or absent, and all applicable atomic rows are completed."
+      evidence: "route sheet; process flow diagram; production traveller"
+    - id: dq_upstream_links
+      applies_to: "purchased inputs"
+      requirement: "Each applicable purchased-input row links to a representative upstream dataset or reports the identity, geography, technology, and substitution gap."
+      evidence: "dataset references and substitution log"
+    - id: dq_mass_balance
+      applies_to: "steel-bearing flows"
+      requirement: "Investigate and explain the steel mass-balance difference rather than forcing it to zero or hiding stock changes and residues."
+      evidence: "signed reconciliation; inventory-change record; corrective-action note"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference product"
+    rule: "Confirm the reference product is the exact non-cast steel fitting flow and not a cast fitting or unconverted tube or pipe."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Confirm exactly 1 kg of conforming unpackaged output is the normalization denominator and all rows use the same product and reporting period."
+    source_ids: []
+  - rule_id: validate_product_qualifiers
+    applies_to: "product release"
+    rule: "Confirm the declared fitting types, steel grades, dimensions, tolerances, inspection and testing requirements, and quality requirements are supported by product records and the applicable specification."
+    source_ids:
+      - bsi-bs-en-10253-2-2021-a1-2025
+  - rule_id: validate_route_rows
+    applies_to: "process inventory"
+    rule: "Confirm every route operation is declared and each conditional atomic flow is completed only when that operation occurs."
+    source_ids:
+      - eu-jrc-sf-bref-2024
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_solution_basis
+    applies_to: "surface-treatment chemicals"
+    rule: "Confirm sodium hydroxide and hydrochloric acid are reported as delivered solution mass with concentration and that the selected hydrochloric-acid flow is used only for a verified 30% solution."
+    source_ids: []
+  - rule_id: validate_waste_destination
+    applies_to: "steel scrap and spent pickling acid"
+    rule: "Confirm each waste has a measured mass, declared composition or contamination state, and named receiving treatment; do not merge scrap and acid waste."
+    source_ids: []
+  - rule_id: validate_direct_co2_boundary
+    applies_to: "direct fossil carbon dioxide"
+    rule: "Confirm the row contains only on-site fossil combustion emissions and excludes upstream electricity, natural-gas supply, and purchased-material emissions."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared operations"
+    rule: "Confirm subdivision was attempted first and any remaining physical allocation driver, basis, and affected rows are disclosed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for finished non-cast steel tube or pipe fittings"
+  downstream_use: "May be published as a secondary_dataset or background_dataset for declared fitting types and manufacturing routes"
+  allowed_use: "Product LCAs and lifecycle models that match the declared steel grade, fitting type, route, dimensions, coating, geography, reporting period, and factory-gate boundary"
+  excluded_use: "Cast-iron or cast-steel fittings; unconverted pipe; valves; installation, use, or end-of-life; products with undisclosed route or material state"
+  required_metadata: "PCR id and version; product flow UUID; fitting type; connection type; nominal size and wall thickness; steel grade and specification; route; heat treatment; coating; geography; reporting period; upstream datasets; allocation; data quality"
+  required_quality_disclosure: "Foreground coverage; measured and estimated shares; meter and scale quality; steel mass-balance difference; conditional-process applicability; unresolved UUID substitutions; upstream dataset representativeness; waste destinations"
+  update_trigger: "Change in steel grade or feedstock form, forming or forging technology, heat-treatment fuel, electricity supply, pickling chemistry, galvanizing route, product specification, allocation driver, plant geography, or a material shift in foreground intensity"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Exact CPC 41293 product identity and exclusion of cast-steel fittings"
+  - id: "bsi-bs-en-10253-2-2021-a1-2025"
+    type: "standard"
+    reference: "BSI, BS EN 10253-2:2021+A1:2025, Butt-welding pipe fittings — Non-alloy and ferritic alloy steels with specific inspection requirements, https://knowledge.bsigroup.com/products/butt-welding-pipe-fittings-non-alloy-and-ferritic-alloy-steels-with-specific-inspection-requirements-2"
+    used_for: "Representative butt-welding fitting types and required declaration of steel grade, dimensions, tolerances, inspection, testing, and applicable quality specification"
+  - id: "eu-jrc-sf-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Smitheries and Foundries Industry, 2024, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/smitheries-and-foundries-industry"
+    used_for: "Forging-route process decomposition: heating, metal treatment, forging or hammering, machining, cooling or finishing, and heat treatment"
+  - id: "eu-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Ferrous Metals Processing Industry BREF, 2022, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/ferrous-metals-processing-industry"
+    used_for: "Downstream ferrous-metal boundary and conditional batch-galvanizing sequence of degreasing, pickling, fluxing, galvanizing, and finishing"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b8fc8a5e0fa68512cb659f0ee2da1cc7019c41de5a52aa47df5e83b85acac184"
+  generated_content_sha256: "sha256:402f5975196ce234709ea30337594faa715ec6c436cdc25e99f4f9c894a3a73f"

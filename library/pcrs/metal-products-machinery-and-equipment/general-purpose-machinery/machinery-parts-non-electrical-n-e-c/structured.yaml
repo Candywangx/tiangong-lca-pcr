@@ -1,10 +1,674 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43949"
-  title: "Machinery parts, non-electrical n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.machinery-parts-non-electrical-n-e-c"
+  classification_refs: "CPC 3.0: 43949, Machinery parts, non-electrical n.e.c."
+  covered_products: "Finished non-electrical parts for the goods of CPC classes 4391-4393 that are not separately described in CPC 43941-43944; standard or customized parts are covered when the concrete product and route are declared."
+  excluded_products: "Electrical machinery parts; parts classified in CPC 43941-43944; special-purpose machinery parts; complete machinery; maintenance services; packaging; use-stage and end-of-life activities."
+  representative_product: "One quality-accepted machined non-alloy steel mechanical part with declared drawing, grade, dimensions, tolerances, and surface condition."
+  production_route: "Purchased concrete material or near-net precursor; operation-specific forming/cutting, machining, joining, heat treatment, cleaning or surface treatment; inspection and acceptance. Operations not performed are excluded and disclosed."
+  market_state: "Finished, cleaned, quality-accepted, unpackaged part at the manufacturer's factory gate."
+functional_unit:
+  what: "A finished non-electrical machinery part that provides the declared mechanical fit, support, motion-transfer, sealing, housing, or load-bearing function in general-purpose machinery."
+  how_much: "1 kg net mass of accepted finished part, excluding packaging."
+  how_well: "Conforms to the declared drawing or purchase specification for material grade, geometry, tolerances, heat-treatment state, surface condition, and acceptance criteria."
+  how_long_or_cycle: "One delivered factory-gate part; no service-life performance is claimed unless a study adds and substantiates it."
+  reference_flow_link: "finished_machinery_part"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground manufacturing"
+      rule: "Start with concrete purchased materials or near-net precursors entering the manufacturing boundary and end with the finished, cleaned, accepted, unpackaged part at the factory gate. Include only operations actually performed and identify forming/cutting, machining, joining, heat treatment, cleaning, surface treatment, inspection, and internal handling separately in source records."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - eu-commission-2021-2053-fabricated-metal-products
+    - rule_id: boundary_direct_exchanges
+      applies_to: "foreground inventory"
+      rule: "Include every direct material, electricity, fuel, process-water, process-chemical, gas, waste, wastewater, and elementary-emission exchange attributable to the declared route. Shared utilities may be allocated only under Section 7."
+      source_ids:
+        - eu-commission-2021-2053-fabricated-metal-products
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link each purchased input to an upstream dataset matching material or chemical identity, grade or concentration, product state, geography, technology, and delivery boundary; do not replace a concrete input with an unspecified umbrella flow."
+      source_ids:
+        - eu-commission-2021-2053-fabricated-metal-products
+    - rule_id: boundary_exclusions
+      applies_to: "downstream and capital activities"
+      rule: "Exclude packaging, distribution after the factory gate, use, maintenance, end-of-life, employee travel, and capital equipment unless the study goal explicitly expands the boundary and reports the expansion separately."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Concrete purchased material or purchased near-net precursor received at the manufacturing site, with supplier identity, grade, form, mass, and delivery boundary declared."
+  starting_condition_role: "Upstream-linked product input to the foreground manufacturing unit process."
+  product_classification_scope: "Residual non-electrical machinery parts in CPC 3.0 subclass 43949; one concrete part is modelled per data package."
+  recursive_input_rule: "A purchased input already within the same product category remains an explicit product input with its own supplier dataset and starting condition; do not recursively apply this PCR or absorb it into the reference output."
+  upstream_dataset_requirement: "Use an upstream dataset matching the concrete material or part identity, grade, state, geography, technology, and supplier gate. Proxy use requires explicit justification and uncertainty disclosure."
+  disclosure: "Declare the part drawing/revision, material and precursor state, operations included or absent, facility and period, supplier-data coverage, shared-meter allocation, waste destinations, and every boundary expansion."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Standard mechanical components"
+    uuid: "823b5c17-40c2-4039-91ac-0a648ef9b910"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part name and drawing/revision"
+    - "CPC applicability"
+    - "material grade and input form"
+    - "net part mass"
+    - "dimensions and tolerance class"
+    - "manufacturing operations"
+    - "heat-treatment state"
+    - "surface-treatment state"
+    - "accepted/rejected quantity"
+    - "factory-gate geography"
+    - "reference period"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure accepted part mass after all declared manufacturing and cleaning operations and before packaging; exclude fixtures, reusable carriers, temporary protective media, and packaging."
+  - id: material_mass_basis
+    applies_to: "solid material inputs and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use batch issue, return, stock-change, and waste records on a consistent as-received basis; record alloy grade and physical form separately."
+  - id: electricity_conversion
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter reading and convert kWh to MJ using 1 kWh = 3.6 MJ; disclose the allocation of shared meters to the part route."
+  - id: gas_volume_conditions
+    applies_to: "oxygen, carbon dioxide product gas, and natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record each gas separately and declare reference temperature, pressure, composition or grade, and meter or supplier basis; never aggregate gas species."
+  - id: batch_normalization
+    applies_to: "all inventory exchanges"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "row-specific unit"
+    rule: "Normalize batch totals by accepted finished-part mass. Keep the unnormalized batch quantity, accepted mass, reject mass, and calculation trace."
+process_map:
+  - id: part_manufacturing
+    name: "Manufacture and acceptance of non-electrical machinery part"
+    inclusion: "required"
+    inclusion_condition: "Always; the unit process contains only the route operations actually performed, and each absent operation is disclosed."
+    role: "Foreground conversion of concrete material or near-net precursor into the accepted factory-gate part."
+    quantitative_reference: "1 kg accepted finished unpackaged part"
+process_inventory:
+  - id: part_manufacturing
+    label: "Manufacture and acceptance of non-electrical machinery part"
+    inputs:
+      product:
+        - row_id: steel_bar_stock
+          role: "Cold-drawn non-alloy steel bar for the representative machining route"
+          name: "Cold-drawn non-alloy steel bar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this row only when the declared part is manufactured from cold-drawn non-alloy steel bar. Other material routes shall add separate cards for each concrete material and form; this row shall never stand for mixed or unspecified materials."
+          amount:
+            expression: "measured bar mass issued to the batch minus unused bar returned to controlled stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electrical energy"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electrical energy for the declared route, including attributable machine tools, pumps, extraction, compressed-air generation, cleaning and inspection equipment; allocate shared meters under Section 7."
+          amount:
+            expression: "metered or defensibly allocated electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water that crosses the boundary for metalworking-fluid make-up, washing, rinsing, or declared surface treatment. Exclude closed-loop recirculation from repeated input accounting and disclose make-up and purge separately."
+          amount:
+            expression: "metered or tank-balance make-up water used by the declared operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: metalworking_fluid_concentrate
+          role: "Water-miscible metalworking-fluid concentrate"
+          name: "Water-miscible metalworking-fluid concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the concrete concentrate only when used for cutting, grinding, or forming. Declare product name, supplier, concentration, density, and whether the amount is concentrate or prepared emulsion."
+          amount:
+            expression: "purchased or issued concentrate mass corrected for stock change and returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_chemicals
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for cutting or joining"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen only when consumed by the declared thermal cutting or joining operation. Purity, supply state, pressure, reference conditions, and on-site generation boundary shall be declared."
+          amount:
+            expression: "metered delivered volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: carbon_dioxide_shielding_gas
+          role: "Carbon dioxide shielding gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "Record carbon dioxide product gas only when used as welding shielding gas. Declare grade, supplier, pressure, reference conditions, and fossil or biogenic origin."
+          amount:
+            expression: "supplier-delivered mass or cylinder inventory change attributable to the declared joining operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas for thermal operations"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when burned in a declared furnace, oven, dryer, or other directly controlled thermal operation. Declare composition, net calorific value, meter reference conditions, and delivery boundary."
+          amount:
+            expression: "metered delivered volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_gas
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning or surface treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when a declared alkaline cleaning or surface-treatment bath consumes it. Report pure NaOH-equivalent mass and retain solution concentration and supplied mass."
+          amount:
+            expression: "supplied solution mass multiplied by measured or supplier-certified NaOH mass fraction, corrected for stock change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_chemicals
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machinery_part
+          role: "Accepted finished non-electrical machinery part"
+          name: "Standard mechanical components"
+          flow_type: "product"
+          flow_ref:
+            uuid: "823b5c17-40c2-4039-91ac-0a648ef9b910"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after the declared manufacturing, cleaning, inspection, and acceptance operations and before packaging."
+          amount:
+            expression: "normalize accepted net product mass to exactly 1 kg; retain measured batch output and reject mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: steel_swarf
+          role: "Segregated steel swarf from machining"
+          name: "Steel swarf"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6a16eab5-8097-4e37-8d28-aa1e81b8bb5c"
+          property_unit: "Mass / kg"
+          description: "Record steel swarf removed by machining as a waste output. Declare alloy family, coolant or oil carryover, weighing basis, storage moisture, and receiving treatment or recycling route."
+          amount:
+            expression: "measured net swarf mass leaving the process after documented drainage condition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: waste_metalworking_fluid
+          role: "Spent metalworking fluid sent to treatment"
+          name: "Waste metalworking fluid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2468f4c0-46fa-4a8b-8075-686cf7391b00"
+          property_unit: "Mass / kg"
+          description: "Record spent metalworking fluid only when it leaves the foreground process for treatment or disposal. Declare fluid family, water and oil content, contaminants, drainage basis, and destination."
+          amount:
+            expression: "measured transferred mass corrected for container tare and retained reusable fluid"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+        - row_id: surface_treatment_wastewater
+          role: "Metal surface-treatment wastewater"
+          name: "Metal surface-treatment wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this wastewater only when aqueous cleaning or surface treatment produces a separately managed discharge. Declare source operation, pH, principal dissolved metals or treatment chemicals, suspended solids, water content, and destination."
+          amount:
+            expression: "metered discharge or tank-balance mass leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide released by foreground fuel combustion or vented fossil carbon dioxide shielding gas. Upstream electricity emissions are excluded from this row and belong to the electricity supply dataset."
+          amount:
+            expression: "measured direct release or calculation from foreground fuel/gas quantity, documented carbon content, oxidation, and fossil fraction"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished machinery part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_co2
+              source_ids:
+                - eu-commission-2021-2053-fabricated-metal-products
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "separable products, routes, batches, and operations"
+    rule: "Avoid allocation by collecting product-, batch-, route-, and operation-specific records or by subdividing independently measurable processes."
+    source_ids:
+      - eu-recommendation-2021-2279-environmental-footprint
+  - rule_id: allocation_physical
+    applies_to: "unavoidable shared inputs and emissions"
+    rule: "When subdivision is not possible, use a documented causal physical relationship such as metered energy, machine time, treatment area, gas use, or bath loading that represents the driver of the shared exchange; do not default to mass merely because the reference flow is mass-based."
+    source_ids:
+      - eu-recommendation-2021-2279-environmental-footprint
+  - rule_id: allocation_other
+    applies_to: "no defensible physical relationship"
+    rule: "Use another relationship, including economic allocation, only after documenting why subdivision and causal physical allocation are infeasible; retain product-specific quantities, prices, period, currency, and sensitivity results."
+    source_ids:
+      - eu-recommendation-2021-2279-environmental-footprint
+  - rule_id: allocation_waste
+    applies_to: "steel swarf, spent fluid, and wastewater"
+    rule: "Keep these outputs as waste flows at the foreground gate. Do not subtract an avoided-product credit inside this unit process unless the declared downstream methodology explicitly requires it and the alternative result is reported transparently."
+    source_ids:
+      - eu-recommendation-2021-2279-environmental-footprint
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "part_manufacturing"
+      flow_role: "concrete solid material input"
+      record_type: "purchase, issue, return and stock record"
+      raw_fields: "material identity; grade; form; supplier; batch; issued mass; returned mass; opening and closing stock"
+      collection_method: "calibrated scale and inventory reconciliation"
+      unit: "kg"
+      frequency: "each batch, reconciled monthly"
+      temporal_coverage: "representative continuous 12-month period or disclosed campaign"
+      site_scope: "all included production lines"
+      aggregation_rule: "issued minus returned material, normalized by accepted product mass"
+      quality_evidence: "scale calibration; stock reconciliation; supplier certificate; batch trace"
+    - protocol_id: cp_electricity
+      process_id: "part_manufacturing"
+      flow_role: "purchased electricity"
+      record_type: "meter and machine log"
+      raw_fields: "meter id; start/end readings; machine state; operation; batch; shared-load basis"
+      collection_method: "dedicated meter preferred; otherwise documented submeter or engineering allocation"
+      unit: "kWh and MJ"
+      frequency: "each batch or interval no longer than one month"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included machines and attributable auxiliaries"
+      aggregation_rule: "sum attributable kWh, convert to MJ, normalize by accepted product mass"
+      quality_evidence: "meter calibration; tariff or utility reconciliation; allocation trace"
+    - protocol_id: cp_process_water
+      process_id: "part_manufacturing"
+      flow_role: "process-water make-up"
+      record_type: "meter, tank and batch record"
+      raw_fields: "source; meter readings; tank changes; operation; recirculation; purge; batch"
+      collection_method: "dedicated meter or tank balance"
+      unit: "kg or m3 with density"
+      frequency: "each batch or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included water-using operations"
+      aggregation_rule: "count boundary-crossing make-up once; normalize by accepted product mass"
+      quality_evidence: "meter calibration; tank balance; density basis"
+    - protocol_id: cp_process_chemicals
+      process_id: "part_manufacturing"
+      flow_role: "metalworking fluid and sodium hydroxide"
+      record_type: "purchase, issue, concentration and stock record"
+      raw_fields: "product; supplier; lot; supplied mass; concentration; density; opening/closing stock; returned mass; operation"
+      collection_method: "weighed issue and stock reconciliation; laboratory or supplier concentration"
+      unit: "kg"
+      frequency: "each batch, reconciled monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included chemical-using operations"
+      aggregation_rule: "calculate concrete product or pure-substance mass, normalize by accepted product mass"
+      quality_evidence: "scale calibration; certificate of analysis; concentration test; stock reconciliation"
+    - protocol_id: cp_process_gases
+      process_id: "part_manufacturing"
+      flow_role: "oxygen and carbon-dioxide process gas"
+      record_type: "flowmeter or cylinder inventory"
+      raw_fields: "gas identity; grade; supplier; pressure; temperature; start/end cylinder mass or volume; operation; batch"
+      collection_method: "calibrated flowmeter or cylinder mass balance"
+      unit: "m3 or kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included cutting and joining operations"
+      aggregation_rule: "aggregate each gas separately at declared reference conditions, normalize by accepted product mass"
+      quality_evidence: "meter calibration; supplier certificate; cylinder reconciliation"
+    - protocol_id: cp_fuel_gas
+      process_id: "part_manufacturing"
+      flow_role: "gaseous natural gas"
+      record_type: "meter and supplier record"
+      raw_fields: "meter readings; temperature; pressure; composition; net calorific value; operation; batch"
+      collection_method: "calibrated dedicated meter or documented allocation from site meter"
+      unit: "m3"
+      frequency: "each batch or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included thermal operations"
+      aggregation_rule: "normalize reference-condition volume by accepted product mass"
+      quality_evidence: "meter calibration; supplier statement; allocation trace"
+    - protocol_id: cp_product_output
+      process_id: "part_manufacturing"
+      flow_role: "accepted reference product"
+      record_type: "production and quality record"
+      raw_fields: "part id; drawing revision; batch; produced count; accepted count; reject count; net mass; rework status"
+      collection_method: "calibrated scale linked to quality acceptance"
+      unit: "kg and item"
+      frequency: "each batch"
+      temporal_coverage: "same period as all inputs"
+      site_scope: "all included products and rejects"
+      aggregation_rule: "sum accepted net mass; normalize inventory to 1 kg"
+      quality_evidence: "scale calibration; inspection record; batch genealogy"
+    - protocol_id: cp_waste_mass
+      process_id: "part_manufacturing"
+      flow_role: "steel swarf and spent metalworking fluid"
+      record_type: "waste transfer and scale record"
+      raw_fields: "waste identity; source operation; gross/tare/net mass; moisture or water/oil content; destination; date; batch"
+      collection_method: "calibrated scale or verified waste contractor ticket"
+      unit: "kg"
+      frequency: "each transfer, assigned to batches or period"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included waste collection points"
+      aggregation_rule: "subtract tare and retained reusable material, normalize by accepted product mass"
+      quality_evidence: "scale calibration; transfer note; composition or drainage record"
+    - protocol_id: cp_wastewater
+      process_id: "part_manufacturing"
+      flow_role: "metal surface-treatment wastewater"
+      record_type: "discharge meter, tank and analytical record"
+      raw_fields: "source operation; volume or mass; density; pH; principal dissolved metals; suspended solids; treatment; destination; batch"
+      collection_method: "calibrated meter or tank balance plus representative analysis"
+      unit: "kg or m3 with density"
+      frequency: "each discharge and representative analysis"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included aqueous treatment discharges"
+      aggregation_rule: "aggregate only the concrete wastewater stream, normalize by accepted product mass"
+      quality_evidence: "meter calibration; laboratory report; discharge or transfer record"
+    - protocol_id: cp_direct_co2
+      process_id: "part_manufacturing"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "stack measurement or fuel/gas calculation record"
+      raw_fields: "source operation; measured CO2; fuel/gas amount; carbon content; oxidation; fossil fraction; calculation version"
+      collection_method: "direct measurement preferred; otherwise transparent stoichiometric calculation from foreground records"
+      unit: "kg"
+      frequency: "each batch or monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all direct combustion and shielding-gas releases"
+      aggregation_rule: "sum direct fossil CO2 only, normalize by accepted product mass"
+      quality_evidence: "instrument calibration or supplier composition; calculation audit"
+  calculation_rules:
+    - id: calc_normalization
+      applies_to: "every inventory row"
+      rule: "normalized exchange = attributable batch exchange / accepted net batch product mass"
+      inputs:
+        - "attributable exchange"
+        - "accepted net product mass"
+      output: "row quantity per 1 kg accepted finished part"
+      source_ids:
+        - eu-commission-2021-2053-fabricated-metal-products
+    - id: calc_naoh_pure_mass
+      applies_to: "sodium_hydroxide"
+      rule: "pure NaOH-equivalent mass = supplied solution mass × measured or supplier-certified NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - "NaOH mass fraction"
+      output: "kg Sodium hydroxide"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "fossil_carbon_dioxide"
+      rule: "direct fossil CO2 = measured direct fossil CO2; if calculated, sum carbon-bearing foreground gas or fuel × documented carbon content × oxidation fraction × fossil fraction × 44/12, using mutually consistent mass units"
+      inputs:
+        - "gas/fuel quantity"
+        - "carbon content"
+        - "oxidation fraction"
+        - "fossil fraction"
+        - "direct measurement when available"
+      output: "kg carbon dioxide (fossil)"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "solid material route"
+      rule: "reconcile concrete solid material input with accepted product, rejects, swarf, other separately named solid wastes, stock change, and measured process losses; investigate and disclose any residual rather than creating an unspecified waste row"
+      inputs:
+        - "issued/returned material"
+        - "accepted product"
+        - rejects
+        - "each solid waste"
+        - "stock change"
+      output: "material-balance residual and completeness finding"
+      source_ids:
+        - eu-commission-2021-2053-fabricated-metal-products
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and material inputs"
+      requirement: "Use one concrete part identity and one concrete flow per material, consumable, waste, and emission; retain drawing revision, material certificate, supplier and batch trace."
+      evidence: "product specification; material certificate; UUID audit or documented unresolved identity"
+    - id: dq_measurement
+      applies_to: "all measured exchanges"
+      requirement: "Use calibrated meters or scales and retain raw readings, units, conversions, allocation keys, zero/negative-value explanations, and reconciliation to invoices or transfer records."
+      evidence: "calibration certificates; raw logs; reconciliation and calculation files"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Use a continuous representative 12-month period where available; a shorter campaign shall state dates, production volume, operating modes, abnormal events, and representativeness limits."
+      evidence: "dated production, meter, stock and waste records"
+    - id: dq_completeness
+      applies_to: "declared manufacturing route"
+      requirement: "Cover every operation actually performed and every direct atomic exchange; separately name additional materials, chemicals, fuels, wastes, wastewater streams, and elementary emissions not represented by the minimum inventory above."
+      evidence: "route map; mass and energy reconciliation; completeness review"
+    - id: dq_supplier_data
+      applies_to: "upstream-linked inputs"
+      requirement: "Document supplier dataset identity, geography, technology, product state, time period, delivery boundary, substitutions, and uncertainty."
+      evidence: "supplier declaration; dataset metadata; proxy justification"
+    - id: dq_range_gap
+      applies_to: "all important flows"
+      requirement: "Foreground records remain mandatory because no externally inferred empirical range met the two-independent-source requirement. Do not treat absence of a range as permission to use a default amount."
+      evidence: "manifest range-evidence needs; collection-protocol records"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "product category and reference flow"
+    rule: "Confirm CPC 43949 applicability, exclusion of electrical and separately classified parts, exact canonical PCR id, 1 kg accepted unpackaged output, and all required product qualifiers."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_route
+    applies_to: "process map and boundary"
+    rule: "Confirm that each performed operation is disclosed, each absent operation is excluded, and each purchased input has a matching upstream dataset or documented proxy."
+    source_ids:
+      - eu-commission-2021-2053-fabricated-metal-products
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Reject umbrella or combined selected flows. Electricity, water, each gas, each chemical, each waste stream, each wastewater stream, and each elementary emission shall remain separate atomic rows with route conditions."
+    source_ids:
+      - eu-commission-2021-2053-fabricated-metal-products
+  - rule_id: validate_normalization
+    applies_to: "quantities and units"
+    rule: "Recalculate every normalized row from retained batch data; verify the kWh-to-MJ conversion, gas reference conditions, concentration calculations, accepted output mass, and no double counting of recirculated water or fluid."
+    source_ids:
+      - eu-commission-2021-2053-fabricated-metal-products
+  - rule_id: validate_mass_balance
+    applies_to: "solid material route"
+    rule: "Reconcile concrete material input, accepted product, rejects, swarf, each other solid waste, stock change, and measured losses; unresolved residuals are findings, not unnamed waste flows."
+    source_ids:
+      - eu-commission-2021-2053-fabricated-metal-products
+  - rule_id: validate_emissions
+    applies_to: "direct fossil carbon dioxide"
+    rule: "Confirm that only direct foreground fossil CO2 is recorded, the measured or calculation basis is retained, fossil fraction is declared, and upstream electricity emissions are excluded."
+    source_ids:
+      - eu-commission-2021-2053-fabricated-metal-products
+  - rule_id: validate_allocation
+    applies_to: "shared and multifunctional operations"
+    rule: "Confirm that subdivision was attempted first and that every remaining allocation key follows a documented causal physical relationship or a justified last-resort relationship with sensitivity information."
+    source_ids:
+      - eu-recommendation-2021-2279-environmental-footprint
+  - rule_id: validate_uuid_status
+    applies_to: "inventory identity"
+    rule: "Confirm each stored UUID by public state-100 direct read. Keep unresolved rows blank and visible; never substitute a rejected, narrower, broader, wrong-state, wrong-classification, or bilingual-conflicted candidate."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground unit_process dataset for manufacture and acceptance of one declared non-electrical machinery part"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Attributional cradle-to-gate modelling of a matching finished non-electrical general-purpose machinery part with compatible drawing, material, route, geography, technology, period, boundary, and allocation."
+  excluded_use: "Electrical parts; parts in CPC 43941-43944; special-purpose machinery parts; complete machines; service-life comparisons without functional equivalence; packaged product; downstream distribution, use, maintenance, and end-of-life."
+  required_metadata: "canonical PCR id; CPC applicability; part and drawing/revision; material grade and form; net mass; route operations; heat and surface state; facility geography; period; meter and allocation coverage; accepted/reject mass; upstream datasets; waste destinations; unresolved UUIDs"
+  required_quality_disclosure: "primary-data share; metering and scale coverage; calibration; temporal representativeness; supplier-data quality; proxy use; mass-balance residual; shared-meter allocation; direct-emission method; missing range evidence; uncertainty and data gaps"
+  update_trigger: "Change in part drawing or material grade; route, machine, heat treatment or surface treatment; supplier mix; energy or gas source; facility or geography; allocation method; direct-emission method; waste destination; or a newly confirmed UUID or compatible independent range evidence."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Product-category identity, residual hierarchy, and exclusions by classification."
+  - id: "eu-commission-2021-2053-fabricated-metal-products"
+    type: "official_guidance"
+    reference: "Commission Decision (EU) 2021/2053 of 8 November 2021 on the sectoral reference document for the fabricated metal products manufacturing sector. https://publications.europa.eu/resource/cellar/1b58f2a1-4d96-11ec-91ac-01aa75ed71a1.0006.03/DOC_1 (retrieved 2026-09-06)"
+    used_for: "Operation-dependent manufacturing process decomposition; monitoring of energy, material, metalworking-fluid, water, waste, and related environmental performance."
+  - id: "eu-recommendation-2021-2279-environmental-footprint"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of Environmental Footprint methods. https://publications.europa.eu/resource/cellar/af96b549-6912-11ec-9136-01aa75ed71a1.0006.01/DOC_1 (retrieved 2026-09-06)"
+    used_for: "Multi-functionality hierarchy: subdivision or system expansion, physical relationship, then another justified relationship."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a2fe76c91d43a6eef55e1b6f0f1f2e48fc0b9e2890aa6f24e27762cc3b983027"
+  generated_content_sha256: "sha256:3c8445ba8f32ed4a79c7cbbef9daea0e4274b5aeec88bdc1a69cac7b52b9c588"

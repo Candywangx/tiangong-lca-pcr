@@ -1,10 +1,794 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42932"
-  title: "Stoppers, caps and lids (including crown corks), capsules for bottles, threaded bungs, bung covers, seals and other packing accessories, of base metal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.stoppers-caps-and-lids-including-crown-corks-capsules-for-bottles-threaded-bungs-bung-c-d6fc8692"
+  classification_refs: "CPC 3.0: 42932 (exact classification context; mapping acceptance is governed separately)"
+  covered_products: "Base-metal crown corks, screw caps and lids, bottle capsules, threaded bungs, bung covers, seals, and other base-metal packing accessories, including products with polymeric liners or gaskets"
+  excluded_products: "Complete containers; non-metal closure bodies; filling/closing services; packaged contents; post-gate use and end-of-life"
+  representative_product: "A finished, inspected, unfilled base-metal closure ready to leave the manufacturing site"
+  production_route: "Purchased steel/tinplate or aluminium sheet/strip → blanking and press forming → conditional cleaning, coating and printing → conditional liner or sealing-compound application and curing → inspection"
+  market_state: "Dry, finished and unfilled at the factory gate; coating, liner, dimensions, compatibility specification, and unit mass declared"
+functional_unit:
+  what: "Provide finished base-metal closure accessories that close, cover, seal, or secure a declared container opening"
+  how_much: "1,000 kg of conforming finished closures at the factory gate"
+  how_well: "Meets the declared dimensional, sealing, opening-torque or pressure-retention, corrosion-resistance, coating/liner compatibility, and food-contact requirements applicable to the product"
+  how_long_or_cycle: "One manufacturing output at the factory gate; no use-life duration is assigned"
+  reference_flow_link: "finished_base_metal_closures_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate_foreground
+      applies_to: "foreground closure manufacture"
+      rule: "Include all on-site material and energy exchanges from receipt of purchased metal stock through conforming closure output, including rejects, direct emissions and wastes sent to treatment."
+      source_ids:
+        - ep3663427b1-crown-cap
+        - eu-jrc-sts-bref-2007
+        - us-epa-metal-can-coating-background
+    - rule_id: boundary_conditional_finishing
+      applies_to: "purchased pre-finished stock"
+      rule: "Include on-site cleaning, coating, printing and lining only when performed at the reporting site; otherwise require supplier datasets that include those operations and prevent double counting."
+      source_ids:
+        - eu-jrc-sts-bref-2007
+        - us-epa-metal-can-coating-background
+    - rule_id: boundary_packaging_exclusion
+      applies_to: "filling, distribution, use and end-of-life"
+      rule: "Exclude filling with packaged contents and all post-factory-gate stages unless the study goal explicitly expands the system boundary; disclose any expansion separately."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_no_hidden_cutoff
+      applies_to: "foreground completeness"
+      rule: "Do not omit a material, energy, waste or elementary exchange solely because its mass is small; document measured zero, not applicable status, or an explicit data gap."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Purchased base-metal sheet, strip, or pre-finished stock enters the closure-manufacturing site; its substrate grade, thickness, coating/printing state and supplier gate are declared"
+  starting_condition_role: "Foreground manufacturing gate for conversion of purchased semi-finished metal into closures"
+  product_classification_scope: "Base-metal closure accessories represented by the reviewed semantic boundary; CPC 42932 is classification context, not canonical identity ownership"
+  recursive_input_rule: "If a purchased input is itself a finished base-metal closure within this category, record it once as a supplied product with an upstream dataset and exclude its already-completed manufacturing steps from the foreground process"
+  upstream_dataset_requirement: "Every purchased metal, polymer, chemical, coating, ink, electricity, fuel and treatment service must link to a geographically and technologically representative upstream dataset or remain an explicit data gap"
+  disclosure: "Declare which forming, preparation, coating, printing, lining, curing, inspection and on-site treatment operations occur; identify purchased pre-coated/pre-printed stock and any excluded shared operations"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Stoppers, caps and lids (including crown corks), capsules for bottles, threaded bungs, bung covers, seals and other packing accessories, of base metal"
+    uuid: "24a22981-bd1e-4c1a-bd64-78df94ef256a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "closure subtype and opening interface"
+    - "base-metal substrate"
+    - "grade and thickness"
+    - "coating/plating state"
+    - "liner or gasket chemistry and mass"
+    - "printing state"
+    - "dimensions and mass per closure"
+    - "recycled-content claim and accounting method"
+    - sealing
+    - torque
+    - pressure
+    - "corrosion and compatibility specification"
+    - "food-contact status"
+    - "purchased pre-finished stock and on-site finishing split"
+    - "manufacturing geography"
+    - "technology and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure dry mass of conforming closures leaving the gate. Exclude pallets, cartons and transport wrapping from the reference product mass and report them separately if they cross the boundary."
+  - id: piece_to_mass_conversion
+    applies_to: "production records stated as pieces"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts with a product- and campaign-specific mean closure mass from a documented sample; retain sample size, weighing method and variability."
+  - id: material_mass_basis
+    applies_to: "metal, coating, ink, liner, chemical, scrap and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report as-received mass and separately disclose solids, moisture, solvent or active concentration when it changes material or emission balances."
+  - id: electricity_energy_basis
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered energy; when source records use kWh, convert with 1 kWh = 3.6 MJ and disclose voltage, grid mix, losses and delivery boundary."
+  - id: natural_gas_volume_basis
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State pressure, temperature, wet/dry basis and net calorific value used; do not combine gas volume with other fuels."
+  - id: mass_balance_check
+    applies_to: "closure manufacturing"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile metal and liner inputs with conforming product, separately measured scrap, retained work-in-progress and other outputs for the declared period."
+process_map:
+  - id: closure_manufacturing
+    name: "Base-metal closure forming and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always; individual cleaning, coating, printing, lining and direct-emission rows apply only when the declared route uses them"
+    role: "Foreground production from purchased metal stock to finished closures"
+    quantitative_reference: "1,000 kg conforming finished closures"
+process_inventory:
+  - id: closure_manufacturing
+    label: "Base-metal closure forming and finishing"
+    inputs:
+      product:
+        - row_id: tinplate_sheet_input
+          role: "Closure-grade tinplate steel sheet"
+          name: "Closure-grade tinplate steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a steel-body closure route. The selected exchange is closure-grade tinplate steel sheet as received, not generic steel, a finished can, or a collection of metals."
+          amount:
+            expression: "Supplier receipt mass issued to the declared production campaign, corrected for returned unused stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: aluminium_sheet_input
+          role: "Aluminium sheet exceeding 0.2 mm"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record this input only when the declared closure body uses aluminium sheet exceeding 0.2 mm. Do not use this UUID for aluminium foil or composite aluminium/copper stock."
+          amount:
+            expression: "Supplier receipt mass issued to the declared production campaign, corrected for returned unused stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to presses, conveyors, preparation, coating, printing, liner forming, curing, inspection and directly attributable auxiliaries within the boundary."
+          amount:
+            expression: "Metered electricity attributable to the declared closure production campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - eu-jrc-sts-bref-2007
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when used directly for drying, coating or liner curing, thermal treatment, or emission control associated with the declared campaign."
+          amount:
+            expression: "Metered or invoice-reconciled gas volume attributable to the declared campaign at stated reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-jrc-sts-bref-2007
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water for aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when aqueous cleaning, rinsing or surface preparation is performed on site."
+          amount:
+            expression: "Metered make-up and rinse water crossing into the foreground process, excluding internally recirculated water counted more than once"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_chemicals
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is consumed in an on-site alkaline cleaning bath. Report solution concentration separately from active sodium-hydroxide mass."
+          amount:
+            expression: "Active sodium-hydroxide mass from purchase, dosing and bath make-up records attributable to the campaign"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_chemicals
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: forming_lubricant_input
+          role: "Metal-forming lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Record the lubricating oil supplied to blanking and press-forming equipment when it crosses into the product process; exclude closed equipment oil that does not become attributable consumption during the period."
+          amount:
+            expression: "Net lubricant make-up issued to the campaign after subtracting recovered reusable oil returned to stock"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: protective_lacquer_input
+          role: "Metal-packaging protective lacquer"
+          name: "Metal-packaging protective lacquer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one declared protective lacquer formulation when it is applied on site. The formulation, solids content, carrier, food-contact status, application method and cured coating side must be stated."
+          amount:
+            expression: "Net as-supplied lacquer consumed, from opening and closing stock plus receipts minus recoverable return, with solids and volatile fractions disclosed"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coating_ink_liner_records
+              source_ids:
+                - eu-jrc-sts-bref-2007
+                - us-epa-metal-can-coating-background
+            ranges: []
+        - row_id: metal_decorating_ink_input
+          role: "Lithographic metal-decorating printing ink"
+          name: "Lithographic metal-decorating printing ink"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one formulated ink applied on site for each declared print station and colour. Distinct formulations must remain separate foreground exchanges rather than an aggregated ink mixture."
+          amount:
+            expression: "Net as-supplied ink consumed by the declared print station, with colour/formulation and volatile fraction disclosed"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coating_ink_liner_records
+              source_ids:
+                - eu-jrc-sts-bref-2007
+            ranges: []
+        - row_id: polyethylene_liner_resin_input
+          role: "Polyethylene resin for in-house liner forming"
+          name: "polyethylene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f4dfd1a4-b24e-471e-bd21-04ad7a45ea52"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene only when the site forms a polyethylene-based liner from primary resin. Grade, additives and any separately purchased components must be individually disclosed in the foreground package."
+          amount:
+            expression: "Net resin issued to in-house liner forming for the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_ink_liner_records
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: epvc_resin_input
+          role: "E-PVC resin for in-house plastisol compounding"
+          name: "polyvinylchloride resin (E-PVC)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19f121-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record E-PVC resin only when the site compounds a PVC plastisol liner internally. Plasticizers, stabilizers and other additives crossing the boundary must be reported as separate concrete foreground exchanges."
+          amount:
+            expression: "Net E-PVC resin issued to the declared in-house plastisol batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_ink_liner_records
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: pvc_plastisol_compound_input
+          role: "Purchased PVC plastisol sealing compound"
+          name: "PVC plastisol sealing compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased PVC plastisol only when a ready-to-use sealing compound crosses the site boundary; do not also record its upstream resin and additives as on-site inputs."
+          amount:
+            expression: "Net as-supplied compound consumed by the declared lining operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_ink_liner_records
+              source_ids:
+                - ep3663427b1-crown-cap
+                - eu-jrc-sts-bref-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_base_metal_closures_output
+          role: "Conforming finished base-metal closures"
+          name: "Stoppers, caps and lids (including crown corks), capsules for bottles, threaded bungs, bung covers, seals and other packing accessories, of base metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "24a22981-bd1e-4c1a-bd64-78df94ef256a"
+          property_unit: "Mass / kg"
+          description: "This is the quantitative reference output after inspection. The exact Tiangong Chinese baseName is used in the aligned Chinese rendering."
+          amount:
+            expression: "1,000 kg of conforming finished closures at the factory gate"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: steel_scrap_output
+          role: "Steel stamping scrap"
+          name: "steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "409ba088-e428-4cdf-a688-b5b4f074068d"
+          property_unit: "Mass / kg"
+          description: "Record steel skeleton, punched web, trim and rejected steel closure bodies as one ferrous scrap stream only when the steel route applies; do not mix aluminium or contaminated hazardous wastes into it."
+          amount:
+            expression: "Weighed ferrous production scrap leaving the foreground process, net of verified internal same-quality reuse"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: aluminium_scrap_output
+          role: "Aluminium stamping scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record aluminium skeleton, punched web, trim and rejected aluminium closure bodies as a separate scrap stream only when the aluminium route applies."
+          amount:
+            expression: "Weighed aluminium production scrap leaving the foreground process, net of verified internal same-quality reuse"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+        - row_id: cleaning_wastewater_output
+          role: "Wastewater from aqueous cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record cleaning and rinse wastewater when it leaves the foreground process for on-site or off-site treatment. State the aqueous-cleaning origin, contaminants, measurement point and treatment destination."
+          amount:
+            expression: "Measured wastewater mass at the transfer point, excluding recirculated water counted earlier in the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: waste_oil_output
+          role: "Waste oil from forming"
+          name: "Waste oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a68e97a-21fe-43f7-a86e-3e39b653e10a"
+          property_unit: "Mass / kg"
+          description: "Record spent oil removed from blanking or forming equipment when it leaves for recovery or disposal. Do not combine coolant, solvent or aqueous bath waste with this row."
+          amount:
+            expression: "Weighed spent oil transferred from the declared process during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass
+              source_ids:
+                - ep3663427b1-crown-cap
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_to_air
+          role: "Fossil carbon dioxide from direct natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil CO2 from natural gas burned inside the foreground boundary. Upstream grid or fuel-supply emissions remain in background datasets."
+          amount:
+            expression: "Direct measurement or calculation from metered natural gas using documented supplier composition, reference conditions, oxidation and carbon factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - eu-jrc-sts-bref-2007
+            ranges: []
+        - row_id: xylene_mixed_isomers_to_air
+          role: "Xylene (mixed isomers) to unspecified outdoor air"
+          name: "Xylene (mixed isomers) to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single chemical-mixture exchange only when the declared coating, ink or cleaning formulation contains commercial mixed-isomer xylene and site records quantify that mixture released after capture and control. Do not substitute an individual p-xylene flow for a mixed-isomer result."
+          amount:
+            expression: "Stack and fugitive mixed-isomer xylene release measured directly or calculated by a documented solvent mass balance after capture, destruction and recovery"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming finished closures"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - us-epa-metal-can-coating-background
+                - eu-jrc-sts-bref-2007
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "shared lines and utilities"
+    rule: "First subdivide meters, material issues, operating hours or equipment records so only exchanges attributable to the declared closures are included."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_other
+    applies_to: "unavoidable multifunctionality"
+    rule: "If subdivision or system expansion is not feasible, use a demonstrated relevant physical relationship; use another relationship only when physical allocation is not defensible, and disclose the rejected options, formula, factors and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_scrap_no_automatic_credit
+    applies_to: "steel and aluminium scrap"
+    rule: "Report scrap mass, composition, treatment destination and any revenue separately. Do not assign an avoided-primary-metal credit inside this foreground dataset unless the governing study method explicitly requires it."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "closure_manufacturing"
+      flow_role: "metal stock and forming lubricant inputs"
+      record_type: "purchase receipts, stock issues and returns"
+      raw_fields: "material identity; supplier; batch; substrate/grade; thickness; coating state; opening stock; receipts; issued mass; returned mass; closing stock"
+      collection_method: "Reconcile ERP/warehouse records to production campaign and physical inventory"
+      unit: "kg"
+      frequency: "Per receipt and campaign; aggregate monthly"
+      temporal_coverage: "At least 12 consecutive representative months or full campaign for seasonal/custom production"
+      site_scope: "All facilities and lines represented by the dataset"
+      aggregation_rule: "Net consumed mass = opening stock + receipts − closing stock − verified return; allocate shared consumption under section 7"
+      quality_evidence: "Supplier specification, weighbridge/scale calibration, stock reconciliation and exception log"
+    - protocol_id: cp_energy_meters
+      process_id: "closure_manufacturing"
+      flow_role: "purchased electricity"
+      record_type: "interval or submeter readings"
+      raw_fields: "meter id; start/end reading; multiplier; kWh; line state; downtime; production mass; grid/voltage"
+      collection_method: "Read calibrated meters and reconcile with invoice totals"
+      unit: "kWh and MJ"
+      frequency: "At least monthly; campaign submetering preferred"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included presses and finishing auxiliaries"
+      aggregation_rule: "Subtract documented non-production loads; convert kWh to MJ; normalize to conforming output"
+      quality_evidence: "Meter calibration, invoice reconciliation and allocation worksheet"
+    - protocol_id: cp_fuel_records
+      process_id: "closure_manufacturing"
+      flow_role: "direct natural gas"
+      record_type: "meter and invoice records"
+      raw_fields: "meter id; gas volume; pressure; temperature; wet/dry basis; net calorific value; production mass"
+      collection_method: "Reconcile site meter to supplier invoice and attributable equipment runtime"
+      unit: "m3 and MJ"
+      frequency: "At least monthly"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included direct-fired equipment and controls"
+      aggregation_rule: "Correct to stated reference conditions and normalize to conforming output"
+      quality_evidence: "Meter calibration, invoice and supplier gas specification"
+    - protocol_id: cp_water_and_chemicals
+      process_id: "closure_manufacturing"
+      flow_role: "process water and sodium hydroxide"
+      record_type: "water meter, dosing and bath records"
+      raw_fields: "water meter readings; bath volume; make-up volume; sodium-hydroxide product mass; concentration; purge; recirculation; production mass"
+      collection_method: "Meter make-up/rinse water and reconcile chemical dosing to inventory"
+      unit: "kg"
+      frequency: "Per bath make-up and at least monthly"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "All included cleaning and rinse stages"
+      aggregation_rule: "Count boundary-crossing make-up once; calculate active NaOH mass from product mass and concentration"
+      quality_evidence: "Meter calibration, concentration test, dosing record and bath log"
+    - protocol_id: cp_coating_ink_liner_records
+      process_id: "closure_manufacturing"
+      flow_role: "coating, ink and liner materials"
+      record_type: "batch sheet and stock balance"
+      raw_fields: "formulation id; colour; solids; volatile fraction; opening/closing stock; receipts; returns; applied mass; recovered mass; product mass"
+      collection_method: "Reconcile batch and warehouse records for each concrete formulation"
+      unit: "kg"
+      frequency: "Per batch; aggregate by declared product"
+      temporal_coverage: "Same representative period as product output"
+      site_scope: "Each included coating, printing and lining station"
+      aggregation_rule: "Calculate net as-supplied consumption separately for each formulation; prevent double counting of purchased compound and its upstream ingredients"
+      quality_evidence: "Supplier SDS/specification, batch record, scale calibration and stock reconciliation"
+    - protocol_id: cp_product_and_waste_mass
+      process_id: "closure_manufacturing"
+      flow_role: "conforming product, metal scrap, wastewater and waste oil"
+      record_type: "production, quality, weighbridge and waste-transfer records"
+      raw_fields: "gross/net product mass; piece count; sample mass; rejects; scrap composition; wastewater mass; waste-oil mass; destination; transfer date"
+      collection_method: "Weigh outputs at defined transfer points and reconcile with production records"
+      unit: "kg"
+      frequency: "Per batch or transfer; aggregate monthly"
+      temporal_coverage: "Same representative period as inputs"
+      site_scope: "All included lines and output destinations"
+      aggregation_rule: "Normalize each output to 1,000 kg conforming product; retain separate steel, aluminium, wastewater and oil streams"
+      quality_evidence: "Scale calibration, quality release, waste manifest and mass-balance reconciliation"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "closure_manufacturing"
+      flow_role: "direct fossil CO2 and mixed-isomer xylene"
+      record_type: "stack test, continuous monitor, solvent balance and fuel calculation"
+      raw_fields: "pollutant; emission point; measured concentration/flow; test period; formulation xylene content; capture/destruction/recovery; gas composition; oxidation factor; production mass"
+      collection_method: "Use direct measurement where representative; otherwise documented fuel or solvent mass balance"
+      unit: "kg"
+      frequency: "Per compliance test and monthly balance; update after material/control change"
+      temporal_coverage: "Representative operating period aligned with product output"
+      site_scope: "All stacks and fugitive sources attributable to included operations"
+      aggregation_rule: "Sum controlled stack and fugitive releases without upstream electricity/fuel emissions; normalize to product mass"
+      quality_evidence: "Laboratory accreditation, test method, control-efficiency evidence, supplier composition and calculation audit"
+  calculation_rules:
+    - id: calc_normalized_exchange
+      applies_to: "every non-reference inventory row"
+      rule: "normalized amount = period exchange × 1,000 / period conforming closure mass"
+      inputs:
+        - "period exchange"
+        - "conforming product mass"
+      output: "exchange per 1,000 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_piece_mass
+      applies_to: "count-based product records"
+      rule: "product mass = accepted piece count × campaign-specific sampled mean mass per closure"
+      inputs:
+        - "accepted count"
+        - "sampled mean mass"
+      output: "kg conforming product"
+      source_ids:
+        - customs-union-tr-cu-005-2011
+    - id: calc_active_naoh
+      applies_to: "sodium-hydroxide input"
+      rule: "active NaOH mass = as-supplied solution mass × measured or supplier-certified NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - "NaOH mass fraction"
+      output: "kg active NaOH"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "fossil CO2 from natural gas"
+      rule: "Use direct measured fossil CO2; otherwise calculate from metered gas, supplier carbon content or validated emission factor, oxidation fraction and molecular-mass conversion, documenting every factor and reference condition"
+      inputs:
+        - "gas volume"
+        - "reference conditions"
+        - "composition/factor"
+        - "oxidation fraction"
+      output: "kg fossil CO2"
+      source_ids: []
+    - id: calc_xylene_mixed_isomers
+      applies_to: "mixed-isomer xylene to air"
+      rule: "mixed-isomer xylene input in coating/ink/cleaner − xylene retained in product − recovered xylene − xylene transferred in wastes − xylene destroyed by control = mixed-isomer xylene released to air; include separately measured fugitives consistently"
+      inputs:
+        - "formulation records"
+        - "stock balance"
+        - "product/waste analyses"
+        - "capture and destruction evidence"
+      output: "kg mixed-isomer xylene to air"
+      source_ids:
+        - us-epa-metal-can-coating-background
+        - eu-jrc-sts-bref-2007
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Declare closure subtype, substrate, thickness, coating/plating, liner/gasket, print state, dimensions, unit mass, compatibility application and conformity specification."
+      evidence: "Product drawing, bill of materials, supplier specifications and quality-release record"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Use at least 12 consecutive representative months unless a full campaign is more representative; explain shutdowns, trials, abnormal production and substitutions."
+      evidence: "Period coverage table and exception log"
+    - id: dq_technology_geography
+      applies_to: "foreground and upstream links"
+      requirement: "Describe forming, coating, printing, lining, curing and control technologies and the manufacturing geography; justify all upstream dataset geography/technology matches."
+      evidence: "Process map, equipment list and dataset-link register"
+    - id: dq_completeness_mass_balance
+      applies_to: "material inventory"
+      requirement: "Reconcile metal and liner material inputs to conforming product, scrap, retained work-in-progress and other outputs; investigate and disclose unexplained imbalance."
+      evidence: "Signed mass-balance worksheet and stock reconciliation"
+    - id: dq_route_applicability
+      applies_to: "conditional rows"
+      requirement: "Mark each conditional flow applicable or not applicable with product and route evidence; zero is not a substitute for a missing applicability decision."
+      evidence: "Bill of materials, routing, batch sheet and site interview"
+    - id: dq_uncertainty_and_gaps
+      applies_to: "calculated and allocated values"
+      requirement: "Disclose measurement uncertainty, allocation sensitivity, missing UUIDs, missing external ranges and any proxy upstream dataset."
+      evidence: "Uncertainty register, allocation worksheet and data-gap log"
+validation_rules:
+  - rule_id: validate_reference_output
+    applies_to: "reference flow"
+    rule: "Confirm exactly 1,000 kg of conforming finished base-metal closures and verify that dispatch packaging is excluded from that mass."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_identity_and_qualifiers
+    applies_to: "product identity"
+    rule: "Reject a data package missing any required reference-flow qualifier or mixing materially different substrate, liner or finishing routes without separate quantities."
+    source_ids:
+      - un-cpc-3-0-2025
+      - customs-union-tr-cu-005-2011
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory rows"
+    rule: "Confirm that every reported exchange is one concrete product, waste or elementary flow and that steel/aluminium scrap, electricity/gas, and distinct liner materials remain separate."
+    source_ids: []
+  - rule_id: validate_route_and_double_counting
+    applies_to: "conditional operations"
+    rule: "Confirm that purchased pre-coated or pre-printed stock does not duplicate on-site coating or printing burdens and that purchased PVC compound is not double-counted with its upstream resin ingredients."
+    source_ids:
+      - eu-jrc-sts-bref-2007
+      - us-epa-metal-can-coating-background
+  - rule_id: validate_mass_and_energy
+    applies_to: "foreground balances"
+    rule: "Reperform piece-to-mass, material-balance, kWh-to-MJ, gas-condition and normalization calculations from retained raw records."
+    source_ids: []
+  - rule_id: validate_emission_scope
+    applies_to: "direct emissions"
+    rule: "Confirm that fossil CO2 includes only on-site fossil combustion and that mixed-isomer xylene is reported only when formulation chemistry and environmental compartment match; do not include upstream electricity or fuel-supply emissions."
+    source_ids:
+      - us-epa-metal-can-coating-background
+  - rule_id: validate_product_performance_metadata
+    applies_to: "declared conformity"
+    rule: "Confirm that applicable sealing, torque, pressure, corrosion, coating/liner resistance and food-contact test requirements are identified; this PCR does not invent universal pass limits."
+    source_ids:
+      - customs-union-tr-cu-005-2011
+published_dataset_profile:
+  dataset_role: "Foreground product-manufacturing dataset for one declared base-metal closure product or homogeneous product family"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness and unresolved data gaps"
+  allowed_use: "Cradle-to-gate product studies, packaging-component inventories, supplier comparisons and downstream models whose closure specification and system boundary match"
+  excluded_use: "Complete container, filling or packaged-product claims; non-metal closure bodies; post-gate use/end-of-life claims; comparative assertions across unmatched closure functions, substrates, liners or performance specifications"
+  required_metadata: "PCR id/version; product and required qualifiers; site geography; technology; reference period; ownership; foreground/background dataset links; allocation; cut-offs; data gaps; uncertainty; review status"
+  required_quality_disclosure: "Meter and scale coverage; mass-balance result; route applicability; supplier-data quality; allocation sensitivity; control efficiency; unresolved UUID and range-evidence needs; deviations from this PCR"
+  update_trigger: "Material, coating, ink or liner formulation change; substrate/thickness change; new forming/curing/control technology; facility or grid change; allocation change; performance specification change; data older than the intended representativeness period"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 42932 classification identity"
+  - id: "un-cpc-1-1-zh"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-05)"
+    used_for: "Chinese classification terminology cross-check; the authored title uses professional current terminology while Tiangong UUID displays retain exact Tiangong Chinese baseNames"
+  - id: "ep3663427b1-crown-cap"
+    type: "literature"
+    reference: "EP3663427B1, Steel sheet for crown cap, crown cap, and method for producing steel sheet for crown cap, https://patents.google.com/patent/EP3663427B1/en (retrieved 2026-09-05)"
+    used_for: "Crown-cap steel substrate, blanking, press forming, liner attachment and liner-resin examples"
+  - id: "eu-jrc-sts-bref-2007"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Reference Document on Best Available Techniques on Surface Treatment Using Organic Solvents, August 2007, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-04/STS_Adopted082007.pdf (retrieved 2026-09-05)"
+    used_for: "Metal-packaging coating, printing and compound-lining process decomposition; energy, solvent and direct-emission collection scope"
+  - id: "eu-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Reference Document on Best Available Techniques for the Surface Treatment of Metals and Plastics, August 2006, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-metals-and-plastics (retrieved 2026-09-05)"
+    used_for: "Conditional aqueous surface preparation, water and chemical inputs, wastewater and associated activities"
+  - id: "us-epa-metal-can-coating-background"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, National Emission Standards for Hazardous Air Pollutants for the Surface Coating of Metal Cans: Background Information for Proposed Standards, EPA-453/R-02-009, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P1008FRH.TXT (retrieved 2026-09-05)"
+    used_for: "Applicability of can-end coating methods to metal crowns and closures; plant route variability; coating-related organic HAP/VOC scope"
+  - id: "customs-union-tr-cu-005-2011"
+    type: "standard"
+    reference: "Customs Union Technical Regulation TR CU 005/2011, On Safety of Packaging, official English translation hosted by the European Commission, https://food.ec.europa.eu/document/download/8a0639e9-5d76-46c6-a3eb-6a8f406081e8_en?filename=ia_eu-ru_sps-req_decision-769_16082011_en.pdf (retrieved 2026-09-05)"
+    used_for: "Closure performance, sealing, torque, pressure, corrosion, coating/liner resistance and food-contact qualifier categories; not empirical LCI ranges"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Product Environmental Footprint method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-09-05)"
+    used_for: "Functional/reference-flow framing, system boundary, foreground data quality and multifunctionality hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b3ab58d2767a0ebda2e017428129e8ef3ce79ce547c2585b42a5f34704b05e9c"
+  generated_content_sha256: "sha256:d56e350f2414a2b2eae00d268fb79c3f4d28b1e8ef7a2ad732406d75a953c479"

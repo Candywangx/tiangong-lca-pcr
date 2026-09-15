@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.line-pipe-of-a-kind-used-for-oil-or-gas-pipelines-welded-of-steel
 title:
   en-US: "Line pipe of a kind used for oil or gas pipelines, welded, of steel"
-  zh-CN: null
-status: scaffold
+  zh-CN: "钢制焊接石油或天然气管道用管线管"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T04:06:35Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,92 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41285"
     title: "Line pipe of a kind used for oil or gas pipelines, welded, of steel"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: forming_plate_input
+        reason_code: manual_review_required
+        explanation: "Five public state-100 candidates were directly read; none provided an exact hot-rolled line-pipe steel plate identity with a coherent classification and Chinese baseName."
+      - row_id: formed_shell_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The unwelded formed steel pipe shell is a foreground internal intermediate; no exact public state-100 flow exists and a dedicated internal flow is required."
+      - row_id: formed_shell_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The unwelded formed steel pipe shell is transferred from forming to welding as a foreground internal intermediate and needs the same new internal flow as formed_shell_output."
+      - row_id: saw_welding_wire_input
+        reason_code: no_exact_candidate
+        explanation: "The ranked public candidates did not include an exact solid submerged-arc welding wire; flux-cored wire and generic rod candidates were not promoted."
+      - row_id: saw_welding_flux_input
+        reason_code: no_exact_candidate
+        explanation: "The only ranked public candidate was a welding service rather than a granular submerged-arc welding flux product."
+      - row_id: unfinished_pipe_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The welded but unfinished pipe before sizing, testing, and final inspection is a foreground internal intermediate distinct from the finished reference product."
+      - row_id: unfinished_pipe_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The welded but unfinished pipe transferred into finishing needs the same dedicated internal flow as unfinished_pipe_output."
+      - row_id: spent_flux_output
+        reason_code: manual_review_required
+        explanation: "The public waste candidates were broader welding-consumable waste or chemically different wastes and did not exactly identify spent submerged-arc welding flux."
+      - row_id: hydrotest_wastewater_output
+        reason_code: manual_review_required
+        explanation: "Generic wastewater candidates did not establish the hydrostatic-test process origin, water quality, and treatment state needed for an exact waste-flow UUID."
+    range_evidence_needs:
+      - row_id: forming_coil_input
+        explanation: "Two independent, original-text-verified and boundary-compatible sources are needed before publishing a hot-rolled coil input range."
+      - row_id: forming_plate_input
+        explanation: "Two independent, original-text-verified and boundary-compatible sources are needed before publishing an LSAW plate input range."
+      - row_id: forming_electricity_input
+        explanation: "Route- and equipment-compatible empirical electricity evidence is needed; site metering remains authoritative."
+      - row_id: formed_shell_output
+        explanation: "A source-backed range is not assigned to this internal transfer; paired foreground mass-balance records remain authoritative."
+      - row_id: forming_scrap_output
+        explanation: "Independent compatible evidence is needed for forming-trim and edge-preparation scrap yield."
+      - row_id: formed_shell_input
+        explanation: "A source-backed range is not assigned to this internal transfer; it must equal formed_shell_output in the foreground mass balance."
+      - row_id: welding_electricity_input
+        explanation: "Independent HFW/ERW and SAW-compatible evidence is needed before publishing a welding-electricity range."
+      - row_id: postweld_natural_gas_input
+        explanation: "Independent heat-treatment-route evidence is needed before publishing a natural-gas range."
+      - row_id: saw_welding_wire_input
+        explanation: "Independent SAW consumable evidence is needed before publishing a welding-wire range."
+      - row_id: saw_welding_flux_input
+        explanation: "Independent SAW consumable evidence is needed before publishing a welding-flux range."
+      - row_id: unfinished_pipe_output
+        explanation: "A source-backed range is not assigned to this internal transfer; paired foreground mass-balance records remain authoritative."
+      - row_id: welding_scrap_output
+        explanation: "Independent compatible evidence is needed for weld-flash and weld-repair scrap yield."
+      - row_id: spent_flux_output
+        explanation: "Independent route-compatible evidence is needed for spent-flux generation after documented recovery and reuse."
+      - row_id: direct_fossil_co2_output
+        explanation: "A source-backed combustion calculation rule and site fuel data are required before publishing a direct fossil CO2 range."
+      - row_id: unfinished_pipe_input
+        explanation: "A source-backed range is not assigned to this internal transfer; it must equal unfinished_pipe_output in the foreground mass balance."
+      - row_id: finishing_electricity_input
+        explanation: "Independent finishing, inspection, and testing electricity evidence is needed; site metering remains authoritative."
+      - row_id: hydrotest_water_input
+        explanation: "Independent hydrostatic-testing water evidence compatible with recirculation and discharge boundaries is needed."
+      - row_id: reference_line_pipe_output
+        explanation: "Independent route-compatible yield evidence is needed before publishing a finished-product yield guardrail."
+      - row_id: finishing_scrap_output
+        explanation: "Independent compatible evidence is needed for end-cropping, beveling, and rejected-pipe scrap yield."
+      - row_id: hydrotest_wastewater_output
+        explanation: "Independent hydrotest-water discharge evidence compatible with recirculation and treatment boundaries is needed."

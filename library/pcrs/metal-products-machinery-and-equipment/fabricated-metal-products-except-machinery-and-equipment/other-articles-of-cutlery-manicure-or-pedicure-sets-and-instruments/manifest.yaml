@@ -1,13 +1,15 @@
 schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.other-articles-of-cutlery-manicure-or-pedicure-sets-and-instruments
+version: 0.1.0
+updated_at_utc: "2026-09-04T20:24:30Z"
 title:
   en-US: "Other articles of cutlery; manicure or pedicure sets and instruments"
-  zh-CN: null
-status: scaffold
+  zh-CN: "其他利口器；修指甲或修脚套具及器械"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -28,10 +30,76 @@ languages:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42915"
     title: "Other articles of cutlery; manicure or pedicure sets and instruments"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary_review:
+    result: distinct_material_pcr_required
+    explanation: "Covers the physical CPC 42915 product category. Nearby identities for manufacturing services, knives and scissors, and kitchen or table ware are different service or product boundaries and remain empty legacy scaffolds."
+  cartesian_expansion_review:
+    result: avoided
+    explanation: "The inventory models common unit operations and conditional atomic exchanges. It does not expand product variant by alloy grade by finish by packaging configuration."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: stainless_steel_sheet_input
+        reason_code: no_exact_candidate
+        explanation: "Five public state-100 candidates were directly read; none simultaneously established stainless composition, sheet or strip state, compatible classification, and consistent English and Chinese names."
+      - row_id: nitric_acid_surface
+        reason_code: manual_review_required
+        explanation: "Two public state-100 generic nitric-acid UUIDs were semantically indistinguishable and had empty general comments; database curation review is required before selecting one."
+      - row_id: grinding_sludge_output
+        reason_code: no_exact_candidate
+        explanation: "The ranked public waste candidates were sewage sludge, oil sludge, generic sediment/sludge, municipal sludge, or sludge-dryer exhaust rather than metal-and-abrasive grinding sludge."
+      - row_id: grinding_particulate_output
+        reason_code: no_exact_candidate
+        explanation: "The ranked public elementary candidates represented only PM0.2-PM2.5 in specific air compartments; no exact total metal-grinding particulate flow with the required operating-period compartment was found."
+      - row_id: finishing_wastewater_output
+        reason_code: no_exact_candidate
+        explanation: "The only ranked public waste candidate was evaporation condensate and did not denote contaminated metal-finishing wastewater."
+      - row_id: metal_hydroxide_sludge_output
+        reason_code: no_exact_candidate
+        explanation: "The ranked public waste candidates were sewage or municipal sludge or generic solid waste and did not establish metal-hydroxide composition and industrial treatment origin."
+    range_evidence_needs:
+      - range_id: material_yield_and_scrap_range
+        row_ids:
+          - stainless_steel_sheet_input
+          - steel_scrap_forming
+          - final_product_output
+        explanation: "Two independent original sources with compatible factory-gate boundary, mass functional unit, alloy/product state, geography and forming technology were not available. Collect site mass-balance records; do not use an external range until evidence is sufficient."
+      - range_id: process_energy_intensity_range
+        row_ids:
+          - electricity_forming
+          - natural_gas_heat
+          - electricity_heat
+          - electricity_grinding
+          - electricity_assembly
+        explanation: "No two independent boundary-compatible original sources were verified for product-specific forming, heat-treatment, grinding/polishing and assembly energy intensity. Retain metered foreground collection."
+      - range_id: water_and_process_chemical_range
+        row_ids:
+          - process_water_grinding
+          - alumina_abrasive
+          - process_water_surface
+          - sodium_hydroxide_surface
+          - nitric_acid_surface
+        explanation: "Available official sources establish process relevance but not two-source empirical ranges compatible in finish route, concentration, product state and reference mass. Retain route-specific foreground collection."
+      - range_id: direct_emission_and_residue_range
+        row_ids:
+          - fossil_co2_heat
+          - grinding_sludge_output
+          - grinding_particulate_output
+          - finishing_wastewater_output
+          - metal_hydroxide_sludge_output
+        explanation: "No two independent boundary-compatible original sources were verified for direct emission and residue intensities. Use fuel records, direct monitoring, waste manifests and wastewater records."
+      - range_id: packaging_intensity_range
+        row_ids:
+          - corrugated_box_packaging
+        explanation: "No two independent sources were verified for corrugated-box mass per kilogram of the declared article or set configuration. Collect bill-of-material and packaging issue records."

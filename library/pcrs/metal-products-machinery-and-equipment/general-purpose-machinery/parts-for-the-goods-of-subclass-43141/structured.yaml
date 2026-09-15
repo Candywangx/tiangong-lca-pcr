@@ -1,10 +1,539 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43153"
-  title: "Parts for the goods of subclass 43141"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-for-the-goods-of-subclass-43141"
+  classification_refs: "CPC 3.0: 43153, Parts for the goods of subclass 43141"
+  covered_products: "Separately delivered rotors, blades, casings, diaphragms, glands, nozzles, and other parts designed specifically for steam turbines or other vapour turbines and satisfying CPC 43153"
+  excluded_products: "Complete turbines; parts for hydraulic, gas, wind, aircraft, or internal-combustion machines; generic shafts, bearings, valves, controls, services, repaired parts, and remanufactured parts"
+  representative_product: "Machined and heat-treated alloy-steel steam-turbine part supplied as a conforming factory-gate product"
+  production_route: "Received prepared forged steel blank; machining; route-specific heat treatment; conditional aqueous cleaning, oxy-fuel work, or alkaline cleaning; inspection and release"
+  market_state: "Finished, conforming, separately delivered part at the factory gate, with protection and packaging boundary declared"
+functional_unit:
+  what: "A finished part providing its declared mechanical, flow-path, sealing, or structural function in a steam or other vapour turbine"
+  how_much: "1 kg net mass of conforming part"
+  how_well: "Meets the declared drawing, material grade, dimensional tolerances, heat-treatment condition, surface finish, and acceptance standard"
+  how_long_or_cycle: "One manufacturing release at the factory gate; service life is outside this gate-to-gate reference"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground boundary"
+      rule: "Include on-site exchanges from receipt of the declared prepared input through release of the conforming part; exclude turbine assembly, installation, use, and end-of-life."
+      source_ids:
+        - eu-jrc-sf-bref
+        - us-doe-harsh-service-materials-2020
+    - rule_id: boundary_route_specific
+      applies_to: "manufacturing route"
+      rule: "Include forging, casting, additive manufacture, heat treatment, joining, and coating only when they occur in the declared route; do not average mutually exclusive routes."
+      source_ids:
+        - eu-jrc-sf-bref
+        - us-doe-harsh-service-materials-2020
+boundary_abstraction:
+  declared_starting_condition: "Prepared steel blank or another precisely identified part material received at the facility, with grade, form, and upstream route declared"
+  starting_condition_role: "Upstream product input to foreground turbine-part manufacture"
+  product_classification_scope: "Separately delivered parts specifically for steam turbines and other vapour turbines corresponding to CPC 43153"
+  recursive_input_rule: "Record a received unfinished part already in this PCR category once as a traceable product input with its upstream dataset; do not recreate it recursively inside the same boundary."
+  upstream_dataset_requirement: "Every purchased material, chemical, energy carrier, and outsourced treatment crossing the boundary requires a representative upstream dataset."
+  disclosure: "Declare which shaping, machining, heat treatment, joining, coating, cleaning, inspection, packaging, waste treatment, and combustion stages are foreground, purchased, excluded, or not applicable."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Finished steam-turbine part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part type and drawing"
+    - "turbine application"
+    - "material grade"
+    - "received input form and preparation route"
+    - "manufacturing technology"
+    - "heat-treatment condition"
+    - "surface treatment"
+    - "net and gross mass"
+    - "acceptance standard"
+    - "site and geography"
+    - "reference period"
+    - "packaging boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-balance flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg net conforming part; report packaging separately."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh using 1 kWh = 3.6 MJ; disclose voltage, geography, meter boundary, and losses."
+  - id: gas_volume
+    applies_to: "natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State temperature, pressure, and dry/wet basis and use consistent reference conditions."
+  - id: liquid_mass
+    applies_to: "water, sodium hydroxide, cutting fluid, and liquid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report supplied or removed mass and disclose concentration, dilution, and recovered material."
+process_map:
+  - id: integrated_part_manufacture
+    name: "Integrated turbine-part machining and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always included; each conditional exchange below is recorded only when its operation occurs"
+    role: "Foreground manufacture, finishing, inspection, and release"
+    quantitative_reference: "1 kg net conforming part output"
+process_inventory:
+  - id: integrated_part_manufacture
+    label: "Integrated turbine-part machining and finishing"
+    inputs:
+      product:
+        - row_id: prepared_steel_blank
+          role: "Prepared steel machining blank"
+          name: "Prepared steel blank for machining"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a511bdc0-a8ac-443f-8dab-fc185d29aec3"
+          property_unit: "Mass / kg"
+          description: "The prepared blank crosses the factory boundary as the principal material input for the declared part."
+          amount:
+            expression: "measured lot input net of returned unused blank; declare alloy grade, forged state, dimensions, supplier, and upstream route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity supplies the included machines and auxiliaries and is collected for the declared production lot."
+          amount:
+            expression: "metered or causally allocated kWh converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_records
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for on-site heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas crosses the boundary only when included on-site thermal equipment consumes it for the declared route."
+          amount:
+            expression: "metered gas at declared reference conditions; record only when an on-site furnace or burner serves the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_records
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for oxy-fuel work"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Industrial oxygen crosses the boundary only for included oxy-fuel cutting or heating."
+          amount:
+            expression: "metered, cylinder-accounted, or invoiced oxygen; record only when oxy-fuel cutting or heating occurs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_records
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water for aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water crosses the boundary only when aqueous cleaning or rinsing is included."
+          amount:
+            expression: "measured supplied water less separately metered internal reuse; record only when aqueous cleaning occurs"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_liquid_input_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide crosses the boundary only as the active chemical supplied to an included alkaline-cleaning bath."
+          amount:
+            expression: "active-equivalent mass charged and allocated to the lot; record only when alkaline cleaning occurs"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_liquid_input_records
+              source_ids: []
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting fluid make-up"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Fresh cutting fluid crosses the boundary as make-up for machining the declared lot."
+          amount:
+            expression: "measured fresh cutting-fluid or concentrate-equivalent make-up allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_liquid_input_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Conforming steam-turbine part"
+          name: "Finished steam-turbine part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The inspected and accepted part leaves the process as the reference product."
+          amount:
+            expression: "measured net mass of inspected, accepted CPC 43153 output; normalize to exactly 1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared lot before normalization to 1 kg"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: steel_machining_chips
+          role: "Steel scrap from machining"
+          name: "Steel scrap, machining chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c978e4fc-350b-4fb6-8021-90eb5a6ed034"
+          property_unit: "Mass / kg"
+          description: "Steel chips leave the machining system as a separately measured waste exchange."
+          amount:
+            expression: "measured mass transferred from the lot and reconciled to material balance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: spent_cutting_fluid
+          role: "Spent cutting fluid"
+          name: "Spent coolant"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "62b6a738-fb6a-4570-a95a-9255ec0dcb2b"
+          property_unit: "Mass / kg"
+          description: "Spent cutting fluid leaves the machining system for declared treatment or disposal."
+          amount:
+            expression: "measured mass removed from the machining system; declare water content, contaminants, and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_liquid_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_alkaline_liquor
+          role: "Waste alkaline cleaning liquor"
+          name: "Waste Alkaline Liquor"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ca310225-50c8-4d41-8353-4338b41e19a1"
+          property_unit: "Mass / kg"
+          description: "Spent alkaline liquor leaves an included cleaning bath as a separately measured waste exchange."
+          amount:
+            expression: "measured drained bath mass allocated to the lot; record only when alkaline cleaning occurs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_liquid_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide crosses the environment boundary from included on-site combustion."
+          amount:
+            expression: "verified or directly measured on-site fossil CO2 allocated to the lot; exclude upstream electricity and outsourced-operation emissions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming steam-turbine part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared foreground operations"
+    rule: "Prefer lot, machine-time, meter, or mass-balance subdivision before allocation."
+    source_ids: []
+  - rule_id: allocation_shared_burdens
+    applies_to: "unavoidable shared burdens"
+    rule: "Allocate by a documented causal physical driver; use mass only when no better physical driver exists and disclose sensitivity."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "steel machining chips"
+    rule: "Report chips as waste without avoided-production credit; disclose revenue and downstream recycling or treatment separately."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "integrated_part_manufacture"
+      flow_role: "blank, product, chips"
+      record_type: "scale, issue, production, and transfer records"
+      raw_fields: "lot; part; input; return; conforming output; chip mass"
+      collection_method: "calibrated scales reconciled to records"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "full period"
+      site_scope: "included operations"
+      aggregation_rule: "sum by lot, subtract returns, divide by conforming output"
+      quality_evidence: "calibration; reconciliation; transfer ticket"
+    - protocol_id: cp_electricity_records
+      process_id: "integrated_part_manufacture"
+      flow_role: "electricity"
+      record_type: "meter and allocation records"
+      raw_fields: "meter; opening/closing kWh; machine hours; driver"
+      collection_method: "submeter or documented causal allocation"
+      unit: "kWh"
+      frequency: "shift or billing interval"
+      temporal_coverage: "full period"
+      site_scope: "included equipment"
+      aggregation_rule: "allocate, convert with calc_electricity_mj, normalize"
+      quality_evidence: "calibration; invoice; allocation worksheet"
+    - protocol_id: cp_gas_records
+      process_id: "integrated_part_manufacture"
+      flow_role: "natural gas and oxygen"
+      record_type: "meter, cylinder, supplier records"
+      raw_fields: "identity; volume; temperature; pressure; dry/wet basis; allocation"
+      collection_method: "meter, cylinder balance, or invoice"
+      unit: "m3"
+      frequency: "lot or delivery interval"
+      temporal_coverage: "full period"
+      site_scope: "included gas equipment"
+      aggregation_rule: "reference-condition conversion and lot allocation"
+      quality_evidence: "certificate; invoice; conversion record"
+    - protocol_id: cp_liquid_input_records
+      process_id: "integrated_part_manufacture"
+      flow_role: "water, NaOH, cutting fluid"
+      record_type: "meter, batch, purchase, make-up records"
+      raw_fields: "identity; mass; concentration; dilution; recovery; lot"
+      collection_method: "calibrated meter or scale"
+      unit: "kg"
+      frequency: "each event"
+      temporal_coverage: "full period"
+      site_scope: "included systems"
+      aggregation_rule: "sum net fresh input; calculate active NaOH; normalize"
+      quality_evidence: "calibration; batch sheet; supplier specification"
+    - protocol_id: cp_waste_liquid_records
+      process_id: "integrated_part_manufacture"
+      flow_role: "spent fluid and alkaline liquor"
+      record_type: "tank, drum, manifest records"
+      raw_fields: "identity; mass; water; chemistry; contaminants; destination"
+      collection_method: "calibrated tank or scale"
+      unit: "kg"
+      frequency: "each removal"
+      temporal_coverage: "full period"
+      site_scope: "collection points"
+      aggregation_rule: "sum by identity and lot allocation; normalize"
+      quality_evidence: "calibration; manifest; treatment receipt"
+    - protocol_id: cp_direct_emission_records
+      process_id: "integrated_part_manufacture"
+      flow_role: "fossil CO2"
+      record_type: "emissions or stack record"
+      raw_fields: "source; fossil attribution; CO2; period; driver"
+      collection_method: "verified monitoring and allocation"
+      unit: "kg"
+      frequency: "reporting interval"
+      temporal_coverage: "full period"
+      site_scope: "included combustion"
+      aggregation_rule: "allocate verified CO2 and normalize"
+      quality_evidence: "monitoring QA/QC; calibration; reconciliation"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "every row"
+      rule: "normalized amount = lot exchange / lot net conforming output mass"
+      inputs:
+        - exchange
+        - "conforming output"
+      output: "exchange per kg reference product"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity"
+      rule: "MJ = kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ delivered electricity"
+      source_ids: []
+    - id: calc_active_sodium_hydroxide
+      applies_to: "sodium hydroxide"
+      rule: "active NaOH = solution mass × verified mass fraction"
+      inputs:
+        - "solution mass"
+        - concentration
+      output: "kg active NaOH"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "material yield"
+      rule: "residual = blank input − returned blank − product − chips − other declared metal outputs"
+      inputs:
+        - "measured masses"
+      output: "residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and material"
+      requirement: "Link each lot to drawing, material certificate, route, heat treatment, acceptance release, and CPC 43153 eligibility."
+      evidence: "drawing; certificate; traveller; release"
+    - id: dq_completeness
+      applies_to: "boundary"
+      requirement: "Reconcile operations, outsourced work, utilities, material, waste, and direct emissions for the period."
+      evidence: "boundary checklist; meter map; ledgers; registers"
+    - id: dq_measurement
+      applies_to: "exchanges"
+      requirement: "Use calibrated instruments or documented invoices; retain conversions, allocation, and uncertainty notes."
+      evidence: "calibration; invoice; worksheet; uncertainty statement"
+    - id: dq_route_separation
+      applies_to: "variants"
+      requirement: "Keep different designs, materials, shaping routes, heat treatments, and coatings separate unless homogeneity and weighting are demonstrated."
+      evidence: "bills of material; travellers; homogeneity test; weighting record"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Reject data lacking a separately delivered steam- or vapour-turbine part identity, declared material/route, or 1 kg net-mass reference."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_mass_balance
+    applies_to: "materials"
+    rule: "Investigate and disclose residuals; do not hide scale, swarf, rejects, or returns in the reference product."
+    source_ids: []
+  - rule_id: validate_conditional_rows
+    applies_to: "conditional exchanges"
+    rule: "Require a documented not-applicable statement when a conditional atomic exchange is absent."
+    source_ids:
+      - eu-jrc-sf-bref
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID flows"
+    rule: "Recheck flow type, classification, property, unit group, product state, geography, technology, and generalComment."
+    source_ids: []
+  - rule_id: validate_ranges
+    applies_to: "quantitative QA"
+    rule: "Use foreground records; do not add an external numeric range without two independent compatible original sources or reviewed datasets."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset for one declared steam- or vapour-turbine part and route"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-specific LCA, turbine-system modelling, procurement comparison, and supply-chain inventory when qualifiers and upstream links match"
+  excluded_use: "Complete-turbine representation; generic machinery-part proxy; unqualified cross-material, cross-route, cross-site, or repaired-part comparison"
+  required_metadata: "PCR id; part/drawing; CPC reference; material/input state; route; heat treatment; finish; site; geography; period; net/gross mass; packaging; allocation; upstream datasets"
+  required_quality_disclosure: "Measurement coverage; calibration; material balance; allocation; route exclusions; outsourced stages; UUID and range-evidence gaps; uncertainty"
+  update_trigger: "Change in design, material, input route, technology, heat treatment, finish, site, energy, allocation, waste route, or resolved evidence gap"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "CPC 43153 identity and link to subclass 43141"
+  - id: "eu-jrc-sf-bref"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Smitheries and Foundries Industry, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/smitheries-and-foundries-industry (retrieved 2026-09-05)"
+    used_for: "Heating, metal treatment, forging, machining, finishing, and heat-treatment process decomposition"
+  - id: "us-doe-harsh-service-materials-2020"
+    type: "official_guidance"
+    reference: "U.S. Department of Energy, 2020 Workshop on Materials for Harsh Service Conditions, https://www.energy.gov/sites/default/files/2021-04/Materials%20for%20Harsh%20Environments_%202020%20Virtual%20Workshop%20Summary%20Report.pdf (retrieved 2026-09-05)"
+    used_for: "Turbine-component route distinctions including forging, machining, joining, coatings, and near-net-shape manufacture"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:19839d2682c2f240f09914dda5f27c2ee67ef2d85d2a88eb160d013b16e32a9b"
+  generated_content_sha256: "sha256:ecbaa6a356a3a92c08a4be92e5cbc0ecb6aff023645db8587c8d4ccd40346b46"

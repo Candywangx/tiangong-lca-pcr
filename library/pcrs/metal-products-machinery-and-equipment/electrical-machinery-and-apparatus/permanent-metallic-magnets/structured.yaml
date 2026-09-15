@@ -1,10 +1,700 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46931"
-  title: "Permanent metallic magnets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.permanent-metallic-magnets"
+  classification_refs: "CPC 3.0: 46931, Permanent metallic magnets"
+  covered_products: "Finished sintered NdFeB magnets; finished sintered SmCo magnets; finished cast or sintered Alnico magnets"
+  excluded_products: "Permanent ceramic or ferrite magnets; electromagnets; soft-magnetic cores; polymer-bonded magnets; magnet assemblies; unmagnetized magnetic alloy and powder sold as feedstock"
+  representative_product: "Magnetized, dimensionally finished permanent metallic magnet body at the manufacturer's gate"
+  production_route: "Route-qualified manufacture from ready-to-form NdFeB magnet powder, SmCo magnet alloy or powder, or Alnico magnet alloy, followed by forming or casting, heat treatment, machining, conditional surface treatment, magnetization, and inspection"
+  market_state: "Finished and accepted magnet body, coated or uncoated as declared, excluding transport packaging and any assembly hardware"
+functional_unit:
+  what: "A finished permanent metallic magnet body that maintains a magnetic field without continuous external electrical excitation"
+  how_much: "1 kg net mass of accepted magnet product"
+  how_well: "Conforms to the declared alloy family, grade or composition specification, magnetic-property test, dimensions and tolerances, coating specification, magnetization direction and pole configuration"
+  how_long_or_cycle: "One delivered product at the manufacturer's gate; service life is not asserted by this cradle-to-gate reference"
+  reference_flow_link: "Net accepted product mass after all manufacturing rejects, machining losses, and coating additions have been accounted for"
+system_boundary:
+  rules:
+    - rule_id: boundary_starting_material
+      applies_to: "foreground_start"
+      rule: "Begin foreground collection at receipt of one declared ready-to-form magnetic alloy or magnet powder; connect its upstream production rather than omitting it."
+      source_ids:
+        - cui-et-al-2022-permanent-magnet-manufacturing
+    - rule_id: boundary_required_operations
+      applies_to: "manufacturing_operations"
+      rule: "Include all site operations used to convert that feedstock into accepted magnets: material conditioning, forming or casting, heat treatment or sintering, machining, conditional surface treatment, magnetization, inspection, internal recycling, and reject handling."
+      source_ids:
+        - cui-et-al-2022-permanent-magnet-manufacturing
+        - netl-2014-ndfeb-magnet-manufacturing
+    - rule_id: boundary_direct_exchanges
+      applies_to: "foreground_environment"
+      rule: "Include site energy and water use, material inputs, wastes, wastewater, and direct elementary emissions; do not copy upstream emissions from linked supplies into the foreground process."
+      source_ids:
+        - netl-2014-ndfeb-magnet-manufacturing
+    - rule_id: boundary_route_disclosure
+      applies_to: "route_variation"
+      rule: "Mark each conditional flow not applicable only when production records demonstrate that its route or treatment is absent."
+      source_ids:
+        - cui-et-al-2022-permanent-magnet-manufacturing
+boundary_abstraction:
+  declared_starting_condition: "Ready-to-form NdFeB magnet powder, SmCo magnet alloy or powder, or Alnico magnet alloy received at the manufacturing site gate with composition, supplier, recycled content, and physical state declared"
+  starting_condition_role: "Foreground entry point for forming or casting, heat treatment, machining, conditional surface treatment, magnetization, inspection, and reject accounting"
+  product_classification_scope: "Finished permanent metallic magnet bodies corresponding to CPC 3.0 subclass 46931; ceramic or ferrite magnets and magnet assemblies are excluded"
+  recursive_input_rule: "A finished permanent metallic magnet reintroduced as feedstock must be recorded as a distinct recovered-magnet input with its prior life and preparation boundary disclosed; it must not be treated as the reference product recursively"
+  upstream_dataset_requirement: "Link composition- and geography-representative upstream datasets for each purchased magnetic alloy or powder, gas, electricity, water, coating material, chemical, and waste-treatment service"
+  disclosure: "Declare feedstock family and state, all included unit operations, forming or casting and heat-treatment technologies, machining method, surface treatment, magnetization and inspection route, scrap recovery, abatement, site geography, reporting period, and any excluded operation"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Magnet"
+    uuid: "0286ac90-a513-4ed7-9f8e-c2df707e5dbb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "metallic magnet alloy family"
+    - "grade or declared composition"
+    - "sintered or cast route"
+    - virgin
+    - recycled
+    - "or blended feedstock share"
+    - "product geometry and dimensions"
+    - "net product mass"
+    - "coating material and thickness or uncoated state"
+    - "magnetization direction and pole configuration"
+    - "magnetic acceptance test and result"
+    - "manufacturing site and geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_product_mass
+    applies_to: "Reference product and solid material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine the reference amount from the net mass of accepted finished magnets, excluding transport packaging, fixtures, and assembly hardware. Record coating mass within the finished product and separately as an input."
+  - id: energy_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered energy record and convert kWh to MJ using 1 kWh = 3.6 MJ; do not convert electricity to a fuel mass."
+  - id: gas_reference_conditions
+    applies_to: "Hydrogen and natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered gas volume with temperature, pressure, and dry or wet basis; normalize only when the stated reference conditions and conversion are retained."
+  - id: water_conversion
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer measured mass. If volume is metered, retain the volume and density used to calculate mass and reconcile intake, recirculation, evaporation, incorporation, and discharge."
+  - id: direct_fossil_co2
+    applies_to: "On-site combustion carbon dioxide"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calculate or measure only emissions physically released within the foreground boundary; exclude upstream electricity and fuel-supply emissions."
+process_map:
+  - id: magnet_manufacturing
+    name: "Permanent metallic magnet manufacturing"
+    inclusion: "required"
+    inclusion_condition: "Always; unit-operation records must distinguish the applicable forming or casting, heat-treatment, machining, coating, magnetization, and inspection steps"
+    role: "Foreground conversion of route-specific magnetic feedstock to accepted finished magnets"
+    quantitative_reference: "1 kg net accepted permanent metallic magnet output"
+process_inventory:
+  - id: magnet_manufacturing
+    label: "Permanent metallic magnet manufacturing"
+    inputs:
+      product:
+        - row_id: ndfeb_magnet_powder
+          role: "NdFeB magnet powder feedstock"
+          name: "NdFeB magnet powder, approximately 200 µm"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f1334ecc-c198-46fa-b1e8-d7bdc75262b9"
+          property_unit: "Mass / kg"
+          description: "Record NdFeB magnet powder received for a sintered or other powder-forming NdFeB route. Do not use this row for SmCo, Alnico, or finished recovered magnets."
+          amount:
+            expression: "Meter or calculate dry powder charged to included manufacturing operations, net of separately recorded returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: smco_magnet_alloy
+          role: "SmCo magnet alloy or powder feedstock"
+          name: "SmCo magnet alloy or powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the declared SmCo5 or Sm2Co17-family magnetic alloy or powder supplied to the SmCo route. Composition and physical state are mandatory foreground qualifiers."
+          amount:
+            expression: "Meter or calculate dry SmCo magnetic feedstock charged to included manufacturing operations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+        - row_id: alnico_magnet_alloy
+          role: "Alnico magnet alloy feedstock"
+          name: "Alnico magnet alloy"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record Alnico alloy supplied to casting or powder-forming operations. The grade and whether the route is cast or sintered must be declared."
+          amount:
+            expression: "Meter or calculate Alnico alloy charged to included manufacturing operations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+        - row_id: hydrogen_gas
+          role: "Hydrogen for decrepitation"
+          name: "Industrial hydrogen gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record industrial hydrogen crossing the site boundary when hydrogen decrepitation or another included hydrogen treatment is used."
+          amount:
+            expression: "Meter hydrogen supplied to the applicable treatment, with reference conditions and purge disposition retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_and_energy_records
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electrical energy"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to the included conditioning, forming, furnace, machining, surface-treatment, magnetization, inspection, and pollution-control equipment."
+          amount:
+            expression: "Sum revenue-meter and submeter records for included operations and reconcile the allocated site total"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_and_energy_records
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for on-site thermal equipment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when it is combusted or otherwise consumed in included site thermal equipment; electricity or another fuel remains a separate exchange."
+          amount:
+            expression: "Meter delivered natural gas for included operations and retain reference conditions and lower-heating-value data"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_and_energy_records
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied for cooling, machining, cleaning, or surface treatment without combining it with wastewater output."
+          amount:
+            expression: "Meter make-up water crossing the site boundary and reconcile reuse, evaporation, incorporation, and discharge"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: nickel_metal
+          role: "Nickel metal for coating"
+          name: "Nickel metal (＞99.9% Ni)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8a1cacfb-0b44-404e-93e0-01a9b7a4403c"
+          property_unit: "Mass / kg"
+          description: "Record high-purity nickel metal crossing the process boundary when nickel electroplating is applied. Coating stack and thickness must be declared."
+          amount:
+            expression: "Measure nickel consumed from anodes or verified bath balance, net of recoverable returned nickel"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for surface treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide supplied to cleaning or nickel-plating bath preparation when that chemistry is used."
+          amount:
+            expression: "Calculate pure NaOH mass from purchased solution mass and verified concentration, adjusted for inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: sulfuric_acid
+          role: "Sulfuric acid for surface treatment"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid supplied to cleaning, activation, or nickel-plating operations when that chemistry is used."
+          amount:
+            expression: "Calculate pure H2SO4 mass from purchased solution mass and verified concentration, adjusted for inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted permanent metallic magnet"
+          name: "Magnet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0286ac90-a513-4ed7-9f8e-c2df707e5dbb"
+          property_unit: "Mass / kg"
+          description: "Record only finished magnet bodies that pass the declared dimensional, coating, magnetization, and magnetic-property acceptance criteria."
+          amount:
+            expression: "Net measured mass of accepted finished magnets released at the manufacturer gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_quality_records
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+      waste:
+        - row_id: ndfeb_material_loss
+          role: "NdFeB magnet material loss"
+          name: "NdFeB magnet material loss"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "8744667e-6800-4d35-823a-d1c0ef727ab9"
+          property_unit: "Mass / kg"
+          description: "Record NdFeB grinding swarf, slicing loss, powder loss, and rejected NdFeB material leaving the foreground as one measured waste material stream; destination and any internal return are reported separately."
+          amount:
+            expression: "Reconcile measured NdFeB waste dispatched off site against input, accepted output, inventory change, and internal recycling"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+        - row_id: smco_material_loss
+          role: "SmCo magnet material loss"
+          name: "SmCo magnet material loss"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record SmCo grinding swarf, powder loss, and rejected SmCo material leaving the foreground as a concrete SmCo waste stream."
+          amount:
+            expression: "Reconcile measured SmCo waste dispatched off site against input, accepted output, inventory change, and internal recycling"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+        - row_id: alnico_material_loss
+          role: "Alnico magnet material loss"
+          name: "Alnico magnet material loss"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record Alnico casting gates, risers, grinding swarf, and rejected Alnico material leaving the foreground as a concrete Alnico waste stream."
+          amount:
+            expression: "Reconcile measured Alnico waste dispatched off site against input, accepted output, inventory change, and internal recycling"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+        - row_id: nickel_plating_wastewater
+          role: "Nickel-plating wastewater"
+          name: "Nickel-plating wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aqueous wastewater discharged from nickel-plating, rinsing, or associated bath treatment as a distinct waste flow; do not combine it with solid sludge or direct water emissions."
+          amount:
+            expression: "Meter wastewater sent to on-site or off-site treatment and reconcile it with the surface-treatment water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted from on-site natural-gas combustion used by included manufacturing equipment. Upstream grid and fuel-supply emissions are excluded from this row."
+          amount:
+            expression: "Calculate from metered foreground natural-gas consumption and a disclosed carbon-content or emission-factor method, or use a quality-controlled direct measurement"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - cui-et-al-2022-permanent-magnet-manufacturing
+            ranges: []
+        - row_id: pm25_to_air
+          role: "Direct particulate matter at PM2.5"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record controlled and fugitive PM2.5 released directly from included powder handling, furnace, machining, and surface-treatment operations after abatement."
+          amount:
+            expression: "Use stack testing, continuous or periodic monitoring, or an approved site calculation based on measured activity and abatement performance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted permanent metallic magnet output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - netl-2014-ndfeb-magnet-manufacturing
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared_site_operations"
+    rule: "Subdivide metered production lines, furnaces, machining cells, coating lines, and abatement equipment by product family or campaign before applying allocation."
+    source_ids: []
+  - rule_id: allocation_physical_driver
+    applies_to: "residual_shared_inputs"
+    rule: "When subdivision is not feasible, allocate shared electricity, gas, water, and consumables using a documented causal physical driver such as equipment time, furnace charge mass, treated surface area, or measured throughput; do not default to product mass when it is not causal."
+    source_ids: []
+  - rule_id: allocation_scrap_treatment
+    applies_to: "magnet_material_loss"
+    rule: "Treat off-site material loss as waste at the foreground boundary. Do not credit avoided virgin material; if an expanded recycling system is modelled, disclose the substitution method and keep it outside the uncredited foreground result."
+    source_ids:
+      - cui-et-al-2022-permanent-magnet-manufacturing
+  - rule_id: allocation_rejects
+    applies_to: "internal_recycling"
+    rule: "Return internally recycled powder, gates, risers, or swarf to the mass balance without counting a second external input or output; disclose internal recovery rate and losses."
+    source_ids:
+      - cui-et-al-2022-permanent-magnet-manufacturing
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "magnet_manufacturing"
+      flow_role: "Route-specific magnetic feedstock and material loss"
+      record_type: "Weigh tickets, batch sheets, inventory and waste dispatch records"
+      raw_fields: "alloy_family; grade; physical_state; supplier; recycled_content; opening_inventory_kg; receipts_kg; charge_kg; accepted_output_kg; internal_return_kg; off_site_loss_kg; closing_inventory_kg"
+      collection_method: "Calibrated scales and lot-level material reconciliation"
+      unit: "kg"
+      frequency: "Each lot or campaign, aggregated monthly"
+      temporal_coverage: "At least 12 representative months or the complete campaign for campaign production"
+      site_scope: "All included lines at the declared site"
+      aggregation_rule: "Sum external inputs and outputs; keep internal returns non-duplicative; normalize by accepted product mass"
+      quality_evidence: "Scale calibration, signed batch records, inventory reconciliation, waste transfer records, and unresolved balance explanation"
+    - protocol_id: cp_gas_and_energy_records
+      process_id: "magnet_manufacturing"
+      flow_role: "Electricity, natural gas, and hydrogen"
+      record_type: "Utility meters, invoices, equipment submeters, and batch logs"
+      raw_fields: "meter_id; opening_reading; closing_reading; unit; temperature; pressure; gas_basis; lower_heating_value; operation; lot_or_campaign; allocation_driver"
+      collection_method: "Reconcile site invoices to included equipment and allocate only residual shared consumption"
+      unit: "MJ; m3"
+      frequency: "Monthly and by batch where submetered"
+      temporal_coverage: "Same period as product output, normally at least 12 representative months"
+      site_scope: "Included production and abatement equipment"
+      aggregation_rule: "Convert electricity using 3.6 MJ/kWh; normalize metered consumption by accepted output after documented allocation"
+      quality_evidence: "Meter calibration, invoice reconciliation, submeter coverage, conversion record, and allocation worksheet"
+    - protocol_id: cp_water_balance
+      process_id: "magnet_manufacturing"
+      flow_role: "Process water and nickel-plating wastewater"
+      record_type: "Intake and discharge meters, tank logs, treatment records, and water-quality records"
+      raw_fields: "intake_mass_or_volume; density; recirculated_water; evaporation; product_incorporation; wastewater_mass_or_volume; destination; nickel_concentration; sludge_mass"
+      collection_method: "Reconcile water intake, reuse, losses, and wastewater discharge for included operations"
+      unit: "kg; m3"
+      frequency: "Monthly, with coating batches linked when applicable"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All included cooling, machining, cleaning, coating, and treatment systems"
+      aggregation_rule: "Convert volume with disclosed density; report make-up water and wastewater separately; normalize by accepted output"
+      quality_evidence: "Meter calibration, laboratory analyses, treatment manifests, and closure of the water balance"
+    - protocol_id: cp_surface_treatment_records
+      process_id: "magnet_manufacturing"
+      flow_role: "Nickel, sodium hydroxide, and sulfuric acid"
+      record_type: "Purchase, bath make-up, concentration, anode, drag-out, and inventory records"
+      raw_fields: "coating_system; coated_area_m2; thickness; chemical_name; solution_mass; concentration; anode_mass_change; opening_inventory; additions; returns; closing_inventory"
+      collection_method: "Reconcile each chemical and metal separately by coating campaign"
+      unit: "kg; m2; µm"
+      frequency: "Each coating batch, aggregated monthly"
+      temporal_coverage: "Same period as coated product output"
+      site_scope: "Included surface-treatment line"
+      aggregation_rule: "Calculate pure chemical mass from solution mass and concentration; normalize by accepted magnet mass while retaining treated area"
+      quality_evidence: "Concentration certificates, bath analyses, calibrated balances, coating-thickness tests, and inventory reconciliation"
+    - protocol_id: cp_product_and_quality_records
+      process_id: "magnet_manufacturing"
+      flow_role: "Accepted permanent metallic magnet"
+      record_type: "Final weigh, inspection, and release records"
+      raw_fields: "alloy_family; grade; route; dimensions; coating; magnetization_direction; pole_configuration; mass_kg; magnetic_test_method; test_result; accepted_or_rejected"
+      collection_method: "Calibrated final weighing and documented dimensional and magnetic acceptance testing"
+      unit: "kg"
+      frequency: "Each production lot"
+      temporal_coverage: "Same period as inventory records"
+      site_scope: "All reference-product lots"
+      aggregation_rule: "Sum accepted net product mass only; exclude packaging and rejects"
+      quality_evidence: "Scale calibration, inspection report, test-equipment calibration, and release authorization"
+    - protocol_id: cp_direct_emissions
+      process_id: "magnet_manufacturing"
+      flow_role: "Direct fossil CO2 and PM2.5"
+      record_type: "Fuel records, stack tests, monitoring data, abatement logs, and approved calculation sheets"
+      raw_fields: "emission_source; fuel_volume; fuel_carbon_content; factor; stack_flow; concentration; test_duration; abatement_status; operating_hours"
+      collection_method: "Source-specific measurement or calculation using collected foreground activity data"
+      unit: "kg"
+      frequency: "Per required test schedule and monthly calculation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included direct emission source"
+      aggregation_rule: "Sum source emissions after abatement and normalize by accepted product mass; exclude upstream supply emissions"
+      quality_evidence: "Laboratory accreditation, monitor calibration, factor source, calculation review, and abnormal-event log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory exchange"
+      rule: "normalized amount = period exchange amount / net accepted product mass in the same period"
+      inputs:
+        - "exchange amount"
+        - "accepted product mass"
+      output: "exchange per kg reference product"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "Each magnetic material family"
+      rule: "balance gap = opening inventory + external receipts - accepted output - off-site material loss - closing inventory; internal returns are not counted as external exchanges"
+      inputs:
+        - "opening inventory"
+        - receipts
+        - "accepted output"
+        - "off-site loss"
+        - "closing inventory"
+        - "internal returns"
+      output: "family-specific mass-balance gap and reconciliation status"
+      source_ids: []
+    - id: calc_pure_chemical
+      applies_to: "Sodium hydroxide and sulfuric acid"
+      rule: "pure chemical mass = supplied solution mass × verified mass fraction, adjusted for opening and closing solution inventory attributable to the reporting period"
+      inputs:
+        - "solution mass"
+        - concentration
+        - "opening inventory"
+        - "closing inventory"
+      output: "kg pure chemical"
+      source_ids:
+        - netl-2014-ndfeb-magnet-manufacturing
+    - id: calc_fossil_co2
+      applies_to: "Direct natural-gas combustion"
+      rule: "calculate fossil CO2 from metered gas and a disclosed carbon-content or emission-factor method; keep factor identity, oxidation assumption, and reference conditions"
+      inputs:
+        - "gas volume"
+        - "reference conditions"
+        - "lower heating value or carbon content"
+        - factor
+        - "oxidation assumption"
+      output: "kg fossil CO2 released directly"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Every lot must identify alloy family, grade or composition, route, geometry, coating, magnetization state, and acceptance result."
+      evidence: "Product specification, batch record, inspection report, and magnetic test result"
+    - id: dq_temporal_alignment
+      applies_to: "All foreground records"
+      requirement: "Inputs, outputs, waste, and emissions must cover the same production period; explain shutdowns, trials, abnormal events, and inventory carryover."
+      evidence: "Dated meter, batch, inventory, treatment, and output records"
+    - id: dq_mass_balance
+      applies_to: "Magnetic materials and water"
+      requirement: "Reconcile family-specific material and site water balances; investigate rather than hide unexplained gaps."
+      evidence: "Signed reconciliation worksheet and corrective-action record"
+    - id: dq_route_coverage
+      applies_to: "Conditional flows"
+      requirement: "A conditional row may be marked not applicable only with evidence that the relevant route, fuel, coating, or emission source was absent."
+      evidence: "Process flow diagram, equipment list, formulation, and production record"
+    - id: dq_upstream_representativeness
+      applies_to: "Linked datasets"
+      requirement: "Upstream alloy or powder datasets must match material family, composition or grade, recycled content, technology, and geography as closely as practicable; document proxies."
+      evidence: "Supplier declaration, dataset metadata, and proxy justification"
+    - id: dq_uuid_gaps
+      applies_to: "UUID-empty rows"
+      requirement: "Preserve the exact concrete flow name and qualifiers until an exact public Tiangong state-100 flow is confirmed; do not substitute a broader or differently classified UUID."
+      evidence: "UUID review record and foreground flow specification"
+validation_rules:
+  - rule_id: validate_reference_product
+    applies_to: "reference_flow"
+    rule: "Confirm that the output is a finished, magnetized metallic magnet body, equals 1 kg net accepted mass after normalization, and carries every required qualifier."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_category_exclusions
+    applies_to: "product_scope"
+    rule: "Reject datasets for ferrite or ceramic magnets, electromagnets, bonded composite magnets, magnet assemblies, or feedstock sold before final magnet manufacture."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - cui-et-al-2022-permanent-magnet-manufacturing
+  - rule_id: validate_route_inventory
+    applies_to: "process_inventory"
+    rule: "Verify that the declared route is consistent with the selected magnetic feedstock, included unit operations, conditional gases and coating chemicals, waste identities, and accepted product state."
+    source_ids:
+      - cui-et-al-2022-permanent-magnet-manufacturing
+      - netl-2014-ndfeb-magnet-manufacturing
+  - rule_id: validate_mass_and_water_balance
+    applies_to: "completeness"
+    rule: "Require reconciled material-family and water balances, with internal recycling non-duplicative and all unexplained gaps disclosed."
+    source_ids: []
+  - rule_id: validate_direct_emissions
+    applies_to: "elementary_flows"
+    rule: "Confirm that fossil CO2 and PM2.5 rows contain only direct foreground releases and do not duplicate emissions embedded in electricity, gas, material, or treatment datasets."
+    source_ids: []
+  - rule_id: validate_evidence_and_uuid_status
+    applies_to: "evidence"
+    rule: "Confirm that every value derives from its declared collection protocol or calculation and that UUID-empty flows remain explicitly unresolved rather than receiving proxy UUIDs."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for finished permanent metallic magnet manufacture from declared ready-to-form magnetic feedstock"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Cradle-to-gate product footprints, component inventories, and lifecycle models that preserve alloy family, route, geography, product state, coating, and data-quality metadata"
+  excluded_use: "Ceramic or ferrite magnets; electromagnets; bonded composite magnets; complete magnet assemblies; use-phase performance or lifetime claims; substitution among NdFeB, SmCo, and Alnico without functional equivalence analysis"
+  required_metadata: "PCR id and version; alloy family and grade or composition; feedstock state and recycled content; route and unit operations; site and geography; reporting period; accepted output mass; coating; magnetization; magnetic test; allocation; upstream dataset identities; unresolved UUIDs"
+  required_quality_disclosure: "Meter and scale coverage; temporal coverage; material and water balance closure; conditional-row evidence; allocation basis; upstream proxies; emission method; rejected lots; missing data; uncertainty; unresolved range and UUID evidence needs"
+  update_trigger: "Change in alloy family or grade, feedstock source or recycled content, forming or heat-treatment technology, machining yield, coating system, energy supply, abatement, site, allocation method, or evidence sufficient to resolve a UUID or quantitative range"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official identity of CPC 46931 and its separation from permanent ceramic or ferrite magnets"
+  - id: "cui-et-al-2022-permanent-magnet-manufacturing"
+    type: "literature"
+    reference: "Cui, J. et al. (2022), Manufacturing Processes for Permanent Magnets: Part I—Sintering and Casting, JOM 74, 1279–1295, https://doi.org/10.1007/s11837-022-05156-9"
+    used_for: "Metallic magnet family boundary; conventional NdFeB, SmCo, and Alnico route decomposition; machining and loss relevance"
+  - id: "netl-2014-ndfeb-magnet-manufacturing"
+    type: "dataset"
+    reference: "U.S. DOE National Energy Technology Laboratory (2014), NETL Life Cycle Inventory Data – Process Documentation File: NdFeB Permanent Magnet Manufacturing, https://www.netl.doe.gov/projects/files/DF_Stage1_O_NdFeB_Magnet_Manufacturing-2014-01.pdf (retrieved 2026-09-04)"
+    used_for: "NdFeB process sequence; atomic input, waste, and emission candidates; manufacturer-gate collection fields"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:68695e86bed5f756a0246d8ec2ce2c0d3b64a1abb31fe2cfeefd301d1f312cd0"
+  generated_content_sha256: "sha256:04caae08801db5e2de1c00c4437ba810f8e55e9404633598b532b6531ec4f503"

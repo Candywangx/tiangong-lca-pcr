@@ -1,10 +1,933 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43913"
-  title: "Refrigerating and freezing equipment and heat pumps, except household type equipment"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.refrigerating-and-freezing-equipment-and-heat-pumps-except-household-type-equipment"
+  classification_refs: "CPC 3.0: 43913, Refrigerating and freezing equipment and heat pumps, except household type equipment"
+  covered_products: "Complete non-household commercial or industrial refrigerating and freezing equipment, professional refrigerated equipment, process chillers, condensing units, and heat pumps"
+  excluded_products: "Household-type equipment; air-conditioning machines outside CPC 43913; loose compressors, heat exchangers, fans, controls, and other components sold separately; refrigerants sold separately; installation, repair, and refrigeration services"
+  representative_product: "One accepted complete commercial or industrial refrigeration, freezing, chiller, condensing-unit, or heat-pump model at the manufacturer's factory gate"
+  production_route: "Assembly of purchased structural materials and components, with model-specific circuit charging, pressure/leak testing, performance/electrical testing, and release packaging"
+  market_state: "Complete new equipment as released by the manufacturer, with factory refrigerant charge and packaging status declared"
+functional_unit:
+  what: "One complete identified non-household refrigerating/freezing equipment or heat-pump item"
+  how_much: "One accepted item, represented by its measured net product mass in kg"
+  how_well: "Conforms to the declared equipment subtype, rated cooling and/or heating capacity, temperature class, electrical supply, refrigerant species and factory charge, and final acceptance-test criteria"
+  how_long_or_cycle: "One factory-gate production and acceptance cycle; operation over service life is excluded"
+  reference_flow_link: "The output finished_equipment is the sole quantitative reference for all foreground exchanges"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include material/component receipt, reported in-house preparation, assembly, joining, refrigerant-circuit charging and testing when applicable, electrical and performance testing, packaging, accepted equipment output, factory scrap, and measured factory emissions through release at the manufacturing gate."
+      source_ids:
+        - epd-international-25543
+    - rule_id: boundary_use_stage_excluded
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude distribution, installation, operation, maintenance, refrigerant servicing, and end-of-life from the foreground result; retain rated performance, refrigerant identity, charge, and test-condition metadata so downstream use-stage modeling can be attached without changing the product identity."
+      source_ids:
+        - eu-2015-1095-professional-refrigeration
+        - jrc91168-commercial-refrigeration
+    - rule_id: boundary_conditional_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Apply a conditional row only when the declared model and factory route actually use that material, component, refrigerant, test medium, water, packaging item, waste route, or emission; otherwise record it as not applicable and do not replace it with another choice in the same row."
+      source_ids: []
+    - rule_id: boundary_upstream_linking
+      applies_to: "foreground_system_boundary"
+      rule: "Do not add upstream supplier production or inbound transport to the foreground factory operation; link separate upstream datasets where the study includes them and disclose missing links."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, refrigerants, test gases, water, electricity, and packaging as received at the reporting factory gate"
+  starting_condition_role: "The foreground record begins at receipt into the manufacturing site; supplier production and inbound transport are represented only through linked upstream datasets when included by the study"
+  product_classification_scope: "Complete products within the semantic boundary of CPC 3.0 code 43913, independent of whether a classification mapping has yet been centrally accepted"
+  recursive_input_rule: "If a complete CPC 43913 product is consumed as an input, record it once as a purchased upstream product and link its supplier dataset; do not recursively reopen its manufacturing inventory inside this foreground package"
+  upstream_dataset_requirement: "Every purchased input included in the modeled life-cycle system must link to a geographically and technologically appropriate upstream dataset or carry an explicit data gap; foreground quantities remain site and product specific"
+  disclosure: "Declare equipment subtype, production route, included in-house operations, purchased-component boundary, refrigerant charging and test status, packaging status, factory geography, reporting period, and all exclusions"
+reference_flow_definition:
+  reference_amount: "Actual net mass in kg of one accepted equipment item"
+  product_flow_ref:
+    name: "Refrigerating and freezing equipment and heat pumps, except household type equipment"
+    uuid: "0c1bef08-e0fc-465a-aff0-c3a43837edbc"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "equipment subtype and model or production family"
+    - "rated cooling and/or heating capacity with test standard and conditions"
+    - "operating temperature class"
+    - "refrigerant species and factory charge"
+    - "heat-source and heat-sink configuration"
+    - "electrical supply"
+    - "net product mass"
+    - "installation configuration"
+    - "factory-gate geography"
+    - "production period"
+    - "packaging status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item_mass
+    applies_to: "finished_equipment and all per-item normalization"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure or derive from an auditable model-specific bill of materials the net mass of one accepted item; exclude separately reported packaging and reusable shipping fixtures, and reconcile any item-count conversion to this mass."
+  - id: material_and_component_mass
+    applies_to: "Purchased materials, incorporated components, packaging, scrap, test gases, process water, refrigerant charges, and factory refrigerant loss"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report each atomic exchange separately by measured, invoiced, BOM, cylinder, or mass-balance mass; do not combine unlike materials, components, gases, refrigerants, wastes, or emissions."
+  - id: electricity_energy
+    applies_to: "manufacturing_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered kWh record and convert only for projection using 1 kWh = 3.6 MJ; document meter boundary, allocation driver, voltage level, geography, and grid contract."
+  - id: refrigerant_species_balance
+    applies_to: "Refrigerant inputs and factory refrigerant emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep every refrigerant species or blend in a separate row and close the model-period mass balance from opening stock, receipts, closing stock, charged product, recovery, returns, and measured or calculated loss; never substitute one refrigerant for another."
+  - id: gas_reference_conditions
+    applies_to: "gaseous_nitrogen_test_gas and helium_test_gas"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "If the source record is volumetric, retain temperature and pressure and convert to mass only with a supplier certificate or documented density at matching reference conditions."
+process_map:
+  - id: component_preparation_and_assembly
+    name: "Component preparation and equipment assembly"
+    inclusion: "required"
+    inclusion_condition: "Include for every modeled item; report only the preparation steps actually performed at the factory and treat purchased finished components as product inputs."
+    role: "Converts purchased structural materials and components into assembled equipment and records manufacturing electricity and segregated metal scrap."
+    quantitative_reference: "One accepted equipment item represented by finished_equipment"
+  - id: refrigerant_circuit_charging_and_test
+    name: "Refrigerant-circuit charging and testing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the factory charges, pressure-tests, leak-tests, evacuates, flushes, or wet-tests a refrigerant or hydraulic circuit; apply only the specific refrigerant and test-media rows used by the declared model."
+    role: "Records circuit test media, process water, factory refrigerant charge, and measured factory refrigerant loss by species."
+    quantitative_reference: "One accepted equipment item represented by finished_equipment"
+  - id: final_packaging_and_release
+    name: "Final testing, packaging, and release"
+    inclusion: "required"
+    inclusion_condition: "Include final acceptance and release for every item; packaging inputs apply only when the declared factory-gate product is shipped with that packaging component."
+    role: "Records release packaging and the complete accepted reference product."
+    quantitative_reference: "One accepted equipment item represented by finished_equipment"
+process_inventory:
+  - id: component_preparation_and_assembly
+    label: "Component preparation and equipment assembly"
+    inputs:
+      product:
+        - row_id: carbon_steel_sheet
+          role: "Carbon-steel sheet"
+          name: "Carbon-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carbon-steel sheet crosses the factory boundary when cut or formed into panels, frames, bases, tanks, or brackets for the modeled item."
+          amount:
+            expression: "Record the net issued mass attributable to one accepted item from stock issues, cut plans, or the model-specific BOM; include this row only when carbon-steel sheet is used."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Aluminium sheet crosses the factory boundary when incorporated into casings, panels, fins, or other model-specific parts."
+          amount:
+            expression: "Record BOM or stock-issue mass per accepted item; include only when aluminium sheet is incorporated."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: copper_tubing
+          role: "Copper tubing"
+          name: "Copper tubing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0d80f4b8-8f26-4eee-8b81-df499c4c9dff"
+          property_unit: "Mass / kg"
+          description: "Copper tubing crosses the factory boundary as refrigerant or hydraulic circuit tubing incorporated into the item."
+          amount:
+            expression: "Record model-specific BOM, measured issue, or length converted with documented tube dimensions and density."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: hermetic_refrigeration_compressor
+          role: "Hermetic refrigeration compressor"
+          name: "Hermetic refrigeration compressor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a2a3427c-5d93-494b-a1fd-bcab42fea432"
+          property_unit: "Mass / kg"
+          description: "The complete hermetic compressor is recorded as a purchased component only for models that incorporate this compressor type."
+          amount:
+            expression: "Sum verified supplier masses for the quantity installed in one accepted item; do not use this row for semi-hermetic, open, or other compressor types."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: finned_heat_exchanger
+          role: "Finned heat exchanger"
+          name: "Finned heat exchanger"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A purchased finned heat exchanger crosses the boundary when installed as a complete coil or exchanger assembly."
+          amount:
+            expression: "Sum supplier-certified or receiving masses for finned heat exchangers installed in one accepted item; include only for purchased complete exchangers."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: electric_axial_fan
+          role: "Electric axial fan"
+          name: "Electric axial fan"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A purchased electric axial fan crosses the boundary when installed for air movement in the modeled item."
+          amount:
+            expression: "Sum supplier-certified or receiving masses for electric axial fans installed in one accepted item; include only for this fan type."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: electronic_control_unit
+          role: "Electronic control unit"
+          name: "Electronic control unit"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff5a65c8-7726-48b4-b794-6bacd21ab77e"
+          property_unit: "Mass / kg"
+          description: "The electronic control unit is recorded as a purchased component when incorporated into the declared model."
+          amount:
+            expression: "Sum supplier-certified or BOM masses for the control units installed in one accepted item."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: rigid_polyurethane_insulation_foam
+          role: "Rigid polyurethane insulation foam"
+          name: "Rigid polyurethane insulation foam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Rigid polyurethane insulation foam crosses the factory boundary when incorporated into insulated panels, tanks, cabinets, or piping."
+          amount:
+            expression: "Record the cured foam mass incorporated per accepted item from BOM, dispensing records, or panel supplier declarations; include only when this insulation is present."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: manufacturing_electricity
+          role: "Manufacturing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity crosses the factory boundary for attributable cutting, forming, brazing, assembly, evacuation, testing, and supporting operations."
+          amount:
+            expression: "Allocate metered electricity to accepted model output using submetering or a documented causal driver; convert retained kWh records using electricity_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b973529f-a945-4cb9-9600-ecbcc745a4c6"
+          property_unit: "Mass / kg"
+          description: "Segregated steel offcuts and rejected steel parts leave the assembly process as waste when generated on site."
+          amount:
+            expression: "Record measured steel scrap generated and removed from the modeled production boundary per accepted item; include only for in-house steel preparation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_scrap_records
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Segregated aluminium offcuts and rejected aluminium parts leave the assembly process as waste when generated on site."
+          amount:
+            expression: "Record measured aluminium scrap generated and removed from the modeled production boundary per accepted item; include only for in-house aluminium preparation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_scrap_records
+              source_ids: []
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Segregated copper-tube offcuts and rejected copper parts leave the assembly process as waste when generated on site."
+          amount:
+            expression: "Record measured copper scrap generated and removed from the modeled production boundary per accepted item; include only for in-house copper preparation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_scrap_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: refrigerant_circuit_charging_and_test
+    label: "Refrigerant-circuit charging and testing"
+    inputs:
+      product:
+        - row_id: gaseous_nitrogen_test_gas
+          role: "Gaseous nitrogen test gas"
+          name: "Gaseous nitrogen test gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Gaseous nitrogen crosses the boundary when consumed for circuit pressurization, purging, or leak testing."
+          amount:
+            expression: "Record cylinder or bulk-stock withdrawal less measured recovery per accepted item; include only when gaseous nitrogen is used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_materials
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: helium_test_gas
+          role: "Helium test gas"
+          name: "Helium test gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Helium crosses the boundary when consumed as a tracer gas for leak detection."
+          amount:
+            expression: "Record cylinder or bulk-stock withdrawal less measured recovery per accepted item; include only when helium leak testing is used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_materials
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water crosses the boundary only when consumed in factory hydraulic testing, cleaning, or wet commissioning included in the declared route."
+          amount:
+            expression: "Record metered or batch-accounted water entering included operations, net of separately measured recirculation; do not use this row for cooling water or discharged wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_materials
+              source_ids: []
+            ranges: []
+        - row_id: r410a_charge
+          role: "R410A factory charge"
+          name: "Refrigerant R410A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7d38fb13-97b6-4c65-a866-0d89444afbe4"
+          property_unit: "Mass / kg"
+          description: "R410A crosses the boundary as a product input only for equipment factory-charged with this blend."
+          amount:
+            expression: "Record the R410A mass retained in the accepted item, reconciled to the species-specific factory mass balance; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - jrc91168-commercial-refrigeration
+                - eu-2024-573-fgas
+            ranges: []
+        - row_id: r404a_charge
+          role: "R404A factory charge"
+          name: "Refrigerant, R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "33db0143-ba65-4036-a57b-e32dcdecb779"
+          property_unit: "Mass / kg"
+          description: "R404A crosses the boundary as a product input only for equipment factory-charged with this blend."
+          amount:
+            expression: "Record the R404A mass retained in the accepted item, reconciled to the species-specific factory mass balance; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - jrc91168-commercial-refrigeration
+                - eu-2024-573-fgas
+            ranges: []
+        - row_id: r134a_charge
+          role: "R134a factory charge"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1ed335ef-341f-46cc-be90-6bf805244f28"
+          property_unit: "Mass / kg"
+          description: "R134a crosses the boundary as a product input only for equipment factory-charged with this refrigerant."
+          amount:
+            expression: "Record the R134a mass retained in the accepted item, reconciled to the species-specific factory mass balance; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - jrc91168-commercial-refrigeration
+                - eu-2024-573-fgas
+            ranges: []
+        - row_id: r290_propane_charge
+          role: "R290 propane factory charge"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass / kg"
+          description: "Refrigerant-grade propane crosses the boundary only for equipment factory-charged with R290."
+          amount:
+            expression: "Record the refrigerant-grade R290 mass retained in the accepted item, including declared purity, reconciled to the species-specific factory mass balance; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - jrc91168-commercial-refrigeration
+                - eu-2024-573-fgas
+            ranges: []
+        - row_id: r744_carbon_dioxide_charge
+          role: "R744 carbon-dioxide factory charge"
+          name: "Refrigerant-grade carbon dioxide (R744)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Refrigerant-grade carbon dioxide crosses the boundary only for equipment factory-charged with R744."
+          amount:
+            expression: "Record the R744 mass retained in the accepted item, including declared purity and supply state, reconciled to the species-specific factory mass balance; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - jrc91168-commercial-refrigeration
+                - eu-2024-573-fgas
+            ranges: []
+        - row_id: r717_ammonia_charge
+          role: "R717 ammonia factory charge"
+          name: "Ammonia"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9874382d-672c-4601-a3ce-9a4ae21e663b"
+          property_unit: "Mass / kg"
+          description: "Anhydrous refrigerant-grade ammonia crosses the boundary only for equipment factory-charged with R717."
+          amount:
+            expression: "Record the anhydrous refrigerant-grade R717 mass retained in the accepted item, including declared purity, reconciled to the species-specific factory mass balance; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - eu-2024-573-fgas
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: r410a_emission_to_air
+          role: "R410A emitted to air during manufacturing"
+          name: "Refrigerant R410A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R410A is recorded as an elementary output only when a species-specific factory mass balance demonstrates an unrecovered atmospheric loss."
+          amount:
+            expression: "Calculate non-negative R410A loss from the closed factory mass balance after charge, recovery, returns, and closing stock; do not include upstream refrigerant-production emissions or substitute constituent emissions."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids:
+                - eu-2024-573-fgas
+            ranges: []
+  - id: final_packaging_and_release
+    label: "Final testing, packaging, and release"
+    inputs:
+      product:
+        - row_id: corrugated_board_box
+          role: "Corrugated-board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Corrugated-board boxes cross the boundary as release packaging when supplied with the declared factory-gate item."
+          amount:
+            expression: "Record the actual packaging BOM or scale mass attributable to one released item; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: euro_wooden_pallet
+          role: "EURO wooden pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "A EURO-format wooden pallet crosses the boundary when shipped with the item and is not a reusable factory fixture."
+          amount:
+            expression: "Record pallet mass divided by the actual number of released items carried; otherwise mark not applicable and disclose reusable pooling separately."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+        - row_id: ldpe_packaging_film
+          role: "LDPE packaging film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene film crosses the boundary when used to wrap or protect the released item."
+          amount:
+            expression: "Record packaging BOM, roll-consumption, or scale mass attributable to one released item; otherwise mark not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - epd-international-25543
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_equipment
+          role: "Finished non-household refrigerating/freezing equipment or heat pump"
+          name: "Refrigerating and freezing equipment and heat pumps, except household type equipment"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c1bef08-e0fc-465a-aff0-c3a43837edbc"
+          property_unit: "Mass / kg"
+          description: "The complete accepted item leaves the foreground manufacturing boundary as the reference product after required final tests and release disposition."
+          amount:
+            expression: "Record the measured or auditable BOM-derived net mass of one accepted item and reconcile it to the declared item count and packaging exclusion."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "one accepted equipment item"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_record
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - epd-international-25543
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_submetering
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation by separate BOMs, production orders, meters, batch logs, charge logs, test records, and scrap records for the declared model or production family."
+    source_ids: []
+  - rule_id: allocation_shared_factory_resources
+    applies_to: "foreground_burden_allocation"
+    rule: "When shared electricity, water, test gas, or overhead cannot be subdivided, apply a documented causal driver such as machine time, test time, metered load, or production hours; use mass or item count only when shown to represent resource causation."
+    source_ids: []
+  - rule_id: allocation_scrap_no_credit
+    applies_to: "foreground_burden_allocation"
+    rule: "Report steel, aluminium, and copper scrap as waste at the point of generation; assign no avoided-burden or recycling credit inside this foreground inventory, and disclose any downstream recycling model separately."
+    source_ids: []
+  - rule_id: allocation_rework_and_rejects
+    applies_to: "foreground_burden_allocation"
+    rule: "Include attributable rework inputs and allocate unrecovered rejected-item burdens across accepted output using the documented production-order accounting period; exclude inputs demonstrably recovered intact into the same period."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "component_preparation_and_assembly"
+      flow_role: "Structural materials and incorporated components"
+      record_type: "Model BOM, purchase specification, goods receipt, stock issue, cut plan"
+      raw_fields: "model, part number, material specification, quantity, unit mass, issued mass, incorporated mass, supplier"
+      collection_method: "Reconcile approved BOM to production-order issues and supplier mass evidence"
+      unit: "kg"
+      frequency: "Each model revision and production order"
+      temporal_coverage: "Representative production period, normally at least 12 consecutive months or the complete shorter campaign"
+      site_scope: "Reporting factory"
+      aggregation_rule: "Sum conforming incorporated quantities and attributable issues; normalize to accepted items"
+      quality_evidence: "Approved BOM revision, supplier datasheet or invoice, stock ledger, production-order reconciliation"
+    - protocol_id: cp_factory_electricity
+      process_id: "component_preparation_and_assembly"
+      flow_role: "Manufacturing electricity"
+      record_type: "Main/submeter readings, interval data, production hours"
+      raw_fields: "meter id, opening and closing reading, kWh, area or machine, model output, downtime"
+      collection_method: "Submeter preferred; otherwise reconcile site bill and allocate with a causal operating driver"
+      unit: "kWh retained; MJ projected"
+      frequency: "Monthly or finer"
+      temporal_coverage: "Same representative period as production output"
+      site_scope: "Reporting factory and included production areas"
+      aggregation_rule: "Subtract excluded loads, allocate included load, divide by accepted items, convert at 3.6 MJ/kWh"
+      quality_evidence: "Calibrated meter record, utility invoice, reconciliation and allocation worksheet"
+    - protocol_id: cp_scrap_records
+      process_id: "component_preparation_and_assembly"
+      flow_role: "Segregated steel, aluminium, and copper scrap"
+      record_type: "Weigh ticket, bin log, recycler receipt"
+      raw_fields: "material, gross and tare mass, date, production area, disposition"
+      collection_method: "Weigh each segregated stream and reconcile opening/closing bin inventory"
+      unit: "kg"
+      frequency: "Each removal, aggregated monthly"
+      temporal_coverage: "Same representative period as production output"
+      site_scope: "Reporting factory"
+      aggregation_rule: "Sum net generated mass by material and normalize to accepted items"
+      quality_evidence: "Calibrated scale or external weighbridge ticket and recycler receipt"
+    - protocol_id: cp_test_materials
+      process_id: "refrigerant_circuit_charging_and_test"
+      flow_role: "Nitrogen, helium, and process water"
+      record_type: "Cylinder/bulk inventory, meter, batch test log"
+      raw_fields: "medium, purity, opening stock, receipts, closing stock, recovered amount, reference conditions, water meter"
+      collection_method: "Close medium-specific stock balance and link use to tested serial numbers"
+      unit: "kg"
+      frequency: "Each batch, cylinder change, or meter period"
+      temporal_coverage: "Same representative period as tested accepted output"
+      site_scope: "Charging and test stations"
+      aggregation_rule: "Net consumed mass divided by accepted tested items; retain gas conversion evidence"
+      quality_evidence: "Cylinder certificate, calibrated meter, recovery log, test record"
+    - protocol_id: cp_refrigerant_balance
+      process_id: "refrigerant_circuit_charging_and_test"
+      flow_role: "Refrigerant charge and factory loss by species"
+      record_type: "Refrigerant stock, receipt, charging-machine, recovery, return, and serial charge logs"
+      raw_fields: "species, blend designation, purity, opening stock, receipts, closing stock, charged mass, recovered mass, returned mass, serial number"
+      collection_method: "Close a separate mass balance for each refrigerant species or blend"
+      unit: "kg"
+      frequency: "Each charging event with monthly closure"
+      temporal_coverage: "Same representative period as charged accepted output"
+      site_scope: "All factory storage and charging points"
+      aggregation_rule: "Charged product mass is the accepted serial charge; loss is balance residual after recovery and returns, never below zero without investigation"
+      quality_evidence: "Calibrated charging equipment, purchase/return records, recovery logs, signed balance worksheet"
+    - protocol_id: cp_packaging_bom
+      process_id: "final_packaging_and_release"
+      flow_role: "Corrugated boxes, EURO pallets, and LDPE film"
+      record_type: "Packaging BOM, issue record, scale record"
+      raw_fields: "packaging type, material, unit mass, issued quantity, reusable status, items per pallet"
+      collection_method: "Reconcile issued packaging to released serial numbers and weigh representative packs"
+      unit: "kg"
+      frequency: "Each packaging design revision and production order"
+      temporal_coverage: "Same representative period as released output"
+      site_scope: "Reporting factory dispatch boundary"
+      aggregation_rule: "Sum packaging supplied with one item; allocate shared pallet by actual item count"
+      quality_evidence: "Approved packaging specification, scale record, issue and dispatch reconciliation"
+    - protocol_id: cp_acceptance_record
+      process_id: "final_packaging_and_release"
+      flow_role: "Finished equipment reference product"
+      record_type: "Serial, model, net-mass, performance, electrical and release records"
+      raw_fields: "serial, model, subtype, capacity, test standard and conditions, temperature class, electrical supply, refrigerant, charge, net mass, acceptance status, release date"
+      collection_method: "Link calibrated final-test results and mass record to each accepted serial or statistically controlled model family"
+      unit: "item and kg"
+      frequency: "Each accepted item"
+      temporal_coverage: "Same representative period as all input records"
+      site_scope: "Final test and dispatch gate"
+      aggregation_rule: "Count accepted items and report measured or BOM-reconciled net mass per item"
+      quality_evidence: "Signed acceptance record, calibrated test result, scale or controlled BOM, nonconformance disposition"
+  calculation_rules:
+    - id: calc_normalize_per_accepted_item
+      applies_to: "All foreground exchanges"
+      rule: "Divide the period total attributable to the declared model by accepted items in the same period; for mixed-model production first apply the documented causal allocation driver."
+      inputs:
+        - "attributable period quantity"
+        - "accepted item count"
+        - "allocation driver where needed"
+      output: "atomic exchange per accepted item"
+      source_ids: []
+    - id: calc_electricity_to_mj
+      applies_to: "manufacturing_electricity"
+      rule: "projected MJ = retained metered kWh × 3.6"
+      inputs:
+        - "included metered kWh"
+      output: "electricity in MJ per accepted item"
+      source_ids: []
+    - id: calc_refrigerant_charge
+      applies_to: "Refrigerant input rows"
+      rule: "Sum verified charge retained in accepted serials for each refrigerant separately and divide by accepted charged items of that design."
+      inputs:
+        - "serial charge logs"
+        - "accepted charged item count"
+      output: "refrigerant charge in kg per accepted item"
+      source_ids:
+        - eu-2015-1095-professional-refrigeration
+        - eu-2024-573-fgas
+    - id: calc_refrigerant_loss
+      applies_to: "r410a_emission_to_air"
+      rule: "loss = opening stock + receipts − closing stock − accepted product charge − recovered mass − returned mass; investigate negative or unexplained balances and report only demonstrated non-negative atmospheric loss."
+      inputs:
+        - stock
+        - receipts
+        - charges
+        - recovery
+        - returns
+      output: "R410A emitted to air in kg per accepted item"
+      source_ids:
+        - eu-2024-573-fgas
+    - id: calc_scrap_by_material
+      applies_to: "Metal scrap outputs"
+      rule: "For each metal separately, generated scrap = outbound scrap + closing on-site scrap − opening on-site scrap; normalize to accepted items after model attribution."
+      inputs:
+        - "material-specific bin inventory and outbound weights"
+      output: "waste mass by metal per accepted item"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_temporal_alignment
+      applies_to: "All foreground records"
+      requirement: "Use one common representative production period; where a shorter campaign is used, disclose dates, reason, and production coverage."
+      evidence: "Period reconciliation linking invoices, meters, stock, production, test, and release records"
+    - id: dq_model_representativeness
+      applies_to: "Product family datasets"
+      requirement: "Demonstrate that included models share material architecture, component technology, refrigerant route, factory operations, and acceptance criteria; otherwise publish separate datasets."
+      evidence: "Model-family definition, BOM comparison, route matrix, production-weight calculation"
+    - id: dq_measurement_traceability
+      applies_to: "Mass, energy, gas, charge, and performance records"
+      requirement: "Identify instrument, calibration or supplier certificate, measurement resolution, conversion, and responsible record system."
+      evidence: "Calibration certificates, supplier certificates, controlled meter register, audit trail"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Reconcile all 26 required atomic rows as measured/calculated or explicitly not applicable, close material-specific and refrigerant balances, and disclose unresolved UUID identities without inventing proxies."
+      evidence: "Signed completeness checklist, balances, UUID audit receipts, exception log"
+    - id: dq_geography_and_technology
+      applies_to: "Foreground and linked upstream data"
+      requirement: "Declare factory geography, technology, purchased-component boundary, grid contract, refrigerant grade, and supplier geography; explain any non-representative upstream link."
+      evidence: "Dataset metadata, supplier declarations, linked-dataset review"
+validation_rules:
+  - rule_id: validate_identity_and_reference
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that the modeled output is a complete non-household CPC 43913 product, the reference UUID is exact and public state 100, the output property is Mass, and one accepted item is reconciled to its net kg mass."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_qualifiers
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a data package that omits equipment subtype/model, capacity and test conditions, temperature class, refrigerant species and charge, heat-source/sink configuration, electrical supply, net mass, factory geography, period, or packaging status."
+    source_ids:
+      - eu-2015-1095-professional-refrigeration
+  - rule_id: validate_atomic_inventory
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm every inventory card represents one atomic exchange, uses the exact audited UUID when adopted, and is either quantified or explicitly not applicable under its condition; no umbrella utility, fuel, packaging, waste, emission, component, or refrigerant selector is allowed."
+    source_ids: []
+  - rule_id: validate_refrigerant_exclusivity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that only refrigerants actually charged into the declared model are active, each is recorded separately, charge and factory loss close by species, and product refrigerant flows are not used as elementary emissions."
+    source_ids:
+      - jrc91168-commercial-refrigeration
+      - eu-2024-573-fgas
+  - rule_id: validate_boundary_and_allocation
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm factory-gate exclusions, upstream links, shared-resource drivers, rework/reject treatment, and no foreground recycling credit; report any study-level extension separately."
+    source_ids: []
+  - rule_id: validate_bilingual_alignment
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm the English and Chinese projections preserve identical process ids, row ids, rule ids, source ids, UUIDs, controlled codes, and inventory-row order, and use official TianGong Chinese base names for every UUID-bearing flow."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific or demonstrably production-weighted family foreground manufacturing dataset for one complete non-household refrigerating/freezing equipment or heat-pump item"
+  downstream_use: "Link upstream supply datasets and, when required, separate distribution, installation, operation, servicing, and end-of-life scenarios to construct process or lifecycle-model projections"
+  allowed_use: "Factory-gate comparison only among products with compatible subtype, function, capacity/test conditions, temperature class, refrigerant, factory boundary, geography, period, and packaging status"
+  excluded_use: "Direct comparison of unlike cooling/heating functions; household equipment; component or refrigerant production; use-stage efficiency claims; cradle-to-grave results without separate downstream modules"
+  required_metadata: "All reference-flow qualifiers; process applicability; purchased-component boundary; foreground period and geography; source record systems; allocation drivers; upstream links and gaps; UUID audit status; package version"
+  required_quality_disclosure: "Coverage of accepted output, model-family representativeness, measurement/calibration status, mass and refrigerant balance closure, allocation fraction, exclusions, not-applicable rows, unresolved UUIDs, and absence of source-backed amount ranges"
+  update_trigger: "Change in model architecture, rated function/capacity class, refrigerant or charge, compressor/heat-exchanger technology, major material or packaging design, factory route/site, grid contract, allocation driver, or representative period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, CSV: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Original-text verification of CPC 43913 code and English product classification identity"
+  - id: "epd-international-25543"
+    type: "dataset"
+    reference: "EPD International, EPD-IES-0025543:003, NRG350R commercial heat pump/chiller product record and declaration: https://www.environdec.com/library/epd25543"
+    used_for: "Original-text verification of an in-scope CPC 43913 product, one-piece declared unit with mass conversion, and factory assembly, brazing, pressurization, helium/nitrogen leak testing, evacuation, wiring, final testing, and packaging operations and components"
+  - id: "eu-2015-1095-professional-refrigeration"
+    type: "standard"
+    reference: "European Commission, Commission Regulation (EU) 2015/1095 on professional refrigerated storage cabinets, blast cabinets, condensing units and process chillers: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32015R1095"
+    used_for: "Original-text verification of covered professional equipment definitions, rated-performance/test information, annual energy information, and refrigerant type/name/GWP/charge reporting fields"
+  - id: "jrc91168-commercial-refrigeration"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Ecodesign for Commercial Refrigeration, JRC91168, 2014: https://publications.jrc.ec.europa.eu/repository/bitstream/JRC91168/comm_refrig_published_bkg_doc%20-%202014%20august%2026.pdf"
+    used_for: "Original-text verification that energy and refrigerant are material aspects and that R290, R600a, R744, R404A, R134a, and R410A occur as distinct refrigerants or blends in commercial refrigeration contexts"
+  - id: "eu-2024-573-fgas"
+    type: "standard"
+    reference: "European Parliament and Council, Regulation (EU) 2024/573 on fluorinated greenhouse gases, consolidated text: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02024R0573-20240220"
+    used_for: "Original-text verification of equipment-category/refrigerant applicability distinctions and mixture mass-fraction treatment; used as a reporting and conformance rule, not as empirical amount evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4497843726a4304d4f1c1869bb78796a63554bec33f3ff4a04f080f2db377b8c"
+  generated_content_sha256: "sha256:ec242b3c9054b08020f4fa7d15582ec25312787b88a59d6467dc5fe7c2aa8b0e"

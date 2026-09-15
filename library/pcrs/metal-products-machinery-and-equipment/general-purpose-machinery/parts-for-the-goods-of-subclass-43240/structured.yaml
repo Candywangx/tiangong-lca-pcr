@@ -1,10 +1,633 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43254"
-  title: "Parts for the goods of subclass 43240"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-for-the-goods-of-subclass-43240"
+  classification_refs: "CPC 3.0: 43254, Parts for the goods of subclass 43240"
+  covered_products: "Separately traded bodies, bonnets, stems, discs, plugs, balls, seats, and other identifiable parts for taps, cocks, valves, and similar appliances"
+  excluded_products: "Complete appliances; generic fasteners, seals, actuators, instruments, and pipe fittings; unworked raw material; installation, repair, and machining services"
+  representative_product: "Machined chromium-steel valve body or trim component supplied for downstream assembly"
+  production_route: "Purchased alloy-steel semi-finished material followed by machining; heat treatment and aqueous surface cleaning when performed; final inspection and packing"
+  market_state: "Identifiable finished or semi-finished part at the manufacturer's gate, clean and packed when packing is part of the sale"
+functional_unit:
+  what: "An identifiable part providing a declared pressure-retaining, flow-control, sealing, or structural function in a tap, cock, valve, or similar appliance"
+  how_much: "1 kg of finished or declared semi-finished part at the manufacturer's gate"
+  how_well: "Conforming to the declared drawing/specification, material grade, dimensions and tolerances, surface condition, and applicable pressure-temperature or sealing requirements"
+  how_long_or_cycle: "One delivered production lot; no service duration is assigned unless a downstream study documents the complete appliance life"
+  reference_flow_link: "1 kg of the declared covered part meeting all required qualifiers"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with purchased semi-finished material and other products at the site gate and includes on-site machining, conditional heat treatment, conditional aqueous surface cleaning, final inspection, and packing through the covered part at the manufacturer's gate. Upstream production is linked through supplier or background datasets. Capital equipment, site construction, downstream distribution, installation, use, maintenance, and end of life are excluded unless the study expands the boundary."
+      source_ids: []
+    - rule_id: sb_foreground_gate
+      applies_to: "all foreground processes"
+      rule: "Include all on-site material, energy, water, waste, and direct-emission exchanges from receipt of the declared semi-finished material through release of the covered part."
+      source_ids:
+        - eu-pef-method-2021
+        - us-epa-fabricated-metal-products-1995
+    - rule_id: sb_conditional_processes
+      applies_to: "heat treatment and aqueous surface cleaning"
+      rule: "Include each conditional process only when performed; disclose its technology and add every actual atomic exchange crossing its boundary."
+      source_ids:
+        - us-epa-fabricated-metal-products-1995
+    - rule_id: sb_exclusions
+      applies_to: "excluded stages"
+      rule: "Document and justify exclusions; do not silently exclude rejects, rework, scrap, cleaning wastewater, or direct combustion emissions."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased chromium steel or another explicitly declared semi-finished material enters with grade, form, mass, supplier geography, and recycled-content information"
+  starting_condition_role: "Upstream product input to foreground parts manufacture"
+  product_classification_scope: "Separately traded parts for taps, cocks, valves, and similar appliances; complete appliances and generic components are outside this identity"
+  recursive_input_rule: "Record a purchased unfinished part already in this category once as a product input with a supplier dataset and completion state; do not recreate its upstream foreground manufacture"
+  upstream_dataset_requirement: "Use representative cradle-to-gate datasets for purchased material, electricity, natural gas, water, chemicals, and packaging; disclose proxies and gaps"
+  disclosure: "Declare starting material, machining, heat treatment, surface preparation, rejects/rework, wastewater and scrap destinations, packing state, exclusions, and company-specific data boundaries"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Parts for the goods of subclass 43240 (Tiangong UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part type and function"
+    - "finished or semi-finished state"
+    - "material grade and stock form"
+    - "net product mass"
+    - "drawing/specification and revision"
+    - "dimensions and tolerances"
+    - "pressure-temperature or sealing class when applicable"
+    - "heat-treatment condition"
+    - "surface treatment"
+    - "production site and geography"
+    - "reporting period"
+    - "packaging inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: mr_reference_mass
+    applies_to: "reference product and mass-based inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass of conforming covered parts at the declared market state. Exclude detachable transport fixtures and packaging from product mass."
+  - id: mr_energy
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Record delivered electricity at the process meter; retain the source unit, conversion, and meter boundary."
+  - id: mr_gas_volume
+    applies_to: "natural-gas row"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State metering reference temperature and pressure, gas basis, and whether volume is corrected to standard conditions."
+  - id: mr_normalization
+    applies_to: "all foreground amounts"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "row-specific reference unit"
+    rule: "Normalize inputs and outputs by net mass of conforming parts from the same scope and period; retain gross production, rejects, rework, and inventory changes."
+process_map:
+  - id: p_primary_machining
+    name: "Primary machining of alloy-steel part"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the covered part is produced by machining chromium steel or another declared metal semi-finished input"
+    role: "Foreground material shaping"
+    quantitative_reference: "kg of conforming machined part"
+  - id: p_heat_treatment
+    name: "Heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when controlled heating and cooling changes the material condition"
+    role: "Foreground property modification"
+    quantitative_reference: "kg of heat-treated part"
+  - id: p_aqueous_cleaning
+    name: "Aqueous surface cleaning"
+    inclusion: "conditional"
+    inclusion_condition: "Include when alkaline aqueous cleaning and rinsing are performed on-site"
+    role: "Foreground surface preparation"
+    quantitative_reference: "kg of cleaned part"
+  - id: p_final_release
+    name: "Final inspection and packing"
+    inclusion: "required"
+    inclusion_condition: "Always include final conformity release; include the box row only when boxes are part of the sale"
+    role: "Foreground release of reference product"
+    quantitative_reference: "1 kg of conforming covered part"
+process_inventory:
+  - id: p_primary_machining
+    label: "Primary machining of alloy-steel part"
+    inputs:
+      product:
+        - row_id: chromium_steel_input
+          role: "Chromium-steel semi-finished material"
+          name: "Chromium steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f4f19250-c683-4ff0-9763-1498069df9de"
+          property_unit: "Mass / kg"
+          description: "Record this input only for the chromium-steel route; other material routes shall use separately identified atomic material flows."
+          amount:
+            expression: "purchased mass entering machining, adjusted for opening and closing inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of conforming covered part from the same production scope"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: machining_electricity
+          role: "Electricity delivered to machining"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity used by machine tools and directly attributable auxiliary equipment."
+          amount:
+            expression: "metered or allocated delivered electricity for machining"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of conforming covered part from the same production scope"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: cutting_fluid_input
+          role: "Cutting fluid supplied to machining"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record purchased make-up cutting fluid; keep recovered recirculating inventory distinct."
+          amount:
+            expression: "purchased make-up mass consumed after inventory adjustment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of conforming covered part from the same production scope"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: machining_process_water
+          role: "Process water supplied to machining"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water used for water-miscible cutting fluid or direct machining when it crosses this boundary."
+          amount:
+            expression: "metered or batch-recorded water mass attributable to machining"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of conforming covered part from the same production scope"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap_from_machining
+          role: "Steel scrap generated by machining"
+          name: "Steel scrap from machining"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a88e0790-436c-44f8-b336-ee509aa8a38a"
+          property_unit: "Mass / kg"
+          description: "Record chips, turnings, and offcuts leaving machining; state alloy grade, oil contamination, and destination."
+          amount:
+            expression: "measured scrap dispatched or transferred to treatment, adjusted for scrap inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of conforming covered part from the same production scope"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+      elementary:
+        []
+  - id: p_heat_treatment
+    label: "Heat treatment"
+    inputs:
+      product:
+        - row_id: heat_treatment_natural_gas
+          role: "Natural gas supplied to the furnace"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only for directly fired or gas-heated equipment."
+          amount:
+            expression: "corrected metered natural-gas volume attributable to heat treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of heat-treated covered part"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: heat_treatment_electricity
+          role: "Electricity delivered to heat treatment"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record furnace and directly attributable auxiliary electricity."
+          amount:
+            expression: "metered or allocated delivered electricity for heat treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of heat-treated covered part"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: heat_treatment_fossil_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct on-site fossil carbon dioxide from natural-gas combustion; exclude upstream electricity emissions."
+          amount:
+            expression: "monitored site emission mass attributable to heat treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of heat-treated covered part"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+  - id: p_aqueous_cleaning
+    label: "Aqueous surface cleaning"
+    inputs:
+      product:
+        - row_id: cleaning_sodium_hydroxide
+          role: "Sodium hydroxide used in alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record supplied sodium-hydroxide mass only when present; retain solution concentration separately."
+          amount:
+            expression: "purchased sodium-hydroxide mass in cleaning make-up"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of cleaned covered part"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: cleaning_process_water
+          role: "Process water used for cleaning and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record metered water crossing the cleaning boundary for bath make-up and rinsing."
+          amount:
+            expression: "metered water mass attributable to cleaning and rinsing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of cleaned covered part"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Wastewater from cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record cleaning and rinse wastewater leaving for on-site or off-site treatment; disclose composition and destination."
+          amount:
+            expression: "measured wastewater mass leaving cleaning, adjusted for storage changes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of cleaned covered part"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+      elementary:
+        []
+  - id: p_final_release
+    label: "Final inspection and packing"
+    inputs:
+      product:
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board boxes used for shipment"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record boxes included in the sale or needed for the declared factory-gate state."
+          amount:
+            expression: "issued box mass less returned unused boxes, allocated to released parts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg of conforming covered part released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_valve_part
+          role: "Finished covered valve part"
+          name: "Parts for the goods of subclass 43240 (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after conformity release. Its exact Tiangong product-flow UUID remains unresolved."
+          amount:
+            expression: "fixed reference amount of 1 kg of conforming covered part"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivision_first
+    applies_to: "shared machines, lines, and utilities"
+    rule: "Avoid allocation by separately metering batches, machines, or stages attributable to covered parts."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: al_physical_relationship
+    applies_to: "inseparable shared foreground processes"
+    rule: "If subdivision is impracticable, use a documented causal physical driver such as machine time, load-adjusted furnace occupancy, metered energy, or treated surface area."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: al_other_relationship
+    applies_to: "remaining multifunctional processes"
+    rule: "Use another relationship, including economic allocation, only when no defensible physical relationship exists; disclose values, period, sensitivity, and affected flows."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: al_scrap_disclosure
+    applies_to: "steel scrap and recycling"
+    rule: "Record scrap as waste without netting it against metal input or energy. Model recycling burdens and credits consistently downstream and disclose the convention."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_machining_records
+      process_id: "p_primary_machining"
+      flow_role: "chromium steel, electricity, cutting fluid, process water, steel scrap"
+      record_type: "purchase/issue records, meters, scrap tickets, production log"
+      raw_fields: "inventories; purchases/issues; meter readings; scrap mass; conforming mass; rejects; rework; identifiers"
+      collection_method: "Reconcile records to the same machines, lots, and period"
+      unit: "kg; MJ"
+      frequency: "Per batch where available and at least monthly"
+      temporal_coverage: "Representative continuous 12-month period or justified shorter campaign"
+      site_scope: "All attributable on-site machining"
+      aggregation_rule: "Sum net inputs/outputs, allocate shared resources, divide by conforming mass"
+      quality_evidence: "calibrated meters/scales, invoices, batch travellers, scrap tickets, reconciliation sign-off"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "p_heat_treatment"
+      flow_role: "natural gas, electricity, fossil carbon dioxide"
+      record_type: "meters, furnace logs, emissions records, production log"
+      raw_fields: "corrected gas volume; electricity; monitored CO2; furnace; recipe; load; output mass"
+      collection_method: "Match meters or allocation to furnace batches and technology"
+      unit: "m3; MJ; kg"
+      frequency: "Per batch or meter interval and at least monthly"
+      temporal_coverage: "Representative continuous 12-month period or justified shorter campaign"
+      site_scope: "On-site heat treatment"
+      aggregation_rule: "Sum attributable records and divide by heat-treated conforming mass"
+      quality_evidence: "calibration, reference-condition record, furnace log, emissions monitoring record"
+    - protocol_id: cp_cleaning_records
+      process_id: "p_aqueous_cleaning"
+      flow_role: "sodium hydroxide, water, cleaning wastewater"
+      record_type: "chemical issues, meters, bath logs, production log"
+      raw_fields: "chemical mass/concentration; water; wastewater; bath inventory; treated mass; destination"
+      collection_method: "Reconcile make-up, rinse water, wastewater, inventories, and output"
+      unit: "kg"
+      frequency: "Per batch or meter interval and at least monthly"
+      temporal_coverage: "Representative continuous 12-month period or justified shorter campaign"
+      site_scope: "On-site aqueous cleaning"
+      aggregation_rule: "Sum net inputs and wastewater, divide by cleaned conforming mass"
+      quality_evidence: "invoices, calibrated meters/scales, bath analyses, transfer manifests, mass-balance review"
+    - protocol_id: cp_release_records
+      process_id: "p_final_release"
+      flow_role: "corrugated boxes and finished part"
+      record_type: "packaging issues and final inspection/production records"
+      raw_fields: "boxes issued/returned; box mass; conforming mass; rejects; rework; part/specification revision"
+      collection_method: "Link packaging and release records to the same order or period"
+      unit: "kg"
+      frequency: "Per order or batch and at least monthly"
+      temporal_coverage: "Representative continuous 12-month period or justified shorter campaign"
+      site_scope: "Final release and packing"
+      aggregation_rule: "Divide net box mass by conforming mass; set reference output to 1 kg"
+      quality_evidence: "scale checks, packaging specification, inspection release, production reconciliation"
+  calculation_rules:
+    - id: cr_net_consumption
+      applies_to: "purchased products"
+      rule: "Net consumption = purchases or issues + opening inventory - closing inventory - documented returns"
+      inputs:
+        - "transactions and inventories for one scope and period"
+      output: "net boundary-crossing quantity"
+      source_ids:
+        - eu-pef-method-2021
+    - id: cr_reference_normalization
+      applies_to: "variable inventory rows"
+      rule: "Normalized amount = attributable net quantity / net conforming-part mass for the same scope and period"
+      inputs:
+        - "net quantity"
+        - "conforming mass"
+        - "allocation driver if needed"
+      output: "amount per kg reference flow or process output"
+      source_ids:
+        - eu-pef-method-2021
+    - id: cr_scrap_reconciliation
+      applies_to: "machining material balance"
+      rule: "Reconcile metal input with conforming output, scrap, rejects, rework transfers, and inventory changes; investigate unexplained imbalance."
+      inputs:
+        - "metal input"
+        - output
+        - scrap
+        - rejects
+        - rework
+        - inventories
+      output: "documented mass balance and residual"
+      source_ids:
+        - us-epa-fabricated-metal-products-1995
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and material"
+      requirement: "Preserve part number, drawing/specification revision, function, grade, stock form, treatment state, and completion state."
+      evidence: "product specification, certificate of conformity, material certificate, release record"
+    - id: dq_scope
+      applies_to: "foreground processes"
+      requirement: "Use the same site, technology, products, and period for inputs and outputs; document outsourced steps and upstream datasets."
+      evidence: "process map, boundary statement, supplier records, period reconciliation"
+    - id: dq_measurement
+      applies_to: "meters and mass records"
+      requirement: "Retain calibration, unit conversions, meter coverage, estimation method, and allocation driver."
+      evidence: "calibration certificates, meter register, conversion worksheet, allocation record"
+    - id: dq_temporal
+      applies_to: "foreground data"
+      requirement: "Prefer a continuous 12-month period; justify shorter campaigns and disclose shutdowns, abnormal batches, and utilization."
+      evidence: "dated production, purchase, utility, and waste records"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile metal, water when cleaning is used, and process outputs; report missing exchanges and likely significance."
+      evidence: "signed mass-balance and completeness review"
+validation_rules:
+  - rule_id: vr_identity_complete
+    applies_to: "reference flow"
+    rule: "Fail when a required qualifier, reference mass, market state, or drawing/specification identity is missing."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-pef-method-2021
+  - rule_id: vr_inventory_atomic
+    applies_to: "process inventory"
+    rule: "Fail when a row combines multiple materials, utilities, packaging components, wastes, or emissions, or uses an umbrella route selector."
+    source_ids:
+      - us-epa-fabricated-metal-products-1995
+  - rule_id: vr_period_reconciliation
+    applies_to: "variable amounts"
+    rule: "Fail when quantities lack a common site, process scope, and period or omit inventory changes and rework."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: vr_uuid_semantics
+    applies_to: "UUID-bearing flows"
+    rule: "Confirm public state, bilingual names, flow type, classification, property, unit group, and qualifiers; never replace the unresolved reference product with a proxy."
+    source_ids: []
+  - rule_id: vr_boundary_disclosure
+    applies_to: "system boundary"
+    rule: "Fail when an applicable machining, heat-treatment, cleaning, reject, wastewater, scrap, packaging, or direct-emission process is omitted without justification."
+    source_ids:
+      - eu-pef-method-2021
+      - us-epa-fabricated-metal-products-1995
+published_dataset_profile:
+  dataset_role: "foreground production dataset publishable as a secondary_dataset or background_dataset after review"
+  downstream_use: "process and lifecyclemodel projections for manufacture of separately traded parts for taps, cocks, valves, and similar appliances"
+  allowed_use: "Studies matching declared function, material, completion state, technology, geography, period, boundary, and allocation"
+  excluded_use: "Complete appliances; generic metal products; parts with materially different functions, materials, or routes; unsupported comparative assertions"
+  required_metadata: "PCR id/version; part and drawing/specification identity; function; material/treatment; market state; reference mass; site/geography; technology; period; process map; allocation; upstream datasets; packaging state"
+  required_quality_disclosure: "foreground coverage; measured versus allocated data; calibration/conversions; temporal representativeness; mass-balance residuals; rejects/rework; missing exchanges; proxies; uncertainty and range-evidence gaps"
+  update_trigger: "Material change in function, grade, completion state, machining route, heat treatment, cleaning chemistry, site, energy supply, allocation, packaging, supplier datasets, or period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official identity of CPC 43254 and its parent goods in subclass 43240"
+  - id: "us-epa-fabricated-metal-products-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, *Profile of the Fabricated Metal Products Industry*, EPA/310-R-95-007, September 1995, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=50000DGC.TXT (retrieved 2026-09-05)"
+    used_for: "Metal fabrication, machining, heat treatment, surface preparation, inputs, and waste-output decomposition"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annexes I-II, consolidated 30 December 2021, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-09-05)"
+    used_for: "Functional unit/reference flow, boundary disclosure, company-specific data, allocation, validation, and quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6d115f728f10c561431ba8f4016ebc4aef6d3b5d66e9bf2e73c4b676eac3ab27"
+  generated_content_sha256: "sha256:5a5ad71de2f8d52b3c9dd8995b9f07179e62fc542cd877e0ed511f55ee4fa87d"

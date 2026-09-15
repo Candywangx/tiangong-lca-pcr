@@ -1,10 +1,878 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47540"
-  title: "Optical media, not recorded"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.optical-media-not-recorded"
+  classification_refs: "CPC 3.0 47540; semantic context only"
+  covered_products: "New finished blank optical media with declared write-once or rewritable recording mechanism"
+  excluded_products: "Recorded and replicated content media; previously used erased discs; drives; magnetic and solid-state media; separately sold masters and stampers"
+  representative_product: "Blank 120 mm single-sided DVD-R with declared nominal 4.70 Gbyte capacity; dye and reflector composition specified by supplier"
+  production_route: "Condition resin; mould substrate; apply recording layer; dry; metallize; clean edges; bond if required; inspect and test; pack"
+  market_state: "Accepted finished unrecorded medium at factory gate, including required functional layers; detachable packaging inventoried separately"
+functional_unit:
+  what: "Supply blank optical media capable of recording information in the declared format"
+  how_much: "1 kg net accepted media; disclose equivalent disc count and aggregate nominal writable capacity"
+  how_well: "Meet declared format and manufacturer acceptance criteria; ECMA-359 applies only to a conforming DVD-R model, not to every optical format"
+  how_long_or_cycle: "One manufacturing delivery; no assumed archival lifetime, number of rewrites or user recording cycles"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory
+      applies_to: "foreground system"
+      rule: "Include attributable production, rejected and test-consumed discs, packing and site services. Link upstream manufacture, inbound transport and external waste treatment when constructing the cradle-to-gate result."
+      source_ids:
+        - wri-wbcsd-product-standard-2011
+    - rule_id: boundary_partial
+      applies_to: "downstream use"
+      rule: "Exclude customer recording, reading, distribution after the factory gate and post-consumer treatment from this partial result; disclose the limitation and add separate scenarios for a whole-life assessment."
+      source_ids:
+        - wri-wbcsd-product-standard-2011
+    - rule_id: boundary_route
+      applies_to: "format instantiation"
+      rule: "For rewritable media, document the actual phase-change alloy, each dielectric formulation and initialization step; for Blu-ray, document its actual recording and cover-layer technology. Add one concrete exchange per actual material or release, with no reuse of dye quantities across these routes."
+      source_ids:
+        - nist-sp-500-252-2003
+        - cci-notes-19-1
+    - rule_id: boundary_completeness
+      applies_to: "site collection"
+      rule: "Reconcile the full recipe, utilities ledger and waste register against the cards. Add actual coating additives, edge cleaners, gases, fuels, refrigerant losses, tooling amortization, cartridge parts and packaging components as separate exchanges where present. Missing data are not zero and small mass alone does not justify excluding thin functional layers."
+      source_ids: []
+    - rule_id: boundary_transfers
+      applies_to: "outsourced and internal stages"
+      rule: "Retain interstage counts in cp_output. Include subcontracted operations once; purchased semifinished substrates require their own upstream identity and replace only the operations already performed. Internal regrind and solvent recovery remain internal transfers with their processing burdens."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Receipt of specified substrate resin, supplied coating formulations, reflector feedstock and packaging at the manufacturing site"
+  starting_condition_role: "Foreground entry state for a factory-gate partial life-cycle inventory"
+  product_classification_scope: "Finished new unrecorded optical medium; upstream resin and chemical production are distinct product categories"
+  recursive_input_rule: "If purchased blank media enter the same category, record their actual state and quantity with an upstream supplier dataset and model only subsequent operations; do not recreate their prior production or substitute them for virgin resin"
+  upstream_dataset_requirement: "Attach compatible supplier or background datasets for actual material form, chemistry, energy supply, transport and treatment. A flow UUID establishes identity, not an upstream inventory."
+  disclosure: "Disclose supplier geography, subcontracted steps, transport legs, treatment destinations, excluded stages, internal recovery, integral housings and the aggregation boundary"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Optical media, not recorded"
+    uuid: "714535e8-24d4-44bf-8496-4837f638fdd4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Format and model"
+    - diameter
+    - "writable nominal capacity and capacity convention"
+    - "layer and side count"
+    - "write-once or rewritable"
+    - "recording-layer chemistry"
+    - "reflector composition"
+    - "substrate material"
+    - "protective and bonding layers"
+    - "new unrecorded state"
+    - "mean net medium mass and count"
+    - "integral cartridge housing if any"
+    - "detachable packaging"
+    - "acceptance specification and test sampling"
+    - plant
+    - geography
+    - technology
+    - "reporting period and declared starting condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_media_mass
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted media without detachable packaging. Include integral cartridge parts only when declared part of the reference object."
+  - id: count_mass
+    applies_to: "acceptance and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate accepted mass from lot count times measured mean net medium mass; retain sampling, tare and calibration records. Never assign a universal disc mass."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the electricity carrier; 1 kWh = 3.6 MJ is a unit identity. Do not interpret the database property label as a fuel or convert a shared meter into multiple carriers."
+  - id: formulated_input
+    applies_to: "dye, adhesive and lacquer"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record supplied formulation mass and constituent fractions. Purchased premix and its constituents must not both be external inputs; an on-site mixing route must instead record its actual individual purchased ingredients."
+  - id: gas_water_conversion
+    applies_to: "argon and water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve metered volume records and convert with documented composition, density, temperature and pressure; circulating throughput is not make-up consumption."
+process_map:
+  - id: disc_manufacture
+    name: "Substrate and functional-layer manufacture"
+    inclusion: "required"
+    inclusion_condition: "Every production route; instantiate its actual layer chemistry"
+    role: "foreground production"
+    quantitative_reference: "1 kg net accepted finished media"
+  - id: disc_bonding
+    name: "Bonding and UV curing"
+    inclusion: "conditional"
+    inclusion_condition: "Disc construction bonds substrates with UV-curable adhesive"
+    role: "foreground finishing"
+    quantitative_reference: "Same accepted-media denominator"
+  - id: disc_lacquering
+    name: "CD protective lacquer application"
+    inclusion: "conditional"
+    inclusion_condition: "The CD construction uses a separate protective lacquer"
+    role: "foreground finishing"
+    quantitative_reference: "Same accepted-media denominator"
+  - id: site_services
+    name: "Metered site services"
+    inclusion: "required"
+    inclusion_condition: "Include actual attributable services, with water rows conditional"
+    role: "foreground support"
+    quantitative_reference: "Same accepted-media denominator"
+  - id: pack_release
+    name: "Packing, acceptance and factory release"
+    inclusion: "required"
+    inclusion_condition: "Every accepted output; actual packaging components only"
+    role: "foreground output"
+    quantitative_reference: "1 kg net accepted media"
+process_inventory:
+  - id: disc_manufacture
+    label: "Substrate and functional-layer manufacture"
+    inputs:
+      product:
+        - row_id: polycarbonate
+          role: "Substrate resin"
+          name: "Polycarbonate granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c945ca0-edf2-41f3-ba9e-23af3e75c6d1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record this external exchange through the specified collection protocol."
+          amount:
+            expression: "Net external resin consumed, excluding internally recirculated sprues; weigh both DVD halves."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - nist-sp-500-252-2003
+            ranges: []
+        - row_id: silver
+          role: "Reflective-layer silver"
+          name: "silver"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7db0c01b-7605-4e92-90a1-c4bc6dd8e157"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Monometal silver reflector is used; a silver alloy needs its own composition-specific exchange."
+          amount:
+            expression: "Weighed silver target consumption and reconciled target inventory; distinguish deposited silver, recoverable target remnants and coating-chamber losses."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - nist-sp-500-252-2003
+                - bayer-wo2011092200a1
+            ranges: []
+        - row_id: azo_dye_solution
+          role: "Recording-layer formulation"
+          name: "Optical-disc azo dye coating solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Verified product recipe uses an azo dye solution. Other dye families require separate recipe-specific exchanges."
+          amount:
+            expression: "Weigh one supplied coating formulation; retain formulation identifier, dye identity, solids fraction and every solvent mass fraction. Do not also count its constituents as purchased inputs."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - nist-sp-500-252-2003
+            ranges: []
+        - row_id: argon_gas
+          role: "Sputtering gas"
+          name: "Gaseous argon"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Purchased gaseous argon feeds sputtering."
+          amount:
+            expression: "Meter delivered gas and convert to mass using supplier density at declared pressure and temperature; exclude internal gas circulation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: isopropanol
+          role: "Equipment-cleaning solvent"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Equipment cleaning uses isopropanol; this is not a default dye carrier or universal edge-cleaning recipe."
+          amount:
+            expression: "Weighed external isopropanol use corrected for stock changes; identify purity and exclude internal recovered-solvent circulation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pc_moulding_scrap
+          role: "External moulding scrap"
+          name: "Clean polycarbonate moulding scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Uncoated polycarbonate is discarded across the site boundary."
+          amount:
+            expression: "Weigh clean uncoated polymer scrap leaving the site for treatment; disclose destination and distinguish internal regrind."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: metallized_disc_reject
+          role: "Coated rejects including destructive tests"
+          name: "Rejected metallized optical disc"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Coated or bonded discs fail quality tests or are sacrificed for testing."
+          amount:
+            expression: "Weigh rejected coated discs by composition and treatment destination; include recording tests that consume saleable output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_dye_solution
+          role: "Spent coating formulation"
+          name: "Spent optical-disc azo dye coating solution"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Azo coating solution is discarded rather than internally recovered."
+          amount:
+            expression: "Weigh externally discarded liquid of the same declared coating formulation; retain solvent composition, solids and treatment destination."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_isopropanol
+          role: "External spent cleaning solvent"
+          name: "Spent isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Isopropanol cleaning generates a separately collected spent solvent."
+          amount:
+            expression: "Weigh the isopropanol cleaning waste solution and measure its solvent fraction; document contamination and recovery or treatment destination."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: isopropanol_air
+          role: "Direct cleaning-solvent release"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Isopropanol crosses to outdoor air; specify release location."
+          amount:
+            expression: "Measured release or species-resolved solvent balance after recovery and abatement; subtract solvent retained in waste and product."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids: []
+            ranges: []
+        - row_id: tetrafluoropropanol_air
+          role: "Direct dye-carrier release"
+          name: "2,2,3,3-Tetrafluoro-1-propanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "8a309c78-e251-11e6-bf01-fe55135034f3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Supplier formulation confirms this solvent and a direct release occurs. TianGong supplies no Chinese baseName for this flow; the aligned Chinese Selected flow retains its canonical English name."
+          amount:
+            expression: "Calculate only this species from the documented coating formulation and measured recovery, retention and abatement; do not equate all VOC to this compound."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_releases
+              source_ids: []
+            ranges: []
+  - id: disc_bonding
+    label: "Bonding and UV curing"
+    inputs:
+      product:
+        - row_id: uv_bonding_adhesive
+          role: "DVD bonding formulation"
+          name: "UV-curable acrylate DVD bonding adhesive"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): The declared disc construction uses UV-curable acrylate bonding."
+          amount:
+            expression: "Weigh the complete supplied adhesive formulation issued to bonding, corrected for recoverable returns and inventory; record cured mass retained in discs."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bonding
+              source_ids:
+                - bayer-wo2011092200a1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: disc_lacquering
+    label: "CD protective lacquer application"
+    inputs:
+      product:
+        - row_id: uv_cd_lacquer
+          role: "CD protective coating"
+          name: "UV-curable acrylate CD protective lacquer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): A CD route has a UV-curable acrylate protective lacquer; absent for the representative bonded DVD-R."
+          amount:
+            expression: "Weigh one supplied lacquer formulation net of returned liquid; record composition and cured retention."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lacquer
+              source_ids:
+                - nist-sp-500-252-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: site_services
+    label: "Metered site services"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record this external exchange through the specified collection protocol."
+          amount:
+            expression: "Meter all attributable drying, moulding, coating, vacuum, curing, testing, packing, compressed-air generation and cooling electricity, including allocated standby. Convert kWh to MJ."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Supplied make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): The site takes supplied process water for its attributable operations."
+          amount:
+            expression: "Meter supplied make-up water mass; record supply quality, source and density conversion. Do not count recirculating cooling-loop throughput."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cooling_blowdown
+          role: "External cooling blowdown"
+          name: "Cooling-tower blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Evaporative cooling produces blowdown sent to external treatment."
+          amount:
+            expression: "Meter blowdown mass and composition to external treatment; retain water chemistry and destination, without treating this as an elementary emission."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: evaporated_water
+          role: "Evaporative water loss"
+          name: "Water vapour emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Evaporative water loss occurs."
+          amount:
+            expression: "Measure or calculate evaporation from make-up minus blowdown, retained water, drift and inventory change; report drift separately if present."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+  - id: pack_release
+    label: "Packing, acceptance and factory release"
+    inputs:
+      product:
+        - row_id: corrugated_box
+          role: "Shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Corrugated board boxes accompany the shipped discs."
+          amount:
+            expression: "Count boxes used and multiply by measured tare mass per box; include packing rejects and identify recycled fibre content."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pp_spindle
+          role: "Disc-stack spindle"
+          name: "Polypropylene optical-disc packaging spindle"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): A polypropylene spindle is supplied with the discs."
+          amount:
+            expression: "Count polypropylene spindle components and multiply by measured component mass; a cover of another polymer requires a separate exchange."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted blank media"
+          name: "Optical media, not recorded"
+          flow_type: "product"
+          flow_ref:
+            uuid: "714535e8-24d4-44bf-8496-4837f638fdd4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record this external exchange through the specified collection protocol."
+          amount:
+            expression: "Normalize accepted net media output to 1 kg, excluding detachable packaging and rejected or test-recorded discs; retain accepted count and measured mean disc mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted media at factory gate; common denominator Q"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - ecma-359-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared production"
+    rule: "Prefer submetering and campaign subdivision. For unavoidable shared loads use a measured causal driver, such as machine time under matched loading; count allocation is justified only for equivalent products and routes."
+    source_ids:
+      - wri-wbcsd-product-standard-2011
+  - rule_id: allocation_losses
+    applies_to: "rejects and recycling"
+    rule: "Keep yield losses with accepted output. Record external scrap transfers, their status and recycling convention; do not credit avoided virgin resin or silver without an explicitly justified model."
+    source_ids:
+      - wri-wbcsd-product-standard-2011
+  - rule_id: allocation_reconcile
+    applies_to: "allocation factors"
+    rule: "Retain driver totals and assigned shares; allocated campaign quantities must reconcile to the original meter or ledger. Internal recovery is not a saleable co-product and creates no avoided-production credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_materials
+      process_id: "disc_manufacture"
+      flow_role: "individual material inputs"
+      record_type: "stock and dosing records"
+      raw_fields: "material and formulation id; composition; receipts; opening and closing stock; external returns; internal recovery; issued mass; density; gas conditions"
+      collection_method: "weigh issues and returns; reconcile with purchases; retain supplier specification"
+      unit: "kg; original gas volume"
+      frequency: "each lot and stock reconciliation"
+      temporal_coverage: "full declared campaign series"
+      site_scope: "each manufacturing line and outsourced step"
+      aggregation_rule: "external consumption by material divided by accepted mass Q"
+      quality_evidence: "calibrated scales; BOM; formulation sheet; reconciled ledger"
+    - protocol_id: cp_bonding
+      process_id: "disc_bonding"
+      flow_role: "individual material inputs"
+      record_type: "stock and dosing records"
+      raw_fields: "material and formulation id; composition; receipts; opening and closing stock; external returns; internal recovery; issued mass; density; gas conditions"
+      collection_method: "weigh issues and returns; reconcile with purchases; retain supplier specification"
+      unit: "kg; original gas volume"
+      frequency: "each lot and stock reconciliation"
+      temporal_coverage: "full declared campaign series"
+      site_scope: "each manufacturing line and outsourced step"
+      aggregation_rule: "external consumption by material divided by accepted mass Q"
+      quality_evidence: "calibrated scales; BOM; formulation sheet; reconciled ledger"
+    - protocol_id: cp_lacquer
+      process_id: "disc_lacquering"
+      flow_role: "individual material inputs"
+      record_type: "stock and dosing records"
+      raw_fields: "material and formulation id; composition; receipts; opening and closing stock; external returns; internal recovery; issued mass; density; gas conditions"
+      collection_method: "weigh issues and returns; reconcile with purchases; retain supplier specification"
+      unit: "kg; original gas volume"
+      frequency: "each lot and stock reconciliation"
+      temporal_coverage: "full declared campaign series"
+      site_scope: "each manufacturing line and outsourced step"
+      aggregation_rule: "external consumption by material divided by accepted mass Q"
+      quality_evidence: "calibrated scales; BOM; formulation sheet; reconciled ledger"
+    - protocol_id: cp_energy
+      process_id: "site_services"
+      flow_role: "electricity"
+      record_type: "meter records"
+      raw_fields: "opening and closing meter; kWh; line runtime; standby; shared load; allocation driver"
+      collection_method: "interval submetering and utility-bill reconciliation"
+      unit: "kWh and MJ"
+      frequency: "each meter interval and campaign"
+      temporal_coverage: "same period as Q"
+      site_scope: "site and production/support submeters"
+      aggregation_rule: "attributable meter differences times 3.6 divided by Q"
+      quality_evidence: "calibration; bill check; allocation calculation"
+    - protocol_id: cp_water
+      process_id: "site_services"
+      flow_role: "make-up, blowdown and evaporation separately"
+      record_type: "meters and water balance"
+      raw_fields: "incoming mass or volume; density; blowdown; evaporation; drift; retained water; stock changes; composition; treatment destination"
+      collection_method: "meter each boundary stream; close water balance"
+      unit: "kg; original m3"
+      frequency: "each campaign and discharge event"
+      temporal_coverage: "same period as Q"
+      site_scope: "attributable cooling and process-water systems"
+      aggregation_rule: "each stream divided by Q; internal recirculation excluded"
+      quality_evidence: "meter calibration; analysis; destination records; balance residual"
+    - protocol_id: cp_waste
+      process_id: "disc_manufacture"
+      flow_role: "individual waste streams"
+      record_type: "transfer and test records"
+      raw_fields: "stream id; wet mass; polymer or solvent fraction; metal content; rejected count; internal recovery; destination"
+      collection_method: "separate weighing and waste-composition records"
+      unit: "kg and count"
+      frequency: "each transfer and reject lot"
+      temporal_coverage: "same period as Q"
+      site_scope: "each generating line and external recipient"
+      aggregation_rule: "total external stream mass divided by Q"
+      quality_evidence: "weighing tickets; treatment contract; test log"
+    - protocol_id: cp_releases
+      process_id: "disc_manufacture"
+      flow_role: "each named atmospheric species"
+      record_type: "emission measurement or solvent balance"
+      raw_fields: "species; formulation mass fraction; input; recovery; retained product and waste; abatement; release compartment"
+      collection_method: "integrate concentration and exhaust volume or use species-resolved balance"
+      unit: "kg per species"
+      frequency: "each campaign with operating-state coverage"
+      temporal_coverage: "same period as Q"
+      site_scope: "coating and cleaning emission points"
+      aggregation_rule: "direct post-abatement species mass divided by Q"
+      quality_evidence: "method report; recovery records; detection limits; uncertainty"
+    - protocol_id: cp_packaging
+      process_id: "pack_release"
+      flow_role: "box and spindle separately"
+      record_type: "packing counts and tare"
+      raw_fields: "component identity; polymer or fibre grade; issued count; component mass; returns; rejected packaging"
+      collection_method: "count and representative component weighing"
+      unit: "count and kg"
+      frequency: "each packaging configuration and lot"
+      temporal_coverage: "same period as Q"
+      site_scope: "packing lines"
+      aggregation_rule: "each component count times mean mass divided by Q"
+      quality_evidence: "packing BOM; sampled tare; reconciliation"
+    - protocol_id: cp_output
+      process_id: "pack_release"
+      flow_role: "reference product and yield"
+      record_type: "production and acceptance records"
+      raw_fields: "model; interstage counts; accepted count; net disc mass sample; rejects; destructive-test count; WIP changes; nominal capacity; specification"
+      collection_method: "calibrated weighing, counters and documented optical acceptance testing"
+      unit: "kg; count; declared capacity unit"
+      frequency: "each production lot"
+      temporal_coverage: "same period as inputs"
+      site_scope: "every included production stage"
+      aggregation_rule: "Q is accepted count times measured mean net mass, reconciled with stock"
+      quality_evidence: "signed release; test results; tare check; counter and scale calibration"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all external exchanges"
+      rule: "q_i = X_i / Q, where X_i is the allocated campaign exchange and Q is accepted net medium mass; Q must be positive"
+      inputs:
+        - cp_materials
+        - cp_bonding
+        - cp_lacquer
+        - cp_energy
+        - cp_water
+        - cp_waste
+        - cp_releases
+        - cp_packaging
+        - cp_output
+      output: "exchange per 1 kg accepted media"
+      source_ids: []
+    - id: accepted_mass
+      applies_to: "reference_product"
+      rule: "Q = sum of accepted lot counts multiplied by their sampled mean net mass; exclude packaging and destructive-test discs"
+      inputs:
+        - cp_output
+      output: "accepted kg and equivalent count"
+      source_ids: []
+    - id: material_consumption
+      applies_to: "purchased materials"
+      rule: "External consumption = opening stock + receipts - closing stock - external unused returns; account for WIP changes and internal transfers explicitly"
+      inputs:
+        - cp_materials
+        - cp_bonding
+        - cp_lacquer
+        - cp_output
+      output: "consumed material mass"
+      source_ids: []
+    - id: solvent_balance
+      applies_to: "each solvent release"
+      rule: "Release = solvent input - retained product - solvent in external waste - recovered solvent exported - solvent destroyed - inventory increase; internally recycled solvent cancels. Negative residuals trigger investigation."
+      inputs:
+        - cp_materials
+        - cp_bonding
+        - cp_lacquer
+        - cp_releases
+        - cp_waste
+      output: "direct release of one solvent species"
+      source_ids: []
+    - id: yield_balance
+      applies_to: "physical completeness"
+      rule: "Reconcile incoming external material with accepted product, external rejects, recoverable output, emissions and stock changes; preserve separate polymer, reflector and solvent balances"
+      inputs:
+        - cp_materials
+        - cp_bonding
+        - cp_lacquer
+        - cp_output
+        - cp_waste
+        - cp_releases
+      output: "documented residual and investigation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all materials and media"
+      requirement: "Preserve format, recording mechanism, composition, supply form and quality designation; supplier evidence must confirm the representative recipe applies"
+      evidence: "BOM, specification and signed acceptance"
+    - id: dq_coverage
+      applies_to: "all stages"
+      requirement: "Reconcile records with the process map; disclose unmeasured flows, missing suppliers, treatment coverage and estimates without turning blanks into zero"
+      evidence: "completeness register and ledger checks"
+    - id: dq_measurement
+      applies_to: "normalized amounts"
+      requirement: "Use common dates and product boundaries; disclose sampling, calibration, allocations, detection limits and uncertainty"
+      evidence: "raw records and calculation workbook"
+    - id: dq_range
+      applies_to: "quantitative QA"
+      requirement: "Assess results with plant balances and measurement uncertainty; this PCR supplies no empirical production interval or archival-lifetime default"
+      evidence: "balance review and documented evidence gaps"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference object"
+    rule: "Verify new unrecorded market state, all qualifiers and the link to reference_product; exclude recorded rejects from accepted output."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - ecma-359-2004
+  - rule_id: validate_units
+    applies_to: "inventory"
+    rule: "Confirm positive Q, net-mass normalization, explicit unit conversions, and one material or species per exchange. A UUID cannot substitute for a missing quantity."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "process coverage"
+    rule: "Every required process has collection evidence; every conditional process and card has a declared applicability decision. Alternate recording chemistries require complete instantiated BOM and emissions coverage."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "yields and releases"
+    rule: "Check polymer, metal, solvent and water balances; investigate residuals using measured uncertainty and document the action. Do not force balance by creating an unnamed waste or emission."
+    source_ids: []
+  - rule_id: validate_conformance
+    applies_to: "product quality"
+    rule: "Retain applicable format tests, acceptance criteria and sampling basis. ECMA-359 conformance is a specification claim and does not supply an empirical inventory range."
+    source_ids:
+      - ecma-359-2004
+  - rule_id: validate_boundary
+    applies_to: "downstream dataset"
+    rule: "Disclose the partial boundary, missing upstream links, treatment destinations and unresolved exchanges; claims of complete life-cycle coverage require the omitted stages."
+    source_ids:
+      - wri-wbcsd-product-standard-2011
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after dataset-specific review"
+  downstream_use: "Supply of blank optical media to recording, distribution or storage-service models"
+  allowed_use: "Format- and route-matched factory-gate production; linking to separately declared downstream scenarios"
+  excluded_use: "Unqualified substitution for another recording technology, recorded-content production, drives, universal archive life or equal-service comparisons by mass alone"
+  required_metadata: "PCR identity and version; reference qualifiers; site and dates; net mass/count conversion; process boundary; supplier and treatment links; packaging; allocation; collection methods"
+  required_quality_disclosure: "Unresolved identities and amounts; missing stages; representativeness; measured versus calculated values; uncertainty; conformance evidence; review status"
+  update_trigger: "Change of recording chemistry, format, functional layers, supplier, energy mix, yield, recovery, packaging, site or supporting specification"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "[UN Statistics Division, CPC Version 3.0 structure (30 June 2025)](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv); retrieved 2026-09-09; independence_key: un-cpc-3-0-structure-2025"
+    used_for: "CPC 47540 identity and adjacent unrecorded-media categories."
+  - id: "china-mof-optical-media-2013"
+    type: "official_guidance"
+    reference: "[China Ministry of Finance hosted bilingual tariff table, p. 165, row 6779](https://gss.mof.gov.cn/gzdt/zhengcefabu/201306/P020130708509079068339.pdf); retrieved 2026-09-09; independence_key: mof-p020130708509079068339"
+    used_for: "Chinese terminology only; no tax rate or classification mapping is adopted."
+  - id: "nist-sp-500-252-2003"
+    type: "official_guidance"
+    reference: "[F. R. Byers, Care and Handling of CDs and DVDs, NIST SP 500-252 (2003), section 3](https://nvlpubs.nist.gov/nistpubs/legacy/sp/NISTspecialpublication500-252.pdf); retrieved 2026-09-09; independence_key: nist-sp-500-252"
+    used_for: "Polycarbonate, recording-layer distinctions, reflective metals, CD lacquer and DVD construction."
+  - id: "ecma-359-2004"
+    type: "standard"
+    reference: "[ECMA-359, 1st edition (December 2004), clauses 1, 2, 7, 14 and 26](https://ecma-international.org/wp-content/uploads/ECMA-359_1st_edition_december_2004.pdf); retrieved 2026-09-09; independence_key: ecma-359-ed1-2004"
+    used_for: "DVD-R format, blank-state preformatting and conformance scope; no production ranges."
+  - id: "cci-notes-19-1"
+    type: "official_guidance"
+    reference: "[Canadian Conservation Institute, Longevity of Recordable CDs, DVDs and Blu-rays, Notes 19/1](https://www.canada.ca/en/conservation-institute/services/conservation-preservation-publications/canadian-conservation-institute-notes/longevity-recordable-cds-dvds.html); retrieved 2026-09-09; independence_key: cci-notes-19-1"
+    used_for: "Material-dependent recording routes, Blu-ray distinctions and limitations on lifetime claims."
+  - id: "bayer-wo2011092200a1"
+    type: "literature"
+    reference: "[Bayer MaterialScience, High Speed DVDs, WO 2011/092200 A1 (4 August 2011), description pp. 12-13; original English publication reproduced with HK1177810A](https://patentimages.storage.googleapis.com/ea/32/ff/60d39479719181/HK1177810A.pdf); retrieved 2026-09-09; independence_key: wo2011092200a1"
+    used_for: "Technical route example: resin drying, moulding, dye spin coating and drying, sputtering, edge cleaning and UV bonding. Patent case quantities are not general benchmarks."
+  - id: "wri-wbcsd-product-standard-2011"
+    type: "standard"
+    reference: "[WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters 6-9](https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf); retrieved 2026-09-09; independence_key: ghg-protocol-product-standard-2011"
+    used_for: "Reference-flow disclosure, partial life-cycle boundaries, primary data and allocation hierarchy."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:10b10bc02e7362878bb7322386b1313f5e7103cf0d619bd9c81bd83336882a0b"
+  generated_content_sha256: "sha256:6ad294220a7fc51ca91bdf68bc49366a3c4bdc86f51e10e2743938927d33250c"

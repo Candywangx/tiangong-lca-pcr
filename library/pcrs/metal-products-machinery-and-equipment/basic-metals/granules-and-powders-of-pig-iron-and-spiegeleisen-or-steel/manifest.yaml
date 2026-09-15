@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.granules-and-powders-of-pig-iron-and-spiegeleisen-or-steel
 title:
   en-US: "Granules and powders, of pig iron and spiegeleisen, or steel"
-  zh-CN: null
-status: scaffold
+  zh-CN: "生铁、镜铁及钢铁的颗粒和粉末"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,83 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41117"
     title: "Granules and powders, of pig iron and spiegeleisen, or steel"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    result: canonical_identity_required
+    existing_material_pcr: null
+    rationale: "The reviewed boundary is a dry, saleable primary ferrous granule or powder product, not upstream pig iron in primary blocks, direct-reduced iron, ferro-alloy powder, ferrous scrap, or a downstream fabricated part. No existing material PCR has this product boundary."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: reference_product
+      reason: "No exact public state-100 TianGong product flow represents the full declared pig-iron, spiegeleisen, or steel granule/powder product boundary and dry market state."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: pig_iron_feedstock
+        reason_code: no_exact_candidate
+        explanation: "Hybrid discovery did not provide an exact public state-100 product flow for pig iron specifically in the received pig form and required market state."
+      - row_id: spiegeleisen_feedstock
+        reason_code: no_exact_candidate
+        explanation: "Hybrid discovery did not provide an exact public state-100 product flow for spiegeleisen specifically in the received pig form."
+      - row_id: steel_ingot_feedstock
+        reason_code: no_exact_candidate
+        explanation: "Hybrid discovery did not provide an exact public state-100 steel-ingot input with the declared grade and product state."
+      - row_id: steel_wire_feedstock
+        reason_code: no_exact_candidate
+        explanation: "Hybrid discovery did not provide an exact public state-100 steel-wire input for the cut-wire granule route."
+      - row_id: demineralized_water_input
+        reason_code: no_exact_candidate
+        explanation: "No exact public state-100 demineralized-water product flow with the required supplied state was confirmed."
+      - row_id: argon_gas_input
+        reason_code: no_exact_candidate
+        explanation: "No exact public state-100 gaseous argon product flow with the required supply state was confirmed."
+      - row_id: reference_product
+        reason_code: no_exact_candidate
+        explanation: "No exact public state-100 TianGong product flow was confirmed for the full declared pig-iron, spiegeleisen, or steel granule/powder product boundary and dry market state."
+      - row_id: off_spec_steel_powder
+        reason_code: no_exact_candidate
+        explanation: "No exact public state-100 waste flow for off-spec steel powder sent to external recycling was confirmed."
+      - row_id: atomization_sludge
+        reason_code: no_exact_candidate
+        explanation: "No exact public state-100 waste flow for iron-bearing water-atomization sludge was confirmed."
+      - row_id: pm10_air
+        reason_code: classification_mismatch
+        explanation: "No exact public state-100 PM10 elementary flow with the required receiving-air compartment and site emission height was confirmed."
+      - row_id: iron_to_water
+        reason_code: classification_mismatch
+        explanation: "No exact public state-100 iron elementary flow with the declared receiving-water compartment and dissolved-or-total measurement basis was confirmed."
+    range_evidence_needs:
+      - range_id: feedstock_yield_range
+        row_ids: [pig_iron_feedstock, spiegeleisen_feedstock, steel_ingot_feedstock, steel_wire_feedstock, reference_product]
+        explanation: "Two independent original-text sources with compatible gate-to-gate boundary, dry-mass basis, product state, and production route were not available; collect campaign mass-balance records and do not infer a numeric yield range."
+      - range_id: electricity_intensity_range
+        row_ids: [electricity_input]
+        explanation: "No two independent boundary-compatible sources were verified for electricity per dry saleable product across the declared production technologies; use metered foreground electricity."
+      - range_id: atomizing_media_range
+        row_ids: [demineralized_water_input, nitrogen_gas_input, argon_gas_input, compressed_air_input]
+        explanation: "Available sources establish media and process roles but do not provide two independent compatible empirical ranges on the PCR basis; use route-specific foreground meter and purchase records."
+      - range_id: combustion_media_range
+        row_ids: [natural_gas_input, industrial_oxygen_input]
+        explanation: "No two independent boundary-compatible original-text sources were verified for natural gas or oxygen consumption per dry saleable product; use equipment-specific foreground meter and purchase records."
+      - range_id: residue_and_waste_range
+        row_ids: [off_spec_steel_powder, atomization_sludge]
+        explanation: "No two independent compatible original-text sources were verified for these route- and recovery-dependent outputs; collect weighed waste and treatment-transfer records."
+      - range_id: direct_emission_range
+        row_ids: [pm10_air, fossil_co2_air, iron_to_water]
+        explanation: "No two independent compatible original-text sources were verified for these direct emissions from the declared process boundary; use site measurements, fuel records, and documented calculations."

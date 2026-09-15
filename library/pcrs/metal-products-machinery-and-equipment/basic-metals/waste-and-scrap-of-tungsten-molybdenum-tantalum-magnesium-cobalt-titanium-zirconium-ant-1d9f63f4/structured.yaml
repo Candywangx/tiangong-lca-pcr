@@ -1,10 +1,596 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41609"
-  title: "Waste and scrap of tungsten, molybdenum, tantalum, magnesium, cobalt, titanium, zirconium, antinomy, beryllium, chromium, thallium, cadmium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.waste-and-scrap-of-tungsten-molybdenum-tantalum-magnesium-cobalt-titanium-zirconium-ant-1d9f63f4"
+  classification_refs: "CPC 3.0: 41609 (exact semantic reference; mapping acceptance is governed separately)"
+  covered_products: "Saleable waste and scrap lots predominantly containing tungsten, molybdenum, tantalum, magnesium, cobalt, titanium, zirconium, antimony, beryllium, chromium, thallium, or cadmium, including declared alloys of those metals, after grading and any required non-thermal mechanical preparation"
+  excluded_products: "Precious-metal scrap; ferrous scrap; intact batteries and accumulators; unsorted electronic equipment; metal-bearing liquids, sludges, slags, drosses, baghouse dust, and process residues that are not traded as the declared scrap grade; recovered unwrought metal; wrought articles; cermets; mixtures without a declared predominant listed metal or alloy"
+  representative_product: "A weighed and graded lot of prepared listed-metal or listed-alloy scrap meeting a declared buyer, industry, or facility specification at the scrap-preparation facility gate"
+  production_route: "Acceptance and characterization, physical sorting, conditional non-thermal size reduction or separation, final grading, consolidation, and loading; no metallurgical recovery"
+  market_state: "Bulk pieces, turnings, cuttings, clips, granules, or compacted units, with metal or alloy grade, physical form, moisture, foreign-material content, hazardous-component status, and delivery form declared"
+functional_unit:
+  what: "Provide a composition-controlled secondary raw-material lot that a declared metals producer can accept for further recovery or manufacture"
+  how_much: "1 kg net mass of prepared saleable waste and scrap"
+  how_well: "Meets the declared metal or alloy grade and buyer, industry, or facility specification, with measured or documented moisture and foreign-material content"
+  how_long_or_cycle: "One completed preparation batch or dispatch lot at the facility gate; no service lifetime is assigned"
+  reference_flow_link: "The normalized output reference_scrap_output from grading_dispatch"
+system_boundary:
+  rules:
+    - rule_id: sb_start_at_acceptance
+      applies_to: "foreground starting condition"
+      rule: "Start the foreground boundary only after the facility has accepted, weighed, and identified the incoming listed-metal scrap. Model generation, collection, depollution required before acceptance, and inbound transport in separate upstream datasets when included by the study."
+      source_ids:
+        - jrc-waste-treatment-bref-2018
+        - us-epa-metal-shredders-2024
+    - rule_id: sb_include_preparation
+      applies_to: "foreground operations"
+      rule: "Include receiving and inspection, characterization and sorting, material handling and storage, route-conditional cutting, shearing, shredding, screening or physical separation, final grading, consolidation, and loading when performed by the reporting facility."
+      source_ids:
+        - us-epa-metal-shredders-2024
+    - rule_id: sb_exclude_recovery
+      applies_to: "downstream transformation"
+      rule: "Exclude roasting, smelting, melting, hydrometallurgy, refining, alloy manufacture, and any other transformation that produces recovered metal rather than prepared waste or scrap."
+      source_ids:
+        - ec-jrc-non-ferrous-metals-bref-2016
+    - rule_id: sb_route_and_residue_disclosure
+      applies_to: "conditional operations and treatment"
+      rule: "Declare every preparation technology actually used, meter its exchanges, and link each outgoing residue to a specific treatment dataset. Do not insert a generic preparation route or a generic waste-treatment process."
+      source_ids:
+        - jrc-waste-treatment-bref-2018
+        - us-epa-metal-shredders-2024
+boundary_abstraction:
+  declared_starting_condition: "Accepted, weighed incoming scrap for which predominant listed metal or alloy, origin, physical form, contamination, hazardous-component status, and moisture basis have been recorded"
+  starting_condition_role: "Secondary-material input accepted at the scrap-preparation facility gate"
+  product_classification_scope: "Waste and scrap predominantly of one declared listed metal or alloy within the semantic boundary of this PCR; CPC 3.0 code 41609 is a classification reference, not the canonical identity"
+  recursive_input_rule: "When incoming material already satisfies this PCR category, reference its supplying dataset and record its delivered grade and state once; do not recursively rebuild the supplying preparation inside the receiving dataset"
+  upstream_dataset_requirement: "Use separate, geographically and technologically representative datasets for scrap generation or prior treatment, inbound transport, electricity and water supply, and off-site treatment of each residue when these exchanges are in the study scope"
+  disclosure: "Disclose predominant metal or alloy, source and scrap age class, acceptance criteria, physical form, sampling and analytical method, moisture and foreign-material basis, preparation route, facility location, reporting period, mass balance, residue destinations, allocation, and any excluded operation"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Prepared listed-metal waste and scrap"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "predominant listed metal or alloy and composition basis"
+    - "new-scrap or post-consumer origin"
+    - "source sector"
+    - "physical form and particle-size class"
+    - "grade or specification"
+    - gross
+    - tare
+    - net
+    - moisture
+    - "and foreign-material basis"
+    - "hazardous-component and depollution status"
+    - "preparation route and equipment"
+    - "facility geography"
+    - "temporal coverage"
+    - "delivery form and included packaging"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_net_mass
+    applies_to: "reference product and all solid material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated gross and tare measurements to obtain net mass. State whether moisture and adhering non-metallic material remain in the commercial grade; never mix dry-mass and as-received results without an explicit conversion."
+  - id: mu_electricity_energy
+    applies_to: "electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter data in its recorded unit and convert kWh to MJ using exactly 3.6 MJ/kWh. Apply only the metered share attributable to the declared process and period."
+  - id: mu_water_mass
+    applies_to: "process-water input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass measurement. When volume is measured, convert with a documented contemporaneous density or a justified water-density value and retain the original volume record."
+  - id: mu_composition_basis
+    applies_to: "metal grade, moisture, and foreign-material results"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Report each fraction on one declared wet or dry basis, identify the test or sorting method and sampling plan, and reconcile the fractions to the measured lot mass."
+process_map:
+  - id: receiving_sorting
+    name: "Receiving, characterization, and sorting"
+    inclusion: "required"
+    inclusion_condition: "Always included for accepted incoming scrap"
+    role: "Establish accepted lot identity, grade, mass, and sorted intermediate"
+    quantitative_reference: "kg sorted scrap leaving the stage"
+  - id: mechanical_preparation
+    name: "Non-thermal mechanical preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the accepted scrap is cut, sheared, shredded, screened, physically separated, or water-sprayed before sale"
+    role: "Produce the required physical form and separate non-saleable fractions"
+    quantitative_reference: "kg prepared scrap leaving the stage"
+  - id: grading_dispatch
+    name: "Final grading, consolidation, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always included for the saleable reference lot"
+    role: "Verify the final grade, determine reference mass, consolidate, and load"
+    quantitative_reference: "1 kg net saleable reference product"
+process_inventory:
+  - id: receiving_sorting
+    label: "Receiving, characterization, and sorting"
+    inputs:
+      product:
+        - row_id: receiving_sorting_electricity_input
+          role: "Purchased electricity for receiving and sorting"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity crosses the process boundary for weighing, analysis, conveyors, lighting, and powered sorting equipment. Record the metered or defensibly submetered energy attributable to accepted lots."
+          amount:
+            expression: "Metered electricity attributable to receiving, characterization, and sorting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_sorting
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+      waste:
+        - row_id: accepted_unprepared_scrap_input
+          role: "Accepted unprepared listed-metal scrap"
+          name: "Accepted unprepared listed-metal waste and scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This is the accepted incoming physical waste stream before foreground sorting or size preparation. Record it by lot and keep the declared predominant metal or alloy, form, contamination, moisture, and origin with the mass record."
+          amount:
+            expression: "Net accepted mass from gross and tare measurements, reconciled to lot inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_sorting
+              source_ids:
+                - jrc-waste-treatment-bref-2018
+                - us-epa-metal-shredders-2024
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sorted_scrap_output
+          role: "Sorted listed-metal scrap intermediate"
+          name: "Sorted listed-metal scrap intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal intermediate is the accepted listed-metal scrap after characterization and sorting but before any required size or separation treatment. Calculate it from measured batch transfers and inventory change."
+          amount:
+            expression: "Calculated sorted output mass from batch transfer records and measured inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_sorting
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: mechanical_preparation
+    label: "Non-thermal mechanical preparation"
+    inputs:
+      product:
+        - row_id: sorted_scrap_input
+          role: "Sorted scrap transferred to preparation"
+          name: "Sorted listed-metal scrap intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This row transfers the measured sorting-stage intermediate only when mechanical preparation is used. The value shall equal the corresponding transfer out of receiving_sorting after inventory-change reconciliation."
+          amount:
+            expression: "Calculated interstage transfer into the included preparation route"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_preparation
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+        - row_id: preparation_electricity_input
+          role: "Purchased electricity for mechanical preparation"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity crosses the boundary for the actually used cutting, shearing, shredding, screening, conveying, or physical separation equipment. Record zero only when the conditional process is not included, and document that route decision."
+          amount:
+            expression: "Metered or submetered electricity for the included preparation campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_preparation
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+        - row_id: preparation_water_input
+          role: "Process water for wet separation or dust suppression"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water crosses the boundary only when the declared preparation route uses water for wet physical separation or dust suppression. Keep recirculated internal water outside the input until make-up water crosses the facility boundary."
+          amount:
+            expression: "Metered make-up water for the included wet-separation or dust-suppression route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_preparation
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_scrap_output
+          role: "Prepared scrap intermediate"
+          name: "Prepared listed-metal scrap intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal intermediate is the route-conditioned scrap after the included non-thermal physical preparation. Calculate it from weighed transfers and the preparation-stage mass balance."
+          amount:
+            expression: "Calculated prepared output mass after measured residues and inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_preparation
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+      waste:
+        - row_id: nonmetallic_separation_residue_output
+          role: "Separated non-metallic residue"
+          name: "Non-metallic separation residue from listed-metal scrap preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the one physical non-metallic residue stream separated from the declared scrap during the included preparation campaign. Do not combine it with metal-bearing fines or an off-site treatment service."
+          amount:
+            expression: "Weighed residue dispatched from or added to on-site inventory during the campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_preparation
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+        - row_id: metal_bearing_fines_output
+          role: "Metal-bearing fines from preparation"
+          name: "Listed-metal-bearing fines from mechanical scrap preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately the physically collected fines that still contain one or more declared listed metals and leave for recovery or treatment. The metal or alloy composition and destination shall accompany the mass record."
+          amount:
+            expression: "Weighed fines dispatched from or added to on-site inventory during the campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_preparation
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+      elementary:
+        []
+  - id: grading_dispatch
+    label: "Final grading, consolidation, and dispatch"
+    inputs:
+      product:
+        - row_id: prepared_scrap_input
+          role: "Prepared scrap transferred to final grading"
+          name: "Prepared listed-metal scrap intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This interstage transfer is the prepared scrap supplied to final grading. When mechanical preparation is not applicable, use the reconciled sorted output from receiving_sorting and declare the bypass."
+          amount:
+            expression: "Calculated interstage transfer into the dispatch lot, including a documented process bypass when applicable"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grading_dispatch
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+        - row_id: dispatch_electricity_input
+          role: "Purchased electricity for grading and dispatch"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity crosses the boundary for final analysis, weighing, consolidation, conveying, and loading equipment. Allocate shared meter data using an auditable operating-time, throughput, or submeter basis."
+          amount:
+            expression: "Metered or allocated electricity attributable to the dispatch lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_dispatch
+              source_ids:
+                - us-epa-metal-shredders-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_scrap_output
+          role: "Prepared saleable listed-metal waste and scrap"
+          name: "Prepared listed-metal waste and scrap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the only quantitative reference output. Normalize the complete foreground inventory to 1 kg net mass after final grade verification and retain the actual dispatch-lot mass as the unnormalized source record."
+          amount:
+            expression: "Exactly 1 kg after normalization by cr_reference_normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grading_dispatch
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+                - us-epa-metal-shredders-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivide_first
+    applies_to: "independently measured preparation lines and grades"
+    rule: "Avoid allocation by subdividing receiving, preparation, and dispatch operations whenever meters, batch records, or operating logs distinguish the declared metal or alloy grade and route."
+    source_ids: []
+  - rule_id: al_shared_operations
+    applies_to: "electricity and shared handling"
+    rule: "Allocate only genuinely shared operations using a causal submeter, operating-time, equipment-throughput, or handled-net-mass basis, in that preference order; report the driver and affected exchanges."
+    source_ids: []
+  - rule_id: al_multiple_saleable_grades
+    applies_to: "multiple saleable scrap outputs"
+    rule: "Keep separately weighed saleable grades as separate product outputs. If subdivision is impossible, allocate shared burdens by dry saleable mass and report a sensitivity case using economic value when price differences could change interpretation."
+    source_ids: []
+  - rule_id: al_incoming_scrap_burden
+    applies_to: "incoming waste and scrap"
+    rule: "State the study's treatment of burdens before facility acceptance. Do not silently assign zero upstream burden, avoided primary-metal credit, or end-of-life recycling credit; apply such conventions only in the downstream study and disclose them separately from this foreground inventory."
+    source_ids: []
+  - rule_id: al_residue_no_credit
+    applies_to: "nonmetallic residue and metal-bearing fines"
+    rule: "Model each outgoing stream and its receiving treatment or recovery dataset explicitly. Do not credit recovery before the receiving process and allocation convention are identified."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_sorting
+      process_id: "receiving_sorting"
+      flow_role: "accepted input, electricity, and sorted transfer"
+      record_type: "scale tickets, acceptance record, composition or grade test, inventory log, electricity meter"
+      raw_fields: "lot id; supplier and origin; gross mass; tare mass; moisture basis; predominant metal or alloy; composition result; physical form; foreign material; hazardous-component status; acceptance decision; opening and closing inventory; meter start and end"
+      collection_method: "Calibrated weighing plus documented sampling, analysis, inspection, lot tracking, and submeter or defensible meter allocation"
+      unit: "kg; mass fraction; kWh or MJ"
+      frequency: "Every accepted lot and meter interval"
+      temporal_coverage: "At least one representative continuous 12-month period or the full campaign when shorter"
+      site_scope: "All receiving and sorting operations supplying the declared product"
+      aggregation_rule: "Sum accepted and transferred net masses by homogeneous declared grade and route; reconcile inventory change; sum attributable electricity and normalize after final output is known"
+      quality_evidence: "Scale and meter calibration; sampling plan; analytical method; acceptance checklist; lot ledger; inventory reconciliation"
+    - protocol_id: cp_mechanical_preparation
+      process_id: "mechanical_preparation"
+      flow_role: "interstage input, electricity, water, prepared output, residue, and fines"
+      record_type: "batch transfer ticket, equipment meter, water meter, residue scale ticket, inventory log"
+      raw_fields: "batch id; route and equipment; input mass; output mass; residue mass; fines mass; opening and closing inventory; meter readings; water readings; recirculation state; destination"
+      collection_method: "Weigh every material transfer; meter electricity and boundary-crossing make-up water for the included campaign"
+      unit: "kg; kWh or MJ"
+      frequency: "Every preparation batch and meter interval"
+      temporal_coverage: "Same period as the represented dispatch lots"
+      site_scope: "All included non-thermal mechanical preparation equipment"
+      aggregation_rule: "Reconcile input, outputs, residues, and inventory change by route; sum energy and make-up water; do not combine technologies before checking representativeness"
+      quality_evidence: "Scale and meter calibration; route log; maintenance and downtime log; residue destination record; signed mass-balance review"
+    - protocol_id: cp_grading_dispatch
+      process_id: "grading_dispatch"
+      flow_role: "prepared input, dispatch electricity, and reference output"
+      record_type: "transfer ticket, final grade certificate, dispatch scale ticket, electricity meter, loading log"
+      raw_fields: "dispatch lot id; linked input batches; predominant metal or alloy; composition and grade; gross mass; tare mass; net mass; moisture and foreign-material basis; physical and delivery form; meter readings; customer specification; dispatch date"
+      collection_method: "Calibrated final weighing, documented sampling or inspection, lot linkage, and submeter or defensible meter allocation"
+      unit: "kg; mass fraction; kWh or MJ"
+      frequency: "Every dispatch lot and meter interval"
+      temporal_coverage: "At least one representative continuous 12-month period or the full campaign when shorter"
+      site_scope: "All final grading, consolidation, and loading operations for the declared product"
+      aggregation_rule: "Aggregate only homogeneous lots meeting the same declared product boundary; normalize all linked exchanges by net saleable output mass"
+      quality_evidence: "Scale and meter calibration; grade certificate; chain of custody; customer or facility specification; batch-to-dispatch reconciliation"
+  calculation_rules:
+    - id: cr_net_mass
+      applies_to: "every weighed lot or stream"
+      rule: "net mass = gross mass - tare mass; apply a moisture or foreign-material correction only when the declared commercial basis requires it and retain both original and corrected values"
+      inputs:
+        - "gross mass"
+        - "tare mass"
+        - "declared basis"
+        - "moisture and foreign-material results"
+      output: "kg net mass on the declared basis"
+      source_ids: []
+    - id: cr_stage_mass_balance
+      applies_to: "receiving_sorting and mechanical_preparation"
+      rule: "input + opening inventory = product transfers + nonmetallic residue + metal-bearing fines + other specifically identified outputs + closing inventory; investigate rather than allocate an unexplained imbalance"
+      inputs:
+        - "measured input"
+        - outputs
+        - "and inventory change"
+      output: "reconciled batch mass balance and unexplained difference"
+      source_ids: []
+    - id: cr_electricity_conversion
+      applies_to: "all electricity inputs"
+      rule: "electricity_MJ = electricity_kWh × 3.6"
+      inputs:
+        - "attributable metered kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: cr_water_conversion
+      applies_to: "preparation_water_input"
+      rule: "water_mass = measured water volume × documented density; subtract measured recovered water crossing outward only if it is a separate exchange"
+      inputs:
+        - "boundary-crossing make-up volume"
+        - density
+        - "any separately measured outward recovered-water flow"
+      output: "kg process-water input"
+      source_ids: []
+    - id: cr_reference_normalization
+      applies_to: "complete foreground data package"
+      rule: "normalized exchange = reconciled exchange amount / net mass of conforming reference_scrap_output"
+      inputs:
+        - "all reconciled exchanges"
+        - "dispatch-lot net saleable mass"
+      output: "each exchange per 1 kg reference product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "every represented lot"
+      requirement: "Identify the predominant listed metal or alloy, composition basis, origin, physical form, grade, preparation route, and hazardous-component state; do not use a generic mixed-metal identity."
+      evidence: "Supplier record, acceptance record, sampling plan, test or inspection result, and grade certificate"
+    - id: dq_measurement
+      applies_to: "mass, electricity, water, and composition"
+      requirement: "Use calibrated devices within their valid range and retain original readings, unit conversions, uncertainty or precision information, and calibration status."
+      evidence: "Calibration certificates, meter logs, laboratory quality records, and conversion worksheet"
+    - id: dq_temporal
+      applies_to: "annual or campaign dataset"
+      requirement: "Cover a representative continuous 12-month period where possible; otherwise cover the full campaign and explain seasonality, outages, stock changes, and the reason for the shorter period."
+      evidence: "Dated lot ledger, production calendar, inventory reconciliation, and representativeness assessment"
+    - id: dq_completeness
+      applies_to: "facility foreground inventory"
+      requirement: "Reconcile every accepted lot to saleable outputs, specifically identified residues, fines, other physical outputs, and inventory change; investigate missing streams."
+      evidence: "Signed process-stage and facility mass balances"
+    - id: dq_route_specificity
+      applies_to: "conditional mechanical preparation"
+      requirement: "Keep bypassed, sheared, shredded, screened, wet-separated, and other materially different routes separate unless a documented weighted aggregation remains representative."
+      evidence: "Route logs, equipment records, meter allocation, and aggregation rationale"
+    - id: dq_destination
+      applies_to: "outgoing residue and fines"
+      requirement: "Record physical state, declared composition where relevant, waste or product status, receiver, transport handoff, and treatment or recovery route."
+      evidence: "Scale ticket, transfer document, receiver record, and linked treatment dataset"
+validation_rules:
+  - rule_id: vr_identity_complete
+    applies_to: "reference flow and foreground package"
+    rule: "Fail validation when predominant listed metal or alloy, origin, physical form, grade or specification, moisture and foreign-material basis, hazardous-component state, preparation route, geography, or reporting period is missing."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: vr_reference_output
+    applies_to: "reference_scrap_output"
+    rule: "Confirm that the only quantitative reference output is exactly 1 kg after normalization and that its unnormalized dispatch-lot net mass is positive and traceable."
+    source_ids: []
+  - rule_id: vr_mass_balance
+    applies_to: "each process stage and facility total"
+    rule: "Confirm the mass-balance equation, report the signed and absolute unexplained difference, and require documented investigation against a study-defined tolerance rather than inserting a balancing flow."
+    source_ids: []
+  - rule_id: vr_conditional_route
+    applies_to: "mechanical_preparation and its exchanges"
+    rule: "Include preparation electricity, water, residues, and fines only when their specific route occurs; require an explicit bypass statement when the conditional process is omitted."
+    source_ids:
+      - us-epa-metal-shredders-2024
+  - rule_id: vr_energy_units
+    applies_to: "electricity inputs"
+    rule: "Recalculate each kWh-to-MJ conversion with 3.6 MJ/kWh and reject mixed-unit summation."
+    source_ids: []
+  - rule_id: vr_no_double_count
+    applies_to: "interstage and upstream links"
+    rule: "Confirm each internal transfer appears once as an output and once as the corresponding input without adding both to the facility-level net inventory, and confirm upstream supply and off-site treatment are linked rather than duplicated in the foreground process."
+    source_ids: []
+  - rule_id: vr_uuid_status
+    applies_to: "reference and inventory flows"
+    rule: "Treat UUID-empty rows as unresolved identities. Do not substitute generic metal scrap, mixed scrap, precious-metal scrap, ferrous scrap, or non-metal waste for the exact semantic flow."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; may serve as a background_dataset only after representativeness and review are documented"
+  downstream_use: "Foreground process datasets and lifecycle models requiring prepared listed-metal scrap at a scrap-preparation facility gate"
+  allowed_use: "Studies whose predominant metal or alloy, grade, origin, physical form, preparation route, geography, period, moisture basis, foreign-material basis, and burden convention match the dataset"
+  excluded_use: "Generic mixed-metal scrap; precious-metal or ferrous scrap; intact batteries or electronic equipment; metallurgical recovery; substitution or avoided-primary-metal credit without a separate downstream convention; geographies or technologies lacking a representativeness assessment"
+  required_metadata: "Canonical PCR id; predominant metal or alloy and composition; new or post-consumer origin; source sector; grade or specification; physical and delivery form; moisture and foreign-material basis; hazardous-component state; preparation route and equipment; facility geography; reporting period; reference mass; allocation; source ids; unresolved UUID disclosure"
+  required_quality_disclosure: "Sampling and analytical methods; scale and meter calibration; temporal and technological coverage; batch-to-dispatch linkage; process and facility mass balances; unexplained differences; route aggregation; residue destinations; data gaps; uncertainty; review status"
+  update_trigger: "Change in predominant metal or alloy, accepted source mix, grade specification, physical form, contamination or moisture basis, preparation technology, facility, electricity or water supply, residue destination, allocation rule, reporting period, or reference-flow UUID resolution"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-06-23; SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c)"
+    used_for: "Official CPC 41609 classification identity and hierarchy; not quantitative evidence"
+  - id: "jrc-waste-treatment-bref-2018"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Waste Treatment BAT Reference Document landing page, published October 2018, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/waste-treatment-0 (retrieved 2026-09-04)"
+    used_for: "Waste reception, sampling, checking, analysis, transfer, handling, and storage process coverage"
+  - id: "ec-jrc-non-ferrous-metals-bref-2016"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Non-ferrous Metals Industries BAT Reference Document landing page, adopted June 2016, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/non-ferrous-metals-industries-0 (retrieved 2026-09-04)"
+    used_for: "Distinguishing production of secondary non-ferrous metals from preparation of scrap"
+  - id: "us-epa-metal-shredders-2024"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Best Practices for Metal Shredding Facilities in Clean Air Act Permitting, August 2024, https://19january2025snapshot.epa.gov/system/files/documents/2024-09/metal-shredders-best-practices_08-2024.pdf (retrieved 2026-09-04)"
+    used_for: "Receiving and inspection, acceptance control, sorting, size preparation, separation, material handling, water dust suppression, residue handling, grading, loading, and site-specific emissions-data requirements; not an amount range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4ad4f2cdd8af80cb97c5f77078211b7e8847b11a5f354a6041443e337a7d28c7"
+  generated_content_sha256: "sha256:7b8f1a5f87d01aa4b3ba5450b4c93d3a20c4e05a5ca67faaeb682676a835e786"

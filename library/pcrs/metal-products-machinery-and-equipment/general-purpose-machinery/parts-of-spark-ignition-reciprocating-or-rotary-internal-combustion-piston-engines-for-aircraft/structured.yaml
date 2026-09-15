@@ -1,10 +1,846 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43152"
-  title: "Parts of spark-ignition reciprocating or rotary internal combustion piston engines for aircraft"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-of-spark-ignition-reciprocating-or-rotary-internal-combustion-piston-engines-for-aircraft"
+  classification_refs: "CPC 3.0: 43152 (exact classification context)"
+  covered_products: "New, finished, serviceable cylinder, piston, connecting-rod, crankshaft, crankcase, valve-train, bearing-housing, and other individually identified parts made specifically for aircraft spark-ignition reciprocating or rotary piston engines, when supplied as parts rather than complete engines."
+  excluded_products: "Complete engines; generic engine parts not restricted to aircraft spark-ignition piston engines; compression-ignition engine parts; turbojet, turboprop, and other reaction-engine parts; propellers; electrical ignition equipment classified separately; maintenance-fabricated, repaired, overhauled, or remanufactured parts; raw material and unfinished stock not eligible for installation."
+  representative_product: "A released, individually identified aircraft spark-ignition piston-engine part conforming to the applicable drawing, material and process specification, inspection status, and production-approval basis."
+  production_route: "Purchased material or near-net blank; machining and cleaning; route-specific heat treatment; route-specific surface preparation, anodizing, plating, or coating; inspection, nonconforming-part control, preservation, and release. Outsourced steps are represented by supplier datasets rather than omitted."
+  market_state: "New, accepted, serviceable part at the manufacturer's gate, with part number, revision/configuration, material grade, process route, acceptance status, and net accepted mass declared; transport packaging excluded unless explicitly brought into the dataset boundary."
+functional_unit:
+  what: "Provision of a new, conforming, serviceable part made specifically for an aircraft spark-ignition reciprocating or rotary piston engine."
+  how_much: "1 kg net accepted mass of the declared part number and configuration at the manufacturer's gate."
+  how_well: "Conforms to the applicable approved design or controlling specification, including declared material, dimensions, special processes, inspection status, marking, and release basis."
+  how_long_or_cycle: "One production and release cycle ending at the manufacturer's gate; no equivalence in service life among different part numbers is asserted."
+  reference_flow_link: "aircraft_engine_part_output"
+system_boundary:
+  rules:
+    - rule_id: sb_cradle_to_gate
+      applies_to: "all foreground datasets"
+      rule: "Include purchased-input supply, all producer-controlled manufacturing and special processes, inspection, nonconforming-part handling, preservation, and release through the manufacturer's gate."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - faa-ac-21-43a-2015
+        - faa-ac-43-18-chg-2-2011
+    - rule_id: sb_outsourced_processes
+      applies_to: "outsourced machining, heat treatment, surface treatment, inspection, and other special processes"
+      rule: "Represent the supplier service and its material, energy, emission, and waste burdens with an upstream dataset; do not treat outsourcing as a cut-off."
+      source_ids:
+        - faa-ac-21-43a-2015
+        - faa-ac-43-18-chg-2-2011
+    - rule_id: sb_use_and_end_of_life
+      applies_to: "downstream aircraft and engine stages"
+      rule: "Exclude engine assembly, aircraft integration, operation, maintenance, replacement, and end-of-life unless a study explicitly extends the boundary and reports those stages separately."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased alloy stock, casting, forging, or supplier-finished subpart received with material/product identity, mass, supplier, geography, production route, and upstream-dataset reference."
+  starting_condition_role: "Cradle-to-gate starting condition for the reporting organization's controlled manufacturing route."
+  product_classification_scope: "New, finished parts specifically for aircraft spark-ignition reciprocating or rotary piston engines; not complete engines or generic/non-aircraft engine parts."
+  recursive_input_rule: "A purchased input that already meets this same finished-part category is recorded as one product input with its own upstream dataset, declared part number and gate, and is not recursively decomposed inside the receiving foreground process."
+  upstream_dataset_requirement: "Every purchased material, near-net blank, supplier-finished part, and outsourced special process must carry a geographically and technologically representative upstream dataset or be disclosed as an unresolved data gap; supplier-controlled burdens may not be omitted."
+  disclosure: "Declare material and product state at entry, exact controlled and outsourced operations, cut-offs, site and period, yield and reject accounting, energy and water meter allocation, treatment destinations, packaging status, and any excluded tooling or capital goods."
+reference_flow_definition:
+  reference_amount: "1 kg net accepted product"
+  product_flow_ref:
+    name: "Parts of spark-ignition reciprocating or rotary internal combustion piston engines for aircraft (UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part name and part number"
+    - "drawing and revision/configuration"
+    - "reciprocating or rotary engine application"
+    - "aircraft application and eligibility basis"
+    - "material grade and product state"
+    - "purchased-stock or near-net-blank state"
+    - "heat-treatment route"
+    - "surface-treatment route"
+    - "inspection and release status"
+    - "net accepted mass"
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "outsourced-process boundary"
+    - "allocation and recycling treatment"
+    - "packaging inclusion status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the net mass of accepted parts after final processing and before excluded transport packaging. Normalize all inventory quantities to 1 kg accepted product."
+  - id: accepted_product_mass
+    applies_to: "production batches"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Determine accepted product mass from calibrated scales or part-count multiplied by a controlled, current measured mass per part number; exclude rejected parts and samples not released as product."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity in its recorded unit and convert kWh to MJ using 1 kWh = 3.6 MJ. Do not mix electricity with fuel energy."
+  - id: gas_volume_conditions
+    applies_to: "natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered gas volume and disclose the temperature, pressure, dry/wet basis, and any standard-volume conversion used."
+  - id: aqueous_mass_conversion
+    applies_to: "process water and aqueous wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Prefer measured mass. When only volume is available, convert with a measured or documented density applicable to the stream and reporting conditions, and retain both the original volume and density evidence."
+process_map:
+  - id: machining_and_cleaning
+    name: "Material preparation, machining, and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always include the controlled operations that turn purchased stock or near-net blanks into the declared part geometry; represent purchased finished subparts as recursive inputs under the boundary rule."
+    role: "Foreground manufacturing and material-removal accounting."
+    quantitative_reference: "Inputs, chips, spent machining fluid, energy, and water per 1 kg accepted part."
+  - id: heat_treatment
+    name: "Heat treatment and quenching"
+    inclusion: "conditional"
+    inclusion_condition: "Include when thermal treatment or oil quenching is performed under the declared route; use supplier datasets when outsourced."
+    role: "Controlled thermal processing."
+    quantitative_reference: "Fuel, electricity, quenching-oil make-up, direct fossil CO2, and spent quench oil per 1 kg accepted part."
+  - id: surface_treatment
+    name: "Surface preparation and chromium-bearing anodizing or plating"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared part route uses the represented alkaline cleaning, acid activation, chromic-acid anodizing, or chromium plating steps; other finishes require separate atomic rows."
+    role: "Controlled surface processing and rinse/wastewater accounting."
+    quantitative_reference: "Electricity, water, bath-chemical make-up, and wastewater per 1 kg accepted part."
+  - id: inspection_and_release
+    name: "Inspection, nonconforming-part control, preservation, and release"
+    inclusion: "required"
+    inclusion_condition: "Always include final conformity activities and the measured disposition of nonconforming parts; include route-specific NDI consumables as additional atomic rows in the foreground dataset."
+    role: "Quality release and final reference-product output."
+    quantitative_reference: "Inspection energy, reject mass, and 1 kg accepted product."
+process_inventory:
+  - id: machining_and_cleaning
+    label: "Material preparation, machining, and cleaning"
+    inputs:
+      product:
+        - row_id: aluminium_alloy_casting
+          role: "Aluminium-alloy casting blank"
+          name: "Aluminium-alloy casting, declared alloy grade and casting state (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of the exact aluminium-alloy casting grade entering machining when this material route applies."
+          amount:
+            expression: "Measured received mass consumed by the declared production batch, net of returned unused stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - faa-ac-43-18-chg-2-2011
+            ranges: []
+        - row_id: alloy_steel_forging
+          role: "Alloy-steel forging blank"
+          name: "Alloy-steel forging, declared alloy grade and forged state (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of the exact alloy-steel forging grade entering machining when this material route applies."
+          amount:
+            expression: "Measured received mass consumed by the declared production batch, net of returned unused stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - faa-ac-43-18-chg-2-2011
+            ranges: []
+        - row_id: machining_electricity
+          role: "Machining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy delivered to machine tools, chip and fluid handling, and in-boundary cleaning equipment."
+          amount:
+            expression: "Submetered electricity or documented equipment power multiplied by operating time and allocated under section 7"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: machining_process_water
+          role: "Machining and cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water supplied across the process boundary for machining-fluid preparation and part cleaning."
+          amount:
+            expression: "Metered or batch-recorded process-water mass; exclude recirculated water until make-up crosses the boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting-fluid make-up"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record purchased cutting fluid crossing the process boundary; declare formulation, concentration, and whether it is neat oil or water-miscible concentrate."
+          amount:
+            expression: "Measured make-up fluid added during the reporting period and assigned to the declared production batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: aluminium_machining_chips
+          role: "Aluminium machining chips"
+          name: "Aluminium-alloy machining chips, declared alloy and contamination state (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium-alloy chips and swarf leaving the process when the aluminium route applies."
+          amount:
+            expression: "Measured dispatched or inventory-adjusted chip mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: steel_machining_chips
+          role: "Steel machining chips"
+          name: "Steel scrap, machining chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c978e4fc-350b-4fb6-8021-90eb5a6ed034"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel chips and swarf leaving the process when the alloy-steel route applies."
+          amount:
+            expression: "Measured dispatched or inventory-adjusted chip mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_cutting_oil
+          role: "Waste cutting oil"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass / kg"
+          description: "Record spent neat cutting oil leaving the process only when the declared machining-fluid route uses neat oil."
+          amount:
+            expression: "Measured mass sent to the declared recovery or treatment route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: spent_water_miscible_cutting_fluid_emulsion
+          role: "Spent water-miscible cutting-fluid emulsion"
+          name: "Spent water-miscible cutting-fluid emulsion (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent water-miscible machining emulsion separately from neat waste cutting oil when that route applies."
+          amount:
+            expression: "Measured mass sent to the declared recovery or treatment route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Heat treatment and quenching"
+    inputs:
+      product:
+        - row_id: heat_treatment_natural_gas
+          role: "Heat-treatment natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas burned in an in-boundary furnace only when the declared heat-treatment route uses it."
+          amount:
+            expression: "Metered standard or actual volume assigned to the declared heat-treatment batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: heat_treatment_electricity
+          role: "Heat-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity supplied to electric furnaces, furnace auxiliaries, quench circulation, and controls when in boundary."
+          amount:
+            expression: "Submetered electricity or documented equipment power multiplied by operating time and allocated under section 7"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: quenching_oil
+          role: "Quenching-oil make-up"
+          name: "Quenching Oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02f62137-e204-46e6-8e72-e88b450fbdc4"
+          property_unit: "Mass / kg"
+          description: "Record new quenching oil added to the bath when oil quenching is part of the declared route; do not record the circulating bath inventory as consumption."
+          amount:
+            expression: "Measured make-up and replacement oil charged during the reporting period and assigned to treated batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_quenching_oil
+          role: "Spent quenching oil"
+          name: "spent quench oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "0f997fd8-26b1-432f-a8b8-e2703616b018"
+          property_unit: "Mass / kg"
+          description: "Record spent quenching oil removed from the bath and transferred to the declared recovery or treatment route."
+          amount:
+            expression: "Measured removed mass, adjusted for documented off-site return or on-site inventory change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil CO2 from in-boundary fuel combustion; upstream electricity emissions remain in electricity datasets."
+          amount:
+            expression: "Site-measured direct emission assigned to the heat-treatment batches, or a disclosed calculation from metered fuel, fuel carbon content, and oxidation evidence"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+  - id: surface_treatment
+    label: "Surface preparation and chromium-bearing anodizing or plating"
+    inputs:
+      product:
+        - row_id: surface_treatment_electricity
+          role: "Surface-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity supplied to rectifiers, bath heating, ventilation, pumps, and in-boundary emission controls for the declared route."
+          amount:
+            expression: "Submetered electricity assigned to the declared parts and treatment batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - us-epa-ap42-12-20-electroplating-2021
+            ranges: []
+        - row_id: surface_treatment_process_water
+          role: "Surface-treatment process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water added to treatment baths, cleaning, and rinsing; count only make-up crossing the boundary."
+          amount:
+            expression: "Metered or batch-recorded water input assigned to the declared treatment batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - us-epa-ap42-12-20-electroplating-2021
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium-hydroxide make-up"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide added for alkaline cleaning or etching only when used by the declared surface-treatment recipe."
+          amount:
+            expression: "Mass of active sodium hydroxide in purchased solution or solid make-up assigned to the declared batches; retain concentration evidence"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - us-epa-ap42-12-20-electroplating-2021
+            ranges: []
+        - row_id: sulfuric_acid
+          role: "Sulfuric-acid make-up"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid added for acid activation or bath chemistry only when used by the declared recipe."
+          amount:
+            expression: "Mass of active sulfuric acid in purchased solution assigned to the declared batches; retain concentration evidence"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - us-epa-ap42-12-20-electroplating-2021
+            ranges: []
+        - row_id: chromic_acid
+          role: "Chromic-acid make-up"
+          name: "Chromic acid solution, declared concentration and bath role (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record chromic acid added only for a declared chromic-acid anodizing or hexavalent-chromium plating route."
+          amount:
+            expression: "Mass of active chromic acid in purchased or prepared make-up assigned to the declared batches; retain composition and concentration evidence"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - us-epa-ap42-12-20-electroplating-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: chromium_containing_metal_finishing_wastewater
+          role: "Chromium-containing metal-finishing wastewater"
+          name: "Chromium-containing metal-finishing wastewater, declared chromium speciation and concentration (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the combined aqueous discharge transferred from the declared chromium-bearing treatment line to on-site or off-site treatment, before treatment when that is the process boundary."
+          amount:
+            expression: "Measured discharge mass, or measured volume converted with applicable density, assigned to the declared treatment batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids:
+                - us-epa-ap42-12-20-electroplating-2021
+            ranges: []
+      elementary:
+        []
+  - id: inspection_and_release
+    label: "Inspection, nonconforming-part control, preservation, and release"
+    inputs:
+      product:
+        - row_id: inspection_electricity
+          role: "Inspection electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity supplied to dimensional inspection, nondestructive inspection, final cleaning, marking, and release-document equipment within the declared boundary."
+          amount:
+            expression: "Submetered electricity or documented equipment power multiplied by operating time and assigned to accepted and rejected parts"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inspection_release_records
+              source_ids:
+                - faa-ac-21-43a-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: aircraft_engine_part_output
+          role: "Accepted aircraft piston-engine part"
+          name: "Parts of spark-ignition reciprocating or rotary internal combustion piston engines for aircraft (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only parts that have passed the declared inspection and release process."
+          amount:
+            expression: "1 kg net accepted reference product by definition; retain measured batch accepted mass before normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - faa-ac-21-43a-2015
+            ranges: []
+      waste:
+        - row_id: nonconforming_aircraft_engine_part
+          role: "Nonconforming aircraft piston-engine part"
+          name: "Nonconforming aircraft spark-ignition piston-engine part, segregated for controlled disposition (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the mass of rejected parts rendered unusable or transferred to a documented non-product disposition; do not net it against recyclable-metal inputs."
+          amount:
+            expression: "Measured rejected-part mass by part number and disposition during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_inspection_release_records
+              source_ids:
+                - faa-ac-21-43a-2015
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared machines, furnaces, baths, ventilation, and inspection equipment"
+    rule: "Prefer submetering, batch records, machine time, bath loading, or another measured causal driver. Document the driver and reconcile allocated totals to facility records."
+    source_ids: []
+  - rule_id: allocation_recycling
+    applies_to: "aluminium chips, steel chips, rejected parts, waste oils, and other recovered residues"
+    rule: "Report gross waste output and its destination. Do not subtract recycling credit or avoided virgin production from the foreground inventory; any recycling benefit must be modelled and disclosed in a separate downstream scenario."
+    source_ids: []
+  - rule_id: allocation_multi_output
+    applies_to: "production campaigns with more than one saleable part"
+    rule: "Subdivide by part number when feasible. If subdivision is not feasible, use a documented physical causal relation; economic allocation requires explicit justification and sensitivity disclosure."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_machining_records
+      process_id: "machining_and_cleaning"
+      flow_role: "Material, electricity, water, cutting fluid, chips, and spent machining fluid"
+      record_type: "Purchase/issue records, scales, meters, batch travellers, and waste manifests"
+      raw_fields: "part_number; batch_id; accepted_mass_kg; input_identity; input_mass_kg; electricity_MJ_or_kWh; water_mass_or_volume; cutting_fluid_mass_kg; chip_material; chip_mass_kg; spent_fluid_identity; spent_fluid_mass_kg; inventory_change; destination"
+      collection_method: "Reconcile direct meters and weighed issues/dispatches to each production batch; retain original units and allocation keys."
+      unit: "kg; MJ; kWh; m3"
+      frequency: "Per batch with at least monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or complete shorter campaign disclosed"
+      site_scope: "All controlled machining and cleaning operations at the reporting site and included suppliers"
+      aggregation_rule: "Sum net boundary-crossing quantities by atomic flow, allocate only shared quantities under section 7, and divide by accepted part mass."
+      quality_evidence: "Calibration records, purchase and issue records, batch travellers, meter totals, waste manifests, and material-balance reconciliation"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "heat_treatment"
+      flow_role: "Fuel, electricity, quenching oil, direct fossil CO2, and spent quench oil"
+      record_type: "Furnace meters, cycle logs, bath make-up/removal logs, emission records, and batch travellers"
+      raw_fields: "batch_id; furnace_id; cycle; treated_part_mass_kg; accepted_mass_kg; gas_m3; gas_conditions; electricity_MJ_or_kWh; quench_oil_added_kg; quench_oil_removed_kg; direct_fossil_co2_kg; emission_calculation_inputs"
+      collection_method: "Link each furnace cycle and bath transaction to treated batches; retain measured fuel and electricity and all emission-calculation inputs."
+      unit: "kg; MJ; kWh; m3"
+      frequency: "Per furnace cycle and bath transaction, reconciled monthly"
+      temporal_coverage: "Representative continuous 12-month period or complete shorter campaign disclosed"
+      site_scope: "All in-boundary heat-treatment and quench equipment and included supplier services"
+      aggregation_rule: "Allocate shared cycles by measured treated mass or another documented causal driver, then divide by accepted part mass."
+      quality_evidence: "Calibrated meter records, furnace charts, controlled recipes, bath logs, emission records, and batch traceability"
+    - protocol_id: cp_surface_treatment_records
+      process_id: "surface_treatment"
+      flow_role: "Electricity, water, sodium hydroxide, sulfuric acid, chromic acid, and wastewater"
+      record_type: "Rectifier and utility meters, bath analyses, chemical issue records, rinse records, discharge meters, and treatment manifests"
+      raw_fields: "batch_id; route; treated_area_or_mass; accepted_mass_kg; electricity_MJ_or_kWh; water_mass_or_volume; chemical_identity; solution_mass_kg; concentration; active_chemical_mass_kg; wastewater_mass_or_volume; density; chromium_speciation; destination"
+      collection_method: "Record each chemical separately on an active-substance basis, retain solution concentration, and reconcile bath additions, drag-out, rinse discharge, and inventory changes."
+      unit: "kg; MJ; kWh; m3"
+      frequency: "Per batch and chemical addition, reconciled monthly"
+      temporal_coverage: "Representative continuous 12-month period or complete shorter campaign disclosed"
+      site_scope: "All in-boundary surface-treatment, rinse, ventilation, and wastewater-transfer operations"
+      aggregation_rule: "Sum atomic inputs and outputs by declared route, allocate shared baths by measured ampere-hours, treated area, or another documented causal driver, and divide by accepted part mass."
+      quality_evidence: "Calibrated meters, certificates of analysis, bath-control logs, purchase/issue records, discharge records, and hazardous-waste documentation"
+    - protocol_id: cp_inspection_release_records
+      process_id: "inspection_and_release"
+      flow_role: "Inspection electricity, accepted product, and nonconforming parts"
+      record_type: "Inspection/test records, equipment logs, calibrated scales, release records, and nonconformance dispositions"
+      raw_fields: "part_number; revision; batch_id; inspection_route; electricity_MJ_or_kWh; accepted_count; accepted_mass_kg; rejected_count; rejected_mass_kg; disposition; release_status"
+      collection_method: "Link energy, accepted mass, and reject mass to the same part-number campaign and retain authorized inspection and disposition records."
+      unit: "kg; MJ; kWh; Item(s)"
+      frequency: "Per batch or release lot, reconciled monthly"
+      temporal_coverage: "Representative continuous 12-month period or complete shorter campaign disclosed"
+      site_scope: "All final inspection, marking, preservation, release, and nonconforming-part control in boundary"
+      aggregation_rule: "Sum accepted and rejected mass by part number, allocate shared inspection energy causally, and normalize to accepted mass only."
+      quality_evidence: "Inspection and test records, calibration status, release documents, nonconformance authorization, segregation evidence, and final disposition records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized quantity = net boundary-crossing quantity assigned to the declared part number / net accepted part mass for the same reporting period"
+      inputs:
+        - "atomic flow quantity"
+        - "allocation key where needed"
+        - accepted_mass_kg
+      output: "quantity per 1 kg accepted reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity records"
+      rule: "electricity_MJ = electricity_kWh × 3.6; preserve the original meter reading and unit"
+      inputs:
+        - electricity_kWh
+      output: "electricity_MJ"
+      source_ids: []
+    - id: calc_solution_active_mass
+      applies_to: "sodium hydroxide, sulfuric acid, and chromic acid"
+      rule: "active chemical mass = solution mass × measured or certificate concentration mass fraction"
+      inputs:
+        - solution_mass_kg
+        - concentration_mass_fraction
+      output: "active_chemical_mass_kg"
+      source_ids:
+        - us-epa-ap42-12-20-electroplating-2021
+    - id: calc_direct_fossil_co2
+      applies_to: "direct furnace CO2 when not continuously measured"
+      rule: "Use the site's documented fuel-carbon calculation with metered fuel, fuel carbon content, oxidation evidence, and unit conversions; disclose the equation and factors rather than applying an undeclared default."
+      inputs:
+        - "gas_m3 or fuel mass"
+        - "reference conditions"
+        - "carbon content"
+        - "oxidation factor"
+        - "molecular conversion"
+      output: "fossil_carbon_dioxide_kg"
+      source_ids: []
+    - id: calc_aqueous_mass
+      applies_to: "water or wastewater recorded by volume"
+      rule: "mass = measured volume × stream density at the declared conditions"
+      inputs:
+        - volume
+        - density
+        - "temperature and concentration conditions"
+      output: "water_or_wastewater_mass_kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "reference product and all material inputs"
+      requirement: "Preserve part number, current drawing/revision, material grade, supplier or site, batch/lot, process route, inspection status, and raw-material-to-completed-part traceability."
+      evidence: "Controlled design data, batch travellers, certificates, supplier records, inspection status, and release record"
+    - id: dq_temporal_scope
+      applies_to: "all foreground records"
+      requirement: "Use one representative continuous 12-month period where available; a shorter complete campaign must state dates, production volume, seasonality limits, and why it is representative."
+      evidence: "Meter coverage, production calendar, batch list, and reconciliation"
+    - id: dq_atomic_completeness
+      applies_to: "all process inventories"
+      requirement: "Reconcile purchased inputs, utilities, chemicals, wastes, direct emissions, accepted mass, rejected mass, and inventory changes; add every additional route-specific exchange as a separate atomic row."
+      evidence: "Material and energy balances, bills, meters, bath logs, waste manifests, and omission register"
+    - id: dq_special_processes
+      applies_to: "heat treatment, anodizing, plating, coating, and nondestructive inspection"
+      requirement: "Declare whether each process is in-house or outsourced and retain controlled route, supplier, recipe/specification, acceptance evidence, and upstream dataset link."
+      evidence: "Special-process certification, supplier control record, work instruction, inspection/test record, and upstream dataset"
+    - id: dq_measurement
+      applies_to: "meters, scales, gauges, and test equipment"
+      requirement: "Use calibrated equipment over the reporting period; document estimation, downtime, missing-data substitution, and uncertainty."
+      evidence: "Calibration status, meter logs, maintenance records, and missing-data register"
+    - id: dq_unresolved_uuid
+      applies_to: "inventory rows without a confirmed Tiangong UUID"
+      requirement: "Preserve the exact atomic name and qualifiers and flag the identity as unresolved; never substitute a broader, differently classified, or differently stated flow."
+      evidence: "UUID audit record and dataset-level unresolved-identity disclosure"
+validation_rules:
+  - rule_id: val_product_identity
+    applies_to: "reference product"
+    rule: "Fail validation if part number, revision/configuration, aircraft spark-ignition piston-engine application, material grade, approved-design or controlling-specification basis, acceptance status, or net accepted mass is missing."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - faa-ac-21-43a-2015
+      - faa-ac-43-18-chg-2-2011
+  - rule_id: val_boundary
+    applies_to: "foreground and supplier-controlled operations"
+    rule: "Fail validation if an applicable machining, heat-treatment, surface-treatment, inspection, or supplier-controlled special process is omitted without an explicit exclusion and data-gap disclosure."
+    source_ids:
+      - faa-ac-21-43a-2015
+      - faa-ac-43-18-chg-2-2011
+  - rule_id: val_inventory_atomicity
+    applies_to: "all exchanges"
+    rule: "Fail validation if an inventory row combines materials, utilities, fuels, chemicals, wastes, wastewater types, or emissions, or if route applicability is not declared."
+    source_ids: []
+  - rule_id: val_mass_and_energy_reconciliation
+    applies_to: "production period"
+    rule: "Require accepted mass, rejected mass, material inputs, recovered chips, waste oils, chemical/water outputs, electricity, and fuel totals to reconcile with source records and documented allocation keys."
+    source_ids: []
+  - rule_id: val_quality_release
+    applies_to: "accepted and nonconforming parts"
+    rule: "Fail validation if inspection/test status, authorized release basis, nonconforming-part segregation, or final disposition evidence is absent."
+    source_ids:
+      - faa-ac-21-43a-2015
+  - rule_id: val_uuid_and_units
+    applies_to: "UUID-bearing and unresolved rows"
+    rule: "Require UUID-bearing rows to retain the audited flow property and unit group; require unresolved rows to remain explicitly unresolved with the same row id and semantic qualifiers."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific cradle-to-gate secondary dataset generated from foreground manufacturing records."
+  downstream_use: "May serve as a secondary_dataset or background_dataset for the declared part number in aircraft piston-engine, maintenance, or aircraft product systems when geography, technology, period, route, and product-state compatibility are demonstrated."
+  allowed_use: "Product-footprint and LCA modelling for the same part number/configuration or a demonstrably equivalent material, manufacturing route, acceptance state, geography, and reporting period."
+  excluded_use: "Comparison of different part numbers by mass alone; complete-engine representation; compression-ignition, turbine-engine, remanufactured, repaired, or maintenance-fabricated parts; use-phase or service-life claims without additional modelling."
+  required_metadata: "canonical PCR id and version; part name/number and drawing revision; engine and aircraft application; material grade; purchased-input state; controlled and outsourced route; accepted and rejected mass; site/geography; reporting period; electricity mix and gas reference conditions; allocation; recycling and treatment destinations; packaging status; source and UUID gaps."
+  required_quality_disclosure: "Primary-data share and coverage; meter and scale calibration; supplier-data coverage; missing-data treatment; mass/energy reconciliation; special-process traceability; inspection/release evidence; uncertainty; unresolved UUIDs and range-evidence needs."
+  update_trigger: "New part or revision, material or supplier change, manufacturing or special-process change, site/geography change, electricity or fuel-supply change, allocation change, material yield or reject-rate shift, reporting period older than the user's representativeness requirement, or resolution of a UUID/source gap."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)."
+    used_for: "English category identity and exclusions from adjacent CPC product classes."
+  - id: "un-cpc-1-1-chinese-2004"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, ST/ESA/STAT/SER.M/77/Ver.1.1. https://digitallibrary.un.org/record/536544/files/M_77ver1_1c.pdf (retrieved 2026-09-05)."
+    used_for: "Official Chinese CPC 43152 terminology used to verify the professional current translation."
+  - id: "faa-ac-21-43a-2015"
+    type: "official_guidance"
+    reference: "Federal Aviation Administration, AC 21-43A, Production Under 14 CFR Part 21, Subparts F, G, K, and O, 1 October 2015. https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_21-43A.pdf (retrieved 2026-09-05)."
+    used_for: "Manufacturing-process control, raw-material-to-completed-article traceability, inspection and testing, calibrated equipment, nonconforming-article control, supplier control, handling, storage, and quality records."
+  - id: "faa-ac-43-18-chg-2-2011"
+    type: "official_guidance"
+    reference: "Federal Aviation Administration, AC 43-18 with Changes 1 and 2, Fabrication of Aircraft Parts by Maintenance Personnel, 7 June 2011. https://www.faa.gov/documentLibrary/media/Advisory_Circular/Ac_43-18_Chg_1-2.pdf (retrieved 2026-09-05)."
+    used_for: "Installable-part boundary; design-data needs for materials, dimensions, processes, inspection and testing; and recognition of machining, plating, and welding as fabrication services."
+  - id: "us-epa-ap42-12-20-electroplating-2021"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Chapter 12, Section 20, Electroplating, October 2021. https://www.epa.gov/sites/production/files/2020-11/documents/c12s20.pdf (retrieved 2026-09-05)."
+    used_for: "Conditional aircraft-part chromium-plating and chromic-acid-anodizing process decomposition, including pretreatment, alkaline cleaning, acid dipping, rinsing, electricity, water, bath chemicals, and chromium-bearing emissions/wastes."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9ae98addbbf9069140c23bc5d1641db2874c1d66317b8ab36e0e636081d805b8"
+  generated_content_sha256: "sha256:782ebb1cf9824d28b8fc21735b87d859deb017b95cda111b7fabba59bd181f89"

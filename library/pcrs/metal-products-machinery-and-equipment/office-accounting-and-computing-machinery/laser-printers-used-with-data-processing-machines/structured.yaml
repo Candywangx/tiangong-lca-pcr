@@ -1,10 +1,447 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45264"
-  title: "Laser printers used with data processing machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.laser-printers-used-with-data-processing-machines"
+  classification_refs: "CPC 3.0: 45264 (un-cpc-3-0-structure-2025)"
+  covered_products: "New computer-connected single-function laser printers, monochrome or colour"
+  excluded_products: "Inkjet, LED-only and multifunction devices; standalone copiers; consumables alone; remanufacturing"
+  representative_product: "A declared model of single-function laser printer, without assigning a generic model mass"
+  production_route: "Purchased print engine and separately supplied components; assembly, factory test and packing"
+  market_state: "New tested hardware with declared starter consumables, ready for dispatch"
+functional_unit:
+  what: "Supply laser-printing hardware converting electronic images to paper output"
+  how_much: "Declared manufacturing unit: 1 kg net printer product; disclose model-specific kg per device"
+  how_well: "Declared resolution, monochrome/colour capability, media size, duplex function and print speed; pass model acceptance test"
+  how_long_or_cycle: "One manufacturing cycle through factory release; service lifetime and page volume are not assumed"
+  reference_flow_link: "Row printer; multiply per-kg inventory by measured kg/device for one device; mass equivalence is not functional equivalence"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory
+      applies_to: "foreground route"
+      rule: "Include incoming component supply burdens, inbound freight links, assembly electricity, factory testing, packing and treatment links for factory waste. Exclude downstream distribution, customer paper, replacement consumables and use electricity from this manufacturing result; disclose these exclusions."
+      source_ids:
+        - lexmark-m5163-lca-2024
+    - rule_id: boundary_components
+      applies_to: "purchased modules"
+      rule: "Define the print engine as one purchased electromechanical assembly. Record its included chassis, drive, fuser, optical unit and wiring on a supplier BOM. Separately supplied housing, controller, power supply and cartridge must not also be included in the engine dataset. Add individually identified extra components and packaging when the actual BOM requires them."
+      source_ids:
+        - epa-imaging-equipment-v3-2-2021
+    - rule_id: boundary_emissions
+      applies_to: "direct emissions"
+      rule: "Screen factory measurements for ozone or other individual releases during tests and add each actual substance separately when present. Do not represent electricity upstream emissions as direct factory emissions or interpret absent measurements as zero."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased subassemblies at the receiving gate, with supplier manufacturing and freight links"
+  starting_condition_role: "Foreground assembly starting point, not a burden-free cut-off"
+  product_classification_scope: "CPC 3.0: 45264"
+  recursive_input_rule: "A purchased complete laser printer is a same-category input with its own upstream dataset, never a print-engine proxy. A rework loop is internal and must not repeat original manufacturing burdens."
+  upstream_dataset_requirement: "Compatible supplier product state, included components, geography, technology and reference property; disclose unresolved links"
+  disclosure: "Report site operations, outsourced steps, configuration coverage, excluded life stages and missing data"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Laser printers used with data processing machines"
+    uuid: "19a06db9-33d8-4f4d-b11a-3f43e6a4b2e1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - Model
+    - "laser exposure technology"
+    - "single-function status"
+    - "colour capability"
+    - resolution
+    - "media size"
+    - "print speed and test mode"
+    - "duplex configuration"
+    - "net kg/device"
+    - "starter cartridge and toner fill"
+    - "included accessories"
+    - "packaging mass separately"
+    - "factory and country"
+    - "reporting period"
+    - "purchased-component boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: mass_basis
+    applies_to: "printer and subassemblies"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh each declared configuration. Convert count records using measured component or device mass; never use shipping weight for product normalization."
+  - id: electricity_units
+    applies_to: "factory electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve meter kWh records and convert with 1 kWh = 3.6 MJ. Power in W needs elapsed hours before conversion. TEC use-stage consumption is not factory energy."
+  - id: paper_basis
+    applies_to: "test paper"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate paper mass from sheet count, sheet area and measured grammage; distinguish sheets from printed sides."
+process_map:
+  - id: assembly_test_pack
+    name: "Assembly, factory testing and packing"
+    inclusion: "required"
+    inclusion_condition: "All modeled products"
+    role: "Foreground manufacturing"
+    quantitative_reference: "1 kg net accepted printer"
+process_inventory:
+  - id: assembly_test_pack
+    label: "Assembly, factory testing and packing"
+    inputs:
+      product:
+        - row_id: engine
+          role: "Laser printer print-engine assembly"
+          name: "Laser printer print-engine assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased engine crosses the assembly boundary; weigh net withdrawals with its documented included components. Inclusion condition: All purchased-engine configurations"
+          amount:
+            expression: "Purchased engine crosses the assembly boundary; weigh net withdrawals with its documented included components."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: housing
+          role: "Moulded ABS printer housing"
+          name: "Moulded ABS printer housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the separately purchased finished housing, including rejects; no resin substitution. Inclusion condition: Housing supplied separately and verified as ABS; otherwise document the actual polymer component separately"
+          amount:
+            expression: "Weigh the separately purchased finished housing, including rejects; no resin substitution."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: controller
+          role: "Populated printer-controller circuit board"
+          name: "Populated printer-controller circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net controller-board withdrawal mass; exclude boards already included in the engine. Inclusion condition: Controller supplied separately"
+          amount:
+            expression: "Record net controller-board withdrawal mass; exclude boards already included in the engine."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: power_supply
+          role: "Printer power-supply unit"
+          name: "Printer power-supply unit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the separately supplied complete power-supply mass and rating; exclude overlapping engine inventory. Inclusion condition: Power supply supplied separately"
+          amount:
+            expression: "Record the separately supplied complete power-supply mass and rating; exclude overlapping engine inventory."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: cartridge
+          role: "Laser printer toner cartridge"
+          name: "Laser printer toner cartridge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each physical cartridge with its declared toner fill and colour. Sum the same exchange over the actual configuration; distinguish shipped starter units from test-only consumption and retain stocks. Inclusion condition: Cartridge crosses the boundary separately from the engine"
+          amount:
+            expression: "Record each physical cartridge with its declared toner fill and colour. Sum the same exchange over the actual configuration; distinguish shipped starter units from test-only consumption and retain stocks."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record actual corrugated-box mass issued for shipping; packaging is outside net product mass. Inclusion condition: Corrugated box used for dispatch"
+          amount:
+            expression: "Record actual corrugated-box mass issued for shipping; packaging is outside net product mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: paper
+          role: "Uncoated office printing paper"
+          name: "Uncoated office printing paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure test-paper consumption including retests; retain sheet size and grammage. Inclusion condition: Paper-output factory testing occurs"
+          amount:
+            expression: "Measure test-paper consumption including retests; retain sheet size and grammage."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter assembly, test and packing electricity including attributable idle and retest energy; convert kWh to MJ. Inclusion condition: All configurations"
+          amount:
+            expression: "Meter assembly, test and packing electricity including attributable idle and retest energy; convert kWh to MJ."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: printer
+          role: "Laser printers used with data processing machines"
+          name: "Laser printers used with data processing machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "19a06db9-33d8-4f4d-b11a-3f43e6a4b2e1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted net product mass divided by the same accepted net mass is 1 kg reference output; retain measured kg/device. Inclusion condition: All accepted products"
+          amount:
+            expression: "Accepted net product mass divided by the same accepted net mass is 1 kg reference output; retain measured kg/device."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: paper_waste
+          role: "Toner-printed office test-paper waste"
+          name: "Toner-printed office test-paper waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh segregated discarded test sheets with retained toner; reconcile retained samples and paper stocks. Inclusion condition: Test sheets discarded from the factory"
+          amount:
+            expression: "Weigh segregated discarded test sheets with retained toner; reconcile retained samples and paper stocks."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: printer_waste
+          role: "Rejected laser printer waste"
+          name: "Rejected laser printer waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh complete irreparable rejected printers leaving the factory; record cartridge removal and composition, excluding internal rework. Inclusion condition: Irreparable whole printer discarded"
+          amount:
+            expression: "Weigh complete irreparable rejected printers leaving the factory; record cartridge removal and composition, excluding internal rework."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg accepted net printer product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_factory
+    applies_to: "shared assembly line"
+    rule: "Use line submetering and configuration-specific withdrawals first. For inseparable shared electricity, allocate using logged equipment time multiplied by measured operating power and reconcile shares to the meter total under cp_factory. Disclose the driver and sensitivity; device mass alone is not an energy driver."
+    source_ids: []
+  - rule_id: allocation_rejects
+    applies_to: "rework and waste"
+    rule: "Charge actual reject and rework burdens to accepted production. Retain waste treatment burdens without speculative avoided-virgin-material credits. Record any saleable co-product separately and justify a specific allocation rule before using the dataset."
+    source_ids:
+      - lexmark-m5163-lca-2024
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom
+      process_id: "assembly_test_pack"
+      flow_role: "component inputs and product output"
+      record_type: "BOM and scales"
+      raw_fields: "part number; configuration; received/issued/returned stock; component mass; accepted counts; net product mass; starter fill"
+      collection_method: "Trace serial/BOM revisions to calibrated weighing and stock movements"
+      unit: "kg; item"
+      frequency: "Each lot and BOM revision"
+      temporal_coverage: "One disclosed representative production year, or justified shorter full campaign"
+      site_scope: "Declared factory and supplier modules"
+      aggregation_rule: "Net withdrawals divided by accepted net product kg; avoid nested BOM overlap"
+      quality_evidence: "BOM; calibration; stock reconciliation"
+    - protocol_id: cp_factory
+      process_id: "assembly_test_pack"
+      flow_role: "electricity and test paper"
+      record_type: "meter and test log"
+      raw_fields: "kWh start/end; machine time and power; idle periods; test sheets; area; grammage; configuration; retests"
+      collection_method: "Submeter line and test station; record warm-up and retest cycles; weigh paper"
+      unit: "kWh; h; W; kg"
+      frequency: "Each shift and test campaign"
+      temporal_coverage: "Same period as cp_bom"
+      site_scope: "Assembly and test stations"
+      aggregation_rule: "Sum actual attributable consumption then divide by accepted net kg"
+      quality_evidence: "Meter calibration; power-time reconciliation; test settings"
+    - protocol_id: cp_waste
+      process_id: "assembly_test_pack"
+      flow_role: "paper and rejected printer waste"
+      record_type: "weighbridge and waste manifests"
+      raw_fields: "stream identity; mass; toner content; stock change; recovered/reworked status; receiver and treatment route"
+      collection_method: "Weigh segregated streams and reconcile disposal documents"
+      unit: "kg"
+      frequency: "Each dispatch and monthly reconciliation"
+      temporal_coverage: "Same period as cp_bom"
+      site_scope: "Factory waste exit"
+      aggregation_rule: "Mass leaving factory divided by accepted net product kg; exclude internal rework transfer"
+      quality_evidence: "Waste tickets; receiver records; inventory balance"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all rows"
+      rule: "Q_ref = Q_attributable / M_accepted; M_accepted = sum of accepted device counts times measured net kg/device. Reference output equals 1 kg by normalization."
+      inputs:
+        - cp_bom
+        - cp_factory
+        - cp_waste
+      output: "kg or MJ per kg printer"
+      source_ids: []
+    - id: energy
+      applies_to: "electricity"
+      rule: "E_MJ = 3.6 × metered kWh. Retain actual test duty; do not substitute weekly TEC or rated maximum power for measured factory energy."
+      inputs:
+        - cp_factory
+      output: "MJ/kg"
+      source_ids:
+        - epa-imaging-equipment-v3-2-2021
+    - id: mass_reconcile
+      applies_to: "physical materials"
+      rule: "Reconcile net material inputs against product, segregated wastes and inventory change; explain residuals against measurement uncertainty. Packaging accompanies the shipment but is excluded from reference product mass."
+      inputs:
+        - cp_bom
+        - cp_waste
+      output: "documented balance"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "supplier data"
+      requirement: "Verify purchased assembly state and component coverage; never substitute primary polymer for a moulded housing or a complete printer for its engine."
+      evidence: "cp_bom"
+    - id: quality_period
+      applies_to: "all activity data"
+      requirement: "Align site and reporting period; disclose sampling, missing meters, allocation, upstream proxies and unmeasured direct releases. No measured record means unknown, not zero."
+      evidence: "cp_factory; cp_waste"
+    - id: quality_evidence
+      applies_to: "ranges and literature"
+      requirement: "Do not transfer case values across configurations. No external amount ranges are prescribed; collect primary values. The Lexmark report has inconsistent single-function/multifunction wording on page 3, so that passage is not used to define this category."
+      evidence: "lexmark-m5163-lca-2024"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require all reference qualifiers, positive accepted output and a measured net count-to-mass conversion. Reject multifunction or non-laser technology under this identity."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_inventory
+    applies_to: "inventory"
+    rule: "Every included exchange needs an amount, unit, protocol evidence and consistent denominator. Check conditional applicability, BOM coverage, mass residuals and electricity allocation reconciliation. Unresolved flow or supplier identity must remain explicit."
+    source_ids: []
+  - rule_id: validate_claim
+    applies_to: "dataset claim"
+    rule: "A manufacturing result must not claim lifetime printing-service equivalence. A cradle-to-gate claim requires complete supplier and treatment links; omitted actual exchanges make completeness inconclusive."
+    source_ids:
+      - lexmark-m5163-lca-2024
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "background_dataset; process; lifecyclemodel"
+  allowed_use: "Manufacturing input for matching laser-printer configuration, geography and technology; service model only after adding use, consumables, distribution and end-of-life"
+  excluded_use: "Multifunction or inkjet manufacturing; direct service comparison per kg; certification or full lifecycle claims from this foreground inventory alone"
+  required_metadata: "All reference qualifiers; factory; time; BOM version; upstream supplier coverage; allocation; boundary"
+  required_quality_disclosure: "Measured versus estimated values; missing UUIDs and links; conditional applicability; uncertainty; excluded life stages; unresolved ranges"
+  update_trigger: "BOM, technology, supplier, factory, packaging, test duty or measurement method changes"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-08"
+    used_for: "Classification identity and neighboring exclusions"
+  - id: "epa-imaging-equipment-v3-2-2021"
+    type: "standard"
+    reference: "US EPA, ENERGY STAR Imaging Equipment Version 3.2, definitions 1.A, 1.B, 1.C and 1.E; https://www.energystar.gov/sites/default/files/ENERGY%20STAR%20Imaging%20Equipment%20Version%203.2%20Final%20Specification_0.pdf; retrieved 2026-09-08"
+    used_for: "Printer, laser marking engine and operating-mode distinctions; no certification claim"
+  - id: "lexmark-m5163-lca-2024"
+    type: "literature"
+    reference: "Lexmark, Life Cycle Assessment: Laser Printer M5163, issue 12/4/2024, pp. 5-6, 11-12; https://www.lexmark.com/content/dam/lexmark/documents/compliance/lca/M5163.pdf; retrieved 2026-09-08"
+    used_for: "BOM and teardown evidence, separate hardware and consumables accounting; case-specific results are not defaults"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6dfa52c95e1380a7c20518df0739105f9755504e737347bcadd8b00006e5aa41"
+  generated_content_sha256: "sha256:8372febbcec040243bfdf1f304f99b8e2a8a73f1fa59dad176e4ab56271f7cc9"

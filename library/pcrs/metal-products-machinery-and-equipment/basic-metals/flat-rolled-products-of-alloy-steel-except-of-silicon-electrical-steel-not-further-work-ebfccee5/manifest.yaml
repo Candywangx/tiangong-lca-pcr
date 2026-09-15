@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-alloy-steel-except-of-silicon-electrical-steel-not-further-work-ebfccee5
 title:
   en-US: "Flat-rolled products of alloy steel (except of silicon-electrical steel), not further worked than hot-rolled, of a width of 600 mm or more"
-  zh-CN: null
-status: scaffold
+  zh-CN: "宽度不小于600毫米、除热轧外未经进一步加工的合金钢平板轧材（硅电钢除外）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +22,101 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41213"
     title: "Flat-rolled products of alloy steel (except of silicon-electrical steel), not further worked than hot-rolled, of a width of 600 mm or more"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary:
+    decision: create_distinct_material_pcr
+    rationale: "No existing material PCR has the same combination of alloy-steel composition, as-hot-rolled state, and width of 600 mm or more. Neighbouring material PCR identities cover non-alloy or silicon-electrical steel and do not subsume this product boundary."
+  unresolved_flow_identities:
+    - row_id: input_alloy_steel_slab
+      reason: "Authenticated hybrid search receipt 8175c92f-eacf-4327-8994-6d7ad5374cd0 was finalized after direct state-100 reads of five candidates; none was an alloy-steel slab for flat rolling."
+    - row_id: input_alternating_current_electricity
+      reason: "Authenticated hybrid search receipt 07a126df-3b9b-41ff-8228-d463b785772e was finalized after direct state-100 reads; all five generic alternating-current candidates were rejected because provider, geography, voltage, supply technology, delivery boundary, and line-loss allocation were unspecified."
+    - row_id: input_basic_oxygen_furnace_gas
+      reason: "Authenticated hybrid search receipt 27cca8b8-eaa3-4840-ad9f-52c00bf2d697 was finalized after direct state-100 reads; the converter-gas candidate used Mass/kg rather than the Net calorific value/MJ required by this energy row, and the other candidates were semantic mismatches."
+    - row_id: input_process_water
+      reason: "Authenticated hybrid search receipt 7c7677ab-dd34-4b14-bf84-dad1e08f4185 was finalized after direct state-100 reads; the semantically relevant candidates used Mass/kg rather than the Volume/m3 required by the water-balance row."
+    - row_id: reference_product_hot_rolled_wide_alloy_steel
+      reason: "Authenticated hybrid search receipt ec02f205-4259-4542-9dec-9ea2bf5ff84d was finalized after direct state-100 reads of five candidates; all candidates mismatched the required as-hot-rolled state, width, or further-working boundary."
+    - row_id: output_crop_trim_alloy_steel_scrap
+      reason: "Authenticated hybrid search receipt 866be8d1-35ba-4a28-970a-4063233dca06 was finalized after direct state-100 reads; low-alloy candidates were narrower than the PCR's alloy-family scope and generic steel-scrap candidates had an incompatible Aluminium content property."
+    - row_id: output_oily_water_treatment_sludge
+      reason: "Authenticated hybrid search receipt f8cbddf9-0cc3-47a2-b79d-ae2d7002b285 was finalized after direct state-100 reads; no candidate established oily-sludge origin in hot-rolling process-water treatment."
+    - row_id: output_hot_rolling_wastewater
+      reason: "Authenticated hybrid search receipt a2bdb530-6315-49fa-82fb-d83f5583268d was finalized after direct state-100 reads; the only wastewater candidate was specific to cold rolling and used Mass/kg rather than Volume/m3."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: input_alloy_steel_slab
+        reason_code: no_exact_candidate
+        explanation: "Receipt 8175c92f-eacf-4327-8994-6d7ad5374cd0 directly audited five state-100 candidates; none was an alloy-steel slab for flat rolling."
+      - row_id: input_alternating_current_electricity
+        reason_code: semantic_mismatch
+        explanation: "Receipt 07a126df-3b9b-41ff-8228-d463b785772e directly audited five state-100 generic alternating-current candidates; each lacked the required provider, geography, voltage, supply technology, delivery boundary, and line-loss allocation."
+      - row_id: input_basic_oxygen_furnace_gas
+        reason_code: property_or_unit_mismatch
+        explanation: "Receipt 27cca8b8-eaa3-4840-ad9f-52c00bf2d697 directly audited five state-100 candidates; converter gas used Mass/kg rather than the row's Net calorific value/MJ, and the remaining candidates were semantic mismatches."
+      - row_id: input_process_water
+        reason_code: property_or_unit_mismatch
+        explanation: "Receipt 7c7677ab-dd34-4b14-bf84-dad1e08f4185 directly audited five state-100 candidates; the semantically relevant process-water candidates used Mass/kg rather than the required Volume/m3."
+      - row_id: reference_product_hot_rolled_wide_alloy_steel
+        reason_code: no_exact_candidate
+        explanation: "Receipt ec02f205-4259-4542-9dec-9ea2bf5ff84d directly audited five state-100 candidates; none matched the full as-hot-rolled, at-least-600-mm-wide, not-further-worked alloy-steel product boundary."
+      - row_id: output_crop_trim_alloy_steel_scrap
+        reason_code: semantic_mismatch
+        explanation: "Receipt 866be8d1-35ba-4a28-970a-4063233dca06 directly audited five state-100 candidates; low-alloy scrap was narrower than the PCR scope, while generic steel scrap used an incompatible Aluminium content property."
+      - row_id: output_oily_water_treatment_sludge
+        reason_code: semantic_mismatch
+        explanation: "Receipt f8cbddf9-0cc3-47a2-b79d-ae2d7002b285 directly audited three state-100 candidates; none established oily-sludge origin in hot-rolling process-water treatment."
+      - row_id: output_hot_rolling_wastewater
+        reason_code: product_state_mismatch
+        explanation: "Receipt a2bdb530-6315-49fa-82fb-d83f5583268d directly audited two state-100 candidates; the wastewater candidate was specific to cold rolling and used Mass/kg rather than the required Volume/m3."
+    range_evidence_needs:
+      - range_id: range_alloy_steel_slab_and_yield
+        row_ids:
+          - input_alloy_steel_slab
+          - reference_product_hot_rolled_wide_alloy_steel
+          - output_crop_trim_alloy_steel_scrap
+          - output_mill_scale
+        explanation: "Two independent original-text sources with compatible alloy family, width, as-hot-rolled state, foreground boundary, and mass basis were not available for a defensible yield or residue range."
+      - range_id: range_hot_rolling_energy
+        row_ids:
+          - input_alternating_current_electricity
+          - input_natural_gas
+          - input_coke_oven_gas
+          - input_blast_furnace_gas
+          - input_basic_oxygen_furnace_gas
+          - input_industrial_oxygen
+        explanation: "Available BAT values are regulatory performance levels rather than empirical cross-source ranges, and no second independent boundary-compatible alloy-steel source was verified."
+      - range_id: range_hot_rolling_water_and_residues
+        row_ids:
+          - input_process_water
+          - output_oily_water_treatment_sludge
+          - output_hot_rolling_wastewater
+        explanation: "Available BAT values are conformance benchmarks; no two independent compatible empirical sources were verified for this PCR boundary."
+      - range_id: range_hot_rolling_direct_emissions
+        row_ids:
+          - output_fossil_carbon_dioxide_to_air
+          - output_particulate_matter_to_air
+        explanation: "No two independent original-text sources with compatible furnace fuel, alloy family, air compartment, and foreground boundary were verified."
+      - range_id: range_hot_rolling_consumables
+        row_ids:
+          - input_hot_rolling_lubricant_oil
+          - input_steel_strapping
+        explanation: "No two independent original-text sources with compatible product form and packaging boundary were verified."

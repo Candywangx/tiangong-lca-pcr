@@ -1,10 +1,679 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46340"
-  title: "Other electric conductors, for a voltage not exceeding 1000 V"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.other-electric-conductors-for-a-voltage-not-exceeding-1000-v"
+  classification_refs: "CPC 3.0: 46340, exact mapping context; the classification edge remains subject to repository acceptance governance"
+  covered_products: "Insulated electric wires and cables rated not above 1000 V that are prepared for trade and are not winding wire, coaxial conductors, vehicle/aircraft/ship wiring sets, or optical-fibre cable"
+  excluded_products: "CPC 46310, 46320, 46330, 46350, and 46360 products; bare conductors; upstream metal and polymer production; installation, use, and end-of-life stages"
+  representative_product: "Copper-conductor, PVC-insulated low-voltage wire or cable supplied as a tested, saleable factory-gate product"
+  production_route: "Receipt of wire rod and compounds; wire drawing and annealing; stranding where required; insulation extrusion; conditional laying-up, sheathing, marking, testing, and packing"
+  market_state: "Finished, tested, and saleable insulated conductor at the manufacturing gate; voltage rating, core configuration, conductor cross-section, materials, and packaging are declared"
+functional_unit:
+  what: "Provision of a finished insulated electric conductor able to carry electrical current within its declared voltage, conductor, insulation, and installation specification"
+  how_much: "1 kg net mass of saleable conductor at the manufacturing gate"
+  how_well: "Conforms to the declared product standard and specified rated voltage not exceeding 1000 V; conductor material and cross-section, number of cores, insulation and sheath materials, electrical resistance, and test status are declared"
+  how_long_or_cycle: "One completed manufacturing batch or reporting-period production lot; service life is outside this factory-gate reference flow and must not be inferred"
+  reference_flow_link: "The process output row reference_product, normalized to 1 kg net saleable product"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when purchased conductor feedstock, insulation materials, auxiliaries, energy, water, and packaging enter the manufacturing site. It includes drawing, annealing, stranding, extrusion, conditional assembly and sheathing, marking, testing, internal transport, packing, process rejects, spent process media, and direct site emissions. It ends with tested saleable conductor and separated manufacturing wastes at the factory gate. Upstream supply, outbound distribution, installation, use losses, and end-of-life are represented by linked datasets or later lifecycle-model stages, not by this foreground process."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include all directly consumed materials, energy, water, auxiliaries, packing inputs, manufacturing wastes, and direct emissions from receipt of purchased inputs through tested saleable product at the factory gate."
+      source_ids:
+        - environdec-epd-ies-0024248-2025
+    - rule_id: boundary_variant_disclosure
+      applies_to: "product variants"
+      rule: "Add each actual conductor metal, polymer, additive, screen, armour, sheath, connector, and packaging component as its own atomic exchange; do not use an umbrella material row."
+      source_ids:
+        - epd-norge-npcr-027-2022
+    - rule_id: boundary_stage_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude distribution, installation, use, and end-of-life from the foreground process and disclose that these require separate scenarios when a cradle-to-grave model is built."
+      source_ids:
+        - epd-norge-npcr-027-2022
+boundary_abstraction:
+  declared_starting_condition: "Purchased wire rod or other declared conductor feedstock, formulated insulation/sheath materials, auxiliaries, energy, water, and packaging at the manufacturing-site gate"
+  starting_condition_role: "Upstream products entering integrated conductor manufacture"
+  product_classification_scope: "Residual traded insulated electric conductors rated not above 1000 V, excluding the named sibling conductor categories"
+  recursive_input_rule: "A purchased insulated conductor or cable component within the same category is recorded once as an upstream product input with its own dataset; do not reopen its manufacture inside this foreground process"
+  upstream_dataset_requirement: "Link geographically, technologically, temporally, and materially representative upstream datasets for every purchased input and disclose recycled-content, formulation, and supplier proxies"
+  disclosure: "Declare voltage rating, construction, materials, included manufacturing steps, excluded or outsourced steps, site, period, allocation, packaging, and whether any same-category conductor input crosses the boundary"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other electric conductors, for a voltage not exceeding 1000 V"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "rated voltage"
+    - "applicable product standard"
+    - "conductor material"
+    - "conductor class and cross-section"
+    - "number of cores"
+    - insulation
+    - sheath
+    - screen
+    - "and armour materials"
+    - "connector state"
+    - "net linear mass"
+    - "product length represented"
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "recycled content by material"
+    - "packaging configuration"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-based inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net saleable conductor mass excluding separable transport packaging. Normalize all foreground exchanges to 1 kg net saleable product."
+  - id: length_to_mass
+    applies_to: "product records held by length"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert length to mass only with product- and batch-specific measured net linear mass; retain the measured length, linear mass, and conversion calculation."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity unit and convert to MJ with a documented unit identity; do not substitute upstream grid emissions for the purchased electricity input."
+  - id: packaging_mass
+    applies_to: "each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each packaging material separately and normalize by the net mass of the product shipped in that packaging configuration."
+process_map:
+  - id: electric_conductor_manufacturing
+    name: "Integrated low-voltage conductor manufacture and packing"
+    inclusion: "required"
+    inclusion_condition: "Always; route-inapplicable atomic rows are omitted only with product-construction evidence"
+    role: "Foreground transformation by drawing, annealing, stranding, extrusion, conditional assembly/sheathing, testing, and packing"
+    quantitative_reference: "1 kg net saleable finished conductor"
+process_inventory:
+  - id: electric_conductor_manufacturing
+    label: "Integrated low-voltage conductor manufacture and packing"
+    inputs:
+      product:
+        - row_id: copper_wire_rod
+          role: "Copper conductor feedstock"
+          name: "Copper wire rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "99715c69-4245-44ff-a438-0e0d68377386"
+          property_unit: "Mass / kg"
+          description: "Copper wire rod enters the representative route for drawing into conductor wire."
+          amount:
+            expression: "measured mass issued to the represented production lot, net of returned unused rod"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: pvc_insulation_compound
+          role: "PVC cable-insulation compound"
+          name: "PVC cable-insulation compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Formulated PVC compound enters when the declared product uses PVC insulation or sheath. Its exact Tiangong identity remains unresolved; resin, plasticizer, stabilizer, filler, and other separately purchased formulation constituents must not be collapsed into this row when on-site compounding occurs."
+          amount:
+            expression: "measured mass issued to the represented PVC-insulated production lot, net of reusable return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: colour_masterbatch
+          role: "Colour masterbatch"
+          name: "Masterbatch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "71dc7f76-bcc0-4239-a8d7-03132cef6b16"
+          property_unit: "Mass / kg"
+          description: "Masterbatch enters when colour or other masterbatch is dosed into an insulation or sheath compound."
+          amount:
+            expression: "measured masterbatch mass issued to the represented lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity crosses the site boundary for drawing, annealing, stranding, extrusion, assembly, testing, and packing."
+          amount:
+            expression: "metered electricity attributable to the represented production lot after documented allocation of shared loads"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: diesel_fuel
+          role: "Diesel for internal transport"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Diesel enters only when forklifts or other site-controlled internal transport burn diesel within the foreground boundary."
+          amount:
+            expression: "measured or invoice-reconciled diesel consumed by applicable internal transport and allocated to the represented lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_emissions
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: process_water
+          role: "Process-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water enters as measured make-up for wire-drawing emulsion, extrusion cooling, or other production-contact systems; recirculated water is not counted repeatedly."
+          amount:
+            expression: "metered make-up water crossing the site boundary for the represented lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: drawing_lubricant_emulsion
+          role: "Wire-drawing lubricant emulsion"
+          name: "Wire-drawing lubricant emulsion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wire-drawing lubricant emulsion enters when drawing is performed on site. The selected flow is the purchased formulated emulsion or concentrate, not an umbrella lubricant category."
+          amount:
+            expression: "measured make-up mass issued to the drawing system for the represented lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "A wooden pallet enters when it accompanies the saleable product from the factory gate."
+          amount:
+            expression: "measured pallet mass divided by the net product mass shipped on that pallet, adjusted for documented reuse"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor in the declared packaging configuration"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: ldpe_packaging_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "PE-LD foil enters when film wraps or protects the saleable product."
+          amount:
+            expression: "measured film mass used for the declared shipment configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor in the declared packaging configuration"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: corrugated_cardboard
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Corrugated cardboard enters when used as a packaging board, protector, carton, or separator for the product."
+          amount:
+            expression: "measured corrugated cardboard mass used for the declared shipment configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor in the declared packaging configuration"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: polypropylene_strap
+          role: "Polypropylene packaging strap"
+          name: "Polypropylene packaging strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polypropylene strap enters when it secures the declared cable or pallet shipment. Its exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured strap mass used for the declared shipment configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor in the declared packaging configuration"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: paper_label
+          role: "Paper product label"
+          name: "Label, paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b25a54f-baa6-4593-9670-4240a3315eed"
+          property_unit: "Mass / kg"
+          description: "A paper label enters when attached to the declared saleable product or its packaging."
+          amount:
+            expression: "measured paper-label mass used for the declared shipment configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor in the declared packaging configuration"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_inputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Finished low-voltage electric conductor"
+          name: "Other electric conductors, for a voltage not exceeding 1000 V"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The tested saleable conductor is the quantitative reference output. No exact Tiangong product-flow UUID was confirmed."
+          amount:
+            expression: "1 kg net saleable product by reference-flow definition"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - epd-norge-npcr-027-2022
+            ranges: []
+      waste:
+        - row_id: copper_scrap
+          role: "Segregated copper scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Copper scrap leaves the process when drawing, stranding, setup, or reject handling produces separately collected copper waste."
+          amount:
+            expression: "measured segregated copper scrap leaving the process, net of verified same-process internal recycling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: pvc_scrap
+          role: "Segregated PVC scrap"
+          name: "Polyvinyl chloride"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "389a97eb-6bcb-4a51-a49b-79893dbc7d41"
+          property_unit: "Mass / kg"
+          description: "PVC scrap leaves the process when extrusion purge, setup, trimming, or rejects are separately collected from metal-bearing cable scrap."
+          amount:
+            expression: "measured segregated PVC scrap leaving the process, net of verified same-process internal recycling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+        - row_id: spent_drawing_emulsion
+          role: "Spent wire-drawing lubricant emulsion"
+          name: "Spent wire-drawing lubricant emulsion"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent drawing emulsion leaves the process only when removed from the drawing system for off-site treatment. Its exact Tiangong waste-flow UUID remains unresolved."
+          amount:
+            expression: "measured mass removed for off-site treatment, excluding recirculated bath inventory"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - environdec-epd-ies-0024248-2025
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_from_diesel
+          role: "Fossil carbon dioxide from on-site diesel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide leaves to air only when diesel is combusted in site-controlled equipment inside the foreground boundary. Upstream fuel-supply emissions are excluded from this row."
+          amount:
+            expression: "site-reported direct fossil CO2 mass attributable to the recorded diesel use and represented lot; do not apply an uncited default factor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable finished conductor"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "all shared operations"
+    rule: "Avoid allocation by submetering production lines, recording material issues and wastes by lot, and separating independently measurable processes."
+    source_ids: []
+  - rule_id: allocation_physical
+    applies_to: "unavoidable shared energy, water, auxiliaries, and wastes"
+    rule: "When subdivision is not possible, use a documented physical driver such as machine time, metered load, throughput, or material mass that reflects causality."
+    source_ids: []
+  - rule_id: allocation_mass_fallback
+    applies_to: "shared site records without a demonstrable causal driver"
+    rule: "Use net saleable product mass only as a disclosed fallback; report the allocation share, denominator, affected exchanges, and sensitivity."
+    source_ids:
+      - environdec-epd-ies-0024248-2025
+  - rule_id: scrap_no_avoided_burden
+    applies_to: "manufacturing scrap"
+    rule: "Record scrap at the measured factory-gate waste boundary without an avoided-burden credit in the foreground process; any recycling benefit belongs to an explicitly linked downstream model."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_inputs
+      process_id: "electric_conductor_manufacturing"
+      flow_role: "each separately identified conductor, polymer, masterbatch, and drawing-emulsion input"
+      record_type: "weigh-ticket, warehouse issue, batch recipe, purchase reconciliation"
+      raw_fields: "material identity; lot; opening stock; receipts; issues; returns; closing stock; mass"
+      collection_method: "reconcile mass issued to production against inventory movement and batch recipe"
+      unit: "kg"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "all included production lines at the declared site"
+      aggregation_rule: "sum net issues by atomic material and divide by net saleable output"
+      quality_evidence: "calibrated-scale record; supplier specification; stock reconciliation; formulation revision"
+    - protocol_id: cp_energy_water
+      process_id: "electric_conductor_manufacturing"
+      flow_role: "electricity and process-water make-up"
+      record_type: "meter and utility record"
+      raw_fields: "meter id; opening and closing readings; unit; line share; downtime; make-up-water reading"
+      collection_method: "read dedicated meters or allocate shared meters using documented physical drivers"
+      unit: "native meter unit and kg water"
+      frequency: "continuous or shift; monthly reconciliation"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "all included lines and support systems"
+      aggregation_rule: "subtract opening from closing, remove documented non-production loads, allocate, and normalize"
+      quality_evidence: "meter calibration; utility invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_fuel_and_emissions
+      process_id: "electric_conductor_manufacturing"
+      flow_role: "diesel input and direct fossil CO2"
+      record_type: "fuel issue log, equipment-hour log, verified emissions record"
+      raw_fields: "fuel identity; mass or volume; density; equipment; hours; lot; direct CO2"
+      collection_method: "reconcile fuel issues and retain site emissions calculation or verified report where direct combustion applies"
+      unit: "kg fuel and kg CO2"
+      frequency: "each issue; monthly reconciliation"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "site-controlled combustion equipment only"
+      aggregation_rule: "allocate by measured use or equipment hours; normalize to net saleable output"
+      quality_evidence: "invoice; tank reconciliation; density record; emissions calculation and reviewer sign-off"
+    - protocol_id: cp_packaging_inputs
+      process_id: "electric_conductor_manufacturing"
+      flow_role: "each packaging component"
+      record_type: "packaging bill of materials and packing log"
+      raw_fields: "component identity; mass per item; items used; reuse count; product mass shipped"
+      collection_method: "weigh representative components and reconcile counts to shipment records"
+      unit: "kg"
+      frequency: "each packaging design; each revision"
+      temporal_coverage: "packaging configurations used in reporting period"
+      site_scope: "declared outgoing product packaging"
+      aggregation_rule: "component mass times net consumption divided by packaged net product mass"
+      quality_evidence: "scale record; bill of materials; packing record; reuse evidence"
+    - protocol_id: cp_waste_outputs
+      process_id: "electric_conductor_manufacturing"
+      flow_role: "each segregated manufacturing waste"
+      record_type: "waste scale ticket, container log, disposal manifest"
+      raw_fields: "waste identity; gross and tare mass; destination; internal recycle quantity; lot or period"
+      collection_method: "weigh each waste stream separately and reconcile storage changes and treatment manifests"
+      unit: "kg"
+      frequency: "each removal; monthly reconciliation"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "all included production and maintenance areas"
+      aggregation_rule: "outgoing waste plus closing minus opening storage, less verified same-process internal recycling; normalize"
+      quality_evidence: "calibrated scale; manifest; recycler receipt; storage reconciliation"
+    - protocol_id: cp_reference_output
+      process_id: "electric_conductor_manufacturing"
+      flow_role: "net saleable finished conductor"
+      record_type: "finished-goods and quality-release record"
+      raw_fields: "product code; voltage; construction; gross mass; separable packaging mass; length; linear mass; rejected mass; release status"
+      collection_method: "use released finished-goods mass, subtract separable packaging, and reconcile length-to-mass conversion"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same reporting period as inputs"
+      site_scope: "all included saleable output"
+      aggregation_rule: "sum net released product mass; exclude rejects and separable packaging"
+      quality_evidence: "release certificate; calibrated scale; length and linear-mass check"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "every foreground exchange"
+      rule: "normalized exchange = attributable exchange amount / net saleable product mass"
+      inputs:
+        - "atomic exchange amount"
+        - "net saleable output from cp_reference_output"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_length_mass
+      applies_to: "product records held by length"
+      rule: "product mass = measured product length × batch-specific net linear mass"
+      inputs:
+        - "measured length"
+        - "measured net kg/m"
+      output: "kg net saleable product"
+      source_ids: []
+    - id: calc_packaging_reuse
+      applies_to: "reusable pallet or drum"
+      rule: "consumed packaging mass = component mass / verified expected uses; no reuse adjustment without traceable return evidence"
+      inputs:
+        - "component mass"
+        - "verified reuse count"
+        - "product mass carried"
+      output: "kg packaging per kg net product"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "conductor metal and polymer"
+      rule: "input mass = saleable incorporated mass + segregated scrap + other documented losses ± inventory change; investigate unexplained residuals"
+      inputs:
+        - "material issues"
+        - "product composition"
+        - scrap
+        - "inventory change"
+      output: "material balance and unexplained residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Preserve product code, voltage rating, standard, conductor construction, material formulation, dimensions, net linear mass, and quality-release status."
+      evidence: "product specification and release certificate"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile every purchased material, additive, energy carrier, water input, packaging component, waste, and direct emission actually crossing the boundary; add variant-specific exchanges as separate atomic rows."
+      evidence: "ledger-to-inventory reconciliation and signed completeness review"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Use calibrated instruments and retain unit conversions, allocation worksheets, gross/tare corrections, and uncertainty notes."
+      evidence: "calibration certificates and reconciliation worksheets"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Use a continuous representative period and align input, output, waste, and inventory-change records; disclose shutdowns, start-ups, and abnormal production."
+      evidence: "dated records and production log"
+    - id: dq_representativeness
+      applies_to: "upstream links"
+      requirement: "Match conductor grade, recycled content, polymer formulation, electricity geography, fuel technology, water supply, packaging, and waste treatment; disclose every proxy."
+      evidence: "supplier data, dataset metadata, and proxy register"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Confirm rated voltage is not above 1000 V and the product is not winding wire, coaxial conductor, vehicle/aircraft/ship wiring set, above-1000 V conductor, or optical-fibre cable."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference
+    applies_to: "reference flow"
+    rule: "Confirm exactly 1 kg net saleable conductor output, separable packaging excluded, and every required qualifier disclosed."
+    source_ids:
+      - epd-norge-npcr-027-2022
+  - rule_id: validate_atomic_rows
+    applies_to: "inventory"
+    rule: "Reject any row that combines multiple materials, utilities, fuels, packaging components, wastes, or emissions; require a separate concrete exchange and route condition."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "conductor metal and polymer"
+    rule: "Require reconciled material balances and documented investigation of unexplained residuals; do not net scrap against purchased input."
+    source_ids: []
+  - rule_id: validate_boundary
+    applies_to: "foreground process"
+    rule: "Confirm all directly consumed manufacturing and packing exchanges, wastes, and direct site emissions are included, while upstream and downstream stages are represented separately."
+    source_ids:
+      - environdec-epd-ies-0024248-2025
+  - rule_id: validate_uuid_status
+    applies_to: "Tiangong references"
+    rule: "Accept only public state-100 UUIDs whose identity, flow type, property, unit group, and product state match the row; keep unresolved rows explicit."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset suitable for publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "Linked input to product, construction, electrical-equipment, or lifecycle models that separately add upstream supply and downstream distribution, installation, use losses, and end-of-life as required"
+  allowed_use: "Comparison or modelling of conductors only when voltage, construction, materials, function, geography, period, boundary, and allocation are compatible"
+  excluded_use: "Direct comparison across incompatible conductor functions or standards; use as a cradle-to-grave result; inference of service life or operational Joule losses; use for excluded conductor categories"
+  required_metadata: "PCR id and version; product code and standard; voltage; conductor construction; material composition; net linear mass; site and geography; reporting period; technology; boundary; allocation; recycled content; packaging; data sources; unresolved UUIDs"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; allocation share and drivers; material-balance residuals; proxy list; temporal, geographic, and technological representativeness; uncertainty and completeness review"
+  update_trigger: "Change in conductor design or formulation, voltage or product standard, production route or equipment, site or energy mix, supplier or recycled content, packaging, waste treatment, allocation, or a material change in normalized inventory"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Product identity, hierarchy, and exclusions from adjacent conductor categories"
+  - id: "un-cpc-1-1-chinese-2004"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-04)"
+    used_for: "Verified professional Chinese category name and adjacent voltage-category terminology"
+  - id: "epd-norge-npcr-027-2022"
+    type: "standard"
+    reference: "The Norwegian EPD Foundation, NPCR 027:2022 Part B for electrical cables and wires, version 2, https://www.epd-norge.no/getfile.php/13161971-1741628082/PCRer/NPCR%20027%202022%20Part%20B%20Electrical%20cables%20and%20wires%20A2%20010322.pdf (retrieved 2026-09-04)"
+    used_for: "Electrical-cable and wire scope, declared-unit alternatives, lifecycle-stage separation, and disclosure rules"
+  - id: "environdec-epd-ies-0024248-2025"
+    type: "dataset"
+    reference: "AB Lietkabelis, EPD-IES-0024248:001, PVC insulated non-sheathed cable for internal wiring H07V-R 6.0-16.0 mm2, 13 June 2025, https://api.prod.environdec.com/api/v1/EPDLibrary/Files/EPDs/94d4fb03-6def-4593-a3b9-08dda8b4f7e6/Documents (retrieved 2026-09-04)"
+    used_for: "Representative low-voltage product construction, manufacturing inputs, packaging components, factory process boundary, allocation example, and foreground-data context; no quantitative range imported"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:73348f832cf7183ecffdb9a3c224e96022cc5dee9376cef908d50e6e6ee62dc0"
+  generated_content_sha256: "sha256:3facaa4874755d30d23bb8a7f9627eecf8f37347dc4b634148f92ee0f4a58163"

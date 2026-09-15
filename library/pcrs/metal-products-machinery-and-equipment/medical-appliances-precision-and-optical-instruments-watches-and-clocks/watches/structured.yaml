@@ -1,10 +1,622 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48410"
-  title: "Watches"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.watches"
+  classification_refs: "CPC 3.0: 48410 Watches; semantic boundary informed by the official CPC 2.1 correspondence to HS 9101 and 9102"
+  covered_products: "Complete wrist-watches, pocket-watches, and other complete portable personal timepieces whose primary identity is a watch; mechanical and battery-powered or quartz variants"
+  excluded_products: "Clocks; time-recording apparatus; movements and parts sold separately; repair and manufacturing services; connected wearable computers not classified as watches"
+  representative_product: "One accepted, functionally tested, retail-unit packaged watch at the manufacturing factory gate"
+  production_route: "Final assembly and testing from delivered watch movement components, case components, declared band or strap, route-specific power source, and packaging inputs"
+  market_state: "Finished, accepted, packaged watch ready for distribution; movement technology, material configuration, and power system declared"
+functional_unit:
+  what: "Provide one finished portable personal timepiece whose primary product identity is a watch"
+  how_much: "One accepted retail-unit packaged watch at the factory gate"
+  how_well: "Meets the manufacturer's declared timekeeping, functional, appearance, water-resistance where applicable, and quality-release specifications"
+  how_long_or_cycle: "One completed manufacturing lot allocation to one accepted watch; use-life duration is outside this factory-gate functional unit"
+  reference_flow_link: "finished_watch"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete_watch
+      applies_to: "Product inclusion"
+      rule: "Include only a complete watch as the reference product; treat movements, cases, straps, bands, glasses, and other separately supplied parts as upstream inputs."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - un-cpc-2-1-hs-correspondence-2013
+    - rule_id: boundary_foreground_gate
+      applies_to: "Foreground operations"
+      rule: "Include final assembly, cleaning when performed, functional and water-resistance testing, quality release, reject handling, and retail-unit packaging performed at the reporting site."
+      source_ids:
+        - casio-environmental-report-2003
+        - hes-so-he-arc-mechanical-watch-eco-audit-2022
+    - rule_id: boundary_upstream_components
+      applies_to: "Broader cradle-to-gate claims"
+      rule: "Link upstream datasets for delivered movement, case, strap or band, battery, solvent, utilities, and packaging; do not represent their embedded burdens as direct foreground emissions."
+      source_ids:
+        - casio-environmental-report-2003
+        - hes-so-he-arc-mechanical-watch-eco-audit-2022
+    - rule_id: boundary_route_disclosure
+      applies_to: "Variant handling"
+      rule: "Keep mechanical and battery-powered routes and different case, cover, and strap materials separately parameterized whenever their bills of materials or operations differ."
+      source_ids:
+        - casio-environmental-report-2003
+        - hes-so-he-arc-mechanical-watch-eco-audit-2022
+boundary_abstraction:
+  declared_starting_condition: "Delivered movement components, surface-treated case components, declared band or strap, route-specific button cell where used, cleaning agent, and retail packaging materials at the watch-assembly site gate"
+  starting_condition_role: "Upstream component and material datasets feed the foreground final assembly, testing, quality release, and packaging process"
+  product_classification_scope: "Complete watches within CPC 48410; separately sold movements, cases, bands, straps, glasses, and other parts remain upstream products rather than reference products"
+  recursive_input_rule: "A complete watch re-entering the foreground process for rework is tracked as an internal rework item and not as a new purchased reference-category input; an externally purchased complete watch must be disclosed and linked to a separate upstream dataset without double counting its production"
+  upstream_dataset_requirement: "Supplier- or technology-specific cradle-to-gate datasets are required for each delivered component, power source, solvent, water, electricity supply, and packaging input when a cradle-to-gate or broader result is claimed"
+  disclosure: "Declare the assembly site, accepted-lot period, included operations, manual versus automated assembly, movement and power technology, component material configuration, wet-testing and cleaning practice, utility boundary, rejects, packaging, and all omitted upstream or downstream stages"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Watches (Tiangong UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "movement technology"
+    - "power system"
+    - "case material"
+    - "watch-cover material"
+    - "band or strap material"
+    - "water-resistance class or not applicable"
+    - "declared accuracy or release specification"
+    - "manufacturing site and geography"
+    - "accepted-lot period"
+    - "packaging configuration"
+    - "included and excluded life-cycle stages"
+reference_flows:
+  []
+measurement_rules:
+  - id: watch_item_reference
+    applies_to: "Reference product and accepted-watch count"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Normalize all foreground exchanges to one accepted, packaged watch; reject units do not increase the denominator."
+  - id: component_mass_basis
+    applies_to: "Component, strap, packaging, solvent, and waste mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net mass crossing the process boundary and convert supplier item counts to mass using lot-specific measured or supplier-declared mass."
+  - id: electricity_energy_basis
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered energy before normalization; if source records use kWh, convert with 1 kWh = 3.6 MJ and disclose the grid geography, voltage level, and included losses."
+  - id: water_mass_basis
+    applies_to: "Process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net make-up or consumed water, excluding recirculated volume that does not cross the foreground boundary; document any volume-to-mass conversion and reference conditions."
+process_map:
+  - id: watch_final_assembly
+    name: "Final watch assembly, testing, quality release, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included for complete watches"
+    role: "Foreground production"
+    quantitative_reference: "Per one accepted, retail-unit packaged watch at the factory gate"
+process_inventory:
+  - id: watch_final_assembly
+    label: "Final watch assembly, testing, quality release, and packaging"
+    inputs:
+      product:
+        - row_id: movement_components
+          role: "Delivered watch movement component set"
+          name: "Delivered watch movement component set (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the delivered component set used to build the declared mechanical or electronic watch movement configuration. Do not mix movement technologies in one foreground average unless the declared product mix and weighted bill of materials are retained."
+          amount:
+            expression: "Supplier or receiving mass consumed, including components incorporated in accepted watches and attributable rejects, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted packaged watch"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - hes-so-he-arc-mechanical-watch-eco-audit-2022
+            ranges: []
+        - row_id: watch_case_components
+          role: "Surface-treated watch case components"
+          name: "Surface-treated watch case components (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the case, back, bezel, cover or crystal, crown, seals, and other case components as the delivered case-component lot used by the declared watch configuration. The unresolved selected-flow label denotes one delivered case-component set, not a choice among materials; component material and masses remain explicit in the bill of materials."
+          amount:
+            expression: "Receiving or bill-of-material mass consumed for the declared case configuration, including attributable rejects, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packaged watch"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - casio-environmental-report-2003
+                - hes-so-he-arc-mechanical-watch-eco-audit-2022
+            ranges: []
+        - row_id: metal_watch_band
+          role: "Assembled metal watch band"
+          name: "Assembled metal watch band (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the accepted watch is supplied with a metal band. Record one finished metal band crossing the assembly boundary and its measured or supplier-declared mass."
+          amount:
+            expression: "Mass of metal bands consumed, including attributable rejects, normalized to accepted watches fitted with this band type"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packaged watch fitted with a metal band"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - casio-environmental-report-2003
+            ranges: []
+        - row_id: leather_watch_strap
+          role: "Finished leather watch strap"
+          name: "Finished leather watch strap (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the accepted watch is supplied with a leather strap. Keep leather origin, tanning route, buckle material, and supplier identity as upstream qualifiers."
+          amount:
+            expression: "Mass of leather straps consumed, including attributable rejects, normalized to accepted watches fitted with this strap type"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packaged watch fitted with a leather strap"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - casio-environmental-report-2003
+            ranges: []
+        - row_id: elastomer_watch_strap
+          role: "Finished elastomer watch strap"
+          name: "Finished elastomer watch strap (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the accepted watch is supplied with an elastomer or resin strap. Record the actual finished strap material and supplier dataset; do not substitute a generic plastic mass without disclosure."
+          amount:
+            expression: "Mass of elastomer straps consumed, including attributable rejects, normalized to accepted watches fitted with this strap type"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packaged watch fitted with an elastomer strap"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - casio-environmental-report-2003
+            ranges: []
+        - row_id: watch_button_cell
+          role: "Watch button cell"
+          name: "Watch button cell (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Include only for a battery-powered watch when a button cell crosses the assembly-site boundary separately from the movement. Record its chemistry, model, nominal capacity, rechargeable status, supplier, and whether it is incorporated in the delivered movement."
+          amount:
+            expression: "Count of button cells issued to assembly, less verified returns to stock, normalized to accepted battery-powered watches"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted packaged battery-powered watch receiving a separate cell"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: isopropanol
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Include when isopropanol is consumed for component or case cleaning. Purity, water content, recovered quantity, and waste or air destinations must be retained in the site record."
+          amount:
+            expression: "Opening inventory plus receipts minus closing inventory, verified returns, and recovered reusable solvent, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted packaged watch when isopropanol cleaning is used"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed by assembly benches, automated equipment, cleaning, testing, packaging, and the allocated share of directly supporting facility loads during the reporting period."
+          amount:
+            expression: "Metered electricity for included operations plus a documented allocation of shared directly supporting loads, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted packaged watch"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_metering
+              source_ids:
+                - hes-so-he-arc-mechanical-watch-eco-audit-2022
+            ranges: []
+        - row_id: test_process_water
+          role: "Process water for cleaning and wet testing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include net make-up water when cleaning or water-resistance testing causes water to cross the foreground boundary. Do not count closed-loop recirculation repeatedly."
+          amount:
+            expression: "Metered or tank-balanced net process-water input for included cleaning and wet-testing operations, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted packaged watch when wet cleaning or testing is used"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_metering
+              source_ids: []
+            ranges: []
+        - row_id: paper_box
+          role: "Paper presentation box"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "Record the paper or paperboard presentation box supplied with the retail unit. Decorative non-paper components must be recorded in additional atomic rows in the site implementation."
+          amount:
+            expression: "Net receiving mass of paper boxes issued to accepted retail units plus attributable rejects, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packaged watch supplied with a paper box"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+        - row_id: paper_instruction_insert
+          role: "Printed paper instruction insert"
+          name: "Packaging, paper insert"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b4681b7b-ff95-4df8-804a-fff06aa3c3aa"
+          property_unit: "Mass / kg"
+          description: "Record the printed paper instruction, warranty, or compliance insert included in the retail package as one paper insert exchange. Electronic-only instructions are not assigned a paper input."
+          amount:
+            expression: "Net mass of printed paper inserts issued to accepted retail units plus attributable rejects, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packaged watch containing a printed insert"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_watch
+          role: "Accepted finished watch"
+          name: "Watches (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "This is the declared reference product after functional testing, quality release, and retail-unit packaging. The Tiangong product-flow UUID remains unresolved; the item-count property and reference unit are confirmed."
+          amount:
+            expression: "Count of accepted, released, retail-unit packaged watches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "one accepted packaged watch"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_rejects
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - un-cpc-2-1-hs-correspondence-2013
+            ranges: []
+      waste:
+        - row_id: rejected_finished_watch
+          role: "Rejected finished watch"
+          name: "Rejected finished watch (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected assembled watches that leave the foreground system for treatment and are not successfully reworked into accepted output. Preserve their actual component configuration and waste destination."
+          amount:
+            expression: "Measured mass of rejected assembled watches leaving for treatment, excluding units returned to successful internal rework"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted packaged watch"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_and_rejects
+              source_ids: []
+            ranges: []
+        - row_id: spent_isopropanol_solution
+          role: "Spent isopropanol cleaning solution"
+          name: "Spent isopropanol cleaning solution (Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include when spent isopropanol solution leaves the site for treatment or recovery. Record water and contaminant content when known and keep recovered solvent returned to the process out of this output."
+          amount:
+            expression: "Measured mass dispatched off-site as spent isopropanol solution, normalized to accepted watches"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted packaged watch when isopropanol cleaning is used"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Multi-product assembly and packaging operations"
+    rule: "Avoid allocation by separate product bills of materials, accepted and reject counts, direct labor or machine records, and submetered utility data wherever practicable."
+    source_ids: []
+  - rule_id: allocation_shared_utilities
+    applies_to: "Shared electricity, water, and directly supporting facility loads"
+    rule: "Allocate only the residual shared amount using a documented physical driver that reflects consumption, such as measured machine hours, test cycles, or occupied equipment time; retain the total and reconciliation."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "Internal rework"
+    rule: "Assign rework inputs and losses to the product family that caused them and count only successfully released watches in the reference-product denominator."
+    source_ids: []
+  - rule_id: allocation_recycling
+    applies_to: "Recovered solvent, recyclable rejects, and waste treatment"
+    rule: "Report recovered materials and wastes at the foreground boundary without netting avoided virgin-material or treatment credits into the foreground inventory; place substitution or recycling credits in an explicitly disclosed downstream scenario."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "watch_final_assembly"
+      flow_role: "movement, case, band or strap, and button-cell inputs"
+      record_type: "approved bill of materials; receiving and issue records; supplier specifications; reject records"
+      raw_fields: "component identity; material; supplier; lot; opening and closing stock; receipts; returns; issued mass or count; reject mass or count; product variant"
+      collection_method: "Reconcile approved BOM to lot-level warehouse issues and physical or supplier-declared mass; separate mutually exclusive strap and power routes"
+      unit: "kg and Item(s)"
+      frequency: "Each production lot with monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or complete shorter campaign disclosed"
+      site_scope: "All lines and subcontracted steps controlled by the reporting assembly site"
+      aggregation_rule: "Net issued quantity plus attributable rejected quantity divided by accepted watches of the matching variant"
+      quality_evidence: "Approved BOM revision, calibrated balance records, warehouse reconciliation, supplier specifications, and variance investigation"
+    - protocol_id: cp_solvent_records
+      process_id: "watch_final_assembly"
+      flow_role: "isopropanol input and spent-solution output"
+      record_type: "purchase, inventory, recovery, and waste consignment records"
+      raw_fields: "opening stock; receipts; closing stock; returned or recovered solvent; spent-solution mass; purity; water content; destination"
+      collection_method: "Monthly solvent mass balance reconciled to cleaning operation records and waste dispatches"
+      unit: "kg"
+      frequency: "Monthly and each waste dispatch"
+      temporal_coverage: "Same period as accepted-watch output"
+      site_scope: "All included cleaning stations and on-site solvent recovery"
+      aggregation_rule: "Net consumed input and off-site waste mass divided by accepted watches; unexplained balance disclosed"
+      quality_evidence: "Calibrated stock measurement, purchase invoices, recovery logs, waste manifests, and mass-balance closure"
+    - protocol_id: cp_electricity_metering
+      process_id: "watch_final_assembly"
+      flow_role: "assembly, testing, cleaning, packaging, and supporting electricity"
+      record_type: "revenue meter, submeter, and equipment runtime records"
+      raw_fields: "meter start and end; multiplier; equipment runtime; rated or measured load; production downtime; accepted watch count; grid contract"
+      collection_method: "Prefer submeters; reconcile included submeters and allocated supporting loads to the facility meter"
+      unit: "kWh and MJ"
+      frequency: "Continuous or shift readings with monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or complete shorter campaign disclosed"
+      site_scope: "Included production lines and directly supporting facility loads"
+      aggregation_rule: "Net included kWh converted to MJ and divided by accepted watches; residual shared load allocated by disclosed physical driver"
+      quality_evidence: "Meter calibration, utility invoices, reconciliation, driver records, and documented conversion"
+    - protocol_id: cp_water_metering
+      process_id: "watch_final_assembly"
+      flow_role: "cleaning and wet-test process water"
+      record_type: "water meter, tank balance, batch log, and discharge record"
+      raw_fields: "make-up water; drain volume or mass; recirculation inventory change; batch count; accepted watch count; reference conditions"
+      collection_method: "Meter net make-up where possible; otherwise perform a documented tank balance without repeatedly counting recirculation"
+      unit: "kg or m3 with conversion"
+      frequency: "Each batch or monthly meter reconciliation"
+      temporal_coverage: "Same period as accepted-watch output"
+      site_scope: "Included cleaning and water-resistance test systems"
+      aggregation_rule: "Net boundary-crossing water mass divided by accepted watches"
+      quality_evidence: "Meter calibration, tank dimensions, density assumption, leak checks, and reconciliation"
+    - protocol_id: cp_packaging_bom
+      process_id: "watch_final_assembly"
+      flow_role: "paper box and printed paper insert"
+      record_type: "packaging BOM; receiving and issue records; supplier mass specifications"
+      raw_fields: "packaging item identity; material; mass per item; issued count; returned count; rejected count; accepted watch count"
+      collection_method: "Reconcile packaging BOM and issues to accepted retail units; record each additional non-paper component separately"
+      unit: "kg and Item(s)"
+      frequency: "Each packaging specification and monthly reconciliation"
+      temporal_coverage: "Same period as accepted-watch output"
+      site_scope: "All retail-unit packaging applied at the reporting site"
+      aggregation_rule: "Net packaging mass issued plus attributable rejects divided by accepted watches using that configuration"
+      quality_evidence: "Approved packaging specification, calibrated sample weighing, issue records, and reconciliation"
+    - protocol_id: cp_output_and_rejects
+      process_id: "watch_final_assembly"
+      flow_role: "accepted finished watches and rejected assembled watches"
+      record_type: "quality-release, production, rework, and waste records"
+      raw_fields: "product model; movement route; material configuration; packaged accepted count; rejected count and mass; rework entry and release; waste destination"
+      collection_method: "Reconcile final quality release to packaging and dispatch records; track rework until accepted output or waste exit"
+      unit: "Item(s) and kg"
+      frequency: "Each lot with monthly reconciliation"
+      temporal_coverage: "Same period as all input protocols"
+      site_scope: "All included final assembly and quality-release lines"
+      aggregation_rule: "Accepted count is the denominator; only rejects leaving the system are waste outputs"
+      quality_evidence: "Signed release records, test logs, rework genealogy, calibrated reject weighing, and dispatch manifests"
+  calculation_rules:
+    - id: calc_net_component_input
+      applies_to: "Component and packaging input rows"
+      rule: "(opening stock + receipts - closing stock - verified returns) / accepted watches of the matching configuration; reconcile against BOM and add separately measured attributable rejects when issue records exclude them"
+      inputs:
+        - inventory
+        - receiving
+        - return
+        - BOM
+        - reject
+        - "and accepted-output records"
+      output: "kg or Item(s) per accepted packaged watch"
+      source_ids: []
+    - id: calc_net_solvent_input
+      applies_to: "isopropanol"
+      rule: "(opening stock + receipts - closing stock - verified off-site returns - recovered solvent returned to stock) / accepted watches"
+      inputs:
+        - "solvent inventory"
+        - receipts
+        - returns
+        - recovery
+        - "and accepted-output records"
+      output: "kg isopropanol input per accepted packaged watch"
+      source_ids: []
+    - id: calc_electricity_per_watch
+      applies_to: "assembly_electricity"
+      rule: "(submetered included electricity + reconciled shared supporting electricity) × 3.6 MJ/kWh / accepted watches"
+      inputs:
+        - meters
+        - "allocation driver"
+        - "and accepted-output records"
+      output: "MJ per accepted packaged watch"
+      source_ids: []
+    - id: calc_net_process_water
+      applies_to: "test_process_water"
+      rule: "net make-up or boundary-crossing water mass / accepted watches; do not add internal recirculation volume"
+      inputs:
+        - "water meters or tank balance and accepted-output records"
+      output: "kg per accepted packaged watch"
+      source_ids: []
+    - id: calc_waste_per_watch
+      applies_to: "Waste output rows"
+      rule: "measured mass leaving the foreground system / accepted watches; exclude successful internal rework and recovered solvent returned to the process"
+      inputs:
+        - "waste dispatch"
+        - recovery
+        - rework
+        - "and accepted-output records"
+      output: "kg waste per accepted packaged watch"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and all exchanges"
+      requirement: "Preserve product model, movement and power technology, component material configuration, supplier or source, flow state, and Tiangong UUID status; do not replace specific exchanges with generic utilities, materials, wastes, or emissions."
+      evidence: "Approved product specification, BOM, supplier records, direct-read UUID audit, and unresolved-flow register"
+    - id: dq_temporal
+      applies_to: "All foreground records"
+      requirement: "Use one common representative period; disclose shutdowns, start-up lots, model changes, incomplete months, and any shorter campaign."
+      evidence: "Dated meter, inventory, production, and release records"
+    - id: dq_completeness
+      applies_to: "Mass, item, utility, waste, and direct-emission balances"
+      requirement: "Reconcile purchased or issued inputs, accepted output, rejects, recovery, and inventory change; investigate material discrepancies and add substance-specific direct-emission rows where applicable."
+      evidence: "Reconciliation worksheets, mass-balance closure, variance investigations, and emission records"
+    - id: dq_measurement
+      applies_to: "Metered and weighed quantities"
+      requirement: "Retain calibration status, reading frequency, unit conversions, detection limits, and allocation drivers; supplier-declared mass must be distinguished from on-site measurement."
+      evidence: "Calibration certificates, meter logs, scale records, supplier specifications, and calculation files"
+    - id: dq_upstream_linkage
+      applies_to: "Broader cradle-to-gate claims"
+      requirement: "Use component, electricity, water, solvent, battery, and packaging datasets matching the declared geography, technology, material, recycled content, and delivery state; disclose proxies separately."
+      evidence: "Linked dataset metadata and documented representativeness review"
+validation_rules:
+  - rule_id: validate_reference_output
+    applies_to: "Reference flow"
+    rule: "Confirm exactly one finished_watch reference output is reported as one accepted packaged item and that rejects do not increase the denominator."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-2-1-hs-correspondence-2013
+  - rule_id: validate_route_exclusivity
+    applies_to: "Band, strap, movement, and power inputs"
+    rule: "Confirm only the material and power rows applicable to the declared product configuration carry amounts; justify any weighted product-family average with model-level quantities."
+    source_ids:
+      - casio-environmental-report-2003
+      - hes-so-he-arc-mechanical-watch-eco-audit-2022
+  - rule_id: validate_inventory_reconciliation
+    applies_to: "Components, utilities, solvent, water, output, rework, and waste"
+    rule: "Confirm all normalized values use the same accepted-watch denominator and period, and reconcile each protocol to source totals before normalization."
+    source_ids: []
+  - rule_id: validate_no_umbrella_flows
+    applies_to: "Site-specific additions"
+    rule: "Reject combined labels such as utilities, packaging materials, mixed chemicals, wastes and residues, or emissions to air; every added row must represent one physical or chemical exchange."
+    source_ids: []
+  - rule_id: validate_boundary_claim
+    applies_to: "Dataset profile"
+    rule: "A gate-to-gate dataset must not be presented as cradle-to-gate unless all required upstream component and supply datasets are linked; use, maintenance, transport, and end-of-life require separate downstream modelling."
+    source_ids:
+      - casio-environmental-report-2003
+      - hes-so-he-arc-mechanical-watch-eco-audit-2022
+  - rule_id: validate_unresolved_identities
+    applies_to: "UUID-empty rows"
+    rule: "Keep unresolved rows visible and do not publish an exact Tiangong identity until a public state-100 direct read confirms semantic identity, classification, flow type, property, unit group, product state, geography, technology, and general comment."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate watch assembly, testing, quality-release, and retail-unit packaging dataset"
+  downstream_use: "May be linked as a secondary_dataset or background_dataset within a cradle-to-gate or full-life-cycle watch model after upstream component and supply datasets are added"
+  allowed_use: "Product- and site-specific modelling of complete watches with matching movement technology, material configuration, power system, geography, reporting period, quality specification, and packaging"
+  excluded_use: "Unqualified comparison across mechanical, quartz, solar, or connected products; use as a clock or watch-part dataset; representation of component manufacture, distribution, use, maintenance, or end-of-life without additional datasets"
+  required_metadata: "Canonical PCR id; product model or family; CPC scope; movement and power technology; case, cover, and band or strap materials; accepted-watch count; factory geography; reporting period; included operations; packaging configuration; allocation drivers; UUID status; upstream dataset links"
+  required_quality_disclosure: "Metering and weighing methods; calibration; BOM version; supplier data quality; temporal coverage; completeness and reconciliation; rejects and rework; solvent recovery; water recirculation; shared-load allocation; unresolved UUIDs; proxy upstream datasets"
+  update_trigger: "Change in movement or power technology, case or strap material, supplier or BOM, manufacturing geography, cleaning or testing route, packaging configuration, allocation driver, or a material change in normalized inputs, rejects, or data quality"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48410 product-classification identity and title"
+  - id: "un-cpc-2-1-hs-correspondence-2013"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 2.1 complete structure and explanatory notes, https://unstats.un.org/unsd/statcom/doc13/BG-CPC-Version21.pdf (retrieved 2026-09-07)"
+    used_for: "Semantic boundary through HS 9101 and 9102 and separation from clocks, movements, and other parts"
+  - id: "casio-environmental-report-2003"
+    type: "literature"
+    reference: "CASIO Computer Co., Ltd., Environmental Report 2003, “Comparison of Watches through LCA,” https://arch.casio.com/file/csr/pdf/report_2003/p19-20.pdf (retrieved 2026-09-07)"
+    used_for: "Per-watch basis, life-cycle stage separation, and material-dependent case, bezel, and strap configurations; not used as range evidence"
+  - id: "hes-so-he-arc-mechanical-watch-eco-audit-2022"
+    type: "literature"
+    reference: "HES-SO / HE-Arc Ingénierie, “Ecological impact of a typical mechanical Swiss watch,” 2022, https://www.he-arc.ch/wp-content/uploads/2022/06/Ecological-impact-of-a-typical-mechanical-Swiss-watch.pdf (retrieved 2026-09-07)"
+    used_for: "Mechanical-watch movement and external-case decomposition, material and processing disclosure, and electricity-geography sensitivity; not used as range evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2a02b1975d2d0ecd62491b9f33acc9994e4c2ff52f0846f731eaa000995da5ce"
+  generated_content_sha256: "sha256:5f16af763b2ca384c681af9fb0492b4e4eb981700a5631a18686f38de1a295e8"

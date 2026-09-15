@@ -1,10 +1,673 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41350"
-  title: "Base metals clad with silver, and base metals, silver or gold clad with platinum, not further worked than semi-manufactured"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.base-metals-clad-with-silver-and-base-metals-silver-or-gold-clad-with-platinum-not-furt-2dfdd014"
+  classification_refs: "CPC 3.0: 41350 (exact classification context; mapping acceptance is maintained separately)"
+  covered_products: "Semi-manufactured base-metal stock clad with silver; semi-manufactured base-metal, silver, or gold stock clad with platinum; declared strip, sheet, plate, bar, rod, wire, or profile form"
+  excluded_products: "Electroplated rather than clad products; homogeneous precious-metal alloys; unwrought metal and powder; finished parts, jewellery, coins, contacts, and articles worked beyond semi-manufacture"
+  representative_product: "Silver-clad red-copper strip with a declared silver layer mass fraction and finished dimensions"
+  production_route: "Surface preparation, diffusion or roll bonding, hot or cold rolling, route-specific annealing, pickling or rinsing where used, slitting or cutting, inspection, and gate packing"
+  market_state: "Dry semi-manufactured clad-metal stock at the producing facility gate, with composition, layer construction, dimensions, surface state, and packaging declared"
+functional_unit:
+  what: "Supply of a declared semi-manufactured precious-metal-clad metal stock ready for downstream fabrication"
+  how_much: "1 kg net mass of conforming clad-metal product at the producing facility gate"
+  how_well: "Conforms to the declared core and cladding metals, layer mass fractions, bond route, dimensions, temper, surface condition, and quality acceptance criteria"
+  how_long_or_cycle: "One completed production lot; no service life is assigned to the semi-manufactured product"
+  reference_flow_link: "final_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include receipt and preparation of purchased metal stock; surface cleaning; bonding; hot and cold rolling where used; annealing; pickling, rinsing, and drying where used; slitting or cutting; inspection; on-site waste handling; and gate packing. Treat upstream production of purchased metals, electricity, fuels, gases, chemicals, lubricants, water, and packaging as linked upstream datasets."
+      source_ids:
+        - ding-et-al-ag-cu-2025
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_variant_instantiation
+      applies_to: "product_variant_scope"
+      rule: "Model one declared core/cladding construction and one route. A different base-metal core or platinum-clad construction requires concrete atomic material rows and route-specific operations; do not aggregate alternative metals or technologies into one exchange."
+      source_ids:
+        - un-cpc-3-0-2025
+        - ding-et-al-ag-cu-2025
+    - rule_id: boundary_wastes_and_emissions
+      applies_to: "foreground_outputs"
+      rule: "Include composite offcuts leaving the line, spent pickling acid, cleaning wastewater, direct fossil carbon dioxide from on-site natural-gas combustion, and any additional measured route-specific waste or elementary emission in the completed foreground package."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+boundary_abstraction:
+  declared_starting_condition: "Purchased, dimensioned core and cladding metal stock with documented composition, surface state, recycled content, and supplier gate entering the integrated cladding line"
+  starting_condition_role: "foreground_boundary_input"
+  product_classification_scope: "The declared product must be a semi-manufactured silver-clad base-metal or platinum-clad base-metal, silver, or gold construction; CPC 3.0:41350 is classification context, not canonical identity ownership"
+  recursive_input_rule: "If an input is itself a product covered by this PCR, record it once as a purchased supplier product with an upstream dataset and declared clad composition; do not recursively reproduce its manufacturing inventory inside the current foreground line"
+  upstream_dataset_requirement: "Use supplier-specific datasets where available for core metal, cladding metal, electricity, natural gas, industrial gases, sulfuric acid, rolling oil, process water, plastic film, and wooden pallets; otherwise disclose representative technology, geography, recycled content, and substitution"
+  disclosure: "Declare the core/cladding pair, precious-metal mass fraction, layer arrangement, bonding route, rolling and annealing schedule, furnace energy, protective atmosphere, wet-cleaning route, offcut recovery destination, wastewater and spent-acid treatment, packaging, facility geography, data period, and all deviations from the representative Ag/Cu route"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Silver-clad copper strip, semi-manufactured"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Core metal and grade"
+    - "cladding metal and purity"
+    - "layer sequence and number of clad faces"
+    - "core and cladding mass fractions"
+    - "product form and dimensions"
+    - "bonding route"
+    - "rolling schedule"
+    - "annealing atmosphere and schedule"
+    - temper
+    - "surface finish"
+    - "lot yield"
+    - "recycled content by metal"
+    - "packaging state"
+    - "facility geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and all metal input/output rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg dry net conforming product. Exclude reusable pallet tare and separately measured removable packaging from product mass."
+  - id: layer_mass_accounting
+    applies_to: "Core, cladding, product, and composite offcuts"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record core and cladding masses separately. Reconcile precious-metal input with precious metal in product, composite offcuts, recovered residues, and measured losses for the same lot."
+  - id: electricity_conversion
+    applies_to: "Alternating-current input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter reading and voltage qualifier. When converting from kWh, use 1 kWh = 3.6 MJ and disclose whether transformer or distribution losses are inside the meter boundary."
+  - id: gas_reference_conditions
+    applies_to: "Natural gas, nitrogen, and hydrogen inputs"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume and the temperature, pressure, dry/wet basis, composition or purity, and standard-volume conversion used."
+  - id: wastewater_mass_conversion
+    applies_to: "Cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass measurement. If wastewater is metered by volume, convert using measured or documented density for the sampled stream and retain the original volume record."
+  - id: reusable_pallet_accounting
+    applies_to: "Wooden pallet input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record pallet mass, ownership, expected or observed trips, losses, and return status; allocate only the attributable first-use or reuse share to the reference product."
+process_map:
+  - id: integrated_ag_cu_clad_strip_line
+    name: "Integrated Ag/Cu surface preparation, bonding, rolling, annealing, finishing, and gate packing"
+    inclusion: "required"
+    inclusion_condition: "Representative route; another covered construction shall instantiate the same boundary with concrete route-specific atomic exchanges"
+    role: "foreground production"
+    quantitative_reference: "1 kg net conforming silver-clad copper strip at facility gate"
+process_inventory:
+  - id: integrated_ag_cu_clad_strip_line
+    label: "Integrated Ag/Cu surface preparation, bonding, rolling, annealing, finishing, and gate packing"
+    inputs:
+      product:
+        - row_id: copper_strip_input
+          role: "Copper core stock"
+          name: "Red Copper Strip and Sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7da5ca56-6c6e-41e4-b35b-f274a9a7577c"
+          property_unit: "Mass / kg"
+          description: "Red-copper strip or sheet enters as the representative structural core. Record the accepted dry mass crossing the line boundary."
+          amount:
+            expression: "measured accepted copper strip or sheet mass charged to the lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - ding-et-al-ag-cu-2025
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: silver_strip_input
+          role: "Silver cladding stock"
+          name: "Silver strip, semi-manufactured"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Semi-manufactured silver strip enters as the representative cladding layer. The Tiangong UUID remains unresolved because the only name-matching public candidate has a conflicting building-stone classification."
+          amount:
+            expression: "measured accepted silver strip mass charged to the lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - ding-et-al-ag-cu-2025
+            ranges: []
+        - row_id: alternating_current_input
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased alternating current supplies rolling, drives, ventilation, pumps, inspection, and electrically heated equipment inside the line meter boundary."
+          amount:
+            expression: "metered line electricity allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas for on-site thermal equipment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas is recorded when the bonding, annealing, drying, or protective-gas generation route uses on-site gas-fired equipment."
+          amount:
+            expression: "metered gaseous natural gas consumed within the foreground line"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: gaseous_nitrogen_input
+          role: "Gaseous nitrogen for protective atmosphere"
+          name: "Gaseous nitrogen"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Purchased gaseous nitrogen is recorded only when it crosses the site boundary for the declared annealing or bonding atmosphere. Liquid nitrogen is not substituted for this unresolved gaseous flow."
+          amount:
+            expression: "metered purchased gaseous nitrogen consumed by the declared protective-atmosphere route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: gaseous_hydrogen_input
+          role: "Gaseous hydrogen for reducing atmosphere"
+          name: "Gaseous hydrogen"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Purchased gaseous hydrogen is recorded only when it crosses the site boundary as a component of the declared reducing atmosphere."
+          amount:
+            expression: "metered purchased gaseous hydrogen consumed by the declared reducing-atmosphere route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: cold_rolling_oil_input
+          role: "Cold-rolling oil make-up"
+          name: "cold rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a9417245-6f45-4df3-8f04-227ed8a1be58"
+          property_unit: "Mass / kg"
+          description: "Cold-rolling oil entering the line is recorded as purchased make-up, net of internally recirculated oil that does not cross the foreground boundary."
+          amount:
+            expression: "purchased cold-rolling oil make-up issued to the lot or allocated from line inventory change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: sulfuric_acid_input
+          role: "Sulfuric acid for pickling"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Sulfuric acid is recorded when acid pickling is used for copper or clad-strip surface preparation. Concentration and make-up basis shall be declared."
+          amount:
+            expression: "measured fresh sulfuric-acid mass added to the line during the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when acid pickling applies"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water for wet cleaning and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water is recorded when wet cleaning, pickling, rinsing, or line cooling water crosses the site or foreground boundary. Closed-loop recirculation is not counted repeatedly."
+          amount:
+            expression: "metered net process-water withdrawal attributable to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when wet operations apply"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: plastic_film_input
+          role: "Plastic film for gate wrapping"
+          name: "Plastic Film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8c3dd40c-a22b-48b5-bdec-7da4d3282bfa"
+          property_unit: "Mass / kg"
+          description: "Plastic film is recorded when finished coils, sheets, or other semi-manufactured stock are wrapped at the producing facility gate. Polymer and recycled content remain required foreground qualifiers."
+          amount:
+            expression: "measured film mass consumed for the dispatched lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when film wrapping applies"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: wooden_pallet_input
+          role: "Wooden pallet for gate packing"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Wooden pallets are recorded when they accompany the product across the facility gate. Attribute only the recorded first-use or reuse share."
+          amount:
+            expression: "pallet mass multiplied by the attributable use share for the dispatched lot"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when palletized"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_and_packaging_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product_output
+          role: "Conforming silver-clad copper strip at facility gate"
+          name: "Silver-clad copper strip, semi-manufactured"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product output after finishing, inspection, and any declared gate packing. No exact public Tiangong product-flow UUID was confirmed."
+          amount:
+            expression: "fixed reference output equal to measured dry net conforming product mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net conforming silver-clad copper strip at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_waste_and_water_outputs
+              source_ids:
+                - un-cpc-3-0-2025
+                - ding-et-al-ag-cu-2025
+            ranges: []
+      waste:
+        - row_id: composite_offcuts_output
+          role: "Silver-copper composite line offcuts"
+          name: "Silver-copper composite offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Bonded composite edge trim, end cuts, and rejected clad strip leaving the foreground line for metal recovery are recorded without reclassifying them as copper-only scrap."
+          amount:
+            expression: "measured dry mass of bonded Ag/Cu offcuts transferred out of the line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_waste_and_water_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: spent_pickling_acid_output
+          role: "Spent sulfuric-acid pickling bath"
+          name: "Spent sulfuric-acid pickling bath"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent acid leaving the foreground line for recovery or treatment is recorded when acid pickling applies. The stream remains distinct from rinse wastewater."
+          amount:
+            expression: "measured mass removed from the pickling circuit and transferred to recovery or treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when acid pickling applies"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_waste_and_water_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: cleaning_wastewater_output
+          role: "Cleaning wastewater sent to treatment"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Wastewater from wet cleaning, pickling rinses, or line washing is recorded at transfer to on-site or off-site treatment. Dissolved copper, silver, acidity, and treatment destination shall be characterized."
+          amount:
+            expression: "measured wastewater mass leaving the production line before treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when wet cleaning applies"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_waste_and_water_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_output
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from natural-gas combustion inside the foreground boundary is reported directly; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "measured stack total or calculated fossil CO2 from metered natural gas and documented fuel carbon content"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming clad strip output when on-site natural gas is combusted"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_direct_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_lot
+    applies_to: "core_cladding_and_product"
+    rule: "Avoid allocation by maintaining one lot-level bill of materials for one declared core/cladding construction and by separately metering or calculating its product, offcuts, utilities, and emissions."
+    source_ids: []
+  - rule_id: allocation_shared_line
+    applies_to: "shared_line_inputs"
+    rule: "Where a meter serves several products, allocate electricity, gases, water, and line auxiliaries using measured run time and equipment load; use mass throughput only when it represents the physical driver and disclose the sensitivity."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_scrap_recovery
+    applies_to: "composite_offcuts"
+    rule: "Report composite offcuts as a waste output with measured Ag/Cu composition and destination. Do not credit avoided primary metal inside the foreground inventory; any recycling credit or burden shall be applied consistently in the downstream model and disclosed."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_reusable_packaging
+    applies_to: "wooden_pallets"
+    rule: "Allocate reusable pallet production by documented expected or observed trips, include losses and non-returns, and report the use-share calculation."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_and_packaging_inputs
+      process_id: "integrated_ag_cu_clad_strip_line"
+      flow_role: "Metal stock, rolling oil, acid, water, film, and pallet inputs"
+      record_type: "Weigh tickets, purchase issues, tank or water meters, packaging issue records, and pallet-reuse log"
+      raw_fields: "lot_id; flow identity; supplier; metal grade or chemical concentration; gross and tare mass; meter opening and closing; recycled content; pallet trips; timestamp"
+      collection_method: "Reconcile accepted receipts and inventory changes to the declared lot; exclude internal recirculation that does not cross the boundary"
+      unit: "kg"
+      frequency: "Each lot, with monthly inventory reconciliation"
+      temporal_coverage: "Complete production campaign and any start-up or changeover assigned to it"
+      site_scope: "All equipment and storage supplying the foreground line"
+      aggregation_rule: "Sum net boundary-crossing quantity by atomic flow and normalize by conforming product output"
+      quality_evidence: "Calibrated scale or meter record, purchase issue, signed material reconciliation, and exception log"
+    - protocol_id: cp_energy_and_gas_inputs
+      process_id: "integrated_ag_cu_clad_strip_line"
+      flow_role: "Electricity, natural gas, nitrogen, and hydrogen"
+      record_type: "Utility meters, submeter historian, fuel invoice, and gas flowmeter"
+      raw_fields: "lot_id; meter_id; opening and closing reading; unit; voltage; temperature; pressure; dry or wet basis; gas composition or purity; allocation driver; timestamp"
+      collection_method: "Use line submeter totals; where shared, apply the declared physical allocation driver and retain both total and allocated values"
+      unit: "MJ or m3"
+      frequency: "Continuous or per batch, reconciled monthly"
+      temporal_coverage: "Complete production campaign including heating, holding, rolling, ventilation, and shutdown energy assigned to the lot"
+      site_scope: "Foreground line and directly serving utilities"
+      aggregation_rule: "Subtract verified non-production use, allocate shared meters, then normalize by conforming product output"
+      quality_evidence: "Meter calibration, historian extract, invoice reconciliation, reference-condition calculation, and allocation worksheet"
+    - protocol_id: cp_product_waste_and_water_outputs
+      process_id: "integrated_ag_cu_clad_strip_line"
+      flow_role: "Product, composite offcuts, spent acid, and cleaning wastewater"
+      record_type: "Product scale, scrap scale, acid tank transfer, wastewater meter, laboratory analysis, and transfer manifest"
+      raw_fields: "lot_id; stream identity; gross and tare mass or volume; density; Cu and Ag content; pH; acid concentration; destination; timestamp"
+      collection_method: "Measure each output at the line boundary and retain separate records for product, composite offcuts, spent acid, and wastewater"
+      unit: "kg"
+      frequency: "Each lot or each transfer, reconciled monthly"
+      temporal_coverage: "Complete production campaign and all waste transfers attributable to it"
+      site_scope: "Foreground production line before downstream treatment or recovery"
+      aggregation_rule: "Sum each atomic output; convert measured volume using documented density; normalize by net conforming product"
+      quality_evidence: "Calibrated records, mass-balance reconciliation, laboratory report, and waste or recovery manifest"
+    - protocol_id: cp_fuel_and_direct_emissions
+      process_id: "integrated_ag_cu_clad_strip_line"
+      flow_role: "Direct fossil carbon dioxide"
+      record_type: "Stack measurement or fuel meter plus supplier carbon-content record"
+      raw_fields: "lot_id; natural_gas_volume; reference_conditions; fuel_composition; carbon_content; oxidation_basis; measured_stack_co2; timestamp"
+      collection_method: "Prefer compliant direct measurement; otherwise calculate fossil CO2 from collected fuel quantity and documented carbon content without including upstream emissions"
+      unit: "kg CO2"
+      frequency: "Each lot or reporting period aligned to fuel use"
+      temporal_coverage: "Complete campaign including start-up and shutdown combustion allocated to the lot"
+      site_scope: "On-site combustion units inside the foreground boundary"
+      aggregation_rule: "Calculate or aggregate direct fossil CO2, reconcile to fuel records, and normalize by product output"
+      quality_evidence: "Meter calibration, fuel certificate, calculation worksheet, and stack-monitor QA record where available"
+  calculation_rules:
+    - id: calc_normalized_inventory
+      applies_to: "all_inventory_rows"
+      rule: "Normalized amount = lot boundary-crossing amount / lot net conforming product mass"
+      inputs:
+        - "Atomic lot input or output"
+        - "final_product_output mass"
+      output: "Amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_layer_mass_balance
+      applies_to: "core_cladding_product_offcuts"
+      rule: "For each metal, input mass = metal in conforming product + metal in composite offcuts + metal in recovered residues + documented measured loss; report the unreconciled difference"
+      inputs:
+        - "Copper and silver input masses"
+        - "product layer analysis"
+        - "offcut mass and composition"
+        - "recovered residue"
+        - "measured loss"
+      output: "Metal-specific balance and reconciliation percentage"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "alternating_current_input"
+      rule: "Electricity MJ = metered kWh × 3.6; retain original kWh and voltage level"
+      inputs:
+        - "Metered electricity in kWh"
+      output: "Electricity in MJ"
+      source_ids: []
+    - id: calc_wastewater_mass
+      applies_to: "cleaning_wastewater_output"
+      rule: "Wastewater mass = measured wastewater volume × documented stream density when direct mass is unavailable"
+      inputs:
+        - "Wastewater volume"
+        - density
+        - "sampling period"
+      output: "Wastewater mass in kg"
+      source_ids: []
+    - id: calc_pallet_use_share
+      applies_to: "wooden_pallet_input"
+      rule: "Attributable pallet mass = pallet mass / documented expected or observed trips, adjusted for recorded loss and non-return"
+      inputs:
+        - "Pallet mass"
+        - trips
+        - "loss and return records"
+      output: "Attributable pallet input mass"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "fossil_co2_output"
+      rule: "Use measured fossil CO2 where available; otherwise convert collected natural-gas quantity and documented fossil carbon content to fully oxidized CO2 and disclose composition and oxidation assumptions"
+      inputs:
+        - "Natural-gas quantity"
+        - "reference conditions"
+        - "carbon content or composition"
+        - "measured stack CO2 if available"
+      output: "Direct fossil CO2 in kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and metal inputs"
+      requirement: "Retain specification, composition or assay, dimensions, cladding arrangement, bond route, heat treatment, temper, surface finish, and lot acceptance evidence."
+      evidence: "Certificate of analysis, product drawing, route sheet, inspection report, and lot release"
+    - id: dq_temporal_coverage
+      applies_to: "All foreground records"
+      requirement: "Cover a representative production period including normal start-up, shutdown, changeover, and reject handling; disclose excluded abnormal events."
+      evidence: "Time-stamped meter extracts, production calendar, and exception log"
+    - id: dq_mass_balance
+      applies_to: "Copper, silver, product, offcuts, and metal-bearing liquid outputs"
+      requirement: "Reconcile metal inputs and outputs for the same lot and investigate any material unexplained difference before release."
+      evidence: "Signed metal reconciliation and laboratory composition records"
+    - id: dq_metering
+      applies_to: "Electricity, gases, water, product, and wastes"
+      requirement: "Use calibrated meters or scales; retain raw readings, unit conversions, reference conditions, allocation drivers, and calibration status."
+      evidence: "Calibration certificates, raw meter export, and calculation workbook"
+    - id: dq_waste_destination
+      applies_to: "Composite offcuts, spent acid, and wastewater"
+      requirement: "Record physical state, composition, hazardous status where applicable, transfer quantity, recipient, treatment or recovery route, and whether any downstream credit is applied."
+      evidence: "Transfer manifest, analysis, recipient record, and downstream-model disclosure"
+    - id: dq_uuid_and_localization
+      applies_to: "Every inventory row"
+      requirement: "Use a directly verified state-100 Tiangong UUID only when identity, flow type, classification, property, unit group, and product state match; otherwise retain the concrete bilingual name and unresolved status."
+      evidence: "UUID receipt audit or unresolved inventory review metadata"
+validation_rules:
+  - rule_id: validate_reference_and_identity
+    applies_to: "reference_flow"
+    rule: "Confirm that the 1 kg reference output, core/cladding identities, layer mass fractions, product form, bond route, and market state describe one covered semi-manufactured clad-metal product."
+    source_ids:
+      - un-cpc-3-0-2025
+      - china-mof-research-goods-2026
+  - rule_id: validate_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Confirm that every exchange is one atomic product, waste, or elementary flow; every conditional input is either supported by the declared route or marked not applicable; and every UUID-empty row remains registered unresolved."
+    source_ids: []
+  - rule_id: validate_metal_balance
+    applies_to: "metal_mass_balance"
+    rule: "Confirm separate copper and silver input records and reconcile product, composite offcuts, recovered residues, and measured losses for the same lot."
+    source_ids: []
+  - rule_id: validate_units_and_reference_conditions
+    applies_to: "measurement_records"
+    rule: "Confirm mass normalization, kWh-to-MJ conversion, gas reference conditions, wastewater density conversion, and pallet reuse calculation from retained raw records."
+    source_ids: []
+  - rule_id: validate_boundary_and_destinations
+    applies_to: "system_boundary"
+    rule: "Confirm that upstream supply burdens are linked rather than duplicated; direct on-site combustion is included; and offcuts, spent acid, and wastewater have declared treatment or recovery destinations."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_source_and_period
+    applies_to: "data_quality"
+    rule: "Confirm that source ids resolve, foreground records cover the declared production period, and any deviation from the representative Ag/Cu route is disclosed."
+    source_ids:
+      - ding-et-al-ag-cu-2025
+      - eu-jrc-nfm-bref-2017
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one declared semi-manufactured silver-clad or platinum-clad metal construction"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon footprint, LCA, eco-design, procurement, and downstream fabrication studies when product identity, route, geography, time, and allocation are compatible"
+  excluded_use: "Electroplated coatings, finished articles, homogeneous precious-metal alloys, another undeclared core/cladding pair, or a platinum route represented by unmodified Ag/Cu inventory"
+  required_metadata: "Core and cladding identity and grade; layer fractions; dimensions; product form; bond and rolling route; annealing atmosphere and schedule; recycled content; facility geography; data period; product yield; utility mix; cleaning route; waste destinations; allocation; packaging and pallet reuse"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; metal mass-balance reconciliation; allocation shares; supplier dataset substitutions; unresolved UUIDs; unresolved range evidence; excluded abnormal operations; uncertainty and data gaps"
+  update_trigger: "Change in core or cladding metal, layer fraction, bond technology, rolling or annealing route, furnace fuel, protective atmosphere, surface treatment, packaging, scrap recovery, wastewater treatment, supplier mix, facility, or production period that materially affects the inventory"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0 Structure*, 30 June 2025, official CSV: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04; cached content SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c)"
+    used_for: "Official category identity and covered precious-metal-clad, semi-manufactured product boundary"
+  - id: "china-mof-research-goods-2026"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, *免税科研货物清单* [List of duty-free goods for scientific research], 2026, pp. 15–16: https://m.mof.gov.cn/zcfb/202601/P020260114634207037460.pdf (retrieved 2026-09-04)"
+    used_for: "Professional Chinese terms for base-metal-backed silver-clad material and base-metal/silver/gold-backed platinum-clad material, including the extent not beyond semi-manufacture"
+  - id: "ding-et-al-ag-cu-2025"
+    type: "literature"
+    reference: "Ding, Z.-Y. et al., “Microstructural evolution and bonding characteristics of Ag/Cu interface in Ag/Cu bimetallic strips fabricated via diffusion welding,” *Journal of Iron and Steel Research International* 32 (2025) 1468–1476. https://doi.org/10.1007/s42243-024-01383-3"
+    used_for: "Representative Ag/Cu strip identity and route decomposition through diffusion welding, rolling, and annealing; no quantitative PCR range is inferred"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries*, 2017, JRC107041: https://publications.jrc.ec.europa.eu/repository/handle/JRC107041 (retrieved 2026-09-04)"
+    used_for: "Semi-finished sheet and strip process steps; rolling energy and oil; annealing atmospheres; pickling, rinsing, wastewater, spent acid, scrap recovery, and gate-packing flow coverage; no quantitative PCR range is inferred"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:427da2a03cd60b53fe9383473dd85ff04a77a2329795549feb164cdb26cf6a40"
+  generated_content_sha256: "sha256:48d4388e0e1fae2131659802d867ae39596f04347a500e0f6ab96de79cb25b39"

@@ -1,10 +1,830 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48172"
-  title: "Hearing aids and other appliances which are worn or carried, or implanted in the body, to compensate for a defect or disability"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.hearing-aids-and-other-appliances-which-are-worn-or-carried-or-implanted-in-the-body-to-d2e8791e"
+  classification_refs: "CPC 3.0 48172, exact contextual reference"
+  covered_products: "Finished hearing aids and other finished appliances worn, carried, or implanted in the body to compensate for a defect or disability"
+  excluded_products: "Orthopaedic appliances, splints, fracture appliances, artificial body parts, general diagnostic or therapeutic equipment, medical furniture, independently supplied software, accessories, chargers, and replacement parts"
+  representative_product: "One finished, tested, and configured compensatory appliance; the producer must state the concrete appliance subtype and included accessories"
+  production_route: "Product-specific component manufacture or procurement, final assembly, testing, packaging, and, where applicable, validated sterilization; distribution, use, maintenance, and end-of-life are conditional extensions"
+  market_state: "Finished appliance at the manufacturer gate, with sterile/non-sterile state, configuration, included accessories, and sale geography declared"
+functional_unit:
+  what: "Provide the manufacturer-stated function that compensates for the declared defect or disability"
+  how_much: "One finished and configured appliance for one declared user application; paired or multi-unit systems must state the number of appliance units"
+  how_well: "Conforming to the manufacturer-stated intended purpose, performance specification, configuration, and applicable release tests"
+  how_long_or_cycle: "The declared expected service life or use-cycle basis; cradle-to-gate datasets must still disclose this qualifier and must not include use-stage burdens"
+  reference_flow_link: "Net mass in kg of the one finished appliance required to realize the functional unit; included accessories and packaging are separate product inputs and are not added to net appliance mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_product_specific_bom
+      applies_to: "all production datasets"
+      rule: "Use a product-specific bill of materials or bill of components and company-specific manufacturing activity data; identify each included accessory and packaging component separately."
+      source_ids:
+        - ec-pef-2021
+        - selhorst-et-al-2025-hearing-aid-lca
+    - rule_id: boundary_required_production
+      applies_to: "cradle-to-gate foreground system"
+      rule: "Include component or material inputs crossing the final-manufacturing boundary, in-house forming, final assembly, testing, rejects, packaging, and applicable sterilization through release of the finished appliance at the manufacturer gate."
+      source_ids:
+        - ec-pef-2021
+        - selhorst-et-al-2025-hearing-aid-lca
+        - eu-mdr-2017-745
+    - rule_id: boundary_conditional_life_cycle
+      applies_to: "cradle-to-grave extension"
+      rule: "Include distribution, use electricity, replacement consumables, maintenance, collection, dismantling, recycling, incineration, and landfill only when the declared scope includes those stages; state geography and scenario assumptions."
+      source_ids:
+        - ec-pef-2021
+        - selhorst-et-al-2025-hearing-aid-lca
+    - rule_id: boundary_sterile_device
+      applies_to: "appliances supplied sterile"
+      rule: "Include the validated sterilization operation and sterile-barrier packaging when the appliance is placed on the market sterile; disclose sterilization method and maintain the sterile state through the declared manufacturer-gate boundary."
+      source_ids:
+        - eu-mdr-2017-745
+    - rule_id: boundary_no_hidden_cutoff
+      applies_to: "all foreground and linked upstream processes"
+      rule: "Do not omit a material, component, energy, waste, or direct emission merely because its mass is small; quantify and disclose any justified cut-off and assess electronics, batteries, precious-metal contacts, and sterile packaging explicitly."
+      source_ids:
+        - ec-pef-2021
+        - selhorst-et-al-2025-hearing-aid-lca
+boundary_abstraction:
+  declared_starting_condition: "Purchased material or component at the point it enters the reporting manufacturer's controlled production system"
+  starting_condition_role: "Product input with upstream production represented by a linked background or supplier-specific dataset"
+  product_classification_scope: "Finished CPC 48172 compensatory appliances; components and materials retain their own product identities"
+  recursive_input_rule: "A purchased unfinished or finished appliance in the same category is recorded as a separate product input with supplier identity and mass; its upstream production is linked once and is not recreated inside the receiving process"
+  upstream_dataset_requirement: "Each purchased component, material, battery, packaging item, and energy carrier must link to a geographically and technologically representative upstream dataset; proxies are disclosed and never relabelled as exact identities"
+  disclosure: "Declare manufacturer-gate geography, product subtype, BOM revision, component make-or-buy boundary, active/passive and worn/carried/implantable state, sterile state, allocation method, cut-offs, background dataset versions, and conditional life-cycle stages included"
+reference_flow_definition:
+  reference_amount: "Product-specific net mass of one finished appliance, measured in kg"
+  product_flow_ref:
+    name: "Hearing aids and other appliances which are worn or carried, or implanted in the body, to compensate for a defect or disability"
+    uuid: "702d21c4-fc45-412a-8beb-e685dd9a623a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "concrete appliance subtype"
+    - "intended compensatory function"
+    - "active or passive operation"
+    - worn
+    - carried
+    - "or implantable state"
+    - "unit count"
+    - "net appliance mass"
+    - "configuration and included accessories"
+    - "power-source chemistry"
+    - "sterile state and sterilization method when applicable"
+    - "manufacturer-gate geography"
+    - "sale geography"
+    - "expected service life or use-cycle basis"
+    - "cradle-to-gate or cradle-to-grave boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net mass of the finished appliance after final testing and before packaging; report accessory and packaging masses separately."
+  - id: count_to_mass
+    applies_to: "components or cells recorded by item count"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts to kg with product-specific measured unit mass and retain count, unit-mass sample, and conversion records; do not apply a generic count-to-mass factor."
+  - id: electrical_energy
+    applies_to: "assembly, sterilization, and use-stage charging electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Record metered electricity and convert kWh to MJ using 1 kWh = 3.6 MJ; preserve meter boundary, voltage level, grid geography, and loss boundary."
+  - id: service_life_normalization
+    applies_to: "conditional use and end-of-life stages"
+    required_property_ref:
+      name: "Mass and declared appliance count"
+      uuid: ""
+    required_unit: "kg and item"
+    rule: "Scale use-stage exchanges to the declared number of appliance units, duty cycle, replacement schedule, and expected service life; report all four parameters."
+process_map:
+  - id: device_assembly
+    name: "Component preparation, device assembly, testing, and release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground production"
+    quantitative_reference: "Net mass of conforming finished appliance"
+  - id: packaging
+    name: "Final product packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; every individual packaging component used must be added as an atomic row"
+    role: "Foreground production"
+    quantitative_reference: "One declared appliance sales unit"
+  - id: sterilization
+    name: "Sterilization and maintenance of sterile state"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for appliances placed on the market sterile; include the actual validated route and add route-specific exchanges"
+    role: "Foreground production"
+    quantitative_reference: "Mass or count of sterile released appliance"
+  - id: use_and_maintenance
+    name: "Operation and scheduled consumable replacement"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for cradle-to-grave scopes or a separately declared use-stage dataset"
+    role: "Use"
+    quantitative_reference: "Declared appliance count, duty cycle, and expected service life"
+  - id: end_of_life
+    name: "Collection and transfer of used appliance to treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when end-of-life is inside the declared system boundary"
+    role: "End-of-life"
+    quantitative_reference: "Mass of used appliance and separately removed cells"
+process_inventory:
+  - id: device_assembly
+    label: "Component preparation, device assembly, testing, and release"
+    inputs:
+      product:
+        - row_id: hearing_aid_electronic_module
+          role: "Hearing-aid electronic module input"
+          name: "Hearing aid electronic module assembly"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7a71d9b8-bfb0-43e5-bf72-4d6455be5a2f"
+          property_unit: "Mass / kg"
+          description: "Record the populated hearing-aid electronic module when an electronically active hearing aid uses this purchased assembly. Other active appliance subtypes must add their exact electronic assembly as a separate row rather than reuse this hearing-aid-specific identity."
+          amount:
+            expression: "measured accepted module mass entering assemblies that yield conforming product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+        - row_id: abs_granulate
+          role: "ABS granulate for an in-house moulded housing"
+          name: "Acrylonitrile-butadiene-styrene (ABS) copolymer, granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8f1317c1-aa51-4524-8692-74079c923e2c"
+          property_unit: "Mass / kg"
+          description: "Record ABS granulate only when the reporting site moulds an ABS housing or other ABS appliance component. A purchased housing is instead added as its exact component product flow."
+          amount:
+            expression: "measured issued ABS granulate mass net of returned unopened material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - ec-pef-2021
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+        - row_id: silicone_earpiece_component
+          role: "Medical-grade silicone earpiece or dome"
+          name: "Medical-grade silicone hearing-aid earpiece or dome"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the finished silicone earpiece or dome only for a hearing-aid configuration that includes this component. Its TianGong UUID remains unresolved; do not substitute silicon, silica, or ferroalloy identities."
+          amount:
+            expression: "measured component mass accepted into the declared appliance configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+        - row_id: lithium_ion_rechargeable_button_cell
+          role: "Installed lithium-ion rechargeable button cell"
+          name: "Lithium-ion rechargeable hearing-aid button cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one lithium-ion rechargeable button-cell product exchange only when this chemistry and cell form are installed in the declared appliance. The exact TianGong UUID remains unresolved."
+          amount:
+            expression: "measured installed cell mass, with cell count and measured unit mass retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+        - row_id: zinc_air_primary_button_cell_factory
+          role: "Factory-supplied zinc-air primary button cell"
+          name: "Zinc-air primary hearing-aid button cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record zinc-air primary button cells supplied with the appliance but not included in its net mass. The exact TianGong UUID remains unresolved; zinc-manganese batteries are not accepted as a proxy."
+          amount:
+            expression: "supplied cell count multiplied by product-specific measured unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per declared appliance sales unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity crossing the final-assembly and testing meter boundary. Exclude upstream electricity already embedded in purchased component datasets."
+          amount:
+            expression: "metered assembly and test electricity allocated to conforming appliance output using the rule in section 7"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_energy
+              source_ids:
+                - ec-pef-2021
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_compensatory_appliance
+          role: "Conforming finished compensatory appliance"
+          name: "Hearing aids and other appliances which are worn or carried, or implanted in the body, to compensate for a defect or disability"
+          flow_type: "product"
+          flow_ref:
+            uuid: "702d21c4-fc45-412a-8beb-e685dd9a623a"
+          property_unit: "Mass / kg"
+          description: "Record the released appliance at the manufacturer gate after all required testing and, when applicable, sterilization. Packaging and separately supplied accessories are excluded from net appliance mass."
+          amount:
+            expression: "measured net mass of conforming finished appliance output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow amount"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - un-cpc-3-0-2025
+                - eu-mdr-2017-745
+            ranges: []
+      waste:
+        - row_id: populated_pwb_reject
+          role: "Rejected populated printed wiring board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Record populated board assemblies rejected or damaged within the foreground production boundary and transferred for treatment."
+          amount:
+            expression: "measured mass transferred out as populated-board waste, net of documented rework returned to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_rejects
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+        - row_id: abs_moulding_scrap
+          role: "ABS injection-moulding scrap"
+          name: "Waste ABS injection-moulding scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected ABS runners, sprues, and rejected mouldings transferred out of the foreground system. The TianGong UUID remains unresolved; generic plastic waste is not an exact identity."
+          amount:
+            expression: "measured ABS scrap mass transferred out, net of verified in-process regrind reused in the same reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net conforming finished appliance"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_rejects
+              source_ids:
+                - ec-pef-2021
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Final product packaging"
+    inputs:
+      product:
+        - row_id: paper_box
+          role: "Paperboard sales carton"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "Record the individual paper box containing the declared sales unit. Add inserts, manuals, films, pouches, and other packaging as separate atomic rows when present."
+          amount:
+            expression: "measured paper-box mass multiplied by boxes used per declared appliance sales unit"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per declared appliance sales unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - ec-pef-2021
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: sterilization
+    label: "Sterilization and maintenance of sterile state"
+    inputs:
+      product:
+        - row_id: ethylene_oxide_sterilant
+          role: "Ethylene oxide sterilant"
+          name: "Ethylene Oxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a460460e-055f-4b74-9c6f-c1a0b315f31a"
+          property_unit: "Mass / kg"
+          description: "Record ethylene oxide only for an on-site validated ethylene-oxide sterilization route. Other sterilization agents must be added as separate exact chemical rows."
+          amount:
+            expression: "measured sterilant mass charged to validated cycles allocated to released sterile appliance output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net sterile appliance released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sterilization_records
+              source_ids:
+                - eu-mdr-2017-745
+            ranges: []
+        - row_id: sterilization_electricity
+          role: "Sterilization electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for on-site sterilization, aeration, and abatement equipment; do not include electricity already represented by an off-site sterilization supplier dataset."
+          amount:
+            expression: "metered electricity allocated to released sterile appliance output by cycle load"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net sterile appliance released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sterilization_records
+              source_ids:
+                - ec-pef-2021
+                - eu-mdr-2017-745
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: ethylene_oxide_to_air
+          role: "Direct ethylene oxide emission to air"
+          name: "ethylene oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a488-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured post-abatement ethylene oxide released directly to air from the foreground sterilization process. Do not include upstream emissions embedded in the sterilant or electricity datasets."
+          amount:
+            expression: "measured stack and fugitive ethylene oxide mass released after abatement"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net sterile appliance released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sterilization_records
+              source_ids:
+                - eu-mdr-2017-745
+            ranges: []
+  - id: use_and_maintenance
+    label: "Operation and scheduled consumable replacement"
+    inputs:
+      product:
+        - row_id: charging_electricity
+          role: "Charging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered electricity only for a rechargeable appliance during the declared use period. Charger losses are included when inside the meter boundary and the grid geography is declared."
+          amount:
+            expression: "measured or product-specific charging energy per cycle multiplied by documented charging cycles over declared service life"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per declared appliance use cycle and expected service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_scenario
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+                - eu-mdr-2017-745
+            ranges: []
+        - row_id: zinc_air_primary_button_cells_use
+          role: "Replacement zinc-air primary button cells"
+          name: "Zinc-air primary hearing-aid button cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record replacement zinc-air primary hearing-aid button cells only for a disposable-cell configuration. The exact TianGong UUID remains unresolved."
+          amount:
+            expression: "documented replacement-cell count multiplied by product-specific measured unit mass over declared service life"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per declared appliance use cycle and expected service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_scenario
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+                - eu-mdr-2017-745
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_zinc_air_button_cells
+          role: "Spent zinc-air primary button cells"
+          name: "Spent zinc-air primary hearing-aid button cell"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record intact spent zinc-air button cells transferred from the user system to a declared collection or treatment route. The exact TianGong UUID remains unresolved; zinc scrap or slag is not an acceptable proxy."
+          amount:
+            expression: "documented spent-cell count multiplied by product-specific measured unit mass"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per declared appliance use cycle and expected service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_scenario
+              source_ids:
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+      elementary:
+        []
+  - id: end_of_life
+    label: "Collection and transfer of used appliance to treatment"
+    inputs:
+      product:
+        []
+      waste:
+        - row_id: used_compensatory_appliance
+          role: "Used compensatory appliance entering end-of-life"
+          name: "Used hearing aid or other compensatory appliance"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the used appliance as a specific waste input to the end-of-life system. The exact TianGong waste UUID remains unresolved; unspecified solid waste is not accepted."
+          amount:
+            expression: "measured collected used-appliance mass excluding separately removed cells"
+            value_mode: "foreground_record"
+            specificity: "scenario_specific"
+            basis:
+              text: "per declared appliance reaching end-of-life"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_end_of_life_records
+              source_ids:
+                - ec-pef-2021
+                - selhorst-et-al-2025-hearing-aid-lca
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared manufacturing and sterilization operations"
+    rule: "Subdivide product lines, meters, work orders, and sterilization loads wherever product-specific records are available before applying allocation."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_physical_driver
+    applies_to: "remaining shared energy, utilities, and rejects"
+    rule: "Allocate remaining shared exchanges with a documented causal physical driver such as machine time, cycle load, or measured mass throughput; do not use revenue when a causal physical driver is available."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_conforming_output
+    applies_to: "assembly and packaging"
+    rule: "Normalize foreground exchanges to conforming released appliance output; include rejects in the process that generated them and do not divide burdens by total gross input."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_recycling_credit
+    applies_to: "recycled content and end-of-life recovery"
+    rule: "Report recycled input, treatment burdens, recovered material, and any substitution or credit method separately; do not claim avoided virgin production without a declared, consistently applied end-of-life method."
+    source_ids:
+      - ec-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_assembly_bom
+      process_id: "device_assembly"
+      flow_role: "purchased components, installed cells, supplied cells, and finished appliance"
+      record_type: "approved BOM, goods receipts, scale records, production output"
+      raw_fields: "part identity, chemistry, supplier, accepted quantity, unit count, sampled unit mass, finished net mass, lot, configuration"
+      collection_method: "reconcile approved BOM to receipts and calibrated weighing"
+      unit: "item and kg"
+      frequency: "each BOM revision and production lot"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each reporting site and product configuration"
+      aggregation_rule: "sum accepted mass and normalize to conforming net appliance mass; retain count-to-mass calculation"
+      quality_evidence: "BOM revision, supplier specification, calibration record, lot reconciliation, release record"
+    - protocol_id: cp_assembly_energy
+      process_id: "device_assembly"
+      flow_role: "assembly and test electricity"
+      record_type: "submeter, machine log, production record"
+      raw_fields: "meter start/end, kWh, line, machine time, conforming output mass, grid geography, voltage"
+      collection_method: "read calibrated submeters or reconcile machine energy logs to utility meter"
+      unit: "kWh and MJ"
+      frequency: "each shift or batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each assembly and test line"
+      aggregation_rule: "subtract non-production periods, allocate by causal driver, convert kWh to MJ, normalize to conforming output"
+      quality_evidence: "meter calibration, utility invoice reconciliation, production log"
+    - protocol_id: cp_assembly_rejects
+      process_id: "device_assembly"
+      flow_role: "populated-board rejects and ABS scrap"
+      record_type: "reject log, waste scale ticket, rework record"
+      raw_fields: "material identity, gross reject mass, rework return mass, transfer mass, hazardous status, destination"
+      collection_method: "reconcile quality rejects to weighed waste transfers and in-process reuse"
+      unit: "kg"
+      frequency: "each transfer and production lot"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each reporting site"
+      aggregation_rule: "transferred waste equals rejects minus verified rework or same-period reuse; normalize to conforming output"
+      quality_evidence: "calibrated scale, transfer note, rework record, mass-balance check"
+    - protocol_id: cp_packaging_bom
+      process_id: "packaging"
+      flow_role: "paper box and other individually added packaging"
+      record_type: "packaging specification, purchase record, scale record"
+      raw_fields: "component identity, material, unit mass, units per sales unit, recycled content, print specification"
+      collection_method: "weigh a documented sample and reconcile use to packed sales units"
+      unit: "item and kg"
+      frequency: "each packaging revision and production lot"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each packing site and sales configuration"
+      aggregation_rule: "unit mass times units used, normalized to declared appliance sales unit"
+      quality_evidence: "packaging drawing, sample record, scale calibration, packed-unit reconciliation"
+    - protocol_id: cp_sterilization_records
+      process_id: "sterilization"
+      flow_role: "sterilant, electricity, and direct ethylene oxide release"
+      record_type: "cycle batch record, chemical issue record, electricity meter, continuous or batch emission monitoring"
+      raw_fields: "cycle id, load mass, released product mass, sterilant charged and recovered, kWh, stack flow, concentration, fugitive estimate, abatement status"
+      collection_method: "reconcile validated cycle records, meters, chemical inventory, and post-abatement monitoring"
+      unit: "kg and kWh"
+      frequency: "every cycle; emissions at permit or validated monitoring frequency"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each sterilization and abatement system"
+      aggregation_rule: "aggregate complete cycles and normalize to released sterile output; keep stack and fugitive releases explicit"
+      quality_evidence: "sterilization validation, batch release, meter calibration, chemical mass balance, monitoring report"
+    - protocol_id: cp_use_scenario
+      process_id: "use_and_maintenance"
+      flow_role: "charging electricity, replacement cells, and spent cells"
+      record_type: "product test, charger measurement, service-life record, replacement log or declared scenario"
+      raw_fields: "appliance count, operating hours, charge energy, charger loss boundary, charge cycles, cell chemistry, replacement count, unit mass, service life, geography"
+      collection_method: "use product-specific tests or documented user/maintenance records; identify scenario data separately"
+      unit: "item, kWh, MJ, kg, hour, year"
+      frequency: "each test or maintenance event"
+      temporal_coverage: "declared expected service life"
+      site_scope: "declared user geography and appliance configuration"
+      aggregation_rule: "scale measured per-cycle exchanges by documented cycles and appliance count; reconcile supplied and spent disposable cells"
+      quality_evidence: "test report, charger meter calibration, service-life statement, replacement record, scenario justification"
+    - protocol_id: cp_end_of_life_records
+      process_id: "end_of_life"
+      flow_role: "used appliance collection"
+      record_type: "collection receipt, scale record, dismantling record"
+      raw_fields: "appliance subtype, configuration, gross mass, removed cell mass, collection geography, destination, treatment route"
+      collection_method: "weigh collected appliances and separately removed cells at custody transfer"
+      unit: "kg"
+      frequency: "each collection or transfer"
+      temporal_coverage: "declared end-of-life scenario period"
+      site_scope: "each collection geography and route"
+      aggregation_rule: "aggregate appliance mass net of separately recorded cells and normalize to appliances reaching end-of-life"
+      quality_evidence: "calibrated scale, chain-of-custody record, treatment acceptance record"
+  calculation_rules:
+    - id: calc_count_to_mass
+      applies_to: "component, packaging, and cell rows using item records"
+      rule: "mass_kg = accepted_or_used_item_count × measured_mean_unit_mass_kg; sample and configuration must match the reporting product"
+      inputs:
+        - "item count"
+        - "product-specific unit-mass sample"
+      output: "component mass in kg per reference flow"
+      source_ids:
+        - ec-pef-2021
+    - id: calc_shared_energy
+      applies_to: "assembly or sterilization energy not directly metered by product"
+      rule: "product_energy_MJ = shared_energy_kWh × 3.6 × product_causal_driver / total_causal_driver"
+      inputs:
+        - "shared meter reading"
+        - "machine time or cycle load"
+        - "conforming output"
+      output: "allocated MJ per reference flow or process output"
+      source_ids:
+        - ec-pef-2021
+    - id: calc_ethylene_oxide_release
+      applies_to: "direct ethylene oxide emission to air"
+      rule: "released_mass = integrated post-abatement concentration × dry gas volume + documented fugitive release; use consistent temperature and pressure reference conditions"
+      inputs:
+        - concentration
+        - "gas flow or volume"
+        - "monitoring interval"
+        - "fugitive estimate"
+      output: "kg ethylene oxide to air per sterile process output"
+      source_ids:
+        - eu-mdr-2017-745
+    - id: calc_use_electricity
+      applies_to: "rechargeable appliance use"
+      rule: "lifetime_electricity_MJ = measured_charge_energy_kWh × charge_cycles × appliance_count × 3.6"
+      inputs:
+        - "measured energy per charge"
+        - cycles
+        - count
+        - "service life"
+      output: "MJ electricity per declared service-life functional unit"
+      source_ids:
+        - selhorst-et-al-2025-hearing-aid-lca
+    - id: calc_replacement_cells
+      applies_to: "disposable zinc-air cell use"
+      rule: "supplied_or_spent_mass_kg = documented_cell_count × product-specific_measured_unit_mass_kg"
+      inputs:
+        - "cell count"
+        - "unit mass"
+        - "appliance count"
+        - "service life"
+      output: "kg cells per declared service-life functional unit"
+      source_ids:
+        - selhorst-et-al-2025-hearing-aid-lca
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all inventory rows"
+      requirement: "Match product subtype, chemical identity, flow type, product state, property, and unit; do not replace unresolved exact identities with broad or related flows."
+      evidence: "approved BOM, supplier specification, TianGong state-100 UUID audit, unresolved-flow register"
+    - id: dq_mass_balance
+      applies_to: "assembly, packaging, and end-of-life"
+      requirement: "Reconcile accepted material and component mass to conforming output, returned material, rework, rejects, packaging, and transferred waste for the same period."
+      evidence: "signed mass-balance worksheet, calibrated scale records, transfer notes"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use a representative continuous 12-month period where available; otherwise disclose the shorter period, seasonality, campaigns, and extrapolation."
+      evidence: "dated meter extracts, production calendar, invoices, batch logs"
+    - id: dq_technology
+      applies_to: "assembly, sterilization, power system, and use"
+      requirement: "Record product configuration, BOM revision, cell chemistry, manufacturing line, sterilization route and abatement, charger technology, and duty cycle; do not combine incompatible technologies without weighted records."
+      evidence: "engineering change record, process specification, validation report, product test"
+    - id: dq_geography
+      applies_to: "electricity, supply chain, use, and end-of-life"
+      requirement: "State manufacturer site, grid mix geography, supplier geography where known, sale/use geography, and end-of-life route geography."
+      evidence: "site metadata, utility contract, supplier declaration, scenario record"
+    - id: dq_completeness
+      applies_to: "all inventory"
+      requirement: "Screen the complete product-specific BOM and all foreground meters, chemicals, direct emissions, rejects, packaging, accessories, and conditional stages; quantify and justify exclusions."
+      evidence: "completeness checklist cross-referenced to BOM, meters, permits, and waste register"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "product category and reference flow"
+    rule: "Confirm the declared product is a finished worn, carried, or implantable compensatory appliance and that the reference UUID, mass property, and kg unit are unchanged."
+    source_ids:
+      - un-cpc-3-0-2025
+  - rule_id: validate_qualifiers
+    applies_to: "foreground data package"
+    rule: "Fail completeness when appliance subtype, intended purpose, active/passive state, worn/carried/implantable state, unit count, mass, configuration, power chemistry, sterile state, geography, service life, or boundary is missing."
+    source_ids:
+      - eu-mdr-2017-745
+      - ec-pef-2021
+  - rule_id: validate_bom
+    applies_to: "production inventory"
+    rule: "Confirm every BOM component and every packaging item is represented by an atomic inventory row or a disclosed, quantified exclusion; verify that included accessories are not hidden in the reference-product mass."
+    source_ids:
+      - ec-pef-2021
+      - selhorst-et-al-2025-hearing-aid-lca
+  - rule_id: validate_conditions
+    applies_to: "conditional rows and processes"
+    rule: "Confirm that battery chemistry, silicone earpiece, ABS moulding, sterilization route, use, and end-of-life rows are included only when their explicit conditions apply and that applicable rows are not omitted."
+    source_ids:
+      - eu-mdr-2017-745
+      - selhorst-et-al-2025-hearing-aid-lca
+  - rule_id: validate_no_double_count
+    applies_to: "electricity, purchased components, off-site services, and waste"
+    rule: "Confirm foreground exchanges exclude burdens already embedded in linked supplier datasets and that off-site sterilization is not also represented as on-site sterilant and energy."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_allocation
+    applies_to: "shared operations"
+    rule: "Confirm subdivision was attempted first and every remaining allocation uses a recorded causal physical driver with numerator, denominator, and period."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_mass_balance
+    applies_to: "assembly and end-of-life"
+    rule: "Confirm input, conforming output, rework, reject, separately supplied accessory, packaging, and waste masses reconcile within a declared tolerance; explain any imbalance."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_range_status
+    applies_to: "important inventory flows"
+    rule: "Confirm foreground values come from the declared collection protocols. Treat external range evidence as unresolved until at least two independent, boundary-compatible original sources support a synthesized interval."
+    source_ids:
+      - ec-pef-2021
+published_dataset_profile:
+  dataset_role: "Product-specific foreground production dataset; conditional stage datasets may be published separately and linked"
+  downstream_use: "secondary_dataset or background_dataset for a declared appliance configuration and geography; input to a lifecyclemodel only when conditional stages and reference-flow conversion are explicit"
+  allowed_use: "Modelling the named appliance subtype, BOM revision, production route, sterile state, manufacturer-gate geography, power system, and declared time period; scenario-specific use or end-of-life only where those stages are included"
+  excluded_use: "Generic use for unrepresented appliance subtypes, implantable versus non-implantable substitution, different battery chemistry, different sterile state, or comparative claims without equivalent function, service life, boundary, and data quality"
+  required_metadata: "canonical PCR id; product and reference-flow UUIDs; appliance subtype and intended purpose; active/passive and worn/carried/implantable state; unit count and net mass; BOM revision; configuration and accessories; power chemistry; sterile state and method; site and market geography; technology; reporting period; service life; boundary; allocation; cut-offs; background dataset versions"
+  required_quality_disclosure: "primary-data share; meter and mass coverage; BOM completeness; unresolved UUIDs; proxy datasets; allocation drivers; mass-balance result; temporal, technological, and geographic representativeness; excluded flows and stages; uncertainty; range-evidence gaps"
+  update_trigger: "Change in intended purpose, product subtype, BOM or accessory configuration, cell chemistry, housing material, electronic module, assembly line, sterilization route or abatement, packaging, supplier geography, grid mix, service-life claim, use scenario, end-of-life route, or evidence that materially changes inventory results"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Official CPC 48172 classification identity and English title"
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Annex I, Product Environmental Footprint Method, Commission Recommendation (EU) 2021/2279, https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf (retrieved 2026-09-06)"
+    used_for: "Functional-unit structure, product-specific BOM and manufacturing data, life-cycle stages, allocation, cut-off, collection, and end-of-life modelling rules"
+  - id: "eu-mdr-2017-745"
+    type: "standard"
+    reference: "Regulation (EU) 2017/745 of the European Parliament and of the Council on medical devices, consolidated official text, https://eur-lex.europa.eu/eli/reg/2017/745/oj/eng (retrieved 2026-09-06)"
+    used_for: "Intended-purpose, implantable-device, sterile-state, sterilization-method, identification, performance, and expected-lifetime qualifiers"
+  - id: "selhorst-et-al-2025-hearing-aid-lca"
+    type: "literature"
+    reference: "Selhorst, R. da R.; Alves, C.; Li, C.; Silva, A. (2025), Life Cycle Assessment of Hearing Aid Devices: Environmental Impact Analysis and Improvement Opportunities, Recycling 10(6), 219, https://doi.org/10.3390/recycling10060219 (retrieved 2026-09-06)"
+    used_for: "Hearing-aid-specific process decomposition and primary-data methods for BOM, component mass, manufacturing energy, packaging, distribution, use consumables, and end-of-life"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:24a5abd306123fa0ed96777cd1b5f5496008a5e80959fc5cf1d8f465f645bb2c"
+  generated_content_sha256: "sha256:1e98c945729d1c330bcc084345495010b8e6a83cba866071cce1a97bdf4349f6"

@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.electrical-insulators-except-of-glass-or-ceramics-insulating-fittings-for-electrical-ma-98fdb176
 title:
   en-US: "Electrical insulators, except of glass or ceramics; insulating fittings for electrical machines or equipment, except of ceramics or plastics; electrical conduit tubing and joints therefor, of base metal lined with insulating material"
-  zh-CN: null
-status: scaffold
+  zh-CN: "玻璃或陶瓷以外材料制的电绝缘子；陶瓷或塑料以外材料制的电气机器或设备用绝缘配件；内衬绝缘材料的贱金属制电气导管及其接头"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T18:06:27Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,67 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "46940"
     title: "Electrical insulators, except of glass or ceramics; insulating fittings for electrical machines or equipment, except of ceramics or plastics; electrical conduit tubing and joints therefor, of base metal lined with insulating material"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    decision: promote_legacy
+    rationale: "No other material PCR identity covers the combined boundary of non-glass/non-ceramic electrical insulators, non-ceramic/non-plastic insulating fittings, and base-metal electrical conduit lined with insulating material. Material exclusions prevent overlap with the separate glass, ceramic, and plastic categories."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: reference_product
+      reason: "No exact mass-based state-100 reference-product flow is available; see review_metadata.unresolved.inventory_flow_uuids."
+    - row_id: silicone_rubber_compound
+      reason: "No exact moulding-grade silicone-rubber-compound flow is available; see review_metadata.unresolved.inventory_flow_uuids."
+    - row_id: electrical_insulating_varnish
+      reason: "No exact electrical-insulating-varnish flow is available; see review_metadata.unresolved.inventory_flow_uuids."
+    - row_id: cured_silicone_rubber_scrap
+      reason: "No exact cured-silicone-rubber-scrap flow is available; see review_metadata.unresolved.inventory_flow_uuids."
+  cartesian_expansion_review:
+    decision: process_based_conditional_rows
+    rationale: "Common unit processes and per-row inclusion conditions cover product-family and material-route differences without multiplying product family, geometry, voltage class, formulation, packaging, and technology variants."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: reference_product
+        reason_code: no_exact_candidate
+        explanation: "The candidate is a porcelain (ceramic) insulator, while CPC 46940 expressly excludes ceramic electrical insulators. The other bounded state-100 results were an excluded glass insulator, unrelated products, and one epoxy-resin insulator whose Volume/m3 reference property cannot support the PCR mass reference flow without product-specific density."
+      - row_id: silicone_rubber_compound
+        reason_code: no_exact_candidate
+        explanation: "The bounded state-100 search returned caulk, generic sealing material, tyre compounds, and silica; none exactly identifies moulding-grade silicone rubber compound for electrical insulation."
+      - row_id: electrical_insulating_varnish
+        reason_code: no_exact_candidate
+        explanation: "The bounded state-100 search returned UV varnish, magnet wire, and an acrylic varnish with a contradictory electricity classification; none exactly identifies electrical insulating varnish for a metal conduit liner."
+      - row_id: cured_silicone_rubber_scrap
+        reason_code: no_exact_candidate
+        explanation: "All bounded state-100 candidates were generic waste-rubber identities and did not confirm cured silicone-rubber chemistry."
+    range_evidence_needs:
+      - range_id: major_material_input_intensities
+        row_ids: [gfrp_core_material, silicone_rubber_compound, steel_pipe_substrate, electrical_insulating_varnish, silane_coupling_agent, carbon_steel_fitting_stock, zinc_metal]
+        explanation: "No two independent original sources with compatible cradle-to-gate boundary, one-kilogram functional unit, product state, geography, and technology were verified for material-intensity ranges; collect batch-specific masses."
+      - range_id: process_energy_intensities
+        row_ids: [forming_electricity, curing_natural_gas, metalworking_electricity, testing_packaging_electricity]
+        explanation: "No two independent, boundary-compatible original sources were verified for process-energy ranges across the heterogeneous product families; collect meter and allocation records."
+      - range_id: surface_treatment_inputs
+        row_ids: [sodium_hydroxide_cleaner, process_water, industrial_oxygen]
+        explanation: "No independent paired evidence with compatible treatment chemistry and output basis was verified; collect route-specific chemical, water, and oxygen records."
+      - range_id: process_losses_and_direct_releases
+        row_ids: [cured_silicone_rubber_scrap, steel_scrap, cleaning_wastewater, fine_particles_to_air, nmvoc_to_air, fossil_co2_to_air]
+        explanation: "No two independent sources with compatible abatement, process route, compartment, and one-kilogram output basis were verified; collect waste tickets, monitoring data, and direct-emission records."
+      - range_id: packaging_intensities
+        row_ids: [corrugated_board_boxes, wooden_pallets]
+        explanation: "No two independent product-state-compatible sources were verified for packaging mass per kilogram of saleable product; collect bill-of-material and reuse records."

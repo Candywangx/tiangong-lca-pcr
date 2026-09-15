@@ -1,10 +1,1110 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43240"
-  title: "Taps, cocks, valves and similar appliances for pipes, boiler shells, tanks, vats or the like"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.taps-cocks-valves-and-similar-appliances-for-pipes-boiler-shells-tanks-vats-or-the-like"
+  classification_refs: "CPC 3.0: 43240 (exact classification context; mapping acceptance remains a separate governance decision)"
+  covered_products: "Finished taps, cocks, valves, and similar mechanical flow-control appliances for pipes, boiler shells, tanks, vats, or similar equipment, including pressure-reducing and thermostatically controlled valves when classified in CPC 43240"
+  excluded_products: "Loose CPC 43254 parts; pumps; compressors; power engines; fire-extinguisher, tyre, engine, electronic-tube, or other valves classified outside CPC 43240; standalone actuators; installation and use services"
+  representative_product: "Steel valve with declared type, material grades, nominal size, pressure class, connection, sealing system, actuation, and test status"
+  production_route: "Machining and cleaning of received rough components, conditional surface treatment, assembly, and functional/leak or pressure testing"
+  market_state: "Conforming tested finished appliance at the manufacturing factory gate, excluding default packaging"
+functional_unit:
+  what: "Control, isolate, reduce, relieve, check, or regulate the flow of a declared fluid in a piping or vessel system"
+  how_much: "1 kg of conforming finished steel valve at the manufacturing factory gate"
+  how_well: "Meets the declared valve type, nominal size, pressure class, body and trim material grades, end connection, seat/seal system, actuation, applicable product standard, and recorded acceptance test"
+  how_long_or_cycle: "The declared design service life or duty-cycle basis; the factory-gate inventory itself is normalized to product mass and does not include use-stage operation"
+  reference_flow_link: "One kilogram of accepted finished output from final_testing, excluding packaging and rejected or reworked units"
+system_boundary:
+  rules:
+    - rule_id: boundary_start
+      applies_to: "foreground production"
+      rule: "Start at the stated received-component condition. Treat upstream body casting, forging, bar production, elastomer production, fastener manufacture, coating manufacture, electricity, water, and chemical supply as linked inputs unless performed on site and explicitly added as separate atomic foreground processes."
+      source_ids:
+        - us-epa-mpm-2003
+    - rule_id: boundary_operations
+      applies_to: "process inclusion"
+      rule: "Include machining/cleaning, assembly, and acceptance testing when performed for the declared product. Include electroplating, powder coating, or other surface treatment only when performed for the product and identify each route-specific input and output separately."
+      source_ids:
+        - us-epa-mpm-2003
+        - eu-jrc-stm-bref-2006
+    - rule_id: boundary_end
+      applies_to: "factory-gate output"
+      rule: "End with drained, accepted finished product at the factory gate. Exclude installation, distribution, use-stage actuation and leakage, maintenance, and end-of-life; state separately whether packaging is added."
+      source_ids:
+        - us-epa-mpm-2003
+    - rule_id: boundary_wastewater
+      applies_to: "liquid outputs"
+      rule: "Record cleaning, surface-treatment, and hydrostatic-test waters at the point they leave their generating process; link on-site treatment as a separate process or disclose transfer to an external treatment dataset without converting waste to an elementary emission."
+      source_ids:
+        - us-epa-mpm-2003
+boundary_abstraction:
+  declared_starting_condition: "Rough steel valve bodies and bonnets plus separately supplied stems, closure members, seats/seals, fasteners, coatings, process chemicals, water, and energy received at the manufacturing site"
+  starting_condition_role: "Foreground entry condition; upstream manufacture and delivery of each received product input remain linked upstream datasets"
+  product_classification_scope: "Finished mechanical flow-control appliances in CPC 43240; this PCR does not convert loose CPC 43254 parts into a finished-product identity"
+  recursive_input_rule: "If a finished CPC 43240 valve is consumed as an input, record that exact valve as a linked upstream product flow and disclose why it is consumed; do not recursively expand it through this PCR inside the same process. Internal unfinished bodies, bonnets, and assembled units use site-specific foreground intermediate flows."
+  upstream_dataset_requirement: "Every purchased component, chemical, coating, water, electricity, and treatment service crossing the boundary requires a geographically and technologically representative upstream dataset or a disclosed data gap"
+  disclosure: "Declare purchased-versus-in-house component manufacture, machining operations, cleaning chemistry, coating/plating route, assembly configuration, testing method, rework loops, reject treatment, water recirculation, wastewater boundary, packaging inclusion, reporting period, geography, and allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Steel valve"
+    uuid: "3cb88a81-618f-4fa5-814e-46399b121622"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "valve type and function"
+    - "controlled fluid"
+    - body
+    - bonnet
+    - stem
+    - closure-member
+    - "seat and seal materials/grades"
+    - "nominal size"
+    - "pressure class or rated pressure"
+    - "temperature rating"
+    - "end connection"
+    - actuation
+    - "coating or plating route"
+    - "applicable product and test standard"
+    - "test medium"
+    - pressure
+    - "duration and acceptance result"
+    - "factory geography and technology"
+    - "reporting period"
+    - "packaging inclusion"
+    - "recycled-content and scrap treatment choices"
+    - "product mass measurement basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "conforming tested steel-valve output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net product mass on a calibrated scale after final test and drainage and before excluded packaging; normalize all exchanges to 1 kg of accepted output."
+  - id: mass_exchange_basis
+    applies_to: "all mass-based material, component, waste, and water rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured wet or as-supplied mass and disclose concentration, moisture, or retained-fluid basis where relevant; do not silently substitute dry matter, metal content, or item count."
+  - id: electricity_conversion
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain meter readings and convert kWh to MJ with the exact identity 1 kWh = 3.6 MJ; report grid geography, voltage, on-site generation treatment, and included losses."
+  - id: water_mass_conversion
+    applies_to: "process and test water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass metering; if volume is measured, use a documented temperature-appropriate density and retain the original volume, temperature, density, and conversion."
+  - id: component_mass_reconciliation
+    applies_to: "incorporated components and coatings"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile incorporated body, bonnet, trim, seat/seal, fastener, coating, and retained lubricant mass with accepted product mass, measured scrap, collected residues, and documented stock change."
+process_map:
+  - id: component_machining_cleaning
+    name: "Component machining and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Apply to the machining and cleaning actually used for the declared steel-valve body and bonnet; disclose purchased-finished exceptions"
+    role: "foreground component preparation"
+    quantitative_reference: "Measured outputs and wastes normalized to 1 kg conforming tested steel valve"
+  - id: surface_treatment
+    name: "Surface treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when body or bonnet is plated, chemically treated, or powder coated at the reporting site"
+    role: "foreground protection and finishing"
+    quantitative_reference: "Route-specific treated component mass per 1 kg conforming tested steel valve"
+  - id: valve_assembly
+    name: "Valve assembly"
+    inclusion: "required"
+    inclusion_condition: "Include final mechanical assembly and recorded rework loops for the declared product"
+    role: "foreground final assembly"
+    quantitative_reference: "Assembled untested product per 1 kg conforming tested steel valve"
+  - id: final_testing
+    name: "Final functional and leak/pressure testing"
+    inclusion: "required"
+    inclusion_condition: "Apply the declared acceptance-test method; hydrostatic water rows apply only when water is used"
+    role: "foreground quality acceptance"
+    quantitative_reference: "Exactly 1 kg accepted finished steel valve output"
+process_inventory:
+  - id: component_machining_cleaning
+    label: "Component machining and cleaning"
+    inputs:
+      product:
+        - row_id: mc_rough_steel_body
+          role: "Rough steel valve body"
+          name: "Rough steel valve body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the received, unfinished steel pressure-containing body entering machining. Keep supplier, steel grade, casting/forging route, heat number, and incoming mass with the record."
+          amount:
+            expression: "measured received mass allocated to the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_rough_steel_bonnet
+          role: "Rough steel valve bonnet"
+          name: "Rough steel valve bonnet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the received unfinished steel bonnet or cover that will retain pressure or close the body. Keep design revision, steel grade, heat number, and incoming mass."
+          amount:
+            expression: "measured received mass allocated to the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_electricity
+          role: "Machining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity delivered to machine tools, parts washers, pumps, filtration, and directly attributable auxiliaries in this process."
+          amount:
+            expression: "process meter reading or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_cutting_fluid
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fresh cutting fluid concentrate and make-up delivered to the machining system; do not combine it with cleaning chemical or spent fluid."
+          amount:
+            expression: "issued fresh mass minus documented unopened returns, with dilution water recorded separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_process_water
+          role: "Machining and cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water added to cutting-fluid dilution, parts washing, and aqueous rinsing in this process, net of separately measured reused water entering from another process."
+          amount:
+            expression: "measured make-up and rinse-water mass crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only when sodium hydroxide is actually charged to an alkaline cleaning bath; record as supplied mass and disclose solution concentration."
+          amount:
+            expression: "measured as-supplied replenishment attributable to the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mc_machined_body
+          role: "Machined steel valve body"
+          name: "Machined steel valve body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted machined body transferred to surface treatment or assembly as one site-specific internal intermediate."
+          amount:
+            expression: "measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_machined_bonnet
+          role: "Machined steel valve bonnet"
+          name: "Machined steel valve bonnet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted machined bonnet transferred to surface treatment or assembly as one site-specific internal intermediate."
+          amount:
+            expression: "measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: mc_steel_swarf
+          role: "Steel machining swarf"
+          name: "Steel swarf"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6a16eab5-8097-4e37-8d28-aa1e81b8bb5c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record steel chips and fines removed from the declared body and bonnet, after recovery of separately measured cutting fluid."
+          amount:
+            expression: "measured as-transferred waste mass, with retained-fluid basis disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_nonferrous_swarf
+          role: "Non-ferrous machining swarf"
+          name: "Non-ferrous metal machining swarf"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only when a separately identified non-ferrous trim or component is machined; keep alloy identity and do not combine this row with steel swarf."
+          amount:
+            expression: "measured as-transferred alloy-specific waste mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_spent_cutting_fluid
+          role: "Spent cutting fluid"
+          name: "Spent coolant"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "62b6a738-fb6a-4570-a95a-9255ec0dcb2b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record exhausted cutting fluid removed from the machining system for treatment or recovery; do not include fluid retained on swarf unless separately recovered and measured."
+          amount:
+            expression: "measured waste mass leaving the machining-fluid system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: mc_cleaning_wastewater
+          role: "Component-cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record aqueous effluent from parts washing and rinsing at the point it enters on-site treatment or leaves the site for treatment."
+          amount:
+            expression: "measured wastewater mass, including declared bath dumps and rinses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg combined machined body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface_treatment
+    label: "Surface treatment"
+    inputs:
+      product:
+        - row_id: st_machined_body
+          role: "Machined steel valve body entering surface treatment"
+          name: "Machined steel valve body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the machined body transferred into the declared coating or plating route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_machined_bonnet
+          role: "Machined steel valve bonnet entering surface treatment"
+          name: "Machined steel valve bonnet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the machined bonnet transferred into the declared coating or plating route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_electricity
+          role: "Surface-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity delivered to cleaning, rectification, spray, recovery, ventilation, curing, pumps, and directly attributable auxiliaries for the declared route."
+          amount:
+            expression: "route meter reading or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_process_water
+          role: "Surface-treatment process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water added to pretreatment, baths, rinses, and route-specific cleaning, net of measured recirculated water internal to the process."
+          amount:
+            expression: "measured make-up and rinse water crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_zinc_metal
+          role: "Zinc metal for zinc coating"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only for a declared zinc electroplating or equivalent metallic-zinc coating route; keep anode grade, purity, and replenishment records."
+          amount:
+            expression: "measured zinc-metal replenishment attributable to the declared lots"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg zinc-coated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_powder_coating
+          role: "Powder coating material"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only for the declared powder-coating route; record fresh powder issued net of unopened returns, with recovered powder remaining inside the process until purged."
+          amount:
+            expression: "measured fresh powder consumed by the declared lots"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg powder-coated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: st_surface_body
+          role: "Surface-treated steel valve body"
+          name: "Surface-treated steel valve body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted treated body transferred to assembly; identify the specific plating, conversion, or coating system."
+          amount:
+            expression: "measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_surface_bonnet
+          role: "Surface-treated steel valve bonnet"
+          name: "Surface-treated steel valve bonnet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted treated bonnet transferred to assembly; identify the specific plating, conversion, or coating system."
+          amount:
+            expression: "measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: st_wastewater
+          role: "Surface-treatment wastewater"
+          name: "Metal surface-treatment wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the route-specific bath dumps, rinses, scrubber water, and aqueous pretreatment effluent as one characterized wastewater stream only when they are actually combined before treatment; otherwise add separate atomic wastewater rows."
+          amount:
+            expression: "measured mass at the treatment or transfer boundary with chemistry and contributing operations disclosed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg surface-treated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: st_powder_waste
+          role: "Powder-coating waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only for the powder-coating route and record unrecovered overspray or purged powder transferred as waste."
+          amount:
+            expression: "measured dry or as-collected waste mass with basis disclosed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg powder-coated body and bonnet output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: valve_assembly
+    label: "Valve assembly"
+    inputs:
+      product:
+        - row_id: as_finished_body
+          role: "Finished steel valve body"
+          name: "Finished steel valve body for assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the machined or surface-treated body transferred into assembly, using the same foreground intermediate identity as the supplying process."
+          amount:
+            expression: "measured body mass issued to accepted and rejected assemblies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_finished_bonnet
+          role: "Finished steel valve bonnet"
+          name: "Finished steel valve bonnet for assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the machined or surface-treated bonnet transferred into assembly, using the same foreground intermediate identity as the supplying process."
+          amount:
+            expression: "measured bonnet mass issued to accepted and rejected assemblies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_valve_stem
+          role: "Steel valve stem"
+          name: "Steel valve stem"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product-specific steel stem incorporated into the declared valve; keep steel grade, coating, supplier, and drawing revision."
+          amount:
+            expression: "bill-of-material quantity reconciled to measured issued and returned mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_valve_disc
+          role: "Steel valve disc or closure member"
+          name: "Steel valve disc"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product-specific steel disc, plug, ball, gate, needle, or other single declared closure-member design; do not combine multiple alternatives in one dataset."
+          amount:
+            expression: "bill-of-material quantity for the declared disc design reconciled to issue and return records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_elastomer_seat
+          role: "Elastomer valve seat"
+          name: "Elastomer valve seat"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only when the declared valve uses an elastomer seat or seal and identify the exact elastomer formulation and component geometry."
+          amount:
+            expression: "bill-of-material quantity for the declared seat design reconciled to issue and return records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_steel_fasteners
+          role: "Steel fasteners"
+          name: "Steel fasteners"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ebfe08f5-42c8-484e-b39a-684a35981c24"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record steel bolts, nuts, screws, or studs incorporated in the declared valve as the audited fastener product flow; retain grade, coating, and item-to-mass calculation."
+          amount:
+            expression: "item count multiplied by verified unit mass and reconciled to issue and return records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_lubricating_grease
+          role: "Valve assembly lubricating grease"
+          name: "Valve assembly lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only grease retained in or consumed during assembly; identify product formulation and do not combine it with machining cutting fluid."
+          amount:
+            expression: "measured issue less recoverable returns, allocated to the declared assemblies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: as_electricity
+          role: "Assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for assembly tools, presses, handling equipment, and directly attributable auxiliaries."
+          amount:
+            expression: "process meter reading or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: as_assembled_valve
+          role: "Assembled untested steel valve"
+          name: "Assembled untested steel valve"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the assembled valve transferred to final testing before it has obtained accepted finished-product status."
+          amount:
+            expression: "measured transfer mass including units subsequently reworked or rejected"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: as_new_steel_scrap
+          role: "New steel scrap from rejected assemblies"
+          name: "New steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bd11f214-0a1c-4d5d-ba77-c7f6a5780f33"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only unrecoverable steel rejected during production after reusable trim, elastomers, fluids, and other separately managed materials have been removed; units sent to rework remain inside the foreground system."
+          amount:
+            expression: "measured steel scrap mass transferred out of assembly after final reject disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg assembled untested steel valve"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: final_testing
+    label: "Final functional and leak/pressure testing"
+    inputs:
+      product:
+        - row_id: te_assembled_valve
+          role: "Assembled untested valve entering final test"
+          name: "Assembled untested steel valve"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the same assembled intermediate received from valve_assembly, preserving product model and lot traceability."
+          amount:
+            expression: "measured test-lot input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_testing_records
+              source_ids: []
+            ranges: []
+        - row_id: te_process_water
+          role: "Hydrostatic test water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only when water is the declared test medium. Record fresh make-up crossing the test boundary and disclose recirculation, discharge frequency, additives, and drainage practice."
+          amount:
+            expression: "measured fresh make-up water for accepted, reworked, and rejected test cycles"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_testing_records
+              source_ids: []
+            ranges: []
+        - row_id: te_electricity
+          role: "Test-stand electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for pumps, compressors, controls, data acquisition, drying, and directly attributable test-stand auxiliaries."
+          amount:
+            expression: "test-stand meter reading or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_testing_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: te_steel_valve
+          role: "Conforming tested steel valve"
+          name: "Steel valve"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3cb88a81-618f-4fa5-814e-46399b121622"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only drained units that pass the declared acceptance criteria. This is the single reference product output."
+          amount:
+            expression: "measured accepted net product mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_testing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: te_test_wastewater
+          role: "Hydrostatic test wastewater"
+          name: "Hydrostatic valve-test wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include only discarded test water leaving the test system. Keep additives, contamination, drainage destination, and whether water is treated on site with the record."
+          amount:
+            expression: "measured discharged test-water mass at the treatment or transfer boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming tested steel valve"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_testing_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared manufacturing operations"
+    rule: "First avoid allocation through submetering, lot-specific material issue, machine time, bath loading, test cycles, and direct waste measurement."
+    source_ids: []
+  - rule_id: allocation_mass
+    applies_to: "unavoidable shared operations"
+    rule: "If physical subdivision is not practicable, allocate shared material and energy burdens by a documented causal parameter; use processed mass only when it reasonably represents machine, bath, or handling demand."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "rework loops"
+    rule: "Keep reworked units and all incremental machining, cleaning, coating, assembly, and testing exchanges inside the foreground system; allocate them to conforming output, not to a co-product."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "steel swarf and new steel scrap"
+    rule: "Record waste mass and downstream recycling or treatment separately. Do not subtract avoided virgin-metal burdens from the foreground inventory unless the study applies and discloses a consistent recycling allocation method."
+    source_ids: []
+  - rule_id: allocation_no_product_credit
+    applies_to: "wastewater and coating waste"
+    rule: "Treat spent fluid, wastewater, and powder-coating waste as wastes unless a documented marketable co-product meeting a specification leaves the site; disclose any departure and its allocation basis."
+    source_ids:
+      - us-epa-mpm-2003
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_machining_records
+      process_id: "component_machining_cleaning"
+      flow_role: "all inputs, intermediate outputs, swarf, spent cutting fluid, and cleaning wastewater"
+      record_type: "meter, scale, material issue/return, transfer, and waste manifest records"
+      raw_fields: "lot_id; product_model; component_id; supplier; material_grade; opening_stock; receipts; issues; returns; closing_stock; meter_start; meter_end; water_mass_or_volume; density; accepted_transfer_mass; waste_mass; retained_fluid_basis"
+      collection_method: "calibrated meters and scales reconciled with inventory and transfer records"
+      unit: "kg; MJ; original meter unit retained"
+      frequency: "per lot or shift, aggregated monthly"
+      temporal_coverage: "at least one representative production year or the full shorter campaign"
+      site_scope: "all machines, washers, tanks, and waste points serving the declared product"
+      aggregation_rule: "sum net issues and measured exchanges; allocate shared meters by documented machine time or processed mass and normalize to accepted output"
+      quality_evidence: "calibration status; invoices; issue/return records; lot travellers; scale tickets; meter logs; waste manifests; reconciliation sign-off"
+    - protocol_id: cp_surface_treatment_records
+      process_id: "surface_treatment"
+      flow_role: "route-specific components, electricity, water, zinc, powder coating, wastewater, and coating waste"
+      record_type: "bath, coating-line, meter, issue/return, transfer, and waste records"
+      raw_fields: "lot_id; route_id; bath_id; coating_product; opening_stock; issues; recovered_powder; returns; closing_stock; meter_start; meter_end; make_up_water; treated_input_mass; treated_output_mass; wastewater_mass; waste_mass; chemistry"
+      collection_method: "calibrated meters/scales plus bath and coating inventory reconciliation"
+      unit: "kg; MJ; original meter unit retained"
+      frequency: "per batch or shift, aggregated monthly"
+      temporal_coverage: "at least one representative production year or the full shorter campaign"
+      site_scope: "each plating, pretreatment, powder, cure, rinse, and waste system in scope"
+      aggregation_rule: "keep electroplating and powder-coating routes separate; sum net consumption and outputs and normalize to treated output"
+      quality_evidence: "calibration; batch sheets; bath analyses; coating issue/return logs; meter logs; waste manifests; route reconciliation"
+    - protocol_id: cp_assembly_records
+      process_id: "valve_assembly"
+      flow_role: "incorporated components, grease, electricity, assembled output, and new steel scrap"
+      record_type: "bill of materials, work order, issue/return, scale, meter, rework, and nonconformance records"
+      raw_fields: "product_model; drawing_revision; lot_id; component_id; item_count; verified_unit_mass; issues; returns; grease_issue; meter_start; meter_end; assembled_mass; rework_count; reject_disposition; scrap_mass"
+      collection_method: "BOM calculation checked against calibrated mass and production records"
+      unit: "kg; MJ; item(s) retained as raw field"
+      frequency: "per work order or shift, aggregated monthly"
+      temporal_coverage: "at least one representative production year or the full shorter campaign"
+      site_scope: "all assembly cells and rework stations serving the declared product"
+      aggregation_rule: "calculate incorporated mass from count and verified unit mass; reconcile issues, returns, assembled output, rework, and scrap"
+      quality_evidence: "controlled BOM; drawings; unit-mass verification; meter logs; rework travellers; nonconformance and scrap records"
+    - protocol_id: cp_testing_records
+      process_id: "final_testing"
+      flow_role: "assembled input, hydrostatic water, electricity, accepted product, and discarded test water"
+      record_type: "test record, meter, scale, water make-up, drainage, rework, and reject records"
+      raw_fields: "product_model; serial_or_lot; test_standard; medium; pressure; temperature; hold_time; acceptance_result; retest_count; input_mass; accepted_mass; water_make_up; water_discharge; meter_start; meter_end; drainage_state"
+      collection_method: "calibrated test stand, meters, and final-product scale with retained acceptance record"
+      unit: "kg; MJ; pressure and time in declared units"
+      frequency: "every acceptance test, aggregated monthly"
+      temporal_coverage: "at least one representative production year or the full shorter campaign"
+      site_scope: "all final-test stands and linked water systems serving the declared product"
+      aggregation_rule: "sum accepted drained mass; include resources for pass, retest, and fail cycles; normalize all exchanges to accepted mass"
+      quality_evidence: "calibration certificates; signed/electronic test records; meter logs; drainage records; traceability to work order"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "all inventory exchanges"
+      rule: "normalized amount = reporting-period exchange / reporting-period drained accepted steel-valve mass"
+      inputs:
+        - "measured exchange"
+        - "te_steel_valve accepted mass"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_net_material_issue
+      applies_to: "cutting fluid, sodium hydroxide, zinc, powder coating, grease, and components"
+      rule: "net consumption = opening stock + receipts - closing stock - unopened returns - separately measured transferred stock"
+      inputs:
+        - stock
+        - receipt
+        - return
+        - "and transfer records"
+      output: "consumed product mass"
+      source_ids: []
+    - id: calc_component_mass
+      applies_to: "stems, discs, seats, and fasteners"
+      rule: "incorporated mass = accepted-assembly item count × verified item mass, reconciled to net issue and return mass"
+      inputs:
+        - "controlled BOM"
+        - "accepted count"
+        - "verified item mass"
+        - issues
+        - returns
+      output: "incorporated component mass"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity rows"
+      rule: "electricity in MJ = measured kWh × 3.6; retain the original kWh reading and meter boundary"
+      inputs:
+        - "meter start/end or allocated kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "water rows"
+      rule: "water mass = measured volume × documented density when direct mass is unavailable; retain volume, temperature, density, and uncertainty"
+      inputs:
+        - "water volume"
+        - temperature
+        - density
+      output: "water mass in kg"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "each process"
+      rule: "compare inputs plus opening work-in-process with product outputs, wastes, measured losses, and closing work-in-process; investigate and disclose material residuals"
+      inputs:
+        - "all mass flows and stock change for the process"
+      output: "signed process mass-balance reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Preserve model, valve function/type, controlled fluid, material grades, size, pressure and temperature rating, connection, actuation, coating, test standard, and factory-gate state."
+      evidence: "controlled drawing/BOM, product specification, nameplate or traveller, and accepted test record"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Use a representative continuous 12-month period when production is continuous; for shorter campaigns cover the whole campaign and disclose seasonality, start-up, shutdown, and abnormal exclusions."
+      evidence: "reporting-period definition, production calendar, and exception log"
+    - id: dq_completeness
+      applies_to: "all four processes"
+      requirement: "Reconcile every mapped meter, issue point, intermediate transfer, rework loop, waste point, and test outcome; quantify excluded flows and justify cut-offs rather than hiding them in combined rows."
+      evidence: "signed flow map, meter list, reconciliation, waste manifests, and exclusion register"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Use in-calibration instruments suitable for the measured range and retain original readings, conversions, allocation drivers, and uncertainty or resolution."
+      evidence: "calibration and maintenance records, raw meter/scale logs, and calculation workbook"
+    - id: dq_upstream
+      applies_to: "purchased inputs and external treatment"
+      requirement: "Match geography, technology, material grade or chemistry, product state, and delivery boundary; disclose proxy use and do not substitute rejected TianGong UUID candidates."
+      evidence: "supplier records, dataset metadata, UUID audit, and proxy register"
+    - id: dq_route_separation
+      applies_to: "surface treatment"
+      requirement: "Keep zinc and powder-coating routes separate and add separate atomic chemical, waste, and emission rows when the declared site uses additional chemistry or abatement."
+      evidence: "route flow diagram, bath/coating records, and emission/waste inventory"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm that te_steel_valve is the only reference product output, uses UUID 3cb88a81-618f-4fa5-814e-46399b121622, is measured by Mass in kg, and represents drained accepted steel valves rather than parts, untested units, packaging, or non-steel appliances."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_inventory_completeness
+    applies_to: "process inventory"
+    rule: "Verify that all 37 defined rows have either the audited UUID shown here or an explicit unresolved identity in the manifest, and that added site-specific flows are atomic and route-specific."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "each process and full foreground system"
+    rule: "Reconcile measured inputs, internal transfers, accepted output, rework, wastes, stock change, and disclosed residuals. Investigate unexplained residuals before dataset release."
+    source_ids: []
+  - rule_id: validate_route_condition
+    applies_to: "conditional rows"
+    rule: "Require zinc input only for a declared zinc-coating route, powder coating and powder waste only for a declared powder route, and hydrostatic water/wastewater only for a declared water-test route; do not average mutually exclusive routes."
+    source_ids:
+      - eu-jrc-stm-bref-2006
+  - rule_id: validate_testing
+    applies_to: "final product acceptance"
+    rule: "Verify traceability from accepted product mass to the applicable test standard, medium, pressure, temperature, hold time, result, retest, and reject records; exclude failed units from the reference output."
+    source_ids:
+      - us-epa-mpm-2003
+  - rule_id: validate_no_external_ranges
+    applies_to: "quantity checks"
+    rule: "Treat all quantities as foreground records or calculations from them. No external numeric range is authorized until at least two independent, original-text, system-boundary-compatible sources support it."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review and publication"
+  downstream_use: "Cradle-to-factory-gate modelling of a declared steel valve in process datasets and lifecycle models"
+  allowed_use: "Use for the declared steel-valve model, material grades, size/pressure class, manufacturing route, test method, geography, period, and factory-gate state; use as background only when these qualifiers are sufficiently representative"
+  excluded_use: "Non-steel products labelled as Steel valve; loose parts; standalone actuators; installation; distribution; use-stage leakage or actuation energy; maintenance; end-of-life; packaging unless separately modelled; unqualified cross-technology or cross-geography substitution"
+  required_metadata: "all Reference Flow qualifiers; site and reporting period; process map; meter and allocation boundaries; purchased-versus-in-house component manufacture; coating route; test records; rework and reject treatment; wastewater destination; upstream dataset choices; unresolved UUIDs and range needs"
+  required_quality_disclosure: "foreground coverage; calibration and temporal representativeness; mass-balance residuals; shared-meter allocation; water conversion; route separation; supplier and upstream representativeness; proxy or data gaps; recycled-content and scrap allocation method"
+  update_trigger: "change in valve design or material grade, nominal size/pressure-class mix, component sourcing, machine technology, cleaning chemistry, surface-treatment route, test standard or medium, site or electricity supply, wastewater treatment, allocation method, reporting period, or resolution of an unresolved UUID or range-evidence need"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, CPC 43240, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official classification identity and English product title; original CSV bytes verified by receipt 179c0d1b-a2ad-4a02-a96a-2c7e3c809e3f, SHA-256 sha256:5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c"
+  - id: "cn-product-specific-origin-rules-hs8481-2015"
+    type: "official_guidance"
+    reference: "Part 2 Product Specific Rules of Origin, bilingual HS 84.81 entry (2015 government-hosted PDF). https://www.ks.gov.cn/kss/Upload_zwgk/ggxx2015122195763975384.pdf"
+    used_for: "Professional Chinese terminology for the product family; original page 160 text and rendering verified"
+  - id: "us-epa-mpm-2003"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Development Document for the Final Effluent Limitations Guidelines and Standards for the Metal Products and Machinery Point Source Category, EPA-821-B-03-001, February 2003. https://www.epa.gov/sites/default/files/2015-11/documents/mp-m_dd_2003.pdf"
+    used_for: "Original-text process decomposition for machining, cleaning, surface preparation/deposition/finishing, assembly and leak testing, and wastewater boundary; pages 4-12 to 4-14 and Appendix D verified"
+  - id: "eu-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Surface Treatment of Metals and Plastics BAT Reference Document, adopted August 2006. https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-metals-and-plastics"
+    used_for: "Original official page verified for electrolytic and chemical metal-surface-treatment scope, water-based processes, and associated activities"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0c4082e1ef925261cbf724bc3d434e108696fb269f05833484e519dea352221b"
+  generated_content_sha256: "sha256:0bdf7028208f40cac4c9a05aa55750a534d73c69cd59d0f6cf1ebe1ba3da7088"

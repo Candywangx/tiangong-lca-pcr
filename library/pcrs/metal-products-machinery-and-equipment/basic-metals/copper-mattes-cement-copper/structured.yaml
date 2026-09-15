@@ -1,10 +1,746 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41411"
-  title: "Copper mattes; cement copper"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.copper-mattes-cement-copper"
+  classification_refs: "CPC 3.0: 41411, Copper mattes; cement copper"
+  covered_products: "Copper matte; cement copper (precipitated copper)"
+  excluded_products: "Copper ore and concentrate as reference products; blister copper; anode copper; refined copper; copper alloys; copper powder; copper scrap"
+  representative_product: "Copper matte"
+  production_route: "Copper-concentrate smelting to matte, or iron cementation of a copper-bearing pregnant leach solution to cement copper"
+  market_state: "Copper matte as molten, cast, crushed, or granulated intermediate; cement copper as separated wet cake or dried powder, with declared dry-mass basis, moisture, copper grade, impurities, and producer-gate condition"
+functional_unit:
+  what: "Production of a declared copper-bearing intermediate product covered by this PCR"
+  how_much: "1,000 kg dry mass of the declared product"
+  how_well: "Product identified as copper matte or cement copper, with route, copper grade, moisture, physical state, impurity profile, and release specification declared"
+  how_long_or_cycle: "One production batch or reporting-period share completed to the producer gate; no service lifetime applies"
+  reference_flow_link: "reference_product_copper_matte"
+system_boundary:
+  rules:
+    - rule_id: boundary_branch_selection
+      applies_to: "Foreground model"
+      rule: "Select copper matte or cement copper as the reference product. Include the corresponding process branch and exclude the other branch unless the facility actually operates both and the data are subdivided."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+        - us-epa-ap42-primary-copper-smelting-1995
+        - us-bureau-mines-copper-materials-survey-1965
+    - rule_id: boundary_matte_operations
+      applies_to: "Copper matte branch"
+      rule: "Include concentrate and flux receipt, drying or roasting when used, smelting, matte tapping and conditioning, slag handling, direct energy, oxygen, post-control emissions, and on-site off-gas treatment that is operationally integrated with matte production."
+      source_ids:
+        - us-epa-ap42-primary-copper-smelting-1995
+    - rule_id: boundary_cement_operations
+      applies_to: "Cement copper branch"
+      rule: "Include solution transfer, iron cementation, agitation or pumping, separation of the precipitate, product conditioning, spent-solution handling, and direct releases from the cementation operation."
+      source_ids:
+        - us-bureau-mines-copper-materials-survey-1965
+    - rule_id: boundary_upstream_and_downstream
+      applies_to: "Both branches"
+      rule: "Represent upstream supplied inputs with linked datasets. Exclude downstream converting and refining from the reference-product foreground result, and do not credit future recycling or downstream metal recovery unless the study applies and discloses a separate consequential scenario."
+      source_ids:
+        - us-epa-ap42-primary-copper-smelting-1995
+        - eu-commission-pef-method-2021
+    - rule_id: boundary_completeness
+      applies_to: "Both branches"
+      rule: "Include every environmentally relevant material, energy, waste, and direct elementary exchange inside the declared boundary. Add any site-specific species or material as a separate atomic flow row rather than aggregating it under a generic collection label."
+      source_ids:
+        - eu-commission-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Matte branch: copper concentrate and separately purchased flux received at the smelter gate. Cement branch: copper-bearing pregnant leach solution and cementing steel scrap received at the cementation operation."
+  starting_condition_role: "Foreground production input gate; upstream extraction, beneficiation, concentrate production, or leaching is represented by linked upstream datasets rather than re-created inside this PCR."
+  product_classification_scope: "CPC 3.0 subclass 41411, while canonical PCR meaning is limited to the two declared copper-bearing intermediate products and their production routes."
+  recursive_input_rule: "If copper matte or cement copper is used internally as an input, record the measured internal transfer and do not recursively apply this PCR to that transfer; use a separate upstream dataset only when it crosses the declared foreground boundary."
+  upstream_dataset_requirement: "Link supply datasets for copper concentrate, quartz stone, natural gas, industrial oxygen, electricity, pregnant leach solution, and steel scrap when those inputs cross the foreground boundary."
+  disclosure: "Declare selected branch, start material state and assays, technology, pollution controls, internal recycle, co-product recovery, producer geography, reporting period, cut-offs, and every deviation from the default gate-to-gate boundary."
+reference_flow_definition:
+  reference_amount: "1,000 kg dry product"
+  product_flow_ref:
+    name: "Copper matte"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "selected product branch"
+    - "production technology"
+    - "producer geography"
+    - "reporting period"
+    - "product physical state"
+    - "dry-mass determination"
+    - moisture
+    - "copper grade"
+    - "sulfur and iron content for matte"
+    - "residual iron and insoluble impurities for cement copper"
+    - "co-product recovery"
+    - "recycled internal streams"
+    - "pollution-control boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "Reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1,000 kg dry product. Measure as-received mass and moisture on a representative sample, and retain the dry-mass calculation."
+  - id: gas_reference_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200b9a66"
+    required_unit: "m3"
+    rule: "Report gas volume at the metering reference temperature and pressure; record those conditions and any conversion from operating volume."
+  - id: electricity_energy_basis
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use metered active electricity. Keep voltage level, grid geography, supplier, and on-site generation boundary as foreground qualifiers; do not use a net-calorific-value proxy."
+  - id: solution_mass_conversion
+    applies_to: "Pregnant and spent leach solutions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "If collected as volume, convert with contemporaneous density and record copper, total iron, acidity, sulfate, suspended solids, and temperature for the sampled reporting period."
+  - id: direct_emission_basis
+    applies_to: "Direct air emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report post-control releases to the receiving air compartment. Reconcile stack measurements or calculations to the same reporting period and 1,000 kg dry-product basis."
+process_map:
+  - id: p_matte_smelting
+    name: "Copper concentrate smelting to copper matte"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared reference product is copper matte."
+    role: "foreground production"
+    quantitative_reference: "dry mass of copper matte released at the producer gate"
+  - id: p_cement_copper_production
+    name: "Iron cementation to cement copper"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared reference product is cement copper."
+    role: "foreground production"
+    quantitative_reference: "dry mass of cement copper released at the producer gate"
+process_inventory:
+  - id: p_matte_smelting
+    label: "Copper concentrate smelting to copper matte"
+    inputs:
+      product:
+        - row_id: matte_copper_concentrate
+          role: "Copper concentrate feed"
+          name: "Copper concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Copper concentrate crosses the smelter foreground boundary as the principal copper- and sulfur-bearing feed. Record dry mass, moisture, copper, sulfur, iron, gangue, and relevant trace-element assays by batch or reconciled campaign."
+          amount:
+            expression: "calculate dry concentrate consumed from reconciled receipt, stock-change, return, and moisture records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_material_inputs
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_quartz_stone_flux
+          role: "Quartz stone used as siliceous flux"
+          name: "Quartz stone"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e3cb4771-a491-487e-a16b-8482d3ebf6ff"
+          property_unit: "Mass / kg"
+          description: "Quartz stone is recorded only when it is the separately supplied siliceous flux. If another specific flux crosses the boundary, add that material as its own atomic product-flow row rather than relabelling this row."
+          amount:
+            expression: "calculate dry quartz stone charged from weighbridge, bin, and stock-change records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_material_inputs
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas is recorded when it crosses the foreground boundary for furnace, dryer, roaster, holding, or auxiliary combustion. Exclude upstream supply emissions from direct emissions and link them through the natural-gas supply dataset."
+          amount:
+            expression: "meter purchased natural gas and convert it to the declared reference temperature and pressure"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "m3 per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_energy_and_gases
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Purchased industrial oxygen is recorded when used for oxygen enrichment or oxygen-blown smelting. When oxygen is produced on site, include its production inputs inside the foreground boundary and keep this purchased-flow row not applicable."
+          amount:
+            expression: "meter supplied oxygen at declared reference conditions and record oxygen purity"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "m3 per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_energy_and_gases
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_electricity
+          role: "Medium-voltage electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record active electricity imported for electric smelting and all in-boundary drives, fans, pumps, gas cleaning, and product handling. Separately meter exported or on-site generated electricity."
+          amount:
+            expression: "reconcile imported active electricity, on-site generation, exports, and stock-independent submeter totals for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kWh per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_energy_and_gases
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+                - eu-commission-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_copper_matte
+          role: "Reference copper matte product"
+          name: "Copper matte"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Copper matte is the reference output for the matte branch. Record tapped and released product mass on a dry basis and retain moisture, copper, sulfur, iron, physical state, and impurity assay data."
+          amount:
+            expression: "calculate dry copper matte released from measured product mass and representative moisture determination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_outputs_and_emissions
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_sulfuric_acid
+          role: "Recovered sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Sulfuric acid is recorded as a separate co-product only when sulfur dioxide is converted to acid inside the declared foreground boundary and the acid leaves the process as a usable product. Record concentration and commercial disposition."
+          amount:
+            expression: "calculate acid product mass at measured concentration from product dispatch and inventory-change records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "kg sulfuric acid at declared concentration per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_outputs_and_emissions
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+      waste:
+        - row_id: matte_copper_slag
+          role: "Copper slag"
+          name: "Copper slag"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "3b318911-2500-490f-8f56-fea047c8fbea"
+          property_unit: "Mass / kg"
+          description: "Record the copper-bearing slag leaving smelting or slag cleaning as a waste flow until it demonstrably meets the site's declared co-product criteria. Internal slag recycle is an internal transfer and is not counted again as an external input or output."
+          amount:
+            expression: "calculate dry external slag from dispatch, weighing, moisture, and stock-change records after subtracting internal recycle"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "kg dry copper slag per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_outputs_and_emissions
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+      elementary:
+        - row_id: matte_sulfur_dioxide_air
+          role: "Sulfur dioxide released to air"
+          name: "sulfur dioxide to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide released after the declared gas collection and abatement system. Do not record sulfur routed into recovered sulfuric acid as an emission."
+          amount:
+            expression: "calculate post-control release from validated continuous monitoring, stack tests, or a reconciled sulfur balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kg sulfur dioxide per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_outputs_and_emissions
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_particulate_air
+          role: "Total particulate matter released to air"
+          name: "Particulate matter, total, to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter released after control to the declared air compartment. Add measured size fractions or metal species as separate elementary flows when available; do not treat a PM2.5 UUID as total particulate matter."
+          amount:
+            expression: "calculate post-control total particulate release from validated stack tests or continuous measurements and operating hours"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kg total particulate matter per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_outputs_and_emissions
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+        - row_id: matte_fossil_co2_air
+          role: "Fossil carbon dioxide released to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from in-boundary fuel combustion and carbon-bearing reductants. Upstream electricity and fuel-supply emissions remain in linked supply datasets."
+          amount:
+            expression: "calculate direct fossil carbon dioxide from metered fuel, declared carbon content, oxidation, and any measured stack reconciliation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kg fossil carbon dioxide per 1,000 kg dry copper matte output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_matte_outputs_and_emissions
+              source_ids:
+                - us-epa-ap42-primary-copper-smelting-1995
+            ranges: []
+  - id: p_cement_copper_production
+    label: "Iron cementation to cement copper"
+    inputs:
+      product:
+        - row_id: cement_pregnant_leach_solution
+          role: "Copper-bearing pregnant leach solution"
+          name: "Copper sulfate pregnant leach solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous pregnant solution that crosses into cementation. Retain solution volume or mass, density, copper concentration, total iron, acidity, sulfate, suspended solids, temperature, source process, and recycle status."
+          amount:
+            expression: "calculate solution mass from reconciled flow measurement and density for the cementation reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kg pregnant leach solution per 1,000 kg dry cement copper output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cement_inputs_and_energy
+              source_ids:
+                - us-bureau-mines-copper-materials-survey-1965
+            ranges: []
+        - row_id: cement_scrap_steel
+          role: "Steel scrap used as cementing iron"
+          name: "Scrap Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cb5e364-ba39-4009-8b40-a76fdc88bc42"
+          property_unit: "Mass / kg"
+          description: "Record steel scrap added as the iron cementing material. Retain grade, coating, contamination, total iron, unreacted return, and whether any burden from a prior product system is assigned."
+          amount:
+            expression: "calculate net steel scrap consumed from charged, recovered unreacted, and stock-change masses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "kg steel scrap consumed per 1,000 kg dry cement copper output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cement_inputs_and_energy
+              source_ids:
+                - us-bureau-mines-copper-materials-survey-1965
+            ranges: []
+        - row_id: cement_electricity
+          role: "Medium-voltage electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record active electricity imported for solution transfer, agitation, precipitation equipment, separation, ventilation, and product handling inside the cementation boundary."
+          amount:
+            expression: "reconcile imported active electricity, on-site generation, exports, and applicable submeters for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kWh per 1,000 kg dry cement copper output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cement_inputs_and_energy
+              source_ids:
+                - us-bureau-mines-copper-materials-survey-1965
+                - eu-commission-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cement_copper_product
+          role: "Cement copper product"
+          name: "Cement copper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the separated cement copper product on a dry basis. Retain as-received mass, moisture, copper grade, residual iron, insoluble material, physical state, and release specification."
+          amount:
+            expression: "calculate dry cement copper released from measured product mass and representative moisture determination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry cement copper output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cement_outputs_and_releases
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+                - us-bureau-mines-copper-materials-survey-1965
+            ranges: []
+      waste:
+        - row_id: cement_spent_leach_solution
+          role: "Iron-sulfate-bearing spent leach solution"
+          name: "Iron-sulfate-bearing spent copper leach solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the liquid stream leaving cementation after copper precipitation when it crosses to recycle, treatment, discharge, or another process. Record the external transfer only once and disclose its destination."
+          amount:
+            expression: "calculate external spent-solution mass from measured volume, density, recycle, purge, and stock-change records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kg spent solution per 1,000 kg dry cement copper output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cement_outputs_and_releases
+              source_ids:
+                - us-bureau-mines-copper-materials-survey-1965
+            ranges: []
+      elementary:
+        - row_id: cement_hydrogen_air
+          role: "Hydrogen released to air"
+          name: "hydrogen"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-949c-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record hydrogen released by reaction of excess acidity with iron when the release occurs and crosses the foreground boundary. Do not infer a non-zero quantity without measured or reconciled reaction data."
+          amount:
+            expression: "calculate or measure direct hydrogen release from reconciled iron consumption, solution acidity, copper precipitation, and vent data"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "kg hydrogen per 1,000 kg dry cement copper output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cement_outputs_and_releases
+              source_ids:
+                - us-bureau-mines-copper-materials-survey-1965
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_branches
+    applies_to: "Facilities producing copper matte and cement copper"
+    rule: "First subdivide process trains, meters, batches, and stock changes so each declared reference product receives directly attributable foreground inputs and outputs."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: allocation_shared_services
+    applies_to: "Shared utilities and treatment"
+    rule: "Allocate only genuinely shared services that cannot be subdivided. Use a documented physical driver that represents causation, such as metered energy, treated gas volume, solution volume, or dry mass throughput; do not allocate by total product mass merely for convenience."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: allocation_sulfuric_acid
+    applies_to: "Recovered sulfuric acid"
+    rule: "Keep recovered sulfuric acid as a separate product output. Prefer subdivision or system expansion; if neither is feasible, use and justify a relevant physical relationship before considering an economic relationship. Report acid concentration and allocation sensitivity."
+    source_ids:
+      - us-epa-ap42-primary-copper-smelting-1995
+      - eu-commission-pef-method-2021
+  - rule_id: allocation_slag_and_recycle
+    applies_to: "Copper slag and internal recycle"
+    rule: "Treat internal slag return as an internal transfer with no second upstream burden. Keep externally transferred slag as waste unless documented product status applies; disclose any treatment, recovery credit, or burden partitioning separately."
+    source_ids:
+      - us-epa-ap42-primary-copper-smelting-1995
+      - eu-commission-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_matte_material_inputs
+      process_id: "p_matte_smelting"
+      flow_role: "copper concentrate and quartz stone inputs"
+      record_type: "weighbridge, batch, assay, moisture, and inventory records"
+      raw_fields: "received mass; returned mass; opening and closing stock; moisture; copper; sulfur; iron; gangue; trace elements; quartz composition"
+      collection_method: "reconcile calibrated weighing and representative laboratory samples to each batch or campaign"
+      unit: "kg and mass fraction"
+      frequency: "each receipt and batch; monthly reconciliation"
+      temporal_coverage: "at least one representative operating year or the full campaign if shorter"
+      site_scope: "all foreground smelting units supplying the declared product"
+      aggregation_rule: "net dry input equals receipts plus opening stock minus returns and closing stock, normalized to dry matte output"
+      quality_evidence: "scale calibration; sample plan; laboratory method; chain of custody; reconciliation residual"
+    - protocol_id: cp_matte_energy_and_gases
+      process_id: "p_matte_smelting"
+      flow_role: "natural gas, industrial oxygen, and electricity"
+      record_type: "fiscal meter, submeter, invoice, and operating log"
+      raw_fields: "gas volume; temperature; pressure; oxygen volume and purity; electricity import; generation; export; downtime; production allocation driver"
+      collection_method: "time-align calibrated meters and invoices with the smelting reporting period"
+      unit: "m3 and kWh"
+      frequency: "continuous or each delivery; monthly reconciliation"
+      temporal_coverage: "same period as product output, covering seasonal and campaign variability"
+      site_scope: "all in-boundary furnaces, gas cleaning, and auxiliaries"
+      aggregation_rule: "net imported quantity minus exports, apportioned only by documented physical drivers, normalized to dry matte output"
+      quality_evidence: "meter calibration; invoice reconciliation; missing-data log; reference-condition conversion"
+    - protocol_id: cp_matte_outputs_and_emissions
+      process_id: "p_matte_smelting"
+      flow_role: "copper matte, sulfuric acid, copper slag, sulfur dioxide, particulate matter, and fossil carbon dioxide"
+      record_type: "product dispatch, stock, assay, stack-monitoring, stack-test, fuel, and residue records"
+      raw_fields: "product and slag mass; moisture; copper; sulfur; iron; acid mass and concentration; stack flow; pollutant concentration; operating hours; fuel carbon; internal recycle"
+      collection_method: "reconcile product and residue balances with validated emissions monitoring after controls"
+      unit: "kg, mass fraction, concentration, and gas volume"
+      frequency: "each batch or dispatch; continuous monitoring where installed; stack tests per permit"
+      temporal_coverage: "same representative year or full campaign as inputs"
+      site_scope: "all product tapping, gas treatment, residue handling, and release points inside the boundary"
+      aggregation_rule: "calculate dry outputs and post-control releases, subtract internal recycle, and normalize to dry matte output"
+      quality_evidence: "weighing and laboratory QA; CEMS QA; stack-test report; sulfur and carbon balance closure; inventory reconciliation"
+    - protocol_id: cp_cement_inputs_and_energy
+      process_id: "p_cement_copper_production"
+      flow_role: "pregnant solution, steel scrap, and electricity"
+      record_type: "flowmeter, tank, assay, weighbridge, stock, meter, and invoice records"
+      raw_fields: "solution volume and density; copper; iron; acidity; sulfate; suspended solids; temperature; scrap charge and return; scrap iron content and coating; electricity import, generation, and export"
+      collection_method: "time-align calibrated solution, mass, assay, and electricity records with cementation batches"
+      unit: "kg, m3, mass concentration, mass fraction, and kWh"
+      frequency: "each batch or continuous flow; monthly reconciliation"
+      temporal_coverage: "at least one representative operating year or full campaign if shorter"
+      site_scope: "all cementation, separation, ventilation, and product-handling units inside the boundary"
+      aggregation_rule: "calculate net solution, scrap, and electricity inputs and normalize to dry cement copper output"
+      quality_evidence: "meter and scale calibration; sampling plan; laboratory QA; invoice reconciliation; reaction-balance residual"
+    - protocol_id: cp_cement_outputs_and_releases
+      process_id: "p_cement_copper_production"
+      flow_role: "cement copper, spent solution, and hydrogen"
+      record_type: "product mass, moisture, assay, solution-flow, tank, vent, and reaction-balance records"
+      raw_fields: "product mass; moisture; copper; iron; insolubles; spent-solution volume and density; copper; ferrous and ferric iron; acidity; sulfate; recycle and purge; hydrogen measurement or calculation inputs"
+      collection_method: "reconcile dry product, solution, copper, iron, and vent balances for each batch or reporting period"
+      unit: "kg, m3, mass concentration, and mass fraction"
+      frequency: "each batch or continuous flow; monthly reconciliation"
+      temporal_coverage: "same period as cementation inputs"
+      site_scope: "all separation, recycle, purge, product-conditioning, and vent points inside the boundary"
+      aggregation_rule: "calculate external outputs after subtracting internal recycle and normalize to dry cement copper output"
+      quality_evidence: "scale and flowmeter calibration; representative moisture sample; laboratory QA; copper and iron balance closure; vent method documentation"
+  calculation_rules:
+    - id: calc_dry_product_mass
+      applies_to: "Copper matte and cement copper"
+      rule: "dry product mass = as-received product mass × (1 − moisture mass fraction)"
+      inputs:
+        - "as-received mass"
+        - "representative moisture mass fraction"
+      output: "kg dry product"
+      source_ids:
+        - eu-commission-pef-method-2021
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized amount = reporting-period net exchange × 1,000 / reporting-period dry reference-product mass"
+      inputs:
+        - "net exchange"
+        - "dry reference-product mass"
+      output: "row unit per 1,000 kg dry product"
+      source_ids:
+        - eu-commission-pef-method-2021
+    - id: calc_gas_reference_volume
+      applies_to: "Natural gas and industrial oxygen"
+      rule: "Convert operating volume to the declared metering reference temperature and pressure using the documented meter or gas-law correction; do not mix incompatible reference conditions."
+      inputs:
+        - "operating volume"
+        - temperature
+        - pressure
+        - "meter correction"
+        - "gas compressibility when material"
+      output: "m3 at declared reference conditions"
+      source_ids:
+        - us-epa-ap42-primary-copper-smelting-1995
+    - id: calc_matte_sulfur_balance
+      applies_to: "Matte branch"
+      rule: "Reconcile sulfur in concentrate and other inputs with sulfur in matte, slag, recovered acid, direct sulfur emissions, and other measured sulfur outputs; investigate and disclose the residual."
+      inputs:
+        - "dry masses"
+        - "sulfur assays"
+        - "acid concentration"
+        - "monitored emissions"
+      output: "sulfur-balance closure and normalized sulfur-bearing outputs"
+      source_ids:
+        - us-epa-ap42-primary-copper-smelting-1995
+    - id: calc_cementation_balance
+      applies_to: "Cement copper branch"
+      rule: "Reconcile copper and iron across pregnant solution, steel scrap, cement copper, unreacted steel, spent solution, residues, and releases using the reaction Fe + CuSO4 → Cu + FeSO4 as a stoichiometric QA relationship, not as a substitute for foreground measurements."
+      inputs:
+        - "solution flows and assays"
+        - "scrap and product masses and assays"
+        - "spent-solution composition"
+      output: "copper-balance closure; iron-balance closure; QA residual"
+      source_ids:
+        - us-bureau-mines-copper-materials-survey-1965
+    - id: calc_stack_release
+      applies_to: "Direct stack emissions"
+      rule: "pollutant mass = validated post-control pollutant concentration × compatible dry or wet gas volume, with moisture, oxygen-reference, temperature, and pressure corrections documented as applicable"
+      inputs:
+        - concentration
+        - "stack gas flow"
+        - "operating time"
+        - "correction parameters"
+      output: "kg pollutant released"
+      source_ids:
+        - us-epa-ap42-primary-copper-smelting-1995
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Declare branch, physical state, moisture basis, copper grade, relevant impurities, release specification, and sampling method; do not use a refined- or ore-state UUID as a proxy."
+      evidence: "product specification; dispatch record; laboratory certificate; sampling plan"
+    - id: dq_temporal_alignment
+      applies_to: "All foreground exchanges"
+      requirement: "Use the same reporting period for inputs, outputs, stock changes, and emissions. Cover a representative operating year or explain why a shorter campaign is representative."
+      evidence: "dated source records; production calendar; downtime and abnormal-operation log"
+    - id: dq_measurement_control
+      applies_to: "Meters, scales, and assays"
+      requirement: "Retain calibration status, sample representativeness, laboratory method, detection limits, substitutions, and uncertainty for every material exchange."
+      evidence: "calibration certificates; QA/QC charts; laboratory reports; missing-data register"
+    - id: dq_balance_closure
+      applies_to: "Both branches"
+      requirement: "Report mass-balance residuals and branch-specific copper balance; also report sulfur balance for matte and iron balance for cementation. Investigate material residuals rather than forcing closure through an unmeasured flow."
+      evidence: "signed reconciliation workbook; assay records; explanation of residuals"
+    - id: dq_atomic_completeness
+      applies_to: "Inventory"
+      requirement: "Add each site-specific material, waste, and emitted species as a separate atomic exchange with its own identity, property, unit, amount rule, and destination."
+      evidence: "flow register; permit pollutant list; waste manifest; completeness review"
+    - id: dq_primary_manufacturing_data
+      applies_to: "Foreground manufacturing"
+      requirement: "Use company-specific data for the foreground production processes and disclose any secondary-data substitution and its effect."
+      evidence: "meter, batch, invoice, assay, dispatch, and monitoring records; substitution log; sensitivity result"
+validation_rules:
+  - rule_id: validate_identity_and_branch
+    applies_to: "Dataset identity"
+    rule: "Confirm CPC 41411 scope, declare exactly one reference-product branch, and reject copper ore, concentrate, blister copper, anode copper, refined copper, copper alloys, powder, or scrap as the reference product."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_reference_mass
+    applies_to: "Reference flow"
+    rule: "Confirm that the reference output equals 1,000 kg dry product after the documented moisture conversion and that every inventory amount uses the same denominator."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: validate_process_completeness
+    applies_to: "Process inventory"
+    rule: "For the selected branch, verify all relevant process steps, material and energy inputs, product and co-product outputs, wastes, and post-control elementary releases; skipped rows require a documented not-applicable basis."
+    source_ids:
+      - us-epa-ap42-primary-copper-smelting-1995
+      - us-bureau-mines-copper-materials-survey-1965
+      - eu-commission-pef-method-2021
+  - rule_id: validate_no_double_counting
+    applies_to: "Upstream and internal flows"
+    rule: "Confirm upstream supply burdens appear only in linked datasets, internal recycle is not counted as a second external exchange, and sulfur routed to acid is not also recorded as sulfur-dioxide emission."
+    source_ids:
+      - us-epa-ap42-primary-copper-smelting-1995
+  - rule_id: validate_balances
+    applies_to: "Mass, copper, sulfur, and iron"
+    rule: "Check total mass and copper closure for both branches, sulfur closure for matte, and iron closure for cementation. Report residuals, thresholds, investigations, and corrections without inventing balancing flows."
+    source_ids:
+      - us-epa-ap42-primary-copper-smelting-1995
+      - us-bureau-mines-copper-materials-survey-1965
+  - rule_id: validate_allocation
+    applies_to: "Multi-output operations"
+    rule: "Confirm subdivision was attempted first, every remaining shared burden has a causal driver, recovered sulfuric acid is a separate output, and any physical, system-expansion, or economic allocation is fully disclosed with sensitivity."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: validate_uuid_status
+    applies_to: "Tiangong flow identities"
+    rule: "Use only directly verified state-100 UUIDs. Keep the nine declared unresolved rows UUID-empty until an exact public identity with compatible flow type, classification, product state, property, and unit group is verified."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset for copper matte or cement copper"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness, completeness, allocation, and unresolved identities"
+  allowed_use: "Product-footprint and life-cycle models needing a declared copper-matte or cement-copper producer-gate input with compatible technology, geography, grade, and boundary"
+  excluded_use: "Direct representation of ore mining, concentrate production, pregnant-solution leaching, blister or anode production, refining, finished copper products, or an undeclared average of the two covered branches"
+  required_metadata: "selected branch; geography; technology; reporting period; dry-mass method; product grade and physical state; input assays; energy supply; oxygen and gas reference conditions; pollution controls; co-products; internal recycle; allocation; upstream links; unresolved UUIDs"
+  required_quality_disclosure: "primary-data share; temporal and geographic representativeness; meter and assay QA; missing-data treatment; mass, copper, sulfur, and iron balance residuals as applicable; emission measurement basis; allocation sensitivity; deviations and cut-offs"
+  update_trigger: "Material change in feed grade, furnace or cementation technology, energy or oxygen supply, pollution control, acid recovery, solution recycle, product specification, allocation, site geography, or availability of an exact Tiangong UUID or two-source range evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 41411 identity and English title"
+  - id: "china-product-specific-origin-rules"
+    type: "official_guidance"
+    reference: "附件五 产品特定原产地规则. https://www.dg.gov.cn/attachment/cmsfile/304093920/0202/201504/daofile/doc233067.pdf (retrieved 2026-09-04)"
+    used_for: "Professional Chinese heading terminology 铜锍；沉积铜（泥铜）"
+  - id: "us-epa-ap42-primary-copper-smelting-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42, Section 12.3, Primary Copper Smelting, October 1986, reformatted January 1995. https://www.epa.gov/sites/default/files/2020-11/documents/c12s03.pdf (retrieved 2026-09-04)"
+    used_for: "Copper matte process decomposition, material and energy inputs, slag, off-gas, emissions, and sulfuric-acid recovery"
+  - id: "us-bureau-mines-copper-materials-survey-1965"
+    type: "handbook"
+    reference: "U.S. Department of the Interior, Bureau of Mines, Copper: A Materials Survey, Information Circular 8225, 1965. https://stacks.cdc.gov/view/cdc/206386/cdc_206386_DS1.pdf (retrieved 2026-09-04)"
+    used_for: "Cement copper definition, iron cementation reaction, pregnant solution, cementing iron, spent solution, and direct hydrogen pathway"
+  - id: "eu-commission-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annexes 1 to 2, Product Environmental Footprint Method, 2021. https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf (retrieved 2026-09-04)"
+    used_for: "Company-specific manufacturing data, completeness, transparency, normalization, data quality, and multi-functionality hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:340e05378ff3c22f2175817a37470dabc32646017861eb35dbfc05c1c53d6fe4"
+  generated_content_sha256: "sha256:ac9668a0799dd9cf580c5118cc3ffb99344f4d6d199b99fed9115d4588a83203"

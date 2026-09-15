@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.silver-including-silver-plated-with-gold-or-platinum-unwrought-or-in-semi-manufactured-12dcded9
 title:
   en-US: "Silver (including silver plated with gold or platinum), unwrought or in semi-manufactured forms, or in powder form"
-  zh-CN: null
-status: scaffold
+  zh-CN: "银（包括镀金、镀铂的银），未锻造、半制成或粉末状"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T05:26:03Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,102 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41310"
     title: "Silver (including silver plated with gold or platinum), unwrought or in semi-manufactured forms, or in powder form"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary_review:
+    decision: promote_legacy
+    duplicate_material_pcr_found: false
+    conclusion: "This PCR covers route-declared silver metal products in unwrought, semi-manufactured, powder, gold-plated, or platinum-plated state at the factory gate; silver-bearing ores, concentrates, compounds, pastes, finished articles, and base metals merely clad with silver are outside the boundary."
+  source_verification:
+    - source_id: un-cpc-3-0-structure-2025
+      independence_key: un-cpc-version-3-0-structure-2025
+      original_text_verified: true
+    - source_id: china-mof-research-goods-list-2026
+      independence_key: china-mof-2026-research-goods-list
+      original_text_verified: true
+    - source_id: eu-jrc-nfm-bref-2017
+      independence_key: eu-jrc-nfm-bref-jrc107041
+      original_text_verified: true
+    - source_id: eu-jrc-stm-bref-2006
+      independence_key: eu-jrc-stm-bref-2006
+      original_text_verified: true
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: dr_dore_feed
+        reason_code: no_exact_candidate
+        explanation: "The product search returned no state-100 flow that exactly denotes silver-bearing doré refinery feed."
+      - row_id: dr_silver_scrap_feed
+        reason_code: semantic_mismatch
+        explanation: "The closest state-100 product candidate covers waste and scrap containing unspecified precious metals and is broader than silver scrap."
+      - row_id: dr_refining_electricity
+        reason_code: manual_review_required
+        explanation: "Two state-100 alternating-current candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: dr_refining_nitric_acid
+        reason_code: manual_review_required
+        explanation: "Two state-100 generic nitric-acid candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: mc_electricity
+        reason_code: manual_review_required
+        explanation: "Two state-100 alternating-current candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: sm_electricity
+        reason_code: manual_review_required
+        explanation: "Two state-100 alternating-current candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: sm_lubricating_oil
+        reason_code: manual_review_required
+        explanation: "Two state-100 generic lubricating-oil candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: sm_silver_scrap
+        reason_code: no_exact_candidate
+        explanation: "The waste-flow search returned no state-100 flow exactly denoting solid silver-bearing process scrap."
+      - row_id: pw_electricity
+        reason_code: manual_review_required
+        explanation: "Two state-100 alternating-current candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: pw_nitrogen_gas
+        reason_code: product_state_mismatch
+        explanation: "The nitrogen search returned liquid nitrogen and unrelated gases, but no exact gaseous-nitrogen product flow."
+      - row_id: pw_nitric_acid
+        reason_code: manual_review_required
+        explanation: "Two state-100 generic nitric-acid candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+      - row_id: pl_platinum_input
+        reason_code: no_exact_candidate
+        explanation: "The bounded search returned platinum wire, foil, mixed metal, and ore candidates but no route-neutral platinum product suitable for this mass input."
+      - row_id: pl_electricity
+        reason_code: manual_review_required
+        explanation: "Two state-100 alternating-current candidates are semantically identical and have no public discriminator supporting an arbitrary UUID choice."
+    range_evidence_needs:
+      - range_id: rng_refining_material_balance
+        row_ids: [dr_dore_feed, dr_silver_scrap_feed, dr_refined_silver, dr_refining_slag, dr_refining_wastewater]
+        explanation: "Obtain at least two independent, boundary-compatible refinery datasets for feed, yield, slag, and wastewater QA ranges."
+      - range_id: rng_refining_energy_reagents
+        row_ids: [dr_refining_electricity, dr_refining_natural_gas, dr_refining_oxygen, dr_refining_process_water, dr_refining_nitric_acid, dr_refining_sodium_hydroxide]
+        explanation: "Obtain at least two independent, route-compatible sources before authoring energy, water, oxygen, acid, or alkali ranges."
+      - range_id: rng_refining_direct_emissions
+        row_ids: [dr_refining_fossil_co2, dr_refining_particulate, dr_refining_nox]
+        explanation: "Obtain compatible direct-emission observations for the declared furnace and refining route."
+      - range_id: rng_casting_balance_and_energy
+        row_ids: [mc_silver_feed, mc_electricity, mc_natural_gas, mc_oxygen, mc_cast_silver, mc_slag, mc_fossil_co2, mc_particulate]
+        explanation: "Obtain independent casting-route evidence for yield, utilities, slag, and direct emissions."
+      - range_id: rng_forming_balance_and_energy
+        row_ids: [sm_silver_feed, sm_electricity, sm_lubricating_oil, sm_silver_product, sm_silver_scrap]
+        explanation: "Obtain independent evidence compatible with the declared rolling, extrusion, or drawing route and output form."
+      - range_id: rng_powder_balance_and_energy
+        row_ids: [pw_silver_feed, pw_electricity, pw_nitrogen_gas, pw_process_water, pw_nitric_acid, pw_silver_powder, pw_wastewater, pw_nox]
+        explanation: "Obtain independent evidence separately for gas-atomization or wet-chemical powder routes; do not mix route scenarios."
+      - range_id: rng_plating_balance_and_energy
+        row_ids: [pl_silver_substrate, pl_gold_input, pl_platinum_input, pl_electricity, pl_process_water, pl_sodium_hydroxide, pl_plated_silver, pl_wastewater]
+        explanation: "Obtain independent area- and thickness-compatible plating evidence and convert it to the declared product-mass basis only with measured geometry and coating mass."

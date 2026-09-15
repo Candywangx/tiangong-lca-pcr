@@ -1,10 +1,937 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48341"
-  title: "Photographic plates and film and instant print film, sensitized, unexposed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.photographic-plates-and-film-and-instant-print-film-sensitized-unexposed"
+  classification_refs: "CPC 3.0: 48341, exact classification context"
+  covered_products: "Sensitized unexposed photographic plates; flat photographic film; photographic film in rolls; conventional and instant-print film units"
+  excluded_products: "Exposed or developed film and plates; separately sold photographic chemicals; sensitized paper not integral to an instant-film unit; cameras and processing equipment"
+  representative_product: "Saleable unexposed silver-halide photographic film supplied in a declared format and light-tight market pack"
+  production_route: "Silver-halide emulsion preparation, support treatment, multilayer coating and drying, converting, conditional instant-film assembly, and light-tight packaging"
+  market_state: "Sensitized, unexposed, quality-conforming and packaged for shipment; format, support, imaging chemistry and intended use declared"
+functional_unit:
+  what: "Provide an unexposed photosensitive medium capable of recording a latent photographic image under the declared exposure and processing system"
+  how_much: "1 kg net mass of saleable sensitized product at the factory gate"
+  how_well: "Meets the producer's declared format, dimensions, sensitivity/speed, spectral response, image type, shelf-life and defect acceptance specification"
+  how_long_or_cycle: "One delivered product lot at release; no use-stage service life is assigned"
+  reference_flow_link: "The reference flow is the conforming packaged product output pack_reference_product, normalized to 1 kg net product; secondary and tertiary packaging are excluded from reference mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "all datasets"
+      rule: "Include emulsion preparation, support preparation or receipt, coating and drying, converting, conditional instant-film assembly, quality losses, light-tight packaging, on-site waste handling and direct emissions through the factory gate."
+      source_ids:
+        - us-patent-4564591
+        - us-patent-6814329
+        - us-patent-5356762
+    - rule_id: boundary_route_conditionals
+      applies_to: "route-specific processes"
+      rule: "Include each support or instant-film component row only when that material physically enters the declared product route; record demonstrably absent atomic exchanges as not applicable rather than zero measured use."
+      source_ids:
+        - us-patent-4564591
+        - us-patent-5356762
+    - rule_id: boundary_recursive_input
+      applies_to: "purchased sensitized master material"
+      rule: "Apply the recursive input rule and disclose the upstream-to-foreground hand-off to prevent duplicated coating burdens."
+      source_ids: []
+    - rule_id: boundary_additional_formulation_flows
+      applies_to: "product-specific formulations"
+      rule: "Add each non-listed sensitizer, colour coupler, hardener, surfactant, stabilizer, subbing chemical, solvent, cleaning chemical and direct emission as its own atomic exchange when used; never aggregate them as additives or chemicals."
+      source_ids:
+        - us-patent-4564591
+        - us-patent-3849166
+    - rule_id: boundary_exclusions
+      applies_to: "downstream life cycle"
+      rule: "Exclude imagewise exposure, photographic development, customer use and end-of-life from the foreground production inventory; model them only in a separately declared downstream system."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased photosensitive chemicals, support materials, utilities, packaging components and any externally produced intermediate arrive at the reporting-site gate with upstream datasets attached"
+  starting_condition_role: "Cradle-to-gate foreground manufacturing start; upstream production of purchased inputs remains represented by linked background datasets"
+  product_classification_scope: "Sensitized, unexposed photographic plates, film and instant-print film within the reviewed semantic boundary; classification codes are mapping context only"
+  recursive_input_rule: "A purchased sensitized master roll or other input already within this product category is recorded once as an upstream same-category product input. The reporting unit then models only subsequent converting or assembly and discloses the partial manufacturing boundary; it must not recreate emulsion and coating burdens."
+  upstream_dataset_requirement: "Every purchased chemical, support, energy carrier, packaging component and same-category intermediate requires a geographically and technologically representative upstream dataset or an explicit data gap"
+  disclosure: "Declare included sites and processes, support and chemistry routes, instant-film construction, internal transfers, recovered silver, wastewater treatment boundary, solvent recovery, energy supply, packaging convention, cut-offs and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Unexposed photosensitive substrate rolls and sheets"
+    uuid: "e568740b-8b0c-4359-8268-366cb8b6d2a6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form (plate"
+    - "flat film"
+    - "roll film"
+    - "or instant film)"
+    - "support material"
+    - "silver-halide or other imaging chemistry"
+    - "monochrome or colour"
+    - "intended application"
+    - "dimensions or roll width and length"
+    - "perforation and spool/cassette state"
+    - "photosensitivity or speed designation"
+    - "spectral response"
+    - "coating-side configuration"
+    - "instant-film type and unit count when applicable"
+    - "net product mass convention"
+    - "primary light-tight packaging included in product"
+    - "production geography"
+    - "reference year"
+    - "shelf-life and storage condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground exchanges to 1 kg net saleable product. Include inseparable instant-film sheets, processing pod, frame and cassette in net product mass; exclude secondary and tertiary distribution packaging."
+  - id: area_or_length_to_mass
+    applies_to: "plate, film-base, coating and converting records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "When operating records use m2, m or item count, convert with lot-specific measured basis mass or with measured thickness and density. Retain the source measurement, conversion formula and lot identifier; a generic conversion factor is not allowed."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered energy. Convert kWh to MJ by multiplying by 3.6 and disclose grid geography, voltage and whether transformer or on-site distribution losses are included."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report gas volume at the supplier or meter reference temperature and pressure, and disclose those reference conditions; do not mix standard and operating volumes."
+  - id: silver_mass_balance
+    applies_to: "silver-bearing inputs, product, wastes and recovery outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain a campaign-level silver mass balance based on measured silver-bearing feed, coated product, recovered material, liquid waste and solid waste. Do not infer silver content from total wastewater mass alone."
+process_map:
+  - id: emulsion_preparation
+    name: "Silver-halide emulsion preparation"
+    inclusion: "required"
+    inclusion_condition: "All silver-halide routes; non-silver routes replace it with a fully disclosed chemistry-specific preparation process"
+    role: "Foreground photosensitive-emulsion production"
+    quantitative_reference: "Inputs and utilities normalized to emulsion used for 1 kg reference product"
+  - id: support_coating_drying
+    name: "Support treatment, coating and drying"
+    inclusion: "required"
+    inclusion_condition: "All products; support and solvent cards are conditional by actual formulation and support"
+    role: "Foreground sensitization and coated-master production"
+    quantitative_reference: "Inputs, wastes and emissions normalized to coated material used for 1 kg reference product"
+  - id: converting_packaging
+    name: "Converting, instant-film assembly and light-tight packaging"
+    inclusion: "required"
+    inclusion_condition: "All products; instant-film component cards apply only to instant-film units"
+    role: "Foreground slitting, perforating, loading, assembly, inspection and packaging"
+    quantitative_reference: "1 kg net conforming saleable reference product"
+process_inventory:
+  - id: emulsion_preparation
+    label: "Silver-halide emulsion preparation"
+    inputs:
+      product:
+        - row_id: em_silver_nitrate
+          role: "Silver nitrate reagent"
+          name: "Silver nitrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Silver nitrate entering precipitation of the photosensitive silver-halide phase is recorded as a separate input."
+          amount:
+            expression: "Measured net silver nitrate issued to conforming and rejected emulsion batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emulsion_materials
+              source_ids:
+                - us-patent-4564591
+            ranges: []
+        - row_id: em_potassium_bromide
+          role: "Potassium bromide reagent"
+          name: "Potassium bromide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Potassium bromide used as the bromide source is recorded separately; another halide salt is added as its own row when used."
+          amount:
+            expression: "Measured net potassium bromide issued to emulsion batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emulsion_materials
+              source_ids:
+                - us-patent-4564591
+            ranges: []
+        - row_id: em_gelatin
+          role: "Photographic gelatin binder"
+          name: "Photographic gelatin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Gelatin incorporated as the hydrophilic colloid binder is recorded by supplied dry-equivalent mass."
+          amount:
+            expression: "Measured gelatin dry-equivalent mass issued to emulsion batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emulsion_materials
+              source_ids:
+                - us-patent-4564591
+            ranges: []
+        - row_id: em_process_water
+          role: "Process water for emulsion preparation"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Water crossing the process boundary for solution preparation, controlled washing and vessel cleaning is recorded by mass."
+          amount:
+            expression: "Metered or batch-record water supplied to emulsion preparation, excluding recirculated water until make-up crosses the boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emulsion_utilities
+              source_ids: []
+            ranges: []
+        - row_id: em_electricity
+          role: "Electricity for emulsion preparation"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electrical energy used by reactors, mixing, temperature control, filtration and local ventilation is recorded separately."
+          amount:
+            expression: "Submetered electricity or allocated meter total for emulsion preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emulsion_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: support_coating_drying
+    label: "Support treatment, coating and drying"
+    inputs:
+      product:
+        - row_id: coat_pet_film_base
+          role: "PET photographic film base"
+          name: "Polyethylene terephthalate photographic film base"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Biaxially oriented PET film base is recorded when the declared product uses a polyester support."
+          amount:
+            expression: "Measured PET film-base mass entering support treatment and coating"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - us-patent-3849166
+                - us-patent-4564591
+            ranges: []
+        - row_id: coat_cellulose_triacetate_base
+          role: "Cellulose triacetate photographic film base"
+          name: "Cellulose triacetate photographic film base"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cellulose triacetate film base is recorded only for products using that flexible support."
+          amount:
+            expression: "Measured cellulose triacetate film-base mass entering coating"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - us-patent-4564591
+            ranges: []
+        - row_id: coat_glass_plate
+          role: "Glass support plate"
+          name: "plate glass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "491a7940-d102-4981-a2b8-81bf183987df"
+          property_unit: "Mass / kg"
+          description: "Unworked sheet glass is recorded when a rigid photographic plate is produced."
+          amount:
+            expression: "Measured mass of accepted glass plates entering cleaning and coating"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - us-patent-4564591
+            ranges: []
+        - row_id: coat_methanol
+          role: "Methanol for subbing or coating formulation"
+          name: "Methanol (market average)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "adbc8430-7937-4ade-b7a5-cb1797dda661"
+          property_unit: "Mass / kg"
+          description: "Methanol is recorded only when purchased methanol enters the declared subbing or coating formulation."
+          amount:
+            expression: "Measured gross methanol input less documented recovered methanol returned to the same process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - us-patent-3849166
+                - us-patent-4564591
+            ranges: []
+        - row_id: coat_acetone
+          role: "Acetone for subbing or coating formulation"
+          name: "Acetone"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5d65ffc-92f2-4d88-b6e7-e050445978f5"
+          property_unit: "Mass / kg"
+          description: "Acetone is recorded only when purchased acetone enters the declared subbing or coating formulation."
+          amount:
+            expression: "Measured gross acetone input less documented recovered acetone returned to the same process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - us-patent-3849166
+                - us-patent-4564591
+            ranges: []
+        - row_id: coat_process_water
+          role: "Process water for coating"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Water supplied for aqueous coating formulations, line cleaning and controlled humidification is recorded by mass."
+          amount:
+            expression: "Metered make-up and cleaning water entering support treatment, coating and drying"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_utilities
+              source_ids:
+                - us-patent-3849166
+            ranges: []
+        - row_id: coat_electricity
+          role: "Electricity for coating and drying"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy for web handling, coating, refrigeration, clean-room air handling, drying auxiliaries and controls is recorded separately."
+          amount:
+            expression: "Submetered electricity or allocated meter total for support treatment, coating and drying"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_utilities
+              source_ids:
+                - us-patent-3849166
+                - us-patent-4564591
+            ranges: []
+        - row_id: coat_natural_gas
+          role: "Natural gas for direct thermal drying"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas is recorded when combusted on site for drying or thermal air conditioning."
+          amount:
+            expression: "Metered gaseous natural gas supplied to coating-line dryers and thermal air systems"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: coat_silver_wastewater
+          role: "Silver-bearing coating wastewater"
+          name: "Silver-bearing photographic coating wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater containing silver-bearing emulsion or coating residues is recorded before external treatment or at the declared on-site treatment hand-off."
+          amount:
+            expression: "Measured wastewater mass with silver concentration and treatment destination retained as quality evidence"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_wastewater
+              source_ids:
+                - us-epa-silver-risk-1980
+            ranges: []
+      elementary:
+        - row_id: coat_fossil_co2
+          role: "Fossil carbon dioxide from on-site natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from declared on-site natural-gas combustion is reported; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "Calculate from metered natural gas, supplier carbon content and measured or documented oxidation fraction using calc_combustion_co2, or use a verified stack mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+  - id: converting_packaging
+    label: "Converting, instant-film assembly and light-tight packaging"
+    inputs:
+      product:
+        - row_id: pack_image_receiving_sheet
+          role: "Instant-film image-receiving sheet"
+          name: "Instant-film image-receiving sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The image-receiving sheet is recorded only for instant-film designs that physically incorporate a separate receiving element."
+          amount:
+            expression: "Measured image-receiving-sheet mass issued to instant-film assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - us-patent-5356762
+            ranges: []
+        - row_id: pack_instant_processing_composition
+          role: "Instant-film processing composition"
+          name: "Instant-film processing composition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The sealed processing composition is recorded only for self-developing instant-film units that contain a rupturable pod."
+          amount:
+            expression: "Measured filled processing-composition mass accepted into film units, including documented fill loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - us-patent-5356762
+            ranges: []
+        - row_id: pack_plastic_cassette
+          role: "Plastic instant-film cassette"
+          name: "Plastic instant-film cassette"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The moulded light-tight cassette is recorded when it remains part of the delivered instant-film pack."
+          amount:
+            expression: "Measured cassette mass assembled into released instant-film packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - us-patent-5356762
+            ranges: []
+        - row_id: pack_paper_box
+          role: "Paper box for secondary packaging"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "The paper or paperboard sales carton crossing the factory gate is recorded separately from the net reference-product mass."
+          amount:
+            expression: "Measured paper-box mass consumed for shipped saleable product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - us-patent-6814329
+            ranges: []
+        - row_id: pack_electricity
+          role: "Electricity for converting and packaging"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity for slitting, perforating, loading, assembly, inspection and packaging is recorded separately."
+          amount:
+            expression: "Submetered electricity or allocated meter total for converting and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_converting_utilities
+              source_ids:
+                - us-patent-6814329
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pack_reference_product
+          role: "Conforming unexposed photosensitive product"
+          name: "Unexposed photosensitive substrate rolls and sheets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e568740b-8b0c-4359-8268-366cb8b6d2a6"
+          property_unit: "Mass / kg"
+          description: "Only released, sensitized and unexposed product meeting the declared specification is counted as reference output."
+          amount:
+            expression: "Net mass of conforming product released from the lot, normalized to exactly 1 kg reference flow"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: pack_film_trim_waste
+          role: "Sensitized photographic-film edge trim"
+          name: "Sensitized photographic-film edge trim waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Coated edge trim and perforation scrap removed during converting are recorded as a distinct silver-bearing solid waste."
+          amount:
+            expression: "Measured coated trim and perforation scrap sent to recovery, treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_wastes
+              source_ids:
+                - us-patent-6814329
+                - us-epa-silver-risk-1980
+            ranges: []
+        - row_id: pack_offspec_photographic_material
+          role: "Off-spec sensitized photographic material"
+          name: "Off-spec sensitized photographic material waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected coated plate, film or assembled instant-film material is recorded separately from clean uncoated support scrap."
+          amount:
+            expression: "Measured mass rejected after sensitization and sent to silver recovery, treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_wastes
+              source_ids:
+                - us-epa-silver-risk-1980
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared foreground processes"
+    rule: "Prefer subdivision and direct metering by emulsion family, coating line, support type, format and packaging campaign before applying allocation."
+    source_ids: []
+  - rule_id: allocation_mass_or_area
+    applies_to: "inseparable shared coating campaigns"
+    rule: "If subdivision is not possible, allocate support, coating materials, utilities and losses by measured coated area adjusted by product-specific wet or dry coating mass; use net product mass only when area and coating-load data are unavailable, and disclose the hierarchy used."
+    source_ids: []
+  - rule_id: allocation_packaging
+    applies_to: "converting and packaging"
+    rule: "Assign format-specific packaging components directly by bill of materials and accepted unit count; do not spread instant-film components to conventional film or plate products."
+    source_ids:
+      - us-patent-5356762
+      - us-patent-6814329
+  - rule_id: allocation_silver_recovery
+    applies_to: "recovered silver-bearing outputs"
+    rule: "Treat recovered silver or silver-bearing concentrate according to the study's declared allocation or substitution method. Report recovered mass, quality, destination and any credited burden separately; do not omit recovery because it has revenue."
+    source_ids:
+      - us-epa-silver-risk-1980
+  - rule_id: allocation_rework
+    applies_to: "internal rework"
+    rule: "Return internally reworked emulsion or support to the consuming process without creating a co-product; count only make-up inputs, unrecovered loss and additional energy once."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_emulsion_materials
+      process_id: "emulsion_preparation"
+      flow_role: "silver nitrate, potassium bromide and gelatin inputs"
+      record_type: "batch issue and return records"
+      raw_fields: "material id; grade; lot; gross issue; return; dry solids; batch id; accepted emulsion"
+      collection_method: "Reconcile warehouse issue/return with signed batch recipes"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative 12-month period or full shorter campaign"
+      site_scope: "all reporting-site emulsion lines"
+      aggregation_rule: "Sum net consumed mass and normalize through conforming product output"
+      quality_evidence: "calibrated scales; supplier certificate; recipe revision; batch reconciliation"
+    - protocol_id: cp_emulsion_utilities
+      process_id: "emulsion_preparation"
+      flow_role: "process water and electricity"
+      record_type: "meters and batch utility logs"
+      raw_fields: "meter start/end; batch id; make-up water; recirculation; electricity; allocation driver"
+      collection_method: "Use dedicated meters; otherwise reconcile shared meters to operating hours and measured load"
+      unit: "kg water; MJ electricity"
+      frequency: "batch and monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "all reporting-site emulsion utilities"
+      aggregation_rule: "Sum make-up water and electricity and normalize to conforming output"
+      quality_evidence: "meter calibration; utility invoice reconciliation; downtime log"
+    - protocol_id: cp_coating_materials
+      process_id: "support_coating_drying"
+      flow_role: "support and solvent inputs"
+      record_type: "roll/plate issue, tank charge and recovery records"
+      raw_fields: "support material; lot; input mass; unused return; solvent charge; recovered solvent; coating campaign"
+      collection_method: "Reconcile material issues, tank records and recovery-system returns"
+      unit: "kg"
+      frequency: "each campaign"
+      temporal_coverage: "same period as product output"
+      site_scope: "all coating lines in scope"
+      aggregation_rule: "Sum net external input; exclude verified closed-loop return to the same process"
+      quality_evidence: "weighbridge or scale checks; bill of materials; solvent inventory balance"
+    - protocol_id: cp_coating_utilities
+      process_id: "support_coating_drying"
+      flow_role: "water, electricity and natural gas"
+      record_type: "utility meters and line logs"
+      raw_fields: "meter readings; reference conditions; line id; operating hours; product campaign"
+      collection_method: "Read dedicated meters or allocate reconciled shared meter totals using measured line load and operating time"
+      unit: "kg water; MJ electricity; m3 gas"
+      frequency: "shift, campaign and monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "coating, drying and associated clean-room utilities"
+      aggregation_rule: "Sum by campaign and normalize to conforming output"
+      quality_evidence: "meter calibration; invoices; reference-condition record; allocation calculation"
+    - protocol_id: cp_coating_wastewater
+      process_id: "support_coating_drying"
+      flow_role: "silver-bearing wastewater"
+      record_type: "flow meter, tank transfer and laboratory records"
+      raw_fields: "wastewater mass or volume; density; silver concentration; stream origin; treatment destination; recovered silver"
+      collection_method: "Measure each segregated stream at the treatment hand-off and pair with a representative laboratory result"
+      unit: "kg; mg Ag/L"
+      frequency: "transfer or daily composite"
+      temporal_coverage: "same period as product output"
+      site_scope: "all in-scope silver-bearing wastewater streams"
+      aggregation_rule: "Convert volume with measured density where needed; sum mass and retain silver load separately"
+      quality_evidence: "meter calibration; chain of custody; laboratory method; treatment manifest"
+    - protocol_id: cp_combustion_emissions
+      process_id: "support_coating_drying"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "fuel meter and supplier composition records"
+      raw_fields: "gas volume; temperature; pressure; carbon content; oxidation fraction; stack result if available"
+      collection_method: "Reconcile metered fuel with supplier certificate and verified combustion or stack records"
+      unit: "m3 gas; kg CO2"
+      frequency: "monthly and campaign allocation"
+      temporal_coverage: "same period as product output"
+      site_scope: "all on-site gas combustion assigned to coating/drying"
+      aggregation_rule: "Apply calc_combustion_co2 and normalize to conforming output"
+      quality_evidence: "meter calibration; supplier certificate; calculation workbook or stack report"
+    - protocol_id: cp_packaging_materials
+      process_id: "converting_packaging"
+      flow_role: "instant-film sheets, composition, cassette and paper box"
+      record_type: "bill of materials, issue and count records"
+      raw_fields: "component id; material; unit mass; issued count; accepted count; rejects; returned mass"
+      collection_method: "Reconcile component issues to released unit count and measured component mass"
+      unit: "kg; item"
+      frequency: "each packaging or assembly campaign"
+      temporal_coverage: "same period as product output"
+      site_scope: "all converting and assembly lines in scope"
+      aggregation_rule: "Sum net consumed component mass and normalize to net product output"
+      quality_evidence: "approved bill of materials; scale checks; issue/return reconciliation"
+    - protocol_id: cp_converting_utilities
+      process_id: "converting_packaging"
+      flow_role: "electricity"
+      record_type: "submeter and machine log"
+      raw_fields: "meter readings; machine id; operating hours; campaign; accepted output"
+      collection_method: "Read line submeter or allocate reconciled meter totals by measured machine load and operating time"
+      unit: "MJ"
+      frequency: "shift and monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "slitting, perforating, loading, assembly, inspection and packaging"
+      aggregation_rule: "Sum and normalize to conforming output"
+      quality_evidence: "meter calibration; invoice reconciliation; machine log"
+    - protocol_id: cp_product_output
+      process_id: "converting_packaging"
+      flow_role: "conforming reference product"
+      record_type: "release, count and net-mass records"
+      raw_fields: "lot; format; accepted quantity; sampled unit mass; net product mass; packaging convention; release status"
+      collection_method: "Determine lot net mass from calibrated bulk weighing or accepted count times representative measured unit mass"
+      unit: "kg"
+      frequency: "each released lot"
+      temporal_coverage: "same period as all inputs"
+      site_scope: "all released products in declared dataset"
+      aggregation_rule: "Sum released net mass; normalize all exchanges by this amount"
+      quality_evidence: "release certificate; scale calibration; sampling plan; mass reconciliation"
+    - protocol_id: cp_solid_wastes
+      process_id: "converting_packaging"
+      flow_role: "sensitized trim and off-spec material"
+      record_type: "waste container and recovery records"
+      raw_fields: "waste type; sensitized state; mass; silver-bearing status; destination; recovery certificate"
+      collection_method: "Segregate coated trim and off-spec material from clean support and weigh at transfer"
+      unit: "kg"
+      frequency: "each container or transfer"
+      temporal_coverage: "same period as product output"
+      site_scope: "all in-scope converting and quality-reject points"
+      aggregation_rule: "Sum each atomic waste stream separately and normalize to conforming output"
+      quality_evidence: "scale calibration; waste manifest; recovery receipt; segregation audit"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period exchange amount / period net conforming reference-product mass"
+      inputs:
+        - "matched-period exchange record"
+        - "cp_product_output net mass"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_area_length_mass
+      applies_to: "area-, length- or count-based support and product records"
+      rule: "mass = measured area × lot-specific basis mass; or mass = measured volume × lot-specific density; count conversion uses sampled mean unit mass under the approved sampling plan"
+      inputs:
+        - "area or length and width"
+        - thickness
+        - density
+        - count
+        - "sampled unit mass"
+      output: "kg input or output"
+      source_ids: []
+    - id: calc_combustion_co2
+      applies_to: "coat_fossil_co2"
+      rule: "fossil CO2 mass = metered gas quantity × supplier fossil-carbon content × oxidation fraction × 44/12, with units reconciled and reference conditions documented"
+      inputs:
+        - "natural-gas record"
+        - "carbon content"
+        - "oxidation fraction"
+      output: "kg fossil CO2"
+      source_ids: []
+    - id: calc_silver_balance
+      applies_to: "campaign silver accounting"
+      rule: "silver input = silver in product + recovered silver + silver in liquid waste + silver in solid waste + quantified inventory change; report unresolved imbalance without forcing closure"
+      inputs:
+        - "reagent certificates"
+        - "product assay or coating load"
+        - "waste assays"
+        - "recovery records"
+        - "inventory change"
+      output: "campaign silver balance and closure percentage"
+      source_ids:
+        - us-epa-silver-risk-1980
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and inputs"
+      requirement: "Match product form, support, chemistry, coating configuration, format and market state to the declared dataset; retain supplier grade and lot for chemistry-sensitive inputs."
+      evidence: "release specification; bill of materials; supplier certificates; lot records"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use a continuous representative 12-month period where production is continuous, or the complete campaign when production is shorter; identify atypical shutdown or start-up periods."
+      evidence: "dated meters, batch logs, production calendar and deviation record"
+    - id: dq_completeness
+      applies_to: "material, energy, waste and emission rows"
+      requirement: "Reconcile purchases/issues, returns, inventory change, recovered materials, product and wastes; explain every omitted expected row and every balance gap."
+      evidence: "mass and energy reconciliations; cut-off register; waste manifests"
+    - id: dq_silver
+      applies_to: "silver-bearing system"
+      requirement: "Maintain traceability from silver-bearing reagent through coated product, wastewater, solid waste and recovery; report concentration methods and detection limits."
+      evidence: "laboratory reports; recovery receipts; silver mass balance"
+    - id: dq_allocation
+      applies_to: "shared processes"
+      requirement: "Document subdivision attempts, allocation hierarchy, drivers and sensitivity for materially shared burdens."
+      evidence: "meter map; campaign schedule; allocation workbook; sensitivity result"
+    - id: dq_geography_technology
+      applies_to: "upstream datasets"
+      requirement: "Match supplier geography, electricity grid, support technology, solvent recovery, drying technology and treatment route, or disclose and assess each mismatch."
+      evidence: "supplier location; dataset metadata; technology description; representativeness assessment"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm that the output is sensitized, unexposed and quality-conforming; reference amount is exactly 1 kg net product and required qualifiers are complete."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Confirm every selected flow is one atomic material, energy, waste or emission exchange; formulation-specific additions must be separate rows with route conditions."
+    source_ids: []
+  - rule_id: validation_process_alignment
+    applies_to: "process map and cards"
+    rule: "Confirm every required process has a matching inventory section and every conditional row agrees with the declared support, chemistry and instant-film construction."
+    source_ids:
+      - us-patent-4564591
+      - us-patent-5356762
+      - us-patent-6814329
+  - rule_id: validation_mass_energy
+    applies_to: "foreground calculations"
+    rule: "Recalculate reference normalization, count/area conversions, utility conversions and the product/waste mass reconciliation from retained raw records."
+    source_ids: []
+  - rule_id: validation_silver_balance
+    applies_to: "silver-bearing routes"
+    rule: "Check campaign silver balance inputs, product, recovered material, wastewater, solid waste and inventory change; flag an unexplained imbalance rather than inserting an estimated loss flow."
+    source_ids:
+      - us-epa-silver-risk-1980
+  - rule_id: validation_uuid_scope
+    applies_to: "Tiangong references"
+    rule: "Confirm each UUID remains public state 100 and matches name, flow type, classification, property, unit group and product state; unresolved rows remain explicitly UUID-empty."
+    source_ids: []
+  - rule_id: validation_no_external_ranges
+    applies_to: "all important flows"
+    rule: "Confirm that no external empirical range is claimed until at least two independent, original-text-verified and boundary-compatible sources support a synthesis; use foreground records for dataset values."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset representing cradle-to-gate production of the declared sensitized unexposed photographic product"
+  downstream_use: "Product-system modelling for photographic media, cameras, medical or industrial imaging, graphic arts, supply-chain screening and procurement where the declared product and geography match"
+  allowed_use: "Use after checking product form, support, imaging chemistry, format, instant-film construction, geography, production year, energy system, solvent recovery and treatment route"
+  excluded_use: "Direct representation of exposed or developed material, photo processing, non-photographic coated media, separately sold photographic chemicals, use-stage image formation or end-of-life"
+  required_metadata: "PCR id and version; product qualifiers; reference mass convention; geography and year; included sites and processes; support and chemistry route; instant-film components; allocation; upstream datasets; cut-offs; uncertainty; UUID gaps"
+  required_quality_disclosure: "Temporal coverage; meter and mass-balance quality; silver balance; allocation sensitivity; completeness; technology and geography mismatches; recovery and treatment boundaries; unresolved UUID and range-evidence needs"
+  update_trigger: "Change in support or photosensitive chemistry, coating architecture, solvent or silver recovery, drying energy, instant-film construction, packaging, site, grid, treatment route, allocation driver, product mass convention, or a material correction to foreground records"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official product classification identity and unexposed sensitized market state"
+  - id: "cn-nbs-photographic-film-classification-2010"
+    type: "official_guidance"
+    reference: "National Bureau of Statistics of China, Statistical Product Classification Catalogue, product 26180102, https://www.stats.gov.cn/sj/tjbz/tjypflml/2010/26/18/01/26180102.html (original text verified 2026-09-07)"
+    used_for: "Professional Chinese terminology for unexposed photosensitive plates and flat film, photographic film and instant photographic film"
+  - id: "us-patent-4564591"
+    type: "literature"
+    reference: "U.S. Patent US4564591A, Silver halide color photographic material, https://patents.google.com/patent/US4564591A/en (original text verified 2026-09-07)"
+    used_for: "Support materials, silver-halide multilayer coating, formulation additives, coating and drying process decomposition"
+  - id: "us-patent-3849166"
+    type: "literature"
+    reference: "U.S. Patent US3849166A, Method for providing subbing layer of photographic film, https://patents.google.com/patent/US3849166A/en (original text verified 2026-09-07)"
+    used_for: "PET support treatment, aqueous process steps, methanol and acetone inputs, coating and drying"
+  - id: "us-patent-6814329"
+    type: "literature"
+    reference: "U.S. Patent US6814329B2, Production managing method for photo film production, https://patents.google.com/patent/US6814329B2/en (original text verified 2026-09-07)"
+    used_for: "Slitting, perforating, loading, inspection and light-tight packaging process decomposition"
+  - id: "us-patent-5356762"
+    type: "literature"
+    reference: "U.S. Patent US5356762A, Film-sheet assemblage for peel-apart self-developing film, https://patents.google.com/patent/US5356762A/en (original text verified 2026-09-07)"
+    used_for: "Instant-film photosensitive and image-receiving sheets, processing-liquid pod and light-tight cassette boundary"
+  - id: "us-epa-silver-risk-1980"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Exposure and Risk Assessment for Silver, 1980, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=9101LCQG.TXT (original text verified 2026-09-07)"
+    used_for: "Silver-bearing manufacturing wastewater, contaminated emulsion and scrap trim, recovery and silver mass-balance requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:337a0acffd35db7c4cfba0324f51b5dda680f53c321109722e9fc4ad4fc4e38f"
+  generated_content_sha256: "sha256:d25b00ed00ea590fedc867c521c213aaa47ef41d2f257cd2a53d3ddf976e58b4"

@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.other-bars-and-rods-of-iron-or-non-alloy-steel-not-further-worked-than-forged-hot-rolle-f7af5b63
 title:
   en-US: "Other bars and rods of iron or non-alloy steel, not further worked than forged, hot-rolled, hot-drawn or extruded, but including those twisted after rolling"
-  zh-CN: null
-status: scaffold
+  zh-CN: "除锻造、热轧、热拉拔或挤压外未经进一步加工的其他铁或非合金钢条、杆，但包括轧制后扭曲的条、杆"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-03T23:55:00Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,61 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41242"
     title: "Other bars and rods of iron or non-alloy steel, not further worked than forged, hot-rolled, hot-drawn or extruded, but including those twisted after rolling"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  reference_flow_identity:
+    status: unresolved
+    unresolved_support_fields:
+      - reference_product_flow_uuid
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: steel_feedstock
+        reason_code: no_exact_candidate
+        explanation: "Authenticated hybrid search and public state-100 direct reads found alloy-steel billet, pig iron, iron ore, and iron-pellet candidates, but no exact iron or non-alloy steel semi-finished feedstock for this hot-working boundary."
+      - row_id: reference_product
+        reason_code: no_exact_candidate
+        explanation: "Authenticated hybrid search and public state-100 direct reads found CPC 41241 irregularly wound coils, CPC 41244 alloy-steel bars and rods, and CPC 41261 cold-processed products, but no exact CPC 41242 reference-product flow."
+      - row_id: descaling_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Authenticated hybrid search and public state-100 direct reading returned only separated solid mill scale, not wastewater carrying suspended iron oxide across the boundary."
+      - row_id: pm10_air
+        reason_code: manual_review_required
+        explanation: "Public state-100 PM10 candidates are compartment-specific; the foreground urban/non-urban setting and release-height class must be declared before selecting one, while the compartment-unspecified candidate has unspecified particle size."
+    range_evidence_needs:
+      - row_id: steel_feedstock
+        explanation: "Verify at least two independent, boundary-compatible original sources before defining a feedstock-to-net-product mass or yield range."
+      - row_id: electricity_input
+        explanation: "Verify route- and technology-compatible electricity evidence for hot rolling, forging, hot drawing, extrusion, and post-rolling twisting before defining a range."
+      - row_id: natural_gas_input
+        explanation: "Verify route-, furnace-, reference-condition-, and boundary-compatible fuel-use evidence before defining a natural-gas range."
+      - row_id: process_water
+        explanation: "Verify water-accounting evidence with compatible recirculation and withdrawal/consumption boundaries before defining a range."
+      - row_id: reference_product
+        explanation: "The reference amount is a normalization identity, not an empirical yield range; any yield range must be synthesized from compatible net-output evidence."
+      - row_id: steel_crop_scrap
+        explanation: "Verify independent evidence with compatible product geometry and finishing scope before defining a crop-scrap fraction range."
+      - row_id: mill_scale
+        explanation: "Verify independent evidence with compatible reheating, descaling, and hot-working scope before defining a mill-scale range."
+      - row_id: descaling_wastewater
+        explanation: "Verify independent evidence with compatible water recirculation and wastewater-treatment boundaries before defining a wastewater range."
+      - row_id: fossil_co2_air
+        explanation: "Verify independent route- and fuel-compatible direct-emission evidence before defining a fossil-carbon-dioxide range."
+      - row_id: pm10_air
+        explanation: "Verify independent evidence with compatible abatement, stack/fugitive, and particle-size boundaries before defining a PM10 range."

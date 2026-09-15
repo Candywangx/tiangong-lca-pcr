@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.parts-of-portable-electric-lamps-designed-to-function-by-their-own-source-of-energy-exc-21bad56b
 title:
   en-US: "Parts of portable electric lamps designed to function by their own source of energy (except those of cycles or motor vehicles); parts n.e.c. of lamps and lighting fittings; parts n.e.c. of illuminated signs, illuminated name-plates and the like"
-  zh-CN: null
-status: scaffold
+  zh-CN: "自行供能的便携式电灯零件（自行车或机动车辆用者除外）；未另分类的灯具和照明装置零件；未另分类的发光标志、发光铭牌及类似品零件"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,67 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "46542"
     title: "Parts of portable electric lamps designed to function by their own source of energy (except those of cycles or motor vehicles); parts n.e.c. of lamps and lighting fittings; parts n.e.c. of illuminated signs, illuminated name-plates and the like"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - finished_lighting_part
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: formed_part_release_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The formed internal part crossing from fabrication to the next applicable operation is product-specific and needs a foreground product-flow identity."
+      - row_id: formed_part_surface_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This input is the same task-specific internal part entering surface preparation and coating and needs a foreground product-flow identity."
+      - row_id: finished_part_surface_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The coated internal product awaiting release inspection is product-specific and needs a foreground product-flow identity."
+      - row_id: finished_part_inspection_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The inspection input is the product-specific internal part awaiting release and needs a foreground product-flow identity."
+      - row_id: finished_lighting_part
+        reason_code: no_exact_candidate
+        explanation: "Receipt fd0dd520-46b8-49d5-b2e6-427dc6c94d03 directly read five public state-100 candidates and found no exact finished lighting-part flow. Its highest-ranked candidate decision is classification_mismatch: The public flow is aluminium/alloy bars, rods and profiles (CPC 41532), not a finished lighting-equipment part in the assigned category. The remaining candidates were upstream aluminium materials or unrelated aluminium products."
+    range_evidence_needs:
+      - row_id: aluminium_sheet_input
+        explanation: "A QA range requires at least two independent original-text sources compatible with fabricated aluminium lighting-part material yield, product state, and mass reference flow."
+      - row_id: forming_electricity
+        explanation: "A forming-energy range requires at least two independent original-text sources aligned to sheet-forming and machining boundaries and normalized to kg of saleable lighting part."
+      - row_id: cutting_fluid_input
+        explanation: "A cutting-fluid range requires at least two independent sources for comparable machining technology, recirculation boundary, and product mass basis."
+      - row_id: aluminium_scrap_output
+        explanation: "A fabrication-scrap range requires at least two independent sources with compatible alloy, blank geometry, recovery boundary, and saleable-part mass basis."
+      - row_id: spent_coolant_output
+        explanation: "A spent-coolant range requires at least two independent sources with compatible coolant formulation, recirculation, disposal boundary, and product mass basis."
+      - row_id: process_water_input
+        explanation: "A surface-treatment water range requires at least two independent sources compatible with alkaline cleaning, rinse configuration, reuse, and kg of finished part."
+      - row_id: sodium_hydroxide_input
+        explanation: "An alkaline-cleaner range requires at least two independent sources compatible with bath concentration, replenishment, carry-over, and product mass basis."
+      - row_id: powder_coating_input
+        explanation: "A coating-input range requires at least two independent sources compatible with powder chemistry, target film, transfer efficiency, recovery, surface area, and product mass basis."
+      - row_id: surface_electricity
+        explanation: "A surface-process energy range requires at least two independent sources compatible with pretreatment, drying and electric cure boundaries and product mass basis."
+      - row_id: cleaning_wastewater_output
+        explanation: "A cleaning-wastewater range requires at least two independent sources compatible with rinse configuration, bath discharge, on-site reuse/treatment, and mass reference flow."
+      - row_id: powder_coating_waste_output
+        explanation: "A powder-waste range requires at least two independent sources compatible with transfer efficiency, overspray recovery, booth clean-out, and product mass basis."
+      - row_id: inspection_electricity
+        explanation: "An inspection-energy range requires at least two independent sources compatible with the declared inspection equipment and product release basis."
+      - row_id: finished_lighting_part
+        explanation: "A yield guardrail requires at least two independent sources compatible with the representative fabricated and powder-coated lighting-part boundary; the reference amount itself remains the exact normalization identity."
