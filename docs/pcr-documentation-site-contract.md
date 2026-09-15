@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-16
-lastReviewedNote: "Reviewed for PCR #19: scratch selection probes usable disk parents independently of the observed provider-controlled TMPDIR and preserves an explicit override. Canonical content, language/lifecycle rules, source identity, output verification and resource limits are unchanged; focused tests cover candidate rejection, override intent and probe cleanup. Provider completion remains tracked separately."
-lastReviewedCommit: f695a21737e42ec63855098017e201743ec28c17
+lastReviewedNote: "Reviewed for PCR #21: the provider handoff prepares standard EdgeOne assets from verified staged output without a second content allocation. Canonical sources, dependencies, source identity, fidelity and resource gates stay intact. Official CLI compatibility was tested locally; final provider publish/live acceptance remains pending."
+lastReviewedCommit: fd4f69462a83f70db3612475a12fb055b91043d3
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -157,7 +157,7 @@ Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
 Temporary cleanup is confined to directories created by the current build.
 
-Relocation hands back only `out/` and writes small build metrics in the original
+Relocation retains `out/` as the standalone export and writes small build metrics in the original
 checkout. Its original `.generated/` is not the relocated generation metadata;
 use the complete build command rather than standalone `verify` there. Relocation
 probes `/tmp`, `/var/tmp`, and the OS default in order, deduplicates their real paths,
@@ -170,6 +170,22 @@ Candidate errors report storage facts, and selection reports marker presence
 without logging environment values. Interrupted `out.stage-*` and `out.prev-*`
 directories are excluded from the source copy, but are not automatically removed
 by later runs; inspect ownership before cleaning them when destination space is low.
+
+The EdgeOne packager copies ordinary configured output into `.edgeone/assets`
+after the build command. On the observed 3.4 GB shared-memory filesystem, a second
+1.45 GB allocation fails even when generation and verification succeeded on disk.
+For that constrained origin, prepare the documented Build Output API assets as
+ordinary hard-linked files from the verified output stage. Both trees share file
+bytes on the same filesystem; this is not a symlinked export or content reduction.
+The platform then consumes the prepared assets instead of making another copy.
+`PCR_EDGEONE_PREBUILT_ASSETS=1` exercises the same handoff in relocated CI builds.
+
+Stage provider assets before the final resource gate and retain the old output
+until both handoffs succeed. An existing unowned provider assets target is refused;
+failed preparation or final handoff removes only this run's stages and restores
+previous output. Provider output is excluded from source copying and Git. The
+actual provider still owns packaging, configured routing/headers and final publish;
+live checks are required after its processing.
 
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
 indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
