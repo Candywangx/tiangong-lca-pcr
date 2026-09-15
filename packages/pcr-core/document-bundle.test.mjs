@@ -76,9 +76,15 @@ test("declared optional language is exported and checked against its v2 release 
 });
 
 test("required/declared language failures and stale projections cannot become empty success", () => {
-  for (const mutation of ["missing-zh", "missing-optional", "stale-structured", "invalid-utf8"]) {
+  for (const mutation of ["missing-zh", "missing-optional", "stale-structured", "invalid-utf8", "unsupported-schema"]) {
     const f = fixture();
     try {
+      if (mutation === "unsupported-schema") {
+        const file = path.join(f.directory, "manifest.yaml");
+        const manifest = parseYaml(readFileSync(file, "utf8"));
+        manifest.schema_version = 99;
+        writeFileSync(file, renderYaml(manifest));
+      }
       if (mutation === "missing-zh") rmSync(path.join(f.directory, "pcr.zh-CN.md"));
       if (mutation === "missing-optional") {
         const file = path.join(f.directory, "manifest.yaml");

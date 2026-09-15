@@ -10,7 +10,7 @@
       "type": "string",
       "pattern": "^pcr\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
     },
-    "language": { "enum": ["en-US", "zh-CN"] },
+    "language": { "$ref": "#/$defs/languageCode" },
     "status": {
       "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/pcr_status"
     },
@@ -25,7 +25,19 @@
         }
       ]
     },
-    "sync_with": { "enum": ["pcr.en-US.md", "pcr.zh-CN.md"] }
+    "sync_with": { "$ref": "#/$defs/markdownFileName" }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "languageCode": {
+      "$comment": "Canonical BCP 47 PCR language spelling; the builder additionally enforces Intl.getCanonicalLocales equality and manifest declaration.",
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+    },
+    "markdownFileName": {
+      "$comment": "A sibling PCR Markdown file. The builder additionally requires the target to be a declared language file in the same workspace and derives the language file set from manifest.languages.available; undeclared or traversal-shaped names are rejected.",
+      "type": "string",
+      "pattern": "^pcr\\.[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*\\.md$"
+    }
+  }
 }

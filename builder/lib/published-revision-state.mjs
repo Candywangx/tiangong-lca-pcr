@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import {
   closeSync,
   constants as fsConstants,
@@ -14,7 +13,16 @@ import { isDeepStrictEqual } from "node:util";
 
 import { inspectProjectionIntegrity } from "../../packages/pcr-core/src/projection-integrity.mjs";
 import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
+import {
+  REQUIRED_PCR_LANGUAGES,
+  declaredPcrLanguages,
+} from "../../packages/pcr-core/src/languages.mjs";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import {
+  byteSha256,
+  releaseArtifactHashes,
+  manifestReleaseArtifacts,
+} from "./artifact-hashes.mjs";
 import {
   compareSemver,
   isValidSemver,
@@ -22,12 +30,18 @@ import {
   manifestLifecycleProblems,
 } from "./lifecycle-policy.mjs";
 import {
+  resolvePcrLanguageFiles,
+  pcrLanguageFromMarkdownFile,
+} from "./pcr-language-files.mjs";
+import {
   validateManifest,
   validateRelease,
   validateReleaseHistory,
   validateRevision,
   validateStructured,
 } from "./schema-contracts.mjs";
+
+export { byteSha256, releaseArtifactHashes, manifestReleaseArtifacts };
 
 export const RELEASE_FILES = Object.freeze([
   "manifest.snapshot.yaml",
@@ -47,43 +61,6 @@ export const REVISION_FILES = Object.freeze([
 
 const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 
-export function byteSha256(value) {
-  return `sha256:${createHash("sha256").update(asBytes(value)).digest("hex")}`;
-}
-
-export function releaseArtifactHashes({
-  manifestBytes,
-  englishBytes,
-  chineseBytes,
-  structuredBytes,
-  manifestText,
-  englishText,
-  chineseText,
-  structuredText,
-}) {
-  return {
-    manifest_snapshot_sha256: byteSha256(manifestBytes ?? manifestText),
-    pcr_en_us_sha256: byteSha256(englishBytes ?? englishText),
-    pcr_zh_cn_sha256: byteSha256(chineseBytes ?? chineseText),
-    structured_sha256: byteSha256(structuredBytes ?? structuredText),
-  };
-}
-
-export function manifestReleaseArtifacts({
-  englishBytes,
-  chineseBytes,
-  structuredBytes,
-  englishText,
-  chineseText,
-  structuredText,
-}) {
-  return {
-    pcr_en_us_sha256: byteSha256(englishBytes ?? englishText),
-    pcr_zh_cn_sha256: byteSha256(chineseBytes ?? chineseText),
-    structured_sha256: byteSha256(structuredBytes ?? structuredText),
-  };
-}
-
 export function buildReleaseRecord({
   pcrId,
   version,
@@ -93,19 +70,32 @@ export function buildReleaseRecord({
   englishText,
   chineseText,
   structuredText,
+  languages,
+  languageFiles,
 }) {
   const release = {
-    schema_version: 1,
+    schema_version: languages ? 2 : 1,
     pcr_id: pcrId,
     version,
     published_at_utc: publishedAtUtc,
     predecessor_version: predecessorVersion,
-    artifacts: releaseArtifactHashes({
-      manifestText,
-      englishText,
-      chineseText,
-      structuredText,
-    }),
+    artifacts: languages
+      ? releaseArtifactHashes({
+          manifestText,
+          markdownSha256ByLanguage: Object.fromEntries(
+            languages.map((language) => {
+              const file = languageFiles.get(language);
+              return [language, file.bytes ?? file.text];
+            }),
+          ),
+          structuredText,
+        })
+      : releaseArtifactHashes({
+          manifestText,
+          englishText,
+          chineseText,
+          structuredText,
+        }),
   };
   const releaseText = renderYaml(release);
   return {
@@ -333,14 +323,38 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
     problems.push(`${relative(root, releaseDir)}: release directory is missing`);
     return null;
   }
-  requireExactFiles(releaseDir, RELEASE_FILES, root, "release", problems);
-  const paths = Object.fromEntries(RELEASE_FILES.map((name) => [name, path.join(releaseDir, name)]));
-  const artifacts = Object.fromEntries(
-    Object.entries(paths).map(([name, filePath]) => [name, readArtifact(filePath, root, problems)]),
+  const auditDocuments = ["manifest.snapshot.yaml", "release.yaml", "structured.yaml"];
+  const releasePath = path.join(releaseDir, "release.yaml");
+  const snapshotManifestPath = path.join(releaseDir, "manifest.snapshot.yaml");
+  const snapshotText = readArtifactText(snapshotManifestPath, root, problems);
+  const snapshotManifest = parseAuditDocument(snapshotText, snapshotManifestPath, root, problems);
+  const inspectionProblems = [...problems];
+  const languageInspection = snapshotManifest
+    ? inspectLanguageArtifacts({
+        root,
+        directory: releaseDir,
+        manifest: snapshotManifest,
+        kind: "release",
+        problems: inspectionProblems,
+      })
+    : null;
+  requireExactFiles(
+    releaseDir,
+    [...(languageInspection?.expectedFiles ?? []), ...auditDocuments],
+    root,
+    "release",
+    problems,
   );
-  if (Object.values(artifacts).some((value) => value === null)) {
+  const fileNames = [...(languageInspection?.presentFiles ?? []), ...auditDocuments];
+  const paths = Object.fromEntries(fileNames.map((name) => [name, path.join(releaseDir, name)]));
+  const artifacts = Object.fromEntries(
+    fileNames.map((name) => [name, readArtifact(paths[name], root, problems)]),
+  );
+  if (!snapshotManifest || Object.values(artifacts).some((value) => value === null)) {
+    problems.push(...inspectionProblems.filter((problem) => !problems.includes(problem)));
     return null;
   }
+  problems.push(...inspectionProblems.filter((problem) => !problems.includes(problem)));
   const texts = Object.fromEntries(
     Object.entries(artifacts).map(([name, artifact]) => [name, artifact.text]),
   );
@@ -350,19 +364,16 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
     root,
     problems,
   );
-  const snapshotManifest = parseAuditDocument(
-    texts["manifest.snapshot.yaml"],
-    paths["manifest.snapshot.yaml"],
-    root,
-    problems,
-  );
   const structured = parseDocument(
     texts["structured.yaml"],
     paths["structured.yaml"],
     root,
     problems,
   );
-  if (!release || !snapshotManifest || !structured) {
+  if (!release || !structured) {
+    return null;
+  }
+  if (languageInspection.undeclaredFiles.length > 0) {
     return null;
   }
 
@@ -419,33 +430,47 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
     problems.push(`${relative(root, paths["manifest.snapshot.yaml"])}: updated_at_utc is not a real canonical UTC timestamp`);
   }
 
+  const languageManifest = expectedReleaseArtifactsForRelease({ release, snapshotManifest });
+  if (!releaseArtifactsMatchDeclaredLanguages({ artifacts: release.artifacts, manifest: languageManifest, problems })) {
+    return null;
+  }
   const expectedHashes = releaseArtifactHashes({
     manifestBytes: artifacts["manifest.snapshot.yaml"].bytes,
-    englishBytes: artifacts["pcr.en-US.md"].bytes,
-    chineseBytes: artifacts["pcr.zh-CN.md"].bytes,
+    ...(languageManifest ? {
+      markdownSha256ByLanguage: Object.fromEntries(
+        languageInspection.presentFiles.map((name) => [
+          pcrLanguageFromMarkdownFile(name),
+          artifacts[name].bytes,
+        ]),
+      ),
+    } : {
+      englishBytes: artifacts["pcr.en-US.md"].bytes,
+      chineseBytes: artifacts["pcr.zh-CN.md"].bytes,
+    }),
     structuredBytes: artifacts["structured.yaml"].bytes,
   });
   for (const [field, expected] of Object.entries(expectedHashes)) {
-    if (release.artifacts?.[field] !== expected) {
+    if (!isDeepStrictEqual(release.artifacts?.[field], expected)) {
       problems.push(`${relative(root, paths["release.yaml"])}: artifacts.${field} does not match snapshot bytes`);
     }
   }
-  const expectedManifestArtifacts = manifestReleaseArtifacts({
-    englishBytes: artifacts["pcr.en-US.md"].bytes,
-    chineseBytes: artifacts["pcr.zh-CN.md"].bytes,
-    structuredBytes: artifacts["structured.yaml"].bytes,
-  });
+  const expectedManifestArtifacts = {
+    ...expectedHashes,
+  };
+  delete expectedManifestArtifacts.manifest_snapshot_sha256;
   if (!isDeepStrictEqual(snapshotManifest.release_artifacts, expectedManifestArtifacts)) {
     problems.push(
       `${relative(root, paths["manifest.snapshot.yaml"])}: release_artifacts do not match snapshot artifact bytes`,
     );
   }
   const releaseManifestArtifacts = release.artifacts
-    ? {
-        pcr_en_us_sha256: release.artifacts.pcr_en_us_sha256,
-        pcr_zh_cn_sha256: release.artifacts.pcr_zh_cn_sha256,
-        structured_sha256: release.artifacts.structured_sha256,
-      }
+    ? (() => {
+        const {
+          manifest_snapshot_sha256: _manifestSnapshot,
+          ...currentArtifacts
+        } = release.artifacts;
+        return currentArtifacts;
+      })()
     : null;
   if (!isDeepStrictEqual(releaseManifestArtifacts, snapshotManifest.release_artifacts)) {
     problems.push(
@@ -481,8 +506,77 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
     chineseText: texts["pcr.zh-CN.md"],
     structuredBytes: artifacts["structured.yaml"].bytes,
     structuredText: texts["structured.yaml"],
+    languages: languageInspection.languages,
+    languageArtifacts: Object.fromEntries(
+      languageInspection.presentFiles.map((name) => [
+        pcrLanguageFromMarkdownFile(name),
+        { bytes: artifacts[name].bytes, text: artifacts[name].text },
+      ]),
+    ),
+    historyEntry,
     release,
   };
+}
+
+function readArtifactText(filePath, root, problems) {
+  return readArtifact(filePath, root, problems)?.text ?? null;
+}
+
+/**
+ * Cross-checks a managed directory against the languages its own manifest
+ * declares: every declared language must be materialized, and no other
+ * language Markdown file may appear.
+ */
+function inspectLanguageArtifacts({ root, directory, manifest, kind, problems }) {
+  const resolved = resolvePcrLanguageFiles({ manifest, directory, displayRoot: root });
+  problems.push(...resolved.problems);
+  if (kind === "release" && resolved.absent.length > 0) {
+    problems.push(
+      `${relative(root, directory)}: release directory must contain ` +
+        `${resolved.absent.map((language) => `pcr.${language}.md`).join(", ")} for its declared languages`,
+    );
+  }
+  return {
+    languages: resolved.present,
+    expectedFiles: resolved.present.map((language) => `pcr.${language}.md`),
+    presentFiles: resolved.present.map((language) => `pcr.${language}.md`),
+    undeclaredFiles: resolved.undeclaredFiles,
+  };
+}
+
+/** The manifest that governs one release's language set: v2 release metadata, otherwise the snapshot. */
+function expectedReleaseArtifactsForRelease({ release, snapshotManifest }) {
+  if (release.schema_version === 2) {
+    return Object.hasOwn(release.artifacts ?? {}, "markdown_sha256") ? snapshotManifest : null;
+  }
+  return null;
+}
+
+function releaseArtifactsMatchDeclaredLanguages({ artifacts, manifest, problems }) {
+  if (!manifest) {
+    return artifacts !== null && typeof artifacts === "object" && !Array.isArray(artifacts);
+  }
+  let languages;
+  try {
+    languages = declaredPcrLanguages(manifest);
+  } catch (error) {
+    problems.push(`release manifest languages could not be resolved: ${error.message}`);
+    return false;
+  }
+  const markdownHashes = artifacts?.markdown_sha256;
+  if (!markdownHashes || typeof markdownHashes !== "object" || Array.isArray(markdownHashes)) {
+    problems.push("release artifacts must declare markdown_sha256 for a schema v2 release");
+    return false;
+  }
+  const declared = [...languages].sort().join("\n");
+  const hashed = Object.keys(markdownHashes).sort().join("\n");
+  if (declared !== hashed) {
+    problems.push(
+      "release markdown_sha256 keys must match the snapshot manifest languages.available exactly",
+    );
+    return false;
+  }
+  return true;
 }
 
 function validateCurrentAgainstLatest({
@@ -493,12 +587,8 @@ function validateCurrentAgainstLatest({
   latest,
   problems,
 }) {
-  const englishArtifact = readArtifact(path.join(pcrDir, "pcr.en-US.md"), root, problems);
-  const chineseArtifact = readArtifact(path.join(pcrDir, "pcr.zh-CN.md"), root, problems);
   const structuredArtifact = readArtifact(path.join(pcrDir, "structured.yaml"), root, problems);
   for (const [name, actual, expected] of [
-    ["pcr.en-US.md", englishArtifact?.bytes, latest.englishBytes],
-    ["pcr.zh-CN.md", chineseArtifact?.bytes, latest.chineseBytes],
     ["structured.yaml", structuredArtifact?.bytes, latest.structuredBytes],
   ]) {
     if (actual && !actual.equals(expected)) {
@@ -506,12 +596,58 @@ function validateCurrentAgainstLatest({
     }
   }
 
-  const expectedArtifacts = englishArtifact && chineseArtifact && structuredArtifact
-    ? manifestReleaseArtifacts({
-        englishBytes: englishArtifact.bytes,
-        chineseBytes: chineseArtifact.bytes,
-        structuredBytes: structuredArtifact.bytes,
-      })
+  let currentLanguages = [];
+  try {
+    currentLanguages = declaredPcrLanguages(manifest);
+  } catch {
+    currentLanguages = [];
+  }
+  for (const language of latest.languages) {
+    if (!currentLanguages.includes(language)) {
+      problems.push(
+        `${relative(root, path.join(pcrDir, "manifest.yaml"))}: current manifest must declare released language ${language}`,
+      );
+    }
+  }
+  const currentLanguageFiles = new Map();
+  for (const language of currentLanguages) {
+    const fileName = `pcr.${language}.md`;
+    const artifact = readArtifact(path.join(pcrDir, fileName), root, problems);
+    if (artifact) {
+      currentLanguageFiles.set(language, artifact);
+    }
+    const expected = latest.languageArtifacts[language]?.bytes;
+    if (artifact && expected && !artifact.bytes.equals(expected)) {
+      problems.push(`${relative(root, path.join(pcrDir, fileName))}: current file differs from latest release snapshot`);
+    }
+  }
+
+  const latestIsV2 = latest.release.schema_version === 2;
+  const usesLegacyFields = Object.hasOwn(manifest.release_artifacts ?? {}, "pcr_en_us_sha256");
+  if (latestIsV2 === usesLegacyFields) {
+    problems.push(
+      `${relative(root, path.join(pcrDir, "manifest.yaml"))}: release_artifacts shape must match the latest release ` +
+        `(schema v${latest.release.schema_version})`,
+    );
+  }
+
+  const expectedArtifacts = currentLanguageFiles.size === currentLanguages.length
+    && currentLanguages.length > 0
+    && structuredArtifact
+    ? manifestReleaseArtifacts(
+        latestIsV2
+          ? {
+              markdownSha256ByLanguage: Object.fromEntries(
+                currentLanguages.map((language) => [language, currentLanguageFiles.get(language).bytes]),
+              ),
+              structuredBytes: structuredArtifact.bytes,
+            }
+          : {
+              englishBytes: currentLanguageFiles.get("en-US").bytes,
+              chineseBytes: currentLanguageFiles.get("zh-CN").bytes,
+              structuredBytes: structuredArtifact.bytes,
+            },
+      )
     : null;
   if (expectedArtifacts && !isDeepStrictEqual(manifest.release_artifacts, expectedArtifacts)) {
     problems.push(`${relative(root, path.join(pcrDir, "manifest.yaml"))}: release_artifacts do not match current bytes`);
@@ -558,7 +694,6 @@ function inspectRevisionDirectory({
   if (!isRealDirectory(revisionDir, root, problems)) {
     return null;
   }
-  requireExactFiles(revisionDir, REVISION_FILES, root, "revision", problems);
   const revisionPath = path.join(revisionDir, "revision.yaml");
   const nextManifestPath = path.join(revisionDir, "manifest.next.yaml");
   const revisionArtifact = readArtifact(revisionPath, root, problems);
@@ -570,6 +705,20 @@ function inspectRevisionDirectory({
   if (!revision || !nextManifest) {
     return null;
   }
+  const languageInspection = inspectLanguageArtifacts({
+    root,
+    directory: revisionDir,
+    manifest: nextManifest,
+    kind: "revision",
+    problems,
+  });
+  requireExactFiles(
+    revisionDir,
+    [...languageInspection.expectedFiles, "manifest.next.yaml", "revision.yaml", "structured.yaml"],
+    root,
+    "revision",
+    problems,
+  );
 
   addSchemaProblems(
     validateRevision(revision),
@@ -759,19 +908,6 @@ function readArtifact(filePath, root, problems) {
       closeSync(descriptor);
     }
   }
-}
-
-function asBytes(value) {
-  if (Buffer.isBuffer(value)) {
-    return value;
-  }
-  if (value instanceof Uint8Array) {
-    return Buffer.from(value.buffer, value.byteOffset, value.byteLength);
-  }
-  if (typeof value === "string") {
-    return Buffer.from(value, "utf8");
-  }
-  throw new TypeError("SHA-256 input must be a Buffer, Uint8Array, or string");
 }
 
 function isRealDirectory(directory, root, problems) {

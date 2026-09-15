@@ -16,6 +16,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { declaredPcrLanguages } from "../../packages/pcr-core/src/languages.mjs";
 import {
   CONTENT_MATURITY_VALUES,
   PCR_STATUS_VALUES,
@@ -43,8 +44,12 @@ import {
 import {
   buildReleaseRecord,
   inspectPublishedRevisionState,
-  manifestReleaseArtifacts,
 } from "./published-revision-state.mjs";
+import {
+  currentReleaseArtifacts,
+  outOfSyncTranslationStatus,
+  resolvePcrLanguageFiles,
+} from "./pcr-language-files.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { validateManifest, validateStructured } from "./schema-contracts.mjs";
 
@@ -268,6 +273,93 @@ function manifestSchemaProblems(manifest, context) {
   );
 }
 
+/**
+ * Reads every declared language file of a workspace and reports the structural
+ * findings of an undeclared, unreadable, or non-regular language file.
+ */
+function readWorkspaceLanguageFiles({ manifest, workspaceDir, root, problems }) {
+  let resolved;
+  try {
+    resolved = resolvePcrLanguageFiles({ manifest, directory: workspaceDir, displayRoot: root });
+  } catch (error) {
+    problems.push(error.message);
+    return null;
+  }
+  problems.push(...resolved.problems);
+  return resolved;
+}
+
+/**
+ * The release gate for the declared optional languages. `languages.available`
+ * is the exact declared set and every declared language has a validated file, so
+ * each declared optional translation must be reviewed before it can enter the
+ * snapshot; a declared language without a file has already failed the language
+ * resolution preflight.
+ */
+function releaseLanguageGateProblems(manifest, resolved) {
+  const translationStatus = manifest.translation_status ?? {};
+  return (resolved?.optional ?? [])
+    .map((entry) => entry.language)
+    .filter((language) => translationStatus[language] !== "reviewed")
+    .map(
+      (language) =>
+        `released language ${language} requires translation_status.${language} to be reviewed; ` +
+        "review the translation before publishing",
+    );
+}
+
+/** A language file beyond the two required languages needs the v2 artifact contract. */
+function optionalLanguageSchemaProblems(manifest, resolved) {
+  if ((resolved?.optional?.length ?? 0) === 0 || manifest.schema_version === 2) {
+    return [];
+  }
+  return [
+    "the published/release contract for optional languages requires manifest schema_version 2; " +
+      `set schema_version: 2 and retry (language files: ${resolved.optional
+        .map((entry) => entry.fileName)
+        .join(", ")})`,
+  ];
+}
+
+/**
+/**
+ * Rewrites the workspace manifest for publication. `languages.available` is the
+ * declared included set and every declared language has a validated file, so the
+ * declaration, the titles, and the translation status map are carried through
+ * byte-for-byte; only the release fingerprints are added.
+ *
+ * The map is deliberately not extended with an `en-US: canonical` entry: the
+ * legacy publisher preserved the author's map verbatim, so adding one would
+ * change every v1 snapshot's bytes. The canonical rendering stays recorded in
+ * the English Markdown frontmatter, which the publication plan writes.
+ */
+function publishedManifestFrom({ manifest: sourceManifest, resolved, structuredText }) {
+  const result = { manifest: null, artifacts: null, problems: [] };
+  const manifest = structuredClone(sourceManifest);
+  delete manifest.release_artifacts;
+  const availableLanguages = manifest.languages.available;
+  for (const language of availableLanguages) {
+    if (language === manifest.languages.canonical) {
+      continue;
+    }
+    if (!TRANSLATION_STATUS_VALUES.includes(manifest.translation_status?.[language])) {
+      result.problems.push(
+        `published language ${language} requires a translation_status value in ` +
+          `${TRANSLATION_STATUS_VALUES.join(", ")}`,
+      );
+    }
+  }
+  result.manifest = manifest;
+  result.artifacts = structuredText === null
+    ? null
+    : currentReleaseArtifacts({
+        languages: availableLanguages,
+        languageFiles: resolved.languageFiles,
+        structuredText,
+      });
+  return result;
+}
+
 function structuredSchemaProblems(structuredText, context) {
   return validateStructured(parseYaml(structuredText)).errors.map(
     (error) => `${context} schema ${error.instance_path} ${error.message}`,
@@ -309,7 +401,7 @@ function transactionMessages(result, relativePcrPath) {
   ];
 }
 
-function publicationPlan({ workspaceDir, manifestFileName, version, now }) {
+function publicationPlan({ workspaceDir, manifestFileName, version, now, root = null }) {
   const manifestPath = path.join(workspaceDir, manifestFileName);
   const currentManifestText = readRequiredText(manifestPath, "PCR manifest");
   const currentManifest = parseYaml(currentManifestText);
@@ -323,16 +415,18 @@ function publicationPlan({ workspaceDir, manifestFileName, version, now }) {
     problems.push(`unresolved review blocker at ${blocker}`);
   }
 
-  const englishPath = path.join(workspaceDir, PCR_EN_FILE);
-  const chinesePath = path.join(workspaceDir, PCR_ZH_FILE);
-  let sourceEnglishText = "";
-  let sourceChineseText = "";
-  try {
-    sourceEnglishText = readRequiredText(englishPath, "canonical Markdown file");
-    sourceChineseText = readRequiredText(chinesePath, "Chinese Markdown file");
-  } catch (error) {
-    problems.push(error.message);
-  }
+  const resolved = readWorkspaceLanguageFiles({
+    manifest: currentManifest,
+    workspaceDir,
+    root: root ?? workspaceDir,
+    problems,
+  });
+  // `languages.available` is the exact declared included set. Every declared
+  // language must have a validated file, so a declared-but-missing optional
+  // language fails here instead of being dropped from the release.
+  const languages = resolved?.present ?? [];
+  problems.push(...optionalLanguageSchemaProblems(currentManifest, resolved));
+  problems.push(...releaseLanguageGateProblems(currentManifest, resolved));
 
   const proposedManifest = {
     ...currentManifest,
@@ -348,20 +442,22 @@ function publicationPlan({ workspaceDir, manifestFileName, version, now }) {
     return { problems };
   }
 
-  let englishText;
-  let chineseText;
+  const publishedFiles = new Map();
   let structuredText;
   try {
-    englishText = updateMarkdownFrontmatter(sourceEnglishText, {
-      status: "published",
-      content_maturity: "published_methodology",
-      translation_status: "canonical",
-    });
-    chineseText = updateMarkdownFrontmatter(sourceChineseText, {
-      status: "published",
-      content_maturity: "published_methodology",
-      translation_status: "reviewed",
-    });
+    for (const language of languages) {
+      const artifact = resolved.languageFiles.get(language);
+      const text = updateMarkdownFrontmatter(artifact.text, {
+        status: "published",
+        content_maturity: "published_methodology",
+        translation_status:
+          language === currentManifest.languages.canonical
+            ? "canonical"
+            : currentManifest.translation_status[language],
+      });
+      publishedFiles.set(language, { bytes: Buffer.from(text, "utf8"), text });
+    }
+    const englishText = publishedFiles.get(currentManifest.languages.canonical).text;
     const projection = parsePcrMarkdownToStructured(englishText);
     structuredText = structuredProjectionYaml(projection, { sourceMarkdown: englishText });
   } catch (error) {
@@ -369,9 +465,20 @@ function publicationPlan({ workspaceDir, manifestFileName, version, now }) {
     return { problems };
   }
 
+  const publishedManifest = publishedManifestFrom({
+    manifest: proposedManifest,
+    resolved: { ...resolved, languageFiles: publishedFiles },
+    structuredText,
+  });
+  problems.push(...publishedManifest.problems);
+  if (problems.length > 0) {
+    return { problems };
+  }
+  const schemaVersion = languages.length > 2 ? 2 : 1;
   const nextManifest = {
-    ...proposedManifest,
-    release_artifacts: manifestReleaseArtifacts({ englishText, chineseText, structuredText }),
+    ...publishedManifest.manifest,
+    schema_version: schemaVersion,
+    release_artifacts: publishedManifest.artifacts,
   };
   problems.push(...manifestSchemaProblems(nextManifest, "published manifest"));
   return {
@@ -379,8 +486,9 @@ function publicationPlan({ workspaceDir, manifestFileName, version, now }) {
     currentManifest,
     nextManifest,
     nextManifestText: renderYaml(nextManifest),
-    englishText,
-    chineseText,
+    schemaVersion,
+    languages,
+    publishedFiles,
     structuredText,
     version,
     now,
@@ -410,14 +518,17 @@ function writePublishedRelease({ stageDir, sourceWorkspaceDir, plan, predecessor
     publishedAtUtc: plan.now,
     predecessorVersion,
     manifestText: plan.nextManifestText,
-    englishText: plan.englishText,
-    chineseText: plan.chineseText,
+    languages: plan.schemaVersion === 2 ? plan.languages : null,
+    languageFiles: plan.publishedFiles,
+    englishText: plan.publishedFiles.get("en-US").text,
+    chineseText: plan.publishedFiles.get("zh-CN").text,
     structuredText: plan.structuredText,
   });
 
   writeFileSync(path.join(releaseDir, "manifest.snapshot.yaml"), plan.nextManifestText);
-  writeFileSync(path.join(releaseDir, PCR_EN_FILE), plan.englishText);
-  writeFileSync(path.join(releaseDir, PCR_ZH_FILE), plan.chineseText);
+  for (const language of plan.languages) {
+    writeFileSync(path.join(releaseDir, `pcr.${language}.md`), plan.publishedFiles.get(language).text);
+  }
   writeFileSync(path.join(releaseDir, "structured.yaml"), plan.structuredText);
   writeFileSync(path.join(releaseDir, "release.yaml"), releaseRecord.releaseText);
 
@@ -435,8 +546,9 @@ function writePublishedRelease({ stageDir, sourceWorkspaceDir, plan, predecessor
       };
 
   writeFileSync(path.join(stageDir, "manifest.yaml"), plan.nextManifestText);
-  writeFileSync(path.join(stageDir, PCR_EN_FILE), plan.englishText);
-  writeFileSync(path.join(stageDir, PCR_ZH_FILE), plan.chineseText);
+  for (const language of plan.languages) {
+    writeFileSync(path.join(stageDir, `pcr.${language}.md`), plan.publishedFiles.get(language).text);
+  }
   writeFileSync(path.join(stageDir, "structured.yaml"), plan.structuredText);
   writeFileSync(path.join(stageDir, "release-history.yaml"), renderYaml(nextHistory));
 
@@ -896,14 +1008,14 @@ export function revise(options) {
       nextManifest.version = targetVersion;
       nextManifest.status = "candidate";
       nextManifest.content_maturity = "authored_methodology";
-      nextManifest.translation_status = {
-        ...(nextManifest.translation_status ?? {}),
-        "zh-CN": "out_of_sync",
-      };
+      // The canonical source is being revised: every dependent translation that
+      // this revision carries must be aligned and reviewed again.
+      nextManifest.translation_status = outOfSyncTranslationStatus(manifest);
       nextManifest.updated_at_utc = now;
       delete nextManifest.published_at_utc;
       delete nextManifest.release_artifacts;
 
+      const canonicalLanguage = manifest.languages.canonical;
       const englishText = updateMarkdownFrontmatter(
         readRequiredText(path.join(stageDir, PCR_EN_FILE), "canonical Markdown file"),
         {
@@ -912,6 +1024,31 @@ export function revise(options) {
           translation_status: "canonical",
         },
       );
+      const optionalLanguageEntries = [];
+      for (const language of declaredPcrLanguages(manifest)) {
+        if (language === canonicalLanguage) {
+          continue;
+        }
+        const fileName = `pcr.${language}.md`;
+        const filePath = path.join(stageDir, fileName);
+        if (language === "zh-CN") {
+          continue;
+        }
+        if (!existsSync(filePath)) {
+          continue;
+        }
+        optionalLanguageEntries.push({
+          fileName,
+          text: updateMarkdownFrontmatter(
+            readRequiredText(filePath, `${language} Markdown file`),
+            {
+              status: "candidate",
+              content_maturity: "authored_methodology",
+              translation_status: "out_of_sync",
+            },
+          ),
+        });
+      }
       const chineseText = updateMarkdownFrontmatter(
         readRequiredText(path.join(stageDir, PCR_ZH_FILE), "translated Markdown file"),
         {
@@ -924,6 +1061,9 @@ export function revise(options) {
       writeFileSync(path.join(revisionDir, "manifest.next.yaml"), renderYaml(nextManifest));
       writeFileSync(path.join(revisionDir, PCR_EN_FILE), englishText);
       writeFileSync(path.join(revisionDir, PCR_ZH_FILE), chineseText);
+      for (const entry of optionalLanguageEntries) {
+        writeFileSync(path.join(revisionDir, entry.fileName), entry.text);
+      }
       writeFileSync(
         path.join(revisionDir, "structured.yaml"),
         structuredProjectionYaml(projection, { sourceMarkdown: englishText }),
@@ -1008,6 +1148,7 @@ export function publish(options) {
     manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
     version,
     now,
+    root,
   });
   assertPublicationPlan(root, paths.pcrDir, initialPlan);
   const sourceMarkdown = readRequiredText(
@@ -1067,6 +1208,7 @@ export function publish(options) {
         manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
         version,
         now,
+        root,
       });
       assertPublicationPlan(root, paths.pcrDir, lockedPlan);
       const lockedMarkdown = readRequiredText(
@@ -1113,6 +1255,7 @@ export function publish(options) {
         manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
         version,
         now,
+        root,
       });
       assertPublicationPlan(root, paths.pcrDir, publishedPlan);
       writePublishedRelease({

@@ -617,6 +617,8 @@ export function readPcrDocumentBundle({ root, pcrId, context = null }) {
   const { pcr, manifest, manifestBytes, structured } = snapshot;
   assertPcrUsable({ pcr, operation: "guidance" });
   const languages = declaredPcrLanguages(manifest);
+  if (![1, 2].includes(manifest.schema_version)) throw new Error(`Unsupported document manifest schema: ${manifest.schema_version}`);
+  for (const language of languages) if (typeof manifest.title?.[language] !== "string" || !manifest.title[language].trim()) throw new Error(`Document requires a nonempty ${language} title.`);
   const artifacts = {};
   const decoder = new TextDecoder("utf-8", { fatal: true });
   for (const name of ["manifest.yaml", ...pcrArtifactFiles(manifest)]) {
@@ -642,6 +644,23 @@ export function readPcrDocumentBundle({ root, pcrId, context = null }) {
     languages,
     artifacts,
   };
+}
+
+/** Complete referenced legacy module source; scaffold status remains explicit. */
+export function readPcrModuleDocumentBundle({ root, group, moduleId }) {
+  for (const value of [group, moduleId]) if (typeof value !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value)) throw new Error("Invalid PCR module identity.");
+  const relativePath = `library/modules/${group}/${moduleId}.md`;
+  const filePath = path.join(root, relativePath);
+  const read = () => readControlledRepositoryFileBytes({ root, filePath, relativePath, label: "PCR module" });
+  const bytes = read();
+  const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  const envelope = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u.exec(text);
+  if (!envelope) throw new Error(`Module requires frontmatter: ${relativePath}`);
+  const frontmatter = parseYaml(envelope[1]);
+  if (frontmatter.id !== `module.${group}.${moduleId}` || frontmatter.module_type !== group) throw new Error(`Module identity mismatch: ${relativePath}`);
+  if (!text.slice(envelope[0].length).trim()) throw new Error(`Module body is empty: ${relativePath}`);
+  if (!bytes.equals(read())) throw new Error(`Module changed during read: ${relativePath}`);
+  return { frontmatter, language: frontmatter.language ?? "en-US", artifact: { path: relativePath, bytes: Buffer.from(bytes), text, sha256: exactByteSha256(bytes) } };
 }
 
 export function buildGuidance({ root, pcrId, context = null }) {

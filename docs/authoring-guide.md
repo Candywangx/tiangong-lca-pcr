@@ -56,6 +56,19 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
   structured.yaml
 ```
 
+English `en-US` and Chinese `zh-CN` are mandatory. To add an optional reading
+language, declare its canonical BCP 47 code in `languages.available`, provide its
+title, translation state and `pcr.<language>.md` file. The declaration is the exact
+included file set: a declared missing file is an error. Every dependent translation
+uses `sync_with: pcr.en-US.md`; English revision marks all of them `out_of_sync`.
+Formal publication requires review of every included translation. Multilingual
+releases use schema v2 per-language hashes; existing v1 snapshots remain unchanged.
+
+The public documentation site is generated from these files. Never edit generated
+pages to correct methodology. Update the canonical source, preserve truthful
+manifest/frontmatter states, and rerun source validation and the documentation
+build. Documentation deployment does not change PCR lifecycle or translation state.
+
 Keep language-independent identity and lifecycle state in `manifest.yaml`. Keep machine-oriented rules in `structured.yaml`. Keep human-readable English and Chinese text in `pcr.en-US.md` and `pcr.zh-CN.md`.
 
 Use semantic PCR slugs. Classification codes belong in mapping files and `classification_refs`.

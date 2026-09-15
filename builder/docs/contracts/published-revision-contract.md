@@ -16,6 +16,7 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
   manifest.yaml
   pcr.en-US.md
   pcr.zh-CN.md
+  pcr.<language>.md            # one file per declared optional language; the declaration and file always agree
   structured.yaml
   release-history.yaml
   revision/
@@ -23,6 +24,7 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
     manifest.next.yaml
     pcr.en-US.md
     pcr.zh-CN.md
+    pcr.<language>.md
     structured.yaml
   releases/
     <semver>/
@@ -30,14 +32,23 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
       manifest.snapshot.yaml
       pcr.en-US.md
       pcr.zh-CN.md
+      pcr.<language>.md
       structured.yaml
 ```
 
 `revision/` exists only while one revision is open. `releases/<semver>/` is an immutable snapshot and must use
 `manifest.snapshot.yaml`; a nested file named `manifest.yaml` would be mistaken for another canonical PCR by catalog
 discovery and is rejected. `release-history.yaml` is the append-only index of published versions. The revision and
-release directories must contain exactly the files shown above; managed artifacts must be regular files and must not
-be symbolic links.
+release directories must contain exactly the files their own manifest declares: the two required Markdown files plus
+one `pcr.<language>.md` per declared optional language, and the audit files shown above. Managed artifacts must be
+regular files and must not be symbolic links. An undeclared language Markdown file is rejected, and a declared
+language whose file is missing is rejected too.
+
+`en-US` and `zh-CN` are always required. Additional languages are optional, but `languages.available` is the exact
+declared included set: a declared optional language must have a validated `pcr.<language>.md` file, its title, and
+its translation status in every workspace and every snapshot. Publishing without a language means removing its
+declaration, title, status, and file — the builder never drops one silently. Undeclared locales never block English
+or Chinese publication.
 
 The four top-level files always represent the current consumer-facing release after first publication. Revision work
 must never edit those files directly. A `deprecated` top-level manifest may differ from its latest published snapshot
@@ -80,8 +91,9 @@ npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
   `revising` lifecycle status is added.
 - Revision Markdown bodies are derived from the current published version, their frontmatter is moved back to
   candidate authoring state, and the projection is regenerated. The canonical English source becomes editable, and
-  `manifest.next.yaml` sets `translation_status.zh-CN: out_of_sync` so Chinese alignment and review must be performed
-  again.
+  `manifest.next.yaml` sets `translation_status.<language>: out_of_sync` for Chinese and for every carried optional
+  language, so alignment and review must be performed again. A dependent translation enters a published English
+  revision already out of sync and can only return to the released snapshot after it is reviewed again.
 
 At minimum, `revision.yaml` owns `schema_version`, `pcr_id`, `base_version`, `target_version`, and `opened_at_utc`. It is
 workflow metadata, not PCR lifecycle truth. The presence of `revision/` represents the open-revision state; the
@@ -130,16 +142,40 @@ entry while promoting the active PCR to the top-level published state. A release
 artifact snapshot, or history entry must never be edited after commit; corrections require a new version.
 
 `release.yaml` owns `schema_version`, `pcr_id`, `version`, `published_at_utc`, `predecessor_version`, and the exact-byte
-SHA-256 fingerprints of `manifest.snapshot.yaml`, both Markdown files, and `structured.yaml`. `release-history.yaml`
-owns `schema_version`, `pcr_id`, `current_version`, and chronologically appended release entries containing the
-version, publication timestamp, predecessor version, snapshot path, and exact-byte `release.yaml` SHA-256. Versions
-and snapshot paths must be unique, history order must match the predecessor chain, and `current_version` must equal
-the latest entry. The current published manifest also records the exact-byte hashes of both Markdown files and
-`structured.yaml` in `release_artifacts` so consumers can detect mixed or tampered current-release reads.
-The three artifact hashes must agree across the actual snapshot bytes, `manifest.snapshot.yaml.release_artifacts`,
-and `release.yaml.artifacts`. Builder-owned release, history, revision, and snapshot YAML must be valid UTF-8 in the
+SHA-256 fingerprints of `manifest.snapshot.yaml`, every released Markdown file, and `structured.yaml`.
+`release-history.yaml` owns `schema_version`, `pcr_id`, `current_version`, and chronologically appended release
+entries containing the version, publication timestamp, predecessor version, snapshot path, and exact-byte
+`release.yaml` SHA-256. Versions and snapshot paths must be unique, history order must match the predecessor chain,
+and `current_version` must equal the latest entry. The current published manifest also records the exact-byte hashes
+of every released Markdown file and `structured.yaml` in `release_artifacts` so consumers can detect mixed or
+tampered current-release reads.
+The artifact hashes must agree across the actual snapshot bytes, `manifest.snapshot.yaml.release_artifacts`, and
+`release.yaml.artifacts`. Builder-owned release, history, revision, and snapshot YAML must be valid UTF-8 in the
 canonical builder rendering; duplicate keys, trailing content, alternate formatting, and calendar-invalid UTC dates
 fail closed rather than creating ambiguous audit facts.
+
+## Release Artifact Schema Versions
+
+Two release metadata versions are supported and both stay valid forever:
+
+- `schema_version: 1` — the legacy two-language contract. `release.yaml` records
+  `manifest_snapshot_sha256`, `pcr_en_us_sha256`, `pcr_zh_cn_sha256`, and `structured_sha256`; the published manifest
+  records the three current-artifact hashes under the same legacy field names. Historical v1 snapshots and history
+  entries are never rewritten, and a release whose language set is exactly `en-US` and `zh-CN` keeps this form
+  byte-for-byte.
+- `schema_version: 2` — used whenever an optional language is part of the release. `release.yaml` records
+  `manifest_snapshot_sha256`, `markdown_sha256` keyed by language, and `structured_sha256`; the published manifest
+  records `markdown_sha256` and `structured_sha256`. The `markdown_sha256` key set must equal the snapshot manifest's
+  `languages.available` exactly — neither a missing nor an extra language key is accepted.
+
+`release-history.yaml`, `revision.yaml`, and the open-revision manifest keep `schema_version: 1` because their generic
+structure is unchanged; a history may therefore link a v1 release and a v2 successor in one chain.
+
+Publication preflight resolves the declared language set before it writes anything: every declared language file is
+validated, hashed, and copied by exact bytes, and each one must be `reviewed` in `translation_status`. The published
+snapshot declares exactly the languages it carries, and it carries exactly the languages it declares — a declared
+language whose file is missing, an undeclared language file, and any byte-level tamper all fail validation.
+
 
 ## Transaction and Recovery Boundary
 
