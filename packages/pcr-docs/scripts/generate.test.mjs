@@ -1,4 +1,5 @@
 import test from "node:test";
+import { recordPages } from "../lib/record-navigation.mjs";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -44,6 +45,33 @@ test("real generator preserves multilingual released snapshots and excludes open
     });
     publish({ root, pcr: fixture.libraryPath, version: "1.0.0" });
     revise({ root, pcr: fixture.libraryPath, version: "1.1.0" });
+    fs.appendFileSync(
+      path.join(fixture.pcrDir, "revision/pcr.en-US.md"),
+      "\nPUBLISHED_SECOND_VERSION\n",
+    );
+    syncStructured({ root, pcr: fixture.libraryPath, workspace: "revision" });
+    lifecycle({
+      root,
+      pcr: fixture.libraryPath,
+      workspace: "revision",
+      translation: "de-DE=aligned",
+    });
+    lifecycle({
+      root,
+      pcr: fixture.libraryPath,
+      workspace: "revision",
+      status: "active",
+      "content-maturity": "reviewed_methodology",
+      translation: "zh-CN=reviewed",
+    });
+    lifecycle({
+      root,
+      pcr: fixture.libraryPath,
+      workspace: "revision",
+      translation: "de-DE=reviewed",
+    });
+    publish({ root, pcr: fixture.libraryPath, workspace: "revision" });
+    revise({ root, pcr: fixture.libraryPath, version: "1.2.0" });
     fs.appendFileSync(
       path.join(fixture.pcrDir, "revision/pcr.en-US.md"),
       "\nUNPUBLISHED_TEST_MARKER\n",
@@ -112,7 +140,7 @@ test("real generator preserves multilingual released snapshots and excludes open
       fs.readFileSync(path.join(output, ".generated/site.json")),
     );
     assert.equal(site.records.length, 1);
-    assert.equal(site.historicalRecords.length, 1);
+    assert.equal(site.historicalRecords.length, 2);
     assert.equal(site.historicalRecords[0].version, "1.0.0");
     assert.equal(
       site.historicalRecords[0].title["de-DE"],
@@ -124,6 +152,24 @@ test("real generator preserves multilingual released snapshots and excludes open
       ),
     );
     assert.ok(site.records[0].versions[0].urls["de-DE"]);
+    for (const record of [site.records[0], ...site.historicalRecords])
+      assert.deepEqual(
+        record.versions.map((item) => item.version),
+        ["1.0.0", "1.1.0"],
+      );
+    for (const language of ["en-US", "zh-CN", "de-DE"]) {
+      assert.ok(
+        recordPages(site, site.records[0], language).every(
+          (page) => page.recordVersion === undefined,
+        ),
+      );
+      for (const historical of site.historicalRecords)
+        assert.ok(
+          recordPages(site, historical, language).every(
+            (page) => page.recordVersion === historical.version,
+          ),
+        );
+    }
     const report = JSON.parse(
       fs.readFileSync(path.join(output, ".generated/report.json")),
     );
@@ -151,7 +197,7 @@ test("real generator preserves multilingual released snapshots and excludes open
         })) {
           const file = path.join(directory, entry.name);
           if (entry.isDirectory()) walk(file);
-          else if (!file.endsWith("/report.json"))
+          else if (path.basename(file) !== "report.json")
             files[path.relative(output, file)] = hash(fs.readFileSync(file));
         }
       };

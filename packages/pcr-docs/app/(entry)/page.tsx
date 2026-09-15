@@ -25,7 +25,7 @@ export default function RootHome() {
         alternates={Object.fromEntries(
           manifest.languages.map((language) => [
             language.code,
-            `${manifest.origin}/${language.route}/`,
+            language.route === manifest.defaultLocale ? `${manifest.origin}/` : `${manifest.origin}/${language.route}/`,
           ]),
         )}
       />

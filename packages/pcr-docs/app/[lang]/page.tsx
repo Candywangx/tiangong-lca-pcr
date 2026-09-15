@@ -27,7 +27,7 @@ export default async function LocaleHome({ params }: { params: Promise<Params> }
         alternates={Object.fromEntries(
           manifest.languages.map((language) => [
             language.code,
-            `${manifest.origin}/${language.route}/`,
+            language.route === manifest.defaultLocale ? `${manifest.origin}/` : `${manifest.origin}/${language.route}/`,
           ]),
         )}
       />

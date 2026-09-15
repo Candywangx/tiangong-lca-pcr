@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseHTML, DOMParser } from "linkedom";
+import { verifyHostingContract } from "./hosting-contract.mjs";
 import {
   inventoryMarkdown,
   verifyRenderedBlocks,
@@ -17,6 +18,10 @@ const manifest = JSON.parse(
   report = JSON.parse(
     fs.readFileSync(path.join(app, ".generated/report.json"), "utf8"),
   );
+verifyHostingContract(
+  JSON.parse(fs.readFileSync(path.join(root, "edgeone.json"), "utf8")),
+  report.downloads,
+);
 const parsed = new Map();
 const fileFor = (url) =>
   path.join(
@@ -63,6 +68,10 @@ for (const source of report.documents) {
     (p) => p.sourcePath === source.sourcePath,
   );
   const allIds = pages.flatMap((p) => p.sourceNodeIds);
+  const actualOrder = [];
+  const orderedSource = inventory
+    .filter((node) => !node.isFootnote)
+    .map((node) => node.id);
   requireThat(
     allIds.length === inventory.length &&
       new Set(allIds).size === inventory.length,
@@ -74,6 +83,15 @@ for (const source of report.documents) {
       verifyLinks: true,
       resolveLink,
     });
+    const renderedIds = [
+      ...document.querySelectorAll("[data-source-node]"),
+    ].map((node) => node.getAttribute("data-source-node"));
+    requireThat(
+      renderedIds.length === page.sourceNodeIds.length &&
+        renderedIds.every((id) => page.sourceNodeIds.includes(id)),
+      "Unexpected source marker " + page.url,
+    );
+    actualOrder.push(...renderedIds.filter((id) => orderedSource.includes(id)));
     requireThat(
       document.querySelector(
         '[data-source-document="' + source.sourcePath + '"]',
@@ -82,7 +100,83 @@ for (const source of report.documents) {
     );
     parsed.delete(page.url);
   }
+  requireThat(
+    actualOrder.join("\n") === orderedSource.join("\n"),
+    "Source block order changed " + source.sourcePath,
+  );
 }
+const homeAlternates = Object.fromEntries(
+  manifest.languages.map((language) => [
+    language.code,
+    manifest.origin +
+      (language.route === manifest.defaultLocale
+        ? "/"
+        : "/" + language.route + "/"),
+  ]),
+);
+for (const route of [
+  "/",
+  ...manifest.languages.map((language) => "/" + language.route + "/"),
+]) {
+  const language =
+    manifest.languages.find(
+      (language) => "/" + language.route + "/" === route,
+    ) ??
+    manifest.languages.find(
+      (language) => language.route === manifest.defaultLocale,
+    );
+  const document = readPage(route),
+    canonical = homeAlternates[language.code];
+  requireThat(
+    document.documentElement.lang === language.code,
+    "Wrong home language " + route,
+  );
+  requireThat(
+    document.querySelector('link[rel="canonical"]')?.getAttribute("href") ===
+      canonical,
+    "Wrong home canonical " + route,
+  );
+  for (const [code, url] of Object.entries({
+    ...homeAlternates,
+    "x-default": manifest.origin + "/",
+  })) {
+    const alternate = [
+      ...document.querySelectorAll('link[rel="alternate"]'),
+    ].find(
+      (link) =>
+        (link.getAttribute("hreflang") ?? link.getAttribute("hrefLang")) ===
+        code,
+    );
+    requireThat(
+      alternate?.getAttribute("href") === url,
+      "Wrong home hreflang " + route + " " + code,
+    );
+  }
+  parsed.delete(route);
+}
+const notFoundHtml = fs.readFileSync(path.join(out, "404.html"), "utf8");
+const notFound = parseHTML(notFoundHtml).document;
+requireThat(
+  /^<!doctype html>/iu.test(notFoundHtml),
+  "404 needs an HTML5 doctype",
+);
+requireThat(
+  (notFoundHtml.match(/<html(?:\s|>)/giu) ?? []).length === 1 &&
+    (notFoundHtml.match(/<body(?:\s|>)/giu) ?? []).length === 1,
+  "404 needs one complete document shell",
+);
+requireThat(
+  notFound.documentElement.lang &&
+    notFound.querySelector("h1")?.textContent.trim(),
+  "404 needs language and a heading",
+);
+requireThat(
+  notFound
+    .querySelector('meta[name="robots"]')
+    ?.getAttribute("content")
+    .includes("noindex"),
+  "404 must be noindex",
+);
 for (const page of manifest.pages) {
   const document = readPage(page.url);
   requireThat(
@@ -193,6 +287,18 @@ const sitemap = new DOMParser().parseFromString(
 const locations = [...sitemap.querySelectorAll("url > loc")].map(
   (n) => n.textContent,
 );
+const sitemapDates = new Map(
+  [...sitemap.querySelectorAll("url")].map((node) => [
+    node.querySelector("loc")?.textContent,
+    node.querySelector("lastmod")?.textContent,
+  ]),
+);
+for (const page of manifest.pages.filter((page) => page.indexable))
+  requireThat(
+    new Date(sitemapDates.get(page.canonical)).toISOString() ===
+      new Date(page.lastModified ?? manifest.sourceDate).toISOString(),
+    "Sitemap modification date differs " + page.url,
+  );
 requireThat(
   new Set(locations).size === locations.length,
   "Duplicate sitemap URL",

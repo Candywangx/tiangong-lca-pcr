@@ -23,6 +23,7 @@ import {
 } from "../../../builder/lib/schema-contracts.mjs";
 import { routeFor, publicLanguage } from "./language-policy.mjs";
 import { categoryTitle } from "./category-titles.mjs";
+import { ensureSourceHistory } from "./source-history.mjs";
 import {
   renderMarkdown,
   finalizePart,
@@ -64,6 +65,7 @@ const git = (...args) =>
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   }).trim();
+ensureSourceHistory(root);
 const commit = git("rev-parse", "HEAD"),
   sourceDate = git(
     "log",
@@ -114,11 +116,6 @@ const urlFor = (code, slugs) =>
   "/docs/" +
   slugs.map(encodeURIComponent).join("/") +
   "/";
-const human = (value) =>
-  value
-    .split("-")
-    .map((s) => s[0]?.toUpperCase() + s.slice(1))
-    .join(" ");
 const sourceFiles = new Map(),
   sourceRoutes = new Map(),
   sourceAnchors = new Map(),
@@ -143,7 +140,6 @@ const report = {
   sourceCommit: commit,
   documents: [],
   downloads: [],
-  translationWarnings: [],
   links: [],
   search: [],
   metrics: {},
@@ -537,6 +533,15 @@ async function generate() {
           if (!record.downloads.some((existing) => existing.url === item.url))
             record.downloads.push(item);
         }
+        record.versions = history.releases.map((release) => ({
+          version: release.version,
+          urls: Object.fromEntries(
+            release.languages.map((code) => [
+              code,
+              urlFor(code, ["pcr", ...slug, "versions", release.version]),
+            ]),
+          ),
+        }));
         for (const release of history.releases) {
           for (const code of release.languages)
             if (!codes.includes(code)) {
@@ -621,10 +626,6 @@ async function generate() {
             historical.pages[code] = rendered.urls;
           }
           manifest.historicalRecords.push(historical);
-          (record.versions ??= []).push({
-            version: release.version,
-            urls: historicalUrls,
-          });
         }
         if ((number + 1) % 50 === 0)
           console.log(

@@ -3,6 +3,7 @@ import type { Folder, Item, Node as PageTreeNode, Root } from 'fumadocs-core/pag
 import type { DocPage, Download, Language, PcrRecord, SiteManifest } from './types';
 import { DEFAULT_ROUTE, i18n } from './i18n';
 import { getSiteManifest } from './generated';
+import { recordPages } from './record-navigation.mjs';
 
 export type PcrSourcePage = {
   path: string;
@@ -113,9 +114,7 @@ export function recordParts(
   record: PcrRecord,
   origin: string,
 ): Array<{ index: number; label: string; url: string }> {
-  return manifest.pages
-    .filter((page) => page.locale === locale && page.pcrId === record.id && page.part)
-    .sort((left, right) => (left.part?.index ?? 0) - (right.part?.index ?? 0))
+  return recordPages(manifest, record, languageCodeFor(manifest, locale))
     .map((page) => ({
       index: page.part?.index ?? 0,
       label: page.part?.label ?? page.title,
@@ -351,7 +350,7 @@ export function navigationTree(context: NavContext): Root {
     context.locale,
     context.domain ?? '',
     context.subdomain ?? '',
-    context.record?.id ?? '',
+    context.record?.sourcePath ?? '',
   ].join('|');
   const cached = treeCache.get(key);
   if (cached) return cached;

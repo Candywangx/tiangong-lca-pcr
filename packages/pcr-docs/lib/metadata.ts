@@ -92,8 +92,8 @@ export function pageMetadata(page: DocPage, manifest: SiteManifest): Metadata {
     if (typeof url === 'string' && /^https?:\/\//u.test(url)) languages[source] = url;
   }
   const defaultCode = manifest.languages.find(language => language.route === manifest.defaultLocale)?.code;
-  const xDefault = (defaultCode ? languages[defaultCode] : undefined) ?? languages[code];
-  if (xDefault) languages['x-default'] = xDefault;
+  const xDefault = defaultCode ? languages[defaultCode] : undefined;
+  if (xDefault && !page.part?.index) languages['x-default'] = xDefault;
 
   return {
     title: page.title,
@@ -120,7 +120,7 @@ export function homeMetadata(
 ): Metadata {
   // Homes are route files, not generated pages, so their counterparts are the sibling homes.
   const languages: Record<string, string> = {};
-  for (const language of manifest.languages) languages[language.code] = `${manifest.origin}/${language.route}/`;
+  for (const language of manifest.languages) languages[language.code] = language.route === manifest.defaultLocale ? `${manifest.origin}/` : `${manifest.origin}/${language.route}/`;
   languages['x-default'] = `${manifest.origin}/`;
   const title = `${routeName(locale)} | TianGong PCR`;
   const canonical = canonicalOverride === '/' ? `${manifest.origin}/` : canonicalOverride ?? `${manifest.origin}/${locale}/`;

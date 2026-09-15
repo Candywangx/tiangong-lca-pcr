@@ -108,10 +108,14 @@ Distinct historical versions are not blindly canonicalized to different text.
 
 ## Validation and production
 
-Build verification compares source inventory with exported HTML and original
-downloads, including a JavaScript-disabled reading check. It validates routes,
-canonical/hreflang, real 404s, source modification times, sitemap, headers,
-keyboard access, light/dark rendering and representative viewport sizes.
+Automated build verification compares source inventory with exported HTML without
+executing JavaScript, including original downloads, block order, tables, list
+hierarchy, code and links. It checks document and home canonicals/hreflang, complete
+404 HTML, source modification dates, sitemap and the static hosting configuration.
+Browser acceptance separately checks keyboard access, themes, responsive layouts,
+search and disclosures. Live production acceptance verifies actual HTTP status,
+headers, HTTPS and redirects on EdgeOne; static configuration checks cannot prove
+that the provider applied its rules.
 
 Measure the real full corpus and largest records. Enforce provider limits on
 individual files, total file count and build resources, and partition search and
@@ -137,7 +141,7 @@ resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
 not proof of total process memory.
 
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
-indexes must stay under 20 MB and their combined gzip transfer under 4 MB; the
+indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
 current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
 Worker and tokenization module are ordinary browser modules copied with the pinned
 FlexSearch browser bundle, preserving its license header. Static exports must
@@ -168,3 +172,21 @@ native disclosures in initial HTML. Their identifiers and text are verified agai
 the complete structured projection; the on-demand field tree remains available for
 all remaining metadata. Canonical English rule text is labelled as such on Chinese
 pages instead of being passed off as translated methodology.
+
+Historical navigation uses each record's exact emitted chapter URLs, never a shared
+PCR-ID-only page set. Current and historical sidebars use distinct cache identities,
+and every historical record links the complete immutable version list. Home-page
+language alternatives point to canonical homes; the default Chinese alternative
+and x-default both use `/`, while `/zh/` redirects permanently to it.
+
+Production resource checks fail when memory measurement is unavailable or empty.
+POSIX builds inspect process-tree RSS; Windows uses its native CIM working-set
+statistics. No unmeasured zero is accepted as evidence that a production build fits
+within the memory budget. Browser chrome is complete in English and Chinese;
+optional reading-language pages currently use English controls unless additional
+UI translations are registered. Their actual document bodies are never substituted.
+
+Per-file modification dates require complete Git ancestry. A shallow hosting clone
+fetches origin history without advancing its pinned HEAD before collecting dates;
+if ancestry cannot be obtained, generation fails. Local full clones and the
+full-history CI checkout require no additional fetch.

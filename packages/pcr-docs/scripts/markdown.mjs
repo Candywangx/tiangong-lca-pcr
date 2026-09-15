@@ -225,6 +225,7 @@ export function inventoryMarkdown(source, fileKey) {
       nodes.push({
         id: nodeId(fileKey, block),
         type: block.type,
+        isFootnote: node.type === "footnoteDefinition",
         text: normalizeText(sourceText(block)),
         code: block.type === "code" ? block.value : null,
         sourceStart: parsed.offset + block.position.start.offset,
