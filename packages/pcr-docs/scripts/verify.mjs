@@ -152,6 +152,14 @@ for (const route of [
       "Wrong home hreflang " + route + " " + code,
     );
   }
+  const expectedVerification = process.env.PCR_GOOGLE_SITE_VERIFICATION;
+  if (expectedVerification)
+    requireThat(
+      document
+        .querySelector('meta[name="google-site-verification"]')
+        ?.getAttribute("content") === expectedVerification,
+      "Missing configured Search Console marker " + route,
+    );
   parsed.delete(route);
 }
 const notFoundHtml = fs.readFileSync(path.join(out, "404.html"), "utf8");

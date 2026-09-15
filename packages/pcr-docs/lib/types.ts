@@ -25,6 +25,7 @@ export type DocPage = {
   pcrId?: string;
   recordVersion?: string;
   currentUrl?: string;
+  currentLanguage?: string;
   lastModified?: string;
   moduleId?: string;
   domain?: string;

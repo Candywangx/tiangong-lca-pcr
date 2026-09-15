@@ -1,5 +1,9 @@
 import test from "node:test";
-import { recordPages } from "../lib/record-navigation.mjs";
+import {
+  recordPages,
+  recordNavigationNode,
+} from "../lib/record-navigation.mjs";
+import { createDocumentSource } from "../lib/content-source.mjs";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -14,7 +18,7 @@ import {
   revise,
   syncStructured,
 } from "../../../builder/lib/manifest-lifecycle.mjs";
-import { renderYaml } from "../../pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../pcr-core/src/yaml-lite.mjs";
 const script = fileURLToPath(new URL("./generate.mjs", import.meta.url));
 const hash = (bytes) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
@@ -70,6 +74,16 @@ test("real generator preserves multilingual released snapshots and excludes open
       workspace: "revision",
       translation: "de-DE=reviewed",
     });
+    const revisionManifest = path.join(
+      fixture.pcrDir,
+      "revision/manifest.next.yaml",
+    );
+    const nextManifest = parseYaml(fs.readFileSync(revisionManifest, "utf8"));
+    nextManifest.languages.available = ["en-US", "zh-CN"];
+    delete nextManifest.title["de-DE"];
+    delete nextManifest.translation_status["de-DE"];
+    fs.writeFileSync(revisionManifest, renderYaml(nextManifest));
+    fs.rmSync(path.join(fixture.pcrDir, "revision/pcr.de-DE.md"));
     publish({ root, pcr: fixture.libraryPath, workspace: "revision" });
     revise({ root, pcr: fixture.libraryPath, version: "1.2.0" });
     fs.appendFileSync(
@@ -157,19 +171,56 @@ test("real generator preserves multilingual released snapshots and excludes open
         record.versions.map((item) => item.version),
         ["1.0.0", "1.1.0"],
       );
+    const source = createDocumentSource(site);
     for (const language of ["en-US", "zh-CN", "de-DE"]) {
-      assert.ok(
-        recordPages(site, site.records[0], language).every(
-          (page) => page.recordVersion === undefined,
-        ),
-      );
-      for (const historical of site.historicalRecords)
-        assert.ok(
-          recordPages(site, historical, language).every(
-            (page) => page.recordVersion === historical.version,
-          ),
+      const currentPages = recordPages(site, site.records[0], language);
+      assert.equal(currentPages.length, language === "de-DE" ? 0 : 1);
+      assert.ok(currentPages.every((page) => page.recordVersion === undefined));
+      for (const historical of site.historicalRecords) {
+        const pages = recordPages(site, historical, language);
+        assert.equal(
+          pages.length,
+          language === "de-DE" && historical.version === "1.1.0" ? 0 : 1,
         );
+        for (const page of pages) {
+          assert.equal(page.recordVersion, historical.version);
+          assert.equal(
+            source.getPage(page.slugs, page.locale)?.data.doc.key,
+            page.key,
+          );
+        }
+        if (pages.length) {
+          const sidebar = recordNavigationNode(site, historical, language, {
+            title: historical.title[language],
+            url: historical.urls[language],
+          });
+          const urls =
+            sidebar.type === "page"
+              ? [sidebar.url]
+              : sidebar.children.map((page) => page.url);
+          assert.deepEqual(
+            urls,
+            pages.map((page) => page.url),
+            "the rendered sidebar must use only this historical version",
+          );
+        }
+      }
     }
+    assert.equal(
+      source.getPage(["pcr", "agriculture", "crops", "wheat-seed"], "de-de"),
+      undefined,
+      "no fake current German fallback",
+    );
+    const germanHistory = site.pages.find(
+      (page) => page.language === "de-DE" && page.recordVersion === "1.0.0",
+    );
+    assert.equal(germanHistory.currentLanguage, "en-US");
+    assert.equal(germanHistory.currentUrl, site.records[0].urls["en-US"]);
+    assert.ok(
+      site.pages
+        .filter((page) => page.kind === "catalog" && page.language === "de-DE")
+        .every((page) => !page.indexable),
+    );
     const report = JSON.parse(
       fs.readFileSync(path.join(output, ".generated/report.json")),
     );

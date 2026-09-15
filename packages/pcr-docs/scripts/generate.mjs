@@ -364,6 +364,7 @@ function catalogPage(language, slugs, title, records, description) {
     kind: "catalog",
     title,
     description,
+    indexable: records.length > 0,
   });
   page.htmlPath = "pages/" + page.key + ".html";
   write(
@@ -610,7 +611,8 @@ async function generate() {
                 kind: "pcr",
                 pcrId: pcr.id,
                 recordVersion: release.version,
-                currentUrl: urls[code],
+                currentUrl: urls[code] ?? urls["en-US"],
+                currentLanguage: urls[code] ? code : "en-US",
                 domain: slug[0],
                 subdomain: slug[1],
                 indexable: true,

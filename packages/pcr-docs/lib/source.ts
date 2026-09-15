@@ -1,9 +1,9 @@
-import { loader } from 'fumadocs-core/source';
+import { createDocumentSource } from './content-source.mjs';
 import type { Folder, Item, Node as PageTreeNode, Root } from 'fumadocs-core/page-tree';
 import type { DocPage, Download, Language, PcrRecord, SiteManifest } from './types';
-import { DEFAULT_ROUTE, i18n } from './i18n';
+import { DEFAULT_ROUTE } from './i18n';
 import { getSiteManifest } from './generated';
-import { recordPages } from './record-navigation.mjs';
+import { recordPages, recordNavigationNode } from './record-navigation.mjs';
 
 export type PcrSourcePage = {
   path: string;
@@ -80,11 +80,8 @@ export function routeUrl(origin: string, url: string | undefined): string | unde
   return relative(origin, url);
 }
 
-/**
- * A record's raw downloads mix shared artifacts (`manifest.yaml`, `structured.yaml`) with one
- * rendering per declared source language (`pcr.en-US.md`). Shared files are always offered; of
- * the language renderings, only the one this page displays is.
- */
+/** All declared original artifacts are downloadable. Sorting prioritizes the reading language;
+ * a raw optional translation is not a claim that a current translated HTML page exists. */
 export function recordDownloads(record: PcrRecord, code: string): Download[] {
   return [...(record.downloads ?? [])].sort((a, b) => Number(b.name === `pcr.${code}.md`) - Number(a.name === `pcr.${code}.md`));
 }
@@ -128,37 +125,7 @@ export function recordParts(
  * URL shape follows the manifest's `page.url`. `trailingSlash` is on, so every link this source
  * hands to Fumadocs carries the trailing slash the static export actually emits.
  */
-function urlFor(slugs: string[], locale?: string): string {
-  const paths = ['docs', ...slugs].filter((segment) => segment.length > 0);
-  const segments = locale ? [locale, ...paths] : paths;
-  return `/${segments.join('/')}/`;
-}
-
-/**
- * Virtual files carry page metadata plus the manifest `DocPage`. Rendered HTML and record data
- * are never part of this graph: pages read them from `.generated` at build time.
- */
-function filesFrom(manifest: SiteManifest) {
-  return manifest.pages.map((page) => ({
-    type: 'page' as const,
-    path: `${page.locale}/${page.slugs.join('/')}.mdx`,
-    slugs: page.slugs,
-    data: {
-      title: page.title,
-      description: page.description,
-      doc: page,
-    },
-  }));
-}
-
-export const source = loader({
-  baseUrl: '/docs',
-  i18n,
-  url: urlFor,
-  source: {
-    files: filesFrom(getSiteManifest()),
-  },
-});
+export const source = createDocumentSource(getSiteManifest());
 
 export function sourcePage(slugs: string[] | undefined, locale: string): PcrSourcePage | undefined {
   return source.getPage(slugs, locale) as PcrSourcePage | undefined;
@@ -298,25 +265,7 @@ function recordNode(
 ): PageTreeNode {
   const title = recordTitle(record, code, manifest.defaultLocale);
   const url = recordUrls(manifest.origin, record, code, manifest.defaultLocale) ?? libraryUrl(locale);
-  const parts = manifest.pages
-    .filter((page) => page.locale === locale && page.pcrId === record.id && page.part)
-    .sort((left, right) => (left.part?.index ?? 0) - (right.part?.index ?? 0));
-  if (parts.length <= 1) return { type: 'page', name: title, url };
-  const index: Item = { type: 'page', name: title, url };
-  return {
-    type: 'folder',
-    name: title,
-    collapsible: true,
-    defaultOpen: true,
-    index,
-    children: parts.map(
-      (part): PageTreeNode => ({
-        type: 'page',
-        name: part.part?.label ?? part.title,
-        url: relative(manifest.origin, part.url) ?? part.url,
-      }),
-    ),
-  };
+  return recordNavigationNode(manifest,record,code,{title,url});
 }
 
 function subdomainNode(
@@ -368,7 +317,8 @@ export function navigationTree(context: NavContext): Root {
   if (catalogPage) children.push({ type: 'page', name: messages.library, url: catalogPage.url });
   if (coverage) children.push({ type: 'page', name: messages.coverage, url: coverage.url });
 
-  for (const domain of buildDomainNav(locale)) {
+  const domains = buildDomainNav(locale);
+  for (const domain of domains) {
     const active = domain.slug === context.domain;
     const domainCatalog = manifest.pages.find(
       (page) =>
@@ -403,6 +353,10 @@ export function navigationTree(context: NavContext): Root {
             },
           ],
     });
+  }
+
+  if (context.record && !domains.some(domain=>domain.slug===context.domain && domain.subdomains.some(subdomain=>subdomain.slug===context.subdomain))) {
+    children.push(recordNode(manifest, locale, code, context.record));
   }
 
   const tree: Root = { type: 'root', name: catalogPage?.title ?? messages.library, children };

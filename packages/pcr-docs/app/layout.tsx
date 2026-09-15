@@ -4,6 +4,7 @@ import { getSiteManifest } from '@/lib/generated';
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteManifest().origin),
+  verification: process.env.PCR_GOOGLE_SITE_VERIFICATION ? { google: process.env.PCR_GOOGLE_SITE_VERIFICATION } : undefined,
 };
 
 /**

@@ -190,3 +190,17 @@ Per-file modification dates require complete Git ancestry. A shallow hosting clo
 fetches origin history without advancing its pinned HEAD before collecting dates;
 if ancestry cannot be obtained, generation fails. Local full clones and the
 full-history CI checkout require no additional fetch.
+
+All declared original language files remain downloadable, including optional files
+that are unavailable as current translated HTML. Their manifest state and original
+bytes are preserved, and raw responses remain noindex attachments. The Fumadocs
+content registry follows all emitted languages, including languages found only in
+historical versions; it is separate from the English/Chinese UI translation set.
+An optional translation removed in a new release leaves the current workspace in
+the declared file state while its immutable older release stays downloadable.
+
+For an authorized Search Console URL-prefix property, production may set the public
+`PCR_GOOGLE_SITE_VERIFICATION` build variable. When configured, the Metadata API
+emits the corresponding verification tag and the output gate checks it. An unset
+variable emits no ownership marker. Changing this binding and verifying ownership
+is a separate authorized operation from deploying the documentation code.

@@ -1,4 +1,3 @@
-import { defineI18n } from 'fumadocs-core/i18n';
 import type { Language } from './types';
 
 /**
@@ -6,16 +5,6 @@ import type { Language } from './types';
  * `zh-CN`/`en-US` stay the canonical PCR language identities carried by the manifest.
  */
 export const DEFAULT_ROUTE = 'zh';
-
-export const uiLanguages = ['zh', 'en'] as const;
-
-export const i18n = defineI18n({
-  defaultLanguage: DEFAULT_ROUTE,
-  languages: ['zh', 'en'],
-  hideLocale: 'never',
-  parser: 'dir',
-  fallbackLanguage: null,
-});
 
 export function isRouteLocale(value: string, languages: readonly Language[]): boolean {
   return languages.some((language) => language.route === value);

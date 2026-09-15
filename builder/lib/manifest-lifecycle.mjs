@@ -545,6 +545,13 @@ function writePublishedRelease({ stageDir, sourceWorkspaceDir, plan, predecessor
         releases: [releaseRecord.historyEntry],
       };
 
+  // The transaction stage still contains the previous current workspace. A
+  // translation intentionally omitted by this revision survives in its immutable
+  // release, but must not remain as an undeclared current-language artifact.
+  const previousLanguages = declaredPcrLanguages(parseYaml(readRequiredText(path.join(stageDir, "manifest.yaml"), "current manifest")));
+  for (const language of previousLanguages) {
+    if (!plan.languages.includes(language)) rmSync(path.join(stageDir, `pcr.${language}.md`));
+  }
   writeFileSync(path.join(stageDir, "manifest.yaml"), plan.nextManifestText);
   for (const language of plan.languages) {
     writeFileSync(path.join(stageDir, `pcr.${language}.md`), plan.publishedFiles.get(language).text);

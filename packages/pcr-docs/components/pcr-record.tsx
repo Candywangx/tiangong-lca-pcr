@@ -245,7 +245,7 @@ export function PcrRecordPage({
   const source = sourceUrl(manifest, record.sourcePath);
   // The generator marks a snapshot page with the version it froze and the URL of the live record;
   // a current page carries neither. The corpus has no historical releases yet.
-  const historical = Boolean(page.recordVersion && page.currentUrl);
+  const historical = Boolean(page.recordVersion);
 
   return (
     <PcrPage page={page}>
@@ -290,7 +290,7 @@ export function PcrRecordPage({
         {historical && page.currentUrl ? (
           <p className="pcr-status-note pcr-status-note--history" role="note">
             {text.historicalNote}{" "}
-            <Link href={page.currentUrl}>{text.currentVersion}</Link>
+            <Link href={page.currentUrl}>{text.currentVersion}{page.currentLanguage && page.currentLanguage !== page.language ? ` (${page.currentLanguage})` : ""}</Link>
           </p>
         ) : null}
 
