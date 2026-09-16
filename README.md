@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-16
-lastReviewedCommit: fd4f69462a83f70db3612475a12fb055b91043d3
-lastReviewedNote: "Reviewed for PCR #21: the provider handoff prepares standard EdgeOne assets from verified staged output without a second content allocation. Canonical sources, dependencies, source identity, fidelity and resource gates stay intact. Official CLI compatibility was tested locally; final provider publish/live acceptance remains pending."
+lastReviewedCommit: 02d206a3f252355ee1512732383409ac452d1088
+lastReviewedNote: "Reviewed for PCR #15 on current main59b: bounded canonical lint retains all22422diagnostics in complete JSON, preserves all inspection/optional-language/publication logic, and rejects lost required CI evidence. Current Linux base1292/candidate1301tests pass with same4filesystem skips; full arrays match, console22428to23lines, both69s without a time-speedup claim. New documentation job is byte-preserved; source/root handoff remains separate. Independent source review and both hosted CI jobs remain pending."
 ---
 
 # TianGong LCA PCR Library
@@ -132,6 +132,11 @@ npm run goal:land -- --config <goal.yaml>
 npm run goal:stop -- --config <goal.yaml>
 npm run validate
 ```
+
+Canonical lint writes complete diagnostics to `.reports/pcr-lint.json` while
+printing a bounded summary. Warning/error semantics and every check are unchanged;
+see [Complete lint diagnostics](builder/README.md#complete-lint-diagnostics) for
+report paths, failure behavior and CI artifacts.
 
 The local `goal:*` Harness turns a bounded classification/category objective into a persistent, hash-chained queue.
 It captures an allowlisted synthetic commit without changing the user's index or branch, gives each author a durable

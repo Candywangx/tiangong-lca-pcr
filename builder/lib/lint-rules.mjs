@@ -1197,7 +1197,7 @@ export function inspectPcrDirectory({
   };
 }
 
-export function lint(options) {
+export function collectLintDiagnostics(options) {
   const root = rootFromOptions(options);
   const problems = [];
   const warnings = [];
@@ -1263,6 +1263,11 @@ export function lint(options) {
     }
   }
 
+  return { problems, warnings };
+}
+
+export function lint(options) {
+  const { problems, warnings } = collectLintDiagnostics(options);
   if (problems.length > 0) {
     throw new Error(`PCR library lint failed.\n${problems.map((problem) => `- ${problem}`).join("\n")}`);
   }

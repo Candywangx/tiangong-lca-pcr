@@ -3,6 +3,7 @@ import { checkPcr, PCR_CHECK_HELP } from "../lib/pcr-check.mjs";
 import { init } from "../lib/builder-operations.mjs";
 import { importCpc } from "../lib/cpc-scaffold.mjs";
 import { lint } from "../lib/lint-rules.mjs";
+import { lintWithReport } from "../lib/lint-report.mjs";
 import {
   bump,
   lifecycle,
@@ -21,7 +22,7 @@ const COMMAND_OPTIONS = Object.freeze({
     values: ["root", "sample-pcr", "pcr-id", "title-en", "title-zh-CN"],
     booleans: ["help"],
   }),
-  lint: Object.freeze({ values: ["root"], booleans: ["help"] }),
+  lint: Object.freeze({ values: ["root", "report"], booleans: ["help"] }),
   "import-cpc": Object.freeze({
     values: ["root", "source", "classification-version", "source-url"],
     booleans: ["help", "legacy-scaffolds"],
@@ -130,7 +131,7 @@ function printHelp() {
 Usage:
   node builder/cli/index.mjs init [--root <path>] [--sample-pcr <domain/path/slug>]
   node builder/cli/index.mjs check --pcr <PCR directory> [--workspace current|revision] [--format human|json]
-  node builder/cli/index.mjs lint [--root <path>]
+  node builder/cli/index.mjs lint [--root <path>] [--report .reports/pcr-lint.json]
   node builder/cli/index.mjs import-cpc --source <csv> [--classification-version 3.0] [--legacy-scaffolds]
   node builder/cli/index.mjs scaffold-cpc --legacy-scaffolds --source <csv>  # compatibility alias
   node builder/cli/index.mjs sync-structured --pcr <library/pcrs/...> [--workspace current|revision] [--root <path>]
@@ -204,6 +205,10 @@ function runCommand(command, options) {
     return { messages: init(options), exitCode: 0 };
   }
   if (command === "lint") {
+    if (Object.hasOwn(options, "report")) {
+      if (!options.report.trim()) throw new Error("--report requires a non-empty value");
+      return lintWithReport(options);
+    }
     return { messages: lint(options), exitCode: 0 };
   }
   if (command === "import-cpc" || command === "scaffold-cpc") {

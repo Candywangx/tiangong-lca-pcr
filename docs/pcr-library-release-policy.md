@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-09-15
-lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
-lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
+lastReviewedAt: 2026-09-16
+lastReviewedCommit: 02d206a3f252355ee1512732383409ac452d1088
+lastReviewedNote: "Reviewed for PCR #15 on current main59b: bounded canonical lint retains all22422diagnostics in complete JSON, preserves all inspection/optional-language/publication logic, and rejects lost required CI evidence. Current Linux base1292/candidate1301tests pass with same4filesystem skips; full arrays match, console22428to23lines, both69s without a time-speedup claim. New documentation job is byte-preserved; source/root handoff remains separate. Independent source review and both hosted CI jobs remain pending."
 title: PCR Library Release Policy
 docType: contract
 scope: repo
