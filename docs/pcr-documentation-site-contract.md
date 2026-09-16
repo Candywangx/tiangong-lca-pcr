@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-16
-lastReviewedNote: "Reviewed for PCR #21: the provider handoff prepares standard EdgeOne assets from verified staged output without a second content allocation. Canonical sources, dependencies, source identity, fidelity and resource gates stay intact. Official CLI compatibility was tested locally; final provider publish/live acceptance remains pending."
-lastReviewedCommit: fd4f69462a83f70db3612475a12fb055b91043d3
+lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; provider environment, live verification and final shared CI integration remain pending."
+lastReviewedCommit: f4a6337f6b96ab997dad6392f2044a5fce6ffd9d
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -251,6 +251,15 @@ For an authorized Search Console URL-prefix property, production may set the pub
 emits the corresponding verification tag and the output gate checks it. An unset
 variable emits no ownership marker. Changing this binding and verifying ownership
 is a separate authorized operation from deploying the documentation code.
+
+Baidu ownership uses the independently configured public
+`PCR_BAIDU_SITE_VERIFICATION` build variable. It emits a
+`baidu-site-verification` meta tag; the output gate requires an exact match on
+every locale home, and requires no marker when the variable is unset. Relocated
+builds preserve both providers' variables and log presence only. These public
+ownership markers are not submission API credentials. Keep the configured marker
+after verification; registration and actual crawl/index processing are separate
+provider operations.
 
 A language retained only by historical releases keeps its immutable document URLs,
 search entries and version navigation. Its empty current catalog and locale home

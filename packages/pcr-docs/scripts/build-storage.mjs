@@ -344,6 +344,7 @@ export function scratchEnvironment(env = {}) {
 export function describeEnvironment(env = {}) {
   const names = [
     "PCR_GOOGLE_SITE_VERIFICATION",
+    "PCR_BAIDU_SITE_VERIFICATION",
     PREBUILT_ASSETS_ENV,
     "NODE_OPTIONS",
     "NEXT_TELEMETRY_DISABLED",
