@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-16
-lastReviewedCommit: f4eaa3fe78fd7a22a5ec6d4bbe16c5d9fbca2e83
-lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI checks the generated checker snapshot against its manifest and runs it without another build, needing no private action or token, and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
+lastReviewedCommit: 5f8cf532dca2812762cb45f560b166a63ac7db61
+lastReviewedNote: "Reviewed for PCR #26: page and catalog metadata summaries are a bounded projection of each page's own source scope - a record uses its own opening, a chapter only its own nodes, a domain or subdomain its actual category title and live record count - so no two pages of one language publish the same description. The shared content report drops from 446 duplicate-description leads in 162 groups to 0, with 0 duplicate titles and 0 missing inbound links over 1775 grouped pages. 112 of 1782 summaries are title-only because their own scope carries only headings and rule tables; that residual is counted in .generated/report.json and printed by the generation stage, never padded. Canonical bytes, rendered block order, download hashes, required languages, optional locales, lifecycle and index policy are unchanged: 1786 pages and 12758 export files are unchanged in count, all 2981 downloads remain byte-identical to their canonical source, the relocated full corpus build and the shared checker pass, and 57 package tests pass. Description quality remains a presentation projection, not evidence about methodology coverage; hosted CI, provider environment and production samples remain pending."
 ---
 
 # TianGong LCA PCR Library
