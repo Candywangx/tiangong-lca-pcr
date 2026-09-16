@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-16
 lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI is pinned without another build and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
-lastReviewedCommit: a44b662c917650a1babfa94b18de09f276124693
+lastReviewedCommit: 52b5705efd4b6ff2d296708ff9498bc027cdb79f
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -255,7 +255,8 @@ is a separate authorized operation from deploying the documentation code.
 Baidu ownership uses the independently configured public
 `PCR_BAIDU_SITE_VERIFICATION` build variable. It emits a
 `baidu-site-verification` meta tag; the output gate requires an exact match on
-every locale home, and requires no marker when the variable is unset. Relocated
+every locale home. Surrounding whitespace is trimmed; an unset or whitespace-only
+value requires no marker. Relocated
 builds preserve both providers' variables and log presence only. These public
 ownership markers are not submission API credentials. Keep the configured marker
 after verification; registration and actual crawl/index processing are separate

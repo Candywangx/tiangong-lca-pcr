@@ -167,7 +167,7 @@ for (const route of [
         ?.getAttribute("content") === expectedVerification,
       "Missing configured Search Console marker " + route,
     );
-  const expectedBaiduVerification = process.env.PCR_BAIDU_SITE_VERIFICATION;
+  const expectedBaiduVerification = process.env.PCR_BAIDU_SITE_VERIFICATION?.trim();
   const actualBaiduVerification = document
     .querySelector('meta[name="baidu-site-verification"]')
     ?.getAttribute("content");
