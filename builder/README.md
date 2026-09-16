@@ -222,8 +222,8 @@ alone still exit 0, errors or incomplete collection exit 1. A lint pass is not a
 claim that warnings or professional review requirements are resolved.
 
 Report paths must be JSON filenames directly inside the selected root's ignored
-`.reports/` directory, with letters, digits, dots, underscores or hyphens in the
-filename. Source/state paths, linked directories and linked/shared destination
+`.reports/` directory. Filenames start with a letter or digit and may then use
+letters, digits, dots, underscores or hyphens. Source/state paths, linked directories and linked/shared destination
 files are rejected. A root path containing spaces or Unicode is supported.
 Treat a previous report as historical until the current command prints its new
 successful report location; an earlier vocabulary/catalog failure can stop the
@@ -237,4 +237,5 @@ CI retains a validation transcript and, when produced, the current full JSON in
 `pcr-validation-<run-id>-<attempt>` for 14 days, including failed validation runs.
 A failure before the library scan is recorded as a missing report, not a complete
 empty result. The workflow refuses pre-existing reports and preserves npm's
-failure status. An early setup failure leaves the explicit not-started transcript.
+failure status. A successful validation command without its required full report
+also fails CI. An early setup failure leaves the explicit not-started transcript.
