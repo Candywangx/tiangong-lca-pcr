@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-16
-lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI checks the generated checker snapshot against its manifest and runs it without another build, needing no private action or token, and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
-lastReviewedCommit: f4eaa3fe78fd7a22a5ec6d4bbe16c5d9fbca2e83
+lastReviewedNote: "Reviewed for PCR #26 (residual accounting corrected at 906a04b8): page and catalog metadata summaries are a bounded projection of each page's own source scope - a record uses its own opening, a chapter only its own nodes, a domain or subdomain its actual category title and live record count - so no two pages of one language publish the same description: the shared content report stays at 0 duplicate descriptions, 0 duplicate titles and 0 missing inbound links over 1775 grouped pages, down from 446 description leads in 162 groups. Residual totals now describe the retained output rather than the intent: of 1782 summaries, 137 are the title alone, 38 of those because an available paragraph was removed by the bound (context_dropped) and 99 because the page's own scope carries only headings and rule tables; 1586 summaries were clipped, including titles cut to fit. Both earlier counter defects are fixed and regression-tested. The verification build ran from the c9d3495b checkout with this fix as uncommitted working-tree changes, so the export's embedded sourceCommit names c9d3495b rather than this commit; PR CI rebuilds and binds the exact committed head. Canonical bytes, rendered block order, download hashes, required languages, optional locales, lifecycle and index policy are unchanged: 1786 pages and 12758 export files, all 2981 downloads byte-identical to their canonical source, every published description equal to the verified generator output, the shared checker and the editorial report clean, and 61 package tests pass. Hosted CI, provider environment and production samples remain pending."
+lastReviewedCommit: 906a04b8f70b26de42c814ba0622cbe175d393e5
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -90,6 +90,36 @@ structured data are separate artifacts read only at build time. Public downloads
 and search shards live under `public/generated/`. These directories are derived
 and excluded from manual authoring and Git. Generation stages a complete artifact
 set and never overwrites canonical PCR sources.
+
+### Page summaries
+
+`meta[name="description"]`, the Open Graph description and the search-record description are one
+bounded projection of text that already exists in the rendered source, produced by
+`scripts/summaries.mjs`:
+
+- the page's own title, followed by up to two paragraphs from that page's own source scope;
+- for a chapter, only nodes inside that chapter's `sourceNodeIds`, so a record and each of its
+  chapters publish different summaries instead of the document opening repeated on every page;
+- only a document's first page may fall back to the document opening, so a chapter never borrows
+  another chapter's text;
+- for a domain or subdomain catalog page, its actual category title, its position in the tree and
+  the real record count;
+- bounded to 170 Unicode code points, cut on a source sentence or word boundary, and never inside a
+  surrogate pair. `verify.mjs` fails a page that exceeds the bound.
+
+A page whose retained summary is the title alone publishes no reader-facing context. That residual is
+counted in `.generated/report.json` under `summaries.title_only` and printed by the generation stage.
+`summaries.context_dropped` breaks out the subset where an available paragraph was removed by the
+bound — a title long enough to leave no usable room — while a chapter whose own scope carries only
+headings and structured rule tables is counted in `title_only` without `context_dropped`. Both flags
+and `summaries.clipped` are derived from the retained output, never from the intent to include
+context: a summary is never credited with context the reader cannot see, and a title that had to be
+cut is a clipped summary. Nothing is padded with generated prose: a title-only summary is honest, an
+invented sentence is not.
+
+The projection is presentation only. It changes no canonical Markdown, YAML or JSON byte, no
+rendered block order, no download hash, no lifecycle or translation state, and no indexing policy;
+descriptions are not evidence about methodology quality or coverage.
 
 ## Routes and indexing
 

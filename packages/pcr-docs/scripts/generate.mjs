@@ -29,8 +29,8 @@ import {
   finalizePart,
   verifyRenderedBlocks,
   sha256,
-  normalizeText,
 } from "./markdown.mjs";
+import { SUMMARY_LIMIT, catalogSummary, documentSummary } from "./summaries.mjs";
 import { searchTerms } from "../lib/search-terms.mjs";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const { values: options } = parseArgs({
@@ -144,6 +144,25 @@ const report = {
   search: [],
   metrics: {},
 };
+// Presentation-only summary accounting. A page whose retained summary is the title alone publishes
+// no reader-facing context; that residual is counted here, with the pages where a usable paragraph
+// existed but the bound removed it broken out, so the number is reported instead of being read as
+// full descriptive coverage.
+const summaries = {
+  pages: 0,
+  title_only: 0,
+  context_dropped: 0,
+  clipped: 0,
+  catalog_pages: 0,
+};
+function publishSummary(summary, kind) {
+  summaries.pages += 1;
+  if (summary.titleOnly) summaries.title_only += 1;
+  if (summary.contextDropped) summaries.context_dropped += 1;
+  if (summary.clipped) summaries.clipped += 1;
+  if (kind === "catalog") summaries.catalog_pages += 1;
+  return summary.text;
+}
 const tracked = new Map(
   git("ls-tree", "-r", commit, "--", "library", "classifications")
     .split("\n")
@@ -241,20 +260,28 @@ function renderDocument({
     anchors.set(alias, anchors.get(id));
   sourceAnchors.set(artifact.path, anchors);
   const mapped = [];
+  // Every part of one document shares the same inventory, so the description must be scoped to the
+  // nodes that part actually owns. The previous projection read the document's first paragraphs for
+  // every part, which published one description for the record and each of its chapters.
   rendered.parts.forEach((part, i) => {
+    const nodeIds = new Set(part.sourceNodeIds);
     const page = pageInfo(
       language,
       i ? [...slugs, "chapters", part.slug] : slugs,
       {
         ...extra,
         title: part.title,
-        description: normalizeText(
-          rendered.inventory
-            .filter((n) => n.type === "paragraph")
-            .slice(0, 2)
-            .map((n) => n.text)
-            .join(" "),
-        ).slice(0, 170),
+        description: publishSummary(
+          documentSummary({
+            title: part.title,
+            nodes: rendered.inventory.filter((node) => nodeIds.has(node.id)),
+            // Only a document's first page may fall back to the document opening: a chapter without
+            // its own paragraph must not borrow another chapter's text.
+            fallbackNodes: i === 0 ? rendered.inventory : [],
+            language,
+          }),
+          "document",
+        ),
         htmlPath: "pages/" + short(urls[i]) + ".html",
         toc: part.toc,
         sourcePath: artifact.path,
@@ -697,16 +724,34 @@ async function generate() {
         ["pcr", domain],
         categoryTitle(domain, code),
         subset,
-        zh ? "本分类中的 PCR 文档。" : "PCR documents in this domain.",
+        publishSummary(
+          catalogSummary({
+            language: code,
+            title: categoryTitle(domain, code),
+            count: subset.length,
+            subcategories: new Set(subset.map((r) => r.slug[1])).size,
+          }),
+          "catalog",
+        ),
       );
-      for (const subdomain of [...new Set(subset.map((r) => r.slug[1]))].sort())
+      for (const subdomain of [...new Set(subset.map((r) => r.slug[1]))].sort()) {
+        const members = subset.filter((r) => r.slug[1] === subdomain);
         catalogPage(
           code,
           ["pcr", domain, subdomain],
           categoryTitle(subdomain, code),
-          subset.filter((r) => r.slug[1] === subdomain),
-          zh ? "本子分类中的 PCR 文档。" : "PCR documents in this category.",
+          members,
+          publishSummary(
+            catalogSummary({
+              language: code,
+              title: categoryTitle(subdomain, code),
+              parent: categoryTitle(domain, code),
+              count: members.length,
+            }),
+            "catalog",
+          ),
         );
+      }
     }
   }
   manifest.categoryTitles = Object.fromEntries(
@@ -913,6 +958,7 @@ async function generate() {
   manifest.counts.pages = manifest.pages.length;
   manifest.counts.languages = codes.length;
   report.metrics = { ...manifest.counts, generationMs: Date.now() - started };
+  report.summaries = { ...summaries, limit: SUMMARY_LIMIT };
   json("site.json", manifest);
   json("report.json", report);
   json("public/version.json", {
@@ -943,7 +989,9 @@ async function generate() {
   fs.renameSync(path.join(stage, "public"), publicFinal);
   fs.rmSync(final, { recursive: true, force: true });
   fs.renameSync(stage, final);
-  console.log(JSON.stringify(report.metrics));
+  // The relocated build discards this checkout's `.generated/`, so the summary accounting is also
+  // printed: the build log is the only durable place a residual count can be read there.
+  console.log(JSON.stringify({ ...report.metrics, summaries: report.summaries }));
 }
 try {
   await generate();

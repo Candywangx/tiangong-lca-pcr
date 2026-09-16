@@ -298,3 +298,159 @@ test("real generator preserves multilingual released snapshots and excludes open
     fs.rmSync(temporary, { recursive: true, force: true });
   }
 });
+
+test("metadata summaries describe the page they belong to, and report title-only residuals", () => {
+  const temporary = fs.mkdtempSync(path.join(tmpdir(), "pcr-site-summaries-")),
+    root = path.join(temporary, "source"),
+    output = path.join(temporary, "output");
+  fs.mkdirSync(root);
+  const git = (...args) => execFileSync("git", args, { cwd: root, stdio: "pipe" });
+  try {
+    const fixture = createAuthoringPcr(root, {
+      schemaVersion: 2,
+      languages: ["en-US", "zh-CN"],
+      titles: { "en-US": "Synthetic wheat seed", "zh-CN": "合成测试小麦种子" },
+    });
+    lifecycle({
+      root,
+      pcr: fixture.libraryPath,
+      status: "active",
+      "content-maturity": "reviewed_methodology",
+      translation: "zh-CN=reviewed",
+    });
+    const registryPath = "classifications/aliases/pcr-id-aliases.yaml";
+    const registry = renderYaml({
+      schema_version: 1,
+      registry_kind: "legacy-pcr-id-aliases",
+      status: "current",
+      aliases: [],
+    });
+    fs.mkdirSync(path.dirname(path.join(root, registryPath)), { recursive: true });
+    fs.writeFileSync(path.join(root, registryPath), registry);
+    fs.writeFileSync(
+      path.join(root, "library/catalog.yaml"),
+      renderYaml({
+        schema_version: 1,
+        catalog_status: "current",
+        pcr_index: "library/indexes/pcr-index.yaml",
+        classification_mappings: [],
+        pcr_id_aliases: {
+          path: registryPath,
+          hash_mode: "exact_bytes",
+          sha256: hash(registry),
+          entry_count: 0,
+        },
+      }),
+    );
+    fs.mkdirSync(path.join(root, "library/indexes"));
+    fs.writeFileSync(
+      path.join(root, "library/indexes/pcr-index.yaml"),
+      renderYaml({
+        schema_version: 1,
+        index_kind: "tiangong-pcr-material-catalog",
+        status: "current",
+        summary: { total: 1 },
+        pcrs: [{ id: "pcr.agriculture.crops.wheat-seed", path: fixture.libraryPath }],
+      }),
+    );
+    git("init", "-q", "-b", "main");
+    git("add", "-A");
+    git(
+      "-c",
+      "user.name=PCR Test",
+      "-c",
+      "user.email=pcr-test@example.invalid",
+      "commit",
+      "-qm",
+      "Synthetic summary fixture",
+    );
+    const result = spawnSync(
+      process.execPath,
+      [script, "--source-root", root, "--output-root", output],
+      { encoding: "utf8", maxBuffer: 4 * 1024 * 1024 },
+    );
+    assert.equal(result.status, 0, result.stderr);
+    const site = JSON.parse(fs.readFileSync(path.join(output, ".generated/site.json")));
+    const report = JSON.parse(fs.readFileSync(path.join(output, ".generated/report.json")));
+
+    for (const page of site.pages) {
+      assert.ok(page.description, "every generated page publishes a summary " + page.url);
+      assert.ok([...page.description].length <= 170, "summary stays inside the bound " + page.url);
+      assert.equal(page.description.trim(), page.description, "summary is normalized " + page.url);
+      for (const character of page.description)
+        assert.notEqual(
+          character.codePointAt(0) >= 0xd800 && character.codePointAt(0) <= 0xdfff,
+          true,
+          "summary keeps whole code points " + page.url,
+        );
+    }
+
+    for (const language of ["en-US", "zh-CN"]) {
+      const seen = new Map();
+      for (const page of site.pages.filter((item) => item.language === language)) {
+        const previous = seen.get(page.description);
+        assert.equal(
+          previous,
+          undefined,
+          "two " + language + " pages share one summary: " + previous + " and " + page.url,
+        );
+        seen.set(page.description, page.url);
+      }
+    }
+
+    const pages = site.pages.filter((page) => page.kind === "pcr");
+    const record = pages.find((page) => page.language === "en-US" && page.part.index === 0);
+    const chineseRecord = pages.find((page) => page.language === "zh-CN" && page.part.index === 0);
+    assert.ok(record && chineseRecord, "fixture must generate both required language pages");
+    assert.equal(pages.length, 2, "the fixture document fits one part per language");
+    assert.match(
+      record.description,
+      /^Wheat Seed Production: The foreground system boundary must begin/u,
+      "a record page uses its own document opening",
+    );
+    assert.match(
+      chineseRecord.description,
+      /^小麦种子生产：前景系统边界必须从接收的种批开始/u,
+      "the Chinese page uses the Chinese source paragraph",
+    );
+    assert.notEqual(record.description, chineseRecord.description);
+
+    assert.equal(report.summaries.limit, 170);
+    assert.equal(
+      report.summaries.pages,
+      site.pages.filter(
+        (page) => page.kind === "pcr" || (page.kind === "catalog" && page.slugs.length > 1),
+      ).length,
+      "every document and category page is counted",
+    );
+    assert.equal(
+      report.summaries.title_only,
+      site.pages.filter((page) => page.description === page.title).length,
+      "the reported residual count is the real one",
+    );
+    assert.equal(
+      report.summaries.context_dropped,
+      0,
+      "no fixture title is long enough to hide an available paragraph",
+    );
+    assert.ok(report.summaries.catalog_pages > 0);
+
+    const domain = site.pages.find(
+      (page) => page.kind === "catalog" && page.language === "en-US" && page.slugs.length === 2,
+    );
+    const subdomain = site.pages.find(
+      (page) => page.kind === "catalog" && page.language === "en-US" && page.slugs.length === 3,
+    );
+    assert.equal(domain.description, "Agriculture: 1 PCR document in this domain, across 1 category.");
+    assert.equal(subdomain.description, "Crops (Agriculture): 1 PCR document in this category.");
+    const chineseDomain = site.pages.find(
+      (page) => page.kind === "catalog" && page.language === "zh-CN" && page.slugs.length === 2,
+    );
+    // The synthetic slug has no curated Chinese label, so the summary carries the actual category
+    // title the page publishes; it is derived from the page, never invented for the locale.
+    assert.equal(chineseDomain.title, "Agriculture");
+    assert.equal(chineseDomain.description, "Agriculture：本分类共 1 个 PCR 文档，分为 1 个子分类。");
+  } finally {
+    fs.rmSync(temporary, { recursive: true, force: true });
+  }
+});
