@@ -41,7 +41,7 @@ export function SiteJsonLd({ locale }: { locale: string }) {
     alternateName: locale === DEFAULT_ROUTE ? '天工产品类别规则' : 'TianGong Product Category Rules',
     url: `${manifest.origin}/`,
     inLanguage: manifest.languages.map((language) => language.code),
-    publisher: { '@type': 'Organization', name: 'TianGong LCA', url: 'https://tiangong.earth/' },
+    publisher: { '@type': 'Organization', name: 'TianGong LCA', url: 'https://www.tiangong.earth/' },
   };
   return (
     <script

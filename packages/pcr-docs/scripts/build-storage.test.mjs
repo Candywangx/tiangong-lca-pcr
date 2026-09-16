@@ -407,17 +407,21 @@ test("an oversized export is refused before anything is swapped", () => {
 test("the scratch environment preserves the verification marker and never logs values", () => {
   const env = {
     PCR_GOOGLE_SITE_VERIFICATION: "marker-value",
+    PCR_BAIDU_SITE_VERIFICATION: "baidu-marker-value",
     SOME_TOKEN: "super-secret-value",
   };
   const forwarded = scratchEnvironment(env);
   assert.equal(forwarded.PCR_GOOGLE_SITE_VERIFICATION, "marker-value");
+  assert.equal(forwarded.PCR_BAIDU_SITE_VERIFICATION, "baidu-marker-value");
   assert.equal(forwarded.SOME_TOKEN, "super-secret-value");
   assert.equal(forwarded.PCR_BUILD_IN_SCRATCH, "1");
   assert.equal(forwarded.NEXT_TELEMETRY_DISABLED, "1");
   const described = JSON.stringify(describeEnvironment(env));
   assert.match(described, /PCR_GOOGLE_SITE_VERIFICATION":"set/u);
+  assert.match(described, /PCR_BAIDU_SITE_VERIFICATION":"set/u);
   assert.doesNotMatch(described, /marker-value|super-secret-value/u);
   assert.equal(describeEnvironment({}).PCR_GOOGLE_SITE_VERIFICATION, "absent");
+  assert.equal(describeEnvironment({}).PCR_BAIDU_SITE_VERIFICATION, "absent");
 });
 
 /* ------------------------------------------------------------------ orchestration */

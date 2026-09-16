@@ -2,9 +2,16 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { getSiteManifest } from '@/lib/generated';
 
+const baiduSiteVerification = process.env.PCR_BAIDU_SITE_VERIFICATION?.trim();
+
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteManifest().origin),
-  verification: process.env.PCR_GOOGLE_SITE_VERIFICATION ? { google: process.env.PCR_GOOGLE_SITE_VERIFICATION } : undefined,
+  verification: {
+    google: process.env.PCR_GOOGLE_SITE_VERIFICATION,
+    other: baiduSiteVerification
+      ? { 'baidu-site-verification': baiduSiteVerification }
+      : undefined,
+  },
 };
 
 /**

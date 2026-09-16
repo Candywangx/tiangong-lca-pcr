@@ -167,6 +167,14 @@ for (const route of [
         ?.getAttribute("content") === expectedVerification,
       "Missing configured Search Console marker " + route,
     );
+  const expectedBaiduVerification = process.env.PCR_BAIDU_SITE_VERIFICATION?.trim();
+  const actualBaiduVerification = document
+    .querySelector('meta[name="baidu-site-verification"]')
+    ?.getAttribute("content");
+  requireThat(
+    actualBaiduVerification === (expectedBaiduVerification || undefined),
+    "Baidu ownership marker must match its explicit build configuration " + route,
+  );
   parsed.delete(route);
 }
 const notFoundHtml = fs.readFileSync(path.join(out, "404.html"), "utf8");

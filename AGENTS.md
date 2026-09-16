@@ -28,8 +28,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-16
-lastReviewedCommit: 02d206a3f252355ee1512732383409ac452d1088
-lastReviewedNote: "Reviewed for PCR #15 on current main59b: bounded canonical lint retains all22422diagnostics in complete JSON, preserves all inspection/optional-language/publication logic, and rejects lost required CI evidence. Current Linux base1292/candidate1301tests pass with same4filesystem skips; full arrays match, console22428to23lines, both69s without a time-speedup claim. New documentation job is byte-preserved; source/root handoff remains separate. Independent source review and both hosted CI jobs remain pending."
+lastReviewedCommit: f4eaa3fe78fd7a22a5ec6d4bbe16c5d9fbca2e83
+lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI checks the generated checker snapshot against its manifest and runs it without another build, needing no private action or token, and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
