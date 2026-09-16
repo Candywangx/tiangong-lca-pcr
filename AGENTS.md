@@ -28,8 +28,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-16
-lastReviewedCommit: a44b662c917650a1babfa94b18de09f276124693
-lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI is pinned without another build and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
+lastReviewedCommit: f4eaa3fe78fd7a22a5ec6d4bbe16c5d9fbca2e83
+lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI checks the generated checker snapshot against its manifest and runs it without another build, needing no private action or token, and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
