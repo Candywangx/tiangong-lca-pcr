@@ -10,6 +10,7 @@ import {
   sha256,
   normalizeText,
 } from "./markdown.mjs";
+import { SUMMARY_LIMIT } from "./summaries.mjs";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
   out = path.join(app, "out");
@@ -273,10 +274,15 @@ for (const page of manifest.pages) {
         ?.includes("noindex"),
       "Missing noindex " + page.url,
     );
-  requireThat(
-    document.querySelector('meta[name="description"]')?.getAttribute("content"),
-    "Missing description " + page.url,
-  );
+  const description = document
+    .querySelector('meta[name="description"]')
+    ?.getAttribute("content");
+  requireThat(description, "Missing description " + page.url);
+  if (description)
+    requireThat(
+      [...description].length <= SUMMARY_LIMIT,
+      "Description exceeds " + SUMMARY_LIMIT + " code points " + page.url,
+    );
   for (const node of document.querySelectorAll("a[href]")) {
     const value = node.getAttribute("href");
     if (!value || !value.startsWith("/") || value.startsWith("//")) continue;
