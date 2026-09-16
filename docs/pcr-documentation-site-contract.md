@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-16
-lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; provider environment, live verification and final shared CI integration remain pending."
-lastReviewedCommit: f4a6337f6b96ab997dad6392f2044a5fce6ffd9d
+lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI is pinned without another build and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
+lastReviewedCommit: a44b662c917650a1babfa94b18de09f276124693
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -260,6 +260,15 @@ builds preserve both providers' variables and log presence only. These public
 ownership markers are not submission API credentials. Keep the configured marker
 after verification; registration and actual crawl/index processing are separate
 provider operations.
+
+The documentation CI job validates the existing export with the workspace's
+commit-pinned SEO checker after its full fidelity build, without rebuilding the
+library. PCR supplies hreflang in HTML; the sitemap need not duplicate that
+supported representation. The shared check validates those actual language links,
+canonical URLs, index policy, structured metadata and local targets. Its JSON
+report is retained independently of CI success. This is additional regression
+protection, not a replacement for the complete canonical-content verifier or
+post-deployment header/redirect checks.
 
 A language retained only by historical releases keeps its immutable document URLs,
 search entries and version navigation. Its empty current catalog and locale home

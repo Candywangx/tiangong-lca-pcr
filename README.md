@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-16
-lastReviewedCommit: f4a6337f6b96ab997dad6392f2044a5fce6ffd9d
-lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; provider environment, live verification and final shared CI integration remain pending."
+lastReviewedCommit: a44b662c917650a1babfa94b18de09f276124693
+lastReviewedNote: "Reviewed for PCR #24: optional public Baidu ownership metadata is separate from canonical content and publication state, survives relocation without value logging, and is asserted on exported locale homes. Existing byte-fidelity, source identity, required languages, noindex policy and resource gates remain intact. Full documentation build and shared artifact check pass; shared CI is pinned without another build and the publisher uses the user-selected www origin; hosted CI, provider environment, live verification and final integration remain pending."
 ---
 
 # TianGong LCA PCR Library

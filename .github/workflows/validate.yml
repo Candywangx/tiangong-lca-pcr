@@ -93,4 +93,19 @@ jobs:
           NEXT_TELEMETRY_DISABLED: '1'
           PCR_BUILD_RELOCATE: '1'
           PCR_EDGEONE_PREBUILT_ASSETS: '1'
+          PCR_BAIDU_SITE_VERIFICATION: ci-public-baidu-marker
         run: npm --prefix packages/pcr-docs run build
+      - name: Verify shared SEO invariants without rebuilding
+        uses: tiangong-lca/workspace/.github/actions/seo-check@dff8180d00f5fbff8155be85ee354e522eb3c554
+        with:
+          artifact-root: packages/pcr-docs/out
+          origin: https://pcr.tiangong.earth
+          report: ${{ runner.temp }}/pcr-seo-report.json
+      - name: Preserve SEO verification report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pcr-seo-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-seo-report.json
+          if-no-files-found: warn
+          retention-days: 14
