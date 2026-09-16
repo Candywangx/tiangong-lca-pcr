@@ -428,6 +428,11 @@ test("metadata summaries describe the page they belong to, and report title-only
       site.pages.filter((page) => page.description === page.title).length,
       "the reported residual count is the real one",
     );
+    assert.equal(
+      report.summaries.context_dropped,
+      0,
+      "no fixture title is long enough to hide an available paragraph",
+    );
     assert.ok(report.summaries.catalog_pages > 0);
 
     const domain = site.pages.find(

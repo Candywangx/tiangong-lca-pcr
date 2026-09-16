@@ -144,13 +144,21 @@ const report = {
   search: [],
   metrics: {},
 };
-// Presentation-only summary accounting. A page whose own source scope has no paragraph publishes
-// its title alone; that residual is counted here so it is reported instead of being read as full
-// descriptive coverage.
-const summaries = { pages: 0, title_only: 0, clipped: 0, catalog_pages: 0 };
+// Presentation-only summary accounting. A page whose retained summary is the title alone publishes
+// no reader-facing context; that residual is counted here, with the pages where a usable paragraph
+// existed but the bound removed it broken out, so the number is reported instead of being read as
+// full descriptive coverage.
+const summaries = {
+  pages: 0,
+  title_only: 0,
+  context_dropped: 0,
+  clipped: 0,
+  catalog_pages: 0,
+};
 function publishSummary(summary, kind) {
   summaries.pages += 1;
   if (summary.titleOnly) summaries.title_only += 1;
+  if (summary.contextDropped) summaries.context_dropped += 1;
   if (summary.clipped) summaries.clipped += 1;
   if (kind === "catalog") summaries.catalog_pages += 1;
   return summary.text;

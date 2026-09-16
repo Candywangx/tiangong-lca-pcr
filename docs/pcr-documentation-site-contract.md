@@ -107,10 +107,15 @@ bounded projection of text that already exists in the rendered source, produced 
 - bounded to 170 Unicode code points, cut on a source sentence or word boundary, and never inside a
   surrogate pair. `verify.mjs` fails a page that exceeds the bound.
 
-A page whose own scope carries no usable paragraph — for example a chapter that contains only
-headings and structured rule tables — publishes its title alone. That residual is counted in
-`.generated/report.json` under `summaries.title_only`, printed by the generation stage, and never
-padded with generated prose: a title-only summary is honest, an invented sentence is not.
+A page whose retained summary is the title alone publishes no reader-facing context. That residual is
+counted in `.generated/report.json` under `summaries.title_only` and printed by the generation stage.
+`summaries.context_dropped` breaks out the subset where an available paragraph was removed by the
+bound — a title long enough to leave no usable room — while a chapter whose own scope carries only
+headings and structured rule tables is counted in `title_only` without `context_dropped`. Both flags
+and `summaries.clipped` are derived from the retained output, never from the intent to include
+context: a summary is never credited with context the reader cannot see, and a title that had to be
+cut is a clipped summary. Nothing is padded with generated prose: a title-only summary is honest, an
+invented sentence is not.
 
 The projection is presentation only. It changes no canonical Markdown, YAML or JSON byte, no
 rendered block order, no download hash, no lifecycle or translation state, and no indexing policy;

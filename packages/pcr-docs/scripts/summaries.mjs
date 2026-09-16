@@ -95,18 +95,22 @@ export function documentSummary({
   const context =
     contextFrom(nodes) || (fallbackNodes.length ? contextFrom(fallbackNodes) : "");
   const separator = separatorFor(language);
-  // A long title can consume the whole bound. Report that as a title-only residual rather than
-  // claiming context that the reader never sees.
   const room = limit - [...label].length - [...separator].length;
   const kept = room > 0 ? [...context].slice(0, room).join("") : "";
   const joined = kept ? label + separator + context : label;
   const text = clampSummary(joined, limit);
+  const unbounded = plainText(title) + (context ? separator + context : "");
+  // Both flags describe the retained output, never the intent. The reader sees the title and the
+  // separator first, so anything left after them is visible context; a boundary cut can land inside
+  // the title (or exactly on the separator) and leave the reader with the title alone even though a
+  // paragraph existed, and a title clipped before composition is still a clipped summary.
+  const head = label + separator;
+  const visible = text.startsWith(head) ? text.slice(head.length).replace(/…$/u, "") : "";
   return {
     text,
-    // Honest residual: no source paragraph of this page (or, for a document's first page, of its
-    // document) reached the summary, so it is the actual page title and nothing else. Never padded.
-    titleOnly: !kept,
-    clipped: [...plainText(joined)].length > limit,
+    titleOnly: visible === "",
+    contextDropped: visible === "" && Boolean(context),
+    clipped: text !== unbounded,
     label,
   };
 }
@@ -139,5 +143,11 @@ export function catalogSummary({
       ? title + "：本分类共 " + documents + "，分为 " + categories + "。"
       : title + ": " + documents + " in this domain, across " + categories + ".";
   const text = clampSummary(sentences, limit);
-  return { text, titleOnly: false, clipped: [...plainText(sentences)].length > limit, label: plainText(title) };
+  return {
+    text,
+    titleOnly: false,
+    contextDropped: false,
+    clipped: text !== plainText(sentences),
+    label: plainText(title),
+  };
 }

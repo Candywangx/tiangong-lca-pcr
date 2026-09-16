@@ -141,6 +141,99 @@ test("a title that consumes the bound is reported as a title-only residual, not 
   assert.equal([...summary.text].length <= SUMMARY_LIMIT, true);
 });
 
+test("accounting reports the retained output when the boundary cut discards the context", () => {
+  // Regression: the title left room for five context characters, so the previous flags claimed
+  // visible context, while the boundary cut had already reduced the summary to the title alone.
+  const title = "A".repeat(163);
+  const summary = documentSummary({
+    title,
+    nodes: [paragraph("p", "Useful contextual prose that is longer than twelve characters.")],
+    language: "en",
+  });
+  assert.equal(summary.text, title + "…");
+  assert.equal(summary.titleOnly, true, "the reader sees the title alone");
+  assert.equal(summary.contextDropped, true, "a usable paragraph existed but did not survive");
+  assert.equal(summary.clipped, true, "the summary is shorter than the text it projects");
+});
+
+test("a title clipped before composition still reports a clipped summary", () => {
+  const summary = documentSummary({
+    title: "B".repeat(SUMMARY_LIMIT + 40),
+    nodes: [],
+    language: "en-US",
+  });
+  assert.equal(summary.titleOnly, true);
+  assert.equal(summary.contextDropped, false, "no paragraph was ever available");
+  assert.equal(summary.clipped, true, "the title alone was cut to fit");
+  assert.equal([...summary.text].length <= SUMMARY_LIMIT, true);
+  assert.equal(summary.text.endsWith("…"), true);
+});
+
+test("an exact fit is neither clipped nor title-only, and one character over is clipped", () => {
+  const context = "Measured context for the exact-fit boundary case.";
+  const separator = ": ";
+  const titleLength = SUMMARY_LIMIT - [...separator].length - [...context].length;
+  const fitted = documentSummary({
+    title: "F".repeat(titleLength),
+    nodes: [paragraph("p", context)],
+    language: "en-US",
+  });
+  assert.equal(fitted.text, "F".repeat(titleLength) + separator + context);
+  assert.equal(fitted.titleOnly, false);
+  assert.equal(fitted.clipped, false);
+  assert.equal(fitted.contextDropped, false);
+
+  const over = documentSummary({
+    title: "F".repeat(titleLength + 1),
+    nodes: [paragraph("p", context)],
+    language: "en-US",
+  });
+  assert.equal(over.titleOnly, false, "context is still visible one character over the bound");
+  assert.equal(over.clipped, true);
+  assert.equal([...over.text].length <= SUMMARY_LIMIT, true);
+});
+
+test("every summary reports flags derived from its retained output", () => {
+  const context = "A source paragraph that is comfortably longer than the minimum useful length.";
+  const structural = [node("h", "heading", "2. Scope"), node("t", "table", "flow unit")];
+  for (const titleLength of [1, 12, 60, 140, 160, 162, 163, 164, 168, 169, 170, 171, 200]) {
+    for (const [label, nodes] of [
+      ["paragraph", [paragraph("p", context)]],
+      ["structural", structural],
+      ["empty", []],
+    ]) {
+      const title = "T".repeat(titleLength);
+      const summary = documentSummary({ title, nodes, language: "en-US" });
+      const context_text = nodes.length === 1 ? context : "";
+      // A summary may only claim visible context when the retained output really carries some.
+      if (!summary.titleOnly)
+        assert.ok(
+          [...summary.text].length > [...summary.label].length + 2,
+          `visible context claimed but absent (${label}, ${titleLength}): ${JSON.stringify(summary.text)}`,
+        );
+      // Unclipped means nothing was lost: the summary is the whole projection.
+      if (!summary.clipped)
+        assert.equal(
+          summary.text,
+          title + (context_text ? ": " + context_text : ""),
+          `unclipped summary must equal the projection (${label}, ${titleLength})`,
+        );
+      // Only a page whose summary is the title alone can be a residual, and only a real paragraph
+      // can be dropped.
+      if (summary.contextDropped) assert.equal(summary.titleOnly, true);
+      if (context_text === "") assert.equal(summary.contextDropped, false);
+      assert.equal([...summary.text].length <= SUMMARY_LIMIT, true);
+      assert.equal(
+        [...summary.text].some((character) => {
+          const point = character.codePointAt(0);
+          return point >= 0xd800 && point <= 0xdfff;
+        }),
+        false,
+      );
+    }
+  }
+});
+
 test("catalog summaries name the actual category, its position and the real count", () => {
   const domain = catalogSummary({
     language: "en-US",
