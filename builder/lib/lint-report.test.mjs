@@ -142,7 +142,7 @@ test("Ubuntu CI command preserves failure exit and current complete evidence wit
   assert.ok(command);
   assert.match(workflow, /name: Preserve complete validation diagnostics\n\s+if: always\(\)/u);
   assert.match(workflow, /actions\/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a/u);
-  for (const mode of ["pass", "test-failure", "early-failure", "report-failure", "stale"]) {
+  for (const mode of ["pass", "test-failure", "early-failure", "report-failure", "missing-report-success", "stale"]) {
     const root = fixture(t);
     const runnerTemp = path.join(root, "runner");
     const evidence = path.join(runnerTemp, "pcr-validation");
@@ -153,6 +153,7 @@ test("Ubuntu CI command preserves failure exit and current complete evidence wit
       echo "actual validation transcript"
       if [ "$FIXTURE_MODE" = early-failure ]; then echo "catalog failed" >&2; exit 17; fi
       if [ "$FIXTURE_MODE" = report-failure ]; then echo "Full diagnostics (unsaved): original finding" >&2; exit 1; fi
+      if [ "$FIXTURE_MODE" = missing-report-success ]; then exit 0; fi
       mkdir -p .reports
       printf '{"all_diagnostics":["one","two"]}\\n' > .reports/pcr-lint.json
       if [ "$FIXTURE_MODE" = test-failure ]; then exit 23; fi
@@ -161,7 +162,7 @@ test("Ubuntu CI command preserves failure exit and current complete evidence wit
     if (mode === "stale") { fs.mkdirSync(path.join(root, ".reports")); fs.writeFileSync(path.join(root, reportPath), "STALE"); }
     const run = spawnSync("sh", ["-c", command], { cwd: root, encoding: "utf8",
       env: { ...process.env, PATH: bin + path.delimiter + process.env.PATH, RUNNER_TEMP: runnerTemp, FIXTURE_MODE: mode } });
-    const expected = { pass: 0, "test-failure": 23, "early-failure": 17, "report-failure": 1, stale: 1 }[mode];
+    const expected = { pass: 0, "test-failure": 23, "early-failure": 17, "report-failure": 1, "missing-report-success": 1, stale: 1 }[mode];
     assert.equal(run.status, expected, run.stderr);
     const transcript = fs.readFileSync(path.join(evidence, "validation.log"), "utf8");
     if (["pass", "test-failure"].includes(mode)) {
