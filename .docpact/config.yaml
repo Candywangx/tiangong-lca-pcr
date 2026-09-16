@@ -28,6 +28,7 @@ ownership:
           - README.md
           - .docpact/config.yaml
           - .gitignore
+          - .gitattributes
           - edgeone.json
           - .github/workflows/**
           - docs/**
@@ -54,12 +55,15 @@ ownership:
       paths:
         include:
           - packages/**
+          - scripts/vendor/workspace-seo/**
           - skills/**
           - .github/ISSUE_TEMPLATE/**
       ownerRepo: pcr
 
 coverage:
   include:
+    - .gitattributes
+    - scripts/vendor/workspace-seo/**
     - AGENTS.md
     - README.md
     - .docpact/config.yaml
@@ -161,6 +165,8 @@ rules:
         kind: docpact-config
       - path: .gitignore
         kind: repo-ignore-policy
+      - path: .gitattributes
+        kind: generated-snapshot-encoding
       - path: .github/workflows/**
         kind: repo-validation-workflow
       - path: docs/**
@@ -276,6 +282,8 @@ rules:
     triggers:
       - path: packages/pcr-docs/**
         kind: generated-public-documentation
+      - path: scripts/vendor/workspace-seo/**
+        kind: generated-build-and-proof
       - path: packages/pcr-core/src/languages.mjs
         kind: source-language-contract
       - path: packages/pcr-core/src/index.mjs
