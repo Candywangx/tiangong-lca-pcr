@@ -35,18 +35,20 @@ Standalone transmission or distribution services, electrical equipment, energy-s
 | How much | 1 kWh, equivalent to 3.6 MJ |
 | How well | Net and metered; current form, voltage, generation technology or mix, geography or grid, delivery boundary, loss treatment, and contractual attributes are declared |
 | How long or cycle | A representative reference period, normally one complete year; shorter periods require evidence of representativeness and disclosure of seasonal limitations |
-| reference_flow_link | One unit of the TianGong product flow Electricity, qualified by the dataset-specific technology or mix, geography, voltage, boundary, and reference period |
+| reference_flow_link | reference_electricity |
 
 | Field | Value |
 | --- | --- |
-| Reference amount | 1 kWh (3.6 MJ) |
-| Reference product flow | Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae` |
+| Reference amount | 1 |
+| Reference product flow | Electricity category locator `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`; the application's quantitative reference uses its selected qualified interface Flow |
 | Reference flow property | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` |
 | Reference unit group | Units of energy `93a60a57-a3c8-11da-a746-0800200c9a66` |
 | Reference unit | kWh |
-| Required qualifiers | generation technology or mix; geography or grid or supplier; alternating or direct current; voltage at the reference boundary; net plant export or customer-meter boundary; reference period; transmission and distribution loss treatment; infrastructure inclusion; contractual or tracking-instrument treatment |
+| Required qualifiers | generation technology or mix; geography or grid or supplier; alternating or direct current; voltage at the reference boundary; net plant export or customer-meter boundary; reference period; transmission and distribution loss treatment and accounting location; infrastructure inclusion; annual amount source class; contractual or tracking-instrument treatment |
 
 When constructing a foreground data package, every item listed in `Required qualifiers` shall be declared in dataset metadata, process notes, reference flow comments, product description, or an equivalent data-package field. Missing required qualifiers make the reference flow incomplete for that package.
+
+The generic Electricity UUID in this section identifies the product category, not the quantitative output Flow of every application. The selected root input and reference reporting output must use the same exact qualified Flow; no product conversion is implied. Before using an existing interface Flow, verify its physical meaning, flow property, unit chain, and qualifiers. Keep the exact Process and Model versions chosen for an application in that data package and its calculation evidence, rather than fixing dataset versions in this PCR.
 
 | Role | Tiangong flow | Flow type | UUID | Flow property | Unit group | Preferred unit |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -56,10 +58,11 @@ When constructing a foreground data package, every item listed in `Required qual
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
-| `measure_reference_energy` | Reference product and all internal electricity exchanges | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | Report electricity in kWh. Convert energy consistently using 1 kWh = 3.6 MJ and preserve unrounded meter values until final normalization. |
+| `measure_reference_energy` | Reference product and internal electricity exchanges | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh or convertible MJ | Report the functional unit as 1 kWh. Retain each linked Process's verified native reference amount and unit, including a 1 MJ or 3.6 MJ reference when applicable; convert consistently using 1 kWh = 3.6 MJ for comparison and preserve unrounded amounts until final normalization. |
 | `measure_net_generation` | Generation output | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | Net generation equals gross generator output minus measured plant own-use attributable to electricity production over the same period. Do not mix gross and net quantities. |
-| `measure_delivered_energy` | Customer-meter reference boundary | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | Delivered electricity is the reconciled meter quantity at the declared boundary. Network input, delivered output, own use, imports, exports, and losses shall share the same period and network scope. |
-| `measure_mix_weighting` | Multi-source generation or supplier/grid mix | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | Weight constituent inventories by measured net generated or delivered kWh on the declared basis. Shares shall sum to 100% after documented rounding and shall not double-count contractual attributes. |
+| `measure_delivered_energy` | Customer-meter reference boundary | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | Prefer reconciled measured delivery at the declared boundary. Network input, delivered output, own use, imports, exports, and losses shall share the same period and network scope; a proxy shall identify its mismatch with that boundary. The 1 kWh reference output is not an observed annual delivered amount. |
+| `measure_mix_weighting` | Multi-source generation or supplier/grid mix | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | Prefer measured net generated or delivered kWh on the declared basis. If unavailable, derive compatible generation or delivery amounts from documented activity and technology-specific assumptions, and label the result a scenario estimate rather than an observed mix. Installed capacity shares alone and assumed annual-volume surrogates are not actual generation shares. Shares shall sum to 100% after documented rounding and shall not double-count contractual attributes. |
+| `measure_annual_supply` | Annual supply or production metadata | Energy in the selected reference Flow's unit | Compatible energy unit in the annual field | Record a numeric annual amount and compatible unit separately from the 1 kWh functional unit. Prefer actual annual production or supply for the declared technology, geography, period, and meter boundary. If no suitable actual amount is obtainable, record a fixed, reproducible assumed annual amount, or explicitly use the native reference Flow amount as an annual surrogate. State the source class, derivation, limitations, and replacement condition in methodology fields; a surrogate is neither observed annual output nor evidence of market share or lifetime asset service. An all-voltage total is not a measured amount at one voltage. |
 
 ## 5. System Boundary
 
@@ -81,6 +84,17 @@ When constructing a foreground data package, every item listed in `Required qual
 | `boundary_delivery_conditional` | Transmission and distribution | When the reference product is delivered beyond net plant export, include electricity required to compensate for transmission and distribution losses, network operation and maintenance, direct releases, and the life-cycle share of grid infrastructure up to the declared meter. | `epd-pcr-2007-08-v5-0-2` |
 | `boundary_use_exclusion` | Downstream use | Exclude the consumer's use of electricity and all processes after the declared customer meter. Do not exclude losses or grid stages that occur before that meter. | `epd-pcr-2007-08-v5-0-2` |
 | `boundary_cutoff_control` | All included stages | Do not use a cut-off rule to omit a known hazardous, regulated, or potentially material flow. Any screened omission shall be quantified where practicable and disclosed with its expected significance; the retained model shall demonstrate at least 99% coverage of relevant mass, energy, and environmental significance when applying the source PCR's 1% screening rule. | `epd-pcr-2007-08-v5-0-2` |
+| `boundary_interface_hierarchy` | Production and delivered electricity | Distinguish technology-category production mixes, the regional total production mix, and consumption mixes at each applicable voltage. Follow the actual injection and delivery route, including direct injection, trade and storage where relevant. A production mix and a consumption mix are different products even when their energy unit matches. Count a parent mix or its constituent suppliers at one demand, never both. |  |
+| `boundary_explicit_foreground` | Generation, fuel, assets and delivery | Make fuel origin, processing and transport, generation and own-use, technology-defining assets and their construction, maintenance and retirement, mix composition, physical trade, storage and applicable pre-delivery network stages inspectable in the foreground Model or a resolvable linked submodel. Reuse suitable existing processes or justified proxies; generic material and service production may remain in the background behind explicit, quantified inputs. Missing primary data do not remove a required stage, and a solvable background connection alone does not establish a suitable provider or complete foreground coverage. |  |
+| `boundary_voltage_data_fallback` | Delivered electricity with missing segment records | Prefer compatible measured losses and assets for each voltage segment. Only if segment losses cannot be obtained but a defensible route-wide loss or proxy exists, assign that total or the residual after known segments once to a declared aggregate interface; other unassigned interfaces may pass equal energy. Disclose the denominator, covered route, asset scope and uncertainty. This is an accounting assumption, not measured zero loss or a universal 1:1 Model multiplier. Without a defensible segment or aggregate value, delivery coverage remains unresolved. |  |
+
+### Evidence and missing-data paths
+
+The intended dataset uses compatible, period-specific records for the declared technology, geography, injection voltage, network segment, generation mix, fuel route, and asset life cycle. Preserve original measurements, their gross/net basis, meter positions, source period, publication edition, and exact provider selection before normalizing to the reference flow. For each material quantity, use this evidence order: suitable direct observation; a reproducible derivation from compatible observations; a calibrated representative proxy; then a fixed, reasoned expert assumption. Record the original value, conversion, scope mismatch, uncertainty, sensitivity when a choice could change the main conclusion, and what evidence would replace the assumption. An unavailable value is never silently set to zero.
+
+For network losses, prefer measured input, output, own use and losses at each applicable voltage segment on a common period and network boundary; allocate segment-specific assets to those segments. Only when voltage-specific losses are unavailable but a defensible total loss or aggregate proxy covers the declared delivery route may the application assign that total, or the residual after known segments, once to a stated aggregate accounting interface. Interfaces without a separate loss assignment may then transfer equal physical energy (1:1) for this scenario. Identify the total-loss denominator, coverage, chosen interface, included assets, remaining segments and uncertainty. Equal-energy transfer is not evidence of physically zero loss at those voltages, is not a universal grid topology, and does not prescribe a Model multiplier of one when native supplier reference amounts differ. Replace the aggregate allocation when suitable segment data become available; never charge the same loss or asset twice. If neither segment data nor a defensible aggregate loss/proxy is available, leave delivery coverage unresolved and do not claim a complete delivered-electricity result.
+
+When an indispensable fuel, asset, waste-treatment or provider quantity lacks a suitable observation or defensible proxy, retain the unresolved demand and identify the affected life-cycle stage and use limitation. A narrower draft may be described with its actual boundary; it does not satisfy the full boundary in this PCR merely because its schema or solver checks pass.
 
 ## 6. Process Inventory Structure
 
@@ -89,8 +103,15 @@ When constructing a foreground data package, every item listed in `Required qual
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
 | `upstream_supply` | Upstream supply of energy carriers, auxiliaries, water, and services | required | Always included; the applicable input set depends on the declared generation technology or mix | Supply reviewed upstream product and service datasets to the foreground electricity system | Quantities normalized to 1 kWh at the declared reference boundary |
-| `electricity_generation` | Electricity generation and plant operation | required | Always included | Convert declared energy resources into net electricity and record plant operation, infrastructure, emissions, wastes, and co-products | Measured net electricity over the reference period, normalized to the reference flow |
-| `transmission_distribution` | Transmission and distribution to the declared meter | conditional | Include when the reference boundary is downstream of net plant export | Reconcile network inputs, delivered output, losses, network operation, and grid infrastructure | 1 kWh delivered at the declared voltage and meter |
+| `electricity_generation` | Electricity generation and plant operation | required | Always included; each applicable technology may be instantiated separately and composed into mutually exclusive nested mixes | Convert declared energy resources into net electricity and record plant operation, infrastructure, emissions, wastes, and co-products | Measured net electricity over the reference period, normalized to the reference flow |
+| `transmission_distribution` | Transmission and distribution to the declared meter | conditional | Include when the reference boundary is downstream of net plant export; instantiate applicable voltage interfaces | Reconcile network inputs, delivered output, losses, network operation, and grid infrastructure | 1 kWh delivered at the declared voltage and meter |
+| `reference_interface` | Declared reference interface | required | Reporting view of the actual net plant-export or customer-meter root; do not create a free electricity provider | Pass through exactly one selected root output without adding burden or supply | 1 kWh at the declared reference boundary |
+
+These rows describe responsibilities, not a fixed number of physical processes. A model may nest multiple mutually exclusive production levels. For a disclosed China 2023 application, one valid statistical tree has a regional total supplied by thermal, hydro, nuclear, wind and solar electricity; thermal may contain coal, gas, biomass and other thermal generation, while solar may contain photovoltaic and solar-thermal submixes. Biomass inside thermal is not also an independent top-level supply. A result Process of a submix may supply its parent only once. The actual injection voltage and direct-supply routes determine the consumption-side graph; this example does not require every generator to pass through high voltage.
+
+If that scenario has a defensible aggregate loss for its declared delivery route but no voltage-specific loss records, it may assign the total once at a declared high-voltage accounting interface and transfer equal energy through unassigned medium- and low-voltage interfaces. This does not establish physical zero loss at those voltages or a universal grid topology. Replace the aggregate allocation with compatible segment records when available.
+
+Each inventory `Normalization basis` states the final amount per declared reference flow. The original period and lifetime denominators remain in the Amount rules and collection methods; the reference interface reports the actual selected root output without adding another supply or double-counting its electricity.
 
 ### Process: Upstream supply of energy carriers, auxiliaries, water, and services (`upstream_supply`)
 
@@ -104,10 +125,10 @@ Record each technology-relevant energy carrier, auxiliary material, water supply
 
 - Selected flow: Dataset-specific reviewed product or service flow
 - Flow property / unit: Flow-specific property and unit; energy carriers shall additionally retain the recorded quantity needed for energy conversion
-- Amount rule: Sum supplier, invoice, stock-change, and meter records for the reference period; reconcile opening and closing stocks; normalize each input to the reference electricity output
+- Amount rule: Sum supplier, invoice, stock-change, and meter records for the reference period; reconcile opening and closing stocks; normalize each input to the reference electricity output; Measurement or interim allocation basis: One kWh at the declared electricity reference boundary
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: One kWh at the declared electricity reference boundary
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_input_records`
@@ -123,10 +144,10 @@ Pass the separately identified upstream products and services, including their r
 
 - Selected flow: Same product or service flows as the linked upstream input datasets
 - Flow property / unit: Flow-specific property and unit
-- Amount rule: Equal to the reconciled amount required by the receiving foreground process
+- Amount rule: Equal to the reconciled amount required by the receiving foreground process; Measurement or interim allocation basis: One kWh at the declared electricity reference boundary
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: One kWh at the declared electricity reference boundary
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_input_records`
@@ -144,10 +165,10 @@ Record each fuel, feed, reactant, purchased electricity, auxiliary material, wat
 
 - Selected flow: Technology-specific product and service flows
 - Flow property / unit: Flow-specific property and unit; fuels shall retain mass or volume and net calorific value needed for energy accounting
-- Amount rule: Reconcile supplier, meter, operational, and stock records over the reference period and normalize by net electricity output
+- Amount rule: Reconcile supplier, meter, operational, and stock records over the reference period and normalize by net electricity output; Measurement or interim allocation basis: Net electricity generated during the same reference period
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: Net electricity generated during the same reference period
+- Normalization basis: per reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_generation_inputs`
@@ -159,10 +180,10 @@ Record electricity consumed by generation auxiliaries and plant services on the 
 
 - Selected flow: Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - Flow property / unit: Net calorific value / kWh
-- Amount rule: Metered plant own-use attributable to electricity production; use the co-generation allocation rule when shared with useful heat
+- Amount rule: Metered plant own-use attributable to electricity production; use the co-generation allocation rule when shared with useful heat; Measurement or interim allocation basis: Net electricity generated during the same reference period
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: Net electricity generated during the same reference period
+- Normalization basis: per reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_generation_metering`
@@ -174,10 +195,10 @@ Record plant construction, replacement, maintenance, and decommissioning inputs 
 
 - Selected flow: Technology- and site-specific infrastructure, maintenance, and treatment flows
 - Flow property / unit: Flow-specific property and unit
-- Amount rule: Installed or replaced quantity multiplied by the included life-cycle share and divided by lifetime net generation
+- Amount rule: Installed or replaced quantity multiplied by the included life-cycle share and divided by lifetime net generation; Measurement or interim allocation basis: Lifetime net electricity generation allocated to the declared product
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: Lifetime net electricity generation allocated to the declared product
+- Normalization basis: per reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_infrastructure_records`
@@ -191,12 +212,12 @@ Record plant construction, replacement, maintenance, and decommissioning inputs 
 
 This is the quantitative reference at a net plant-export boundary and the network input at a downstream delivery boundary. The generic identity is qualified in the data package; it does not imply a universal technology or geography.
 
-- Selected flow: Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- Selected flow: Electricity at the application-selected exact, qualified plant-export interface Flow
 - Flow property / unit: Net calorific value / kWh
 - Amount rule: Gross generator output minus measured plant own-use attributable to electricity production; normalize to 1 kWh at plant export or to the amount required for 1 kWh delivered
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: Declared reference flow
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_generation_metering`
@@ -217,10 +238,10 @@ Record useful exported heat, steam, or another co-product separately whenever it
 
 - Selected flow: Co-product-specific product flow
 - Flow property / unit: Co-product-specific property and unit
-- Amount rule: Metered net co-product delivered outside the process, excluding internal use and unrecovered losses
+- Amount rule: Metered net co-product delivered outside the process, excluding internal use and unrecovered losses; Measurement or interim allocation basis: Net electricity generated during the same reference period
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: Net electricity generated during the same reference period
+- Normalization basis: per reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_coproduct_metering`
@@ -234,10 +255,10 @@ Record ash, sludge, spent catalysts, treatment residues, radioactive waste, and 
 
 - Selected flow: Waste-specific flow by treatment destination
 - Flow property / unit: Mass / kg unless a more appropriate reviewed property is required
-- Amount rule: Weighed shipment or reconciled waste record for the reference period, less documented stock change
+- Amount rule: Weighed shipment or reconciled waste record for the reference period, less documented stock change; Measurement or interim allocation basis: Net electricity generated during the same reference period
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: Net electricity generated during the same reference period
+- Normalization basis: per reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_waste_records`
@@ -251,10 +272,10 @@ Record measured or calculated releases to air, water, and soil and direct resour
 
 - Selected flow: Substance- and compartment-specific elementary flow
 - Flow property / unit: Mass / kg, or the reviewed flow-specific property and unit
-- Amount rule: Prefer facility monitoring; otherwise apply a documented calculation to reconciled activity data and retain factor provenance
+- Amount rule: Prefer facility monitoring; otherwise apply a documented calculation to reconciled activity data and retain factor provenance; Measurement or interim allocation basis: Net electricity generated during the same reference period
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: Net electricity generated during the same reference period
+- Normalization basis: per reference flow
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_direct_releases`
@@ -272,10 +293,10 @@ Record the reconciled electricity entering the included network. For a mix, main
 
 - Selected flow: Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - Flow property / unit: Net calorific value / kWh
-- Amount rule: Metered imports plus included generation, adjusted for stock or storage changes where applicable, required to deliver the reference kWh
+- Amount rule: Metered imports plus included generation, adjusted for stock or storage changes where applicable, required to deliver the reference kWh; Measurement or interim allocation basis: One kWh delivered at the declared meter
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: One kWh delivered at the declared meter
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_network_metering`
@@ -287,10 +308,10 @@ Record substations, lines or cables, transformers, maintenance materials, replac
 
 - Selected flow: Network-specific infrastructure, maintenance, energy, and treatment flows
 - Flow property / unit: Flow-specific property and unit
-- Amount rule: Allocate included asset and operational quantities to electricity delivered over the corresponding asset life or reference period
+- Amount rule: Allocate included asset and operational quantities to electricity delivered over the corresponding asset life or reference period; Measurement or interim allocation basis: One kWh delivered at the declared voltage and meter
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Route-specific (`route_specific`)
-- Normalization basis: One kWh delivered at the declared voltage and meter
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_network_records`
@@ -304,12 +325,12 @@ Record substations, lines or cables, transformers, maintenance materials, replac
 
 This is the quantitative reference when the declared boundary is a customer meter. Voltage and network scope shall match the loss and infrastructure data.
 
-- Selected flow: Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- Selected flow: Electricity at the application-selected exact, qualified customer-meter interface Flow
 - Flow property / unit: Net calorific value / kWh
 - Amount rule: Fixed at 1 kWh of reconciled metered delivery; required network input is calculated from the measured balance and losses
 - Value mode: Fixed value (`fixed_value`)
 - Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: Declared reference flow
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: External source (`external_source`)
 - Collection protocol:
@@ -332,14 +353,62 @@ Record network-related releases such as insulating-gas leakage or oil releases b
 
 - Selected flow: Substance- and compartment-specific elementary flow
 - Flow property / unit: Mass / kg, or the reviewed flow-specific property and unit
-- Amount rule: Reconcile monitoring, maintenance, purchase, recovery, and stock records over the reference period
+- Amount rule: Reconcile monitoring, maintenance, purchase, recovery, and stock records over the reference period; Measurement or interim allocation basis: One kWh delivered at the declared meter
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
-- Normalization basis: One kWh delivered at the declared meter
+- Normalization basis: per reference flow
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_network_records`
 - Sources: `epd-pcr-2007-08-v5-0-2`
+
+### Process: Declared reference interface (`reference_interface`)
+
+#### Inputs
+
+##### Product flows
+
+###### Selected root electricity (`selected_root_electricity`)
+
+Use the exact qualified plant-export or customer-meter Flow selected for this application. This accounting input is the one actual root output; it is not a second source of electricity.
+
+- Selected flow: Electricity at the application-selected exact, qualified reference-boundary interface Flow
+- Flow property / unit: Net calorific value / kWh
+- Amount rule: Pass through 1 kWh from exactly one selected root output at the declared boundary; convert the native supplier reference unit as required
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Scenario-specific (`scenario_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: External source (`external_source`)
+- Collection protocol:
+- Sources: `epd-pcr-2007-08-v5-0-2`
+
+##### Waste flows
+
+##### Elementary flows
+
+#### Outputs
+
+##### Product flows
+
+###### Reference electricity (`reference_electricity`)
+
+This is the functional-unit reporting output of the actual plant-export or customer-meter root. It has the same exact qualified Flow identity as `selected_root_electricity`, passes through that electricity and adds no burden. If the selected root already exposes this output, report it directly rather than materializing another provider. The generic Electricity UUID in Section 3 identifies the category only.
+
+- Selected flow: Same application-selected exact, qualified reference-boundary Electricity Flow as `selected_root_electricity`
+- Flow property / unit: Net calorific value / kWh
+- Amount rule: 1 kWh
+- Value mode: Fixed value (`fixed_value`)
+- Specificity: Scenario-specific (`scenario_specific`)
+- Normalization basis: per reference flow
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: External source (`external_source`)
+- Collection protocol:
+- Sources: `epd-pcr-2007-08-v5-0-2`
+
+##### Waste flows
+
+##### Elementary flows
 
 ## 7. Allocation and Co-product Handling
 
@@ -356,15 +425,16 @@ Record network-related releases such as insulating-gas leakage or oil releases b
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_input_records` | `upstream_supply` | Upstream product and service requirements | Supplier, invoice, stock, transport, and service records | flow identity; supplier; quantity; unit; opening stock; closing stock; origin; date; linked dataset | Reconcile purchases, production, stock change, and transfers; retain separate flow identities | Flow-specific | At least monthly, aggregated for reporting | Same representative period as electricity output | All included suppliers and facilities | Sum by identical flow, supplier, geography, and quality; do not net unlike flows | Invoices, meter exports, stock reconciliation, supplier evidence, and dataset links |
-| `cp_generation_inputs` | `electricity_generation` | Generation energy and auxiliary inputs | Plant meters, invoices, batch logs, stock records, and laboratory records | flow identity; quantity; unit; NCV where relevant; supplier; meter; timestamp; stock change | Reconcile meter and mass-balance records against production logs | Flow-specific | Continuous or per batch, aggregated monthly | Complete declared reference period | All generating units included in the dataset | Sum consistent records; keep units and technologies separately identifiable before normalization | Calibrated meters, invoices, calibration certificates, stock balance, and responsible-person sign-off |
-| `cp_generation_metering` | `electricity_generation` | Gross, own-use, net, and co-generated electricity | Revenue meters, generator meters, and auxiliary meters | meter id; gross output; own use; imports; exports; unit; timestamp; voltage; current form | Use synchronized meter readings and reconcile gross minus attributable own use to net output | kWh | Continuous, aggregated monthly | Complete declared reference period | Every included generator and auxiliary boundary | Sum only readings with aligned boundaries and periods; document replacements and gaps | Meter class, calibration status, raw exports, reconciliation, and gap-filling log |
-| `cp_infrastructure_records` | `electricity_generation` | Generation infrastructure and maintenance | Asset register, bills of materials, maintenance and decommissioning plans | asset or material; quantity; unit; commission date; life; replacement; end-of-life route | Reconcile installed and replaced assets to engineering records and amortize over lifetime net generation | Flow-specific | At commissioning and each material change | Asset life, linked to the dataset reference period | All material generation assets inside the declared boundary | Allocate exclusive assets directly; amortize shared assets consistently with section 7 | Asset register, engineering drawings, procurement records, and lifetime rationale |
-| `cp_coproduct_metering` | `electricity_generation` | Useful co-product output | Heat, steam, or product meter and delivery records | product identity; net delivered amount; unit; timestamp; customer or destination; internal use | Reconcile gross output, internal use, and external delivery on the same period | Product-specific | Continuous or per shipment, aggregated monthly | Complete declared reference period | Every useful co-product leaving included units | Aggregate by identical product and quality; keep non-useful rejected heat separate | Meter calibration, delivery records, and customer acceptance |
-| `cp_waste_records` | `electricity_generation` | Operational residues and wastes | Weighbridge tickets, manifests, laboratory classification, and stock records | waste identity; hazard class; mass; destination; treatment; date; opening and closing stock | Reconcile shipments and stock change; preserve destination and treatment identity | kg | Per shipment, aggregated monthly | Complete declared reference period | All included units and waste stores | Sum only identical waste and treatment routes | Manifests, weighbridge calibration, permits, laboratory results, and contractor receipts |
-| `cp_direct_releases` | `electricity_generation` | Direct releases and resource withdrawals | Continuous monitoring, stack tests, water tests, permits, fuel records, and calculation sheets | substance; compartment; amount; unit; method; detection limit; timestamp; activity; factor | Prefer facility measurement; otherwise calculate from reconciled activity and documented representative factors | kg or flow-specific | Continuous, test campaign, or calculation period appropriate to the source | Complete declared reference period, with campaigns shown representative | Every included emission point and direct withdrawal | Sum by substance and compartment; treat non-detects and missing periods explicitly | Calibration, laboratory accreditation, method, factor source, calculation workbook, and coverage statement |
-| `cp_network_metering` | `transmission_distribution` | Network input, delivery, import, export, own use, and losses | Boundary and customer meter records | meter id; network level; input; output; import; export; own use; timestamp; voltage | Reconcile the energy balance over identical network scope and time | kWh | Continuous, aggregated monthly | Complete declared reference period | Entire declared network route to the meter | Network input minus delivery, exports, and own use equals accounted losses after documented adjustments | Meter class, calibration, raw exports, reconciliation, and loss-adjustment log |
-| `cp_network_records` | `transmission_distribution` | Network assets, maintenance, energy, and releases | Asset register, maintenance logs, gas and oil records, procurement, and decommissioning plans | asset or substance; quantity; unit; voltage; route; life; stock; recovery; release; date | Reconcile assets and substances to the declared voltage and network scope | Flow-specific | At event and annually | Asset life and complete declared reference period | Entire declared network route | Amortize assets over delivered electricity; calculate stock losses from complete opening, purchase, recovery, and closing records | Asset register, maintenance work orders, purchase and recovery records, calibration, and lifetime rationale |
+| `cp_annual_supply` | `electricity_generation` | Annual production or delivered-supply metadata | Metered totals, compatible statistics, or a documented fixed assumption | amount; native reference unit; technology; geography; voltage; meter boundary; reference period; source class; source edition; derivation | Search for matching actual annual amounts first; otherwise fix a reproducible assumption or explicitly mark native reference amount as the annual surrogate | Compatible energy unit in annual field | Each reference year and source revision | Declared reference year, separate from source publication year | Declared generation or delivery boundary | Keep actual, derived and assumed amounts distinct; do not aggregate unlike scopes into a measured voltage-specific total | Source table or meter records, conversion, representativeness, proxy rationale, sensitivity and replacement condition |
+| `cp_input_records` | `upstream_supply` | Upstream product and service requirements | Supplier, invoice, stock, transport, and service records | flow identity; supplier; quantity; unit; opening stock; closing stock; origin; date; linked dataset | Reconcile purchases, production, stock change, and transfers; retain separate flow identities; Aggregation before final reference normalization: Sum by identical flow, supplier, geography, and quality; do not net unlike flows | Flow-specific | At least monthly, aggregated for reporting | Same representative period as electricity output | All included suppliers and facilities | per reference flow | Invoices, meter exports, stock reconciliation, supplier evidence, and dataset links |
+| `cp_generation_inputs` | `electricity_generation` | Generation energy and auxiliary inputs | Plant meters, invoices, batch logs, stock records, and laboratory records | flow identity; quantity; unit; NCV where relevant; supplier; meter; timestamp; stock change | Reconcile meter and mass-balance records against production logs; Aggregation before final reference normalization: Sum consistent records; keep units and technologies separately identifiable before normalization | Flow-specific | Continuous or per batch, aggregated monthly | Complete declared reference period | All generating units included in the dataset | per reference flow | Calibrated meters, invoices, calibration certificates, stock balance, and responsible-person sign-off |
+| `cp_generation_metering` | `electricity_generation` | Gross, own-use, net, and co-generated electricity | Revenue meters, generator meters, and auxiliary meters | meter id; gross output; own use; imports; exports; unit; timestamp; voltage; current form | Use synchronized meter readings and reconcile gross minus attributable own use to net output; Aggregation before final reference normalization: Sum only readings with aligned boundaries and periods; document replacements and gaps | kWh | Continuous, aggregated monthly | Complete declared reference period | Every included generator and auxiliary boundary | per reference flow | Meter class, calibration status, raw exports, reconciliation, and gap-filling log |
+| `cp_infrastructure_records` | `electricity_generation` | Generation infrastructure and maintenance | Asset register, bills of materials, maintenance and decommissioning plans | asset or material; quantity; unit; commission date; life; replacement; end-of-life route | Reconcile installed and replaced assets to engineering records and amortize over lifetime net generation; Aggregation before final reference normalization: Allocate exclusive assets directly; amortize shared assets consistently with section 7 | Flow-specific | At commissioning and each material change | Asset life, linked to the dataset reference period | All material generation assets inside the declared boundary | per reference flow | Asset register, engineering drawings, procurement records, and lifetime rationale |
+| `cp_coproduct_metering` | `electricity_generation` | Useful co-product output | Heat, steam, or product meter and delivery records | product identity; net delivered amount; unit; timestamp; customer or destination; internal use | Reconcile gross output, internal use, and external delivery on the same period; Aggregation before final reference normalization: Aggregate by identical product and quality; keep non-useful rejected heat separate | Product-specific | Continuous or per shipment, aggregated monthly | Complete declared reference period | Every useful co-product leaving included units | per reference flow | Meter calibration, delivery records, and customer acceptance |
+| `cp_waste_records` | `electricity_generation` | Operational residues and wastes | Weighbridge tickets, manifests, laboratory classification, and stock records | waste identity; hazard class; mass; destination; treatment; date; opening and closing stock | Reconcile shipments and stock change; preserve destination and treatment identity; Aggregation before final reference normalization: Sum only identical waste and treatment routes | kg | Per shipment, aggregated monthly | Complete declared reference period | All included units and waste stores | per reference flow | Manifests, weighbridge calibration, permits, laboratory results, and contractor receipts |
+| `cp_direct_releases` | `electricity_generation` | Direct releases and resource withdrawals | Continuous monitoring, stack tests, water tests, permits, fuel records, and calculation sheets | substance; compartment; amount; unit; method; detection limit; timestamp; activity; factor | Prefer facility measurement; otherwise calculate from reconciled activity and documented representative factors; Aggregation before final reference normalization: Sum by substance and compartment; treat non-detects and missing periods explicitly | kg or flow-specific | Continuous, test campaign, or calculation period appropriate to the source | Complete declared reference period, with campaigns shown representative | Every included emission point and direct withdrawal | per reference flow | Calibration, laboratory accreditation, method, factor source, calculation workbook, and coverage statement |
+| `cp_network_metering` | `transmission_distribution` | Network input, delivery, import, export, own use, and losses | Boundary and customer meter records | meter id; network level; input; output; import; export; own use; timestamp; voltage; loss denominator; aggregate coverage | Prefer reconciling each voltage-segment energy balance over identical network scope and time; when segment records are unavailable, check the aggregate loss or proxy scope and denominator and allocate it once; Aggregation before final reference normalization: Network input minus delivery, exports, and own use equals accounted losses after documented adjustments; interfaces without another assigned loss transfer equal energy | kWh | Continuous, aggregated monthly; record a proxy's source period | Complete declared reference period; disclose any proxy period mismatch | Entire declared network route to the meter | per reference flow | Meter class, calibration, raw exports, reconciliation, loss-adjustment log, proxy source, and accounting interface |
+| `cp_network_records` | `transmission_distribution` | Network assets, maintenance, energy, and releases | Asset register, maintenance logs, gas and oil records, procurement, and decommissioning plans | asset or substance; quantity; unit; voltage; route; life; stock; recovery; release; date; proxy coverage | Prefer reconciling segment assets and substances to the declared voltage and network scope; disclose included stages and the sole accounting interface for a shared asset proxy; Aggregation before final reference normalization: Amortize assets over delivered electricity; calculate stock losses from complete opening, purchase, recovery, and closing records; count shared assets once | Flow-specific | At event and annually | Asset life and complete declared reference period | Entire declared network route | per reference flow | Asset register, maintenance work orders, purchase and recovery records, calibration, lifetime rationale, and proxy suitability review |
 
 ### Calculation Rules
 
@@ -373,8 +443,11 @@ Record network-related releases such as insulating-gas leakage or oil releases b
 | `calc_net_generation` | `electricity_generation` | Net electricity = gross generator output - plant own-use attributable to electricity. Reconcile imports and exports separately and use aligned meter periods. | gross output; attributable plant own use; imports; exports | net electricity output | `epd-pcr-2007-08-v5-0-2` |
 | `calc_delivery_balance` | `transmission_distribution` | Accounted network loss = network input + imports - exports - delivered electricity - network own use - storage increase + storage decrease. Scale generation and upstream burdens to the network input needed for 1 kWh delivered. | network input; imports; exports; delivered electricity; own use; storage change | loss and required input per delivered kWh | `epd-pcr-2007-08-v5-0-2` |
 | `calc_inventory_normalization` | All foreground inventory rows | Normalized amount = reconciled period amount / reference-period net or delivered electricity, then multiplied by 1 kWh. Keep calculation precision and round only reported values. | reconciled flow amount; reference-period electricity output | flow amount per reference kWh | `epd-pcr-2007-08-v5-0-2` |
+| `calc_native_reference_scaling` | Linked foreground Processes and Models | For a supplier with native reference output r, an exchange amount a and demand d in compatible units, its contribution is a*d/r. Retain r, d and the selected supplier; a 1 MJ supplier serving 2 MJ demand scales by 2, while a 3.6 MJ supplier serving 2 MJ scales by 2/3.6. A Model multiplier is not a mix share or an annual production amount. | supplier exchange a; native output r; demand d | contribution per declared reference flow |  |
+| `calc_voltage_losses` | Voltage-stage delivery | With measured segment data, calculate each stage on its recorded denominator: if l = loss/input, required input = output/(1-l); if r_loss = loss/output, required input = output*(1+r_loss). If only a defensible aggregate loss exists, assign it once to one stated interface and allow equal-energy transfer at other unassigned stages; this does not mean physical zero loss. If no defensible loss exists, leave coverage unresolved. | segment or aggregate loss; denominator; output; assigned stage | required input at each declared interface |  |
+| `calc_mix_residual` | Statistical production mixes | Preserve each published category amount g_i, published total T and original residual T - sum(g_i). Only with compatible reporting scopes, positive sum(g_i), and a documented, justified reconciliation assumption may a bounded residual be allocated proportionally: adjusted g_i = g_i + (T - sum(g_i))*g_i/sum(g_i). This scenario does not identify the residual's actual technology. Preserve original and adjusted values separately; an unexplained or material missing supply remains unresolved rather than becoming a fictitious producer. | original category amounts; total; residual; declared reconciliation rule | traceable scenario weights and unresolved balance |  |
 | `calc_combustion_emissions` | Fuel combustion direct releases | For each fuel and GHG, emission = fuel consumption on a net-calorific-value energy basis x representative emission factor. Prefer facility measurements and technology-specific factors; retain fuel, NCV, factor, oxidation or control assumptions, and units. | fuel quantity; net calorific value; emission factor; measurement or control parameters | emission by substance | `ipcc-2006-stationary-combustion` |
-| `calc_generation_mix` | Multi-source electricity | Mix inventory = sum of each constituent inventory x its measured kWh share. Shares use the same net-generation or delivered basis and period and sum to 100% after documented rounding. | constituent inventories; constituent kWh; total kWh | declared electricity-mix inventory | `eu-pef-2021-2279`; `epd-pcr-2007-08-v5-0-2` |
+| `calc_generation_mix` | Multi-source electricity | Mix inventory = sum of each constituent inventory x its compatible kWh share. Prefer observed net-generation or delivered quantities; when these are unavailable use an explicitly modelled, reproducible scenario estimate with its activity, utilization and time basis, never bare capacity shares or annual-volume surrogates as actual market weights. Shares use the same basis and period and sum to 100% after documented rounding. | constituent inventories; compatible constituent kWh; total kWh | declared observed or estimated electricity-mix inventory | `eu-pef-2021-2279`; `epd-pcr-2007-08-v5-0-2` |
 | `calc_chp_allocation` | Combined heat and power | Electricity allocation share = (E_net / eta_e) / [(E_net / eta_e) + (H_net / eta_h)]. Apply the complementary share to useful heat; allocate exclusive assets directly. | net electricity; net useful heat; reference electrical efficiency; reference thermal efficiency | burden shares for electricity and useful heat | `epd-pcr-2007-08-v5-0-2` |
 | `calc_infrastructure_amortization` | Generation and network infrastructure | Per-kWh infrastructure amount = included asset quantity x allocation share / lifetime net generation or lifetime delivered electricity corresponding to that asset. | asset quantity; included life-cycle share; allocation share; lifetime electricity | infrastructure amount per kWh | `epd-pcr-2007-08-v5-0-2` |
 
@@ -387,18 +460,23 @@ Record network-related releases such as insulating-gas leakage or oil releases b
 | `dq_technological` | Generation and control technology | Match fuel, conversion technology, unit efficiency, pollution controls, storage, infrastructure, and operating mode; do not use a narrow technology process as a universal CPC 17100 default. | Unit configuration, process description, permits, commissioning year, and technology-specific dataset metadata |
 | `dq_metering_and_balance` | Electricity and co-product quantities | Use calibrated or legally controlled meters where applicable and demonstrate gross-to-net, network, and co-product balances on aligned boundaries and periods. | Calibration evidence, raw meter exports, reconciliation workbook, and signed exception log |
 | `dq_source_traceability` | Secondary datasets, factors, and contractual attributes | Record source, version or date, geography, technology, licence or access, selection rationale, and any modification. Supplier-specific electricity claims require qualifying contractual or tracking evidence and prevention of double counting. | Dataset metadata, factor sheets, contracts or instruments, quality-criteria assessment, and residual-mix check |
-| `dq_completeness` | Inventory boundary | Include all known material, energy, emission, waste, infrastructure, and delivery stages required by section 5. Quantify and justify omissions and explain zero values. | Completeness checklist, mass and energy balances, permit comparison, and omission log |
+| `dq_completeness` | Inventory boundary | Include all known material, energy, emission, waste, infrastructure, and delivery stages required by section 5. Quantify and justify omissions and explain zero values; an unresolved material stage remains incomplete even if another proxy or a solver returns a number. | Completeness checklist, mass and energy balances, permit comparison, and omission log |
+| `dq_evidence_hierarchy` | Material quantities and provider choices | Prefer compatible observations, then reproducible derivations, calibrated proxies and fixed, reasoned assumptions. Keep source facts, estimates and unknowns separate. Disclose source year versus represented year, scope mismatch, uncertainty, material sensitivity and replacement evidence; an available Flow or potential provider alone does not prove that the selected provider is suitable or actually used. | Original record, derivation, provider selection and calculation readback, limitation and sensitivity register |
 
 ## 9. Validation Rules
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | Reference flow | Confirm that the product flow, flow property, unit group, and kWh unit match section 3; confirm all required qualifiers and the CPC 17100 boundary are declared. | `un-cpc-3-0`; `tiangong-identity-query` |
+| `validate_reference_identity` | Reference flow | Confirm that the actual selected existing electricity interface Flow, property, unit group and unit conversion match the declared technology, voltage, current form and reference boundary. Section 3's generic Electricity Flow identifies the category, not every qualified interface. Confirm all required qualifiers and the CPC 17100 boundary. | `un-cpc-3-0`; `tiangong-identity-query` |
 | `validate_energy_balance` | Generation and delivery | Confirm gross minus attributable plant own-use equals net generation, and confirm the delivery balance closes within documented meter uncertainty. Reject mixed periods, voltage scopes, or gross/net bases. | `epd-pcr-2007-08-v5-0-2` |
 | `validate_mix_and_attributes` | Electricity mix | Confirm constituent kWh shares sum to 100%, each constituent has compatible boundaries and periods, and contractual attributes are not counted in both supplier-specific and residual/grid mixes. | `eu-pef-2021-2279`; `ghg-protocol-scope-2` |
 | `validate_inventory_completeness` | System boundary and inventory | Reconcile fuel and auxiliary records, direct releases, wastes, plant infrastructure, and conditional network stages against permits, meters, asset records, and the completeness statement. | `epd-pcr-2007-08-v5-0-2`; `iea-energy-statistics-manual` |
 | `validate_allocation` | Multi-output processes | Confirm the allocation hierarchy is followed, all inputs and outputs are conserved, CHP formula inputs are documented, exclusive equipment is assigned directly, and sensitivity is disclosed for consequential choices. | `eu-pef-2021-2279`; `epd-pcr-2007-08-v5-0-2` |
 | `validate_sources_and_period` | Evidence package | Confirm every secondary dataset and factor is identifiable and representative, the foreground reference period is complete, estimates and data gaps are visible, and confidential records remain auditable. | `iea-energy-statistics-manual`; `ghg-protocol-scope-2` |
+| `validate_annual_supply` | Annual quantity metadata | Require a numeric annual amount and compatible unit. Prefer a matching actual amount; otherwise verify the fixed assumption or native-reference surrogate and its separate methodology disclosure. Do not interpret a surrogate as measured production, actual market share, or asset lifetime service. |  |
+| `validate_voltage_fallback` | Delivered-electricity loss and asset coverage | Use segment-specific evidence when available. Otherwise verify that a defensible aggregate loss/proxy was assigned once, known segments were excluded from the residual, equal-energy transfer is labelled an assumption, and asset scope and uncertainty are disclosed. Reject 1:1 as proof of zero loss or full delivery coverage when no defensible total exists. |  |
+| `validate_mix_residual` | Production mix and statistical balance | Check mutually exclusive parent/child categories, original total versus category sum, the evidence for any residual reconciliation, and recomputation of dependent mixes and resulting inventories. Do not create a supplier for an unexplained statistical difference. |  |
+| `validate_foreground_lineage` | Model and resulting-process chain | Trace each declared low- or other-voltage demand through exact selected supplier versions, Model/result associations, reference-output exchanges and native r/d scaling. Check effective providers and unresolved demands separately from available candidates, and prevent double counting a parent mix with its children. A valid graph or solver receipt alone does not prove complete life-cycle coverage. |  |
 
 ## 10. Published Dataset Profile
 
@@ -407,9 +485,9 @@ Record network-related releases such as insulating-gas leakage or oil releases b
 | dataset_role | Foreground data package for generation or delivery of electrical energy; after review it may support a process, lifecycle model, secondary dataset, or background electricity dataset |
 | downstream_use | Product and organizational LCA, footprinting, supply-chain modelling, energy-system studies, and downstream process inventories requiring electricity at a declared boundary |
 | allowed_use | Use when generation technology or mix, geography or supplier, voltage, reference boundary, period, losses, infrastructure, and contractual attributes match the study |
-| excluded_use | Do not use as an undeclared global average, as a substitute for a route- or voltage-specific dataset, for electricity-use processes beyond the meter, or for supplier-specific claims without qualifying contractual evidence |
-| required_metadata | PCR id; CPC 17100; flow UUID; technology or mix and shares; geography, grid, or supplier; current form; voltage; reference boundary; reference period; net or delivered basis; loss and infrastructure scope; co-products and allocation; data sources and versions |
-| required_quality_disclosure | Meter coverage and calibration; data gaps and estimation; temporal, geographical, and technological representativeness; energy balances; cut-offs; allocation; uncertainty or sensitivity; contractual-instrument and residual-mix treatment |
+| excluded_use | Do not use as an undeclared global average, as a substitute for a route- or voltage-specific dataset, for electricity-use processes beyond the meter, for supplier-specific claims without qualifying contractual evidence, or to claim full-boundary coverage while material stages remain unresolved |
+| required_metadata | PCR id; CPC 17100; selected reference Flow and native unit; technology or mix and mutually exclusive hierarchy; geography, grid, or supplier; current form; voltage; reference boundary; reference period; net or delivered basis; loss and infrastructure scope; co-products and allocation; numeric annual supply/production amount with compatible unit; data sources and effective provider versions in the application evidence |
+| required_quality_disclosure | Meter coverage and calibration; source class of annual amount and actual-volume uncertainty; data gaps and fixed proxies; voltage-specific measurements or the declared aggregate-loss interface and equal-energy assumption; temporal, geographical, and technological representativeness; energy balances and original statistical residual; foreground and background coverage; cut-offs; allocation; uncertainty or sensitivity; contractual-instrument and residual-mix treatment |
 | update_trigger | Material change in generation technology, fuel or resource supply, mix shares, plant performance, pollution control, grid route or voltage, losses, infrastructure, co-products, allocation, emission factors, contractual instruments, or reference period |
 
 ## 11. Data Sources
