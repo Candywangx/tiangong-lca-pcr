@@ -1,10 +1,487 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47401"
-  title: "Parts for the goods of subclasses 47221 to 47223"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclasses-47221-to-47223"
+  classification_refs: "CPC 3.0 47401, parts for goods of subclasses 47221 to 47223"
+  covered_products: "Separately supplied dedicated finished parts of the specified host goods, including populated boards and fabricated mechanical parts when sold as those parts"
+  excluded_products: "Complete host equipment; raw unpopulated printed circuits, standalone ICs, unshaped sheet and packaging sold as their own products"
+  representative_product: "A populated communication-apparatus board module supplied as a replacement part; other dedicated part routes remain eligible when declared"
+  production_route: "Declare the actual on-site route; board population and sheet fabrication rows apply only when those operations occur"
+  market_state: "Accepted, functional, separately supplied part at the factory gate, before transport use or end of life"
+functional_unit:
+  what: "A declared dedicated part that performs a specified function in a compatible telephone or communications apparatus"
+  how_much: "1 kg net mass of accepted finished parts of one declared part specification"
+  how_well: "Pass the declared inspection and compatibility specification; disclose part type, materials and performance criteria"
+  how_long_or_cycle: "One completed production lot to the factory gate; service lifetime and use are not modeled"
+  reference_flow_link: "finished_part"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Cradle-to-gate accounting includes upstream datasets for purchased boards, ICs, solder paste, aluminium sheet, electricity and packaging, plus the declared on-site fabrication, assembly, testing and packing operations. Exclude host-device assembly after the part leaves the gate, distribution, use and end-of-life from this part dataset. Disclose any externally performed process as an upstream dataset. [itu-l1410-2024]"
+      source_ids: []
+    - rule_id: boundary_gate
+      applies_to: "foreground part production"
+      rule: "Include applicable on-site fabrication, module assembly, testing and packing until acceptance at factory gate; disclose route-specific omissions."
+      source_ids:
+        - itu-l1410-2024
+    - rule_id: boundary_supplier
+      applies_to: "purchased component inputs"
+      rule: "Keep purchased-component upstream burdens and process boundary explicit; avoid double counting a supplier stage as on-site fabrication."
+      source_ids:
+        - itu-l1410-2024
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components at the part producer gate, with supplier production represented upstream"
+  starting_condition_role: "Explicit foreground inputs with linked upstream datasets"
+  product_classification_scope: "Dedicated separately supplied parts for host goods 47221, 47222 and 47223"
+  recursive_input_rule: "Record a purchased same-category part as a distinct input with its own upstream dataset and stop tracing at that declared supplier boundary; do not silently merge it into the reference output"
+  upstream_dataset_requirement: "Use composition- and geography-matched supplier datasets where available; disclose missing upstream processes and proxy limits"
+  disclosure: "Report part identity, route, supplier boundary, included stages, exclusions and all deviations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Parts for the goods of subclasses 47221 to 47223"
+    uuid: "bf7766aa-8f63-4869-bd70-2090483f4437"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part type and part number"
+    - "compatible host subclass and model"
+    - "accepted functional specification"
+    - "material composition"
+    - "manufacturing route"
+    - "production geography and period"
+    - "packaging exclusion from net mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted finished parts on a calibrated scale after inspection and before transport packaging; exclude rejected units and the corrugated box. Collect using cp_finished_mass."
+  - id: inventory_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Physical flow property of each selected flow"
+      uuid: ""
+    required_unit: "row unit"
+    rule: "Record attributable lot quantities per 1 kg reference flow using the same accepted net output mass and production period; preserve board area in m2, material masses in kg and electricity in kWh."
+process_map:
+  - id: part_manufacturing
+    name: "Part fabrication, module assembly, testing and packing"
+    inclusion: "required"
+    inclusion_condition: "Declare which of board population, sheet fabrication and packing actually occur; each conditional card follows that route"
+    role: "foreground production of one accepted part type"
+    quantitative_reference: "per 1 kg accepted finished part"
+process_inventory:
+  - id: part_manufacturing
+    label: "Part fabrication, module assembly, testing and packing"
+    inputs:
+      product:
+        - row_id: bare_pcb
+          role: "Bare printed circuit board input"
+          name: "Fabricated bare PCB board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6f07dbee-0861-42d0-a644-f84a667933a9"
+          property_unit: "Area / m2"
+          description: "Include only when the producer populates a bare board for the declared communication part. Record the purchased board area and supplier technology; its upstream fabrication remains in the supplier dataset."
+          amount:
+            expression: "Measured board area attributable to accepted output, per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bare_pcb
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+        - row_id: packaged_ic
+          role: "Packaged integrated circuit input"
+          name: "Packaged integrated circuits"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b6eb5862-9b77-4f3a-8e0d-1eea7f0ac8bb"
+          property_unit: "Mass / kg"
+          description: "Include when packaged ICs are mounted on the part; reconcile masses and part numbers with the bill of materials. Do not count bare die fabrication as an on-site process when ICs are purchased."
+          amount:
+            expression: "Measured purchased IC mass consumed per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaged_ic
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+        - row_id: solder_paste
+          role: "Solder paste input"
+          name: "Solder paste"
+          flow_type: "product"
+          flow_ref:
+            uuid: "13b90193-c692-4fce-a8d6-a20554776710"
+          property_unit: "Mass / kg"
+          description: "Include only for an on-site solder-paste deposition route. Declare alloy and flux formulation; the database identity does not establish lead-free composition."
+          amount:
+            expression: "Measured paste consumed per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solder_paste
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet input"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include only for a part formed or cut from aluminium sheet at the foreground site. Declare grade, recycled content and actual fabrication route; this generic flow does not establish primary-metal origin."
+          amount:
+            expression: "Measured aluminium sheet consumption per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_sheet
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+        - row_id: electricity
+          role: "Purchased AC electricity"
+          name: "Grid-supplied alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity consumed by the declared on-site part fabrication, assembly, testing and packing activities. The public candidate records cannot uniquely establish the grid-supply identity; resolve the flow before dataset publication."
+          amount:
+            expression: "Metered attributable electricity per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated board shipping box input"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include when the accepted part is supplied in a corrugated board box. The box is an input to gate-ready packing and is excluded from the net reference-product mass."
+          amount:
+            expression: "Measured box mass attributable to accepted output per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_corrugated_box
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_part
+          role: "Accepted finished communication-equipment part"
+          name: "Parts for the goods of subclasses 47221 to 47223"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bf7766aa-8f63-4869-bd70-2090483f4437"
+          property_unit: "Mass / kg"
+          description: "One declared part type and host compatibility, accepted after inspection at the factory gate. Its net mass excludes the shipping box and rejects."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: rejected_pcba
+          role: "Rejected populated board waste"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Include only when assembled boards fail inspection and leave the foreground as segregated populated-board waste. Record destination and do not treat this waste as accepted product."
+          amount:
+            expression: "Measured rejected populated-board mass per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejected_pcba
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Segregated aluminium cutting scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Include only when aluminium-sheet cutting produces separately collected aluminium scrap. Record recycling or disposal destination without a credit in this foreground inventory."
+          amount:
+            expression: "Measured aluminium scrap mass per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_scrap
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_subdivide
+    applies_to: "shared lines and co-products"
+    rule: "Subdivide metered processes and assign direct input and waste records to the declared part first."
+    source_ids:
+      - itu-l1410-2024
+      - eu-pef-2021-2279
+  - rule_id: allocate_physical
+    applies_to: "shared facility data"
+    rule: "When subdivision is unavailable, use a demonstrated physical driver relevant to the process: board area for PCB operations, good die area for IC production, or mass for other parts. Record driver, totals and sensitivity."
+    source_ids:
+      - itu-l1410-2024
+      - eu-pef-2021-2279
+  - rule_id: allocate_economic
+    applies_to: "shared facility data without a defensible physical driver"
+    rule: "Use economic allocation only if physical data are insufficient; report price basis, period and sensitivity. Do not grant an automatic recycling credit to aluminium scrap."
+    source_ids:
+      - itu-l1410-2024
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bare_pcb
+      process_id: "part_manufacturing"
+      flow_role: "bare_pcb"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable bare printed circuit board input quantity"
+      collection_method: "Measure or reconcile bare printed circuit board input for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "m2"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_packaged_ic
+      process_id: "part_manufacturing"
+      flow_role: "packaged_ic"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable packaged integrated circuit input quantity"
+      collection_method: "Measure or reconcile packaged integrated circuit input for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_solder_paste
+      process_id: "part_manufacturing"
+      flow_role: "solder_paste"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable solder paste input quantity"
+      collection_method: "Measure or reconcile solder paste input for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_aluminium_sheet
+      process_id: "part_manufacturing"
+      flow_role: "aluminium_sheet"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable aluminium sheet input quantity"
+      collection_method: "Measure or reconcile aluminium sheet input for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_electricity
+      process_id: "part_manufacturing"
+      flow_role: "electricity"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable purchased ac electricity quantity"
+      collection_method: "Measure or reconcile purchased ac electricity for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kWh"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_corrugated_box
+      process_id: "part_manufacturing"
+      flow_role: "corrugated_box"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable corrugated board shipping box input quantity"
+      collection_method: "Measure or reconcile corrugated board shipping box input for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_finished_mass
+      process_id: "part_manufacturing"
+      flow_role: "finished_part"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable accepted finished communication-equipment part quantity"
+      collection_method: "Measure or reconcile accepted finished communication-equipment part for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_rejected_pcba
+      process_id: "part_manufacturing"
+      flow_role: "rejected_pcba"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable rejected populated board waste quantity"
+      collection_method: "Measure or reconcile rejected populated board waste for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+    - protocol_id: cp_aluminium_scrap
+      process_id: "part_manufacturing"
+      flow_role: "aluminium_scrap"
+      record_type: "lot ledger and calibrated meter or scale"
+      raw_fields: "lot ID; part number; accepted net output kg; attributable segregated aluminium cutting scrap quantity"
+      collection_method: "Measure or reconcile segregated aluminium cutting scrap for the same accepted lot; record route applicability and supplier or waste destination."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter or scale calibration; purchase and production ledger; acceptance and mass-balance record"
+  calculation_rules:
+    - id: lot_mass_balance
+      applies_to: "finished_part and material losses"
+      rule: "Check that accepted output plus separated scrap is physically plausible against measured material inputs; explain non-recovered losses without inventing a yield factor."
+      inputs:
+        - "accepted output"
+        - "material inputs"
+        - "scrap records"
+      output: "mass-balance review"
+      source_ids:
+        - itu-l1410-2024
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all inventory rows"
+      requirement: "Use the same part number, host compatibility, route and lot across inputs, outputs and reference flow."
+      evidence: "bill of materials; inspection record"
+    - id: dq_temporal
+      applies_to: "all collection protocols"
+      requirement: "Use one disclosed production period and site; record any estimated or missing meter share."
+      evidence: "dated ledgers; meter and allocation records"
+    - id: dq_completeness
+      applies_to: "applicable route cards"
+      requirement: "Account for applicable materials, power and wastes; add separate atomic records for other actual exchanges and explain omissions."
+      evidence: "process map; mass balance; waste transfer records"
+    - id: dq_electricity
+      applies_to: "electricity"
+      requirement: "Resolve a unique public product flow and a geography-matched upstream electricity dataset before publishing a data package."
+      evidence: "task-bound flow audit; meter; supplier dataset"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference flow and finished_part"
+    rule: "Require part/host compatibility, exact CPC 47401 product-flow UUID, 1 kg accepted net mass and exclusion of packaging from net product mass."
+    source_ids:
+      - un-cpc-3-2025
+      - itu-l1410-2024
+  - rule_id: validate_route
+    applies_to: "all inventory rows"
+    rule: "Require route-specific inclusion conditions, atomic selected flows, lot records and reconciliation of accepted output, rejects and material inputs."
+    source_ids:
+      - itu-l1410-2024
+  - rule_id: validate_unresolved
+    applies_to: "electricity"
+    rule: "Block publication of a foreground data package until a unique public electricity flow is audited; retain measured activity without choosing an ambiguous UUID."
+    source_ids:
+      - itu-l1410-2024
+published_dataset_profile:
+  dataset_role: "foreground product production dataset for one declared part specification"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Model the production of the declared dedicated part as an input to a host-device LCA when specifications and boundary match"
+  excluded_use: "Do not substitute for a complete phone or network device, compare unlike part functions by mass, or claim use/end-of-life impacts"
+  required_metadata: "part number; host compatibility; production geography, year and technology; bill of materials; accepted net mass; route and supplier boundary; allocation driver"
+  required_quality_disclosure: "unresolved electricity UUID; missing upstream data; conditional route omissions; meter allocation; scrap destination; source limitations"
+  update_trigger: "part design, material composition, route, supplier mix, electricity identity or production period changes materially"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC identity and host subclasses"
+  - id: "itu-l1410-2024"
+    type: "standard"
+    reference: "ITU-T Recommendation L.1410 (11/2024), https://www.itu.int/rec/dologin_pub.asp?id=T-REC-L.1410-202411-I%21%21PDF-E&lang=s&type=items"
+    used_for: "ICT parts, functional unit, process map, physical facility allocation"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5, https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en?filename=Annexes+1+to+2.pdf"
+    used_for: "multifunctional process allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7b9d03837f20fc8aeca3e7cb481919320fcbca7b86bc2ad4619ce2ec93d5f35e"
+  generated_content_sha256: "sha256:a7e5a5b87b93ef6080ee9b32d01ce3891ee20517c2951656107010fd94bb93b1"

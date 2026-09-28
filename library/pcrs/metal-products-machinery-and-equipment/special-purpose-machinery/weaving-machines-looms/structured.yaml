@@ -1,10 +1,408 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44612"
-  title: "Weaving machines (looms)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.weaving-machines-looms"
+  classification_refs: "CPC 3.0: 44612, Weaving machines (looms)"
+  covered_products: "New complete machines whose primary function is weaving warp and weft, including configured shuttle and shuttleless looms"
+  excluded_products: "Yarn preparation, knitting and sewing machines; standalone loom parts; woven fabric; used or rebuilt machines"
+  representative_product: "One factory-accepted motor-driven loom with its installed frame, weaving mechanisms, drive, controls where fitted and first-fill oil"
+  production_route: "Purchased or internally fabricated components, fitting, assembly and functional acceptance test; actual make-or-buy route is disclosed"
+  market_state: "New complete factory-accepted machine before transport packaging and customer use"
+functional_unit:
+  what: "Provide one complete machine capable of weaving warp and weft according to its declared configuration."
+  how_much: "One accepted complete machine."
+  how_well: "Declare weaving width, technology, installed mechanisms and factory acceptance result."
+  how_long_or_cycle: "At the factory gate after acceptance and before use; no operating lifetime is credited."
+  reference_flow_link: "finished_loom"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground begins with incoming components or the first performed in-house fabrication step and ends with the accepted net machine before packaging. Include attributable assembly electricity, installed oil, fitting waste and test activity. Purchased inputs require upstream datasets; avoid counting internally fabricated components twice [epd-hub-core-pcr-2026]."
+      source_ids: []
+    - rule_id: sb_route
+      applies_to: "factory production"
+      rule: "Record the actual make-or-buy route, assembly, fitting and acceptance test; add each performed fabrication operation as individually measured exchanges."
+      source_ids:
+        - sedzro-fugu-loom-2025
+    - rule_id: sb_upstream
+      applies_to: "purchased components"
+      rule: "Link each purchased component to a dataset with matching material and delivered state; disclose proxies."
+      source_ids:
+        - epd-hub-core-pcr-2026
+    - rule_id: sb_gate
+      applies_to: "finished product"
+      rule: "Stop at the factory-accepted complete loom before packaging, installation or use."
+      source_ids:
+        - toyota-jat910-2021
+boundary_abstraction:
+  declared_starting_condition: "State whether major frame and weaving subassemblies arrive fabricated or are made in-house."
+  starting_condition_role: "Incoming component gate or first performed in-house operation."
+  product_classification_scope: "Complete CPC 3.0 44612 looms; parts and other textile machinery remain separate products."
+  recursive_input_rule: "If a complete loom enters rework, record it as a separate input with an upstream dataset and disclose the route."
+  upstream_dataset_requirement: "Match component state, technology, geography and reference unit; disclose missing data."
+  disclosure: "Plant, period, model, configuration, make-or-buy boundary, accepted count, M, test yield, allocation and gaps."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Weaving machines (looms)"
+    uuid: "9a86353e-e91a-466c-be25-c022ac99dfe2"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "serial or batch"
+    - "weaving technology and width"
+    - "shedding and weft insertion type"
+    - "drive and control configuration"
+    - "installed accessories"
+    - "first-fill state"
+    - "factory acceptance"
+    - "plant and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_machine_mass."
+  - id: per_machine_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "exchange-specific property"
+      uuid: ""
+    required_unit: "row unit"
+    rule: "Collect each exchange per one accepted finished machine of the same configuration; partition shared measured totals by accepted-machine count and disclose rejects and rework."
+process_map:
+  - id: loom_build
+    name: "Component fitting, assembly and factory test"
+    inclusion: "required"
+    inclusion_condition: "Every accepted complete loom"
+    role: "Foreground factory production"
+    quantitative_reference: "One accepted complete loom, M kg net mass"
+process_inventory:
+  - id: loom_build
+    label: "Component fitting, assembly and factory test"
+    inputs:
+      product:
+        - row_id: frame_parts
+          role: "Fabricated frame parts"
+          name: "Fabricated loom structural parts and subframes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "76fc68b2-37b9-41b7-b153-6d84f556c57f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of fabricated structural parts installed in the accepted machine, including documented internal transfers."
+          amount:
+            expression: "Measured installed frame-part mass per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - toyota-jat910-2021
+                - sedzro-fugu-loom-2025
+            ranges: []
+        - row_id: drive_motor
+          role: "Drive motor"
+          name: "Industrial loom drive motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the physical drive motor installed in the declared configuration; its exact database identity remains under review."
+          amount:
+            expression: "Measured installed motor mass per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - sedzro-fugu-loom-2025
+            ranges: []
+        - row_id: electronic_controller
+          role: "Electronic controller"
+          name: "Weaving-machine electronic control unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the installed electronic control unit only for machines equipped with one."
+          amount:
+            expression: "Measured installed controller mass per accepted loom; zero only if documented absent."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - toyota-jat910-2021
+            ranges: []
+        - row_id: loom_lubricating_oil
+          role: "First-fill lubricating oil"
+          name: "Mineral lubricating oil for loom mechanisms"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record mechanical lubricant retained as first fill, excluding spent oil and textile-processing oil."
+          amount:
+            expression: "Measured retained first-fill oil mass per accepted loom; zero only if oil lubrication is absent."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_first_fill
+              source_ids:
+                - toyota-jat910-2021
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly and test electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record delivered electricity consumed by fitting, assembly, adjustment and acceptance testing."
+          amount:
+            expression: "Metered electricity attributable to fitting, assembly and acceptance test per accepted loom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - epd-hub-core-pcr-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_loom
+          role: "Accepted finished loom"
+          name: "Weaving machines (looms)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9a86353e-e91a-466c-be25-c022ac99dfe2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only a complete machine that passed factory acceptance, using its measured net mass M."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machine_mass
+              source_ids:
+                - toyota-jat910-2021
+            ranges: []
+      waste:
+        - row_id: machining_steel_scrap
+          role: "Machining steel scrap"
+          name: "Steel scrap from machining"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a88e0790-436c-44f8-b336-ee509aa8a38a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record segregated steel scrap generated by on-site frame fitting or machining when performed."
+          amount:
+            expression: "Weighed steel machining scrap attributable to one accepted loom."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - sedzro-fugu-loom-2025
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_subdivide
+    applies_to: "shared operations"
+    rule: "Prefer separately metered fitting, assembly and test operations."
+    source_ids:
+      - epd-hub-core-pcr-2026
+  - rule_id: alloc_physical
+    applies_to: "remaining shared burdens"
+    rule: "Partition measured shared inputs and outputs by a documented causal physical relationship such as machine-hours or component mass; disclose factor and basis."
+    source_ids:
+      - epd-hub-core-pcr-2026
+  - rule_id: alloc_scrap
+    applies_to: "steel scrap"
+    rule: "Report physical scrap mass and treatment route separately; do not silently credit avoided steel."
+    source_ids:
+      - epd-hub-core-pcr-2026
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_machine_mass
+      process_id: "loom_build"
+      flow_role: "accepted machine"
+      record_type: "acceptance and weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "reference period"
+      site_scope: "producing plant"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale record; acceptance certificate"
+    - protocol_id: cp_bom
+      process_id: "loom_build"
+      flow_role: "frame, motor and controller"
+      record_type: "BOM and receiving or transfer record"
+      raw_fields: "part ID; supplier; configuration; installed count; measured unit mass"
+      collection_method: "Reconcile installed parts to the accepted serial and weigh or use traceable mass records for the same configuration."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "reference period"
+      site_scope: "producing plant and supplier"
+      aggregation_rule: "installed mass / accepted machines"
+      quality_evidence: "BOM revision; receiving and weighing records"
+    - protocol_id: cp_first_fill
+      process_id: "loom_build"
+      flow_role: "installed oil"
+      record_type: "fill record"
+      raw_fields: "oil specification; filled mass or calibrated volume and density; spill"
+      collection_method: "Weigh oil retained in the machine or convert calibrated fill volume using measured density."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "reference period"
+      site_scope: "producing plant"
+      aggregation_rule: "retained oil / accepted machines"
+      quality_evidence: "fill sheet; calibration"
+    - protocol_id: cp_electricity
+      process_id: "loom_build"
+      flow_role: "assembly and test electricity"
+      record_type: "meter and production log"
+      raw_fields: "meter readings; model; test hours; accepted and rejected counts"
+      collection_method: "Meter relevant operations and remove unrelated loads; partition shared loads by recorded machine-hours."
+      unit: "kWh"
+      frequency: "batch or shift"
+      temporal_coverage: "reference period"
+      site_scope: "producing plant"
+      aggregation_rule: "attributable electricity / accepted machines"
+      quality_evidence: "meter record; allocation worksheet"
+    - protocol_id: cp_scrap
+      process_id: "loom_build"
+      flow_role: "machining steel scrap"
+      record_type: "waste weighing record"
+      raw_fields: "mass; steel grade; job; treatment route; accepted count"
+      collection_method: "Weigh segregated machining steel scrap attributable to the model."
+      unit: "kg"
+      frequency: "batch or shift"
+      temporal_coverage: "reference period"
+      site_scope: "producing plant"
+      aggregation_rule: "attributable scrap / accepted machines"
+      quality_evidence: "scale and transfer tickets"
+  calculation_rules:
+    - id: allocate_shared
+      applies_to: "assembly_electricity, machining_steel_scrap"
+      rule: "Attributable quantity per accepted loom = measured model-assigned quantity / accepted looms of that model; document physical allocation and rework."
+      inputs:
+        - cp_electricity
+        - cp_scrap
+        - "accepted count"
+        - "allocation worksheet"
+      output: "kWh or kg per accepted loom"
+      source_ids:
+        - epd-hub-core-pcr-2026
+    - id: mass_check
+      applies_to: "finished_loom"
+      rule: "Compare M with installed component and first-fill masses, fitting losses and weighing uncertainty; investigate unexplained differences."
+      inputs:
+        - cp_machine_mass
+        - cp_bom
+        - cp_first_fill
+        - cp_scrap
+      output: "documented mass reconciliation"
+      source_ids:
+        - epd-hub-core-pcr-2026
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all rows"
+      requirement: "Use one accepted configuration and traceable batch or serial; disclose make-or-buy and test yield."
+      evidence: "BOM; production and acceptance records"
+    - id: dq_completeness
+      applies_to: "all rows"
+      requirement: "Reconcile actual configured BOM and operations; add missing exchanges as atomic flows and disclose data gaps."
+      evidence: "BOM; meter, waste and emission registers"
+    - id: dq_representativeness
+      applies_to: "upstream datasets"
+      requirement: "Disclose year, geography, technology, completeness and proxies."
+      evidence: "dataset metadata and allocation worksheet"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "reference product"
+    rule: "Confirm a complete factory-accepted CPC 44612 loom, not a part or another textile machine."
+    source_ids:
+      - toyota-jat910-2021
+  - rule_id: val_mass
+    applies_to: "M and finished_loom"
+    rule: "Confirm calibrated net mass M in kg for the same accepted configuration and packaging exclusion."
+    source_ids:
+      - epd-hub-core-pcr-2026
+  - rule_id: val_inventory
+    applies_to: "all rows"
+    rule: "Check atomic identities, UUID property and unit where present, measured per-machine basis, inclusion conditions and no upstream double count."
+    source_ids:
+      - epd-hub-core-pcr-2026
+  - rule_id: val_gaps
+    applies_to: "publication and downstream use"
+    rule: "Disclose unresolved flow identities and empirical range gaps; do not treat a proxy as verified."
+    source_ids:
+      - epd-hub-core-pcr-2026
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one configured, factory-accepted new loom."
+  downstream_use: "secondary_dataset or background_dataset after dataset review."
+  allowed_use: "Factory-gate loom production with compatible upstream components and explicit technology and mass qualifiers."
+  excluded_use: "Fabric production, machine use, packaging, transport, installation or end of life without separate modules; cross-technology benchmarking without configuration alignment."
+  required_metadata: "PCR id and version; model; batch or serial; width and technology; make-or-buy route; plant; year; accepted count; M; upstream identities."
+  required_quality_disclosure: "Measurements, data gaps, unresolved UUIDs, allocation, representativeness and uncertainty."
+  update_trigger: "Material change to design, component supply, route, measured energy or acceptance procedure."
+data_sources:
+  - id: "toyota-jat910-2021"
+    type: "handbook"
+    reference: "Toyota Industries Corporation, *WEAVING MACHINERY JAT910 Air Jet Loom* (2021.12), https://www.toyotatextilemachinery.com/wp-content/uploads/2022/01/JAT910.pdf"
+    used_for: "One complete loom's mechanism classes; no general masses or intensities"
+  - id: "sedzro-fugu-loom-2025"
+    type: "literature"
+    reference: "Sedzro et al., *DESIGN OPTIMISATION OF AN AUTOMATED TRADITIONAL SMOCK (FUGU) WEAVING MACHINE*, African Journal of Applied Research 11(3), 2025, https://ajaronline.com/index.php/AJAR/article/download/1159/620/2673"
+    used_for: "Prototype frame, motor, mechanism and performance-test stages; no industry range"
+  - id: "epd-hub-core-pcr-2026"
+    type: "standard"
+    reference: "EPD Hub B.V., *Core Product Category Rules*, version 1.2.1 (2026), https://www.epdhub.com/_files/ugd/199f85_451db462020743c4b007603b67f3c807.pdf"
+    used_for: "General manufactured-product LCA allocation and data-quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b79882cc9d53b554af22b48ffd5982a88f9636e392ae1b33d55e8a3e2aaa37eb"
+  generated_content_sha256: "sha256:4a5a3336205e385ea4b3cd1397ba88e61cf87a89c4505e64ee3586477e3f2de6"

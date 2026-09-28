@@ -1,10 +1,501 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44821"
-  title: "Cooking appliances and plate warmers, non-electric, domestic, of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.cooking-appliances-and-plate-warmers-non-electric-domestic-of-iron-or-steel"
+  classification_refs: "CPC 3.0 44821, classification context only; no accepted mapping is asserted"
+  covered_products: "Complete non-electric domestic iron or steel cooking appliances and plate warmers, including gas-fired domestic hobs and cookers"
+  excluded_products: "Electric cooking appliances; non-cooking space heaters of CPC 44822; separately sold parts of CPC 44832; copper-bodied cooking or heating appliances of CPC 42912; commercial cooking equipment"
+  representative_product: "Accepted, complete iron or steel domestic gas hob with installed burner and controls"
+  production_route: "Steel housing fabrication, route-specific surface finishing, purchased functional component assembly, acceptance testing and factory-gate packaging"
+  market_state: "Finished and accepted appliance at factory gate, with declared sales packaging; transport packaging is excluded from net product mass"
+functional_unit:
+  what: "A complete domestic appliance that cooks food or warms plates without electric heat"
+  how_much: "One accepted finished appliance of the declared model and configuration"
+  how_well: "Meets the manufacturer's declared cooking or warming performance and applicable acceptance test; fuel and installed components are identified"
+  how_long_or_cycle: "At factory acceptance; no assumed service life or cooking cycle is embedded in this production reference"
+  reference_flow_link: "finished_appliance"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "factory-gate foreground package"
+      rule: "Include fabrication, route-specific finishing, final assembly, acceptance testing, attributable factory energy, scrap and packaging up to release of the accepted appliance."
+      source_ids:
+        - eu-jrc-cooking-appliances-2020
+        - us-epa-metal-fabrication-2007
+    - rule_id: boundary_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude customer cooking fuel, distribution, installation and end-of-life from this factory-gate inventory; disclose any separately modelled downstream scenarios."
+      source_ids:
+        - eu-jrc-cooking-appliances-2020
+boundary_abstraction:
+  declared_starting_condition: "Iron or steel sheet and purchased burner components enter the foreground factory; their upstream production is linked as separate background datasets"
+  starting_condition_role: "Purchased product inputs at the gate of the first included factory process"
+  product_classification_scope: "Finished CPC 44821 appliance; separately supplied CPC 44832 parts remain input components"
+  recursive_input_rule: "If a complete same-category appliance is purchased as an input, disclose and link its upstream dataset rather than recursively modelling it as fresh factory output"
+  upstream_dataset_requirement: "Link upstream datasets for purchased metal, functional components, coating material, gas, electricity and packaging, with geography and technology recorded"
+  disclosure: "Declare site, period, model, configuration, fuel, process route, purchased-versus-in-house components, mass M and all exclusions"
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Cooking appliances and plate warmers, non-electric, domestic, of iron or steel"
+    uuid: "6cc6000a-58ba-4ba3-bfa1-94ee239070ff"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - configuration
+    - "fuel or heat source"
+    - "iron or steel body grade"
+    - "installed burner or warming assembly"
+    - "coating route"
+    - "sales packaging state"
+    - "manufacturing site and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: electricity_energy
+    applies_to: "fabrication_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record alternating-current electricity consumed by the declared fabrication and assembly processes in MJ; convert a metered kWh record using 1 kWh = 3.6 MJ, and retain the original reading."
+process_map:
+  - id: housing_fabrication
+    name: "Steel housing fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when sheet-metal housing cutting and forming occur at the declared factory"
+    role: "Foreground cutting, forming and joining"
+    quantitative_reference: "per one accepted finished unit"
+  - id: surface_coating
+    name: "Powder coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include when powder coating is applied to the housing at the declared factory"
+    role: "Foreground finishing"
+    quantitative_reference: "per one accepted finished unit"
+  - id: final_assembly_test
+    name: "Final assembly and acceptance test"
+    inclusion: "required"
+    inclusion_condition: "Every accepted complete appliance is assembled and tested"
+    role: "Foreground assembly and test"
+    quantitative_reference: "per one accepted finished unit"
+  - id: sales_packaging
+    name: "Corrugated-box packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Include when a corrugated board box is supplied with the factory-gate sale unit"
+    role: "Foreground packaging"
+    quantitative_reference: "per one accepted finished unit"
+process_inventory:
+  - id: housing_fabrication
+    label: "Steel housing fabrication"
+    inputs:
+      product:
+        - row_id: steel_sheet_input
+          role: "Cold-rolled steel sheet for housing"
+          name: "Cold-rolled non-alloy steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For the sheet-fabrication route, record the mass of non-alloy cold-rolled steel sheet entering the housing line, including sheet that becomes measured offcut. Supplier grade and coating state must be declared; its Tiangong flow identity remains unresolved."
+          amount:
+            expression: "Measured sheet issued per one accepted finished unit; record supplier mass and reconcile stock changes."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - eu-jrc-cooking-appliances-2020
+                - us-epa-metal-fabrication-2007
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Alternating-current fabrication electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "949661a5-2af6-4e66-adf8-74f5fca306a9"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter or allocate the electricity used by cutting, forming, joining and installed finishing and assembly equipment; avoid double counting shared meters."
+          amount:
+            expression: "Measured attributable alternating-current electricity in MJ per one accepted finished unit; convert recorded kWh using electricity_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - us-epa-metal-fabrication-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap_output
+          role: "Steel sheet offcut scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "37997e0e-e34b-4ab9-a642-5d86f4333919"
+          property_unit: "Mass / kg"
+          description: "Weigh clean steel offcuts leaving the fabrication line. Record contaminated swarf separately in the produced dataset if present; the selected flow here is only steel scrap."
+          amount:
+            expression: "Measured steel scrap dispatched or stock-adjusted per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - us-epa-metal-fabrication-2007
+            ranges: []
+      elementary:
+        []
+  - id: surface_coating
+    label: "Powder coating"
+    inputs:
+      product:
+        - row_id: powder_coating_input
+          role: "Powder paint applied to housing"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass / kg"
+          description: "Include only when the declared factory uses powder paint; record purchased and consumed coating powder, with losses assigned to this line."
+          amount:
+            expression: "Measured powder paint consumed per one accepted finished unit when powder coating is used."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating
+              source_ids:
+                - us-epa-metal-fabrication-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: final_assembly_test
+    label: "Final assembly and acceptance test"
+    inputs:
+      product:
+        - row_id: domestic_gas_burner_input
+          role: "Purchased domestic gas burner assembly"
+          name: "Domestic gas hob burner assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include for a gas-fired configuration with a purchased domestic hob burner assembly; record its supplier identity and delivered mass. The searched industrial burner records are not this product."
+          amount:
+            expression: "Measured mass of purchased domestic burner assemblies per one accepted gas-fired finished unit."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - eu-jrc-cooking-appliances-2020
+            ranges: []
+        - row_id: acceptance_test_natural_gas
+          role: "Natural gas for gas-fired acceptance test"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only when natural gas is actually burned during the factory acceptance test; use a separate atomic fuel row in the produced dataset for any other test fuel."
+          amount:
+            expression: "Metered natural gas consumed in acceptance testing per one accepted finished unit when this fuel is used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_gas
+              source_ids:
+                - eu-jrc-cooking-appliances-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_appliance
+          role: "Accepted finished cooking appliance or plate warmer"
+          name: "Cooking appliances and plate warmers, non-electric, domestic, of iron or steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cc6000a-58ba-4ba3-bfa1-94ee239070ff"
+          property_unit: "Mass / kg"
+          description: "The reference product is one accepted complete unit. Its net mass M excludes the transport package and is weighed for the same configuration."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+                - eu-jrc-cooking-appliances-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: sales_packaging
+    label: "Corrugated-box packaging"
+    inputs:
+      product:
+        - row_id: corrugated_box_input
+          role: "Corrugated board sale box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include only when a corrugated board sale box accompanies the accepted appliance at the declared factory gate. This box is outside the measured net product mass M."
+          amount:
+            expression: "Measured mass of corrugated sale boxes issued per one accepted finished unit when boxed."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-jrc-cooking-appliances-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared factory processes"
+    rule: "First separate metered process lines, production periods and product configurations; retain directly traceable sheet, scrap, coating, burner, test gas and box records."
+    source_ids:
+      - us-epa-metal-fabrication-2007
+      - eu-jrc-cooking-appliances-2020
+  - rule_id: allocation_shared
+    applies_to: "remaining shared energy and waste"
+    rule: "If direct measurement cannot separate a shared process, allocate by a documented physical driver tied to that process, such as measured machine time; disclose the driver, denominator and sensitivity."
+    source_ids:
+      - us-epa-metal-fabrication-2007
+  - rule_id: scrap_no_credit
+    applies_to: "steel scrap output"
+    rule: "Record steel scrap as an output; do not subtract an assumed recycling credit inside the factory-gate foreground inventory."
+    source_ids:
+      - us-epa-metal-fabrication-2007
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "final_assembly_test"
+      flow_role: "accepted reference product"
+      record_type: "calibrated scale record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted model or production lot"
+      temporal_coverage: "declared production period"
+      site_scope: "declared factory"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "calibration certificate; acceptance record"
+    - protocol_id: cp_materials
+      process_id: "housing_fabrication"
+      flow_role: "steel sheet input"
+      record_type: "supplier and issue ledger"
+      raw_fields: "steel grade; sheet form; received mass; issued mass; opening and closing stock; accepted units"
+      collection_method: "Reconcile supplier and issue records with stock change for the declared configuration."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "housing line"
+      aggregation_rule: "issued sheet mass / accepted units"
+      quality_evidence: "supplier invoice; stock ledger"
+    - protocol_id: cp_electricity
+      process_id: "housing_fabrication"
+      flow_role: "alternating-current input"
+      record_type: "meter record"
+      raw_fields: "meter id; kWh reading; period; line allocation driver; accepted units"
+      collection_method: "Read the calibrated meter and convert kWh to MJ; document allocation of shared electricity."
+      unit: "MJ"
+      frequency: "monthly or batch"
+      temporal_coverage: "declared production period"
+      site_scope: "included factory lines"
+      aggregation_rule: "attributable MJ / accepted units"
+      quality_evidence: "meter readings; allocation worksheet"
+    - protocol_id: cp_scrap
+      process_id: "housing_fabrication"
+      flow_role: "steel offcut output"
+      record_type: "weighbridge and stock record"
+      raw_fields: "scrap type; dispatched mass; opening and closing stock; accepted units"
+      collection_method: "Weigh clean steel offcuts and reconcile stock change."
+      unit: "kg"
+      frequency: "each dispatch or batch"
+      temporal_coverage: "declared production period"
+      site_scope: "housing line"
+      aggregation_rule: "steel scrap mass / accepted units"
+      quality_evidence: "weighbridge ticket; stock ledger"
+    - protocol_id: cp_coating
+      process_id: "surface_coating"
+      flow_role: "powder paint input"
+      record_type: "coating issue record"
+      raw_fields: "powder type; issued mass; returned mass; accepted units"
+      collection_method: "Reconcile powder issues and returns when this route is used."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "coating line"
+      aggregation_rule: "consumed powder mass / accepted units"
+      quality_evidence: "issue ledger; route record"
+    - protocol_id: cp_components
+      process_id: "final_assembly_test"
+      flow_role: "burner assembly input"
+      record_type: "supplier BoM and receipt"
+      raw_fields: "burner model; supplier; receipt mass; installed count; accepted units"
+      collection_method: "Reconcile received domestic burner assemblies with installed components and rejected units."
+      unit: "kg"
+      frequency: "each model or lot"
+      temporal_coverage: "declared production period"
+      site_scope: "assembly line"
+      aggregation_rule: "installed burner mass / accepted units"
+      quality_evidence: "supplier BoM; receipt; assembly traveler"
+    - protocol_id: cp_test_gas
+      process_id: "final_assembly_test"
+      flow_role: "natural gas test input"
+      record_type: "gas meter and test record"
+      raw_fields: "gas meter id; m3 reading; gas type; test duration; accepted units"
+      collection_method: "Meter natural gas attributable to acceptance tests for the declared gas configuration."
+      unit: "m3"
+      frequency: "each test batch"
+      temporal_coverage: "declared production period"
+      site_scope: "test line"
+      aggregation_rule: "attributable natural gas m3 / accepted units"
+      quality_evidence: "gas meter record; test log"
+    - protocol_id: cp_packaging
+      process_id: "sales_packaging"
+      flow_role: "corrugated sale box input"
+      record_type: "packaging issue record"
+      raw_fields: "box specification; issued mass; accepted units"
+      collection_method: "Reconcile corrugated boxes issued to accepted units when boxed."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared production period"
+      site_scope: "packing line"
+      aggregation_rule: "issued box mass / accepted units"
+      quality_evidence: "packaging ledger; supplier specification"
+  calculation_rules:
+    []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all included rows"
+      requirement: "Keep model, fuel, coating route and accepted configuration consistent with M and the bill of materials."
+      evidence: "eu-jrc-cooking-appliances-2020; acceptance and supplier records"
+    - id: dq_period
+      applies_to: "all collected rows"
+      requirement: "Use one declared production period; reconcile shared meter and stock boundaries to accepted output."
+      evidence: "meter, ledger and acceptance dates"
+    - id: dq_identity
+      applies_to: "unresolved UUID rows"
+      requirement: "Preserve the concrete physical name and leave UUID blank until an exact public TianGong flow is verified."
+      evidence: "flow identity review"
+validation_rules:
+  - rule_id: validate_mass
+    applies_to: "reference and material balance"
+    rule: "Confirm M is measured for the accepted configuration and the finished output equals M kg; reconcile sheet issued, component mass, scrap and stock movements without forcing equality across unlike materials."
+    source_ids:
+      - eu-jrc-cooking-appliances-2020
+      - us-epa-metal-fabrication-2007
+  - rule_id: validate_routes
+    applies_to: "conditional process rows"
+    rule: "Confirm powder paint, domestic burner, natural gas and corrugated box are included only when their declared routes apply; require an explicit absence reason otherwise."
+    source_ids:
+      - eu-jrc-cooking-appliances-2020
+  - rule_id: validate_sources
+    applies_to: "foreground data package"
+    rule: "Require meter, supplier, weighbridge, BoM and acceptance records for nonzero rows; disclose geography, technology, time and unresolved UUIDs."
+    source_ids:
+      - eu-jrc-cooking-appliances-2020
+      - us-epa-metal-fabrication-2007
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground data package for an accepted complete appliance"
+  downstream_use: "May become a reviewed secondary_dataset or background_dataset and support process or lifecyclemodel projections"
+  allowed_use: "Use for the declared model, site, period, fuel and finish route, with upstream links and disclosed UUID gaps"
+  excluded_use: "Do not treat this production package as a use-stage cooking or end-of-life result; do not transfer it to electric, copper-bodied or industrial equipment"
+  required_metadata: "model; configuration; fuel; iron or steel grade; site; period; M and measurement evidence; BoM; process routes; packaging state; upstream dataset geography"
+  required_quality_disclosure: "direct measurements; allocation drivers; excluded stages; unmatched flow UUIDs; unresolved range evidence; data coverage"
+  update_trigger: "Reissue when material design, burner, fuel, coating route, supplier, site or measurement protocol changes materially"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 Structure, United Nations Statistics Division, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Product class and adjacent exclusions only"
+  - id: "eu-jrc-cooking-appliances-2020"
+    type: "official_guidance"
+    reference: "Review study of Ecodesign and Energy Labelling for Cooking appliances, first draft, February 2020, https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/2020-07/CA_%20Prep%20Study_draft1_Feb2020.pdf"
+    used_for: "Domestic gas appliance scope; product-specific BoM and component collection; no empirical PCR range"
+  - id: "us-epa-metal-fabrication-2007"
+    type: "official_guidance"
+    reference: "Clean Lines: Strategies for Reducing Your Environmental Footprint, U.S. Environmental Protection Agency, November 2007, https://www.epa.gov/sites/default/files/2015-03/documents/fabrication.pdf"
+    used_for: "Fabrication process map, steel scrap and machining-fluid separation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0a868853903fdb59cec3c5f5f0cc3623f24b371e0ab1d5f15fc591124654a3a3"
+  generated_content_sha256: "sha256:09ae50704d65ae33c69ad51354a56737bfa669f18ad3f2dc948b1d96b3593573"

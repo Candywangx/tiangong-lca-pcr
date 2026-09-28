@@ -1,10 +1,405 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44911"
-  title: "Centrifugal clothes driers"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.centrifugal-clothes-driers"
+  classification_refs: "CPC 3.0 44911, Centrifugal clothes driers (un-cpc-3-2025)"
+  covered_products: "Complete stand-alone centrifugal clothes driers or spin extractors with a rotating perforated drum for dewatering textiles"
+  excluded_products: "Integrated washer spin stages, thermal tumble dryers, water presses, food centrifuges, unassembled parts and replacement subassemblies"
+  representative_product: "One accepted complete motor-driven centrifugal clothes drier of a declared configuration; this is a configuration descriptor, not a fixed mass or capacity"
+  production_route: "Purchased components and sheet stock; drum fabrication where performed; final assembly, functional acceptance and conditional packing"
+  market_state: "Finished complete machine at manufacturer's factory gate, net of transport packaging"
+functional_unit:
+  what: "A complete machine that mechanically extracts water from washed clothes by centrifugal rotation (lot24-task1-2011)"
+  how_much: "One accepted complete machine of the declared configuration"
+  how_well: "Perforated rotating drum, drive and safety controls meet the producer's documented acceptance specification; record capacity and test result"
+  how_long_or_cycle: "One factory-gate handover of an accepted machine; no in-use service-life claim is included"
+  reference_flow_link: "finished_drier"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "production system"
+      rule: "Include purchased material and component supply through background links, in-factory fabrication, assembly, acceptance-test energy, conditional factory packing, and wastes before gate exit. Do not put customer operation or post-gate distribution into this foreground dataset."
+      source_ids:
+        - ec-pef-2021
+    - rule_id: boundary_no_integrated_washer
+      applies_to: "product identity"
+      rule: "Treat a separate centrifugal extractor as the product; an integrated washer spin stage and a thermal tumble dryer have different product boundaries."
+      source_ids:
+        - lot24-task1-2011
+    - rule_id: boundary_direct_emissions
+      applies_to: "plant emissions"
+      rule: "Where the declared route produces a direct emission, measure and report its specific elementary flow separately; do not hide it in a waste or utility row."
+      source_ids:
+        - ec-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased sheet stock and components enter the reporting factory; disclose material specification, supplier state, and whether the drum is fabricated on site."
+  starting_condition_role: "The factory entry of purchased inputs starts the foreground manufacturing stage."
+  product_classification_scope: "The finished complete-machine output is CPC 3.0 44911; purchased motors, materials and boxes retain their own identities."
+  recursive_input_rule: "If a complete centrifugal clothes drier is purchased and reworked as an input, retain it as a separately declared upstream machine input; do not count the same machine output recursively."
+  upstream_dataset_requirement: "Link each purchased input and delivered electricity to geographically and technologically representative upstream datasets; disclose missing exact identities."
+  disclosure: "State factory, period, model/configuration, component sourcing, drum-fabrication route, grid supply, packaging state, scrap destination, exclusions and shared-process allocation."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Centrifugal clothes driers"
+    uuid: "c6fb37f3-a8e3-4178-99c5-c2dd06e2dac1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - manufacturer
+    - "model and configuration"
+    - "serial or batch"
+    - "domestic or professional intended market"
+    - "rated textile load"
+    - "drum material"
+    - "drive type"
+    - "acceptance test"
+    - "measured net machine mass M"
+    - "factory gate"
+    - "packing status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: inventory_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Row-specific mass or energy"
+      uuid: ""
+    required_unit: "kg or MJ"
+    rule: "Collect exchanges per one accepted finished machine of the same configuration. Count rejected machines only through attributable inputs and wastes; do not use them as accepted output."
+process_map:
+  - id: drum_fabrication
+    name: "Perforated drum fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when stainless sheet is cut and formed at the reporting factory; otherwise record the purchased drum as a separately verified component input."
+    role: "Foreground fabrication and offcut accounting"
+    quantitative_reference: "per one accepted finished machine"
+  - id: final_assembly
+    name: "Final assembly, acceptance and packing"
+    inclusion: "required"
+    inclusion_condition: "Include for every accepted complete machine; record a corrugated carton only when fitted before the factory gate."
+    role: "Foreground completion"
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: drum_fabrication
+    label: "Perforated drum fabrication"
+    inputs:
+      product:
+        - row_id: drum_stainless_sheet
+          role: "Stainless steel sheet for the perforated drum"
+          name: "Stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of stainless sheet issued to the drum-fabrication operation when this route is performed. The material grade and purchased product state must be retained with the bill of materials; no exact public flow UUID is yet confirmed. Inclusion condition: on-site sheet-to-drum fabrication. orbegozo-sc4600 supports a stainless drum as a real configuration, not a universal material share."
+          amount:
+            expression: "Record sheet issue attributable to per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - orbegozo-sc4600
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: drum_steel_offcuts
+          role: "Stainless steel sheet offcuts"
+          name: "Stainless steel sheet offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh segregated offcuts leaving drum fabrication and record alloy grade and treatment destination. Inclusion condition: on-site sheet-to-drum fabrication. Do not give an avoided-burden credit without a separately documented treatment model."
+          amount:
+            expression: "Record offcut mass attributable to per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - ec-pef-2021
+            ranges: []
+      elementary:
+        []
+  - id: final_assembly
+    label: "Final assembly, acceptance and packing"
+    inputs:
+      product:
+        - row_id: assembly_motor
+          role: "Purchased electric motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the installed motor mass from the configuration-controlled bill of materials and receipt or weighing record. Report any different drive configuration in the data package."
+          amount:
+            expression: "Record installed motor mass attributable to per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - orbegozo-sc4600
+            ranges: []
+        - row_id: assembly_ac_electricity
+          role: "Alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Measure electricity attributable to assembly and acceptance testing at the factory meter. Record supply voltage, geography and upstream grid dataset separately; duplicate public AC flow identities require review before assigning a UUID."
+          amount:
+            expression: "Record metered electricity attributable to per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - ec-pef-2021
+            ranges: []
+        - row_id: assembly_corrugated_box
+          role: "Corrugated shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured mass of a corrugated box fitted to the accepted machine before factory-gate exit. Inclusion condition: this box is actually used; otherwise the row is not applicable. The box is excluded from net machine mass M."
+          amount:
+            expression: "Record fitted box mass attributable to per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - ec-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_drier
+          role: "Accepted complete centrifugal clothes drier"
+          name: "Centrifugal clothes driers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c6fb37f3-a8e3-4178-99c5-c2dd06e2dac1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh the accepted complete machine in its declared configuration, excluding transport packaging and loose spares. Record a serial or batch identifier and signed acceptance result. M is the actual net mass, not a category default."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared factory activities"
+    rule: "Prefer product- and operation-specific bills, meters and waste records to separate the drier route from other products before allocating shared burdens."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_physical
+    applies_to: "inseparable shared activities"
+    rule: "Where subdivision is impossible, use a documented causal physical driver such as measured machine-hours for shared electricity; record numerator, denominator, period and sensitivity. Do not use a fixed category factor."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_scrap
+    applies_to: "sheet offcuts"
+    rule: "Report actual offcut mass and destination as an outgoing waste flow. Model recycling or disposal in the receiving system and disclose any separate credit method; do not silently net waste against sheet input."
+    source_ids:
+      - ec-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "final_assembly"
+      flow_role: "accepted complete drier"
+      record_type: "calibrated weighing and acceptance record"
+      raw_fields: "manufacturer; model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "reporting period"
+      site_scope: "reporting factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale calibration, tare and signed acceptance record"
+    - protocol_id: cp_components
+      process_id: "drum_fabrication_final_assembly"
+      flow_role: "stainless sheet, motor and conditional corrugated box"
+      record_type: "controlled bill of materials and material issue"
+      raw_fields: "model; configuration; serial or lot; material grade; component identity; issue and installed mass; returns; box fitted flag"
+      collection_method: "Reconcile purchase and issue records with installed or used mass and returns for the accepted configuration."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "reporting period"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable net input mass / accepted machines of the same configuration"
+      quality_evidence: "bill-of-material revision, receipts, issue and return records"
+    - protocol_id: cp_electricity
+      process_id: "final_assembly"
+      flow_role: "assembly and test electricity"
+      record_type: "calibrated meter log"
+      raw_fields: "meter id; start and end reading; voltage; period; operating hours; accepted units"
+      collection_method: "Submeter assembly and test consumption; when shared, document the measured physical allocation driver."
+      unit: "MJ"
+      frequency: "each production period"
+      temporal_coverage: "reporting period"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable metered energy / accepted machines of the same configuration"
+      quality_evidence: "meter calibration and allocation worksheet"
+    - protocol_id: cp_scrap
+      process_id: "drum_fabrication"
+      flow_role: "stainless sheet offcuts"
+      record_type: "weighed scrap dispatch"
+      raw_fields: "material grade; scrap mass; lot; destination; accepted units"
+      collection_method: "Weigh segregated offcuts and reconcile the material balance and dispatch record."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "reporting period"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable offcut mass / accepted machines of the same configuration"
+      quality_evidence: "scale calibration, balance and transfer ticket"
+  calculation_rules:
+    - id: per_item_average
+      applies_to: "collected input and waste rows"
+      rule: "Divide the attributable exchange total for one configuration and period by its number of accepted complete machines; retain the measured numerator and count."
+      inputs:
+        - "attributable exchange total"
+        - "accepted machine count"
+        - configuration
+        - period
+      output: "exchange per one accepted finished machine"
+      source_ids:
+        - ec-pef-2021
+    - id: mass_reconciliation
+      applies_to: "drum_stainless_sheet; drum_steel_offcuts; finished_drier"
+      rule: "Compare measured sheet issue, installed drum material and segregated offcuts; explain returns, rework and purchased components before accepting the material balance."
+      inputs:
+        - "sheet issue"
+        - "installed drum material"
+        - offcuts
+        - returns
+        - M
+      output: "documented material balance"
+      source_ids:
+        - ec-pef-2021
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all rows"
+      requirement: "Use the same declared model and configuration as the accepted reference machine; retain changed bills of materials separately."
+      evidence: "controlled bill of materials and acceptance record"
+    - id: dq_period
+      applies_to: "all rows"
+      requirement: "Align meter, issue, scrap and output records to the same reporting period and disclose missing periods."
+      evidence: "dated logs and reconciliation"
+    - id: dq_identity
+      applies_to: "unresolved rows"
+      requirement: "Keep the concrete row and amount, but do not assign a proxy Tiangong UUID; resolve material grade, grid context or scrap route before database publication."
+      evidence: "direct-read identity review and foreground specifications"
+    - id: dq_sources
+      applies_to: "upstream links"
+      requirement: "Document supplier state, geography, technology and time representativeness of linked datasets."
+      evidence: "supplier records and dataset metadata (ec-pef-2021)"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Confirm finished_drier is one accepted complete machine, that M is a calibrated net kg measurement for the same configuration, and that the signed acceptance record exists."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_rows
+    applies_to: "inventory"
+    rule: "Confirm each reported exchange is one physical flow, uses its declared collection protocol, and is expressed per one accepted finished machine."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_boundary
+    applies_to: "study boundary"
+    rule: "Check that downstream use and distribution are excluded from this factory-gate dataset and conditional drum fabrication and carton rows match actual practice."
+    source_ids:
+      - ec-pef-2021
+      - lot24-task1-2011
+  - rule_id: validate_balance
+    applies_to: "material and energy records"
+    rule: "Reconcile input, offcut, output, meter and accepted-unit records; disclose unresolved UUIDs and the absence of source-backed quantitative ranges."
+    source_ids:
+      - ec-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for one declared centrifugal clothes drier configuration"
+  downstream_use: "secondary_dataset; background_dataset when reviewed and suitable for reuse"
+  allowed_use: "Link upstream purchased inputs and use the accepted machine as a product output in downstream process or lifecyclemodel models"
+  excluded_use: "Claiming thermal drying performance, a fixed machine mass, customer-use impacts or a category-wide impact benchmark from this factory record"
+  required_metadata: "PCR id; CPC reference; manufacturer; model and configuration; serial or lot; capacity; drum material; drive; factory and period; M; testing; packing; allocation; upstream links"
+  required_quality_disclosure: "Measurement uncertainty, record coverage, supplier and grid representativeness, direct-flow identity gaps, scrap route and unresolved range evidence"
+  update_trigger: "Material change in machine configuration, component sourcing, production route, factory supply, allocation or acceptance specification"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Ver. 3.0 Structure*, 30 June 2025, [official CSV](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv), accessed 2026-09-27"
+    used_for: "Product classification identity only"
+  - id: "lot24-task1-2011"
+    type: "literature"
+    reference: "Öko-Institut et al., *Preparatory Studies for Eco-design Requirements of Energy-using Products, Lot 24: Professional Washing Machines, Dryers and Dishwashers, Final Report, Part: Washing Machines and Dryers, Task 1: Definition*, May 2011, [full report](https://ekosuunnittelu.info/wp-content/uploads/2015/09/EuP_Lot24_Wash_T1_Report_ENER_clean.pdf), accessed 2026-09-28"
+    used_for: "Separate spin-extractor function and exclusion from thermal dryer boundary"
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, *Annex I. Product Environmental Footprint Method*, 2021, [complete annex](https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf), accessed 2026-09-28"
+    used_for: "Factory-gate stage, waste inclusion, data collection and allocation hierarchy"
+  - id: "orbegozo-sc4600"
+    type: "handbook"
+    reference: "Sonifer S.A., *Spin Dryer - Instruction Manual*, SC 4600, 05.22, [complete manual](https://codilamar.com/tienda/pdf/otros-manuales/SC4600.pdf), accessed 2026-09-28"
+    used_for: "Example of a complete centrifugal drier with perforated stainless drum; no manufacturing range inferred"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:150cdfea46f4d3b098f4bd40f8cfbf401c2b8f6162503396e578bdd07f1e9e5f"
+  generated_content_sha256: "sha256:016cb0bdf8db5218cdd0b7671bbcb16134185cf71ee67ac70b9e6ddd7b98b9ee"

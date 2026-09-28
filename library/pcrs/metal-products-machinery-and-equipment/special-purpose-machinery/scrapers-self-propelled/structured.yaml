@@ -1,10 +1,534 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44423"
-  title: "Scrapers, self-propelled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.scrapers-self-propelled"
+  classification_refs: "CPC 3.0: 44423, Scrapers, self-propelled (un-cpc-3-2025)"
+  covered_products: "Complete new self-propelled wheel tractor-scrapers with an integral scraping/loading bowl, including disclosed single- or twin-engine configurations."
+  excluded_products: "Towed scrapers; graders; dozers; excavators; front-end loaders; dumpers; detachable blades or bowls sold separately; component-only assemblies; used or refurbished machines."
+  representative_product: "One accepted complete self-propelled scraper with declared bowl and propulsion configuration (cat-657-2020)."
+  production_route: "Purchased components, conditional on-site steel fabrication, final assembly, and factory functional testing."
+  market_state: "New complete machine accepted at the factory gate, without transport packaging."
+functional_unit:
+  what: "Provide an accepted self-propelled machine able to scrape/load, carry and discharge earth or mineral material."
+  how_much: "One complete machine of the declared configuration; its measured accepted net mass is M kg."
+  how_well: "Record rated bowl capacity, payload or cut width, installed engine count and applicable acceptance test; no common performance value is imposed (cat-657-2020)."
+  how_long_or_cycle: "One factory-gate delivery; service life and operating duty cycle are outside this declared result."
+  reference_flow_link: "finished_scraper"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "manufacturing boundary"
+      rule: "Include manufacturing and assembly from component entry through accepted finished machine leaving the site; include manufacturing waste and internal movements where material (ec-pef-method-2021)."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_route
+      applies_to: "fabrication route"
+      rule: "Include on-site cutting, forming and welding only when performed; otherwise record the purchased fabricated bowl as its own upstream product. Do not count both paths for the same bowl (epa-clean-lines-metal-fabrication-2007; cat-657-2020)."
+      source_ids:
+        - epa-clean-lines-metal-fabrication-2007
+        - cat-657-2020
+    - rule_id: boundary_test
+      applies_to: "factory test"
+      rule: "Include fuel and direct exhaust from factory tests before acceptance; exclude customer use and downstream stages (ec-pef-method-2021)."
+      source_ids:
+        - ec-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel and discrete machine components enter the reporting production site; declare whether the steel bowl is made on site or purchased."
+  starting_condition_role: "Physical starting condition for the foreground manufacturing boundary."
+  product_classification_scope: "Finished self-propelled scraper as CPC 44423; upstream parts keep their own product identities."
+  recursive_input_rule: "A purchased complete scraper entering for finishing remains a separately disclosed input; do not recursively replace it with this PCR's own output."
+  upstream_dataset_requirement: "Link each purchased material/component and fuel to a suitable upstream dataset with matching material, technology, geography and product state."
+  disclosure: "Report site, period, configuration, purchased-versus-fabricated bowl route, included tests, excluded stages and upstream data gaps."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Scrapers, self-propelled"
+    uuid: "42b7c34e-7d9d-4e3f-845b-0cd920105c35"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "serial number"
+    - "bowl and propulsion configuration"
+    - "installed engine and tire count"
+    - "acceptance fill state"
+    - "factory location and period"
+    - "measured net mass M"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: fabrication
+    name: "On-site steel fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when steel cutting, forming or welding of scraper structural parts occurs at the reporting site."
+    role: "Foreground fabrication and scrap generation."
+    quantitative_reference: "per one accepted finished scraper"
+  - id: assembly_test
+    name: "Final assembly and factory test"
+    inclusion: "required"
+    inclusion_condition: "All covered machines undergo final assembly and acceptance; include actual factory test route."
+    role: "Foreground assembly, installed components, fuels, direct test emissions and finished output."
+    quantitative_reference: "per one accepted finished scraper"
+process_inventory:
+  - id: fabrication
+    label: "On-site steel fabrication"
+    inputs:
+      product:
+        - row_id: plate
+          role: "Steel plate entering cutting and forming"
+          name: "Hot-rolled carbon steel plate (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When steel structural parts are cut or formed on site; otherwise record the purchased fabricated bowl at assembly."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-clean-lines-metal-fabrication-2007
+            ranges: []
+        - row_id: wire
+          role: "Steel welding wire consumed in fabrication"
+          name: "Steel welding wire (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When arc welding is performed on site."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-clean-lines-metal-fabrication-2007
+            ranges: []
+        - row_id: power
+          role: "Grid electricity for metal fabrication"
+          name: "Grid electricity, medium voltage (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "When fabrication is performed on site; include metered cutting, forming and welding electricity."
+          amount:
+            expression: "Collect the actual kWh exchange per one accepted finished scraper using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: scrap
+          role: "Carbon steel cutting scrap leaving fabrication"
+          name: "Carbon steel cutting scrap (UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When carbon steel offcuts or swarf leave the fabrication process; report their documented destination."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-clean-lines-metal-fabrication-2007
+            ranges: []
+      elementary:
+        []
+  - id: assembly_test
+    label: "Final assembly and factory test"
+    inputs:
+      product:
+        - row_id: purchased_bowl
+          role: "Purchased fabricated scraper bowl entering assembly"
+          name: "Fabricated steel scraper bowl (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when the bowl is purchased as a complete fabricated component; exclude the same bowl from on-site plate and welding inputs."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_components."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - cat-657-2020
+            ranges: []
+        - row_id: engine
+          role: "Diesel engine installed in the scraper"
+          name: "Diesel engine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3ac8612-80b9-4283-9439-62aa4986fce2"
+          property_unit: "Number of items / Item(s)"
+          description: "For each installed engine; record actual engine count and mass for the accepted configuration, including twin-engine variants."
+          amount:
+            expression: "Record the installed diesel engine count per one accepted finished scraper using cp_engine_count."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_engine_count
+              source_ids:
+                - cat-657-2020
+            ranges: []
+        - row_id: tire
+          role: "Pneumatic off-road tire installed"
+          name: "Pneumatic off-road rubber tire (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For each installed tire in a wheeled scraper configuration; record actual tire count and mass."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_components."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_components
+              source_ids:
+                - cat-657-2020
+            ranges: []
+        - row_id: hydraulic_oil
+          role: "Hydraulic oil charged into accepted machine"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eafff56c-3487-4345-9f24-00429f61c556"
+          property_unit: "Mass / kg"
+          description: "Only for a mineral-oil hydraulic system and the acceptance fill; another actual fluid requires its own identified row."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_fluids."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fluids
+              source_ids:
+                - cat-657-2020
+            ranges: []
+        - row_id: test_diesel
+          role: "Diesel consumed in factory functional test"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "When the installed diesel engine is run before factory gate; count fuel actually combusted in tests, not retained acceptance fill, and record the actual fuel grade."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_test_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_fuel
+              source_ids:
+                - cat-657-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_scraper
+          role: "Accepted complete self-propelled scraper"
+          name: "Scrapers, self-propelled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "42b7c34e-7d9d-4e3f-845b-0cd920105c35"
+          property_unit: "Mass / kg"
+          description: "Exactly one accepted complete machine of the declared configuration; amount is measured net mass M kg."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+                - cat-657-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: test_co2
+          role: "Fossil carbon dioxide from factory diesel test"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "When diesel is combusted in on-site testing; use measured exhaust or a documented fuel carbon-balance calculation in the data package."
+          amount:
+            expression: "Collect the actual kg exchange per one accepted finished scraper using cp_test_emission."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_emission
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_subdivide
+    applies_to: "shared fabrication or assembly lines"
+    rule: "First separate directly metered processes and batches; assign measured material, electricity, fuel, scrap and emission records to the represented machine/configuration where possible."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: alloc_shared
+    applies_to: "unavoidable common site inputs"
+    rule: "If subdivision is impossible, use a documented causal physical driver such as metered process hours or component mass; disclose the driver, denominators and sensitivity."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: alloc_scrap
+    applies_to: "steel scrap"
+    rule: "Record carbon steel cutting scrap and its real destination separately; do not silently subtract sale receipts or assumed recycling credits from gross material input."
+    source_ids:
+      - epa-clean-lines-metal-fabrication-2007
+      - ec-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "assembly_test"
+      flow_role: "accepted machine mass"
+      record_type: "calibrated weighing and acceptance record"
+      raw_fields: "model; configuration; serial number; accepted net mass M; fuel and fluid fill state"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration and signed acceptance record"
+    - protocol_id: cp_material
+      process_id: "fabrication"
+      flow_role: "plate and wire input"
+      record_type: "issue, purchase and return records"
+      raw_fields: "material grade; kg issued; kg returned; machine or batch id"
+      collection_method: "Reconcile material issues and returns to the actual scraper structural fabrication batch."
+      unit: "kg"
+      frequency: "each fabrication batch"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "stock ledger and batch traveler"
+    - protocol_id: cp_energy
+      process_id: "fabrication"
+      flow_role: "grid electricity"
+      record_type: "submeter and production log"
+      raw_fields: "kWh; meter id; machine hours; configuration"
+      collection_method: "Read submeter for fabrication; if shared, apply the disclosed physical allocation driver."
+      unit: "kWh"
+      frequency: "each batch or shift"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter and allocation record"
+    - protocol_id: cp_waste
+      process_id: "fabrication"
+      flow_role: "carbon steel scrap"
+      record_type: "weighed waste dispatch"
+      raw_fields: "kg; grade; destination; batch id"
+      collection_method: "Weigh carbon steel offcuts and swarf separately from non-steel waste; record destination."
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "weigh ticket and transfer record"
+    - protocol_id: cp_components
+      process_id: "assembly_test"
+      flow_role: "installed components"
+      record_type: "bill of materials and supplier receipt"
+      raw_fields: "component identity; installed count; net kg; serial number"
+      collection_method: "Reconcile actual installed bowl and tires to the accepted configuration and supplier receipts."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "bill of materials and receipt"
+    - protocol_id: cp_engine_count
+      process_id: "assembly_test"
+      flow_role: "installed diesel engine count"
+      record_type: "engine serial and assembly record"
+      raw_fields: "engine model; serial number; installed count; net kg for reconciliation"
+      collection_method: "Count the diesel engines actually installed in the accepted machine and reconcile purchase and assembly records."
+      unit: "Item(s)"
+      frequency: "each accepted machine"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "engine receipt and signed assembly record"
+    - protocol_id: cp_fluids
+      process_id: "assembly_test"
+      flow_role: "hydraulic oil charge"
+      record_type: "fill and inventory log"
+      raw_fields: "oil grade; kg dispensed; kg recovered; fill state"
+      collection_method: "Reconcile oil dispensed into the accepted hydraulic system with recovered or drained oil."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "fill log and purchase specification"
+    - protocol_id: cp_test_fuel
+      process_id: "assembly_test"
+      flow_role: "diesel combusted in test"
+      record_type: "fuel meter and test log"
+      raw_fields: "kg before; kg after; fuel grade; test id"
+      collection_method: "Measure diesel actually combusted in factory test, separating fuel retained at acceptance."
+      unit: "kg"
+      frequency: "each factory test"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "calibrated meter and test report"
+    - protocol_id: cp_test_emission
+      process_id: "assembly_test"
+      flow_role: "fossil CO2 to air"
+      record_type: "exhaust measurement or carbon-balance worksheet"
+      raw_fields: "measured kg CO2 or fuel kg and documented carbon factor; test id"
+      collection_method: "Use measured test exhaust when available; otherwise calculate from the recorded fuel carbon balance and disclose factors in the data package."
+      unit: "kg"
+      frequency: "each factory test"
+      temporal_coverage: "declared production period"
+      site_scope: "reporting site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "measurement report or auditable balance"
+  calculation_rules:
+    []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "reference and components"
+      requirement: "Match model, serial number, bowl route, engines, tires and fill state across M and all inventory rows."
+      evidence: "acceptance record and bill of materials"
+    - id: dq_temporal
+      applies_to: "all foreground flows"
+      requirement: "Use the declared production period and site, and identify any noncontemporaneous supplier data."
+      evidence: "dated records and supplier metadata (ec-pef-method-2021)"
+    - id: dq_mass_balance
+      applies_to: "material and waste"
+      requirement: "Reconcile steel issued, steel retained in the machine and separately weighed steel scrap; explain unresolved differences."
+      evidence: "stock ledger, bill of materials and weigh tickets (epa-clean-lines-metal-fabrication-2007)"
+    - id: dq_no_default_weight
+      applies_to: "reference mass"
+      requirement: "Do not replace measured M with a model brochure operating weight or a different fill state."
+      evidence: "calibrated weighing record (cat-657-2020)"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "reference product"
+    rule: "Require the finished scraper UUID, exact machine configuration and measured M kg to agree with the accepted machine; no component-only flow may replace the output."
+    source_ids:
+      - un-cpc-3-2025
+      - cat-657-2020
+  - rule_id: val_basis
+    applies_to: "all inventory rows"
+    rule: "Require one accepted finished scraper as the denominator for every material, energy, waste and test emission amount; test fuel and retained fuel are separate."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: val_route
+    applies_to: "fabrication and purchased bowl"
+    rule: "Require route evidence and prohibit counting the same bowl through both on-site steel fabrication and a purchased complete bowl."
+    source_ids:
+      - epa-clean-lines-metal-fabrication-2007
+      - cat-657-2020
+  - rule_id: val_gaps
+    applies_to: "unresolved identity and ranges"
+    rule: "Disclose unresolved flow UUIDs and missing independent range evidence; do not substitute proxy UUIDs or model-specific brochure values."
+    source_ids:
+      - ec-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Primary foreground data package for manufacturing one accepted new self-propelled scraper."
+  downstream_use: "Publish verified process and lifecyclemodel projections; may serve as a secondary or background dataset after review."
+  allowed_use: "Cradle-to-factory-gate comparison only when configuration, boundary, mass and data quality are harmonized."
+  excluded_use: "Unqualified service-life, earthmoving productivity, or operational fuel comparison."
+  required_metadata: "model; serial/configuration; site; period; M and fill state; bowl route; test route; allocation drivers; upstream datasets"
+  required_quality_disclosure: "measured and estimated records; source geography/technology; missing UUIDs; unresolved empirical ranges; mass-balance residuals; exclusions"
+  update_trigger: "changed machine configuration, site route, component supply, fuel/energy mix or material foreground records"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-26)"
+    used_for: "official classification identity only"
+  - id: "cat-657-2020"
+    type: "handbook"
+    reference: "657 WHEEL TRACTOR-SCRAPER, Caterpillar AEXQ2604-00, https://s7d2.scene7.com/is/content/Caterpillar/CM20200825-44b60-322ae (retrieved 2026-09-26)"
+    used_for: "complete-machine boundary, components and model-specific weight caveat"
+  - id: "epa-clean-lines-metal-fabrication-2007"
+    type: "official_guidance"
+    reference: "Clean Lines: Strategies for Reducing Your Environmental Footprint — Metal Fabrication Operations, U.S. EPA, https://www.epa.gov/sites/default/files/2015-03/documents/fabrication.pdf (retrieved 2026-09-26)"
+    used_for: "cutting/welding process and scrap/fluid inventory"
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "Annex I. Product Environmental Footprint Method, European Commission 2021, https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf (retrieved 2026-09-26)"
+    used_for: "functional reference, stage boundary, allocation hierarchy and primary-data collection"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c7f27dd9007847011a1af5ae25ae91a86f5c7350b8a2983a0d4f8b3db4a8901e"
+  generated_content_sha256: "sha256:394ae0bd4c53bc1fd7caa2559d38cd595618825f2461de1d855677a3e5f0ce3e"

@@ -1,10 +1,611 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44411"
-  title: "Continuous-action elevators and conveyors, for goods or materials, specially designed for underground use"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.continuous-action-elevators-and-conveyors-for-goods-or-materials-specially-designed-for-dd6e8554"
+  classification_refs: "CPC 3.0:44411, classification context only"
+  covered_products: "Complete underground-duty continuous-action goods conveyors or elevators, including configured belt or armored chain systems"
+  excluded_products: "General-purpose conveyors; stand-alone belting or spare parts; personnel lifts and skip hoists; coal or rock cutters; onsite mine civil works"
+  representative_product: "One accepted complete underground goods conveyor of a declared belt or chain configuration"
+  production_route: "Structural fabrication, drive integration, selected belt or chain integration, factory acceptance; purchased components enter with upstream datasets"
+  market_state: "Accepted, configured machine supplied at factory gate without transport packaging"
+functional_unit:
+  what: "Continuous transport of goods or materials in the declared underground setting"
+  how_much: "One accepted complete configured machine"
+  how_well: "Declared belt or chain route, design capacity, length, drive and underground-duty requirements verified by acceptance record"
+  how_long_or_cycle: "One factory acceptance and release event; operational service life is disclosed separately, not assumed here"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground_system"
+      rule: "Include fabrication, component integration, metered production electricity, offcuts and factory acceptance of the supplied machine; exclude mine installation and use."
+      source_ids:
+        - djordjevic-2018-conveyor-lca
+        - cowan-1975-face-haulage
+    - rule_id: boundary_route
+      applies_to: "belt_or_chain_route"
+      rule: "Include only the declared belt or chain route and its atomic component rows; disclose absent route as not applicable."
+      source_ids:
+        - cowan-1975-face-haulage
+    - rule_id: boundary_belt_upstream
+      applies_to: "purchased_belt"
+      rule: "Keep rubber compounding, calendering and vulcanization in a supplier upstream dataset when belting is purchased."
+      source_ids:
+        - unido-1990-rubber-belts
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel plate, welding wire, drive parts, belting or chain assemblies enter as specified inputs; record their supplier state and datasets."
+  starting_condition_role: "Factory-gate product-making foreground, including configured assembly and acceptance."
+  product_classification_scope: "Underground-duty continuous-action material transport machine; do not substitute the general-purpose conveyor category."
+  recursive_input_rule: "A purchased complete underground conveyor used as a subassembly is an explicitly recorded same-category input with its own upstream dataset; do not recursively fabricate it again in this foreground."
+  upstream_dataset_requirement: "Provide upstream production datasets for every purchased material and component, especially steel, belt, motor, chain and idlers."
+  disclosure: "Declare route, included modules, material grades, underground-duty specifications, acceptance basis and exclusions."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Continuous-action elevators and conveyors, for goods or materials, specially designed for underground use"
+    uuid: "609af8a1-d52f-4af9-9baf-fefe36a22a50"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "accepted configuration"
+    - "underground application"
+    - "belt or chain route"
+    - capacity
+    - length
+    - "drive specification"
+    - "included modules"
+    - "net mass M and weighing record"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: electricity_unit
+    applies_to: "factory_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Report attributable metered electricity in MJ; convert kWh records with 1 kWh = 3.6 MJ and retain the original meter record."
+process_map:
+  - id: fabricate_frame
+    name: "Structural fabrication"
+    inclusion: "required"
+    inclusion_condition: "always"
+    role: "Structural fabrication of configured supports and frames"
+    quantitative_reference: "per one accepted finished machine"
+  - id: fit_drive
+    name: "Drive integration"
+    inclusion: "required"
+    inclusion_condition: "always"
+    role: "Install the declared drive and initial lubricant"
+    quantitative_reference: "per one accepted finished machine"
+  - id: fit_belt
+    name: "Belt and idler integration"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared machine uses a belt transport route"
+    role: "Install the specified belt and idlers"
+    quantitative_reference: "per one accepted finished machine"
+  - id: fit_chain
+    name: "Chain integration"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared machine uses an armored chain transport route"
+    role: "Install the specified chain assembly"
+    quantitative_reference: "per one accepted finished machine"
+  - id: factory_energy
+    name: "Shared factory electricity"
+    inclusion: "required"
+    inclusion_condition: "always"
+    role: "Attribute metered production and acceptance electricity once"
+    quantitative_reference: "per one accepted finished machine"
+  - id: accept_machine
+    name: "Acceptance and factory release"
+    inclusion: "required"
+    inclusion_condition: "always"
+    role: "Confirm the complete configured machine and its net mass"
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: fabricate_frame
+    label: "Structural fabrication"
+    inputs:
+      product:
+        - row_id: steel_plate
+          role: "Steel plate for structural fabrication"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Structural plate enters frame cutting, forming and joining. Record actual grade and thickness."
+          amount:
+            expression: "Measure steel plate charged to the accepted machine, including cutting offcuts."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_materials
+              source_ids:
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+        - row_id: flux_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Conditional route: flux-cored welding of structural joints. Other filler processes require their own atomic exchange."
+          amount:
+            expression: "Measure consumed wire only when the declared fabrication route uses flux-cored arc welding."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_materials
+              source_ids:
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel fabrication offcuts"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "This is the separately measured post-industrial steel waste stream."
+          amount:
+            expression: "Measure segregated steel offcuts leaving fabrication; do not net them from steel input."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_scrap
+              source_ids:
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+      elementary:
+        []
+  - id: fit_drive
+    label: "Drive integration"
+    inputs:
+      product:
+        - row_id: drive_motor
+          role: "Underground conveyor drive electric motor"
+          name: "Underground conveyor drive electric motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The electric drive is part of the supplied machine; its Tiangong identity needs review before dataset release."
+          amount:
+            expression: "Measure purchased drive-motor mass for the accepted configuration; record the underground-duty specification."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_components
+              source_ids:
+                - cowan-1975-face-haulage
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+        - row_id: lubricating_oil
+          role: "Industrial lubricating oil"
+          name: "Industrial lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual lubricant grade and charged mass, without assuming a generic oil dataset is exact."
+          amount:
+            expression: "Measure oil charged to the delivered drive or gearbox; exclude later maintenance refills."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_components
+              source_ids:
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: fit_belt
+    label: "Belt and idler integration"
+    inputs:
+      product:
+        - row_id: rubber_belt
+          role: "Vulcanized rubber conveyor belt"
+          name: "Conveyor or transmission belts or belting, of vulcanized rubber"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1e587e97-03a2-4c50-8226-f8446a1dd1d9"
+          property_unit: "Mass / kg"
+          description: "Conditional belt route; record reinforcement, underground fire-performance specification and supplier dataset separately."
+          amount:
+            expression: "Measure belt mass installed in the accepted machine when the belt route applies."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_belt_components
+              source_ids:
+                - cowan-1975-face-haulage
+                - unido-1990-rubber-belts
+            ranges: []
+        - row_id: idler_roller
+          role: "Conveyor idler roller assembly"
+          name: "Conveyor idler roller assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional belt route. Bearing-only candidate flows are not a complete idler assembly."
+          amount:
+            expression: "Measure complete idler assemblies installed in the accepted belt-equipped machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_belt_components
+              source_ids:
+                - rondum-1982-conveyor-installation
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: fit_chain
+    label: "Chain integration"
+    inputs:
+      product:
+        - row_id: steel_chain
+          role: "Armored face conveyor steel chain assembly"
+          name: "Armored face conveyor steel chain assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional chain route; record chain type and underground conveyor configuration."
+          amount:
+            expression: "Measure installed chain-assembly mass when the armored chain route applies."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chain_components
+              source_ids:
+                - cowan-1975-face-haulage
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: factory_energy
+    label: "Shared factory electricity"
+    inputs:
+      product:
+        - row_id: factory_electricity
+          role: "Factory alternating-current electricity"
+          name: "Alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Use metered energy and disclose the supply mix. Competing public flow identities require review."
+          amount:
+            expression: "Measure attributable factory electricity for fabrication, drive fit, belt or chain fit, and acceptance; allocate once to accepted machines."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_electricity
+              source_ids:
+                - djordjevic-2018-conveyor-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: accept_machine
+    label: "Acceptance and factory release"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Accepted complete underground conveyor"
+          name: "Continuous-action elevators and conveyors, for goods or materials, specially designed for underground use"
+          flow_type: "product"
+          flow_ref:
+            uuid: "609af8a1-d52f-4af9-9baf-fefe36a22a50"
+          property_unit: "Mass / kg"
+          description: "The output is the accepted supplied machine including declared modules, drive and belt or chain, without transport packaging."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+                - cowan-1975-face-haulage
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "material_and_component_inputs"
+    rule: "Assign BOM and purchase records to the accepted configuration before applying any shared-shop allocation."
+    source_ids:
+      - djordjevic-2018-conveyor-lca
+  - rule_id: allocation_energy
+    applies_to: "shared_factory_electricity"
+    rule: "Submeter where possible; otherwise allocate period electricity by recorded machine-hours for the same included operations, and divide by accepted machines of that configuration. Report the rule and denominator."
+    source_ids:
+      - djordjevic-2018-conveyor-lca
+  - rule_id: allocation_scrap
+    applies_to: "steel_scrap"
+    rule: "Record segregated steel scrap as waste output; any recycling credit belongs in a separately declared downstream model."
+    source_ids:
+      - djordjevic-2018-conveyor-lca
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_frame_materials
+      process_id: "fabricate_frame"
+      flow_role: "steel plate and conditional flux-cored wire"
+      record_type: "BOM and issue records"
+      raw_fields: "model; configuration; material grade; issued mass; return mass; accepted count"
+      collection_method: "Reconcile material issue and returns to the same accepted configuration."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "current representative production period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "purchase and store issue records"
+    - protocol_id: cp_frame_scrap
+      process_id: "fabricate_frame"
+      flow_role: "steel offcuts"
+      record_type: "weighed waste records"
+      raw_fields: "configuration; segregated steel scrap mass; accepted count"
+      collection_method: "Weigh segregated offcuts leaving fabrication."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same period as frame inputs"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "calibrated scale and transfer ticket"
+    - protocol_id: cp_drive_components
+      process_id: "fit_drive"
+      flow_role: "motor and initial oil"
+      record_type: "supplier and assembly records"
+      raw_fields: "configuration; motor mass; lubricant grade; charged oil mass; accepted count"
+      collection_method: "Match supplier component mass and assembly charge to the accepted serial number."
+      unit: "kg"
+      frequency: "each machine"
+      temporal_coverage: "acceptance period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "supplier specification and assembly record"
+    - protocol_id: cp_belt_components
+      process_id: "fit_belt"
+      flow_role: "belt and idlers"
+      record_type: "supplier and assembly records"
+      raw_fields: "configuration; belt mass; idler assembly mass; accepted count"
+      collection_method: "Match purchased belt and idlers to the accepted belt-route machine."
+      unit: "kg"
+      frequency: "each machine"
+      temporal_coverage: "acceptance period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "supplier BOM and assembly record"
+    - protocol_id: cp_chain_components
+      process_id: "fit_chain"
+      flow_role: "steel chain assembly"
+      record_type: "supplier and assembly records"
+      raw_fields: "configuration; chain assembly mass; accepted count"
+      collection_method: "Match purchased chain assembly to the accepted chain-route machine."
+      unit: "kg"
+      frequency: "each machine"
+      temporal_coverage: "acceptance period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "supplier BOM and assembly record"
+    - protocol_id: cp_factory_electricity
+      process_id: "factory_energy"
+      flow_role: "production electricity"
+      record_type: "meter and allocation record"
+      raw_fields: "start meter; end meter; kWh; machine-hours; accepted count"
+      collection_method: "Read calibrated meter; attribute included production and acceptance operations once; convert kWh to MJ."
+      unit: "MJ"
+      frequency: "production period"
+      temporal_coverage: "same period as accepted machines"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter record and allocation worksheet"
+    - protocol_id: cp_mass
+      process_id: "accept_machine"
+      flow_role: "accepted complete machine"
+      record_type: "acceptance weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Use traceable weighing records for the accepted complete machine of the same configuration."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "acceptance event"
+      site_scope: "manufacturing site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "traceable weighing and acceptance records"
+  calculation_rules:
+    - id: energy_per_machine
+      applies_to: "factory_electricity"
+      rule: "Attributable period electricity divided by accepted machines of the same configuration, after documented machine-hour attribution."
+      inputs:
+        - "period meter MJ"
+        - machine-hours
+        - "accepted count"
+        - cp_factory_electricity
+      output: "MJ per accepted machine"
+      source_ids:
+        - djordjevic-2018-conveyor-lca
+    - id: scrap_fraction_check
+      applies_to: "steel_scrap"
+      rule: "Divide measured steel scrap by measured steel plate issued to the same configuration for a non-normative quality check."
+      inputs:
+        - steel_scrap
+        - steel_plate
+        - cp_frame_scrap
+        - cp_frame_materials
+      output: "scrap fraction"
+      source_ids:
+        - djordjevic-2018-conveyor-lca
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all rows"
+      requirement: "Match material, component, energy and output records to the same accepted configuration and route."
+      evidence: "BOM, serial number and acceptance record"
+    - id: dq_upstream
+      applies_to: "purchased inputs"
+      requirement: "Record supplier material grade, component specification, geography, data year and upstream dataset identity."
+      evidence: "supplier documentation and dataset metadata"
+    - id: dq_completeness
+      applies_to: "all rows"
+      requirement: "Record zero or not applicable explicitly for absent conditional routes; do not omit applicable waste or electricity."
+      evidence: "route declaration and reconciled logs"
+    - id: dq_mass
+      applies_to: "finished_machine"
+      requirement: "Record M from traceable net-mass weighing, excluding transport packaging."
+      evidence: "weighing and acceptance records"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_product"
+    rule: "Require CPC 44411 underground-duty machine identity, accepted configuration and matching reference-flow UUID."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_mass
+    applies_to: "all_inventory_rows"
+    rule: "Verify every amount is per the same one accepted finished machine and output is measured M kg."
+    source_ids:
+      - djordjevic-2018-conveyor-lca
+  - rule_id: validate_routes
+    applies_to: "belt_and_chain_rows"
+    rule: "Verify exactly the declared belt or chain route rows are applicable and their component specifications are disclosed."
+    source_ids:
+      - cowan-1975-face-haulage
+  - rule_id: validate_evidence
+    applies_to: "external_ranges"
+    rule: "Do not substitute case-study values for underground equipment ranges; obtain independent compatible originals before any external range is adopted."
+    source_ids:
+      - djordjevic-2018-conveyor-lca
+      - cowan-1975-face-haulage
+published_dataset_profile:
+  dataset_role: "Foreground production data package for a configured underground continuous-action material conveyor"
+  downstream_use: "Secondary dataset or background dataset after review; process and lifecyclemodel projections use the same foreground record"
+  allowed_use: "Cradle-to-factory-gate comparison of disclosed underground machine configurations on the measured M kg per accepted machine basis"
+  excluded_use: "Unqualified general-purpose conveyors; operational transport service; mine installation, use and end of life"
+  required_metadata: "route; model; configuration; accepted count; length; capacity; drive; material grades; included modules; net mass M; geography; data year"
+  required_quality_disclosure: "source and age of each upstream dataset; UUID gaps; range-evidence gaps; allocation method; measured completeness"
+  update_trigger: "design change, belt-to-chain route change, supplier change, material grade change or new measured production data"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official classification identity, rows 2194 and 2296"
+  - id: "cowan-1975-face-haulage"
+    type: "literature"
+    reference: "https://stacks.cdc.gov/view/cdc/235385/cdc_235385_DS1.pdf"
+    used_for: "Underground belt and chain configurations, printed pages 44 and 54"
+  - id: "rondum-1982-conveyor-installation"
+    type: "handbook"
+    reference: "https://stacks.cdc.gov/view/cdc/234436/cdc_234436_DS1.pdf"
+    used_for: "Underground conveyor components and acceptance context, printed pages 8 and 32"
+  - id: "djordjevic-2018-conveyor-lca"
+    type: "literature"
+    reference: "https://www.mas.bg.ac.rs/_media/istrazivanje/fme/vol46/3/18_m_djordjevic_et.pdf"
+    used_for: "Fabrication operations and component types only; laboratory scale, no transferred values"
+  - id: "unido-1990-rubber-belts"
+    type: "official_guidance"
+    reference: "https://downloads.unido.org/ot/48/40/4840936/15001-20000_18498.pdf"
+    used_for: "Purchased-belt upstream production sequence, printed page 35"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:21817db8429e42acd2065a04ba95aad7730eecf830a1050fef06d88112d2a739"
+  generated_content_sha256: "sha256:41283d96f9b0896ef42f68ee8ed79899e598bc8e3163ea9237363e686759b706"

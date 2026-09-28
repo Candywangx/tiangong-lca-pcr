@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.special-purpose-machinery.parts-of-milking-and-dairy-machines-n-e-c
 title:
   en-US: "Parts of milking and dairy machines, n.e.c."
-  zh-CN: null
-status: scaffold
+  zh-CN: "挤奶和乳制品机械零件，未另分类"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -19,6 +19,7 @@ modules:
     - data-quality
     - validation-rules
 target_entities:
+  - dataset
   - flow
   - process
   - lifecyclemodel
@@ -28,10 +29,31 @@ languages:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "44139"
     title: "Parts of milking and dairy machines, n.e.c."
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: nbr_compound_input
+        reason_code: product_state_mismatch
+        explanation: "Public NBR candidate is a vulcanized article rather than raw compound; the other candidates are different chemicals. Record actual compound grade and seek an exact public input flow."
+      - row_id: electricity_input
+        reason_code: property_or_unit_mismatch
+        explanation: "Returned alternating-current candidates use net calorific value in MJ rather than metered electrical energy in kWh; services and cables are not consumed electricity."
+    range_evidence_needs:
+      - row_id: steel_plate_input
+        explanation: "No two independent, boundary-compatible original sources establish material input per kg accepted part; collect lot-specific mass."
+      - row_id: nbr_compound_input
+        explanation: "No two independent, boundary-compatible original sources establish NBR input per kg accepted part; collect lot-specific mass."
+      - row_id: electricity_input
+        explanation: "No two independent, boundary-compatible original sources establish manufacturing electricity per kg accepted part; use allocated meter records."
+      - row_id: new_steel_scrap_output
+        explanation: "No two independent, boundary-compatible original sources establish machining scrap per kg accepted part; weigh actual new scrap."

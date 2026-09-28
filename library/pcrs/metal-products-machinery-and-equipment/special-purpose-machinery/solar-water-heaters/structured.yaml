@@ -1,10 +1,731 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44826"
-  title: "Solar water heaters"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.solar-water-heaters"
+  classification_refs: "CPC 3.0 44826: Solar water heaters; un-cpc-3-2025"
+  covered_products: "Complete factory-made solar water heaters with collector and storage tank, flat-plate or evacuated-tube"
+  excluded_products: "Standalone collectors, standalone tanks, components, photovoltaics, electric-only heaters, site-built custom installations"
+  representative_product: "One accepted complete solar water heater of declared configuration"
+  production_route: "Collector fabrication; storage tank fabrication; final assembly and packaging"
+  market_state: "Packaged at factory gate; packaging mass excluded from net product mass M"
+functional_unit:
+  what: "A complete device for heating domestic water using solar thermal energy"
+  how_much: "One accepted finished machine of declared configuration with net mass M kg"
+  how_well: "Record collector type, tank volume, rated performance and supplied parts; no universal performance value"
+  how_long_or_cycle: "One unit at factory delivery; service life is outside this manufacturing dataset"
+  reference_flow_link: "a_finished"
+system_boundary:
+  rules:
+    - rule_id: boundary_1
+      applies_to: "manufacturing boundary"
+      rule: "Include collector, tank, assembly, and supplied packaging; record actual inputs and wastes for the applicable configuration."
+      source_ids:
+        - greening-2013
+    - rule_id: boundary_2
+      applies_to: "life-cycle stages"
+      rule: "Model installation, operation, maintenance, and end of life separately; this manufacturing dataset ends at the factory gate."
+      source_ids:
+        - greening-2013
+boundary_abstraction:
+  declared_starting_condition: "Quantity and state of purchased materials and components entering the manufacturing facility"
+  starting_condition_role: "Foreground entry; upstream production covered by traceable background datasets"
+  product_classification_scope: "Complete CPC 44826 solar water heaters; any purchased complete heater is separately identified"
+  recursive_input_rule: "Do not recursively use this rule to model a purchased complete heater used as an input; link it as a distinct upstream dataset and disclose its quantity"
+  upstream_dataset_requirement: "Link upstream material, energy, and purchased-component datasets compatible with geography, technology, and time"
+  disclosure: "Declare configuration, supply state, purchased components, plant processes, packaging boundary, and exclusions"
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Solar water heaters"
+    uuid: "9ede182c-cfec-4513-a405-b17db74ed710"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "same configuration"
+    - "collector technology"
+    - "tank volume"
+    - "supplied pump and heat-transfer fluid"
+    - packaging
+    - "accepted net mass M"
+    - "factory location and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: collector
+    name: "Collector fabrication"
+    inclusion: "required"
+    inclusion_condition: "none"
+    role: "foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: tank
+    name: "Storage tank fabrication"
+    inclusion: "required"
+    inclusion_condition: "none"
+    role: "foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+  - id: assembly
+    name: "Final assembly and packaging"
+    inclusion: "required"
+    inclusion_condition: "none"
+    role: "foreground manufacturing"
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: collector
+    label: "Collector fabrication"
+    inputs:
+      product:
+        - row_id: c_steel_sheet
+          role: "Frame steel sheet"
+          name: "Low-alloy steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when all collector routes; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: c_copper_sheet
+          role: "Flat-plate absorber copper sheet"
+          name: "Copper sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30cc5ca3-6198-4f82-8016-284f1b15d01b"
+          property_unit: "Mass / kg"
+          description: "Include when flat-plate collector only; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: c_flat_glass
+          role: "Flat-plate glazing"
+          name: "Low-iron flat glass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when flat-plate collector only; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: c_glass_tube
+          role: "Evacuated glass tube"
+          name: "Borosilicate glass tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when evacuated-tube collector only; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: c_aluminium_sheet
+          role: "Collector frame aluminium sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include when when aluminium framing is installed; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: c_electricity
+          role: "Collector manufacturing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a500e350-83b8-4347-894e-b81ecd418615"
+          property_unit: "Net calorific value / MJ"
+          description: "Include when all collector routes; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_energy
+              source_ids:
+                - greening-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: c_steel_scrap
+          role: "Collector steel offcuts"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "37997e0e-e34b-4ab9-a642-5d86f4333919"
+          property_unit: "Mass / kg"
+          description: "Include when when steel cutting creates offcuts; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_collector_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collector_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: tank
+    label: "Storage tank fabrication"
+    inputs:
+      product:
+        - row_id: t_steel_sheet
+          role: "Tank steel sheet"
+          name: "Low-alloy steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when all tank routes; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: t_glass_wool
+          role: "Tank insulation glass wool"
+          name: "Glass Wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "85977f80-d866-44ec-bac9-52cb2d9fb421"
+          property_unit: "Mass / kg"
+          description: "Include when when glass-wool insulation is fitted; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: t_electricity
+          role: "Tank manufacturing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a500e350-83b8-4347-894e-b81ecd418615"
+          property_unit: "Net calorific value / MJ"
+          description: "Include when all tank routes; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_energy
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: t_natural_gas
+          role: "Tank heating natural gas"
+          name: "Pipeline-quality natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7766e51e-0b64-4fbb-89cb-489c33293137"
+          property_unit: "Volume / m3"
+          description: "Include when when pipeline-quality natural gas fires a manufacturing step; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_fuel
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: t_tap_water
+          role: "Tank test water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Include when when hydrostatic testing uses tap water; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_test_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_test_water
+              source_ids:
+                - greening-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: t_steel_scrap
+          role: "Tank steel offcuts"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "37997e0e-e34b-4ab9-a642-5d86f4333919"
+          property_unit: "Mass / kg"
+          description: "Include when when steel cutting creates offcuts; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_scrap
+              source_ids: []
+            ranges: []
+        - row_id: t_test_water_waste
+          role: "Discharged tank test water"
+          name: "Used hydrostatic-test water"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include when when test water leaves the process; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_tank_test_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tank_test_water
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly
+    label: "Final assembly and packaging"
+    inputs:
+      product:
+        - row_id: a_copper_pipe
+          role: "Connection copper pipe"
+          name: "Copper tubing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0d80f4b8-8f26-4eee-8b81-df499c4c9dff"
+          property_unit: "Mass / kg"
+          description: "Include when when copper pipe is supplied with the finished heater; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_assembly_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: a_pump
+          role: "Integral circulation pump"
+          name: "Circulation pump"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when active circulating package only; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_assembly_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: a_glycol
+          role: "Factory-charged propylene glycol"
+          name: "Propylene glycol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when when heat-transfer circuit is charged at the factory; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_assembly_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: a_cardboard
+          role: "Corrugated board packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Include when when corrugated board is supplied as transport packaging; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_assembly_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - greening-2013
+            ranges: []
+        - row_id: a_electricity
+          role: "Final assembly electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a500e350-83b8-4347-894e-b81ecd418615"
+          property_unit: "Net calorific value / MJ"
+          description: "Include when all assembly routes; use records for the same accepted configuration."
+          amount:
+            expression: "Record and allocate to accepted finished machines using cp_assembly_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_energy
+              source_ids:
+                - greening-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: a_finished
+          role: "Finished solar water heater"
+          name: "Solar water heaters"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9ede182c-cfec-4513-a405-b17db74ed710"
+          property_unit: "Mass / kg"
+          description: "Include when all accepted units; use records for the same accepted configuration."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - greening-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_1
+    applies_to: "shared manufacturing resources"
+    rule: "Prefer separately metered process and batch records; allocate shared meters by documented machine operating time or accepted production count and disclose the method."
+    source_ids: []
+  - rule_id: allocation_2
+    applies_to: "steel offcuts"
+    rule: "Report offcuts as distinct waste outputs; credit recycling only with separate evidence and consistent downstream boundary to avoid double counting."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "assembly"
+      flow_role: "finished heater"
+      record_type: "weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted unit"
+      temporal_coverage: "representative production year"
+      site_scope: "one declared factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration certificate and acceptance record"
+    - protocol_id: cp_collector_bom
+      process_id: "collector"
+      flow_role: "stock materials"
+      record_type: "batch BOM"
+      raw_fields: "model; configuration; material code; issued mass; returned mass; accepted unit count"
+      collection_method: "Reconcile stores issues and returns to accepted collector units."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "collector line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "BOM and stores ledger"
+    - protocol_id: cp_tank_bom
+      process_id: "tank"
+      flow_role: "stock materials"
+      record_type: "batch BOM"
+      raw_fields: "model; configuration; material code; issued mass; returned mass; accepted unit count"
+      collection_method: "Reconcile stores issues and returns to accepted tank units."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "tank line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "BOM and stores ledger"
+    - protocol_id: cp_assembly_bom
+      process_id: "assembly"
+      flow_role: "supplied components"
+      record_type: "batch BOM"
+      raw_fields: "model; configuration; component code; issued mass; returned mass; accepted unit count"
+      collection_method: "Reconcile purchased components and packaging to accepted finished heaters."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "assembly line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "BOM and stores ledger"
+    - protocol_id: cp_collector_energy
+      process_id: "collector"
+      flow_role: "electricity"
+      record_type: "meter log"
+      raw_fields: "meter opening; meter closing; accepted unit count"
+      collection_method: "Read allocated collector-line electricity meter and convert to MJ."
+      unit: "MJ"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "collector line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter log and allocation record"
+    - protocol_id: cp_tank_energy
+      process_id: "tank"
+      flow_role: "electricity"
+      record_type: "meter log"
+      raw_fields: "meter opening; meter closing; accepted unit count"
+      collection_method: "Read allocated tank-line electricity meter and convert to MJ."
+      unit: "MJ"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "tank line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter log and allocation record"
+    - protocol_id: cp_assembly_energy
+      process_id: "assembly"
+      flow_role: "electricity"
+      record_type: "meter log"
+      raw_fields: "meter opening; meter closing; accepted unit count"
+      collection_method: "Read allocated assembly-line electricity meter and convert to MJ."
+      unit: "MJ"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "assembly line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter log and allocation record"
+    - protocol_id: cp_tank_fuel
+      process_id: "tank"
+      flow_role: "natural gas"
+      record_type: "fuel meter log"
+      raw_fields: "fuel meter opening; fuel meter closing; accepted unit count"
+      collection_method: "Measure pipeline-quality natural gas volume from a calibrated meter."
+      unit: "m3"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "tank line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "fuel invoice and calorific-value record"
+    - protocol_id: cp_collector_scrap
+      process_id: "collector"
+      flow_role: "steel offcuts"
+      record_type: "weighed waste ledger"
+      raw_fields: "waste code; net offcut mass; accepted unit count"
+      collection_method: "Weigh segregated collector steel offcuts."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "collector line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "scale ticket and waste transfer note"
+    - protocol_id: cp_tank_scrap
+      process_id: "tank"
+      flow_role: "steel offcuts"
+      record_type: "weighed waste ledger"
+      raw_fields: "waste code; net offcut mass; accepted unit count"
+      collection_method: "Weigh segregated tank steel offcuts."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "tank line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "scale ticket and waste transfer note"
+    - protocol_id: cp_tank_test_water
+      process_id: "tank"
+      flow_role: "test water"
+      record_type: "water meter and discharge log"
+      raw_fields: "water meter; discharge meter; accepted unit count"
+      collection_method: "Measure supplied and discharged hydrostatic-test water separately."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "representative production year"
+      site_scope: "tank line"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "water meter and discharge log"
+  calculation_rules:
+    - id: batch_average
+      applies_to: "shared batch records"
+      rule: "Amount per machine = net batch quantity / accepted finished machines of the same configuration; exclude rework and rejects."
+      inputs:
+        - "net batch quantity"
+        - "accepted finished machine count"
+      output: "amount per machine"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_1
+      applies_to: "all inventory rows"
+      requirement: "Keep the same configuration, production period, and measured units; reconcile batch acceptance counts."
+      evidence: "batch ledger; calibration record"
+    - id: dq_2
+      applies_to: "conditional rows"
+      requirement: "Disclose route applicability and missing data; do not silently code an unobserved route as zero."
+      evidence: "configuration list; process record"
+validation_rules:
+  - rule_id: validation_1
+    applies_to: "reference flow"
+    rule: "Check a_finished is M kg; M comes from cp_mass for the same configuration and excludes transport packaging."
+    source_ids: []
+  - rule_id: validation_2
+    applies_to: "materials and energy"
+    rule: "Check batch coverage for inputs, offcuts, test water, and accepted output; disclose unreconciled mass differences."
+    source_ids: []
+  - rule_id: validation_3
+    applies_to: "routes and scope"
+    rule: "Check applicability of flat-plate and evacuated-tube rows and of pump, heat-transfer fluid, gas, and test water."
+    source_ids:
+      - greening-2013
+published_dataset_profile:
+  dataset_role: "Solar water heater factory-gate foreground data package"
+  downstream_use: "May serve as secondary_dataset or background_dataset linked to installation, use, and end-of-life models"
+  allowed_use: "Manufacturing-stage modelling for matching configuration, geography, time, and product state"
+  excluded_use: "Do not use this factory-gate dataset as a full-life-cycle hot-water service or default performance for other technologies"
+  required_metadata: "model; collector route; tank volume; supplied components; M; factory; year; upstream datasets; allocation method"
+  required_quality_disclosure: "meter coverage; BOM completeness; waste fate; conditional-row applicability; gaps and estimates"
+  update_trigger: "Material change in product configuration, materials, energy mix, or manufacturing process"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Product classification identity"
+  - id: "greening-2013"
+    type: "literature"
+    reference: "Benjamin Paul Greening, *Life cycle environmental and economic sustainability assessment of micro-generation technologies in the UK domestic sector*, 2013, University of Manchester, https://pure.manchester.ac.uk/ws/portalfiles/portal/54548470/FULL_TEXT.PDF"
+    used_for: "Manufacturing processes and candidate materials from Chapter 8, Tables 70–71; no general ranges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:375673b4c819c340325aa1d3fd12a99a5374b82de20dff573454dc89a107dc88"
+  generated_content_sha256: "sha256:e6cccdc6b571159d9e76c1e0517fd223e883ebad9d1c20ecaa71cf04eeb45505"

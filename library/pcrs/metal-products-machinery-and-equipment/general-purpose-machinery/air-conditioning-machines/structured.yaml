@@ -1,10 +1,700 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43912"
-  title: "Air-conditioning machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.air-conditioning-machines"
+  classification_refs: "CPC 3.0: 43912, Air-conditioning machines"
+  covered_products: "Complete factory-accepted air-conditioning machines with an electric vapour-compression circuit for indoor-air cooling or heating."
+  excluded_products: "Separate refrigeration/freezing equipment and heat pumps without the declared indoor-air-conditioning function; loose parts; fans alone; installation service."
+  representative_product: "Factory-accepted R32-charged room air conditioner with sheet-metal cabinet and aluminium-fin/copper-tube exchanger."
+  production_route: "Cabinet and exchanger fabrication when in house; final assembly, refrigerant charging and leak test; utilities; packaging."
+  market_state: "Complete accepted machine at factory gate, before transport or installation."
+functional_unit:
+  what: "Provide a complete air-conditioning machine for indoor-air cooling or heating."
+  how_much: "One accepted complete machine of the declared configuration."
+  how_well: "Declare rated cooling/heating capacity, refrigerant, electrical supply and model; performance is product metadata, not a fixed PCR amount."
+  how_long_or_cycle: "At factory acceptance; no operational service life is assumed."
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "all foreground processes"
+      rule: "Include site fabrication when performed, assembly, charging, leak testing, packaging, attributable electricity, waste and direct refrigerant releases through factory acceptance."
+      source_ids:
+        - us-doe-rac-1997-v2
+    - rule_id: boundary_exclusions
+      applies_to: "downstream stages"
+      rule: "Report installation, operation, maintenance and end-of-life outside this factory-gate package; do not silently include use-phase leakage."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and parts enter the factory at receipt; in-house fabrication starts at issued stock."
+  starting_condition_role: "Foreground factory gate; upstream products link to separate supplier datasets."
+  product_classification_scope: "Complete air-conditioning machines, CPC 3.0 43912; components are separately classified inputs."
+  recursive_input_rule: "If a complete machine is used as an input, disclose it and link its upstream dataset once rather than recursively re-counting the same manufacture."
+  upstream_dataset_requirement: "Link each purchased atomic material, component, electricity and packaging input to a compatible upstream product dataset; keep plant operations foreground."
+  disclosure: "Declare model, factory route, purchased versus in-house components, charge state, temporal/geographic coverage and excluded stages."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Air-conditioning machines"
+    uuid: "a38dcbe4-4dd1-4ce8-a67b-5455ff82e9e0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "model and configuration"
+    - "rated cooling/heating capacity"
+    - "refrigerant identity and factory charge"
+    - "compressor and heat-exchanger technology"
+    - "factory-gate acceptance state"
+    - "manufacturing site and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: electricity_unit
+    applies_to: "plant_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh; preserve the original meter record and period."
+process_map:
+  - id: cabinet_fabrication
+    name: "Cabinet sheet fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "When the factory cuts/forms cold-rolled steel cabinet sheet."
+    role: "foreground fabrication"
+    quantitative_reference: "per accepted machine"
+  - id: heat_exchanger_fabrication
+    name: "Heat exchanger fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "When the factory forms aluminium fins and copper tube exchangers."
+    role: "foreground fabrication"
+    quantitative_reference: "per accepted machine"
+  - id: final_assembly_test
+    name: "Final assembly, charge and test"
+    inclusion: "required"
+    inclusion_condition: "All covered machines; R32 charge and emission rows only for R32 models."
+    role: "foreground assembly and test"
+    quantitative_reference: "per accepted machine"
+  - id: plant_utilities
+    name: "Plant purchased electricity"
+    inclusion: "required"
+    inclusion_condition: "Record electricity attributable to the declared foreground operations."
+    role: "foreground utility"
+    quantitative_reference: "per accepted machine"
+  - id: packaging
+    name: "Factory packaging and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Corrugated box row only when supplied."
+    role: "foreground finishing"
+    quantitative_reference: "one accepted machine"
+process_inventory:
+  - id: cabinet_fabrication
+    label: "Cabinet sheet fabrication"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Cold-rolled carbon steel sheet"
+          name: "Cold-rolled carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only where the cabinet is fabricated from cold-rolled carbon-steel sheet at the site; purchased cabinets require their own atomic input identity."
+          amount:
+            expression: "Record issued sheet mass for on-site cabinet fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_sheet
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b8179640-66c9-4734-80a4-bd2effc29b4b"
+          property_unit: "Mass / kg"
+          description: "Include only for on-site cabinet fabrication; keep externally recycled scrap as waste output before downstream treatment."
+          amount:
+            expression: "Weigh offcuts and rejected steel sent to waste handling."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_scrap
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+      elementary:
+        []
+  - id: heat_exchanger_fabrication
+    label: "Heat exchanger fabrication"
+    inputs:
+      product:
+        - row_id: aluminium_sheet
+          role: "aluminium sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Use this flow only for aluminium sheet thicker than 0.2 mm; thinner foil needs a separately reviewed flow."
+          amount:
+            expression: "Record aluminium sheet issued to fin forming."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_sheet
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+        - row_id: copper_tubing
+          role: "Copper tubing"
+          name: "Copper tubing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0d80f4b8-8f26-4eee-8b81-df499c4c9dff"
+          property_unit: "Mass / kg"
+          description: "Include only when copper-tube heat exchangers are fabricated at the site."
+          amount:
+            expression: "Record copper tube mass issued to heat-exchanger fabrication."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_tubing
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: final_assembly_test
+    label: "Final assembly, charge and test"
+    inputs:
+      product:
+        - row_id: compressor
+          role: "Hermetic refrigeration compressor"
+          name: "Hermetic refrigeration compressor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a2a3427c-5d93-494b-a1fd-bcab42fea432"
+          property_unit: "Mass / kg"
+          description: "Use only for models with a purchased hermetic refrigeration compressor; other compressor designs need their own flow."
+          amount:
+            expression: "Record installed compressor mass from model BOM and receipts."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compressor
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+        - row_id: r32_charge
+          role: "Refrigerant R32 (difluoromethane)"
+          name: "Refrigerant R32 (difluoromethane)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on declared R32 charge; never substitute R404A or an elementary emission flow for purchased refrigerant."
+          amount:
+            expression: "Record R32 transferred into accepted R32-configured machines and test losses separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_r32_charge
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+        - row_id: fan_motor
+          role: "Electric axial-fan motor"
+          name: "Electric axial-fan motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased electric motor driving the axial fan; record its installed mass only when this separate motor is on the BOM."
+          amount:
+            expression: "Collect installed component mass from model BOM and receipt records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fan_motor
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+        - row_id: axial_fan_rotor
+          role: "Axial fan rotor"
+          name: "Axial fan rotor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased axial fan rotor or impeller, excluding the separately recorded motor; include only when this component is installed."
+          amount:
+            expression: "Collect installed component mass from model BOM and receipt records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fan_rotor
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+        - row_id: control_board
+          role: "Electronic control printed circuit board assembly"
+          name: "Electronic control printed circuit board assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased assembled electronic control board installed in the machine; use a separately verified identity if the control design differs."
+          amount:
+            expression: "Collect installed component mass from model BOM and receipt records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_board
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+        - row_id: plastic_front_grille
+          role: "Moulded plastic front grille"
+          name: "Moulded plastic front grille"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased front grille made of moulded plastic; disclose the actual resin and exclude this input when the grille is moulded within the site boundary."
+          amount:
+            expression: "Collect installed component mass from model BOM and receipt records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_plastic_grille
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: r32_to_air
+          role: "HFC-32"
+          name: "HFC-32"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-9ca4-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Conditional on R32 use and an evidenced release; TianGong has no Chinese baseName for this selected elementary flow."
+          amount:
+            expression: "Calculate actual unrecovered HFC-32 release to unspecified air from charging and leak testing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_r32_emission
+              source_ids: []
+            ranges: []
+  - id: plant_utilities
+    label: "Plant purchased electricity"
+    inputs:
+      product:
+        - row_id: plant_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
+          property_unit: "Net calorific value / MJ"
+          description: "Include fabrication, assembly, charging, testing and packaging electricity within the declared site boundary."
+          amount:
+            expression: "Record attributable purchased electricity in MJ; convert meter kWh by 3.6 MJ/kWh."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: packaging
+    label: "Factory packaging and acceptance"
+    inputs:
+      product:
+        - row_id: corrugated_box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include only if a corrugated box is supplied with the factory-gate product; exclude transport packaging from M."
+          amount:
+            expression: "Record corrugated box mass issued for the accepted machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_box
+              source_ids:
+                - us-doe-rac-1997-v2
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Air-conditioning machines"
+          name: "Air-conditioning machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a38dcbe4-4dd1-4ce8-a67b-5455ff82e9e0"
+          property_unit: "Mass / kg"
+          description: "One complete accepted machine of the declared configuration; M excludes transport packaging and includes factory-installed refrigerant."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_shared_energy
+    applies_to: "shared plant electricity"
+    rule: "Prefer submetered model-specific electricity. Where shared, allocate measured electricity by logged machine-hours for the same period; disclose the denominator and uncertainty."
+    source_ids: []
+  - rule_id: allocation_steel_scrap
+    applies_to: "steel scrap"
+    rule: "Record steel scrap as a separate waste output. Do not credit avoided virgin steel within the factory-gate foreground inventory; disclose downstream recycling separately."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_steel_sheet
+      process_id: "cabinet_fabrication"
+      flow_role: "steel_sheet"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable steel_sheet / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_steel_scrap
+      process_id: "cabinet_fabrication"
+      flow_role: "steel_scrap"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable steel_scrap / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_aluminium_sheet
+      process_id: "heat_exchanger_fabrication"
+      flow_role: "aluminium_sheet"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable aluminium_sheet / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_copper_tubing
+      process_id: "heat_exchanger_fabrication"
+      flow_role: "copper_tubing"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable copper_tubing / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_compressor
+      process_id: "final_assembly_test"
+      flow_role: "compressor"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable compressor / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_fan_motor
+      process_id: "final_assembly_test"
+      flow_role: "fan_motor"
+      record_type: "component receipt and BOM"
+      raw_fields: "model; configuration; installed component mass; accepted count"
+      collection_method: "Reconcile component receipts, model BOM and assembly issue records."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "installed fan_motor mass / accepted machines"
+      quality_evidence: "receipt, BOM and assembly record"
+    - protocol_id: cp_fan_rotor
+      process_id: "final_assembly_test"
+      flow_role: "axial_fan_rotor"
+      record_type: "component receipt and BOM"
+      raw_fields: "model; configuration; installed component mass; accepted count"
+      collection_method: "Reconcile component receipts, model BOM and assembly issue records."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "installed axial_fan_rotor mass / accepted machines"
+      quality_evidence: "receipt, BOM and assembly record"
+    - protocol_id: cp_control_board
+      process_id: "final_assembly_test"
+      flow_role: "control_board"
+      record_type: "component receipt and BOM"
+      raw_fields: "model; configuration; installed component mass; accepted count"
+      collection_method: "Reconcile component receipts, model BOM and assembly issue records."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "installed control_board mass / accepted machines"
+      quality_evidence: "receipt, BOM and assembly record"
+    - protocol_id: cp_plastic_grille
+      process_id: "final_assembly_test"
+      flow_role: "plastic_front_grille"
+      record_type: "component receipt and BOM"
+      raw_fields: "model; configuration; installed component mass; accepted count"
+      collection_method: "Reconcile component receipts, model BOM and assembly issue records."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "installed plastic_front_grille mass / accepted machines"
+      quality_evidence: "receipt, BOM and assembly record"
+    - protocol_id: cp_r32_charge
+      process_id: "final_assembly_test"
+      flow_role: "r32_charge"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable r32_charge / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_electricity
+      process_id: "plant_utilities"
+      flow_role: "plant_electricity"
+      record_type: "meter and production ledger"
+      raw_fields: "meter reading; period; machine-hours"
+      collection_method: "Read calibrated meter or ledger, convert kWh to MJ, and allocate by logged machine-hours."
+      unit: "MJ"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable plant_electricity / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_r32_emission
+      process_id: "final_assembly_test"
+      flow_role: "r32_to_air"
+      record_type: "refrigerant mass balance ledger"
+      raw_fields: "R32 issued for test and charge; retained in accepted machines; recovered mass; returned mass; waste dispatch mass; accepted count"
+      collection_method: "Reconcile charging, leak-test, recovery and stock records for the same period and calculate unrecovered release to air."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "released R32 mass / accepted machines"
+      quality_evidence: "charge, recovery, stock and waste records"
+    - protocol_id: cp_box
+      process_id: "packaging"
+      flow_role: "corrugated_box"
+      record_type: "material or waste ledger"
+      raw_fields: "model; configuration; lot; issued mass; returned mass; accepted count"
+      collection_method: "Reconcile lot and model-specific issue, return, recovery and dispatch records; weigh where direct mass is unavailable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "attributable corrugated_box / accepted machines"
+      quality_evidence: "meter, BOM, stock and recovery reconciliation"
+    - protocol_id: cp_mass
+      process_id: "packaging"
+      flow_role: "finished_machine"
+      record_type: "weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "production period"
+      site_scope: "factory site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration and acceptance record"
+  calculation_rules:
+    - id: r32_mass_balance
+      applies_to: "r32_to_air"
+      rule: "Released R32 = R32 issued for charging and tests - R32 retained in accepted machines - R32 recovered - R32 returned to stock - R32 sent off-site as waste."
+      inputs:
+        - "R32 issue"
+        - "retained charge"
+        - recovery
+        - returns
+        - "waste dispatch"
+      output: "kg HFC-32 to air"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all inventory rows"
+      requirement: "Use one declared model/configuration and production period; verify accepted machine count and purchased-versus-fabricated route."
+      evidence: "BOM, acceptance and process records"
+    - id: dq_refrigerant
+      applies_to: "r32_charge; r32_to_air"
+      requirement: "Reconcile R32 purchase, factory charge, recovery, waste and stocks; disclose unmeasured losses rather than force zero."
+      evidence: "charge and recovery logs"
+    - id: dq_mass
+      applies_to: "finished_machine"
+      requirement: "Retain calibrated net-mass measurement for the same accepted configuration; exclude shipping packaging."
+      evidence: "cp_mass record"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_machine"
+    rule: "Confirm one finished machine output equals measured M kg and matches the reference UUID, model and acceptance record."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "materials and refrigerant"
+    rule: "Check material and R32 issue/return balances, record waste and fugitive release separately, and explain any residual."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all UUID-bearing rows"
+    rule: "Use only verified public state-100 flow identities with matching product state, property, unit and classification; keep unresolved rows blank."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground data package for complete factory-gate air-conditioning machine production"
+  downstream_use: "secondary_dataset; background_dataset after review"
+  allowed_use: "Model the declared machine configuration and factory route; link compatible upstream datasets."
+  excluded_use: "Do not infer use-phase efficiency or refrigerant leakage from this production inventory."
+  required_metadata: "model; configuration; capacity; refrigerant and charge; factory route; site and period; measured M; accepted count"
+  required_quality_disclosure: "coverage, allocation, mass-balance residuals, unresolved flow identities and absent empirical ranges"
+  update_trigger: "model, refrigerant, BOM, fabrication route, site or meter boundary changes"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Structure (30 June 2025), https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 43912 identity and separation from adjacent classes; verified original row 2205"
+  - id: "eu-206-2012"
+    type: "standard"
+    reference: "Commission Regulation (EU) No 206/2012, Article 2(1), 2017 consolidated text archived from UK legislation.gov.uk at https://upload.wikimedia.org/wikipedia/commons/a/a0/EUR_2012-206.pdf"
+    used_for: "Representative electric vapour-compression air-conditioner definition; regulation scope is narrower than this PCR"
+  - id: "us-doe-rac-1997-v2"
+    type: "official_guidance"
+    reference: "U.S. DOE / LBNL, Technical Support Document for Energy Conservation Standards for Room Air Conditioners, Volume 2 (September 1997), p. 1-2, https://www1.eere.energy.gov/buildings/appliance_standards/pdfs/tsdracv2.pdf"
+    used_for: "Representative room-air-conditioner manufacturing sequence and materials; no generic quantity range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4e005c6547237586e3603a644914b290142a37641a0bfd3d94e51e1c97d10303"
+  generated_content_sha256: "sha256:c8acbae66f37938df649643e25aca29babb07cb98c7b1e98bb06a4da36039464"
