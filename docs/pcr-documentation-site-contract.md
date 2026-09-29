@@ -274,7 +274,8 @@ and x-default both use `/`, while `/zh/` redirects permanently to it.
 Production resource checks fail when memory measurement is unavailable or empty.
 POSIX builds inspect process-tree RSS; Windows uses its native CIM working-set
 statistics. No unmeasured zero is accepted as evidence that a production build fits
-within the memory budget. Browser chrome is complete in English and Chinese;
+within the memory budget. Browser chrome, including the visible brand lockup, is
+localized consistently in English and Chinese;
 optional reading-language pages currently use English controls unless additional
 UI translations are registered. Their actual document bodies are never substituted.
 
