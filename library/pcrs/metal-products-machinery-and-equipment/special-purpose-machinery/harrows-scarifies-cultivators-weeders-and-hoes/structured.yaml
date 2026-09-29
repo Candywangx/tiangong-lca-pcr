@@ -1,10 +1,334 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44112"
-  title: "Harrows, scarifies, cultivators, weeders and hoes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.harrows-scarifies-cultivators-weeders-and-hoes"
+  classification_refs: "CPC 3.0 44112 (un-cpc-3-2025)"
+  covered_products: "Complete harrows, scarifiers, cultivators, weeders and hoes for soil preparation or cultivation"
+  excluded_products: "Ploughs; seeders; tractors; separately sold parts; residual other soil machinery"
+  representative_product: "Accepted complete steel-frame cultivator with declared working tools and hitch"
+  production_route: "Purchased materials and parts; cutting/forming; conditional welding and coating; assembly, inspection and packaging"
+  market_state: "New accepted complete implement at factory gate; dispatch packaging reported separately"
+functional_unit:
+  what: "Provide one complete implement for soil preparation or cultivation."
+  how_much: "One accepted finished implement of the declared configuration."
+  how_well: "Meets the manufacturer's declared configuration and acceptance specification."
+  how_long_or_cycle: "Factory-gate manufacture; no assumed field life or operating cycle."
+  reference_flow_link: "finished_implement"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "production dataset"
+      rule: "Include fabrication, applicable finishing, assembly and dispatch preparation through factory gate; report packaging separately from net product mass."
+      source_ids: []
+    - rule_id: boundary_variant
+      applies_to: "configuration"
+      rule: "Include conditional exchanges only when the documented route uses them; add distinct atomic BOM exchanges for other actual components."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel and other physical inputs at supplier delivery states, identified by actual BOM item."
+  starting_condition_role: "Start of the foreground manufacturing unit process."
+  product_classification_scope: "Complete named soil-working implements under CPC 44112."
+  recursive_input_rule: "Record a purchased same-category complete implement only if physically incorporated; do not recursively model its manufacture in this foreground unit process."
+  upstream_dataset_requirement: "Link each purchased atomic input to a state- and geography-appropriate upstream dataset; disclose unavailable matches."
+  disclosure: "Declare site, period, operations, configuration, purchased subassemblies, packaging and excluded life-cycle stages."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Harrows, scarifies, cultivators, weeders and hoes"
+    uuid: "b7ca7dbf-8da6-4c2f-b5fc-2751058a221b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - Subtype
+    - "model and configuration"
+    - "manual or mounted drive"
+    - "working width"
+    - "principal materials"
+    - "accepted net mass M"
+    - "site and period."
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: implement_manufacturing
+    name: "Integrated implement manufacture"
+    inclusion: "required"
+    inclusion_condition: "Every accepted complete implement"
+    role: "Cutting, forming, applicable welding/coating, assembly and dispatch preparation"
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: implement_manufacturing
+    label: "Integrated implement manufacture"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Hot-rolled non-alloy steel sheet"
+          name: "Non-Alloy Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce3ac926-5d6f-4558-9edc-67179d93dde4"
+          property_unit: "Mass / kg"
+          description: "Purchased sheet issued to the declared steel-frame route; distinguish other grades and shapes in the actual BOM."
+          amount:
+            expression: "Collect sheet issued per one accepted finished machine from material issue and BOM records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: electricity_ac
+          role: "Alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Record attributable purchased alternating-current energy consumed during manufacture."
+          amount:
+            expression: "Collect metered energy attributable per one accepted finished machine in MJ."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: welding_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Consumed wire on the documented flux-cored arc welding route."
+          amount:
+            expression: "Collect wire issued less traceable unused returns per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: polyester_powder
+          role: "Polyester powder coating"
+          name: "Polyester powder coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased dry polyester powder only where this finishing route is used; exact public flow UUID remains unresolved."
+          amount:
+            expression: "Collect powder consumption per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated dispatch box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record box mass separately from accepted net machine mass when this packaging accompanies the implement."
+          amount:
+            expression: "Collect box mass per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_implement
+          role: "Accepted finished implement"
+          name: "Harrows, scarifies, cultivators, weeders and hoes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b7ca7dbf-8da6-4c2f-b5fc-2751058a221b"
+          property_unit: "Mass / kg"
+          description: "The complete inspected implement without dispatch packaging."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Fabrication steel offcuts"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Segregated post-industrial steel scrap leaving cutting and forming operations."
+          amount:
+            expression: "Collect segregated scrap mass per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_shared
+    applies_to: "shared manufacturing inputs"
+    rule: "Prefer separately metered or subdivided operations; otherwise allocate shared inputs to accepted configurations using a documented physical driver and disclose the driver and period."
+    source_ids:
+      - ghg-product-2011
+  - rule_id: allocation_scrap
+    applies_to: "steel scrap"
+    rule: "Record scrap as a waste output and disclose its destination; do not credit avoided virgin steel in this foreground inventory without a separately declared method."
+    source_ids:
+      - ghg-product-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "implement_manufacturing"
+      flow_role: "reference product"
+      record_type: "calibrated weighing and acceptance record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted configuration"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale calibration and acceptance record"
+    - protocol_id: cp_bom
+      process_id: "implement_manufacturing"
+      flow_role: "purchased material and packaging inputs"
+      record_type: "BOM and material issue records"
+      raw_fields: "model; configuration; item identity; issued mass; unused return; accepted units"
+      collection_method: "Reconcile purchased material and box issues to the actual configuration and accepted output."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "net issued mass / accepted machines"
+      quality_evidence: "supplier specification and issue ledger"
+    - protocol_id: cp_energy
+      process_id: "implement_manufacturing"
+      flow_role: "electricity input"
+      record_type: "meter and production records"
+      raw_fields: "meter reading; period; allocated MJ; accepted units"
+      collection_method: "Read calibrated meter or utility record; convert kWh to MJ using 3.6 MJ/kWh and reconcile shared use by a documented driver."
+      unit: "MJ"
+      frequency: "each reporting period"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "attributable electricity / accepted machines"
+      quality_evidence: "meter or utility record and allocation worksheet"
+    - protocol_id: cp_scrap
+      process_id: "implement_manufacturing"
+      flow_role: "steel scrap output"
+      record_type: "segregated scrap weighing"
+      raw_fields: "scrap mass; period; accepted units; destination"
+      collection_method: "Weigh segregated steel offcuts and reconcile with material issue."
+      unit: "kg"
+      frequency: "each collection batch"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "attributable scrap / accepted machines"
+      quality_evidence: "scale record and waste transfer note"
+  calculation_rules:
+    []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all rows"
+      requirement: "Match BOM, metering and acceptance records to the declared configuration and period; identify excluded components."
+      evidence: "BOM, production and acceptance records"
+    - id: dq_balance
+      applies_to: "material and scrap rows"
+      requirement: "Reconcile major steel input, accepted net product and segregated scrap; explain purchased parts and other outputs."
+      evidence: "signed material balance"
+    - id: dq_background
+      applies_to: "purchased inputs"
+      requirement: "Document upstream dataset state, geography, technology and temporal fit; disclose missing matches."
+      evidence: "supplier and background dataset metadata"
+validation_rules:
+  - rule_id: validate_mass
+    applies_to: "reference product"
+    rule: "Confirm M is measured accepted net mass of the same complete configuration and excludes dispatch packaging."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_inventory
+    applies_to: "inventory"
+    rule: "Confirm atomic included rows, documented route conditions, per-machine quantities and distinct exchanges for other actual BOM items."
+    source_ids:
+      - ghg-product-2011
+published_dataset_profile:
+  dataset_role: "foreground production inventory suitable for review as a secondary or background dataset"
+  downstream_use: "product flow, process and lifecyclemodel projections"
+  allowed_use: "Modelling an accepted implement with matching subtype, configuration and manufacturing route."
+  excluded_use: "Inferring field-use lifetime, soil performance or unrecorded component quantities."
+  required_metadata: "Site; period; subtype; model; configuration; accepted net mass M; working width; materials; operations; allocation driver."
+  required_quality_disclosure: "Metering, BOM and weighing provenance; conditional routes; upstream dataset fit; unresolved UUID and range evidence."
+  update_trigger: "Configuration, supplier, finishing route or manufacturing technology change."
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Product identity; retrieved 2026-09-24."
+  - id: "ghg-product-2011"
+    type: "standard"
+    reference: "GHG Protocol, *Product Life Cycle Accounting and Reporting Standard*, 2011, section 9.2, pp. 62–63; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Avoiding and performing allocation."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:53ecbb1568b641fadb8ef6e2fcb55d94132e6d4d27acb87460ad252130c11a06"
+  generated_content_sha256: "sha256:815aed3b5616597aafa99f78ae10d1e509b22043a56d35ef2771e1d1b0f65406"

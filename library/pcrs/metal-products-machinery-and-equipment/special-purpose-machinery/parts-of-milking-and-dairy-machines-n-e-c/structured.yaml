@@ -1,10 +1,348 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44139"
-  title: "Parts of milking and dairy machines, n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.parts-of-milking-and-dairy-machines-n-e-c"
+  classification_refs: "CPC 3.0:44139; classification context only (un-cpc-3-2025)"
+  covered_products: "Accepted, separately supplied milking-machine or dairy-machine parts, one declared part configuration per dataset."
+  excluded_products: "Complete machines, generic unassigned material stock, hygiene consumables, and replacement services."
+  representative_product: "One accepted milk-contact machine part of a declared steel or elastomer configuration."
+  production_route: "Declare actual metal stock fabrication or elastomer forming; record any other actual route as specific exchanges."
+  market_state: "Accepted finished part at the manufacturer's gate, net of transport packaging."
+functional_unit:
+  what: "An accepted finished part for an identified milking or dairy machine."
+  how_much: "1 kg accepted net finished part mass."
+  how_well: "Part number, material grade, host-machine compatibility, acceptance status, and milk-contact status declared."
+  how_long_or_cycle: "One accepted production lot; no assumed service life."
+  reference_flow_link: "finished_part_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_part_identity
+      applies_to: "reference product"
+      rule: "Use accepted separately supplied parts; complete machines and unassigned stock are outside the product boundary."
+      source_ids:
+        - un-cpc-3-2025
+    - rule_id: boundary_actual_operations
+      applies_to: "manufacturing"
+      rule: "Record actual fabrication, forming, assembly, finishing, cleaning, inspection, and rejects as specific exchanges; omit absent operations."
+      source_ids:
+        - alfalaval-h20-separator
+    - rule_id: boundary_upstream
+      applies_to: "purchased inputs"
+      rule: "Link purchased material and energy upstream without double-counting supplier production in the foreground."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased, grade-identified material enters the part manufacturer's foreground boundary."
+  starting_condition_role: "Material input at factory receipt; supplier production belongs to linked upstream datasets."
+  product_classification_scope: "Separately supplied parts under the semantic 44139 boundary, with one identified configuration per dataset."
+  recursive_input_rule: "Record a purchased 44139 part once and link its upstream dataset; do not reproduce the supplier's inventory in this foreground process."
+  upstream_dataset_requirement: "Link grade-, geography-, and technology-appropriate upstream datasets for purchased materials and energy."
+  disclosure: "Declare part identity, route, included operations, purchased-input boundary, site, period, meter allocation, and excluded downstream stages."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Parts of milking and dairy machines, n.e.c."
+    uuid: "0ea78094-45f3-4068-9e30-73c26232c351"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number"
+    - "host machine and function"
+    - "material grade"
+    - "manufacturing route"
+    - "milk-contact status"
+    - "acceptance lot"
+    - "accepted net mass"
+    - "geography and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished_part_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh accepted finished parts for the declared lot using a calibrated scale, excluding transport packaging and rejected parts; use cp_finished_mass. Measured accepted net mass is the denominator for per-kg inventory."
+  - id: electricity_unit
+    applies_to: "electricity_input"
+    required_property_ref:
+      name: "Electrical energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Retain metered electrical energy in kWh; divide electrical MJ by 3.6 if conversion is necessary. Net calorific value is not electrical energy."
+process_map:
+  - id: part_manufacture
+    name: "Part fabrication and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Every accepted lot; apply material rows only for the declared route."
+    role: "Foreground production and acceptance"
+    quantitative_reference: "1 kg accepted net finished part"
+process_inventory:
+  - id: part_manufacture
+    label: "Part fabrication and acceptance"
+    inputs:
+      product:
+        - row_id: steel_plate_input
+          role: "Alloy steel plate input"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Include only for a part fabricated from alloy steel plate. Record actual alloy grade and weighed amount; the public flow name is generic and the grade is a dataset qualifier."
+          amount:
+            expression: "net issued kg of alloy steel plate for the declared lot divided by accepted net finished kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_input
+              source_ids:
+                - alfalaval-h20-separator
+            ranges: []
+        - row_id: nbr_compound_input
+          role: "Raw nitrile-butadiene rubber compound input"
+          name: "Uncured nitrile-butadiene rubber compound"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only if an uncured NBR compound is formed into the part. The UUID is unresolved: a vulcanized finished article is not the raw compound."
+          amount:
+            expression: "net charged kg of uncured NBR compound for the declared lot divided by accepted net finished kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nbr_input
+              source_ids:
+                - alfalaval-h20-separator
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased alternating-current electricity input"
+          name: "Purchased grid alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Use the measured electricity attributable to the declared lot. The UUID is unresolved because searched public candidates do not represent metered kWh."
+          amount:
+            expression: "attributable metered kWh divided by accepted net finished kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_part_output
+          role: "Accepted finished part"
+          name: "Parts of milking and dairy machines, n.e.c."
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ea78094-45f3-4068-9e30-73c26232c351"
+          property_unit: "Mass / kg"
+          description: "Report accepted net part mass, excluding rejects and transport packaging. Part metadata constrains the broad reference-product identity."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: new_steel_scrap_output
+          role: "New steel scrap output"
+          name: "New steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bc4cdf13-d9bb-4ea1-a8ad-398f13fcfcaa"
+          property_unit: "Mass / kg"
+          description: "Include only when fresh ferrous scrap leaves a steel-processing route. Keep the gross measured waste amount separate from any recycling credit."
+          amount:
+            expression: "weighed new steel scrap attributable to the lot divided by accepted net finished kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared manufacturing"
+    rule: "Prefer separate lot, material-issue, and submeter records for the declared part configuration."
+    source_ids: []
+  - rule_id: allocation_shared_meter
+    applies_to: "shared electricity"
+    rule: "If submetering is unavailable, allocate measured electricity by documented operating time and rated or measured power for the same period; disclose residual unallocated use."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "steel scrap"
+    rule: "Record gross new steel scrap and its disposition separately; do not silently net an avoided-burden recycling credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_finished_mass
+      process_id: "part_manufacture"
+      flow_role: "accepted part output"
+      record_type: "calibrated scale and acceptance record"
+      raw_fields: "part number; lot; accepted count; accepted net mass; rejected mass; scale ID"
+      collection_method: "Weigh accepted parts without packaging and reconcile to acceptance records."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "accepted net kg per lot; denominator for every row"
+      quality_evidence: "calibration and acceptance ledger"
+    - protocol_id: cp_steel_input
+      process_id: "part_manufacture"
+      flow_role: "alloy steel plate input"
+      record_type: "material issue and weigh record"
+      raw_fields: "alloy grade; supplier; lot; issued mass; returns"
+      collection_method: "Reconcile issued plate mass and stock returns with the declared lot."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "material ledger and grade certificate"
+    - protocol_id: cp_nbr_input
+      process_id: "part_manufacture"
+      flow_role: "uncured NBR input"
+      record_type: "batch charge record"
+      raw_fields: "compound grade; batch; charged mass; returns"
+      collection_method: "Weigh compound charges and reconcile returns."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "batch sheet and scale record"
+    - protocol_id: cp_electricity
+      process_id: "part_manufacture"
+      flow_role: "purchased electricity"
+      record_type: "meter and allocation record"
+      raw_fields: "metered kWh; machine hours; power basis; lot"
+      collection_method: "Read meter and attribute shared use by recorded time and power."
+      unit: "kWh"
+      frequency: "each lot or meter period"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter and allocation worksheet"
+    - protocol_id: cp_steel_scrap
+      process_id: "part_manufacture"
+      flow_role: "new steel scrap"
+      record_type: "scrap weigh ticket"
+      raw_fields: "lot; scrap type; gross mass; destination"
+      collection_method: "Weigh fresh ferrous scrap separately from old or mixed scrap."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh ticket and disposition record"
+  calculation_rules:
+    - id: normalize_lot_mass
+      applies_to: "steel_plate_input, nbr_compound_input, electricity_input, new_steel_scrap_output"
+      rule: "q_ref = q_lot / m_accepted; q_lot is the attributable lot exchange; m_accepted is the accepted net finished mass in kg from cp_finished_mass."
+      inputs:
+        - q_lot
+        - m_accepted
+        - cp_finished_mass
+        - "row collection protocol"
+      output: "q_ref per 1 kg reference flow"
+      source_ids: []
+    - id: accepted_output
+      applies_to: "finished_part_output"
+      rule: "m_accepted / m_accepted = 1 kg accepted output per 1 kg reference flow; m_accepted must be positive."
+      inputs:
+        - m_accepted
+        - cp_finished_mass
+      output: "1 kg reference product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and materials"
+      requirement: "Trace part number, host machine, material grade, and milk-contact status to one acceptance lot."
+      evidence: "drawing, bill of materials, grade certificate, acceptance record"
+    - id: dq_completeness
+      applies_to: "all actual operations"
+      requirement: "Add specific atomic rows for every actual material, utility, direct emission, and waste not represented above; record zero only when absence is demonstrated."
+      evidence: "reconciled material, meter, and waste ledgers"
+    - id: dq_period
+      applies_to: "all foreground rows"
+      requirement: "Use one site and period; disclose allocation across lots and missing records."
+      evidence: "reporting-period ledger and allocation worksheet"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Reject a package missing part number, host-machine compatibility, material grade, route, milk-contact status, or accepted lot."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_mass_basis
+    applies_to: "inventory"
+    rule: "Require positive accepted net mass and the same accepted-lot denominator for every row; reconcile material, product, reject, and waste masses."
+    source_ids: []
+  - rule_id: validate_flow_identity
+    applies_to: "inventory"
+    rule: "Use only exact public flow identities; keep unresolved rows unlinked until product state, classification, property, and unit are verified."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "conditional material rows"
+    rule: "Apply steel plate and fresh steel scrap only to the steel route, NBR compound only to its forming route, and add other actual exchanges atomically."
+    source_ids:
+      - alfalaval-h20-separator
+published_dataset_profile:
+  dataset_role: "foreground part-manufacturing dataset eligible for later secondary_dataset or background_dataset review"
+  downstream_use: "process or lifecyclemodel projection for the declared part configuration"
+  allowed_use: "one identified part configuration and compatible host-machine application"
+  excluded_use: "average of unlike part families, complete-machine operation, or unspecified material route"
+  required_metadata: "part number; host machine; route; material grades; milk-contact status; site and period; accepted net mass; allocation; waste disposition"
+  required_quality_disclosure: "primary-record coverage, meter allocation, unresolved UUIDs, omitted operations, data gaps, and linked upstream datasets"
+  update_trigger: "material, design, route, site, meter allocation, or upstream supplier change"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, section 4413, p. 229. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "product boundary"
+  - id: "alfalaval-h20-separator"
+    type: "handbook"
+    reference: "Alfa Laval, H20 Disc stack separator for the dairy industry, publication code 200002019-1-EN-GB, pp. 1–2. https://www.alfalaval.com/globalassets/documents/products/separation/centrifugal-separators/separators/dairy/product_leaflet_h20_separator_en.pdf"
+    used_for: "example dairy-machine steel and NBR components; no manufacturing quantity transfer"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e4ae7bac92df42f0582af7847e214a17c7a87f628017186abcd612168a53c8b8"
+  generated_content_sha256: "sha256:b00014ea3e0b2cfdf624dec8336c88a0abb5a15e2c8adc8317383f1947cf62a1"

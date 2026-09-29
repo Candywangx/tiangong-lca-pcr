@@ -1,10 +1,397 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44125"
-  title: "Straw or fodder balers, including pickup balers"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.straw-or-fodder-balers-including-pickup-balers"
+  classification_refs: "CPC 3.0 44125 (un-cpc-3-2025)"
+  covered_products: "Complete straw or fodder round and square balers, including pickup balers"
+  excluded_products: "Other haymaking machinery; tractors; baler parts sold separately; baled straw or fodder"
+  representative_product: "One accepted complete baler of a declared model and configuration"
+  production_route: "Steel fabrication, welding, finishing where used, assembly and acceptance; purchased components remain separate inputs"
+  market_state: "Complete tested machine at the factory gate, excluding transport packaging"
+functional_unit:
+  what: "Compact harvested straw or fodder into bales with an accepted complete baler."
+  how_much: "One accepted complete baler of the declared configuration."
+  how_well: "Conforms to the manufacturer's acceptance record for that configuration; state pickup and bale format."
+  how_long_or_cycle: "One manufactured machine at the factory gate; service life and field cycles are outside this production dataset."
+  reference_flow_link: "finished_baler"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "factory_gate"
+      rule: "Include purchased inputs and on-site fabrication, finishing, assembly and acceptance through the accepted machine gate; exclude field use and disposal."
+      source_ids: []
+    - rule_id: boundary_identity
+      applies_to: "product_category"
+      rule: "Keep complete balers separate from neighbouring haymaking machinery and separately sold parts."
+      source_ids:
+        - un-cpc-3-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel, coating material, components and electricity enter the integrated factory boundary; disclose incoming state and supplier gate."
+  starting_condition_role: "Upstream inputs to an accepted complete baler manufacturing dataset."
+  product_classification_scope: "Complete balers classified by CPC 3.0 44125, not crop material or separately sold machinery parts."
+  recursive_input_rule: "If an input is itself a complete baler, record it as a separately purchased product and link an upstream dataset; do not recurse into this foreground process."
+  upstream_dataset_requirement: "Use upstream datasets for each purchased input with matching material state, electricity supply geography and supplier gate."
+  disclosure: "Disclose model, configuration, site, period, included stages, purchased-component content and exclusions."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Straw or fodder balers, including pickup balers"
+    uuid: "696c0149-7a29-424b-8aa3-bd8e3f015901"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "serial or lot"
+    - "round or square bale format"
+    - "pickup configuration"
+    - "drive and wrapping configuration"
+    - "accepted complete net mass M"
+    - "factory gate and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete baler of the same configuration in kg; collect using cp_mass."
+  - id: electricity_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record purchased electricity as metered energy in MJ; convert from kWh using 1 kWh = 3.6 MJ and preserve the meter unit in the source record."
+process_map:
+  - id: baler_manufacture
+    name: "Integrated baler fabrication and assembly"
+    inclusion: "required"
+    inclusion_condition: "Every accepted baler"
+    role: "Foreground manufacturing and acceptance; includes site electricity for all included stages"
+    quantitative_reference: "per one accepted finished baler"
+  - id: powder_finishing
+    name: "Powder-coating material application"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared machine's finish uses powder coating; exclude for other finishing routes and disclose the alternative route"
+    role: "Foreground finishing material input, with energy already in baler_manufacture"
+    quantitative_reference: "per one accepted finished baler"
+process_inventory:
+  - id: baler_manufacture
+    label: "Integrated baler fabrication and assembly"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Hot-rolled non-alloy steel sheet input"
+          name: "Hot-rolled non-alloy steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of one specified hot-rolled non-alloy steel sheet or plate stock delivered for the configured baler, before cutting. Record grade and thickness; do not substitute alloy or galvanized stock."
+          amount:
+            expression: "Measured stock issued to accepted baler production."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: welding_wire
+          role: "Solid steel arc-welding wire input"
+          name: "Solid steel arc-welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when solid-wire arc welding is used for this baler. Record the mass of the specific wire grade issued net of returned wire; another welding route requires its own resolved exchange."
+          amount:
+            expression: "Measured solid wire consumed for accepted baler production."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity for manufacture"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
+          property_unit: "Net calorific value / MJ"
+          description: "Record the attributable metered electricity delivered to the site for fabrication, finishing, assembly and acceptance; choose the upstream electricity dataset for the site and reporting period."
+          amount:
+            expression: "Metered purchased electricity attributable to accepted balers, converted to MJ."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: gearbox
+          role: "Purchased baler gearbox"
+          name: "Agricultural baler gearbox"
+          flow_type: "product"
+          property_unit: "Number of items / item"
+          description: "Record one configured agricultural-baler gearbox received as a separate purchased component when fitted. Use its supplier dataset; do not use a wind-turbine gearbox proxy."
+          amount:
+            expression: "Accepted gearbox count installed in the declared baler configuration."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_parts
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_baler
+          role: "Accepted complete baler"
+          name: "Straw or fodder balers, including pickup balers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "696c0149-7a29-424b-8aa3-bd8e3f015901"
+          property_unit: "Mass / kg"
+          description: "Measure the net mass of the complete machine after acceptance and before transport packaging; use the same configuration and acceptance record as the functional unit."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Post-industrial steel fabrication scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel offcuts leaving the factory as waste. If scrap is internally reused, keep it within the foreground material balance and exclude it from this exported waste amount."
+          amount:
+            expression: "Weighed steel scrap crossing the factory waste gate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: powder_finishing
+    label: "Powder-coating material application"
+    inputs:
+      product:
+        - row_id: powder_coating
+          role: "Powder-coating paint input"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass / kg"
+          description: "Include only for the powder-coating route. Record the mass of one formulated powder-coating paint charged net of recovered powder; disclose formulation and coating technology."
+          amount:
+            expression: "Measured powder paint consumed for the accepted baler configuration."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished baler"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct
+    applies_to: "shared_factory_inputs"
+    rule: "First assign directly metered or recorded material, electricity and waste to the declared baler model and period."
+    source_ids: []
+  - rule_id: allocation_shared
+    applies_to: "unavoidable_shared_inputs"
+    rule: "When direct assignment is unavailable, allocate the measured shared quantity by a documented physical driver reflecting use of the shared process; disclose driver, denominator and sensitivity."
+    source_ids: []
+  - rule_id: scrap_no_credit
+    applies_to: "steel_scrap"
+    rule: "Report exported steel scrap as a waste flow at the gate; avoid an unverified avoided-production credit in the foreground inventory."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "baler_manufacture"
+      flow_role: "accepted complete baler"
+      record_type: "weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete baler on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "accepted net mass per baler"
+      quality_evidence: "calibration certificate; acceptance record"
+    - protocol_id: cp_material
+      process_id: "baler_manufacture"
+      flow_role: "steel sheet and solid welding wire, each separately"
+      record_type: "issue and return ledger"
+      raw_fields: "model; configuration; material specification; issued mass; returned mass; accepted machine count"
+      collection_method: "Reconcile material issue and returns for each atomic product against the accepted machine record."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished baler"
+      quality_evidence: "weighed issue records; BOM; return ledger"
+    - protocol_id: cp_energy
+      process_id: "baler_manufacture"
+      flow_role: "purchased electricity"
+      record_type: "meter and allocation record"
+      raw_fields: "meter id; kWh; period; production line; accepted machine count; allocation driver"
+      collection_method: "Read calibrated meter totals and assign attributable electricity to accepted machines."
+      unit: "MJ"
+      frequency: "monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished baler"
+      quality_evidence: "meter readings; tariff invoice; allocation worksheet"
+    - protocol_id: cp_parts
+      process_id: "baler_manufacture"
+      flow_role: "agricultural baler gearbox"
+      record_type: "receipt and installation ledger"
+      raw_fields: "component specification; received count; installed count; model; serial number"
+      collection_method: "Reconcile supplier receipts and installed gearbox count to each accepted configuration."
+      unit: "item"
+      frequency: "each accepted machine"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished baler"
+      quality_evidence: "supplier invoice; BOM; acceptance record"
+    - protocol_id: cp_waste
+      process_id: "baler_manufacture"
+      flow_role: "exported steel scrap"
+      record_type: "weighed waste transfer"
+      raw_fields: "scrap grade; mass; transfer date; receiver; accepted machine count"
+      collection_method: "Weigh segregated offcuts at the waste gate and deduct internal returns."
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished baler"
+      quality_evidence: "weighbridge ticket; transfer note"
+    - protocol_id: cp_coating
+      process_id: "powder_finishing"
+      flow_role: "powder coating paint"
+      record_type: "coating material ledger"
+      raw_fields: "formulation; charged mass; recovered mass; coated model; accepted machine count"
+      collection_method: "Reconcile powder charged and recovered for the declared coating route."
+      unit: "kg"
+      frequency: "each coating batch"
+      temporal_coverage: "reporting period"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished baler"
+      quality_evidence: "issue ledger; recovery record; coating specification"
+  calculation_rules:
+    - id: electricity_convert
+      applies_to: "electricity"
+      rule: "Electricity in MJ equals metered kWh multiplied by 3.6."
+      inputs:
+        - "meter kWh"
+      output: "MJ per accepted baler"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and components"
+      requirement: "Confirm model, configuration, bale format, pickup and installed gearbox specification."
+      evidence: "BOM and acceptance record"
+    - id: dq_balance
+      applies_to: "steel_sheet and steel_scrap"
+      requirement: "Reconcile issued sheet, returned stock, incorporated steel and exported scrap without treating internal reuse as waste."
+      evidence: "material and waste ledgers"
+    - id: dq_time
+      applies_to: "all foreground exchanges"
+      requirement: "Use the same reporting period and site scope as the accepted machine output."
+      evidence: "dated meter, issue, transfer and acceptance records"
+    - id: dq_route
+      applies_to: "powder_finishing"
+      requirement: "Disclose actual coating route and product formulation; mark this process not applicable if powder coating is absent."
+      evidence: "coating specification and batch record"
+validation_rules:
+  - rule_id: validate_mass
+    applies_to: "finished_baler"
+    rule: "Check M is the accepted net mass from cp_mass and the output amount is M kg for the same configuration."
+    source_ids: []
+  - rule_id: validate_basis
+    applies_to: "all_inventory_rows"
+    rule: "Check every input and waste amount is per one accepted finished baler and tied to a collection record."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "unresolved_flow_uuids"
+    rule: "Do not substitute non-exact TianGong identities for hot-rolled sheet, solid welding wire or the baler gearbox."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "powder_finishing"
+    rule: "Require a declared powder-coating route before including powder_coating."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one declared baler model and configuration."
+  downstream_use: "secondary_dataset; background_dataset for subsequent machinery systems"
+  allowed_use: "Model cradle-to-factory-gate manufacturing of the declared baler configuration."
+  excluded_use: "Field baling service, lifetime impacts, tractor operation or end-of-life claims without additional data."
+  required_metadata: "model, configuration, bale format, pickup, gearbox, coating route, site, period, M and gate definition"
+  required_quality_disclosure: "measurement evidence, allocated shares, unresolved flow UUIDs, missing external ranges and excluded stages"
+  update_trigger: "Change of machine configuration, material specification, coating route, supplier mix or production site."
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 44125 product identity and neighbouring category distinction"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a821aa1fff22bd9fca15b4fa2a3e2d57d8680d36c83b9c3ac93aa0c4e9f33b27"
+  generated_content_sha256: "sha256:e4267e1607435c46defb12accc33f5b0e9c03f07ef5778785b8d27b0fc1c2412"

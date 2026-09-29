@@ -1,10 +1,321 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44128"
-  title: "Machines for cleaning, sorting or grading seed, grain or dried leguminous vegetables"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.machines-for-cleaning-sorting-or-grading-seed-grain-or-dried-leguminous-vegetables"
+  classification_refs: "CPC 3.0: 44128 [un-cpc-3-2025]"
+  covered_products: "Complete machines for cleaning, sorting or grading seed, grain or dried legumes."
+  excluded_products: "Separately sold parts; crop-cleaning service; processed crop; milling or grinding machines; machines for eggs, fruit or other produce."
+  representative_product: "Accepted complete electrically driven seed or grain cleaner and grader."
+  production_route: "Purchased materials and components; applicable fabrication; assembly and factory acceptance test. Disclose subcontracted steps."
+  market_state: "New accepted complete machine at factory gate, excluding transport packaging."
+functional_unit:
+  what: "Manufacture one complete machine to clean, sort or grade seed, grain or dried legumes."
+  how_much: "One accepted finished machine of the declared configuration."
+  how_well: "Acceptance-tested for the declared separation function; record throughput, drive and screen configuration."
+  how_long_or_cycle: "One production and acceptance cycle to factory gate; operating life is outside this reference."
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Record delivered purchased inputs, applicable metal fabrication, assembly, factory test and directly attributable wastes. Model upstream production of purchased inputs with state-appropriate background datasets. Include subcontracted fabrication when part of the declared route. EPA identifies cutting and painting wastes as operation-specific possibilities, not machine-specific quantities [us-epa-sector-aa-2006]."
+      source_ids: []
+    - rule_id: boundary_gate
+      applies_to: "complete machine"
+      rule: "Start at delivered purchased materials and components; end at the accepted unpackaged machine at factory gate."
+      source_ids:
+        - un-cpc-3-2025
+    - rule_id: boundary_use
+      applies_to: "downstream"
+      rule: "Exclude crop processing, lifetime operation, post-gate distribution and end of life; disclose them separately when modelled."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components delivered to the manufacturing site."
+  starting_condition_role: "Upstream input boundary for complete-machine production."
+  product_classification_scope: "Complete seed, grain and dried-legume cleaning, sorting or grading machines; CPC 44128 is mapping context."
+  recursive_input_rule: "Record a purchased same-category complete machine as an explicit input with one upstream dataset; do not recursively expand it into this foreground."
+  upstream_dataset_requirement: "Use state- and geography-appropriate datasets for sheet steel, motors and electricity; disclose missing datasets and proxies."
+  disclosure: "Declare model, configuration, fabrication and subcontracting, test practice, suppliers and exclusions."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Machines for cleaning, sorting or grading seed, grain or dried leguminous vegetables"
+    uuid: "043e01da-e959-43fb-b5c3-50851590caec"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Model and configuration"
+    - "crop class"
+    - "separation function"
+    - "drive and screen"
+    - "rated throughput and power"
+    - "acceptance state"
+    - "net mass M."
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: electricity_unit
+    applies_to: "factory_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 1 kWh = 3.6 MJ; retain the original meter reading."
+process_map:
+  - id: machine_production
+    name: "Fabrication, assembly and factory test"
+    inclusion: "required"
+    inclusion_condition: "Complete machine produced and accepted; sheet and AC-motor rows apply only when present in the declared configuration."
+    role: "Foreground production"
+    quantitative_reference: "One accepted machine; measured net mass M kg."
+process_inventory:
+  - id: machine_production
+    label: "Fabrication, assembly and factory test"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Cold-rolled non-alloy steel sheet"
+          name: "Cold-rolled non-alloy steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when sheet is fabricated into the declared machine. Reviewed candidates did not establish a consistent exact sheet-steel UUID."
+          amount:
+            expression: "Record consumed sheet stock from issue and return records per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: ac_motor
+          role: "Purchased AC electric motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include the installed purchased AC drive motor when present in the accepted configuration."
+          amount:
+            expression: "Record installed motor mass per one accepted finished machine from the bill of materials and supplier evidence."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: factory_electricity
+          role: "Factory electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value / MJ; unit group Units of energy"
+          description: "Include electricity attributable to fabrication, assembly and acceptance testing."
+          amount:
+            expression: "Record attributable electricity in MJ per one accepted finished machine from the meter and production log."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Accepted complete machine"
+          name: "Machines for cleaning, sorting or grading seed, grain or dried leguminous vegetables"
+          flow_type: "product"
+          flow_ref:
+            uuid: "043e01da-e959-43fb-b5c3-50851590caec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The output is the unpackaged accepted machine of the same configuration and measured mass M as the reference flow."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_offcuts
+          role: "Fabrication steel offcuts"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include sheet-derived steel scrap from in-house cutting or forming, whether sold for recycling or sent to treatment. Do not net it against steel input."
+          amount:
+            expression: "Weigh attributable sheet-steel offcuts per one accepted machine; include only when sheet cutting or forming occurs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - us-epa-sector-aa-2006
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_direct
+    applies_to: "foreground resources"
+    rule: "Attribute material, motor, electricity and scrap to the declared configuration using traceable production orders and meters."
+    source_ids: []
+  - rule_id: allocate_shared
+    applies_to: "shared resources"
+    rule: "If direct records are unavailable, use a documented physical driver linked to actual shared activity, such as machine-hours; report numerator, denominator and sensitivity."
+    source_ids: []
+  - rule_id: scrap_no_credit
+    applies_to: "steel offcuts"
+    rule: "Record steel scrap as a separate waste output; place any recycling credit in a distinct downstream or sensitivity model."
+    source_ids:
+      - us-epa-sector-aa-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "machine_production"
+      flow_role: "accepted complete machine"
+      record_type: "weighing and acceptance"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each model or accepted lot"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration; acceptance record"
+    - protocol_id: cp_bom
+      process_id: "machine_production"
+      flow_role: "sheet and motor"
+      record_type: "BOM and stock issue"
+      raw_fields: "model; material and motor specification; issued mass; returned mass; installed mass"
+      collection_method: "Reconcile issue, returns and installed components to the production order and accepted configuration."
+      unit: "kg"
+      frequency: "each production order"
+      temporal_coverage: "declared production period"
+      site_scope: "factory and named suppliers"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "BOM revision; issue vouchers; supplier specification"
+    - protocol_id: cp_energy
+      process_id: "machine_production"
+      flow_role: "electricity"
+      record_type: "meter and production log"
+      raw_fields: "meter start; meter end; kWh; machine count"
+      collection_method: "Read calibrated meter for attributable fabrication, assembly and test; exclude unrelated loads and retain allocation evidence."
+      unit: "MJ"
+      frequency: "each order or reporting period"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing factory"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter readings; calibration; test log"
+    - protocol_id: cp_scrap
+      process_id: "machine_production"
+      flow_role: "steel offcuts"
+      record_type: "waste weighing"
+      raw_fields: "scrap mass; waste type; generating order; accepted count"
+      collection_method: "Weigh segregated steel offcuts and reconcile to sheet issues and treatment records."
+      unit: "kg"
+      frequency: "each order or reporting period"
+      temporal_coverage: "declared production period"
+      site_scope: "manufacturing factory"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "weighbridge ticket; stock balance; transfer record"
+  calculation_rules:
+    - id: electricity_conversion
+      applies_to: "factory_electricity"
+      rule: "Metered kWh multiplied by 3.6 gives MJ; attribute to the order and divide by accepted machine count."
+      inputs:
+        - "kWh meter difference"
+        - "order attribution"
+        - "accepted machine count"
+        - cp_energy
+      output: "MJ per accepted machine"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all inventory rows"
+      requirement: "Match accepted model, configuration and period to M; disclose absent sheet or AC-motor rows."
+      evidence: "production order; BOM; acceptance record"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Reconcile the complete bill of materials and significant processing energy and waste; disclose missing flow identities or supplier datasets."
+      evidence: "BOM; meters; waste ledger; gap log"
+    - id: dq_mass
+      applies_to: "steel_sheet, steel_offcuts, finished_machine"
+      requirement: "Explain material-balance differences; do not assume all finished mass is sheet steel."
+      evidence: "stock movement; scales; accepted mass"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_machine"
+    rule: "Require one accepted complete machine with positive M from cp_mass, matching configuration and output M kg."
+    source_ids: []
+  - rule_id: validate_atomicity
+    applies_to: "all inventory rows"
+    rule: "Require one physical exchange per row with direction, flow type, property, unit and applicable collection protocol."
+    source_ids: []
+  - rule_id: validate_evidence
+    applies_to: "steel_sheet, factory_electricity, steel_offcuts"
+    rule: "Require primary quantity records; keep unresolved UUID blank instead of assigning a proxy."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground secondary dataset for production of one accepted complete machine."
+  downstream_use: "Link to process or lifecyclemodel calculations for specified configurations."
+  allowed_use: "Compare like-for-like factory-gate production after checking model, route and data quality."
+  excluded_use: "No inference of operating performance, crop-processing impact, lifetime or universal machine mass."
+  required_metadata: "Model; lot; crop class; separation and motor configuration; throughput; power; factory; period; measured M; upstream datasets."
+  required_quality_disclosure: "Weighing and meter methods; BOM coverage; shared allocations; subcontracting; unresolved identities and ranges; exclusions."
+  update_trigger: "Changed configuration, supplier state, fabrication route, measured mass or production-energy profile."
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-09-24)."
+    used_for: "Product identity and adjacent class boundary; no inventory amount."
+  - id: "us-epa-sector-aa-2006"
+    type: "official_guidance"
+    reference: "US EPA, Sector AA: Fabricated Metal Products Manufacturing Facilities, EPA 833-F-06-042, https://www.epa.gov/sites/default/files/2015-10/documents/sector_aa_fabmetal.pdf (accessed 2026-09-24), Table 1."
+    used_for: "Conditional fabrication scrap screening; no machine-specific quantities."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b5c409b17ce8d3cbb44ded17d2bbf3d0c906971e385df1d787fc10e829e1f233"
+  generated_content_sha256: "sha256:0d45c5b159ede4480bacca9a66a2b5f58c8d5b8876f345625ddcd3b8b533c2f4"

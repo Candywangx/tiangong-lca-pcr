@@ -1,10 +1,427 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47829"
-  title: "Other application software, packaged"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.other-application-software-packaged"
+  classification_refs: "CPC 3.0:47829 (classification context, not PCR identity)"
+  covered_products: "Published cross-industry, vertical-market, utility and other residual application software on physical packaged media"
+  excluded_products: "CPC 47821 general productivity/home applications; CPC 47822 games; CPC 84342 downloads; hosted services; operating and network software"
+  representative_product: "Accepted recorded application-software optical disc in a paper retail box"
+  production_route: "Software design, build and release; procurement of recorded disc and paper box; package assembly and acceptance"
+  market_state: "Finished, accepted physical retail package at producer gate"
+functional_unit:
+  what: "Supply of working, published residual-category application software on physical packaged media"
+  how_much: "1 kg accepted complete packaged software, with package and licence count reported per kg"
+  how_well: "Declared version, application function, verified readable medium and complete declared retail package"
+  how_long_or_cycle: "One release at producer gate; expected supported-use period is disclosed, not included in this gate inventory"
+  reference_flow_link: "finished_packaged_software"
+system_boundary:
+  rules:
+    - rule_id: gate_boundary
+      applies_to: "foreground system"
+      rule: "Include release-development activity attributable to the marketed version, procurement of recorded media and paper boxes, physical package assembly, acceptance, and generated rejects through producer gate. Disclose any separately modelled distribution, use or end-of-life scenario."
+      source_ids:
+        - itu-l1410-2024
+    - rule_id: software_electricity
+      applies_to: "development activity"
+      rule: "Collect attributable ICT equipment and office electricity for design, build and release; document shared-office allocation and release volume."
+      source_ids:
+        - itu-l1410-2024
+boundary_abstraction:
+  declared_starting_condition: "Accepted published application version, purchased recorded disc and paper box at the declared assembly facility"
+  starting_condition_role: "Physical package supply after software release and component procurement"
+  product_classification_scope: "CPC 47829 residual packaged application software; record function and configuration independently of CPC"
+  recursive_input_rule: "A purchased input that is itself CPC 47829 is represented by its upstream dataset and counted once; disclose recursive dependencies and avoid double counting development work."
+  upstream_dataset_requirement: "Include upstream electricity generation, recorded-disc manufacture/recording and paper-box production using traceable supplier or background datasets."
+  disclosure: "State gate, release period, package configuration, licence count, supplier coverage, shared-office allocation and any omitted use/end-of-life stage."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Other application software, packaged"
+    uuid: "48738ce4-0cb1-4fca-8a2e-c77dcf9450e6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "application function and target industry"
+    - "software version and licence/package count per kg"
+    - "physical medium and package configuration"
+    - "accepted gate"
+    - "geography and production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: accepted_mass
+    applies_to: "reference product and finished_packaged_software"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted complete retail packages with a calibrated scale, excluding transport packaging; aggregate only the declared version and configuration."
+  - id: inventory_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass or energy as declared per row"
+      uuid: ""
+    required_unit: "kg or MJ"
+    rule: "Attribute each batch exchange to the declared release and divide by its accepted complete packaged-product mass to express the exchange per 1 kg reference flow; retain the raw batch record."
+  - id: electricity_unit
+    applies_to: "development_electricity, assembly_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ with 1 kWh = 3.6 MJ; retain original meter units and allocation."
+process_map:
+  - id: software_development
+    name: "Software development and release"
+    inclusion: "required"
+    inclusion_condition: "All declared physical releases"
+    role: "Foreground release activity and allocated office electricity"
+    quantitative_reference: "per 1 kg accepted finished package"
+  - id: package_assembly
+    name: "Physical package assembly and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Recorded-disc and paper-box route"
+    role: "Foreground packing, inspection, accepted output and rejects"
+    quantitative_reference: "per 1 kg accepted finished package"
+process_inventory:
+  - id: software_development
+    label: "Software development and release"
+    inputs:
+      product:
+        - row_id: development_electricity
+          role: "Software development electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
+          property_unit: "Net calorific value / MJ"
+          description: "This electricity is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "Measured project-attributable electricity from development, build and release work."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_development_electricity
+              source_ids:
+                - itu-l1410-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: package_assembly
+    label: "Physical package assembly and acceptance"
+    inputs:
+      product:
+        - row_id: assembly_electricity
+          role: "Package assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
+          property_unit: "Net calorific value / MJ"
+          description: "This electricity is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "Measured electricity for the declared physical packing line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_electricity
+              source_ids: []
+            ranges: []
+        - row_id: recorded_disc_input
+          role: "Recorded software disc"
+          name: "Recorded optical disc with reflective/protective layers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6ce243c6-bc3c-483d-b91f-5c1da87e6928"
+          property_unit: "Mass / kg"
+          description: "This recorded optical disc with reflective/protective layers is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "Mass of accepted recorded discs delivered to physical package assembly; include upstream recording in the purchased-disc dataset."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_disc_mass
+              source_ids: []
+            ranges: []
+        - row_id: paper_box_input
+          role: "Retail paper box"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "This paper box is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "Mass of paper boxes delivered to the same package configuration."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_box_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_packaged_software
+          role: "Accepted packaged software"
+          name: "Other application software, packaged"
+          flow_type: "product"
+          flow_ref:
+            uuid: "48738ce4-0cb1-4fca-8a2e-c77dcf9450e6"
+          property_unit: "Mass / kg"
+          description: "This other application software, packaged is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_accepted_product_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_recorded_disc
+          role: "Rejected recorded optical disc"
+          name: "Waste recorded optical disc with reflective/protective layers"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste recorded optical disc with reflective/protective layers is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "Measure rejected recorded optical discs when present; report zero only from a documented zero-reject lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_disc_reject
+              source_ids: []
+            ranges: []
+        - row_id: waste_cardboard_box
+          role: "Rejected paperboard box"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass / kg"
+          description: "This packaging waste, cardboard is one exchange at the declared foreground boundary; retain its batch evidence and package configuration."
+          amount:
+            expression: "Measure rejected paperboard retail boxes when present; report zero only from a documented zero-reject lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_box_reject
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: release_allocation
+    applies_to: "shared software design and office activities"
+    rule: "First subdivide measured release-specific work. Allocate genuinely shared work to the marketed release using documented staff time, computing use or another causal physical driver; if unavailable use disclosed organizational or economic allocation and test material sensitivity. Divide the release total by accepted physical package mass for the reporting period."
+    source_ids:
+      - itu-l1410-2024
+  - rule_id: component_allocation
+    applies_to: "purchased media and boxes"
+    rule: "Use supplier-specific component datasets where possible; allocate shared packaging operations by recorded machine time or accepted batch output mass, and document rejected outputs separately."
+    source_ids:
+      - itu-l1410-2024
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_development_electricity
+      process_id: "software_development"
+      flow_role: "development electricity"
+      record_type: "project meter and allocation log"
+      raw_fields: "release id; meter kWh; project share; accepted product mass"
+      collection_method: "Read calibrated meters or invoices and allocate documented development equipment and office use to the released version."
+      unit: "MJ"
+      frequency: "each release"
+      temporal_coverage: "declared release period"
+      site_scope: "development offices"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter records; allocation log"
+    - protocol_id: cp_assembly_electricity
+      process_id: "package_assembly"
+      flow_role: "assembly electricity"
+      record_type: "line meter"
+      raw_fields: "batch id; meter kWh; accepted product mass"
+      collection_method: "Read packing-line meter or attributable submeter."
+      unit: "MJ"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "packaging facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter and batch logs"
+    - protocol_id: cp_disc_mass
+      process_id: "package_assembly"
+      flow_role: "recorded disc input"
+      record_type: "supplier delivery and scale"
+      raw_fields: "batch id; accepted disc mass; accepted product mass"
+      collection_method: "Weigh or use verified supplier mass records for recorded discs crossing assembly input."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "packaging facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale certificate; supplier record"
+    - protocol_id: cp_box_mass
+      process_id: "package_assembly"
+      flow_role: "paper box input"
+      record_type: "bill of materials and scale"
+      raw_fields: "batch id; paper box mass; accepted product mass"
+      collection_method: "Weigh the declared paper-box component or reconcile supplier and bill-of-material mass."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "packaging facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale certificate; bill of materials"
+    - protocol_id: cp_accepted_product_mass
+      process_id: "package_assembly"
+      flow_role: "accepted packaged software"
+      record_type: "accepted lot weighing"
+      raw_fields: "batch id; version; configuration; package count; licence count; accepted net mass"
+      collection_method: "Weigh accepted complete retail packages on a calibrated scale without transport packaging."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "packaging facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "scale certificate; acceptance log"
+    - protocol_id: cp_disc_reject
+      process_id: "package_assembly"
+      flow_role: "rejected recorded disc"
+      record_type: "reject log and scale"
+      raw_fields: "batch id; rejected recorded disc mass; accepted product mass"
+      collection_method: "Weigh rejected recorded discs and reconcile issue, return and accepted counts."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "packaging facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "reject and scale log"
+    - protocol_id: cp_box_reject
+      process_id: "package_assembly"
+      flow_role: "rejected paperboard box"
+      record_type: "reject log and scale"
+      raw_fields: "batch id; rejected box mass; accepted product mass"
+      collection_method: "Weigh rejected paperboard retail boxes and reconcile issue, return and accepted counts."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "declared production period"
+      site_scope: "packaging facility"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "reject and scale log"
+  calculation_rules:
+    - id: batch_basis
+      applies_to: "all inventory rows"
+      rule: "Divide attributable batch exchange by accepted complete packaged-product mass in kg; accepted reference output equals 1 kg by definition."
+      inputs:
+        - "attributable exchange"
+        - "accepted complete packaged-product mass"
+        - "relevant collection protocol"
+      output: "exchange per 1 kg reference flow"
+      source_ids:
+        - itu-l1410-2024
+    - id: electricity_conversion
+      applies_to: "electricity inputs"
+      rule: "Multiply metered kWh by 3.6 to obtain MJ before normalization."
+      inputs:
+        - "metered kWh"
+        - "allocation record"
+      output: "MJ electricity"
+      source_ids: []
+  data_quality_requirements:
+    - id: release_traceability
+      applies_to: "development and output"
+      requirement: "Match version, release period, physical configuration, licences and accepted mass across all records."
+      evidence: "release manifest; acceptance and mass logs"
+    - id: mass_reconciliation
+      applies_to: "assembly"
+      requirement: "Reconcile incoming recorded disc and paper-box mass with accepted packages, recorded rejects and stock change; explain residual."
+      evidence: "bill of materials; stock and reject logs"
+    - id: source_coverage
+      applies_to: "upstream and shared activity"
+      requirement: "Report supplier dataset coverage, allocation driver, geography, technology, period and omissions."
+      evidence: "supplier records; allocation workbook"
+validation_rules:
+  - rule_id: identity_check
+    applies_to: "reference output"
+    rule: "Confirm CPC 47829 scope, declared version and physical configuration, exact public product UUID, and 1 kg accepted complete package mass."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: inventory_check
+    applies_to: "all inventory rows"
+    rule: "Confirm atomic flow identity, source protocol and per-1-kg basis; unresolved waste-disc UUID blocks automated flow linkage until individually resolved."
+    source_ids: []
+  - rule_id: balance_check
+    applies_to: "package assembly"
+    rule: "Check accepted input, rejects and stock changes against accepted package mass; disclose unexplained difference and shared-activity allocation."
+    source_ids:
+      - itu-l1410-2024
+published_dataset_profile:
+  dataset_role: "Foreground gate dataset for physical packaged application software"
+  downstream_use: "secondary_dataset; background_dataset when product scope and configuration match"
+  allowed_use: "Cradle-to-gate modelling for the declared packaged release and transparent comparisons with equivalent function and licence counts"
+  excluded_use: "Download-only delivery, hosted software service, or full-life-cycle comparison without added use and disposal scenarios"
+  required_metadata: "Version; function; geography; reporting period; licence and package count per kg; medium; retail box; facility; allocation driver"
+  required_quality_disclosure: "Primary-data coverage; supplier datasets; metering and weighing; rejects; shared-office allocation; unresolved flow identities and range evidence gaps"
+  update_trigger: "Material change in version, package configuration, assembly technology, supplier, geography or shared-activity allocation"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, p. 263, subclass 47829; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Category inclusion and exclusions"
+  - id: "itu-l1410-2024"
+    type: "standard"
+    reference: "ITU-T Recommendation L.1410 (11/2024), Annex A and clauses 7.3.3.1–7.3.3.4; https://www.itu.int/rec/dologin_pub.asp?id=T-REC-L.1410-202411-I%21%21PDF-E&lang=s&type=items"
+    used_for: "Software-development activity, primary data, shared-office allocation and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:021cb3b0cf7a08d49cae9773dba2d7a1cdc04b7df31fee0716a3d6983dbad049"
+  generated_content_sha256: "sha256:90a329f2397f1f4ee2fc4fa72cdbfe09e016b8c37df59ecda88286f1521d81ce"

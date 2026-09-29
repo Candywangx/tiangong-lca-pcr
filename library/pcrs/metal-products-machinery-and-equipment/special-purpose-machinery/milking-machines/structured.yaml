@@ -1,10 +1,346 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44131"
-  title: "Milking machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.milking-machines"
+  classification_refs: "CPC 3.0 44131 Milking machines (un-cpc-3-2025)"
+  covered_products: "Complete vacuum and pulsation milking machines, including bucket and pipeline configurations"
+  excluded_products: "Dairy processing machinery; separately sold parts; installation service; on-farm operation"
+  representative_product: "One accepted complete milking machine of a declared configuration"
+  production_route: "Component preparation where performed, purchased-part receipt, assembly and acceptance testing"
+  market_state: "Factory-gate accepted complete machine, excluding transport packaging"
+functional_unit:
+  what: "One complete accepted milking machine"
+  how_much: "M kg of the same accepted configuration"
+  how_well: "Passed documented factory acceptance for the declared configuration"
+  how_long_or_cycle: "One delivered machine; use duration is outside this production inventory"
+  reference_flow_link: "finished_machine"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributable incoming supplied components and materials, factory electricity, outgoing accepted machines and separately recorded production waste. Upstream burdens of supplied flows are linked through datasets, with no recursive recreation of this product category. Exclude use, farm installation and disposal unless a separate study extends the boundary."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Factory receipt of purchased components and raw sheet, with supplier state and on-site fabrication route declared"
+  starting_condition_role: "Foreground start for manufacturing records"
+  product_classification_scope: "Complete milking machines; CPC 3.0 44131 is classification context only"
+  recursive_input_rule: "If an incoming complete milking machine is used, record it as an upstream product input and disclose its source dataset rather than recursively reclassifying it as new output"
+  upstream_dataset_requirement: "Link upstream datasets for each purchased component and material with documented geography and technology"
+  disclosure: "Disclose configuration, purchased versus fabricated components, missing component records, test energy, waste route and factory-gate cut-off"
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Milking machines"
+    uuid: "39d43e6f-0404-4124-bbea-9999523eddb4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - configuration
+    - "vacuum and pulsation arrangement"
+    - "included milk-contact assembly"
+    - "accepted net mass M"
+    - "factory-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: manufacture_assembly
+    name: "Manufacture, assembly and acceptance test"
+    inclusion: "required"
+    inclusion_condition: "All accepted complete milking machines"
+    role: "Foreground production"
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: manufacture_assembly
+    label: "Manufacture, assembly and acceptance test"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Stainless steel sheet"
+          name: "Stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if the accepted machine includes sheet fabricated on site; record sheet issued to this model, excluding sheet embodied in a purchased component."
+          amount:
+            expression: "Only if the accepted machine includes sheet fabricated on site; record sheet issued to this model, excluding sheet embodied in a purchased component."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: vacuum_pump
+          role: "Vacuum pump"
+          name: "Vacuum pump"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the purchased vacuum pump fitted to the accepted machine."
+          amount:
+            expression: "Record the purchased vacuum pump fitted to the accepted machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - fao-milking-machine
+            ranges: []
+        - row_id: pulsator
+          role: "Milking pulsator"
+          name: "Milking pulsator"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the purchased pulsator fitted to the accepted machine."
+          amount:
+            expression: "Record the purchased pulsator fitted to the accepted machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - fao-milking-machine
+            ranges: []
+        - row_id: teatcup_cluster
+          role: "Teatcup cluster"
+          name: "Teatcup cluster"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the purchased teatcup cluster fitted to the accepted machine; exclude separately listed tubing from this quantity."
+          amount:
+            expression: "Record the purchased teatcup cluster fitted to the accepted machine; exclude separately listed tubing from this quantity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - fao-milking-machine
+            ranges: []
+        - row_id: milk_tube
+          role: "Silicone milk tube"
+          name: "Silicone milk tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if the silicone milk tube is supplied separately from the teatcup cluster; record installed tube mass."
+          amount:
+            expression: "Only if the silicone milk tube is supplied separately from the teatcup cluster; record installed tube mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - fao-milking-machine
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity attributable to fabrication, assembly and acceptance testing, per one accepted finished machine."
+          amount:
+            expression: "Record metered electricity attributable to fabrication, assembly and acceptance testing, per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine
+          role: "Milking machines"
+          name: "Milking machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "39d43e6f-0404-4124-bbea-9999523eddb4"
+          property_unit: "Mass / kg"
+          description: "The accepted complete machine leaves the foreground process."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Stainless steel sheet offcuts"
+          name: "Stainless steel sheet offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when sheet is fabricated on site; record separately weighed offcuts leaving the process as waste."
+          amount:
+            expression: "Only when sheet is fabricated on site; record separately weighed offcuts leaving the process as waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_1
+    applies_to: "shared_factory_inputs"
+    rule: "Subdivide shared manufacturing processes using traceable records first; if subdivision is infeasible, allocate by a demonstrable physical causal relationship and disclose the basis."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_2
+    applies_to: "steel_offcuts"
+    rule: "Report separately weighed stainless steel offcuts as a waste flow; do not credit unverified recycled substitution against this product."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "manufacture_assembly"
+      flow_role: "reference product"
+      record_type: "acceptance weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "per machine"
+      temporal_coverage: "same production period"
+      site_scope: "this factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration certificate and acceptance record"
+    - protocol_id: cp_bom
+      process_id: "manufacture_assembly"
+      flow_role: "material inputs"
+      record_type: "bill of materials and issue records"
+      raw_fields: "model; configuration; part number; mass; issued quantity; accepted machine count"
+      collection_method: "Reconcile actual issues installed in the model; do not double count purchased integrated assemblies and separately listed tubing."
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same production period"
+      site_scope: "this factory"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "bill of materials, supplier invoice and issue record"
+    - protocol_id: cp_energy
+      process_id: "manufacture_assembly"
+      flow_role: "electricity input"
+      record_type: "meter and work order"
+      raw_fields: "meter reading; work order; accepted machine count; meter unit"
+      collection_method: "Read attributable meters and acceptance-test logs; document conversion from meter unit to MJ."
+      unit: "MJ"
+      frequency: "per batch"
+      temporal_coverage: "same production period"
+      site_scope: "this factory"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter calibration and work order"
+    - protocol_id: cp_scrap
+      process_id: "manufacture_assembly"
+      flow_role: "sheet waste"
+      record_type: "waste weighing record"
+      raw_fields: "waste grade; net mass; batch; destination; accepted machine count"
+      collection_method: "Weigh sheet offcuts separately and reconcile with sheet issue batch."
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same production period"
+      site_scope: "this factory"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "weigh ticket and waste transfer record"
+  calculation_rules:
+    []
+  data_quality_requirements:
+    - id: dq_1
+      applies_to: "all inventory rows"
+      requirement: "Materials, energy, waste and acceptance records must be traceable to one model and configuration; disclose each missing item."
+      evidence: "bill of materials, work order and meter records"
+    - id: dq_2
+      applies_to: "reference product"
+      requirement: "Net mass excludes transport packaging and matches the accepted configuration."
+      evidence: "calibrated weighing and acceptance records"
+validation_rules:
+  - rule_id: validation_1
+    applies_to: "reference_product"
+    rule: "Check that finished_machine M kg equals cp_mass accepted net mass of the same configuration."
+    source_ids: []
+  - rule_id: validation_2
+    applies_to: "component_mass"
+    rule: "Check that a purchased integrated assembly and separately listed tubing are not counted twice, and that sheet and offcuts appear only when fabrication occurs."
+    source_ids:
+      - fao-milking-machine
+  - rule_id: validation_3
+    applies_to: "inventory_completeness"
+    rule: "Disclose missing component, energy and waste records; a blank is not zero."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground manufacturing data package"
+  downstream_use: "production-stage projection to process and lifecyclemodel"
+  allowed_use: "production inventory for declared configuration and factory-gate boundary"
+  excluded_use: "does not represent farm use, installation or end of life"
+  required_metadata: "model, configuration, production site and period, M, acceptance state, component boundary"
+  required_quality_disclosure: "data gaps, upstream dataset representativeness, energy attribution and waste destination"
+  update_trigger: "material change in configuration, major suppliers or manufacturing route"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "product classification boundary"
+  - id: "fao-milking-machine"
+    type: "official_guidance"
+    reference: "https://www.fao.org/4/T0218E/T0218E02.htm"
+    used_for: "vacuum pump, pulsator and cluster architecture"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en?filename=Annexes+1+to+2.pdf"
+    used_for: "shared-process allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:239daf6af4c373443fe148b37994e394c29fa14108f513da44c09d8ff6f10dc7"
+  generated_content_sha256: "sha256:22e8bc4b553e26dc4104de64202d4d8f77cd08bb57eee7e7920d72311be3943e"

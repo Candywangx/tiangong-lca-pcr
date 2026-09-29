@@ -1,10 +1,426 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44815"
-  title: "Fans and ventilating or recycling hoods of the domestic type"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.fans-and-ventilating-or-recycling-hoods-of-the-domestic-type"
+  classification_refs: "CPC 3.0: 44815; classification identity only"
+  covered_products: "Complete domestic fans; domestic ventilating hoods; domestic recirculating hoods"
+  excluded_products: "Non-domestic fans; separately sold fan/hood parts; installed ventilation service; operating-stage electricity"
+  representative_product: "One accepted domestic fan or hood of declared model and configuration"
+  production_route: "Purchased-component assembly; conditional on-site steel-sheet fabrication or polypropylene molding"
+  market_state: "Complete saleable appliance at factory gate, with transport packaging recorded separately"
+functional_unit:
+  what: "Provide the declared domestic air-moving, ventilation or recirculation function in a complete appliance."
+  how_much: "One accepted finished machine of the declared model and configuration."
+  how_well: "Declare rated airflow, motor presence and rating, filtration or extraction mode, and test acceptance criteria."
+  how_long_or_cycle: "One saleable product at the factory gate; service life and use schedule are separate downstream declarations."
+  reference_flow_link: "finished_domestic_fan_or_hood"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground system"
+      rule: "Include attributable upstream components and their inbound transport, on-site fabrication where performed, assembly, testing and packaging through accepted factory-gate release. Exclude later use and end-of-life."
+      source_ids:
+        - swegon-casa-hood-epd-2022
+    - rule_id: boundary_configuration
+      applies_to: "product configuration"
+      rule: "Disclose domestic fan versus hood, integrated-fan status, ducted versus recirculating route, and whether metal or polymer components are made on-site."
+      source_ids:
+        - swegon-casa-hood-epd-2022
+        - eu-residential-ventilation-2009
+    - rule_id: boundary_internal_transfer
+      applies_to: "same-category purchased input"
+      rule: "Record a purchased completed fan or hood as an input with a separate upstream dataset; do not recursively count its own manufacturing inside this foreground plant."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components arrive at the production site in their actual supplied state; disclose which subassemblies are purchased."
+  starting_condition_role: "Foreground factory-gate entry condition for component and material accounting."
+  product_classification_scope: "Complete domestic fans and domestic ventilating or recirculating hoods; not separate saleable parts."
+  recursive_input_rule: "If a complete same-category appliance is used as an input, use its separately identified upstream dataset and prevent recursive self-application."
+  upstream_dataset_requirement: "Use specific upstream material, component and inbound-transport datasets matched to supplied states; disclose gaps."
+  disclosure: "List model, configuration, integrated motor, ducted or recirculating mode, fabrication route and included packaging."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Fans and ventilating or recycling hoods of the domestic type"
+    uuid: "d241cf7b-4dd0-49d5-89d1-2cf1905189ce"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product kind"
+    - "model and configuration"
+    - "integrated or external motor"
+    - "ventilation or recirculation route"
+    - "rated airflow"
+    - "accepted net mass M"
+    - "factory and reporting year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: component_fabrication
+    name: "On-site component fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when steel sheet is cut or formed, or polypropylene is molded at the reporting site."
+    role: "Foreground fabrication and segregated scrap"
+    quantitative_reference: "per one accepted finished machine"
+  - id: final_assembly
+    name: "Final assembly, testing and packaging"
+    inclusion: "required"
+    inclusion_condition: "All finished domestic fan or hood configurations."
+    role: "Foreground assembly and release"
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: component_fabrication
+    label: "On-site component fabrication"
+    inputs:
+      product:
+        - row_id: cold_rolled_steel_sheet
+          role: "Cold-rolled unalloyed steel sheet"
+          name: "Cold-rolled unalloyed steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when the plant cuts or forms cold-rolled unalloyed steel sheet for a hood shell or fan part. Record net sheet input attributable to accepted finished machines; purchased finished housings are accounted for in the model-specific bill of materials instead."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_fabrication_materials."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_materials
+              source_ids:
+                - eu-residential-ventilation-2009
+            ranges: []
+        - row_id: polypropylene_granules
+          role: "Polypropylene granulate for molding"
+          name: "polypropylene granulate (PP)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19f11d-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include only when the plant molds polypropylene housings or impellers. Identify resin grade and recycled content in foreground records; purchased molded components are accounted for by their specific product flows."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_fabrication_materials."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_materials
+              source_ids:
+                - eu-residential-ventilation-2009
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcuts
+          role: "Steel sheet offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Include segregated steel offcuts when on-site sheet cutting occurs. Record external waste transfer after any documented internal reuse."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_fabrication_waste."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_waste
+              source_ids:
+                - eu-residential-ventilation-2009
+            ranges: []
+        - row_id: polypropylene_scrap
+          role: "Polypropylene molding scrap"
+          name: "Polypropylene Wastes"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "88215d1b-e6b6-4ec7-af7f-83375e80637b"
+          property_unit: "Mass / kg"
+          description: "Include separately weighed polypropylene rejects and purges only when on-site molding occurs; subtract documented closed-loop regrind that remains inside the process."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_fabrication_waste."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_waste
+              source_ids:
+                - eu-residential-ventilation-2009
+            ranges: []
+      elementary:
+        []
+  - id: final_assembly
+    label: "Final assembly, testing and packaging"
+    inputs:
+      product:
+        - row_id: electric_motor
+          role: "Purchased electric motor"
+          name: "Electric motor for domestic fan"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include a separately purchased electric motor only when the accepted configuration incorporates a fan and the motor is not already included in a purchased fan module. Record motor type, rated power and supplier mass."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_purchased_parts."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_parts
+              source_ids:
+                - eu-residential-ventilation-2009
+            ranges: []
+        - row_id: grid_electricity
+          role: "Factory grid electricity"
+          name: "Grid electricity supplied to appliance assembly"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include metered electricity attributable to assembly, configuration, functional testing and packaging. Disclose the site grid and any allocation from a shared meter."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_electricity."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - swegon-casa-hood-epd-2022
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include a corrugated box when the accepted appliance is shipped in one. Record the actual box mass and account for reused transport packaging by documented reuse cycles."
+          amount:
+            expression: "Collect attributable quantity per one accepted finished machine using cp_packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - swegon-casa-hood-epd-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_domestic_fan_or_hood
+          role: "Accepted finished domestic fan or hood"
+          name: "Fans and ventilating or recycling hoods of the domestic type"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d241cf7b-4dd0-49d5-89d1-2cf1905189ce"
+          property_unit: "Mass / kg"
+          description: "Record one complete, accepted, saleable appliance of the declared configuration at the factory gate. Transport packaging is excluded from net product mass M."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - swegon-casa-hood-epd-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared factory processes"
+    rule: "First use separate meters, material issues, work orders and product-specific labor or machine hours. Allocate only unavoidable shared electricity and heat by recorded activity hours for the same site and period; disclose the driver."
+    source_ids:
+      - swegon-casa-hood-epd-2022
+  - rule_id: allocation_scrap
+    applies_to: "fabrication waste"
+    rule: "Keep documented internal regrind or rework inside the process. Record externally transferred offcuts as waste and disclose any economic credit separately; never credit the same mass twice."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "final_assembly"
+      flow_role: "accepted reference product"
+      record_type: "weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each model/configuration sample and every change"
+      temporal_coverage: "reporting year"
+      site_scope: "reporting factory"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "calibration certificate; signed acceptance record"
+    - protocol_id: cp_fabrication_materials
+      process_id: "component_fabrication"
+      flow_role: "steel sheet and polypropylene input"
+      record_type: "issue and return ledger"
+      raw_fields: "material grade; issued mass; returned mass; model; accepted count"
+      collection_method: "Reconcile weighed material issues, returns and bill of materials to accepted output."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "on-site fabrication"
+      aggregation_rule: "attributable net material mass / accepted machines"
+      quality_evidence: "purchase and batch issue records"
+    - protocol_id: cp_fabrication_waste
+      process_id: "component_fabrication"
+      flow_role: "segregated steel and polypropylene waste"
+      record_type: "waste transfer ledger"
+      raw_fields: "material identity; gross scrap mass; internal return mass; accepted count"
+      collection_method: "Weigh each separated waste stream and reconcile documented internal reuse and external transfer."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "on-site fabrication"
+      aggregation_rule: "external waste mass / accepted machines"
+      quality_evidence: "scale and transfer records"
+    - protocol_id: cp_purchased_parts
+      process_id: "final_assembly"
+      flow_role: "purchased motor"
+      record_type: "supplier and issue record"
+      raw_fields: "motor specification; supplier mass; issued quantity; accepted count"
+      collection_method: "Match motor specification and supplier mass to the accepted configuration and issue records."
+      unit: "kg"
+      frequency: "each model or supplier change"
+      temporal_coverage: "reporting year"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable motor mass / accepted machines"
+      quality_evidence: "supplier bill of materials; receiving record"
+    - protocol_id: cp_electricity
+      process_id: "final_assembly"
+      flow_role: "grid electricity"
+      record_type: "meter record"
+      raw_fields: "meter start; meter end; test cycle; accepted count; allocation driver"
+      collection_method: "Read calibrated electricity meters for assembly, test and packaging, then reconcile any shared-meter allocation."
+      unit: "kWh"
+      frequency: "monthly and each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable electricity / accepted machines"
+      quality_evidence: "meter calibration; work-order hours"
+    - protocol_id: cp_packaging
+      process_id: "final_assembly"
+      flow_role: "corrugated box"
+      record_type: "packing bill of materials"
+      raw_fields: "box specification; box mass; issued count; reuse count; accepted count"
+      collection_method: "Weigh or use traceable supplier mass for each box issued to accepted products."
+      unit: "kg"
+      frequency: "each packaging specification change"
+      temporal_coverage: "reporting year"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable corrugated box mass / accepted machines"
+      quality_evidence: "packing record; supplier mass certificate"
+  calculation_rules:
+    - id: accepted_unit_average
+      applies_to: "all inventory rows except finished_domestic_fan_or_hood"
+      rule: "Per-machine amount = attributable batch amount divided by the count of accepted machines of the same configuration; deduct documented internal returns before division."
+      inputs:
+        - "attributable batch amount"
+        - "accepted machine count"
+      output: "per-machine exchange"
+      source_ids:
+        - swegon-casa-hood-epd-2022
+  data_quality_requirements:
+    - id: dq_bom
+      applies_to: "all purchased materials and parts"
+      requirement: "Reconcile the full model-specific bill of materials, including motors, electronics, filters, glass and packaging where present; add each missing exchange as a separate concrete flow before dataset release."
+      evidence: "approved bill of materials; receiving records"
+    - id: dq_route
+      applies_to: "conditional fabrication and motor rows"
+      requirement: "Demonstrate the actual site route and accepted configuration; document omitted conditional rows as absent, not zero by default."
+      evidence: "routing sheet; product specification"
+    - id: dq_mass
+      applies_to: "reference product"
+      requirement: "Verify M for the same accepted configuration and exclude transport packaging."
+      evidence: "calibrated weighing and acceptance record"
+    - id: dq_period
+      applies_to: "all foreground quantities"
+      requirement: "Use one reporting period and site; document any supplier or meter gaps and allocation drivers."
+      evidence: "dated ledgers; meter logs; supplier statements"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Reject a dataset without a confirmed finished CPC 44815 product identity, one accepted configuration, measured net mass M in kg, and an output row of M kg."
+    source_ids:
+      - swegon-casa-hood-epd-2022
+  - rule_id: validate_inventory
+    applies_to: "foreground inventory"
+    rule: "Check every included material, energy, packaging and waste stream against the model bill of materials and site route; preserve one atomic exchange per flow."
+    source_ids:
+      - swegon-casa-hood-epd-2022
+      - eu-residential-ventilation-2009
+  - rule_id: validate_balance
+    applies_to: "fabrication and release"
+    rule: "Reconcile material issue, internal return, finished-product mass and externally transferred scrap; explain residual differences without forcing a fixed yield."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground data package for a complete domestic fan or hood at factory gate."
+  downstream_use: "secondary_dataset; background_dataset for product-specific downstream process or lifecyclemodel."
+  allowed_use: "Use only for the declared model/configuration, factory route, geography and reporting year, or disclose representativeness limits."
+  excluded_use: "Do not infer use-stage performance, service life impacts or end-of-life from this factory-gate inventory."
+  required_metadata: "Product kind; model; accepted M; motor configuration; airflow; ventilation/recirculation route; fabrication route; site; year; included packaging."
+  required_quality_disclosure: "BOM completeness; meter and weighing evidence; allocation drivers; unresolved flow UUIDs; missing upstream datasets."
+  update_trigger: "Model, motor, material, supplier, site, route, energy mix or packaging change."
+data_sources:
+  - id: "swegon-casa-hood-epd-2022"
+    type: "dataset"
+    reference: "EPD Swegon CASA cooker hoods (2022), https://ecowise.lv/wp-content/uploads/2023/09/EPD.pdf"
+    used_for: "Finished cooker-hood identity, bill of materials, purchased-part assembly, factory inputs, packaging and allocation."
+  - id: "eu-residential-ventilation-2009"
+    type: "official_guidance"
+    reference: "Study on residential ventilation - Final report (2009), https://circabc.europa.eu/sd/a/773b634f-9e34-444c-9406-3693982e00b3/V%20_%20Ventilation%20_%20final%20report.pdf"
+    used_for: "Residential fan and motorized-hood boundary; fan material categories. Fan examples are not empirical hood ranges."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:49c31b0da23e368670d835b0d814a363b8417947fa768d6d03e5817a30a44532"
+  generated_content_sha256: "sha256:bc81e75289188e7ddff065ba693d794a1c20690b76ef9edef5083d741b57a985"

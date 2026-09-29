@@ -1,10 +1,512 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "49210"
-  title: "Bodies for motor vehicles"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.transport-equipment.bodies-for-motor-vehicles"
+  classification_refs: "CPC 3.0 49210, Bodies for motor vehicles; classification context only"
+  covered_products: "Assembled new body shells or coachwork for motor vehicles, with declared coating state"
+  excluded_products: "Complete vehicles; engine-fitted chassis; loose body parts or accessories; trailers; repair or repainting services"
+  representative_product: "Assembled passenger or goods vehicle body shell at factory release"
+  production_route: "Sheet-metal forming and joining; surface preparation and coating when the delivered body is coated"
+  market_state: "One accepted finished body at factory gate, with configuration and coating state declared"
+functional_unit:
+  what: "An assembled motor-vehicle body providing the declared structural and enclosure functions"
+  how_much: "One accepted finished body of the declared configuration"
+  how_well: "Meets the producer's documented body acceptance and dimensional criteria; declare coating state"
+  how_long_or_cycle: "One factory release; no vehicle lifetime is asserted by this production rule"
+  reference_flow_link: "body_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_body_only
+      applies_to: "product boundary"
+      rule: "Stop at the released body; exclude complete-vehicle assembly, use, service and end-of-life."
+      source_ids:
+        - un-cpc3-notes-2025
+        - edag-silverado-body-lca-2018
+    - rule_id: boundary_coating
+      applies_to: "coated body route"
+      rule: "Include surface preparation, coating, curing, direct wastes and attributable energy only when coating is part of the delivered body."
+      source_ids:
+        - epa-auto-ria-2004
+    - rule_id: boundary_purchased_inputs
+      applies_to: "upstream inputs"
+      rule: "Record purchased inputs at the foreground gate and link suitable upstream datasets; avoid double counting on-site and purchased forming."
+      source_ids:
+        - edag-silverado-body-lca-2018
+boundary_abstraction:
+  declared_starting_condition: "Purchased body-grade sheet at the plant gate, plus other purchased process inputs; declare the accepted body configuration and coating state"
+  starting_condition_role: "Foreground manufacturing starts with purchased inputs; upstream manufacture remains linked by product datasets"
+  product_classification_scope: "A motor-vehicle body product under CPC 49210; chassis, body parts and complete vehicles remain separate products"
+  recursive_input_rule: "If a purchased input is itself a completed body, model its upstream body dataset once and record only additional foreground transformation; do not count its manufacture twice"
+  upstream_dataset_requirement: "Link supplier datasets for purchased sheet, electricity, coating materials, fuel and water at the declared geography and technology"
+  disclosure: "Declare supplied versus on-site formed panels, coating state, rework, scrap treatment, site, period, and any missing upstream data"
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Bodies for motor vehicles"
+    uuid: "68dcb7da-bb57-4730-94f3-ace5817da287"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "vehicle body type"
+    - "model and configuration"
+    - "included closures"
+    - "material route"
+    - "coated or uncoated state"
+    - "coating system if present"
+    - "factory location and reporting period"
+    - "accepted net mass M"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+  - id: inventory_basis
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Exchange property in each row"
+      uuid: ""
+    required_unit: "row unit"
+    rule: "Record each attributable exchange per one accepted finished unit; the reference amount is that body's measured M kg. Do not use a generic body mass."
+  - id: energy_conversion
+    applies_to: "plant_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve metered kWh; if a downstream energy-flow unit is MJ, multiply kWh by 3.6 and disclose the conversion."
+process_map:
+  - id: body_form_join
+    name: "Sheet forming and body joining"
+    inclusion: "required"
+    inclusion_condition: "Every covered body"
+    role: "Foreground manufacture"
+    quantitative_reference: "per one accepted finished unit"
+  - id: body_coating
+    name: "Body preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Delivered body is coated"
+    role: "Foreground finish"
+    quantitative_reference: "per one accepted finished unit"
+  - id: body_release
+    name: "Acceptance and factory release"
+    inclusion: "required"
+    inclusion_condition: "Every covered body"
+    role: "Reference output and mass measurement"
+    quantitative_reference: "M kg per one accepted finished unit"
+process_inventory:
+  - id: body_form_join
+    label: "Sheet forming and body joining"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Cold-rolled steel body sheet"
+          name: "Cold-rolled steel body sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when steel sheet is purchased for the declared body configuration. Record the actual sheet grade and received mass; its UUID awaits identity review."
+          amount:
+            expression: "Measured steel-sheet input per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet
+              source_ids:
+                - edag-silverado-body-lca-2018
+            ranges: []
+        - row_id: aluminium_sheet
+          role: "Aluminium body sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include only when aluminium sheet is purchased for the declared body configuration; do not infer a primary or recycled alloy route from this generic sheet identity."
+          amount:
+            expression: "Measured aluminium-sheet input per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet
+              source_ids:
+                - edag-silverado-body-lca-2018
+            ranges: []
+        - row_id: plant_electricity
+          role: "Plant electricity for body production"
+          name: "Grid electricity, alternating current"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter the electricity attributable to forming, joining and, when present, coating. The duplicate generic alternating-current candidates need identity review before a UUID can be assigned."
+          amount:
+            expression: "Metered electricity attributable to one accepted finished body."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - edag-silverado-body-lca-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcuts
+          role: "Steel sheet offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass / kg"
+          description: "Weigh segregated steel cut-offs leaving forming and joining; distinguish them from returned reusable sheet."
+          amount:
+            expression: "Weighed steel offcuts per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - edag-silverado-body-lca-2018
+            ranges: []
+      elementary:
+        []
+  - id: body_coating
+    label: "Body preparation and coating"
+    inputs:
+      product:
+        - row_id: process_water
+          role: "Industrial production water"
+          name: "Production water for industrial use"
+          flow_type: "product"
+          flow_ref:
+            uuid: "72dcdee6-846a-455a-95d1-942aa7ad3730"
+          property_unit: "Mass / kg"
+          description: "Include water entering surface preparation and rinsing only when the delivered body is coated; measure the supplied mass."
+          amount:
+            expression: "Metered or weighed water per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - epa-auto-ria-2004
+            ranges: []
+        - row_id: waterborne_basecoat
+          role: "Waterborne automotive basecoat"
+          name: "Waterborne automotive body basecoat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only if the coating recipe uses a waterborne color basecoat. Record the actual supplied formulation and wet mass; the generic paint candidates are not exact identities."
+          amount:
+            expression: "Issued wet basecoat mass per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_materials
+              source_ids:
+                - epa-auto-ria-2004
+            ranges: []
+        - row_id: gaseous_natural_gas
+          role: "Gaseous natural gas for curing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only when natural gas fires the coating oven; use the metered gas volume and disclose its supply conditions."
+          amount:
+            expression: "Metered gas volume attributable to one accepted finished body."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-auto-ria-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pretreatment_effluent
+          role: "Pretreatment effluent"
+          name: "Aqueous phosphate pretreatment effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include separately collected aqueous phosphate pretreatment effluent when the coating route generates it. Record actual treatment destination; a generic wastewater identity is insufficient."
+          amount:
+            expression: "Measured discharged effluent per one accepted finished unit."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - epa-auto-ria-2004
+            ranges: []
+      elementary:
+        []
+  - id: body_release
+    label: "Acceptance and factory release"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: body_output
+          role: "Accepted motor-vehicle body"
+          name: "Bodies for motor vehicles"
+          flow_type: "product"
+          flow_ref:
+            uuid: "68dcb7da-bb57-4730-94f3-ace5817da287"
+          property_unit: "Mass / kg"
+          description: "Release one accepted finished body of the declared configuration and coating state. Its mass M is measured, not assumed. In the measurement rules, “unit” means this one finished motor-vehicle body."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc3-notes-2025
+                - edag-silverado-body-lca-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_subdivide
+    applies_to: "shared body and vehicle operations"
+    rule: "Subdivide body-forming, joining and coating records from downstream vehicle assembly where measured records allow."
+    source_ids:
+      - edag-silverado-body-lca-2018
+  - rule_id: allocate_metered
+    applies_to: "shared meters and batches"
+    rule: "Assign shared electricity, gas, water and material issues to accepted bodies using the documented meter period, line or batch counts and configuration mix; disclose the allocation key and reject untraceable assignment."
+    source_ids:
+      - edag-silverado-body-lca-2018
+  - rule_id: allocate_scrap
+    applies_to: "recovered steel offcuts"
+    rule: "Record steel offcuts once as waste to their actual treatment route; do not give an undocumented avoided-production credit."
+    source_ids:
+      - edag-silverado-body-lca-2018
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "body_release"
+      flow_role: "accepted body mass"
+      record_type: "calibrated scale record"
+      raw_fields: "model; configuration; serial or batch id; coating state; accepted net mass M"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted body or traceable batch"
+      temporal_coverage: "reporting period"
+      site_scope: "release gate"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "scale calibration; acceptance record"
+    - protocol_id: cp_sheet
+      process_id: "body_form_join"
+      flow_role: "steel or aluminium sheet input"
+      record_type: "purchase and issue records"
+      raw_fields: "alloy or grade; received mass; issued mass; batch; accepted body count"
+      collection_method: "Reconcile issued sheet with stock change and forming records for each material separately."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "reporting period"
+      site_scope: "body line"
+      aggregation_rule: "per one accepted finished unit"
+      quality_evidence: "invoices; stock ledger; bill of materials"
+    - protocol_id: cp_energy
+      process_id: "body_form_join"
+      flow_role: "electricity or gas input"
+      record_type: "meter and fuel records"
+      raw_fields: "meter id; kWh; gas m3; period; line; accepted body count"
+      collection_method: "Read calibrated meters and assign only the attributable body line and coating load; separate electricity and gas."
+      unit: "kWh or m3"
+      frequency: "each meter period"
+      temporal_coverage: "reporting period"
+      site_scope: "body line and coating"
+      aggregation_rule: "per one accepted finished unit"
+      quality_evidence: "meter calibration; utility bills; allocation worksheet"
+    - protocol_id: cp_scrap
+      process_id: "body_form_join"
+      flow_role: "steel offcuts"
+      record_type: "scrap weighbridge records"
+      raw_fields: "container id; steel grade; mass; destination; batch"
+      collection_method: "Weigh segregated steel offcuts and reconcile against material issue and body output."
+      unit: "kg"
+      frequency: "each scrap transfer"
+      temporal_coverage: "reporting period"
+      site_scope: "forming line"
+      aggregation_rule: "per one accepted finished unit"
+      quality_evidence: "weighbridge; transfer ticket"
+    - protocol_id: cp_coating_materials
+      process_id: "body_coating"
+      flow_role: "water and basecoat input"
+      record_type: "meter and material issue records"
+      raw_fields: "water kg; coating formulation; issued wet paint kg; batch; accepted body count"
+      collection_method: "Measure supplied water and separately reconcile issued basecoat against stock and returns."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "reporting period"
+      site_scope: "paint shop"
+      aggregation_rule: "per one accepted finished unit"
+      quality_evidence: "meter; issue log; formula sheet"
+    - protocol_id: cp_effluent
+      process_id: "body_coating"
+      flow_role: "pretreatment effluent"
+      record_type: "discharge meter and sample"
+      raw_fields: "discharged mass; pretreatment line; batch; treatment destination"
+      collection_method: "Meter or weigh segregated phosphate pretreatment effluent and identify the treatment route."
+      unit: "kg"
+      frequency: "each discharge batch"
+      temporal_coverage: "reporting period"
+      site_scope: "pretreatment line"
+      aggregation_rule: "per one accepted finished unit"
+      quality_evidence: "discharge log; sample; treatment receipt"
+  calculation_rules:
+    - id: per_body_inventory
+      applies_to: "all inventory rows"
+      rule: "Sum attributable exchange quantities in the reporting period and divide by the number of accepted bodies of the same configuration; keep each exchange in its row unit."
+      inputs:
+        - "raw records"
+        - "accepted body count"
+        - configuration
+        - "applicable collection protocol"
+      output: "exchange per one accepted finished unit"
+      source_ids:
+        - edag-silverado-body-lca-2018
+    - id: mass_reconciliation
+      applies_to: "steel_sheet, aluminium_sheet, steel_offcuts, body_output"
+      rule: "Reconcile material input, documented internal returns, offcuts and measured net body mass for the declared configuration; investigate any unexplained difference rather than forcing balance."
+      inputs:
+        - cp_sheet
+        - cp_scrap
+        - cp_mass
+      output: "reconciliation record"
+      source_ids:
+        - edag-silverado-body-lca-2018
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all flows"
+      requirement: "Declare body configuration, coating state and the physical identity of each material, fuel and waste stream."
+      evidence: "accepted body record; material specification; treatment ticket"
+    - id: dq_mass
+      applies_to: "body_output"
+      requirement: "Use calibrated net mass M for the accepted body; do not substitute whole-vehicle or packaged mass."
+      evidence: "scale calibration; acceptance record"
+    - id: dq_time
+      applies_to: "all foreground records"
+      requirement: "Use a common reporting period and reconcile production counts, meters, inventories and transfers."
+      evidence: "dated ledgers and meter reads"
+    - id: dq_coverage
+      applies_to: "coating route"
+      requirement: "Explain omitted coating layers, treatment chemicals, direct emissions or waste streams and collect them as separate exchanges when material."
+      evidence: "recipe; permit; waste log; completeness check"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "body_output"
+    rule: "Confirm one accepted body with measured M kg and the same configuration and coating state across reference and inventory."
+    source_ids:
+      - edag-silverado-body-lca-2018
+  - rule_id: validate_boundary
+    applies_to: "body versus vehicle"
+    rule: "Reject datasets that include complete-vehicle assembly, chassis, engine or downstream use inside the body reference."
+    source_ids:
+      - un-cpc3-notes-2025
+      - edag-silverado-body-lca-2018
+  - rule_id: validate_conditions
+    applies_to: "conditional rows"
+    rule: "Require route evidence for aluminium sheet, coating water, basecoat, oven gas and effluent when those rows are included; absent routes are disclosed."
+    source_ids:
+      - edag-silverado-body-lca-2018
+      - epa-auto-ria-2004
+  - rule_id: validate_records
+    applies_to: "all rows"
+    rule: "Match each amount to a dated protocol record, check unit and direction, and disclose unresolved flow UUIDs and missing upstream datasets."
+    source_ids:
+      - edag-silverado-body-lca-2018
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review"
+  downstream_use: "Body input to a foreground vehicle assembly process or lifecyclemodel"
+  allowed_use: "Matching body type, material route, configuration, factory geography and coating state"
+  excluded_use: "Whole-vehicle reference; unqualified substitution between coated and uncoated bodies; unsupported generic industry benchmark"
+  required_metadata: "body model; configuration; material and joining route; coating state and recipe; factory; period; measured M; source and treatment routes"
+  required_quality_disclosure: "meter and mass evidence; allocation keys; supplier dataset coverage; unresolved flow identities; omitted emissions and coating chemicals"
+  update_trigger: "changed body design, material mix, coating recipe, supplier route, site technology or reporting period"
+data_sources:
+  - id: "un-cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Ver. 3.0 Explanatory Notes* (30 June 2025), https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, p. 271–272 (accessed 2026-09-27)"
+    used_for: "Body, chassis and body-part classification boundary"
+  - id: "edag-silverado-body-lca-2018"
+    type: "literature"
+    reference: "Lindita Bushi, *EDAG Silverado Body Lightweighting Final LCA Report* (August 2018), https://www.aluminum.org/sites/default/files/2021-10/AA-LWT-Body-Design_Final-LCA-Report_August-2018.pdf, §§ 6.2, 8.2 (accessed 2026-09-27)"
+    used_for: "Assembled-body state, sheet forming, material and scrap accounting; case method only, no empirical range"
+  - id: "epa-auto-ria-2004"
+    type: "official_guidance"
+    reference: "U.S. EPA, *Regulatory Impact Analysis for the Automobile and Light Duty Vehicle NESHAP, Final Report* (EPA-452/R-04-007, February 2004), https://www.epa.gov/sites/default/files/2020-07/documents/transport-mfg_ria_final-neshap_2004-02.pdf, § 2.1 (accessed 2026-09-27)"
+    used_for: "Coating sequence after body assembly, surface preparation, paint-booth water and coating inputs; no general body material quantities or allocation factors"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0e4eed15bb3703d0a5915bf407d82160f8ea1ab7f42305775638d25ab533ab79"
+  generated_content_sha256: "sha256:f89d4dafada49e2b679e0b50a53944c15d3d94fc7b4b841b7f2fc100011322d8"

@@ -1,10 +1,645 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44121"
-  title: "Mowers for lawns, parks or sportsgrounds"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.mowers-for-lawns-parks-or-sportsgrounds"
+  classification_refs: "CPC 3.0 44121; classification identity only, without an accepted mapping claim."
+  covered_products: "Complete lawn, park and sportsground mowers at factory gate, including walk-behind, ride-on and robotic configurations."
+  excluded_products: "Tractor-mounted cutter bars and other non-lawn mowers (CPC 44123), parts sold alone, trimmers, services, and used or refurbished machines."
+  representative_product: "One accepted complete mower of the declared model and configuration."
+  production_route: "Purchased components and conditional in-house metal or plastic fabrication, followed by assembly, acceptance test and packaging; disclose gasoline or electric route."
+  market_state: "New, complete, accepted, gate-ready machine; transport packaging is separate from its net mass."
+functional_unit:
+  what: "Supply a complete mower capable of cutting managed grass in a lawn, park or sportsground."
+  how_much: "One accepted complete machine of the declared configuration."
+  how_well: "Meets the manufacturer's declared cutting and acceptance specification; record cutting width, drive and power source."
+  how_long_or_cycle: "At factory-gate acceptance; operating lifetime and mowing frequency are downstream scenario parameters."
+  reference_flow_link: "finished_mower"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "product system"
+      rule: "Include upstream production and inbound transport of recorded inputs, attributable in-house fabrication, assembly, acceptance test and gate packaging; stop at factory gate."
+      source_ids:
+        - ramboll-husqvarna-2022
+        - chalmers-lan-liu-2010
+    - rule_id: boundary_downstream
+      applies_to: "downstream use"
+      rule: "Keep customer mowing fuel or electricity, maintenance, distribution after factory gate and end-of-life outside this production inventory; model them in separately declared downstream stages."
+      source_ids:
+        - ramboll-husqvarna-2022
+    - rule_id: boundary_no_double_count
+      applies_to: "purchased components"
+      rule: "A purchased painted part or moulded housing includes its supplier production upstream; do not also count its constituent sheet or resin as this factory's input."
+      source_ids:
+        - ramboll-husqvarna-2022
+        - chalmers-lan-liu-2010
+boundary_abstraction:
+  declared_starting_condition: "New complete mower accepted at the factory gate; disclose included accessories and whether packaging is separately counted."
+  starting_condition_role: "Product output of foreground manufacture; upstream purchased materials and parts retain their supplier production datasets."
+  product_classification_scope: "CPC 3.0 44121 identifies the covered product, not a blanket identity for inputs."
+  recursive_input_rule: "A complete mower entering rework is recorded as a separately identified input with its original upstream dataset; do not recursively apply this PCR to its own output."
+  upstream_dataset_requirement: "Link geographically and technically representative datasets for purchased sheets, resin, components, fuels, electricity and packaging; disclose proxy use."
+  disclosure: "Report site, year, model, route, included components, mass scope, direct versus allocated records, omitted flows and upstream dataset provenance."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Mowers for lawns, parks or sportsgrounds"
+    uuid: "2855f6db-d009-4af5-a3de-b01c75d14cd9"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - configuration
+    - "cutting system"
+    - "propulsion and energy source"
+    - "installed battery chemistry and capacity when applicable"
+    - "included accessories"
+    - "acceptance record"
+    - "measured net mass M"
+    - "factory location and reference year."
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: electricity_conversion
+    applies_to: "site_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "If the factory meter records kWh, convert the attributable electricity to MJ using 1 kWh = 3.6 MJ before reporting the selected flow."
+process_map:
+  - id: mower_manufacture
+    name: "Mower fabrication, assembly, acceptance test and gate packaging"
+    inclusion: "required"
+    inclusion_condition: "All covered routes; apply each flow card's stated route condition."
+    role: "Foreground production process"
+    quantitative_reference: "One accepted complete machine of the declared configuration."
+process_inventory:
+  - id: mower_manufacture
+    label: "Mower fabrication, assembly, acceptance test and gate packaging"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Hot-rolled steel sheet"
+          name: "Hot-rolled steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional input when the factory cuts and forms a steel chassis or deck; record purchased sheet mass, not finished component mass."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - chalmers-lan-liu-2010
+            ranges: []
+        - row_id: abs_granulate
+          role: "ABS granulate"
+          name: "Acrylonitrile-butadiene-styrene (ABS) copolymer, granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8f1317c1-aa51-4524-8692-74079c923e2c"
+          property_unit: "Mass / kg"
+          description: "Conditional input when ABS housing parts are injection moulded in this factory; exclude the same resin embedded in purchased housings."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: painted_metal_parts
+          role: "Purchased painted metal parts"
+          name: "Painted metal parts for lawn mower"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8eb07159-a8e1-4d36-9a53-098a20f6fba7"
+          property_unit: "Mass / kg"
+          description: "Conditional purchased mower deck or chassis parts; exclude this input when the same metal parts are made and counted from sheet within the factory."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - chalmers-lan-liu-2010
+            ranges: []
+        - row_id: gasoline_engine
+          role: "Gasoline engine"
+          name: "Small gasoline internal combustion engine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "139afa12-e131-4bed-8e26-9ab59c89f101"
+          property_unit: "Mass / kg"
+          description: "Conditional purchased complete engine for a gasoline-powered mower; exclude for an electric-only model."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - chalmers-lan-liu-2010
+            ranges: []
+        - row_id: electric_motor
+          role: "Electric motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "Conditional purchased cutting or traction motor on an electric mower; record actual installed motor mass."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: liion_battery
+          role: "Lithium-ion battery"
+          name: "Lithium Ion Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5554faa4-1ae2-459a-959a-b2180ab3cedc"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional installed complete lithium-ion battery on a battery-powered mower; count battery items and disclose chemistry and capacity separately."
+          amount:
+            expression: "Count installed battery items per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_battery
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: purchased_housing
+          role: "Purchased injection-moulded housing"
+          name: "Injection molded plastic housing parts"
+          flow_type: "product"
+          flow_ref:
+            uuid: "42e17f3b-3473-4b98-a766-f11ce51c2669"
+          property_unit: "Mass / kg"
+          description: "Conditional input for a purchased plastic housing; exclude the same housing when produced in-house from the recorded ABS granulate."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: site_electricity
+          role: "Factory electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b989a649-ca09-44b8-abab-a069148d0b1e"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity used for attributable fabrication, assembly and acceptance testing at this factory; meter or physically allocate the shared total."
+          amount:
+            expression: "Measured MJ per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: gasoline_test
+          role: "Gasoline for factory test"
+          name: "Gasoline"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e6677cd5-b574-4e00-a3bd-c373ac796135"
+          property_unit: "Mass / kg"
+          description: "Conditional fuel input when a gasoline mower is run during acceptance testing; exclude customer-use fuel and disclose exhaust modelling."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Conditional single corrugated box supplied with a gate-ready mower; exclude reusable pallets and account for them separately."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: diesel_engine
+          role: "Diesel engine"
+          name: "Diesel engine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3ac8612-80b9-4283-9439-62aa4986fce2"
+          property_unit: "Number of items / Item(s)"
+          description: "Conditional complete installed diesel engine on a diesel ride-on mower; count engine items and disclose rated power."
+          amount:
+            expression: "Measured Item(s) per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_engine_count
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: diesel_test
+          role: "Diesel acceptance-test fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Conditional diesel input when a diesel mower is run during factory acceptance testing; exclude customer-use fuel."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+        - row_id: cutting_blade
+          role: "Mower cutting blade"
+          name: "Steel mower cutting blade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Installed grass-cutting steel blade on the accepted mower; record the actual blade mass and configuration, not a generic saw blade."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_mower
+          role: "Accepted finished mower"
+          name: "Mowers for lawns, parks or sportsgrounds"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2855f6db-d009-4af5-a3de-b01c75d14cd9"
+          property_unit: "Mass / kg"
+          description: "Output is one complete accepted mower of the declared configuration at the factory gate; net mass M excludes transport packaging and separate accessories."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel fabrication scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected post-industrial ferrous scrap from in-house sheet cutting or forming; record outgoing mass."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - chalmers-lan-liu-2010
+            ranges: []
+        - row_id: abs_moulding_scrap
+          role: "ABS moulding scrap"
+          name: "ABS injection-moulding scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional separately collected ABS sprues and rejected ABS housings from in-house moulding; do not combine with plastic packaging waste."
+          amount:
+            expression: "Measured kg per one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids:
+                - ramboll-husqvarna-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_subdivide
+    applies_to: "shared manufacturing"
+    rule: "First isolate model or line-specific material, energy, test and waste records; preserve direct measurements."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocate_causal
+    applies_to: "shared manufacturing"
+    rule: "If subdivision is impossible, use a documented physical driver such as equipment operating time for electricity or measured material throughput for scrap; demonstrate causation and disclose denominator and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocate_recycling
+    applies_to: "outgoing scrap"
+    rule: "Record segregated scrap mass and actual destination; do not claim avoided virgin-material credit inside this production inventory without an explicitly declared downstream method."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "mower_manufacture"
+      flow_role: "finished reference machine"
+      record_type: "calibrated weighing and acceptance record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each sampled accepted configuration"
+      temporal_coverage: "reporting year"
+      site_scope: "final acceptance at site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale calibration and acceptance record"
+    - protocol_id: cp_bom
+      process_id: "mower_manufacture"
+      flow_role: "sheet, resin and purchased components"
+      record_type: "controlled bill of materials and receiving weights"
+      raw_fields: "model; configuration; part number; material; received mass; accepted machine count"
+      collection_method: "Reconcile purchased or consumed component mass with the accepted-model bill of materials and stock movements."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "manufacturing site and tier-one suppliers"
+      aggregation_rule: "attributable material mass / accepted machines"
+      quality_evidence: "signed BOM revision and receiving records"
+    - protocol_id: cp_battery
+      process_id: "mower_manufacture"
+      flow_role: "installed lithium-ion battery"
+      record_type: "serialised BOM and assembly record"
+      raw_fields: "model; battery part number; chemistry; capacity; installed item count; accepted machine count"
+      collection_method: "Count complete installed batteries against serialised acceptance and supplier records."
+      unit: "Item(s)"
+      frequency: "each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "battery-equipped route"
+      aggregation_rule: "installed battery items / accepted machines"
+      quality_evidence: "battery BOM and acceptance record"
+    - protocol_id: cp_engine_count
+      process_id: "mower_manufacture"
+      flow_role: "installed diesel engine"
+      record_type: "engine BOM and acceptance record"
+      raw_fields: "model; engine part number; rated power; installed item count; accepted machine count"
+      collection_method: "Count complete installed diesel engines against the signed BOM and acceptance record."
+      unit: "Item(s)"
+      frequency: "each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "diesel-powered route"
+      aggregation_rule: "installed engine items / accepted machines"
+      quality_evidence: "engine BOM and acceptance record"
+    - protocol_id: cp_energy
+      process_id: "mower_manufacture"
+      flow_role: "site electricity"
+      record_type: "meter and production log"
+      raw_fields: "meter interval; kWh; line hours; accepted machine count"
+      collection_method: "Meter attributable factory electricity; subdivide by line or use documented causal operating hours for shared meters."
+      unit: "MJ"
+      frequency: "monthly"
+      temporal_coverage: "reporting year"
+      site_scope: "manufacturing site"
+      aggregation_rule: "attributable electricity / accepted machines"
+      quality_evidence: "calibrated meter, utility bill and production hours"
+    - protocol_id: cp_test
+      process_id: "mower_manufacture"
+      flow_role: "gasoline or diesel acceptance test"
+      record_type: "fuel issue and test record"
+      raw_fields: "fuel type; fuel mass; test run; model; accepted machine count"
+      collection_method: "Weigh or trace gasoline or diesel issued to acceptance tests, net of returned fuel."
+      unit: "kg"
+      frequency: "each test campaign"
+      temporal_coverage: "reporting year"
+      site_scope: "gasoline or diesel route at manufacturing site"
+      aggregation_rule: "test fuel mass / accepted machines"
+      quality_evidence: "fuel issue and acceptance log"
+    - protocol_id: cp_pack
+      process_id: "mower_manufacture"
+      flow_role: "corrugated box"
+      record_type: "packaging BOM and issue record"
+      raw_fields: "box specification; dry mass; box count; accepted machine count"
+      collection_method: "Weigh the actual corrugated box and reconcile issued boxes to accepted machines."
+      unit: "kg"
+      frequency: "each production batch"
+      temporal_coverage: "reporting year"
+      site_scope: "gate packaging"
+      aggregation_rule: "corrugated box mass / accepted machines"
+      quality_evidence: "packaging specification and issue record"
+    - protocol_id: cp_scrap
+      process_id: "mower_manufacture"
+      flow_role: "separate steel and ABS scrap"
+      record_type: "waste weighing and segregation record"
+      raw_fields: "waste code; material; weighed mass; batch; accepted machine count"
+      collection_method: "Weigh steel and ABS scrap separately before transfer; reconcile batch origin and destination."
+      unit: "kg"
+      frequency: "each waste transfer"
+      temporal_coverage: "reporting year"
+      site_scope: "on-site fabrication"
+      aggregation_rule: "attributable segregated scrap / accepted machines"
+      quality_evidence: "calibrated weighbridge ticket and waste transfer record"
+  calculation_rules:
+    - id: electricity_mj
+      applies_to: "site_electricity"
+      rule: "Attributable MJ = metered kWh × 3.6 after documented shared-meter allocation."
+      inputs:
+        - "metered kWh"
+        - "accepted machine count"
+        - "causal line hours when shared"
+      output: "MJ per accepted machine"
+      source_ids:
+        - eu-pef-2021
+    - id: activity_per_machine
+      applies_to: "recorded inputs and wastes"
+      rule: "Attribute the measured batch quantity to the declared model and divide by accepted machines of that model; retain rejected units and rework in the batch balance."
+      inputs:
+        - "batch quantities"
+        - "accepted machine count"
+        - "model records"
+      output: "exchange per accepted machine"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all rows"
+      requirement: "Match every source record to the same model, route, configuration and reporting period as the reference machine."
+      evidence: "BOM revision, serial and acceptance records."
+    - id: dq_mass
+      applies_to: "reference and materials"
+      requirement: "Measure net mass M and reconcile major material or component quantities without merging shipping packaging into the machine."
+      evidence: "scale record, BOM and packaging records."
+    - id: dq_route
+      applies_to: "conditional rows"
+      requirement: "State why each gasoline, diesel, electric, battery, purchased-housing and in-house fabrication row applies or is absent."
+      evidence: "route and process records."
+    - id: dq_gap
+      applies_to: "unresolved rows and quantities"
+      requirement: "Keep UUID and range evidence gaps visible; do not substitute a proxy identity or a case value for a category benchmark."
+      evidence: "lookup review and foreground records."
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Confirm one accepted complete CPC 44121 mower output, the exact reference UUID and M kg for the same configuration."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_material_route
+    applies_to: "inventory"
+    rule: "Reconcile purchased components against in-house sheet and resin routes; reject duplicate counting and record each condition as present or absent."
+    source_ids:
+      - ramboll-husqvarna-2022
+      - chalmers-lan-liu-2010
+  - rule_id: validate_utilities
+    applies_to: "electricity and test fuel"
+    rule: "Confirm metered electricity, any gasoline or diesel test use, their units and a causal shared-site allocation; disclose exhaust modelling without counting customer use."
+    source_ids:
+      - eu-pef-2021
+      - ramboll-husqvarna-2022
+  - rule_id: validate_scrap
+    applies_to: "waste"
+    rule: "Match steel and ABS waste masses with separate transfer records and declared treatment; unresolved ABS flow UUID remains blank."
+    source_ids:
+      - ramboll-husqvarna-2022
+      - chalmers-lan-liu-2010
+published_dataset_profile:
+  dataset_role: "Foreground product manufacturing dataset."
+  downstream_use: "secondary_dataset; may serve as background_dataset for an explicitly compatible mower supply chain."
+  allowed_use: "Cradle-to-factory-gate inventory for the declared mower configuration with separately linked upstream datasets."
+  excluded_use: "Claims about mowing service, lifetime impacts, comparative superiority, or other mower configurations without matched use-stage and quality data."
+  required_metadata: "Model, route, cutting width, motor or engine, battery chemistry and capacity, factory, year, M, included accessories, packaging scope and upstream dataset versions."
+  required_quality_disclosure: "Meter coverage, BOM completeness, allocation drivers, missing UUIDs, quantity range evidence gaps, proxy datasets, rejects and waste destinations."
+  update_trigger: "Design or bill-of-material change, powertrain change, supplier/site change, new measured data or resolved UUID identity."
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Structure, 30 June 2025, row 44121; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (accessed 2026-09-24)."
+    used_for: "Product identity."
+  - id: "un-cpc-exp-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, entries 44121 and 44123; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-09-24)."
+    used_for: "Neighboring mower boundary."
+  - id: "ramboll-husqvarna-2022"
+    type: "literature"
+    reference: "Ramboll Sweden AB for Husqvarna Group, LCA of CEORA™ 546 EPOS™ & Rider P525DX, version 1.3, 7 June 2022, pp. 2, 7, 12–13; https://www.husqvarna.com/-/files/aprimo/husqvarna/robotic-mowers/documents/guideline/qk-274541.pdf?v=3a59cbf2 (accessed 2026-09-24)."
+    used_for: "Mower routes, process decomposition and conditional inputs; case observations only."
+  - id: "chalmers-lan-liu-2010"
+    type: "literature"
+    reference: "Xing Lan and Yu Liu, Life Cycle Assessment of Lawnmowers: Two Mowers' Case Studies, Chalmers Master's Thesis 2010:11, §3.1, p. 7; https://odr.chalmers.se/bitstreams/286ce17b-0137-4137-82fd-9183f9e1bdf1/download (accessed 2026-09-24)."
+    used_for: "Walk-behind fabrication, purchased components and assembly; case observations only."
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Annex I, Product Environmental Footprint Method, §4.5, to Recommendation (EU) 2021/2279, 16 December 2021; https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en?filename=Annexes+1+to+2.pdf (accessed 2026-09-24)."
+    used_for: "Shared-process allocation hierarchy."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:528cdc751995cdee6d5a88d63e8a7864e1a200d068ca359fc536433c1659f5fd"
+  generated_content_sha256: "sha256:fb57e0cf0a494d42ad8526058ceb861376c97b4b862a56c7ad40325db4036fcc"

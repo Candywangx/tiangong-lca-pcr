@@ -1,10 +1,422 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44513"
-  title: "Machinery used in the milling industry or for the working of cereals or dried leguminous vegetables other than farm-type machinery"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.machinery-used-in-the-milling-industry-or-for-the-working-of-cereals-or-dried-leguminou-52304b89"
+  classification_refs: "CPC 3.0 44513, exact product-category description; classification is not PCR identity."
+  covered_products: "Accepted complete non-farm machines that mill or otherwise work cereals or dried legumes in an industrial setting."
+  excluded_products: "Standalone grain or seed cleaning, sorting, or grading machines; farm-type machines; spare parts sold separately; entire plants; and milled food products."
+  representative_product: "Configured industrial grain roller mill with declared casting, food-contact metal, drive, and control scope."
+  production_route: "Purchased components, site fabrication or machining where performed, final assembly, and acceptance test."
+  market_state: "Complete, accepted, net unpackaged machine at the manufacturer's factory gate."
+functional_unit:
+  what: "Supply an accepted complete machine for industrial milling or working of cereals or dried legumes."
+  how_much: "One accepted finished machine of the declared configuration."
+  how_well: "The machine meets its recorded factory acceptance specification for the declared grain or legume application and rated capacity."
+  how_long_or_cycle: "At factory-gate acceptance; this product reference does not assert a service lifetime or operating output."
+  reference_flow_link: "finished_machine_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground starts with purchased component and material receipts and on-site electricity entering the declared manufacturing site, and ends at acceptance of the net unpackaged complete machine. Record supplier processes as upstream datasets for purchased inputs rather than silently treating them as on-site fabrication. Include component machining, sheet fabrication, assembly, and acceptance testing only where the declared route performs them. The inventory separates one physical exchange per row. is-iso-14044-2006; buhler-diorit-2019."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "finished machine"
+      rule: "Include documented material and energy receipts, attributable fabrication, assembly, test, and direct waste through acceptance of the unpackaged machine."
+      source_ids:
+        - is-iso-14044-2006
+    - rule_id: boundary_supplier_inputs
+      applies_to: "purchased inputs"
+      rule: "Link purchased components to upstream datasets and disclose any missing supplier processes or inputs."
+      source_ids:
+        - is-iso-14044-2006
+    - rule_id: boundary_exclusions
+      applies_to: "product scope"
+      rule: "Exclude factory-to-customer transport, installation, use and end-of-life from this factory-gate data package; disclose the exclusion."
+      source_ids:
+        - is-iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased cast-iron frame casting, stainless-steel sheet and drive motor at the factory receipt boundary, with their supplier specifications and origin declared."
+  starting_condition_role: "Documented purchased-input starting condition for the foreground machine factory."
+  product_classification_scope: "Non-farm industrial machinery for milling or working cereals or dried legumes, not grain products or standalone grain cleaners."
+  recursive_input_rule: "If a purchased input is itself a complete machine in this product category, record its distinct quantity and use a separate upstream machine dataset; do not expand the same factory foreground recursively."
+  upstream_dataset_requirement: "Link each purchased component and electricity input to a representative upstream dataset with geography, technology, and product state disclosed."
+  disclosure: "Disclose included components, subcontracted operations, test scope, exclusions, and any shared-process allocation."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Machinery used in the milling industry or for the working of cereals or dried leguminous vegetables other than farm-type machinery"
+    uuid: "777a709f-59dc-4927-843f-2e9546f5495e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Machine model and serial number"
+    - "declared grain or legume application"
+    - "rated capacity"
+    - "complete configuration and included drive or controls"
+    - "accepted net mass M"
+    - "factory site and acceptance date."
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: component_fabrication
+    name: "Component receipt and site fabrication"
+    inclusion: "required"
+    inclusion_condition: "Include actual machining and sheet cutting performed for the declared configuration."
+    role: "Foreground material and fabrication exchanges."
+    quantitative_reference: "per one accepted finished machine"
+  - id: assembly_acceptance
+    name: "Final assembly and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Include installed components and factory acceptance test for the declared configuration."
+    role: "Finished-machine output and acceptance electricity."
+    quantitative_reference: "per one accepted finished machine"
+process_inventory:
+  - id: component_fabrication
+    label: "Component receipt and site fabrication"
+    inputs:
+      product:
+        - row_id: frame_casting_input
+          role: "Purchased cast-iron frame casting"
+          name: "Cast-iron machine-frame casting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Collect the mass of the accepted cast-iron frame casting received for the declared roller-mill configuration. The Diorit example has a cast-iron frame; other machine designs must disclose an inapplicable row rather than assume this material. buhler-diorit-2019."
+          amount:
+            expression: "Recorded accepted casting mass issued to one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frame_casting
+              source_ids:
+                - buhler-diorit-2019
+            ranges: []
+        - row_id: stainless_sheet_input
+          role: "Food-contact stainless-steel sheet"
+          name: "Stainless-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Collect the received stainless-steel sheet issued to food-contact components when the declared design uses this material. The Diorit example identifies stainless steel or other food-grade material for contact parts; it does not establish a universal stainless-steel quantity. buhler-diorit-2019."
+          amount:
+            expression: "Recorded stainless-steel sheet mass issued to one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_sheet
+              source_ids:
+                - buhler-diorit-2019
+            ranges: []
+        - row_id: fabrication_electricity_input
+          role: "Electricity for component fabrication"
+          name: "Purchased grid alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Collect metered purchased grid electricity attributable to component machining or sheet fabrication performed at the site. The electricity identity remains pending because public candidates did not match the declared kWh property."
+          amount:
+            expression: "Metered electricity attributable to one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_electricity
+              source_ids:
+                - is-iso-14044-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: fabrication_steel_scrap_output
+          role: "Post-industrial steel scrap from sheet fabrication"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel scrap leaving on-site sheet cutting or machining. Do not create this waste row when no such fabrication occurs; record the destination and avoid crediting recycling without an explicit downstream model."
+          amount:
+            expression: "Weighed steel scrap dispatched per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_scrap
+              source_ids:
+                - is-iso-14044-2006
+            ranges: []
+      elementary:
+        []
+  - id: assembly_acceptance
+    label: "Final assembly and acceptance"
+    inputs:
+      product:
+        - row_id: drive_motor_input
+          role: "Purchased drive motor"
+          name: "Industrial electric drive motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the electric motor installed in the accepted configuration when the drive is supplied with the machine. Two otherwise similar public motor identities require review before UUID adoption. This is a conditional configured component, not a universal Diorit motor specification."
+          amount:
+            expression: "Recorded per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drive_motor
+              source_ids: []
+            ranges: []
+        - row_id: test_electricity_input
+          role: "Electricity for acceptance testing"
+          name: "Purchased grid alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Collect purchased grid electricity metered for factory acceptance tests of the declared machine configuration. Keep it separate from fabrication electricity."
+          amount:
+            expression: "Metered acceptance-per one accepted finished machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_electricity
+              source_ids:
+                - is-iso-14044-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_machine_output
+          role: "Accepted complete grain-milling machine"
+          name: "Machinery used in the milling industry or for the working of cereals or dried leguminous vegetables other than farm-type machinery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "777a709f-59dc-4927-843f-2e9546f5495e"
+          property_unit: "Mass / kg"
+          description: "The accepted net machine is the sole reference product output; its configuration and net mass match cp_mass. The public product flow describes the full CPC category, not a particular Bühler model."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared factory operations"
+    rule: "Use machine-specific meter, job, and bill-of-material records to subdivide shared operations before allocating their exchanges."
+    source_ids:
+      - is-iso-14044-2006
+  - rule_id: allocation_physical
+    applies_to: "inseparable shared operations"
+    rule: "If subdivision is infeasible, use and document a causal physical relationship, such as measured machine time or processed mass, and retain the unallocated total and reconciliation."
+    source_ids:
+      - is-iso-14044-2006
+  - rule_id: allocation_other
+    applies_to: "operations without a defensible physical relation"
+    rule: "Document a justified alternative relation and sensitivity to the allocation choice; do not insert a default factor."
+    source_ids:
+      - is-iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_frame_casting
+      process_id: "component_fabrication"
+      flow_role: "purchased frame casting"
+      record_type: "bill of materials and receipt"
+      raw_fields: "model; configuration; casting part id; received mass; issue count"
+      collection_method: "Reconcile accepted casting receipt and part issue to the same machine configuration."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "acceptance production lot"
+      site_scope: "manufacturing site and declared suppliers"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "receipt, supplier specification, issue ledger"
+    - protocol_id: cp_stainless_sheet
+      process_id: "component_fabrication"
+      flow_role: "stainless-steel sheet"
+      record_type: "issue and cutting records"
+      raw_fields: "model; configuration; material grade; issue mass; returned mass"
+      collection_method: "Weigh or reconcile traceable sheet issue records for the declared food-contact components."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "acceptance production lot"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "grade certificate, issue and return ledger"
+    - protocol_id: cp_fabrication_electricity
+      process_id: "component_fabrication"
+      flow_role: "purchased grid electricity"
+      record_type: "submeter or equipment log"
+      raw_fields: "meter start; meter end; job id; machine count"
+      collection_method: "Submeter fabrication electricity or attribute a documented job-meter total to accepted machines."
+      unit: "kWh"
+      frequency: "each job or shift"
+      temporal_coverage: "acceptance production lot"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "meter calibration, job log, allocation record"
+    - protocol_id: cp_steel_scrap
+      process_id: "component_fabrication"
+      flow_role: "post-industrial steel scrap"
+      record_type: "scrap dispatch record"
+      raw_fields: "waste code; scale ticket mass; destination; job id"
+      collection_method: "Weigh segregated fabrication steel scrap and reconcile dispatched mass to the job."
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "acceptance production lot"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "scale ticket, waste transfer record"
+    - protocol_id: cp_drive_motor
+      process_id: "assembly_acceptance"
+      flow_role: "purchased drive motor"
+      record_type: "accepted bill of materials"
+      raw_fields: "model; configuration; motor part id; installed mass; quantity"
+      collection_method: "Reconcile installed motor and supplier mass record with the acceptance configuration."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "acceptance production lot"
+      site_scope: "manufacturing site and declared supplier"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "bill of materials, supplier specification, acceptance record"
+    - protocol_id: cp_test_electricity
+      process_id: "assembly_acceptance"
+      flow_role: "purchased grid electricity"
+      record_type: "acceptance-test meter"
+      raw_fields: "meter start; meter end; test id; serial number"
+      collection_method: "Meter the acceptance test or attribute a documented test-bay meter total to accepted machines."
+      unit: "kWh"
+      frequency: "each test"
+      temporal_coverage: "acceptance production lot"
+      site_scope: "manufacturing site"
+      aggregation_rule: "per one accepted finished machine"
+      quality_evidence: "test record, meter calibration, allocation record"
+    - protocol_id: cp_mass
+      process_id: "assembly_acceptance"
+      flow_role: "reference product"
+      record_type: "calibrated weighing record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each accepted machine"
+      temporal_coverage: "acceptance date"
+      site_scope: "manufacturing site"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "scale calibration, weigh ticket, signed acceptance record"
+  calculation_rules:
+    []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "reference product and inputs"
+      requirement: "Match part, meter, waste and mass records to the same model, serial number, configuration and accepted lot."
+      evidence: "bill of materials; acceptance record"
+    - id: dq_metering
+      applies_to: "electricity and mass"
+      requirement: "Preserve calibrated meter or scale evidence and explain attribution when a shared meter is used."
+      evidence: "calibration certificate; meter log; allocation worksheet"
+    - id: dq_supply
+      applies_to: "purchased components"
+      requirement: "Record supplier, material grade, quantity and upstream dataset match; disclose missing supplier data."
+      evidence: "supplier specification; receipt; dataset metadata"
+    - id: dq_completeness
+      applies_to: "entire inventory"
+      requirement: "Reconcile purchases, installed mass, returned stock and waste without assuming a universal machine material mix."
+      evidence: "material balance; issue and scrap records"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "completed machine"
+    rule: "Confirm one reference output with M kg accepted net mass, the exact product UUID, matching configuration, and a linked cp_mass record."
+    source_ids:
+      - is-iso-14044-2006
+  - rule_id: validate_inventory
+    applies_to: "foreground exchanges"
+    rule: "Confirm each selected flow denotes one physical exchange, every collected row has its protocol, and purchased inputs have compatible upstream datasets."
+    source_ids:
+      - is-iso-14044-2006
+  - rule_id: validate_allocation
+    applies_to: "shared operations"
+    rule: "Reconcile allocated totals with measured factory totals, document the physical or alternative relation, and disclose gaps."
+    source_ids:
+      - is-iso-14044-2006
+  - rule_id: validate_range_gap
+    applies_to: "reported quantities"
+    rule: "Use foreground records for all quantities; do not treat the Diorit example or a single report assumption as a machine-category empirical range."
+    source_ids:
+      - buhler-diorit-2019
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package for one accepted complete machine configuration."
+  downstream_use: "secondary_dataset or background_dataset after review of boundary and source quality."
+  allowed_use: "Model cradle-to-factory-gate production of a declared non-farm cereal or dried-legume milling machine."
+  excluded_use: "Do not use as grain-milling operation, food-product production, whole-plant installation, or machine lifetime service dataset."
+  required_metadata: "PCR id; model; serial or representative configuration; grain or legume application; rated capacity; site; period; M; included components; supplier geographies."
+  required_quality_disclosure: "Actual versus allocated exchanges; upstream dataset coverage; missing UUIDs; missing range evidence; excluded processes; uncertainty and data age."
+  update_trigger: "New model or material configuration, manufacturing route, electricity source, acceptance protocol, or reviewed flow identity."
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official product identity and exclusions relative to adjacent CPC descriptions."
+  - id: "buhler-diorit-2019"
+    type: "handbook"
+    reference: "Bühler, *Diorit Roller Mill MDDY/Z*, Version 2019, pp. 1–2. https://dam.buhlergroup.com/asset/af37413b24454efb8d6787644dcff3b0/Brochure_Roller_Mill_Diorit_2019.pdf"
+    used_for: "Complete concrete machine example, cast-iron frame, food-contact materials and declared configuration; no generic amount."
+  - id: "is-iso-14044-2006"
+    type: "standard"
+    reference: "Bureau of Indian Standards, *IS/ISO 14044 (2006): Environmental Management—Life Cycle Assessment—Requirements and Guidelines*, §§ 4.2.3.3, 4.3.2, 4.3.4. https://fenix.ciencias.ulisboa.pt/downloadFile/2251937252647064/is.iso.14044.2006.pdf"
+    used_for: "System boundary, unit-process data collection, normalization and allocation hierarchy."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9d0cbfb7c15a59867ed7b69da88b266076241aa14d772f88abe98ecf014c0a5e"
+  generated_content_sha256: "sha256:941dbbcdc934ecf0b0d96766e62cca248568cc00a1a4fefd3227b714fee08281"

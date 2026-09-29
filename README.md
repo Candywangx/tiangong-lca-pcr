@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-09-27
-lastReviewedCommit: 8663b271cf6555bb46ac6a06cb66d843b83daccb
-lastReviewedNote: "Reviewed PR #30/#33 merge composition: canonical PCR and ADR bytes are preserved; accepted mapping boundaries, deterministic alias/catalog/coverage generation, and ownership/validation contracts remain unchanged. Linux CI qualifies the updated PR head; local content lint and Docpact pass."
+lastReviewedAt: 2026-09-29
+lastReviewedCommit: d3a0f0ecbaeb6f1fba13d118a6c4507b1d028d3c
+lastReviewedNote: "Reviewed PR #38 CPC class-4 candidate intake: 23 bilingual PCRs, 23 accepted exact CPC mappings and 14 bound ADRs. Existing CPC 44123 mapping/content remains unchanged; deterministic alias/catalog/coverage projections and candidate status were checked. Classification identity, source ownership, authoring, publication and documentation contracts require no semantic change; unresolved UUID/range evidence and 47829 promotion review remain explicit."
 ---
 
 # TianGong LCA PCR Library

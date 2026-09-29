@@ -1,10 +1,371 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44822"
-  title: "Stoves, grates, braziers and similar non-electric domestic appliances (other than cooking appliances and plate warmers) of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.stoves-grates-braziers-and-similar-non-electric-domestic-appliances-other-than-cooking-3665f7e2"
+  classification_refs: "CPC 3.0: 44822, identity context only"
+  covered_products: "Complete iron or steel non-electric domestic heating stoves, grates and braziers; fuel route declared"
+  excluded_products: "Cooking appliances and plate warmers; central-heating radiators; electric heaters; parts sold separately; outdoor cooking equipment"
+  representative_product: "One accepted complete steel-bodied or cast-iron-bodied non-electric domestic heating stove"
+  production_route: "Purchased steel stock and/or cast iron firebox components; attributable fabrication, finishing, assembly and packing"
+  market_state: "Sale-ready complete appliance at factory gate, without operating fuel and excluding transport packaging from net mass"
+functional_unit:
+  what: "Provide one complete non-electric domestic local-heating appliance of the declared configuration."
+  how_much: "One accepted finished unit, represented by its measured net mass M kg."
+  how_well: "State model, fuel, iron/steel body construction, nominal heat-output designation and acceptance criteria."
+  how_long_or_cycle: "One accepted sale-ready unit at factory gate; no assumed service life is embedded in this production reference."
+  reference_flow_link: "finished_stove"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "all processes"
+      rule: "Include all attributable factory inputs and outputs through accepted product release, with purchased inputs linked upstream; document exclusions and cut-off decisions."
+      source_ids:
+        - iso-14044-2006
+        - jauhiainen-2024
+    - rule_id: boundary_use_exclusion
+      applies_to: "use stage"
+      rule: "Do not add household operating fuel or use emissions to this manufacturing inventory; report any separate use model with its own scenario."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased metal stock and components arrive at the factory gate with supplier production represented by linked upstream datasets."
+  starting_condition_role: "Foreground manufacturing input boundary."
+  product_classification_scope: "Complete iron or steel domestic non-electric heating appliance, independent of a classification code."
+  recursive_input_rule: "A purchased complete appliance in the same category is a distinct upstream product, never silently reclassified as raw material; disclose its mass and avoid double counting."
+  upstream_dataset_requirement: "Link specific upstream production datasets for each purchased material or component, including transport to the factory when included in the declared cradle-to-gate study."
+  disclosure: "Declare model, fuel route, purchased versus in-house operations, supplier data coverage, excluded stages and any omitted exchange."
+reference_flow_definition:
+  reference_amount: "M"
+  product_flow_ref:
+    name: "Stoves, grates, braziers and similar non-electric domestic appliances (other than cooking appliances and plate warmers) of iron or steel"
+    uuid: "e4f06ae9-21fe-4b4e-a2ba-46b1d8824f14"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "domestic non-electric heating purpose"
+    - "model and fuel type"
+    - "body material"
+    - "accepted complete configuration"
+    - "nominal heat-output designation"
+    - "net mass M excludes transport packaging and fuel"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete unit of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: stove_factory
+    name: "Metal fabrication, finishing, assembly and packing"
+    inclusion: "required"
+    inclusion_condition: "All accepted complete units; each conditional exchange applies only when physically used."
+    role: "Foreground factory production"
+    quantitative_reference: "per one accepted finished unit"
+process_inventory:
+  - id: stove_factory
+    label: "Metal fabrication, finishing, assembly and packing"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Steel sheet for body fabrication"
+          name: "Uncoated low-carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when the factory cuts or forms uncoated low-carbon sheet into the stove body; use the purchased sheet mass crossing the factory boundary."
+          amount:
+            expression: "Purchased sheet mass attributable per one accepted finished unit; collect using cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: cast_firebox
+          role: "Purchased cast firebox"
+          name: "Cast iron firebox casting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when a distinct cast-iron firebox is purchased and installed. An integrated foundry must be represented as a linked upstream foreground process with its own exchanges."
+          amount:
+            expression: "Purchased casting mass attributable per one accepted finished unit; collect using cp_materials."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids: []
+            ranges: []
+        - row_id: factory_electricity
+          role: "Purchased factory electricity"
+          name: "Grid alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Record metered grid electricity used for attributable forming, joining, assembly, coating and packing operations; exclude supplier electricity already included in purchased part datasets."
+          amount:
+            expression: "Metered kWh attributable per one accepted finished unit; collect using cp_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: powder_coating
+          role: "Powder coating consumed"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass / kg"
+          description: "Include only when powder coating is applied inside the foreground factory; purchased precoated components retain their supplier dataset instead."
+          amount:
+            expression: "Powder coating feed mass attributable per one accepted finished unit; collect using cp_coating."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating
+              source_ids: []
+            ranges: []
+        - row_id: carton_box
+          role: "Corrugated shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Include one corrugated board box when supplied with the finished unit at the factory gate; its mass is excluded from M."
+          amount:
+            expression: "Box mass supplied per one accepted finished unit; collect using cp_packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_stove
+          role: "Accepted finished non-electric domestic heater"
+          name: "Stoves, grates, braziers and similar non-electric domestic appliances (other than cooking appliances and plate warmers) of iron or steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e4f06ae9-21fe-4b4e-a2ba-46b1d8824f14"
+          property_unit: "Mass / kg"
+          description: "One accepted, sale-ready iron or steel domestic non-electric heater leaves the factory. Transport packaging and operating fuel are outside the measured net appliance mass M."
+          amount:
+            expression: "M kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Factory steel offcuts and rejects"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Include separated steel offcuts and rejected fabricated steel leaving the factory as post-industrial scrap; do not net them against steel-sheet purchases."
+          amount:
+            expression: "Dispatched steel scrap mass attributable per one accepted finished unit; collect using cp_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished unit"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared factory operations"
+    rule: "Subdivide metered lines and materials by model where possible before allocating shared exchanges."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical
+    applies_to: "residual shared factory exchanges"
+    rule: "If subdivision is impossible, allocate by a documented physical driver such as machine time or measured mass that reflects the exchange; reconcile allocated totals to facility totals."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_scrap
+    applies_to: "steel scrap"
+    rule: "Record scrap as a separate waste output; disclose the recycling boundary and do not subtract a speculative avoided-production credit from factory inputs."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "stove_factory"
+      flow_role: "accepted complete appliance mass"
+      record_type: "calibrated scale record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete unit on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "each model or representative accepted unit"
+      temporal_coverage: "current production campaign"
+      site_scope: "reporting factory"
+      aggregation_rule: "accepted net mass per unit"
+      quality_evidence: "scale calibration and acceptance record"
+    - protocol_id: cp_materials
+      process_id: "stove_factory"
+      flow_role: "purchased steel sheet or cast firebox"
+      record_type: "supplier invoice and bill of materials"
+      raw_fields: "material specification; delivered mass; used mass; model; accepted unit count"
+      collection_method: "Reconcile supplier records, material issues and bill of materials for the same model; separate steel sheet and cast firebox."
+      unit: "kg"
+      frequency: "each production campaign"
+      temporal_coverage: "current production campaign"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable material mass / accepted units"
+      quality_evidence: "invoices; inventory issue log; bill of materials"
+    - protocol_id: cp_electricity
+      process_id: "stove_factory"
+      flow_role: "purchased grid electricity"
+      record_type: "meter and production log"
+      raw_fields: "meter kWh; line; period; model; accepted unit count"
+      collection_method: "Read calibrated meters and allocate only attributable factory use to accepted units."
+      unit: "kWh"
+      frequency: "each production campaign"
+      temporal_coverage: "current production campaign"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable kWh / accepted units"
+      quality_evidence: "meter calibration and production log"
+    - protocol_id: cp_coating
+      process_id: "stove_factory"
+      flow_role: "powder coating feed"
+      record_type: "issue and return log"
+      raw_fields: "coating batch; issued kg; returned kg; model; accepted unit count"
+      collection_method: "Weigh or reconcile net coating powder consumed by the model."
+      unit: "kg"
+      frequency: "each coating campaign"
+      temporal_coverage: "current production campaign"
+      site_scope: "reporting factory"
+      aggregation_rule: "net coating feed kg / accepted units"
+      quality_evidence: "material issue and return records"
+    - protocol_id: cp_packaging
+      process_id: "stove_factory"
+      flow_role: "corrugated board box"
+      record_type: "packaging bill of materials"
+      raw_fields: "box mass; count; model; accepted unit count"
+      collection_method: "Weigh the supplied box or use traceable supplier mass for the specified box."
+      unit: "kg"
+      frequency: "each packaging specification"
+      temporal_coverage: "current specification"
+      site_scope: "reporting factory"
+      aggregation_rule: "supplied box mass / accepted units"
+      quality_evidence: "packaging specification and supplier record"
+    - protocol_id: cp_scrap
+      process_id: "stove_factory"
+      flow_role: "post-industrial steel scrap"
+      record_type: "weighbridge and dispatch log"
+      raw_fields: "scrap kg; grade; model or line; period; accepted unit count"
+      collection_method: "Weigh separated steel scrap dispatched and allocate to the manufacturing campaign."
+      unit: "kg"
+      frequency: "each production campaign"
+      temporal_coverage: "current production campaign"
+      site_scope: "reporting factory"
+      aggregation_rule: "attributable dispatched scrap kg / accepted units"
+      quality_evidence: "weighbridge ticket and scrap transfer record"
+  calculation_rules:
+    []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "all rows"
+      requirement: "Reconcile model, fuel, body material and accepted configuration across mass, bill of materials and meters."
+      evidence: "acceptance record; bill of materials"
+    - id: dq_period
+      applies_to: "all rows"
+      requirement: "Use a declared current production campaign and disclose missing, estimated or supplier-proxy data."
+      evidence: "dated records and gap log"
+    - id: dq_completeness
+      applies_to: "factory inputs and outputs"
+      requirement: "Add a separate atomic row for every other actual factory material, energy carrier, waste or direct emission before publishing a concrete dataset; document cut-off decisions."
+      evidence: "reconciled material and energy balance; site inventory"
+validation_rules:
+  - rule_id: validate_product_identity
+    applies_to: "finished_stove"
+    rule: "Require a complete non-electric iron or steel domestic non-cooking heater with model and fuel recorded."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_reference_mass
+    applies_to: "finished_stove"
+    rule: "Require positive measured M for one accepted complete unit of the same configuration, excluding fuel and transport packaging."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_factory_balance
+    applies_to: "stove_factory"
+    rule: "Reconcile purchased materials, energy, finished units and separately dispatched scrap to the campaign records; explain unmatched quantities."
+    source_ids:
+      - iso-14044-2006
+      - jauhiainen-2024
+published_dataset_profile:
+  dataset_role: "Foreground factory production data package for one declared heater model and fuel route."
+  downstream_use: "secondary_dataset or background_dataset after review; process and lifecyclemodel projections."
+  allowed_use: "Manufacturing-stage LCA with linked supplier datasets and disclosed allocation."
+  excluded_use: "Direct comparison of unlike heating functions, use-phase emissions or compliance certification without separate models."
+  required_metadata: "Product model; fuel; body material; nominal heat designation; factory; year; M; packaging state; purchased components; site operations."
+  required_quality_disclosure: "Data period; primary-data share; meters; supplier coverage; allocation drivers; unresolved flows and omitted exchanges."
+  update_trigger: "Material, fuel, supplier, factory, coating route or measurement change."
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 Structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Product identity and adjacent category exclusions, row 2365."
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "Environmental management — Life cycle assessment — Requirements and guidelines, IS/ISO 14044:2006; https://fenix.ciencias.ulisboa.pt/downloadFile/2251937252647064/is.iso.14044.2006.pdf"
+    used_for: "Unit-process boundary, foreground collection, allocation and data quality, clauses 4.2.3.3, 4.3.2 and 4.3.4."
+  - id: "jauhiainen-2024"
+    type: "literature"
+    reference: "Selvitys puulämmitteisen tulisijan EPD-ympäristöselosteen laadinnasta, 2024; https://www.theseus.fi/bitstream/10024/867657/2/Jauhiainen_Katri.pdf"
+    used_for: "One Finnish wood-fired sauna-stove case supports factory material, energy, waste and component-weighing record types; no cross-product amounts or empirical ranges."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c6de29c1cec5583f54d8f01a44820e797b34ea309f6517dd05788a10fbe83144"
+  generated_content_sha256: "sha256:ed77daaec7dcff30e3daec682c9179b6c67f8769f0e26ecb2131f5a439881737"
