@@ -243,6 +243,8 @@ export function libraryUrl(locale: string): string {
 
 export type NavContext = {
   locale: string;
+  /** The library index can carry the complete tree without repeating it on every document. */
+  catalogRoot?: boolean;
   /** Active top-level domain, when the route is inside one. */
   domain?: string;
   /** Active subdomain folder, when the route is deeper than the domain. */
@@ -272,34 +274,60 @@ function subdomainNode(
   manifest: SiteManifest,
   locale: string,
   code: string,
+  domainSlug: string,
   subdomain: DomainNav['subdomains'][number],
   context: NavContext,
+  includeRecords: boolean,
 ): PageTreeNode {
   const active = subdomain.slug === context.subdomain;
+  const fallback = manifest.defaultLocale;
+  const catalog = manifest.pages.find(
+    (page) =>
+      page.kind === 'catalog' &&
+      page.locale === locale &&
+      page.slugs.join('/') === ['pcr', domainSlug, subdomain.slug].join('/'),
+  );
   return {
     type: 'folder',
     name: subdomain.title,
     collapsible: true,
-    // Only the open subdomain is expanded, and it carries navigation for the open record alone.
-    // Breadth lives on the catalog hub, so the tree that ships with a page stays small.
     defaultOpen: active,
-    children: active && context.record ? [recordNode(manifest, locale, code, context.record)] : [],
+    children: [
+      { type: 'page', name: subdomain.title, url: catalog?.url ?? libraryUrl(locale) },
+      ...(active && context.record &&
+      !subdomain.records.some(
+        (record) => record.id === context.record?.id && record.version === context.record?.version,
+      )
+        ? [recordNode(manifest, locale, code, context.record)]
+        : []),
+      ...(includeRecords
+        ? subdomain.records.map((record): PageTreeNode =>
+            context.record?.id === record.id && context.record?.version === record.version
+              ? recordNode(manifest, locale, code, record)
+              : {
+                  type: 'page',
+                  name: recordTitle(record, code, fallback),
+                  url: recordUrls(manifest.origin, record, code, fallback) ?? libraryUrl(locale),
+                },
+          )
+        : []),
+    ],
   };
 }
 
 /**
- * Sidebar for the reader's current position: the catalog entry points, the active domain's
- * subdomain directory, and — only for the record that is actually open — that record's chapters.
- * Listing every sibling record made each page ship hundreds of kilobytes of navigation, which
- * pushed the export past its deployment budget; the full record set stays crawlable from the
- * catalog hub, and every record is one click from its subdomain's catalog page.
+ * The library index exposes the complete expandable tree. Domain directories expose their own
+ * leaves; document pages expose only the active subdomain's sibling leaves and the open record's
+ * chapters. This keeps the common document-page payload bounded by one subdomain.
  */
 export function navigationTree(context: NavContext): Root {
   const key = [
     context.locale,
+    context.catalogRoot ? 'catalog' : '',
     context.domain ?? '',
     context.subdomain ?? '',
     context.record?.sourcePath ?? '',
+    context.record?.version ?? '',
   ].join('|');
   const cached = treeCache.get(key);
   if (cached) return cached;
@@ -320,6 +348,7 @@ export function navigationTree(context: NavContext): Root {
   const domains = buildDomainNav(locale);
   for (const domain of domains) {
     const active = domain.slug === context.domain;
+    const directory = context.catalogRoot || (active && !context.subdomain);
     const domainCatalog = manifest.pages.find(
       (page) =>
         page.kind === 'catalog' &&
@@ -331,18 +360,29 @@ export function navigationTree(context: NavContext): Root {
       name: domain.title,
       collapsible: true,
       defaultOpen: active,
-      children: active
+      children: active || context.catalogRoot
         ? [
             { type: 'page', name: domain.title, url: domainCatalog?.url ?? library },
             ...domain.records.map(
-              (record): PageTreeNode => ({
-                type: 'page',
-                name: recordTitle(record, code, fallback),
-                url: recordUrls(manifest.origin, record, code, fallback) ?? library,
-              }),
+              (record): PageTreeNode =>
+                context.record?.id === record.id && context.record?.version === record.version
+                  ? recordNode(manifest, locale, code, record)
+                  : {
+                      type: 'page',
+                      name: recordTitle(record, code, fallback),
+                      url: recordUrls(manifest.origin, record, code, fallback) ?? library,
+                    },
             ),
             ...domain.subdomains.map((subdomain) =>
-              subdomainNode(manifest, locale, code, subdomain, context),
+              subdomainNode(
+                manifest,
+                locale,
+                code,
+                domain.slug,
+                subdomain,
+                context,
+                directory || subdomain.slug === context.subdomain,
+              ),
             ),
           ]
         : [

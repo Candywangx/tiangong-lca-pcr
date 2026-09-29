@@ -20,9 +20,11 @@ export function PcrPage({
   if (page.sourceHeadingAnchor) headingProps.id = page.sourceHeadingAnchor;
   if (page.sourceHeadingId) headingProps['data-source-node'] = page.sourceHeadingId;
   const bodyProps = page.sourcePath ? { 'data-source-document': page.sourcePath } : {};
+  // The source keeps every heading and anchor; the narrow on-page rail only needs sections.
+  const toc = page.kind === 'pcr' ? page.toc.filter((heading) => heading.depth === 2) : page.toc;
 
   return (
-    <DocsPage toc={page.toc}>
+    <DocsPage toc={toc}>
       <DocsTitle {...headingProps}>{page.title}</DocsTitle>
       {page.description ? <DocsDescription>{page.description}</DocsDescription> : null}
       <DocsBody {...bodyProps}>{children}</DocsBody>
