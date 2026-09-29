@@ -161,9 +161,10 @@ leave the previous verified deployment intact.
 
 The first real-corpus export showed that a full-library sidebar on every page
 produced almost 5 GB. The library index alone serializes the complete expandable
-domain, subdomain and record tree. Domain catalog pages include their own leaves;
-ordinary record pages include the active subdomain's sibling leaves and the open
-PCR's chapters. Other domains remain directory entry points, so the complete
+domain, subdomain and record tree. Domain and subdomain catalog pages include
+their own leaves; ordinary record pages include a small window of nearby sibling
+leaves, a link to the complete subdomain catalog and the open PCR's chapters.
+Other domains remain directory entry points, so the complete
 tree is not repeated on every record page. The library index also keeps every
 record link in static HTML inside native disclosures, available without JavaScript.
 The narrow PCR page table of contents shows section headings only; deeper source
