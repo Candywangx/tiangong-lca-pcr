@@ -20,9 +20,24 @@ export function PcrPage({
   if (page.sourceHeadingAnchor) headingProps.id = page.sourceHeadingAnchor;
   if (page.sourceHeadingId) headingProps['data-source-node'] = page.sourceHeadingId;
   const bodyProps = page.sourcePath ? { 'data-source-document': page.sourcePath } : {};
+  // The source keeps every heading and anchor. Continuation pages can begin at H3 with no H2.
+  const sections = page.toc.filter((heading) => heading.depth === 2);
+  const processes = page.toc
+    .filter((heading) => heading.depth === 3)
+    .map((heading) => ({
+      ...heading,
+      title: /^(?:Process:|过程：)/u.test(heading.title)
+        ? heading.title.replace(/\s+\([a-z][a-z0-9_]*\)$/u, '')
+        : heading.title,
+    }));
+  const toc = page.kind === 'pcr'
+    ? sections.length > 0
+      ? sections
+      : processes
+    : page.toc;
 
   return (
-    <DocsPage toc={page.toc}>
+    <DocsPage toc={toc}>
       <DocsTitle {...headingProps}>{page.title}</DocsTitle>
       {page.description ? <DocsDescription>{page.description}</DocsDescription> : null}
       <DocsBody {...bodyProps}>{children}</DocsBody>

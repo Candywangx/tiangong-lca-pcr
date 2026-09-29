@@ -65,11 +65,7 @@ export function Coverage({ locale }: { locale: string }) {
   );
 }
 
-/**
- * The library root carries the complete link set: every domain, every subdomain and every record.
- * That is why the sidebar can stay scoped to a single domain and why the generated domain and
- * subdomain pages do not repeat this list.
- */
+/** The library root keeps every record link in static HTML while folding long lists for reading. */
 export function Catalog({ locale }: { locale: string }) {
   const manifest = getSiteManifest();
   const text = pageStrings(locale);
@@ -113,13 +109,13 @@ export function Catalog({ locale }: { locale: string }) {
             {domain.subdomains.length > 0 ? (
               <div className="pcr-subdomains">
                 {domain.subdomains.map((subdomain) => (
-                  <section key={subdomain.slug}>
-                    <div className="pcr-domain-head">
-                      <h4>{subdomain.title}</h4>
+                  <details key={subdomain.slug} className="pcr-subdomain">
+                    <summary>
+                      <span className="pcr-subdomain-title">{subdomain.title}</span>
                       <span className="pcr-count">
                         {formatCount(subdomain.records.length)} {text.records}
                       </span>
-                    </div>
+                    </summary>
                     <ul className="pcr-record-list">
                       {subdomain.records.map((record) => (
                         <li key={record.id}>
@@ -129,7 +125,7 @@ export function Catalog({ locale }: { locale: string }) {
                         </li>
                       ))}
                     </ul>
-                  </section>
+                  </details>
                 ))}
               </div>
             ) : null}

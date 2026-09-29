@@ -263,11 +263,22 @@ export function PcrRecordPage({
             {maturityLabel(record.maturity, page.locale)}
           </Fact>
           <Fact label={historical ? text.historical : text.version}>
-            {record.version ? (
-              <span className="pcr-mono">{record.version}</span>
-            ) : (
-              text.noVersion
-            )}
+            <span className="pcr-fact-primary">
+              {record.version ? (
+                <span className="pcr-mono">{record.version}</span>
+              ) : (
+                text.noVersion
+              )}
+            </span>
+            <span className="pcr-fact-detail">
+              <span>{text.updated}</span>
+              <time
+                dateTime={page.lastModified ?? record.updatedAt ?? undefined}
+                title={utcDate(page.lastModified ?? record.updatedAt)}
+              >
+                {(page.lastModified ?? record.updatedAt)?.slice(0, 10) ?? "—"}
+              </time>
+            </span>
           </Fact>
           <Fact label={text.readiness}>
             <StatusBadge
@@ -276,14 +287,6 @@ export function PcrRecordPage({
             >
               {readiness.label}
             </StatusBadge>
-          </Fact>
-          <Fact label={text.updated}>
-            <time
-              dateTime={page.lastModified ?? record.updatedAt ?? undefined}
-              title={utcDate(page.lastModified ?? record.updatedAt)}
-            >
-              {(page.lastModified ?? record.updatedAt)?.slice(0, 10) ?? "—"}
-            </time>
           </Fact>
         </dl>
 

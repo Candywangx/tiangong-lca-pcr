@@ -49,6 +49,7 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
   const alternates = <AlternateLinks alternates={navigation} origin={manifest.origin} />;
   const context = {
     locale: lang,
+    catalogRoot: isLibraryRoot,
     domain: inLibrary ? slug?.[1] : undefined,
     subdomain: inLibrary && slug && slug.length >= 3 ? slug[2] : undefined,
     record,

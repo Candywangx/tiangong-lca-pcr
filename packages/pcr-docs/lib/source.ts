@@ -209,6 +209,8 @@ export function navMessages(locale: string) {
   return {
     library: zh ? 'PCR 库' : 'PCR library',
     coverage: zh ? '分类覆盖' : 'Classification coverage',
+    domainCatalog: zh ? '浏览领域目录' : 'Browse domain',
+    subdomainCatalog: zh ? '浏览全部记录' : 'Browse all records',
   };
 }
 
@@ -243,6 +245,8 @@ export function libraryUrl(locale: string): string {
 
 export type NavContext = {
   locale: string;
+  /** The library index can carry the complete tree without repeating it on every document. */
+  catalogRoot?: boolean;
   /** Active top-level domain, when the route is inside one. */
   domain?: string;
   /** Active subdomain folder, when the route is deeper than the domain. */
@@ -268,38 +272,79 @@ function recordNode(
   return recordNavigationNode(manifest,record,code,{title,url});
 }
 
+/** A small, stable window around the open record; the catalog link carries the full sibling set. */
+function nearbyRecords(records: PcrRecord[], current: PcrRecord | undefined): PcrRecord[] {
+  if (!current) return [];
+  const index = records.findIndex((record) => record.id === current.id);
+  if (index < 0) return [];
+  const start = Math.max(0, Math.min(index - 3, records.length - 7));
+  return records.slice(start, start + 7);
+}
+
 function subdomainNode(
   manifest: SiteManifest,
   locale: string,
   code: string,
+  domainSlug: string,
   subdomain: DomainNav['subdomains'][number],
   context: NavContext,
+  scope: 'all' | 'nearby' | 'catalog-only',
 ): PageTreeNode {
   const active = subdomain.slug === context.subdomain;
+  const fallback = manifest.defaultLocale;
+  const messages = navMessages(locale);
+  const records =
+    scope === 'all'
+      ? subdomain.records
+      : scope === 'nearby'
+        ? nearbyRecords(subdomain.records, context.record)
+        : [];
+  const catalog = manifest.pages.find(
+    (page) =>
+      page.kind === 'catalog' &&
+      page.locale === locale &&
+      page.slugs.join('/') === ['pcr', domainSlug, subdomain.slug].join('/'),
+  );
   return {
     type: 'folder',
     name: subdomain.title,
     collapsible: true,
-    // Only the open subdomain is expanded, and it carries navigation for the open record alone.
-    // Breadth lives on the catalog hub, so the tree that ships with a page stays small.
     defaultOpen: active,
-    children: active && context.record ? [recordNode(manifest, locale, code, context.record)] : [],
+    children: [
+      { type: 'page', name: messages.subdomainCatalog, url: catalog?.url ?? libraryUrl(locale) },
+      ...(active && context.record &&
+      !subdomain.records.some(
+        (record) => record.id === context.record?.id && record.version === context.record?.version,
+      )
+        ? [recordNode(manifest, locale, code, context.record)]
+        : []),
+      ...records.map((record): PageTreeNode => {
+        if (context.record?.id === record.id && context.record?.version === record.version) {
+          return recordNode(manifest, locale, code, record);
+        }
+        return {
+          type: 'page',
+          name: recordTitle(record, code, fallback),
+          url: recordUrls(manifest.origin, record, code, fallback) ?? libraryUrl(locale),
+        };
+      }),
+    ],
   };
 }
 
 /**
- * Sidebar for the reader's current position: the catalog entry points, the active domain's
- * subdomain directory, and — only for the record that is actually open — that record's chapters.
- * Listing every sibling record made each page ship hundreds of kilobytes of navigation, which
- * pushed the export past its deployment budget; the full record set stays crawlable from the
- * catalog hub, and every record is one click from its subdomain's catalog page.
+ * The library index exposes the complete expandable tree. Domain and subdomain directories expose
+ * their own leaves; document pages expose a small window of nearby leaves, the full directory link,
+ * and the open record's chapters. This keeps repeated document-page payloads within the export budget.
  */
 export function navigationTree(context: NavContext): Root {
   const key = [
     context.locale,
+    context.catalogRoot ? 'catalog' : '',
     context.domain ?? '',
     context.subdomain ?? '',
     context.record?.sourcePath ?? '',
+    context.record?.version ?? '',
   ].join('|');
   const cached = treeCache.get(key);
   if (cached) return cached;
@@ -320,6 +365,12 @@ export function navigationTree(context: NavContext): Root {
   const domains = buildDomainNav(locale);
   for (const domain of domains) {
     const active = domain.slug === context.domain;
+    const directory = context.catalogRoot || (active && !context.subdomain && !context.record);
+    const directRecords = directory
+      ? domain.records
+      : active && !context.subdomain
+        ? nearbyRecords(domain.records, context.record)
+        : [];
     const domainCatalog = manifest.pages.find(
       (page) =>
         page.kind === 'catalog' &&
@@ -331,19 +382,36 @@ export function navigationTree(context: NavContext): Root {
       name: domain.title,
       collapsible: true,
       defaultOpen: active,
-      children: active
+      children: active || context.catalogRoot
         ? [
-            { type: 'page', name: domain.title, url: domainCatalog?.url ?? library },
-            ...domain.records.map(
-              (record): PageTreeNode => ({
-                type: 'page',
-                name: recordTitle(record, code, fallback),
-                url: recordUrls(manifest.origin, record, code, fallback) ?? library,
-              }),
+            { type: 'page', name: messages.domainCatalog, url: domainCatalog?.url ?? library },
+            ...directRecords.map(
+              (record): PageTreeNode =>
+                context.record?.id === record.id && context.record?.version === record.version
+                  ? recordNode(manifest, locale, code, record)
+                  : {
+                      type: 'page',
+                      name: recordTitle(record, code, fallback),
+                      url: recordUrls(manifest.origin, record, code, fallback) ?? library,
+                    },
             ),
-            ...domain.subdomains.map((subdomain) =>
-              subdomainNode(manifest, locale, code, subdomain, context),
-            ),
+            ...domain.subdomains.map((subdomain) => {
+              const selected = subdomain.slug === context.subdomain;
+              const scope = directory || (selected && !context.record)
+                ? 'all'
+                : selected
+                  ? 'nearby'
+                  : 'catalog-only';
+              return subdomainNode(
+                manifest,
+                locale,
+                code,
+                domain.slug,
+                subdomain,
+                context,
+                scope,
+              );
+            }),
           ]
         : [
             {

@@ -16,7 +16,7 @@ import {
  */
 const copy = {
   zh: {
-    eyebrow: 'TianGong PCR · 产品类别规则',
+    eyebrow: '天工产品类别规则',
     claim: '为产品类别找到可用的 PCR，再开始建模',
     description:
       '产品类别规则（PCR）为特定产品类别规定核算范围、参考流、数据收集与验证要求。本库收录天工 LCA 的 PCR 记录，中英双语对照，并提供逐字节可校验的源文件。',

@@ -1,5 +1,5 @@
-/** Product lockup. The visible text carries the accessible identity; the mark is decorative. */
-export function SiteBrand() {
+/** Locale-specific product lockup. Visible text carries the identity; the mark is decorative. */
+export function SiteBrand({ locale }: { locale: string }) {
   return (
     <span className="pcr-brand">
       <span className="pcr-brand-mark" aria-hidden="true">
@@ -10,11 +10,7 @@ export function SiteBrand() {
         <img src="/logo-dark.svg" alt="" width={28} height={28} className="pcr-brand-dark" />
       </span>
       <span className="pcr-brand-name">
-        TianGong PCR
-        <span className="pcr-brand-divider" aria-hidden="true">
-          /
-        </span>
-        <span className="pcr-brand-product">产品类别规则</span>
+        {locale === 'zh' ? '天工产品类别规则' : 'TianGong PCR'}
       </span>
     </span>
   );

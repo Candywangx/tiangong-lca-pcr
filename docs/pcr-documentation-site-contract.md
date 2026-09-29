@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-09-16
-lastReviewedNote: "Reviewed for PCR #26 (residual accounting corrected at 906a04b8): page and catalog metadata summaries are a bounded projection of each page's own source scope - a record uses its own opening, a chapter only its own nodes, a domain or subdomain its actual category title and live record count - so no two pages of one language publish the same description: the shared content report stays at 0 duplicate descriptions, 0 duplicate titles and 0 missing inbound links over 1775 grouped pages, down from 446 description leads in 162 groups. Residual totals now describe the retained output rather than the intent: of 1782 summaries, 137 are the title alone, 38 of those because an available paragraph was removed by the bound (context_dropped) and 99 because the page's own scope carries only headings and rule tables; 1586 summaries were clipped, including titles cut to fit. Both earlier counter defects are fixed and regression-tested. The verification build ran from the c9d3495b checkout with this fix as uncommitted working-tree changes, so the export's embedded sourceCommit names c9d3495b rather than this commit; PR CI rebuilds and binds the exact committed head. Canonical bytes, rendered block order, download hashes, required languages, optional locales, lifecycle and index policy are unchanged: 1786 pages and 12758 export files, all 2981 downloads byte-identical to their canonical source, every published description equal to the verified generator output, the shared checker and the editorial report clean, and 61 package tests pass. Hosted CI, provider environment and production samples remain pending."
-lastReviewedCommit: 906a04b8f70b26de42c814ba0622cbe175d393e5
+lastReviewedAt: 2026-09-29
+lastReviewedNote: "Reviewed PCR #40 navigation and record metadata presentation: the index exposes the complete expandable hierarchy, directory and record pages keep scoped leaves, the PCR page rail uses section headings while source anchors remain intact, and the updated date shares the version card. Full-corpus export and browser verification are required before delivery."
+lastReviewedCommit: 301aa826b68a83e3112553045a0875e603f5cf94
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -160,9 +160,20 @@ leave the previous verified deployment intact.
 ### Measured artifact and runtime budgets
 
 The first real-corpus export showed that a full-library sidebar on every page
-produced almost 5 GB. The final shell receives the full page route and serializes
-only directory links and the open PCR's chapters. The measured compact export is
-about 1.44 GB across 12,758 files with semantic chapters and server-rendered structured rule views.
+produced almost 5 GB. The library index alone serializes the complete expandable
+domain, subdomain and record tree. Domain and subdomain catalog pages include
+their own leaves; ordinary record pages include a small window of nearby sibling
+leaves, a link to the complete subdomain catalog and the open PCR's chapters.
+Other domains remain directory entry points, so the complete
+tree is not repeated on every record page. The library index also keeps every
+record link in static HTML inside native disclosures, available without JavaScript.
+The narrow PCR page table of contents shows H2 sections, or H3 processes on
+continuation pages with no H2. Machine identifiers are omitted from these H3
+navigation labels; full source headings and stable anchors remain in the article.
+The earlier compact
+export measured about 1.44 GB across 12,758 files with semantic chapters and
+server-rendered structured rule views; the scoped navigation must pass the same
+full-corpus export gate.
 Next.js retains both initial HTML and static navigation payloads; these are part
 of its supported export and are not deleted after building.
 
@@ -263,7 +274,8 @@ and x-default both use `/`, while `/zh/` redirects permanently to it.
 Production resource checks fail when memory measurement is unavailable or empty.
 POSIX builds inspect process-tree RSS; Windows uses its native CIM working-set
 statistics. No unmeasured zero is accepted as evidence that a production build fits
-within the memory budget. Browser chrome is complete in English and Chinese;
+within the memory budget. Browser chrome, including the visible brand lockup, is
+localized consistently in English and Chinese;
 optional reading-language pages currently use English controls unless additional
 UI translations are registered. Their actual document bodies are never substituted.
 

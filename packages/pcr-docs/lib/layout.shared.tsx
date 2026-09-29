@@ -62,7 +62,7 @@ export function baseOptions(
   const text = strings(route);
   return {
     nav: {
-      title: <SiteBrand />,
+      title: <SiteBrand locale={route} />,
       url: home ?? `/${route}/`,
       transparentMode: 'top',
     },
