@@ -446,14 +446,16 @@ export function PcrRecordPage({
           <ol className="pcr-chapter-list">
             {parts.map((part) => {
               const current = part.url === page.url;
+              const label = part.label.replace(/^\d+\.\s*/u, "");
               return (
                 <li key={part.url} data-current={current ? "true" : undefined}>
                   <Link
                     href={part.url}
+                    aria-label={part.label}
                     aria-current={current ? "page" : undefined}
                   >
-                    <span className="pcr-chapter-index">{part.index + 1}</span>
-                    <span className="pcr-chapter-label">{part.label}</span>
+                    <span className="pcr-chapter-index" aria-hidden="true">{part.index + 1}</span>
+                    <span className="pcr-chapter-label">{label}</span>
                   </Link>
                 </li>
               );

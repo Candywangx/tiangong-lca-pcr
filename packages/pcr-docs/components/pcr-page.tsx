@@ -1,4 +1,4 @@
-import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
+import { DocsBody, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import type { ReactNode } from 'react';
 import type { DocPage } from '@/lib/types';
 
@@ -37,9 +37,9 @@ export function PcrPage({
     : page.toc;
 
   return (
-    <DocsPage toc={toc}>
+    <DocsPage toc={toc} footer={{ enabled: false }} breadcrumb={{ enabled: false }}>
       <DocsTitle {...headingProps}>{page.title}</DocsTitle>
-      {page.description ? <DocsDescription>{page.description}</DocsDescription> : null}
+      {/* The generated description is SEO metadata that already begins with this title. */}
       <DocsBody {...bodyProps}>{children}</DocsBody>
     </DocsPage>
   );
