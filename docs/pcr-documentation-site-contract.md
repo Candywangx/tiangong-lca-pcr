@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-29
-lastReviewedNote: "Reviewed PCR #40 navigation and record metadata presentation: the index exposes the complete expandable hierarchy, directory and record pages keep scoped leaves, the PCR page rail uses section headings while source anchors remain intact, and the updated date shares the version card. Full-corpus export and browser verification are required before delivery."
-lastReviewedCommit: 301aa826b68a83e3112553045a0875e603f5cf94
+lastReviewedNote: "Reviewed PCR #43 whole-site visual audit and site-owned presentation fixes. Static HTML covered all 1,880 docs plus three homes; Chromium measured all 1,883 routes at six widths with no global overflow or brand clipping. The site groups domain directories, styles chapter inventory and scrollable tables, balances fact cards, removes misleading generic footer/duplicate SEO lead, localizes the coverage summary, and validates exact directory links, TOC targets and breadcrumb names. Canonical PCR bytes, routes, downloads and lifecycle are unchanged. Local preview typecheck, 61 docs tests and full source/SEO/budget verification passed at 13,459 files and 1,403,286,236 bytes; final committed-head CI and live deployment remain tracked in Issue #43."
+lastReviewedCommit: d63cbdfe7395373fae26b26f98f33b5ee0ec9e4e
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -140,6 +140,30 @@ internal revisions, search/filter permutations and raw downloads are not normal
 indexing targets. Raw download responses carry attachment and noindex headers.
 Distinct historical versions are not blindly canonicalized to different text.
 
+## Reader navigation and presentation
+
+The library index keeps every record link in static HTML behind native subdomain
+disclosures. Domain catalog pages group the same exact record set by subdomain,
+offer links to each subdomain directory, and expose those headings in the on-page
+contents. Subdomain pages show their complete scoped record list. The export
+verifier checks each directory's record URL set and every contents anchor.
+Record pages retain a small nearby-record sidebar and explicit chapter inventory
+on split documents. That inventory has a visible current state and previous/next
+chapter actions. Fumadocs' automatic page footer and breadcrumb are disabled:
+its flat page-tree order can duplicate or misidentify chapter neighbours, while
+the site's scoped directories and source-aware chapter links own those routes.
+
+Generated bounded descriptions serve metadata, Open Graph and search. They
+begin with the page title, so the UI does not repeat them below the visible H1;
+record source text, catalog counts and the coverage explanation remain in the
+article. Very long titles remain complete in the H1 with a smaller responsive
+type scale. The four record status facts use two balanced columns in narrow
+containers and four when space allows. Source tables keep readable cell widths
+and scroll within their own box instead of widening the page. Coverage pages
+show one localized summary and one download action; raw classification keys are
+not passed off as reader-facing translations. Record breadcrumb structured data
+uses the same translated category titles as the catalog.
+
 ## Validation and production
 
 Automated build verification compares source inventory with exported HTML without
@@ -164,14 +188,13 @@ produced almost 5 GB. The library index alone serializes the complete expandable
 domain, subdomain and record tree. Domain and subdomain catalog pages include
 their own leaves; ordinary record pages include a small window of nearby sibling
 leaves, a link to the complete subdomain catalog and the open PCR's chapters.
-Other domains remain directory entry points, so the complete
-tree is not repeated on every record page. The library index also keeps every
-record link in static HTML inside native disclosures, available without JavaScript.
+Other domains remain directory entry points, so the complete tree is not
+repeated on every record page. The library index also keeps every record link
+in static HTML inside native disclosures, available without JavaScript.
 The narrow PCR page table of contents shows H2 sections, or H3 processes on
 continuation pages with no H2. Machine identifiers are omitted from these H3
 navigation labels; full source headings and stable anchors remain in the article.
-The earlier compact
-export measured about 1.44 GB across 12,758 files with semantic chapters and
+The earlier compact export measured about 1.44 GB across 12,758 files with semantic chapters and
 server-rendered structured rule views; the scoped navigation must pass the same
 full-corpus export gate.
 Next.js retains both initial HTML and static navigation payloads; these are part
