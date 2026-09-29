@@ -38,7 +38,9 @@ export function PcrPage({
 
   return (
     <DocsPage toc={toc} footer={{ enabled: false }} breadcrumb={{ enabled: false }}>
-      <DocsTitle {...headingProps}>{page.title}</DocsTitle>
+      <DocsTitle {...headingProps} className={page.title.length > 180 ? 'pcr-title--long' : undefined}>
+        {page.title}
+      </DocsTitle>
       {/* The generated description is SEO metadata that already begins with this title. */}
       <DocsBody {...bodyProps}>{children}</DocsBody>
     </DocsPage>

@@ -127,19 +127,12 @@ function crumbs(
         candidate.locale === page.locale &&
         candidate.slugs.join("/") === slugs.join("/"),
     );
+    const slug = record.slug[depth - 1];
     const title =
-      depth === 1
-        ? (manifest.domains.find((item) => item.slug === record.slug[0])
-            ?.title ?? {})[code]
-        : (manifest.domains.find((item) => item.slug === record.slug[1])
-            ?.title ?? {})[code];
+      manifest.categoryTitles?.[slug] ??
+      manifest.domains.find((item) => item.slug === slug)?.title;
     trails.push({
-      name: titleFor(
-        { [code]: title ?? "" },
-        code,
-        fallback,
-        record.slug[depth - 1],
-      ),
+      name: titleFor(title, code, fallback, slug),
       url: catalog?.url ?? libraryUrl(page.locale),
     });
   }

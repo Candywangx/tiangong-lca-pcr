@@ -83,7 +83,6 @@ export default async function DocumentPage({ params }: { params: Promise<Params>
         <PcrPage page={doc}>
           {alternates}
           {breadcrumb}
-          <DocumentBody html={readPageHtml(doc)} />
           <Coverage locale={lang} />
         </PcrPage>
       </DocsShell>

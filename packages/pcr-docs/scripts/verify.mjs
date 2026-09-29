@@ -211,6 +211,40 @@ for (const page of manifest.pages) {
     document.documentElement.lang.toLowerCase() === page.language.toLowerCase(),
     "Wrong HTML language " + page.url + ": " + document.documentElement.lang,
   );
+  for (const heading of page.toc) {
+    requireThat(
+      heading.url.startsWith("#") && document.getElementById(decodeURIComponent(heading.url.slice(1))),
+      "Missing table-of-contents target " + page.url + " " + heading.url,
+    );
+  }
+  if (page.kind === "catalog" && page.slugs.length >= 2) {
+    const expected = manifest.records
+      .filter(
+        (record) =>
+          record.urls[page.language] &&
+          page.slugs.slice(1).every((slug, index) => record.slug[index] === slug),
+      )
+      .map((record) => record.urls[page.language])
+      .sort();
+    const actual = [...document.querySelectorAll(".pcr-catalog-list a[href]")]
+      .map((link) => link.getAttribute("href"))
+      .sort();
+    requireThat(
+      actual.length === expected.length && actual.every((url, index) => url === expected[index]),
+      "Catalog record link set differs " + page.url,
+    );
+  }
+  if (page.kind === "pcr") {
+    const graphs = [...document.querySelectorAll('script[type="application/ld+json"]')]
+      .map((script) => JSON.parse(script.textContent));
+    const breadcrumb = graphs
+      .flatMap((graph) => graph["@graph"] ?? [graph])
+      .find((node) => node["@type"] === "BreadcrumbList");
+    requireThat(
+      breadcrumb?.itemListElement?.every((item) => item.name?.trim()),
+      "Empty record breadcrumb name " + page.url,
+    );
+  }
   requireThat(
     document.querySelector('link[rel="canonical"]')?.getAttribute("href") ===
       page.canonical,

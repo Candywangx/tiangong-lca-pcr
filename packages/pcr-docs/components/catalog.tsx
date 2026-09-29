@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { buildDomainNav, languageCodeFor, recordTitle, recordUrls, routeUrl } from '@/lib/source';
+import { buildDomainNav, languageCodeFor, recordTitle, recordUrls } from '@/lib/source';
 import { getSiteManifest } from '@/lib/generated';
 import { pageStrings } from '@/lib/metadata';
 
@@ -14,8 +14,6 @@ function formatCount(value: number): string {
 export function Coverage({ locale }: { locale: string }) {
   const manifest = getSiteManifest();
   const text = pageStrings(locale);
-  const code = languageCodeFor(manifest, locale);
-
   return (
     <section aria-labelledby="pcr-coverage-heading">
       <h2 id="pcr-coverage-heading" className="pcr-section-title">
@@ -27,9 +25,6 @@ export function Coverage({ locale }: { locale: string }) {
       </p>
       <div className="pcr-domain-grid" style={{ marginBlockStart: '1rem' }}>
         {manifest.coverage.map((entry) => {
-          const url =
-            routeUrl(manifest.origin, entry.url?.[code]) ??
-            routeUrl(manifest.origin, entry.url?.[manifest.defaultLocale]);
           return (
             <article key={`${entry.system}:${entry.version}`} className="pcr-domain">
               <div className="pcr-domain-head">
@@ -42,17 +37,12 @@ export function Coverage({ locale }: { locale: string }) {
               <dl className="pcr-coverage-summary">
                 {Object.entries(entry.summary).map(([key, value]) => (
                   <div key={key}>
-                    <dt>{key.replace(/_/gu, ' ')}</dt>
+                    <dt>{text.coverageMetrics[key] ?? key.replace(/_/gu, ' ')}</dt>
                     <dd>{typeof value === 'number' ? formatCount(value) : String(value)}</dd>
                   </div>
                 ))}
               </dl>
               <div className="pcr-chip-row" style={{ marginBlockStart: '0.75rem' }}>
-                {url ? (
-                  <Link className="pcr-chip" href={url}>
-                    {text.browse}
-                  </Link>
-                ) : null}
                 <a className="pcr-chip" href={entry.downloadUrl} download>
                   {text.coverageDownload}
                 </a>

@@ -16,6 +16,7 @@ export type PageStrings = {
   classificationNote: string;
   coverageSeparate: string;
   coverageDownload: string;
+  coverageMetrics: Record<string, string>;
   classificationSystem: string;
   classificationSummary: string;
   moduleTitle: string;
@@ -38,6 +39,14 @@ const zh: PageStrings = {
     '分类覆盖是派生读数：它把外部分类的叶子节点映射到已接受的 PCR。它与方法学记录分开维护，覆盖计数不代表该 PCR 已完成评审。',
   coverageSeparate: '覆盖表与 PCR 记录是两套数据，请勿相互替代。',
   coverageDownload: '下载覆盖索引',
+  coverageMetrics: {
+    total: '分类条目',
+    mapped: '已映射',
+    unmapped: '未映射',
+    candidate_suggestion: '候选建议',
+    manual_review: '人工复核',
+    unknown: '状态未知',
+  },
   classificationSystem: '分类体系',
   classificationSummary: '覆盖摘要',
   moduleTitle: '方法学模块（脚手架）',
@@ -61,6 +70,14 @@ const en: PageStrings = {
     'Coverage is a derived read model: it maps external classification leaves onto accepted PCRs. It is maintained separately from methodology records, and a coverage count is not evidence that a PCR has been reviewed.',
   coverageSeparate: 'Coverage and PCR records are two different datasets; neither substitutes for the other.',
   coverageDownload: 'Download the coverage index',
+  coverageMetrics: {
+    total: 'Categories',
+    mapped: 'Mapped',
+    unmapped: 'Unmapped',
+    candidate_suggestion: 'Candidate suggestions',
+    manual_review: 'Manual review',
+    unknown: 'Unknown',
+  },
   classificationSystem: 'Classification',
   classificationSummary: 'Coverage summary',
   moduleTitle: 'Methodology module (scaffold)',
