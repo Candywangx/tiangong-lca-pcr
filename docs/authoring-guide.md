@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: d63cbdfe7395373fae26b26f98f33b5ee0ec9e4e
-lastReviewedNote: "Reviewed PCR #43 whole-site documentation visual audit. PCR authoring, source files, review states and methodology publication gates are unchanged by the site presentation fixes."
+lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
+lastReviewedNote: "Reviewed PCR #45 reader navigation change. PCR authoring, source files, review states and methodology publication gates are unchanged by the site presentation fixes."
 ---
 
 # Authoring Guide

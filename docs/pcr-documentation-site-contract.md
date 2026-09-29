@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-29
-lastReviewedNote: "Reviewed PCR #43 whole-site visual audit and site-owned presentation fixes. Static HTML covered all 1,880 docs plus three homes; Chromium measured all 1,883 routes at six widths with no global overflow or brand clipping. The site groups domain directories, styles chapter inventory and scrollable tables, balances fact cards, removes misleading generic footer/duplicate SEO lead, localizes the coverage summary, and validates exact directory links, TOC targets and breadcrumb names. Canonical PCR bytes, routes, downloads and lifecycle are unchanged. Local preview typecheck, 61 docs tests and full source/SEO/budget verification passed below the 1.5 GB export limit; final committed-head CI and live deployment remain tracked in Issue #43."
-lastReviewedCommit: dbe0938ce6111befebb233adc1475eed881d10e5
+lastReviewedNote: "Reviewed PCR #45 reader navigation change: the family menu adds the TianGong LCA public databases entry and the ILCD data node and opens the sibling documentation sites at their locale-appropriate homes. Canonical PCR bytes, routes, downloads, lifecycle and the previously reviewed visual presentation are unchanged. Full docs build (generate, static export, verification) passed within all provider budgets; rendered menu review covered desktop and mobile in both site locales."
+lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

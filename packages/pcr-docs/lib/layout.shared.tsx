@@ -3,13 +3,15 @@ import { LanguageSwitchText, LanguageSwitchTrigger } from '@/components/language
 import { SiteBrand } from '@/components/site-brand';
 
 /**
- * Production origins of the sibling TianGong documentation sites, taken from their own workspace
- * configuration (`docs/lib/metadata.ts`, `tidas/lib/metadata.ts`). Only already-published public
- * domains belong here.
+ * Production origins of the sibling TianGong public sites, taken from their own workspace
+ * configuration (`docs/lib/metadata.ts`, `tidas/lib/metadata.ts`, the Portal site origin, and the
+ * LCDN node runbook). Only already-published public domains belong here; the Portal entry route
+ * is the public databases page that collects the published-data catalogues.
  */
 const family = {
   docs: 'https://docs.tiangong.earth/',
   tidas: 'https://tidas.tiangong.earth/',
+  lcdn: 'https://lcdn.tiangong.earth/',
 };
 
 const label: Record<
@@ -22,6 +24,10 @@ const label: Record<
     familyDocsNote: string;
     familyTidas: string;
     familyTidasNote: string;
+    familyPortal: string;
+    familyPortalNote: string;
+    familyLcdn: string;
+    familyLcdnNote: string;
   }
 > = {
   zh: {
@@ -32,6 +38,10 @@ const label: Record<
     familyDocsNote: '平台使用、建模与数据指南',
     familyTidas: 'TIDAS 数据系统',
     familyTidasNote: '数据规范与 JSON Schema',
+    familyPortal: '天工 LCA 数据目录',
+    familyPortalNote: '浏览公开的过程与流记录，核对适用范围',
+    familyLcdn: 'ILCD 数据节点',
+    familyLcdnNote: '查看 ILCD 数据集、版本与访问条件',
   },
   en: {
     library: 'Browse the PCR library',
@@ -41,6 +51,10 @@ const label: Record<
     familyDocsNote: 'Platform, modelling and data guides',
     familyTidas: 'TIDAS Data System',
     familyTidasNote: 'Data specification and JSON schemas',
+    familyPortal: 'TianGong LCA data catalog',
+    familyPortalNote: 'Browse public process and flow records and check their scope',
+    familyLcdn: 'ILCD data node',
+    familyLcdnNote: 'ILCD datasets, versions and access conditions',
   },
 };
 
@@ -60,6 +74,9 @@ export function baseOptions(
   home?: string,
 ): BaseLayoutProps {
   const text = strings(route);
+  // The Chinese route opens the sibling sites' default homes; every other route opens the
+  // English surfaces, matching this site's own zh/en route model and label fallback.
+  const localizedFamily = (origin: string) => (route === 'zh' ? origin : `${origin}en/`);
   return {
     nav: {
       title: <SiteBrand locale={route} />,
@@ -85,14 +102,31 @@ export function baseOptions(
             type: 'main',
             text: text.familyDocs,
             description: text.familyDocsNote,
-            url: family.docs,
+            url: localizedFamily(family.docs),
             external: true,
           },
           {
             type: 'main',
             text: text.familyTidas,
             description: text.familyTidasNote,
-            url: family.tidas,
+            url: localizedFamily(family.tidas),
+            external: true,
+          },
+          {
+            type: 'main',
+            text: text.familyPortal,
+            description: text.familyPortalNote,
+            url:
+              route === 'zh'
+                ? 'https://www.tiangong.earth/zh-CN/lca-database'
+                : 'https://www.tiangong.earth/en/lca-database',
+            external: true,
+          },
+          {
+            type: 'main',
+            text: text.familyLcdn,
+            description: text.familyLcdnNote,
+            url: family.lcdn,
             external: true,
           },
         ],

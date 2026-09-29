@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: d63cbdfe7395373fae26b26f98f33b5ee0ec9e4e
-lastReviewedNote: "Reviewed PCR #43 whole-site documentation visual audit. The public site remains a lossless static read model built from the canonical library; generation, validation and production-source instructions are unchanged. Presentation details live in the site contract."
+lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
+lastReviewedNote: "Reviewed PCR #45 reader navigation change. The public site remains a lossless static read model built from the canonical library; generation, validation and production-source instructions are unchanged. Presentation details live in the site contract."
 ---
 
 # TianGong LCA PCR Library
