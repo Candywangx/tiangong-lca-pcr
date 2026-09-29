@@ -20,8 +20,13 @@ export function PcrPage({
   if (page.sourceHeadingAnchor) headingProps.id = page.sourceHeadingAnchor;
   if (page.sourceHeadingId) headingProps['data-source-node'] = page.sourceHeadingId;
   const bodyProps = page.sourcePath ? { 'data-source-document': page.sourcePath } : {};
-  // The source keeps every heading and anchor; the narrow on-page rail only needs sections.
-  const toc = page.kind === 'pcr' ? page.toc.filter((heading) => heading.depth === 2) : page.toc;
+  // The source keeps every heading and anchor. Continuation pages can begin at H3 with no H2.
+  const sections = page.toc.filter((heading) => heading.depth === 2);
+  const toc = page.kind === 'pcr'
+    ? sections.length > 0
+      ? sections
+      : page.toc.filter((heading) => heading.depth === 3)
+    : page.toc;
 
   return (
     <DocsPage toc={toc}>

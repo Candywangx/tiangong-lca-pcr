@@ -167,8 +167,9 @@ leaves, a link to the complete subdomain catalog and the open PCR's chapters.
 Other domains remain directory entry points, so the complete
 tree is not repeated on every record page. The library index also keeps every
 record link in static HTML inside native disclosures, available without JavaScript.
-The narrow PCR page table of contents shows section headings only; deeper source
-headings and their stable anchors remain in the article. The earlier compact
+The narrow PCR page table of contents shows H2 sections, or H3 processes on
+continuation pages with no H2; deeper source headings and their stable anchors
+remain in the article. The earlier compact
 export measured about 1.44 GB across 12,758 files with semantic chapters and
 server-rendered structured rule views; the scoped navigation must pass the same
 full-corpus export gate.
