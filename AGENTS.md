@@ -28,8 +28,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 301aa826b68a83e3112553045a0875e603f5cf94
-lastReviewedNote: "Reviewed PCR #40 documentation-site navigation and metadata layout. Repository ownership, validation, and delivery policy are unchanged."
+lastReviewedCommit: d63cbdfe7395373fae26b26f98f33b5ee0ec9e4e
+lastReviewedNote: "Reviewed PCR #43 whole-site documentation visual audit. Repository ownership, delivery routing, branch target and validation policy remain unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

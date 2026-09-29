@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: 301aa826b68a83e3112553045a0875e603f5cf94
-lastReviewedNote: "Reviewed PCR #40 documentation-site navigation and metadata layout. The public Fumadocs surface changes presentation only; source ownership and publication boundaries are unchanged."
+lastReviewedCommit: d63cbdfe7395373fae26b26f98f33b5ee0ec9e4e
+lastReviewedNote: "Reviewed PCR #43 whole-site documentation visual audit. Site presentation changed within packages/pcr-docs; canonical source ownership, static export architecture and Builder boundary are unchanged."
 ---
 
 # PCR 资料库架构

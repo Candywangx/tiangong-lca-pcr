@@ -220,7 +220,7 @@ export function HomeContent({
           </div>
         </section>
 
-        <section aria-labelledby="pcr-home-state">
+        <section className="pcr-home-state" aria-labelledby="pcr-home-state">
           <h2 id="pcr-home-state" className="pcr-section-title">
             {text.statusTitle}
           </h2>

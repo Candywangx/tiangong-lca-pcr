@@ -386,6 +386,29 @@ function validateFrontmatter(bundle, language, fm) {
         fm.translation_status,
     );
 }
+function catalogRecordList(language, records) {
+  return (
+    '<ul class="pcr-catalog-list">' +
+    records
+      .map((record) => {
+        const refs = record.classificationRefs
+          .map((ref) => ref.system + " " + ref.code)
+          .join(", ");
+        return (
+          '<li><a href="' +
+          esc(record.urls[language]) +
+          '">' +
+          esc(record.title[language]) +
+          "</a>" +
+          (refs ? '<span class="pcr-catalog-meta">' + esc(refs) + "</span>" : "") +
+          "</li>"
+        );
+      })
+      .join("") +
+    "</ul>"
+  );
+}
+
 function catalogPage(language, slugs, title, records, description) {
   const page = pageInfo(language, slugs, {
     kind: "catalog",
@@ -394,31 +417,61 @@ function catalogPage(language, slugs, title, records, description) {
     indexable: records.length > 0,
   });
   page.htmlPath = "pages/" + page.key + ".html";
-  write(
-    page.htmlPath,
-    "<p>" +
-      esc(description) +
-      '</p><ul class="pcr-catalog-list">' +
-      records
-        .map(
-          (r) =>
-            '<li><a href="' +
-            esc(r.urls[language]) +
+  const zh = language === "zh-CN";
+  let body;
+  if (slugs.length === 2) {
+    const groups = new Map();
+    for (const record of records) {
+      const slug = record.slug[1] ?? "";
+      if (!groups.has(slug)) groups.set(slug, []);
+      groups.get(slug).push(record);
+    }
+    const categories = [...groups.entries()];
+    page.toc = categories.map(([slug]) => ({
+      title: slug ? categoryTitle(slug, language) : zh ? "其他记录" : "Other records",
+      url: "#pcr-category-" + (slug || "direct"),
+      depth: 2,
+    }));
+    body =
+      '<p class="pcr-catalog-intro">' +
+      esc(
+        zh
+          ? `本领域有 ${records.length} 条 PCR 记录，分为 ${categories.length} 个子领域。`
+          : `${records.length} PCR records across ${categories.length} subdomains.`,
+      ) +
+      '</p><div class="pcr-catalog-groups">' +
+      categories
+        .map(([slug, members]) => {
+          const heading = slug ? categoryTitle(slug, language) : zh ? "其他记录" : "Other records";
+          const url = slug ? urlFor(language, [...slugs, slug]) : "";
+          return (
+            '<section class="pcr-catalog-group" aria-labelledby="pcr-category-' +
+            esc(slug || "direct") +
+            '"><div class="pcr-catalog-group-head"><h2 id="pcr-category-' +
+            esc(slug || "direct") +
             '">' +
-            esc(r.title[language]) +
-            "</a><span> · " +
-            esc(r.status) +
-            " · " +
-            esc(
-              r.classificationRefs
-                .map((c) => c.system + " " + c.code)
-                .join(", "),
-            ) +
-            "</span></li>",
-        )
+            esc(heading) +
+            "</h2>" +
+            (url
+              ? '<a href="' + esc(url) + '">' + esc(zh ? "打开子领域" : "Open subdomain") + "</a>"
+              : "") +
+            '</div><details class="pcr-catalog-disclosure"><summary>' +
+            esc(zh ? `展开 ${members.length} 条记录` : `Show ${members.length} records`) +
+            "</summary>" +
+            catalogRecordList(language, members) +
+            "</details></section>"
+          );
+        })
         .join("") +
-      "</ul>",
-  );
+      "</div>";
+  } else {
+    body =
+      '<p class="pcr-catalog-intro">' +
+      esc(zh ? `本目录有 ${records.length} 条 PCR 记录。` : `${records.length} PCR records in this directory.`) +
+      "</p>" +
+      catalogRecordList(language, records);
+  }
+  write(page.htmlPath, body);
   manifest.pages.push(page);
   addSearch(page, records.map((r) => r.title[language]).join(" "));
 }
