@@ -38,10 +38,10 @@ const label: Record<
     familyDocsNote: '平台使用、建模与数据指南',
     familyTidas: 'TIDAS 数据系统',
     familyTidasNote: '数据规范与 JSON Schema',
-    familyPortal: '天工 LCA 公开数据库',
-    familyPortalNote: '免登录查找公开发布的 LCA 数据集',
+    familyPortal: '天工 LCA 数据目录',
+    familyPortalNote: '浏览公开的过程与流记录，核对适用范围',
     familyLcdn: 'ILCD 数据节点',
-    familyLcdnNote: '以 ILCD 格式提供数据库数据',
+    familyLcdnNote: '查看 ILCD 数据集、版本与访问条件',
   },
   en: {
     library: 'Browse the PCR library',
@@ -51,10 +51,10 @@ const label: Record<
     familyDocsNote: 'Platform, modelling and data guides',
     familyTidas: 'TIDAS Data System',
     familyTidasNote: 'Data specification and JSON schemas',
-    familyPortal: 'TianGong LCA public databases',
-    familyPortalNote: 'Find published LCA datasets without an account',
+    familyPortal: 'TianGong LCA data catalog',
+    familyPortalNote: 'Browse public process and flow records and check their scope',
     familyLcdn: 'ILCD data node',
-    familyLcdnNote: 'Database data in ILCD format',
+    familyLcdnNote: 'ILCD datasets, versions and access conditions',
   },
 };
 
