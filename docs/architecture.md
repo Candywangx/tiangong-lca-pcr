@@ -27,8 +27,8 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-09-29
-lastReviewedCommit: d63cbdfe7395373fae26b26f98f33b5ee0ec9e4e
-lastReviewedNote: "Reviewed PCR #43 whole-site documentation visual audit. Site presentation changed within packages/pcr-docs; canonical source ownership, static export architecture and Builder boundary are unchanged."
+lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
+lastReviewedNote: "Reviewed PCR #45 reader navigation change. Site presentation changed within packages/pcr-docs; canonical source ownership, static export architecture and Builder boundary are unchanged."
 ---
 
 # PCR 资料库架构
