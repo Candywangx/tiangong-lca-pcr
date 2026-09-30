@@ -775,17 +775,28 @@ function stableJson(value) {
   return JSON.stringify(value);
 }
 
-function toolFailureDetails(result, subject) {
+export function toolFailureDetails(result, subject) {
   let machine = null;
   for (const text of [result.stderr, result.stdout]) {
     try { const parsed = JSON.parse(text); machine = parsed.error ?? parsed; if (machine && typeof machine === 'object') break; } catch {}
   }
   const code = machine?.code ?? result.error?.code;
-  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',ENETUNREACH:'network',EAI_AGAIN:'network',RATE_LIMITED:'rate_limit',SERVICE_UNAVAILABLE:'service_unavailable',UNAUTHENTICATED:'authentication',UNAUTHORIZED:'authorization'};
-  const failureKind = kinds[code] ?? 'unknown';
+  const details = machine?.details;
+  const upstreamCodes = [details?.cause_code, details?.code]
+    .filter(value => typeof value === 'string' && /^[A-Z][A-Z0-9_]{1,30}$/u.test(value));
+  const authenticationCodes = new Set(['SUPABASE_OAUTH_LOGIN_REQUIRED', 'AUTH_IDENTITY_SESSION_FAILED', 'UNAUTHENTICATED', 'PGRST301', 'PGRST302']);
+  const authentication = authenticationCodes.has(code) || upstreamCodes.some(value => authenticationCodes.has(value));
+  const underlyingCode = upstreamCodes.find(value => authenticationCodes.has(value)) ?? upstreamCodes[0] ?? null;
+  const httpStatus = [machine?.status, details?.status].find(value => Number.isInteger(value) && value >= 100 && value <= 599) ?? null;
+  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',ENETUNREACH:'network',EAI_AGAIN:'network',ENOTFOUND:'network',FETCH_FAILED:'network',RATE_LIMITED:'rate_limit',SERVICE_UNAVAILABLE:'service_unavailable',UNAUTHORIZED:'authorization'};
+  const failureKind = authentication || httpStatus === 401 ? 'authentication' : httpStatus === 403 ? 'authorization'
+    : httpStatus === 429 ? 'rate_limit' : httpStatus >= 500 ? 'service_unavailable'
+    : httpStatus !== null ? 'unknown' : kinds[underlyingCode] ?? kinds[code] ?? 'unknown';
+  const underlyingError = underlyingCode === 'FETCH_FAILED' || code === 'FETCH_FAILED' ? 'fetch_failed' : null;
   return { ...subject, phase:'tool_execution', origin:'tool_transport', failure_kind:failureKind,
     retryable:machine?.retryable === false || machine?.details?.retryable === false ? false : ['network','timeout','rate_limit','service_unavailable'].includes(failureKind),
-    machine_code:code ?? null, http_status:Number.isInteger(machine?.status) ? machine.status : null, exit_code:result.status, signal:result.signal ?? null, credentials_redacted:true };
+    machine_code:code ?? null, upstream_code:underlyingCode, underlying_error:underlyingError,
+    http_status:httpStatus, exit_code:result.status, signal:result.signal ?? null, credentials_redacted:true };
 }
 
 
