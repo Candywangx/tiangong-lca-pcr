@@ -128,6 +128,16 @@ test("offline distribution preserves contracts and installs without network", { 
     assert.equal(existsSync(path.join(installation, "node_modules/tiangong-pcr/library")), false);
     const dataPackage = JSON.parse(readFileSync(path.join(installation, "node_modules/tiangong-pcr-library/package.json")));
     assert.equal(dataPackage.scripts, undefined); assert.equal(dataPackage.dependencies, undefined);
+    for (const [name, source] of [["tiangong-pcr", "tiangong-pcr-cli"], ["tiangong-pcr-library", "tiangong-pcr-library"]]) {
+      const installed = path.join(installation, "node_modules", name);
+      assert.equal(JSON.parse(readFileSync(path.join(installed, "package.json"))).license, "MIT");
+      assert.equal(readFileSync(path.join(installed, "LICENSE"), "utf8"), readFileSync(path.join(root, "LICENSE"), "utf8"));
+      const readme = readFileSync(path.join(installed, "README.md"), "utf8");
+      assert.equal(readme, readFileSync(path.join(root, "packages", source, "README.md"), "utf8"));
+      assert.ok(readme.startsWith(`# ${name}\n`), "Each installed package needs its own consumer README.");
+      assert.doesNotMatch(readFileSync(path.join(installed, "NOTICE.md"), "utf8"), /UNLICENSED|does not grant redistribution rights/u);
+    }
+    assert.equal(readFileSync(path.join(installation, "node_modules/tiangong-pcr/node_modules/ajv/LICENSE"), "utf8"), readFileSync(path.join(root, "node_modules/ajv/LICENSE"), "utf8"));
   });
   await t.test("release tarballs preserve source provenance and install entirely offline", async () => {
     const toolVersion = JSON.parse(readFileSync(path.join(root, "packages/tiangong-pcr-cli/package.json"))).version;

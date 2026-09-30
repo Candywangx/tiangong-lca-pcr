@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
-lastReviewedNote: "Reviewed PCR #45 reader navigation change. PCR authoring, source files, review states and methodology publication gates are unchanged by the site presentation fixes."
+lastReviewedAt: 2026-09-30
+lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
+lastReviewedNote: "Reviewed PCR #49. MIT distribution and consumer README changes do not alter PCR authoring, readiness or methodology publication."
 ---
 
 # Authoring Guide

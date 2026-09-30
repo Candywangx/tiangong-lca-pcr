@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-09-30
-lastReviewedCommit: bd29c8fe0d0ff43e6e785fcf3a732e015f4420ac
+lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -32,7 +32,8 @@ related:
 
 `tiangong-pcr` contains the CLI, shared semantic reader, schemas, bundled locked
 runtime dependencies and the thin consumer Skill. `tiangong-pcr-library` contains
-`library.sqlite`, its adjacent `library.sqlite.json` manifest and notices. The tool
+`library.sqlite`, its adjacent `library.sqlite.json` manifest and notices. Each
+package includes its own consumer README and the repository MIT `LICENSE`. The tool
 has no dependency on the data package. Both have independent SemVer versions.
 The source package directories are development inputs; publish only generated packages.
 
@@ -131,10 +132,14 @@ Copy `skills/tiangong-pcr/` from the tool package into the host agent's configur
 Skill directory. npm does not activate Skills. The Skill teaches explicit selection,
 pinning, readiness checks, validation coverage and local feedback drafting.
 
-No repository-wide license has been declared at implementation time. Generated
-packages therefore use `UNLICENSED` and preserve notices; bundled dependencies retain
-their own license files. Before public registry publication, owners must establish
-redistribution terms for tool/content and confirm control of the intended npm names.
+TianGong LCA code and authored methodology content use the MIT License. Both
+source manifests and generated packages declare `license: MIT`; builders copy
+`LICENSE` from the repository root into each package. The tool README is sourced
+from `packages/tiangong-pcr-cli/README.md`, and the content README from
+`packages/tiangong-pcr-library/README.md`. These are consumer instructions; this
+contract remains the maintainer reference. Bundled dependencies retain their own
+license files and notices. Source citations and third-party terms remain applicable;
+MIT does not relicense referenced external standards or publications.
 The workflows below publish generated artifacts only after release setup is enabled.
 Implementing these workflows does not itself publish either package.
 
@@ -189,8 +194,8 @@ move existing tags. Retrying a matching tag can repair missing GitHub assets.
 
 ### One-time owner setup
 
-1. Establish the tool/content redistribution terms and control of both npm names.
-   Generated notices currently declare `UNLICENSED`; publishing does not change that.
+1. Confirm control of both npm names. Generated tool/content packages declare
+   MIT and include the full license plus applicable third-party notices.
 2. Create the GitHub environment `npm-release`. Apply the repository's desired
    reviewer protection and allow `pcr-v*` and `library-v*` tag deployments. GitHub
    tag rules must permit the release job to create these tags, while preventing
