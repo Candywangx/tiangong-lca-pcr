@@ -6,12 +6,14 @@ import test from "node:test";
 
 import {
   auditHybridSearchReceipts,
+  loadReportReceiptEvidence,
   finalizeHybridSearchReceipt,
   recordHybridCandidateDirectRead,
   runHybridSearchWithReceipt,
 } from "./uuid-search-receipts.mjs";
 import { authenticatedHybridSearchDryRunCheck } from "./tooling.mjs";
 import { assertAuthorDispatchInfrastructure } from "./commands.mjs";
+import { GoalEventStore } from "./event-store.mjs";
 import { appendGoalCacheReceipt } from "./goal-cache.mjs";
 
 const UUID_A = "11111111-1111-4111-8111-111111111111";
@@ -413,8 +415,13 @@ test('collected local receipt failures do not hide subsequent receipt checks', a
   assert.equal(result.findings.length,2);
 });
 
-function adoptedReceiptCollectionFixture(t) {
+function adoptedReceiptCollectionFixture(t, sealed = false) {
   const f=fixture();t.after(()=>rmSync(f.root,{recursive:true,force:true}));
+  if (sealed) {
+    const initial = JSON.parse(readFileSync(path.join(f.stateDir, 'state.json'), 'utf8'));
+    initial.tasks[0] = { ...initial.tasks[0], authoring_contract_version: 2, turn_id: 'turn-1' };
+    new GoalEventStore({ stateDir: f.stateDir }).initialize(initial);
+  }
   runHybridSearchWithReceipt({stateDir:f.stateDir,taskId:'task-1',query:'pig iron',cwd:f.worktreePath,
     toolConfig:{tiangong_cli_root:'/unused/cli',flow_hybrid_search_root:'/unused/hybrid'},randomId:()=> 'adopted-receipt',
     runner:()=>({status:0,stdout:JSON.stringify({data:[{id:UUID_A},{id:UUID_B}]})})});
@@ -498,4 +505,76 @@ test('receipt adoption continuation advances within a receipt after the executio
   const resumed=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[f.direct],deadline:5,now:()=>++tick,startAfter:first.progress.start_after});
   assert.equal(resumed.checks.find(c=>c.subject_id===`adopted-receipt:${UUID_B}`).status,'failed');
   assert.equal(resumed.findings.some(finding=>finding.code==='GOAL_HYBRID_SEARCH_RECEIPT_MISSING'),true);
+});
+
+function receiptRequestFixture(t) {
+  const f = adoptedReceiptCollectionFixture(t, true);
+  return { ...f, eventStore: new GoalEventStore({ stateDir: f.stateDir }) };
+}
+
+test('request stages share one full traversal while independently checking adoption each time', t => {
+  const f = receiptRequestFixture(t);
+  let scans = 0;
+  const iterate = GoalEventStore.prototype.iterateEvents;
+  t.mock.method(GoalEventStore.prototype, 'iterateEvents', function* (options) { scans++; yield* iterate.call(this, options); });
+  f.eventStore.rebuild();
+  assert.equal(loadReportReceiptEvidence(f).length, 1);
+  assert.equal(loadReportReceiptEvidence({ ...f, collect: true }).valid, true);
+  assert.equal(auditHybridSearchReceipts({ ...f, collect: true, verifiedUuidReads: [f.direct] }).valid, true);
+  assert.equal(auditHybridSearchReceipts({ ...f, verifiedUuidReads: [f.direct] }).length, 1);
+  const changed = { ...f.direct, base_name_en: 'Changed material identity' };
+  const rejected = auditHybridSearchReceipts({ ...f, collect: true, verifiedUuidReads: [changed] });
+  assert.equal(rejected.valid, false);
+  assert.equal(rejected.checks.find(c => c.check_id === 'receipt_adoption').status, 'failed');
+  assert.equal(auditHybridSearchReceipts({ ...f, collect: true, verifiedUuidReads: [] }).checks.find(c => c.check_id === 'receipt_adoption').status, 'skipped');
+  assert.equal(scans, 1);
+});
+
+test('shared receipt index sees legitimate appends and rejects subsequent chain corruption', t => {
+  const f = receiptRequestFixture(t);
+  assert.equal(loadReportReceiptEvidence(f).length, 1);
+  const writer = new GoalEventStore({ stateDir: f.stateDir });
+  writer.append({ event_id: 'legitimate-append', type: 'fixture', payload: { value: 'original' } });
+  assert.equal(loadReportReceiptEvidence(f).length, 1);
+  const file = path.join(f.stateDir, 'events.jsonl');
+  writeFileSync(file, readFileSync(file, 'utf8').replace('original', 'modified'));
+  assert.throws(() => loadReportReceiptEvidence(f), { code: 'GOAL_EVENT_LOG_CORRUPT' });
+});
+
+test('shared receipt index never caches a passing artifact hash or task binding', t => {
+  const f = receiptRequestFixture(t);
+  assert.equal(loadReportReceiptEvidence(f).length, 1);
+  assert.throws(() => loadReportReceiptEvidence({ ...f, task: { ...f.task, id: 'another-task' } }));
+  const paths = path.join(f.stateDir, 'uuid-search-receipts', 'task-1', 'attempt-1');
+  const raw = path.join(paths, 'adopted-receipt.result.json');
+  const original = readFileSync(raw);
+  const search = path.join(paths, 'adopted-receipt.search.json');
+  const metadata = JSON.parse(readFileSync(search));
+  writeFileSync(raw, original.toString().replace(UUID_A, UUID_C));
+  // A new author-controlled hash also cannot replace the original event seal.
+  metadata.result_sha256 = `sha256:${'c'.repeat(64)}`;
+  writeFileSync(search, JSON.stringify(metadata));
+  assert.throws(() => loadReportReceiptEvidence(f), { code: 'GOAL_RECEIPT_INTEGRITY_MISMATCH' });
+  const second = auditHybridSearchReceipts({ ...f, collect: true, verifiedUuidReads: [f.direct] });
+  assert.equal(second.valid, false);
+  assert.equal(second.checks.find(c => c.check_id === 'receipt_integrity').status, 'failed');
+  assert.equal(second.checks.find(c => c.check_id === 'receipt_adoption').status, 'skipped');
+});
+
+test('receipt entry points reject an index from another directory even with an empty report', t => {
+  const f = receiptRequestFixture(t), other = receiptRequestFixture(t);
+  const args = { ...f, eventStore: other.eventStore, report: { hybrid_search_receipt_ids: [] } };
+  assert.throws(() => loadReportReceiptEvidence(args), { code: 'GOAL_RECEIPT_INTEGRITY_MISMATCH' });
+  assert.throws(() => auditHybridSearchReceipts({ ...args, collect: true }), { code: 'GOAL_RECEIPT_INTEGRITY_MISMATCH' });
+});
+
+test('shared receipt index preserves sealed earlier-turn evidence for the same task retry', t => {
+  const f = receiptRequestFixture(t);
+  assert.equal(loadReportReceiptEvidence(f).length, 1);
+  const next = { ...f.task, attempt: 2, turn_id: 'turn-2', state: 'authoring_repair' };
+  new GoalEventStore({ stateDir: f.stateDir }).append({ event_id: 'same-task-retry', type: 'task_replaced', payload: { task: next } });
+  const results = loadReportReceiptEvidence({ ...f, task: next });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].scope, 'task_retry_reuse');
+  assert.equal(auditHybridSearchReceipts({ ...f, task: next, collect: true, verifiedUuidReads: [f.direct] }).valid, true);
 });
