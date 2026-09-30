@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
-lastReviewedNote: "Reviewed PCR #45 reader navigation change. The public site remains a lossless static read model built from the canonical library; generation, validation and production-source instructions are unchanged. Presentation details live in the site contract."
+lastReviewedAt: 2026-09-30
+lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
+lastReviewedNote: "Reviewed PCR #49 package documentation and MIT license. Package-specific consumer entry points and repository license are now explicit."
 ---
 
 # TianGong LCA PCR Library
@@ -329,6 +329,17 @@ The [offline distribution contract](docs/offline-distribution.md) defines the se
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
+Package-specific installation and usage instructions live in the
+[CLI README](packages/tiangong-pcr-cli/README.md) and the
+[content library README](packages/tiangong-pcr-library/README.md). Each generated
+npm package includes its own README and the full MIT license.
+
 Npm artifact releases use independent version sources and tags, main-bound validation,
 OIDC publication and offline transport assets. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
 for setup, first publication and retries. Npm release does not approve PCR methodology.
+
+## License
+
+TianGong LCA code and authored methodology content are licensed under the
+[MIT License](LICENSE). Bundled dependencies and referenced third-party material
+retain their own licenses and notices.

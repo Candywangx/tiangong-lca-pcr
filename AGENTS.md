@@ -27,9 +27,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
-lastReviewedNote: "Reviewed PCR #45 reader navigation change. Repository ownership, delivery routing, branch target and validation policy remain unchanged."
+lastReviewedAt: 2026-09-30
+lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
+lastReviewedNote: "Reviewed PCR #49 package README/MIT changes. Ownership, public CLI behavior, authoring and validation contracts are unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

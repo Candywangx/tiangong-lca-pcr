@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
-lastReviewedNote: "Reviewed PCR #45 reader navigation change. Site presentation changed within packages/pcr-docs; canonical source ownership, static export architecture and Builder boundary are unchanged."
+lastReviewedAt: 2026-09-30
+lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
+lastReviewedNote: "Reviewed PCR #49. Dedicated npm README and MIT files change distribution metadata only; canonical source and tool/data ownership remain unchanged."
 ---
 
 # PCR 资料库架构
