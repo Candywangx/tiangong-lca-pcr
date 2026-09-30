@@ -6,6 +6,7 @@ import {
   readFileSync,
   writeFileSync,
   rmSync,
+  utimesSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -13,6 +14,7 @@ import test from "node:test";
 import { passingReview } from "./fixtures/review-results.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
+import { runHybridSearchWithReceipt, recordHybridCandidateDirectRead, finalizeHybridSearchReceipt } from "./uuid-search-receipts.mjs";
 import { resolveAuthorSubmission } from "./author-submission.mjs";
 const api = await import("./report-preparation.mjs").catch(() => ({}));
 const { assembleAuthorReport, prepareAuthorReport, resolvePreparedReport } =
@@ -382,4 +384,138 @@ test('preparation cannot publish ready when its final input recheck has exhauste
 test('prepared reference resolution observes the harvest deadline before git inspection', t => {
   const f=fixture(t), reference=prepareAuthorReport(f.options);
   assert.throws(()=>resolveAuthorSubmission({stateDir:f.stateDir,task:f.task,wire:{schema_version:2,prepared_report:reference,boundary_review_report:null,failure:null},deadline:Date.now()-1}),error=>error.code==='GOAL_REVIEW_WINDOW_EXHAUSTED');
+});
+
+function countFullTraversals(t) {
+  let count = 0;
+  const iterate = GoalEventStore.prototype.iterateEvents;
+  t.mock.method(GoalEventStore.prototype, "iterateEvents", function* (options) {
+    count++; yield* iterate.call(this, options);
+  });
+  return () => count;
+}
+
+test("preparation shares its request index and retains one fresh publication verification", t => {
+  const f = fixture(t), scans = countFullTraversals(t);
+  prepareAuthorReport(f.options);
+  assert.equal(scans(), 2, "one request traversal and one fresh publication traversal");
+});
+
+test("early preparation error shares the request index with the outer failure handler", t => {
+  const f = fixture(t);
+  delete f.draft.product_name_en;
+  writeFileSync(f.draftPath, JSON.stringify(f.draft));
+  const scans = countFullTraversals(t);
+  assert.throws(() => prepareAuthorReport(f.options), error => Boolean(error.details?.preparation_failure_id));
+  assert.equal(scans(), 2, "one request traversal and one fresh failure publication traversal");
+});
+
+test("failure resolver shares a verified index and applies prepared clearing in event sequence order", t => {
+  const f = fixture(t);
+  assert.throws(() => prepareAuthorReport({ ...f.options, auditUuidsFn: () => {
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "Fixture public read unavailable.");
+  } }));
+  const eventStore = new GoalEventStore({ stateDir: f.stateDir }), scans = countFullTraversals(t);
+  eventStore.rebuild();
+  const args = { stateDir: f.stateDir, task: f.task, eventStore };
+  const first = api.resolvePreparationFailure(args);
+  assert.equal(first.failure.code, "GOAL_UUID_DIRECT_READ_FAILED");
+  assert.deepEqual(api.resolvePreparationFailure(args), first);
+  assert.equal(scans(), 1);
+  // A legitimate append through a different store invalidates the request index.
+  const failed = f.store.getEventsByType("author_report_preparation_failed").at(-1);
+  const beforeAppend = scans();
+  f.store.append({ event_id: "clear-failure", type: "author_report_prepared", payload: { binding: failed.payload.binding } });
+  assert.equal(api.resolvePreparationFailure(args), null);
+  assert.equal(scans(), beforeAppend + 1);
+  f.store.append({ event_id: "later-failure", type: "author_report_preparation_failed", payload: failed.payload });
+  assert.deepEqual(api.resolvePreparationFailure(args), first);
+});
+
+test("shared failure resolver rechecks task binding, commit and content", t => {
+  const f = fixture(t);
+  assert.throws(() => prepareAuthorReport({ ...f.options, auditUuidsFn: () => {
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "Fixture read unavailable.");
+  } }));
+  const eventStore = new GoalEventStore({ stateDir: f.stateDir });
+  const args = { stateDir: f.stateDir, task: f.task, eventStore };
+  assert.ok(api.resolvePreparationFailure(args));
+  assert.equal(api.resolvePreparationFailure({ ...args, forCommit: "other-commit" }), null);
+  writeFileSync(path.join(f.root, f.files[1]), "changed content\n");
+  assert.throws(() => api.resolvePreparationFailure(args), { code: "GOAL_REPORT_COMMIT_INVALID" });
+  git(f.root, ["add", f.files[1]]);
+  git(f.root, ["commit", "-qm", "changed author content"]);
+  assert.throws(() => api.resolvePreparationFailure(args), { code: "GOAL_REPORT_COMMIT_INVALID" });
+  const next = { ...f.task, turn_id: "turn-2" };
+  f.store.append({ event_id: "next-turn", type: "task_replaced", payload: { task: next } });
+  assert.equal(api.resolvePreparationFailure({ ...args, task: next }), null);
+  assert.throws(() => api.resolvePreparationFailure(args), { code: "GOAL_REPORT_BINDING_MISMATCH" });
+});
+
+test("shared failure resolver rejects unchanged-length chain corruption after verification", t => {
+  const f = fixture(t), eventStore = new GoalEventStore({ stateDir: f.stateDir });
+  f.store.append({ event_id: "history", type: "fixture", payload: { value: "original" } });
+  const file = path.join(f.stateDir, "events.jsonl"), fixedTime = new Date('2026-09-01T00:00:00Z');
+  utimesSync(file, fixedTime, fixedTime);
+  const args = { stateDir: f.stateDir, task: f.task, eventStore };
+  assert.equal(api.resolvePreparationFailure(args), null);
+  writeFileSync(file, readFileSync(file, "utf8").replace("original", "modified"));
+  utimesSync(file, fixedTime, fixedTime);
+  assert.throws(() => api.resolvePreparationFailure(args), { code: "GOAL_EVENT_LOG_CORRUPT" });
+});
+
+test("failure resolver rejects a request index from another Goal directory", t => {
+  const f = fixture(t), other = fixture(t);
+  const eventStore = new GoalEventStore({ stateDir: other.stateDir });
+  assert.throws(() => api.resolvePreparationFailure({ stateDir: f.stateDir, task: f.task, eventStore }),
+    { code: "GOAL_REPORT_BINDING_MISMATCH" });
+});
+
+test("fresh publication verification rejects task changes during a shared-index preparation", t => {
+  const f = fixture(t);
+  assert.throws(() => prepareAuthorReport({ ...f.options, reviewFn: args => {
+    f.store.append({ event_id: "change-during-review", type: "task_replaced", payload: { task: { ...f.task, turn_id: "turn-2" } } });
+    return passingReview(args);
+  } }), { code: "GOAL_REPORT_BINDING_MISMATCH" });
+  assert.equal(f.store.getEventsByType("author_report_prepared").length, 0);
+});
+
+function sealedPreparationFixture(t) {
+  const f = fixture(t), receiptId = 'prepared-receipt', uuid = evidence[0].uuid;
+  const args = { stateDir: f.stateDir, taskId: f.task.id, cwd: f.root, receiptId };
+  const { receipt } = runHybridSearchWithReceipt({ ...args, query: 'baler component', randomId: () => receiptId,
+    toolConfig: { flow_hybrid_search_root: '/unused/hybrid' },
+    runner: () => ({ status: 0, stdout: JSON.stringify({ data: [{ id: uuid }] }) }) });
+  recordHybridCandidateDirectRead({ ...args, uuid, tiangongCliRoot: '/unused/cli',
+    reader: () => ({ uuid, state_code: 100, base_name_en: 'Baler component', response_sha256: `sha256:${'a'.repeat(64)}` }) });
+  const decisionsPath = path.join(f.stateDir, 'decisions-input.json');
+  writeFileSync(decisionsPath, JSON.stringify([{ uuid, ...evidence[0].expected, general_comment_review: 'Different component scope.' }]));
+  finalizeHybridSearchReceipt({ ...args, decisionsPath });
+  f.draft.receipt_ids = [receiptId];
+  writeFileSync(f.draftPath, JSON.stringify(f.draft));
+  return { ...f, receipt };
+}
+
+test('sealed receipt preparation shares both request batches and rereads evidence under a fresh publication index', t => {
+  const f = sealedPreparationFixture(t), scans = countFullTraversals(t);
+  const submission = prepareAuthorReport(f.options);
+  assert.equal(scans(), 2);
+  const firstScans = scans();
+  assert.deepEqual(prepareAuthorReport(f.options), submission);
+  assert.equal(scans() - firstScans, 2, 'repeat uses one request and one fresh guard even when resolving a prior reference');
+  assert.equal(f.store.getEventsByType('author_report_prepared').length, 1);
+});
+
+test('publication guard detects receipt substitution after both request batches passed', t => {
+  const f = sealedPreparationFixture(t);
+  let scans = 0;
+  const iterate = GoalEventStore.prototype.iterateEvents;
+  t.mock.method(GoalEventStore.prototype, 'iterateEvents', function* (options) {
+    scans++;
+    // The second reconstruction is the freshly constructed store under the publication lock.
+    if (scans === 2) writeFileSync(f.receipt.result_path, readFileSync(f.receipt.result_path, 'utf8') + '\n');
+    yield* iterate.call(this, options);
+  });
+  assert.throws(() => prepareAuthorReport(f.options), { code: 'GOAL_RECEIPT_INTEGRITY_MISMATCH' });
+  assert.equal(f.store.getEventsByType('author_report_prepared').length, 0);
 });

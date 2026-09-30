@@ -112,7 +112,7 @@ export function sealReceipt({
         );
     }
     const eventId = keyFor(task, receiptId);
-    const prior = store.readEvents().find((e) => e.event_id === eventId);
+    const prior = store.getEvent(eventId);
     if (prior) {
       const original = JSON.parse(prior.payload.decisions_text);
       const priorDecisions = original.candidate_decisions.map(
@@ -170,12 +170,9 @@ export function sealReceipt({
   });
 }
 
-export function verifyReceiptSeal({ stateDir, task, receiptId, paths }) {
-  const events = new GoalEventStore({ stateDir }).readEvents();
-  const matches = events.filter(
-    (e) =>
-      e.type === "uuid_receipt_finalized" && e.payload.receipt_id === receiptId,
-  );
+export function verifyReceiptSeal({ stateDir, task, receiptId, paths, eventStore = new GoalEventStore({ stateDir }) }) {
+  if (path.resolve(eventStore.stateDir) !== path.resolve(stateDir)) fail("MISMATCH", "Receipt query index belongs to another Goal directory.");
+  const matches = eventStore.getEventsByType("uuid_receipt_finalized", { receiptId });
   if (matches.length !== 1)
     fail(
       "MISSING",
