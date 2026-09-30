@@ -310,8 +310,19 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
   if (challenge) return { challenge: true, identifiable: false, kind: "access_challenge" };
   if (!isPdf) {
     text = text.replace(/<!--[^]*?-->/gu, "").replace(/<(script|style|nav|header|footer|head)\b[^>]*>[^]*?<\/\1\s*>/giu, "");
-    const body = text.match(/<(article|main)\b[^>]*>([^]*?)<\/\1\s*>/iu);
-    if (body) text = body[2];
+    text = extractHtmlDocumentBody(text);
+    // Structured abstracts can contain Introduction/Methods/Results headings,
+    // but their prose is still metadata until the full document begins.
+    const headings = [...text.matchAll(/<h([1-6])\b[^>]*>([^]*?)<\/h\1\s*>/giu)]
+      .map(match => ({ start: match.index, level: Number(match[1]), label: normalizeComparableText(match[2].replace(/<[^>]*>/gu, " ")) }));
+    const abstractRanges = [];
+    for (let index = 0; index < headings.length; index += 1) {
+      const heading = headings[index];
+      if (!/^(?:abstract|summary|executive summary)$/iu.test(heading.label)) continue;
+      const end = headings.slice(index + 1).find(next => next.level <= heading.level)?.start ?? text.length;
+      abstractRanges.push([heading.start, end]);
+    }
+    for (const [start, end] of abstractRanges.reverse()) text = `${text.slice(0, start)} ${text.slice(end)}`;
     text = text.replace(/<\/?(?:h[1-6]|p|div|section|br|li|tr|body)\b[^>]*>/giu, "\n").replace(/<[^>]*>/gu, "");
     text = text.replace(/&(#x[0-9a-f]+|#\d+|nbsp|amp|lt|gt|quot|apos);/giu, (_, entity) => {
       if (!entity.startsWith("#")) return ({nbsp:" ",amp:"&",lt:"<",gt:">",quot:'"',apos:"'"})[entity.toLowerCase()];
@@ -322,7 +333,7 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
   const title = normalizeComparableText(source.name ?? "");
   const normalized = normalizeComparableText(text);
   // At least two substantive document sections with prose, beyond abstract/TOC/download metadata.
-  const sectionHeading = /^(?:\d+(?:\.\d+)*[.)]?\s+)?(?:scope|methods?|materials and methods|measurement methods|methodology|requirements|results|discussion|system boundary|inventory|allocation|范围|方法|要求|结果|系统边界)\s*[:：]?$/iu;
+  const sectionHeading = /^(?:\d+(?:\.\d+)*[.)]?\s+)?(?:scope|methods?|materials and methods|measurement methods|methodology|requirements|results(?: and discussion)?|discussion|system boundary|inventory|allocation|范围|方法|要求|结果|系统边界)\s*[:：]?$/iu;
   const sections = [];
   let section = null;
   for (const line of text.split(/\r?\n/u)) {
@@ -336,6 +347,35 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
   const identifiable = Boolean(title && normalized.includes(title) && normalized.length >= 500 && substantiveSections.length >= 2);
   const metadata = /abstract|table of contents|purchase|buy now|download (?:full text|instructions)|摘要|目录|购买|下载/iu.test(text);
   return { challenge: false, identifiable, kind: identifiable ? "original" : metadata ? "metadata" : "unrecognized" };
+}
+
+function extractHtmlDocumentBody(html) {
+  const stack = [];
+  let start = null;
+  let scannedTo = 0;
+  // Scan whole tags so tag-shaped text and ">" in quoted attributes are inert.
+  // Article/main tags require explicit, correctly nested closes; malformed
+  // wrappers cannot fall back to qualifying prose elsewhere on the page.
+  const tags = /<(\/?)([a-z][a-z0-9:-]*)\b(?:[^"'<>]|"[^"]*"|'[^']*')*>/giu;
+  const structuralMarkup = /<\/?(?:article|main)(?=[\s/>]|$)/iu;
+  for (const match of html.matchAll(tags)) {
+    // A malformed structural opener can be skipped by the whole-tag scanner.
+    // Only gaps outside recognized tags are inspected, keeping quoted text inert.
+    if (structuralMarkup.test(html.slice(scannedTo, match.index))) return "";
+    scannedTo = match.index + match[0].length;
+    const tag = match[2].toLowerCase();
+    if (tag !== "article" && tag !== "main") continue;
+    if (match[1]) {
+      if (start === null) continue;
+      if (stack.pop() !== tag) return "";
+      if (stack.length === 0) return html.slice(start, match.index);
+    } else {
+      if (start === null) start = match.index + match[0].length;
+      stack.push(tag);
+    }
+  }
+  if (structuralMarkup.test(html.slice(scannedTo))) return "";
+  return start === null ? html : "";
 }
 
 function sourceBinding(source, phase) {
