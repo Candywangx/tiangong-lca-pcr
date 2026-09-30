@@ -239,3 +239,12 @@ A failure before the library scan is recorded as a missing report, not a complet
 empty result. The workflow refuses pre-existing reports and preserves npm's
 failure status. A successful validation command without its required full report
 also fails CI. An early setup failure leaves the explicit not-started transcript.
+
+## Offline distribution builds
+
+Use `npm run offline:tool -- --output <new-directory> --version <tool-semver>` and
+`npm run offline:library -- --output <new-directory> --version <content-semver>`.
+The library build checks source contracts and stages an immutable English-only
+SQLite snapshot. It does not change PCR lifecycle or authoring files. Read
+[the distribution contract](../docs/offline-distribution.md) for packaging,
+compatibility, licenses and offline installation.

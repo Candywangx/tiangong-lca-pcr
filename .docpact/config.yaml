@@ -17,6 +17,7 @@ catalog:
         - docs/classification-policy.md
         - docs/pcr-library-release-policy.md
         - docs/pcr-documentation-site-contract.md
+        - docs/offline-distribution.md
       workspaceIntegrationRequired: true
 
 ownership:
@@ -147,6 +148,7 @@ docInventory:
     - docs/classification-policy.md
     - docs/pcr-library-release-policy.md
     - docs/pcr-documentation-site-contract.md
+    - docs/offline-distribution.md
 
 repo:
   id: pcr
@@ -300,3 +302,20 @@ rules:
       - path: README.md
         mode: review_or_update
     reason: Public documents must retain complete canonical text, exact artifacts, language and lifecycle identities, and the static production contract.
+
+  - id: offline-distribution
+    scope: repo
+    repo: pcr
+    triggers:
+      - path: builder/scripts/build-offline-*.mjs
+        kind: offline-builder
+      - path: packages/pcr-core/src/offline-library.mjs
+        kind: offline-reader
+      - path: packages/pcr-core/src/source-context.mjs
+        kind: storage-boundary
+      - path: packages/tiangong-pcr-cli/**
+        kind: public-cli
+    requiredDocs:
+      - path: docs/offline-distribution.md
+        mode: review_or_update
+    reason: Offline package layout, integrity, language availability and compatibility are one public contract.

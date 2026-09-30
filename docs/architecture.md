@@ -502,3 +502,10 @@ Web Worker 中按语言加载。特别长的正文按章节拆页，并保留完
 网站采用 Next.js SSG / static export，EdgeOne 托管 `packages/pcr-docs/out`。
 部署配置、无损检查、语言及索引边界以
 [公共文档站契约](pcr-documentation-site-contract.md) 为准。
+
+## Offline consumer distribution
+
+The [offline distribution contract](offline-distribution.md) defines the separate `tiangong-pcr` tool and
+`tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
+structured YAML only; source authoring and translation workflows remain unchanged.
+Use explicit snapshot selection and verification for offline consumption.

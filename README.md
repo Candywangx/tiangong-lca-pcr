@@ -321,3 +321,10 @@ browsing inventories surviving scaffolds. Code `99000` now resolves as known-unm
 id redirects through the alias registry. CPC `98000` and the broader physical migration remain pending; do not treat
 the pilot as completion of bulk migration. Only authored or reviewed material records can enter guidance and
 validation.
+
+## Offline consumer distribution
+
+The [offline distribution contract](docs/offline-distribution.md) defines the separate `tiangong-pcr` tool and
+`tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
+structured YAML only; source authoring and translation workflows remain unchanged.
+Use explicit snapshot selection and verification for offline consumption.

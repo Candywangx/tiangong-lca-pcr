@@ -1,4 +1,7 @@
-import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { OfflineLibrary } from "../../pcr-core/src/offline-library.mjs";
+import { withPcrSource } from "../../pcr-core/src/source-context.mjs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,9 +33,12 @@ const VALID_PCR_STATUSES = new Set(PCR_STATUS_VALUES);
 const VALID_CONTENT_MATURITIES = new Set(CONTENT_MATURITY_VALUES);
 const VALID_CATALOG_SCOPES = new Set(PCR_CATALOG_SCOPES);
 const VALID_COVERAGE_STATUSES = new Set(CLASSIFICATION_COVERAGE_STATUSES);
-const GLOBAL_OPTIONS = new Set(["root", "format", "help"]);
-const GLOBAL_HELP_OPTIONS = new Set(["root", "help"]);
+const GLOBAL_OPTIONS = new Set(["root", "library", "library-sha256", "format", "help"]);
+const GLOBAL_HELP_OPTIONS = new Set(["root", "library", "library-sha256", "help"]);
 const COMMAND_OPTIONS = {
+  library: new Set(),
+  "library:info": new Set(),
+  "library:verify": new Set(),
   list: new Set(["status", "content-maturity", "path-prefix", "scope", "page", "page-size"]),
   tree: new Set(["depth", "scope"]),
   coverage: new Set(),
@@ -55,6 +61,9 @@ const COMMAND_OPTIONS = {
   ]),
 };
 const COMMAND_DEFINITIONS = [
+  { key: "library", command: "library", formats: ["json"], defaultFormat: "json" },
+  { key: "library:info", command: "library", positional: ["info"], formats: ["json"], defaultFormat: "json" },
+  { key: "library:verify", command: "library", positional: ["verify"], formats: ["json"], defaultFormat: "json" },
   { key: "list", command: "list", formats: ["json", "markdown", "table"], defaultFormat: "table" },
   { key: "tree", command: "tree", formats: ["json", "markdown"], defaultFormat: "markdown" },
   { key: "coverage", command: "coverage", formats: ["json", "table"], defaultFormat: "table" },
@@ -95,7 +104,46 @@ export class CliError extends Error {
   }
 }
 
+function installedLibrary() {
+  for (const filename of [path.join(process.cwd(), "package.json"), import.meta.url]) {
+    try { return path.join(path.dirname(createRequire(filename).resolve("tiangong-pcr-library/package.json")), "library.sqlite"); } catch {}
+  }
+  return null;
+}
+
+function toolVersion() {
+  const developmentManifest = fileURLToPath(new URL("../package.json", import.meta.url));
+  const filename = existsSync(developmentManifest) ? developmentManifest : path.join(defaultRoot, "package.json");
+  return JSON.parse(readFileSync(filename, "utf8")).version;
+}
+
 export function runTiangongPcr(argv) {
+  let library;
+  try {
+    if (argv.length === 1 && argv[0] === "--version") return ok(`${toolVersion()}\n`);
+    const { command, positional, options } = parseArgs(argv);
+    if (!command || command === "help" || options.help) return runCommand(argv);
+    if (command === "library" && positional.length === 0) throw new CliError("PCR_CLI_MISSING_SUBCOMMAND", "Use library info or library verify with --library <file>.");
+    if (options.root && options.library) throw new CliError("PCR_CLI_SOURCE_CONFLICT", "Choose either --root or --library.");
+    const filename = options.library ?? (options.root ? null : process.env.PCR_LIBRARY ?? (existsSync(path.join(defaultRoot, "library/catalog.yaml")) ? null : installedLibrary()));
+    if (!filename) {
+      if (options["library-sha256"] || command === "library") throw new CliError("PCR_LIBRARY_REQUIRED", "Select a local snapshot with --library <library.sqlite>.");
+      if (!options.root && !existsSync(path.join(defaultRoot, "library/catalog.yaml"))) throw new CliError("PCR_LIBRARY_REQUIRED", "No offline library found. Install tiangong-pcr-library or pass --library <library.sqlite>.");
+      return runCommand(argv);
+    }
+    // Validate the command before opening a potentially large data file.
+    const definition = requireCommandDefinition(command, positional);
+    validateCommandOptions(definition, options);
+    validateCommandFormat(definition, options.format);
+    library = new OfflineLibrary(String(filename), { expectedSha256: options["library-sha256"] ?? null, verify: command === "library" && positional[0] === "verify" });
+    if (command === "library") return ok(`${JSON.stringify({ tool_version: toolVersion(), ...library.manifest, verified: positional[0] === "verify" || Boolean(options["library-sha256"]) }, null, 2)}\n`);
+    return withPcrSource(library.root, library, () => runCommand(argv, { root: library.root, library: path.resolve(filename), "library-sha256": options["library-sha256"] }));
+  } catch (error) {
+    return fail(error, requestedFormatFromArgv(argv), requestedRootFromArgv(argv));
+  } finally { library?.close(); }
+}
+
+function runCommand(argv, selected = null) {
   const requestedFormat = requestedFormatFromArgv(argv);
   const requestedRoot = requestedRootFromArgv(argv);
   try {
@@ -111,7 +159,8 @@ export function runTiangongPcr(argv) {
       return ok(helpText(command, positional));
     }
 
-    const root = path.resolve(String(options.root ?? defaultRoot));
+    if (selected) options.library = selected.library;
+    const root = selected?.root ?? path.resolve(String(options.root ?? defaultRoot));
     const format = validateCommandFormat(definition, options.format);
 
     if (command === "list") {
@@ -240,7 +289,7 @@ export function runTiangongPcr(argv) {
       `Unknown command: ${[command, ...positional].filter(Boolean).join(" ")}`,
     );
   } catch (error) {
-    return fail(error, requestedFormat, requestedRoot);
+    return fail(error, requestedFormat, requestedRoot, selected);
   }
 }
 
@@ -248,7 +297,7 @@ function ok(stdout, exitCode = 0) {
   return { stdout, stderr: "", exitCode };
 }
 
-function fail(error, requestedFormat, requestedRoot) {
+function fail(error, requestedFormat, requestedRoot, selected = null) {
   const normalized = normalizeError(error);
   if (
     normalized.code === "PCR_LEGACY_ID_REDIRECT"
@@ -257,7 +306,7 @@ function fail(error, requestedFormat, requestedRoot) {
     const originalNextCommand = normalized.details.next_command;
     const nextCommand = legacyRedirectCommand(
       normalized.details.target,
-      { root: requestedRoot },
+      { root: requestedRoot, library: selected?.library, "library-sha256": selected?.["library-sha256"] },
     );
     normalized.details.next_command = nextCommand;
     normalized.message = typeof originalNextCommand === "string"
@@ -743,7 +792,7 @@ function paginateCoverage(result, classification, options) {
 }
 
 function buildCoverageListCommand(options) {
-  const parts = ["npm", "--silent", "run", "tiangong-pcr", "--", "coverage", "list"];
+  const parts = [...commandPrefix(options), "coverage", "list"];
   parts.push("--classification", shellToken(String(options.classification)));
   if (options.status) {
     parts.push("--status", shellToken(String(options.status)));
@@ -754,9 +803,7 @@ function buildCoverageListCommand(options) {
   if (options.page) {
     parts.push("--page", shellToken(String(options.page)));
   }
-  if (options.root) {
-    parts.push("--root", shellToken(String(options.root)));
-  }
+  parts.push(...sourceArguments(options));
   if (options.format) {
     parts.push("--format", shellToken(String(options.format)));
   }
@@ -788,9 +835,9 @@ function resolveOutput(resolution, options) {
   const pcrId = resolution.mapping?.pcr_id;
   const guidanceCommand = usable && resolution.resolution_status === "mapped" && pcrId
     ? [
-        "npm --silent run tiangong-pcr -- guidance",
+        `${commandPrefix(options).join(" ")} guidance`,
         `--pcr ${shellToken(String(pcrId))}`,
-        options.root ? `--root ${shellToken(String(options.root))}` : "",
+        sourceArguments(options).join(" "),
         "--format json",
       ].filter(Boolean).join(" ")
     : null;
@@ -800,6 +847,8 @@ function resolveOutput(resolution, options) {
       classification: `${system}:${version}`,
       status: resolution.coverage_status,
       root: options.root,
+      library: options.library,
+      "library-sha256": options["library-sha256"],
       format: "json",
       page: 1,
     });
@@ -854,9 +903,9 @@ function resolvePcrIdentityOutput(resolution, options) {
   const usable = resolution.pcr?.readiness?.usable_for_guidance === true;
   const nextCommand = usable
     ? [
-        "npm --silent run tiangong-pcr -- guidance",
+        `${commandPrefix(options).join(" ")} guidance`,
         `--pcr ${shellToken(String(resolution.pcr.id))}`,
-        options.root ? `--root ${shellToken(String(options.root))}` : "",
+        sourceArguments(options).join(" "),
         "--format json",
       ].filter(Boolean).join(" ")
     : null;
@@ -881,9 +930,9 @@ function legacyRedirectCommand(target, options) {
       ]
     : ["--pcr", shellToken(String(target.pcr_id))];
   return [
-    "npm --silent run tiangong-pcr -- resolve",
+    `${commandPrefix(options).join(" ")} resolve`,
     ...selector,
-    options.root ? `--root ${shellToken(String(options.root))}` : "",
+    sourceArguments(options).join(" "),
     "--format json",
   ].filter(Boolean).join(" ");
 }
@@ -1027,7 +1076,7 @@ function normalizePathPrefix(value) {
 }
 
 function buildListCommand(options) {
-  const parts = ["npm", "--silent", "run", "tiangong-pcr", "--", "list"];
+  const parts = [...commandPrefix(options), "list"];
   if (options.scope) {
     parts.push("--scope", shellToken(String(options.scope)));
   }
@@ -1046,13 +1095,20 @@ function buildListCommand(options) {
   if (options.page) {
     parts.push("--page", shellToken(String(options.page)));
   }
-  if (options.root) {
-    parts.push("--root", shellToken(String(options.root)));
-  }
+  parts.push(...sourceArguments(options));
   if (options.format) {
     parts.push("--format", shellToken(String(options.format)));
   }
   return parts.join(" ");
+}
+
+function commandPrefix(options) {
+  return options.library ? ["tiangong-pcr"] : ["npm", "--silent", "run", "tiangong-pcr", "--"];
+}
+function sourceArguments(options) {
+  const parts = options.library ? ["--library", shellToken(String(options.library))] : options.root ? ["--root", shellToken(String(options.root))] : [];
+  if (options["library-sha256"]) parts.push("--library-sha256", shellToken(String(options["library-sha256"])));
+  return parts;
 }
 
 function shellToken(value) {
@@ -1101,6 +1157,7 @@ function requireOption(options, key) {
 
 function helpText(command = "", positional = []) {
   const definition = commandDefinitionFor(command, positional);
+  if (command === "library") return `Usage: tiangong-pcr library info|verify --library <library.sqlite> [--library-sha256 sha256:<hex>] [--format json]\n\nRead snapshot identity, or verify the entire database checksum and SQLite integrity. No writes or network requests. Keep the manifest and pin with your task.\n`;
   if (!definition) {
     return globalHelpText();
   }
@@ -1118,6 +1175,8 @@ Options:
   --page-size <n>                   Records per page, from 1 to 100. Defaults to 10 records per page.
   --format json|markdown|table      Output format. Defaults to table.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output:
@@ -1153,6 +1212,8 @@ Options:
   --scope all|material|legacy       Record scope. Defaults to material.
   --format json|markdown            Output format. Defaults to markdown.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output includes scope, requested depth, completeness, tree, and next_steps.
@@ -1197,6 +1258,8 @@ Options:
   --classification <value>          Example: cpc:3.0.
   --format json|table               Output format. Defaults to table.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output includes source, complete status counts, a bounded completeness marker, and next_command.
@@ -1218,6 +1281,8 @@ Options:
   --page-size <n>                   Entries per page, from 1 to 100. Defaults to 10.
   --format json|table               Output format. Defaults to table.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output keeps filters, completeness, items, previous_command, and next_command stable.
@@ -1242,6 +1307,8 @@ Options:
   --pcr <pcr-id>                    Exact current or retired PCR id. Mutually exclusive with --classification.
   --format json                     Output format. JSON is recommended for Agents.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 Examples:
@@ -1264,6 +1331,8 @@ Options:
   --lang en-US|zh-CN                Markdown language. Defaults to en-US.
   --format markdown                 Output format. Defaults to markdown.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 Agent next step:
@@ -1280,6 +1349,8 @@ Options:
   --pcr <pcr-id>                    PCR id.
   --format json                     Output format. JSON is recommended for Agents.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output includes:
@@ -1302,6 +1373,8 @@ Options:
   --format json                     Output format. JSON is recommended for Agents.
   --fail-on never|error|warning     Exit 2 at the selected finding threshold. Defaults to error.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output includes:
@@ -1327,6 +1400,8 @@ Options:
   --format json                     Output format. JSON is recommended for Agents.
   --fail-on never|error|warning     Exit 2 at the selected finding threshold. Defaults to error.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 JSON output includes:
@@ -1357,6 +1432,8 @@ Options:
   --proposed-change <text>          Suggested change.
   --format json|markdown            Output format. Defaults to markdown.
   --root <path>                     PCR repository root.
+  --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
+  --library-sha256 <sha256:hex>      Verify and pin the complete snapshot before reading.
   --help                            Show this command help.
 
 Feedback types:
@@ -1371,7 +1448,12 @@ Agent next step:
 }
 
 function globalHelpText() {
-  return `tiangong-pcr
+  return `Version: tiangong-pcr --version
+Offline: --library <library.sqlite> (or PCR_LIBRARY); --library-sha256 sha256:<hex> pins the file.
+  library info|verify --library <file> --format json
+  Requires Node 24.19+ for SQLite. No automatic downloads.
+
+tiangong-pcr
 
 Usage:
   tiangong-pcr <command> [options]

@@ -361,3 +361,9 @@ From an authorized workspace checkout, update or verify this consumer with
 (add `--check` for read-only exact-source verification). The public CI hash
 check proves local integrity, not the private source identity; workspace
 integration additionally compares the selected Git blob.
+
+The offline consumption package described in [offline distribution](offline-distribution.md)
+contains English bodies only. This does not change the site exporter: repository mode
+continues to export and verify every declared language through complete core bundles.
+The offline storage context is scoped to explicit consumer calls and is never enabled
+by the documentation build.

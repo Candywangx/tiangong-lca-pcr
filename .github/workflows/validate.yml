@@ -134,3 +134,21 @@ jobs:
           path: ${{ runner.temp }}/pcr-seo-report.json
           if-no-files-found: warn
           retention-days: 14
+
+  offline-distribution:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+      - name: Install locked build dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify complete offline distribution and reproducibility
+        run: npm run offline:test

@@ -1,3 +1,4 @@
+import { pcrSource } from "./source-context.mjs";
 import { createHash } from "node:crypto";
 import {
   closeSync,
@@ -94,6 +95,7 @@ export function readClassificationCoverage({ root, system, version }) {
 }
 
 export function readClassificationCoverageSnapshot({ root, system, version }) {
+  if (pcrSource(root)) return pcrSource(root).coverageSnapshot(system, version);
   const normalizedRoot = path.resolve(root);
   const normalized = normalizeClassification({ system, version });
   const coveragePath = classificationCoveragePath({
