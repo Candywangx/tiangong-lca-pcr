@@ -328,3 +328,7 @@ The [offline distribution contract](docs/offline-distribution.md) defines the se
 `tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
+
+Npm artifact releases use independent version sources and tags, main-bound validation,
+OIDC publication and offline transport assets. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
+for setup, first publication and retries. Npm release does not approve PCR methodology.

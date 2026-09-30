@@ -297,3 +297,7 @@ npm run validate
 
 Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
 Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.
+
+Npm artifact releases use independent version sources and tags, main-bound validation,
+OIDC publication and offline transport assets. See the [offline distribution contract](docs/offline-distribution.md#npm-release-automation)
+for setup, first publication and retries. Npm release does not approve PCR methodology.

@@ -1,0 +1,62 @@
+name: Tag npm releases from main
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-tag-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  release-context:
+    if: github.repository == 'tiangong-lca/pcr' && github.repository_id == '1277836444' && github.repository_owner_id == '327771381'
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.detect.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+      - name: Detect independent version changes
+        id: detect
+        env:
+          BASE_REF: ${{ github.event.before }}
+          HEAD_REF: ${{ github.sha }}
+        run: node builder/scripts/npm-release.mjs detect
+
+  quality-gate:
+    needs: release-context
+    if: needs.release-context.outputs.changed == 'true' && vars.PCR_NPM_RELEASE_ENABLED == 'true'
+    uses: ./.github/workflows/validate.yml
+
+  tag-release:
+    needs: [release-context, quality-gate]
+    if: needs.release-context.outputs.changed == 'true' && vars.PCR_NPM_RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+      - name: Refresh main ancestry
+        run: git fetch origin +refs/heads/main:refs/remotes/origin/main
+      - name: Create immutable tags and dispatch publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_REF: ${{ github.event.before }}
+          HEAD_REF: ${{ github.sha }}
+        run: node builder/scripts/npm-release.mjs tag

@@ -1,0 +1,132 @@
+name: Publish offline npm packages
+
+on:
+  push:
+    tags: ['pcr-v*', 'library-v*']
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Existing release tag; run this workflow at the same tag ref.
+        required: true
+        type: string
+      bootstrap:
+        description: First publication of an unregistered npm name using the temporary environment secret.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-publish-${{ startsWith(github.ref, 'refs/tags/library-v') && 'library' || 'tool' }}
+  cancel-in-progress: false
+
+jobs:
+  release-context:
+    if: vars.PCR_NPM_RELEASE_ENABLED == 'true' && github.repository == 'tiangong-lca/pcr' && github.repository_id == '1277836444' && github.repository_owner_id == '327771381'
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.context.outputs.tag }}
+      dist_tag: ${{ steps.context.outputs.dist_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+      - name: Refresh main and tags
+        run: |
+          git fetch origin +refs/heads/main:refs/remotes/origin/main
+          git fetch --force origin '+refs/tags/*:refs/tags/*'
+      - name: Bind release to canonical repository, main, tag and version
+        id: context
+        env:
+          RELEASE_TAG: ${{ inputs.tag_name || github.ref_name }}
+        run: node builder/scripts/npm-release.mjs context "$RELEASE_TAG"
+
+  quality-gate:
+    needs: release-context
+    uses: ./.github/workflows/validate.yml
+
+  npm-publish:
+    needs: [release-context, quality-gate]
+    runs-on: ubuntu-latest
+    environment: npm-release
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      RELEASE_TAG: ${{ needs.release-context.outputs.tag }}
+      DIST_TAG: ${{ needs.release-context.outputs.dist_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          registry-url: https://registry.npmjs.org
+      - name: Recheck tag after validation and environment approval
+        run: |
+          git fetch origin +refs/heads/main:refs/remotes/origin/main
+          git fetch --force origin '+refs/tags/*:refs/tags/*'
+          node builder/scripts/npm-release.mjs context "$RELEASE_TAG"
+      - name: Install locked build dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Build exact publishable tarball and offline assets
+        run: npm run release:build -- "$RELEASE_TAG" dist/npm-release
+      - name: Verify transport checksums and detect safe retry
+        id: registry
+        run: |
+          (cd dist/npm-release && sha256sum --check SHA256SUMS)
+          node builder/scripts/npm-release.mjs registry dist/npm-release/release.json
+      - name: Publish through npm trusted publisher
+        if: steps.registry.outputs.registry_state == 'missing' && inputs.bootstrap != true
+        run: |
+          node builder/scripts/npm-release.mjs channel "$RELEASE_TAG"
+          npm publish dist/npm-release/*.tgz --access public --provenance --ignore-scripts --tag "$DIST_TAG"
+      - name: Bootstrap an unregistered package with an explicitly supplied temporary token
+        if: steps.registry.outputs.registry_state == 'missing' && inputs.bootstrap == true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PCR_NPM_BOOTSTRAP_TOKEN }}
+        run: |
+          test -n "$NODE_AUTH_TOKEN" || { echo 'Missing npm-release environment secret PCR_NPM_BOOTSTRAP_TOKEN' >&2; exit 1; }
+          node builder/scripts/npm-release.mjs bootstrap "$RELEASE_TAG"
+          npm publish dist/npm-release/*.tgz --access public --provenance --ignore-scripts --tag "$DIST_TAG"
+      - name: Verify registry integrity and source commit
+        run: |
+          for attempt in 1 2 3 4 5; do
+            state="$(node builder/scripts/npm-release.mjs registry dist/npm-release/release.json)"
+            if echo "$state" | jq -e '.registry_state == "identical"' >/dev/null; then exit 0; fi
+            sleep 5
+          done
+          echo 'Published version was not visible with matching integrity and source commit.' >&2
+          exit 1
+      - name: Attach offline assets to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            flags=()
+            if [ "$DIST_TAG" = next ]; then flags+=(--prerelease); fi
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --verify-tag --title "$RELEASE_TAG" --notes "Offline PCR distribution. See release.json for the exact source commit and SHA256SUMS for transport verification. Package release does not approve PCR methodology." "${flags[@]}"
+          fi
+          assets=(dist/npm-release/*.tgz dist/npm-release/release.json dist/npm-release/SHA256SUMS)
+          if [ -f dist/npm-release/library.sqlite ]; then assets+=(dist/npm-release/library.sqlite dist/npm-release/library.sqlite.json); fi
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" "${assets[@]}" --clobber
+      - name: Preserve build evidence, including on publication failure
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            dist/npm-release/*.tgz
+            dist/npm-release/release.json
+            dist/npm-release/SHA256SUMS
+            dist/npm-release/library.sqlite*
+          if-no-files-found: warn
+          retention-days: 30

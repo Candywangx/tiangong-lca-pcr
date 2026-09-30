@@ -11,8 +11,12 @@ language: en
 whenToUse:
   - when building or consuming offline PCR packages
 whenToUpdate:
-  - when package layout, snapshot format or compatibility changes
+  - when package layout, snapshot format, compatibility or npm release automation changes
 checkPaths:
+  - .github/workflows/publish.yml
+  - .github/workflows/tag-release-from-merge.yml
+  - builder/scripts/npm-release*.mjs
+  - packages/tiangong-pcr-library/package.json
   - builder/scripts/build-offline-*.mjs
   - packages/pcr-core/src/offline-library.mjs
   - packages/pcr-core/src/source-context.mjs
@@ -131,4 +135,114 @@ No repository-wide license has been declared at implementation time. Generated
 packages therefore use `UNLICENSED` and preserve notices; bundled dependencies retain
 their own license files. Before public registry publication, owners must establish
 redistribution terms for tool/content and confirm control of the intended npm names.
-This implementation builds and tests artifacts; it does not publish to a registry.
+The workflows below publish generated artifacts only after release setup is enabled.
+Implementing these workflows does not itself publish either package.
+
+
+## npm release automation
+
+The release pattern follows the workspace CLI and SDK repositories: merge an explicit
+version change into `main`, pass qualification, create a package tag, and publish
+through npm trusted publishing. PCR retains npm and its existing lockfile instead
+of importing another repository's pnpm setup.
+
+| Package | Authoritative version source | Tag |
+| --- | --- | --- |
+| `tiangong-pcr` | `packages/tiangong-pcr-cli/package.json` | `pcr-v<version>` |
+| `tiangong-pcr-library` | `packages/tiangong-pcr-library/package.json` | `library-v<version>` |
+
+Both source manifests remain private. The library manifest is release metadata,
+not an installable library. Edit only the intended package version; content-only
+commits do not release automatically. Stable versions use npm `latest`, prereleases
+use `next`. Downgrades and SemVer build metadata are rejected. Introduction of a
+version source or migration from the legacy CLI package name does not trigger an
+initial release. The root private package version is unrelated.
+
+`tag-release-from-merge.yml` detects increases and calls the complete `validate.yml`
+gate, including documentation and Linux x64, Windows x64 and macOS ARM64 offline
+installation tests. It then creates immutable lightweight tags using its job-scoped
+`GITHUB_TOKEN` and explicitly dispatches `publish.yml` at each tag. This avoids a
+long-lived GitHub automation token: GitHub does not run push workflows for tags
+created with `GITHUB_TOKEN`, but does allow explicit workflow dispatch.
+
+`publish.yml` accepts a tag push or dispatch at that exact tag ref. It verifies the
+canonical repository and immutable owner/repository IDs, main ancestry, package
+version, checkout SHA, event SHA and workflow SHA. It reruns qualification and checks
+the source binding again after the `npm-release` environment gate. A tag moved or
+pointing outside main is rejected. Release concurrency is serialized per package. A delayed unpublished version cannot
+move its npm channel backwards; interrupted queued runs can be dispatched again.
+
+The publisher uses Node 24.19.0 and its bundled npm (11.17.0), locked build dependencies,
+and no release-build cache. This meets npm OIDC's minimum npm 11.5.1 / Node 22.14
+contract. `release:build` requires a clean committed checkout, stages the selected
+package, adds the matching public repository and `gitHead`, and packs exactly once.
+Only that tarball is published. Each GitHub Release includes the tarball,
+`release.json` (source commit, toolchain, SHA-256 and npm SHA-512 integrity), and
+`SHA256SUMS`. Library releases also include the portable SQLite file and its sidecar.
+Failed runs retain generated transport artifacts for 30 days in Actions.
+
+An already published version is skipped only when its name, version, tarball integrity
+and source commit all match. Different bytes or an uncertain registry response fail;
+only HTTP 404 means missing. After publication, the workflow verifies registry
+integrity before uploading GitHub assets. It does not overwrite npm versions or
+move existing tags. Retrying a matching tag can repair missing GitHub assets.
+
+### One-time owner setup
+
+1. Establish the tool/content redistribution terms and control of both npm names.
+   Generated notices currently declare `UNLICENSED`; publishing does not change that.
+2. Create the GitHub environment `npm-release`. Apply the repository's desired
+   reviewer protection and allow `pcr-v*` and `library-v*` tag deployments. GitHub
+   tag rules must permit the release job to create these tags, while preventing
+   updates/deletions. No personal GitHub release token is required.
+3. In **each npm package's** trusted publisher settings use GitHub owner
+   `tiangong-lca`, repository `pcr`, workflow filename `publish.yml`, environment
+   `npm-release`, and allow direct `npm publish`. Normal releases require no npm
+   token. npm does not validate these settings until a publish is attempted.
+4. Set the GitHub repository variable `PCR_NPM_RELEASE_ENABLED=true` only after
+   setup. With it absent or false, tag creation and publication remain disabled;
+   regular PR validation continues. No variables or secrets are created by these files.
+
+On 2026-09-30 both npm names returned HTTP 404. If an npm name has no package settings
+yet, use the explicit bootstrap path for its first publication: place a temporary,
+short-lived granular npm publish token in the `npm-release` environment secret
+`PCR_NPM_BOOTSTRAP_TOKEN`, create the intended tag on the qualified main commit,
+and dispatch at that tag with `bootstrap=true`. Bootstrap refuses a name that
+already exists and fails on registry errors. Both names may be bootstrapped
+independently. Afterwards configure both trusted publishers and revoke/delete the
+temporary token. Normal runs never fall back to this secret. Never paste the token
+into source, an Issue, or chat. Creating the configuration does not authorize the
+first publication; the owner selects and triggers it separately.
+
+### Release and recovery commands
+
+Build reviewable artifacts locally from a clean commit without publishing:
+
+```sh
+npm ci --ignore-scripts --no-audit --no-fund
+npm run release:build -- pcr-v0.1.0 dist/release-tool
+npm run release:build -- library-v0.1.0 dist/release-library
+```
+
+Use the versions actually recorded at that commit. Output directories must be new.
+For routine release, merge a PR increasing the selected source version; once enabled,
+main automation handles tagging and publication. For first release, an owner creates
+the matching lightweight tag at the qualified main commit after setup.
+
+Retry an existing tag (always select the tag as the workflow ref):
+
+```sh
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref pcr-v0.1.0 -f tag_name=pcr-v0.1.0
+# First publication only, before npm package settings exist:
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref library-v0.1.0 -f tag_name=library-v0.1.0 -F bootstrap=true
+```
+
+Retry the tag workflow if it created the tag but dispatch failed; it accepts an
+existing tag only at the same commit. After npm succeeds, retry publication normally
+(without bootstrap); identical npm bytes are reused and missing GitHub assets repaired.
+A conflicting tag/version requires a new reviewed version, never a force update.
+Package release does not change PCR lifecycle status or complete workspace integration.
+
+Verified upstream contracts: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/),
+[npm provenance](https://docs.npmjs.com/generating-provenance-statements/),
+[GitHub workflow triggering](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow).

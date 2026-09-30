@@ -7,6 +7,7 @@ import { deflateRawSync } from "node:zlib";
 import test from "node:test";
 import { buildOfflineLibrary } from "../../builder/scripts/build-offline-library.mjs";
 import { buildOfflineTool } from "../../builder/scripts/build-offline-packages.mjs";
+import { buildRelease } from "../../builder/scripts/npm-release.mjs";
 import { OfflineLibrary, sqliteDatabase, sha256, hashFile, metadataDigest } from "./src/offline-library.mjs";
 import { withPcrSource } from "./src/source-context.mjs";
 import { buildGuidance, listPcrs, resolveClassification, resolvePcrIdentity, validateDatasetAgainstGuidance, verifyDistributionCoverage, readPcrModuleDocumentBundle } from "./src/index.mjs";
@@ -109,7 +110,7 @@ test("offline distribution preserves contracts and installs without network", { 
     finally { stale.close(); }
   });
   await t.test("two tarballs install with an empty npm cache and offline-only resolution", () => {
-    const tool = path.join(temp, "tool"); buildOfflineTool({ root, output: tool });
+    const tool = path.join(temp, "tool"); const toolBuild = buildOfflineTool({ root, output: tool });
     const npmCli = process.env.npm_execpath;
     assert.ok(npmCli && existsSync(npmCli), "Run through npm run offline:test (npm_execpath required).");
     const npm = (args, cwd) => execFileSync(process.execPath, [npmCli, ...args, "--cache", path.join(temp, "empty-cache"), "--offline", "--ignore-scripts", "--no-audit", "--no-fund"], { cwd, encoding: "utf8", env: { ...process.env, npm_config_registry: "http://127.0.0.1:1" }, stdio: ["ignore", "pipe", "pipe"] });
@@ -118,7 +119,7 @@ test("offline distribution preserves contracts and installs without network", { 
     npm(["pack", output, "--pack-destination", temp], temp);
     const installation = path.join(temp, "installation"); mkdirSync(installation);
     writeFileSync(path.join(installation, "package.json"), '{"private":true}\n');
-    npm(["install", path.join(temp, "tiangong-pcr-0.1.0.tgz"), path.join(temp, "tiangong-pcr-library-0.1.0.tgz")], installation);
+    npm(["install", path.join(temp, `tiangong-pcr-${toolBuild.version}.tgz`), path.join(temp, "tiangong-pcr-library-0.1.0.tgz")], installation);
     const bin = path.join(installation, "node_modules/tiangong-pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
     const env = { ...process.env }; delete env.PCR_LIBRARY;
     const result = execFileSync(process.execPath, [bin, "guidance", "--pcr", wheat, "--format", "json"], { cwd: installation, env, encoding: "utf8" });
@@ -127,5 +128,25 @@ test("offline distribution preserves contracts and installs without network", { 
     assert.equal(existsSync(path.join(installation, "node_modules/tiangong-pcr/library")), false);
     const dataPackage = JSON.parse(readFileSync(path.join(installation, "node_modules/tiangong-pcr-library/package.json")));
     assert.equal(dataPackage.scripts, undefined); assert.equal(dataPackage.dependencies, undefined);
+  });
+  await t.test("release tarballs preserve source provenance and install entirely offline", async () => {
+    const toolVersion = JSON.parse(readFileSync(path.join(root, "packages/tiangong-pcr-cli/package.json"))).version;
+    const libraryVersion = JSON.parse(readFileSync(path.join(root, "packages/tiangong-pcr-library/package.json"))).version;
+    const toolOutput = path.join(temp, "release-tool"); const libraryOutput = path.join(temp, "release-library");
+    const tool = await buildRelease(root, `pcr-v${toolVersion}`, toolOutput);
+    const data = await buildRelease(root, `library-v${libraryVersion}`, libraryOutput);
+    const installation = path.join(temp, "release-install"); mkdirSync(installation);
+    writeFileSync(path.join(installation, "package.json"), '{"private":true}\n');
+    execFileSync(process.execPath, [process.env.npm_execpath, "install", path.join(toolOutput, tool.filename), path.join(libraryOutput, data.filename), "--offline", "--ignore-scripts", "--no-audit", "--no-fund", "--cache", path.join(temp, "release-empty-cache")], { cwd: installation, env: { ...process.env, npm_config_registry: "http://127.0.0.1:1" }, stdio: "pipe" });
+    for (const receipt of [tool, data]) {
+      const pkg = JSON.parse(readFileSync(path.join(installation, "node_modules", receipt.name, "package.json")));
+      assert.equal(pkg.version, receipt.version); assert.equal(pkg.gitHead, receipt.source_commit);
+      assert.equal(pkg.repository.url, "git+https://github.com/tiangong-lca/pcr.git");
+      assert.equal(pkg.private, undefined);
+    }
+    const bin = path.join(installation, "node_modules/tiangong-pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
+    const verified = JSON.parse(execFileSync(process.execPath, [bin, "library", "verify", "--library", path.join(libraryOutput, "library.sqlite"), "--format", "json"], { cwd: installation, encoding: "utf8" }));
+    assert.equal(verified.verified, true);
+    assert.ok(readFileSync(path.join(libraryOutput, "SHA256SUMS"), "utf8").includes("library.sqlite.json"));
   });
 });
