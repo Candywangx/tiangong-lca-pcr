@@ -218,3 +218,14 @@ measurement relationship using finite rules; missing conversion is an error and 
 Symbolic machine mass M is a collection requirement, not a fabricated numeric input. Goal contract-2 tasks additionally
 prepare their report from finalized receipts and submit its reference; follow the assigned Harness prompt and
 `builder/docs/tools/goal-harness.md`.
+
+## Offline consumer distribution
+
+The [offline distribution contract](offline-distribution.md) defines the separate `tiangong-pcr` tool and
+`tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
+structured YAML only; source authoring and translation workflows remain unchanged.
+Use explicit snapshot selection and verification for offline consumption.
+
+Npm artifact releases use independent version sources and tags, main-bound validation,
+OIDC publication and offline transport assets. See the [offline distribution contract](offline-distribution.md#npm-release-automation)
+for setup, first publication and retries. Npm release does not approve PCR methodology.

@@ -1,6 +1,7 @@
 name: Validate PCR library
 
 on:
+  workflow_call:
   pull_request:
   push:
     branches:
@@ -134,3 +135,26 @@ jobs:
           path: ${{ runner.temp }}/pcr-seo-report.json
           if-no-files-found: warn
           retention-days: 14
+
+  offline-distribution:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Configure exact-byte Windows checkout and long paths
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.longpaths true
+          git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+      - name: Install locked build dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify complete offline distribution and reproducibility
+        run: npm run offline:test

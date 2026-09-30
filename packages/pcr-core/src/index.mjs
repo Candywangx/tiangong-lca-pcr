@@ -1,3 +1,4 @@
+import { pcrSource } from "./source-context.mjs";
 import { createHash } from "node:crypto";
 import {
   closeSync,
@@ -27,7 +28,7 @@ import {
   hasDeclaredUnresolvedReferenceProductFlow,
   materialProjectionCompletenessIssues,
 } from "./projection-completeness.mjs";
-import { findPcrIdAlias } from "./pcr-id-aliases.mjs";
+import { findPcrIdAlias as findRepositoryPcrIdAlias } from "./pcr-id-aliases.mjs";
 import {
   assertPcrReadContextFresh,
   createPcrReadContext,
@@ -193,7 +194,13 @@ export class PcrCatalogScopeError extends Error {
   }
 }
 
+function findPcrIdAlias(options) {
+  const source = pcrSource(options.root);
+  return source ? source.findAlias(options.pcrId) : findRepositoryPcrIdAlias(options);
+}
+
 export function listPcrs({ root, refresh = false, scope = "all" }) {
+  if (pcrSource(root)) return pcrSource(root).listPcrs(normalizeCatalogScope(scope));
   const normalizedScope = normalizeCatalogScope(scope);
   const normalizedRoot = path.resolve(root);
   const catalog = getPcrCatalog({ root: normalizedRoot, refresh });
@@ -262,7 +269,7 @@ export function buildPcrTree({ root, depth = Infinity, scope = "all" }) {
   return tree;
 }
 
-export function resolveClassification({ root, system, version, code }) {
+export function resolveClassification({ root, system, version, code, context = null }) {
   const normalizedSystem = String(system).toLowerCase();
   const normalizedVersion = String(version);
   const normalizedCode = String(code);
@@ -277,10 +284,21 @@ export function resolveClassification({ root, system, version, code }) {
     version: normalizedVersion,
     code: normalizedCode,
     coverageIndex,
+    context,
   });
 }
 
-function resolveClassificationWithCoverage({ root, system, version, code, coverageIndex }) {
+export function verifyDistributionCoverage({ root, snapshot, context }) {
+  const coverageIndex = snapshot.document;
+  for (const entry of coverageIndex.entries) {
+    if (entry.coverage_status === "mapped" || entry.legacy_reference) {
+      resolveClassificationWithCoverage({ root, system: String(coverageIndex.classification_system).toLowerCase(),
+        version: String(coverageIndex.classification_version), code: String(entry.code), coverageIndex, context });
+    }
+  }
+}
+
+function resolveClassificationWithCoverage({ root, system, version, code, coverageIndex, context = null }) {
   const coverage = coverageIndex.entries.find(
     (candidate) => String(candidate.code) === String(code),
   );
@@ -295,7 +313,7 @@ function resolveClassificationWithCoverage({ root, system, version, code, covera
       code,
     });
     assertCoverageMappingMatchesCanonical({ coverage, canonical, system, version, code });
-    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id });
+    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id, context });
     if (pcr.record_kind !== "methodology") {
       throw invalidCoverageResolution({
         system,
@@ -330,7 +348,7 @@ function resolveClassificationWithCoverage({ root, system, version, code, covera
         issue: `legacy reference ${coverage.legacy_reference.pcr_id} does not match canonical mapping ${canonical.mapping.pcr_id}`,
       });
     }
-    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id });
+    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id, context });
     if (pcr.record_kind !== "legacy_scaffold_reference") {
       throw invalidCoverageResolution({
         system,
@@ -375,7 +393,7 @@ function readCanonicalClassificationMapping({ root, system, version, code }) {
   const mappingRelativePath = toPosix(path.relative(normalizedRoot, mappingPath));
   let mappingFile;
   try {
-    const mappingBytes = readControlledRepositoryFileBytes({
+    const mappingBytes = pcrSource(root)?.readFile(mappingRelativePath) ?? readControlledRepositoryFileBytes({
       root: normalizedRoot,
       filePath: mappingPath,
       relativePath: mappingRelativePath,
@@ -601,6 +619,9 @@ export function getPcrReadiness({ root, pcrId, refresh = false, context = null }
 export function readPcrMarkdown({ root, pcrId, language = "en-US", context = null }) {
   const readRoot = root ?? context?.root;
   const snapshot = getCurrentPcrSnapshot({ root: readRoot, pcrId, context });
+  if (pcrSource(readRoot) && !pcrSource(readRoot).languages.includes(language)) {
+    throw Object.assign(new Error(`Offline library contains English only; requested ${language}. Use --lang en-US.`), { code: "PCR_LIBRARY_LANGUAGE_UNAVAILABLE" });
+  }
   const markdownName = `pcr.${language}.md`;
   const markdownPath = path.join(readRoot, snapshot.pcr.path, markdownName);
   const artifact = snapshot.artifacts[markdownName];
@@ -616,12 +637,12 @@ export function readPcrDocumentBundle({ root, pcrId, context = null }) {
   const snapshot = getCurrentPcrSnapshot({ root, pcrId, context });
   const { pcr, manifest, manifestBytes, structured } = snapshot;
   assertPcrUsable({ pcr, operation: "guidance" });
-  const languages = declaredPcrLanguages(manifest);
+  const languages = pcrSource(root)?.languages ?? declaredPcrLanguages(manifest);
   if (![1, 2].includes(manifest.schema_version)) throw new Error(`Unsupported document manifest schema: ${manifest.schema_version}`);
   for (const language of languages) if (typeof manifest.title?.[language] !== "string" || !manifest.title[language].trim()) throw new Error(`Document requires a nonempty ${language} title.`);
   const artifacts = {};
   const decoder = new TextDecoder("utf-8", { fatal: true });
-  for (const name of ["manifest.yaml", ...pcrArtifactFiles(manifest)]) {
+  for (const name of ["manifest.yaml", ...(pcrSource(root) ? [...languages.map((language) => `pcr.${language}.md`), "structured.yaml"] : pcrArtifactFiles(manifest))]) {
     const bytes = name === "manifest.yaml" ? manifestBytes : snapshot.artifacts[name]?.bytes;
     if (!bytes) throw new Error(`PCR document artifact is unavailable: ${pcr.path}/${name}`);
     // A copy prevents consumers from changing a cached snapshot through Buffer aliasing.
@@ -651,7 +672,7 @@ export function readPcrModuleDocumentBundle({ root, group, moduleId }) {
   for (const value of [group, moduleId]) if (typeof value !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(value)) throw new Error("Invalid PCR module identity.");
   const relativePath = `library/modules/${group}/${moduleId}.md`;
   const filePath = path.join(root, relativePath);
-  const read = () => readControlledRepositoryFileBytes({ root, filePath, relativePath, label: "PCR module" });
+  const read = () => pcrSource(root)?.readFile(relativePath) ?? readControlledRepositoryFileBytes({ root, filePath, relativePath, label: "PCR module" });
   const bytes = read();
   const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
   const envelope = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/u.exec(text);
@@ -1032,7 +1053,21 @@ function getCurrentPcrSnapshot({ root, pcrId, refresh = false, context = null })
   return getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh, context });
 }
 
+export function readPcrDistributionCatalog({ root }) {
+  return readPcrCatalog(path.resolve(root));
+}
+
+// Builder-only: preserves legacy catalog records without following alias redirects.
+export function readPcrDistributionSnapshot(options) {
+  return getCurrentPcrSnapshotUnchecked(options);
+}
+
 function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false, context = null }) {
+  if (pcrSource(root)) {
+    const entry = pcrSource(root).entry(pcrId);
+    if (!entry) throw new Error(`PCR not found: ${pcrId}`);
+    return currentPcrSnapshot(root, entry);
+  }
   const normalizedRoot = path.resolve(root);
   if (context) {
     assertPcrReadContextFresh({ context, root: normalizedRoot });
@@ -1054,7 +1089,7 @@ function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false, context 
 }
 
 function currentPcrSnapshot(root, entry, context = null) {
-  const snapshotFiles = readConsistentSnapshotFiles({ root, entry, context });
+  const snapshotFiles = pcrSource(root)?.snapshotFiles(entry) ?? readConsistentSnapshotFiles({ root, entry, context });
   const pcr = pcrFromManifest({
     root,
     pcrDir: path.dirname(entry.manifestPath),
