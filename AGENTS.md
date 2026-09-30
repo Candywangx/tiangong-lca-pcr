@@ -28,8 +28,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-30
-lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
-lastReviewedNote: "Reviewed PCR #49 package README/MIT changes. Ownership, public CLI behavior, authoring and validation contracts are unchanged."
+lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
+lastReviewedNote: "Reviewed PCR #51. Removing npm post-publish polling preserves repository ownership, qualification, and methodology boundaries."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library

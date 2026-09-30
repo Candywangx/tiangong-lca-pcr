@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-09-30
-lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
-lastReviewedNote: "Reviewed PCR #49 package documentation and MIT license. Package-specific consumer entry points and repository license are now explicit."
+lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
+lastReviewedNote: "Reviewed PCR #51. Package entry points and release contract link remain accurate after removing post-publish polling."
 ---
 
 # TianGong LCA PCR Library

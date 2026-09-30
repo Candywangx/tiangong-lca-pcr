@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-09-30
-lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
-lastReviewedNote: "Reviewed PCR #49. MIT distribution and consumer README changes do not alter PCR authoring, readiness or methodology publication."
+lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
+lastReviewedNote: "Reviewed PCR #51. Removing npm post-publish polling does not alter PCR authoring or methodology publication."
 ---
 
 # Authoring Guide
