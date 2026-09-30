@@ -9,7 +9,7 @@ import { buildOfflineLibrary } from "../../builder/scripts/build-offline-library
 import { buildOfflineTool } from "../../builder/scripts/build-offline-packages.mjs";
 import { OfflineLibrary, sqliteDatabase, sha256, hashFile, metadataDigest } from "./src/offline-library.mjs";
 import { withPcrSource } from "./src/source-context.mjs";
-import { buildGuidance, listPcrs, resolveClassification, resolvePcrIdentity, validateDatasetAgainstGuidance, readPcrModuleDocumentBundle } from "./src/index.mjs";
+import { buildGuidance, listPcrs, resolveClassification, resolvePcrIdentity, validateDatasetAgainstGuidance, verifyDistributionCoverage, readPcrModuleDocumentBundle } from "./src/index.mjs";
 import { runTiangongPcr } from "../tiangong-pcr-cli/src/commands.mjs";
 
 const root = path.resolve(".");
@@ -47,6 +47,8 @@ test("offline distribution preserves contracts and installs without network", { 
     assert.deepEqual(run(() => readPcrModuleDocumentBundle({ root: library.root, group: "core", moduleId: "allocation" })), readPcrModuleDocumentBundle({ root, group: "core", moduleId: "allocation" }));
   });
   await t.test("accepted mappings, known-unmapped leaves and aliases retain semantics", () => {
+    // Coverage documents use uppercase CPC; physical source paths are lowercase.
+    run(() => verifyDistributionCoverage({ root: library.root, snapshot: library.coverageSnapshot("cpc", "3.0") }));
     for (const code of ["01111", "99000"]) assert.deepEqual(run(() => resolveClassification({ root: library.root, system: "cpc", version: "3.0", code })), resolveClassification({ root, system: "cpc", version: "3.0", code }));
     const alias = library.db.prepare("SELECT key FROM aliases ORDER BY key LIMIT 1").get().key;
     assert.deepEqual(run(() => resolvePcrIdentity({ root: library.root, pcrId: alias })), resolvePcrIdentity({ root, pcrId: alias }));

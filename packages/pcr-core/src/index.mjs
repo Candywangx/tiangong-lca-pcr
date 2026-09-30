@@ -292,8 +292,8 @@ export function verifyDistributionCoverage({ root, snapshot, context }) {
   const coverageIndex = snapshot.document;
   for (const entry of coverageIndex.entries) {
     if (entry.coverage_status === "mapped" || entry.legacy_reference) {
-      resolveClassificationWithCoverage({ root, system: coverageIndex.classification_system,
-        version: coverageIndex.classification_version, code: entry.code, coverageIndex, context });
+      resolveClassificationWithCoverage({ root, system: String(coverageIndex.classification_system).toLowerCase(),
+        version: String(coverageIndex.classification_version), code: String(entry.code), coverageIndex, context });
     }
   }
 }

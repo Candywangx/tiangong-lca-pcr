@@ -34,7 +34,10 @@ The source package directories are development inputs; publish only generated pa
 
 Node 24.19+ is required for offline SQLite reads. The implementation uses the built-in
 SQLite module (release-candidate API in this runtime), without native npm addons.
-Supported targets are macOS ARM64, Linux x64 and Windows x64. Prepare Node separately
+Supported targets are macOS ARM64, Linux x64 and Windows x64. A Windows source
+checkout used for building needs `core.longpaths=true` and `core.autocrlf=false`
+before checkout, so long paths and exact-byte source fingerprints are preserved.
+Installed content packages do not require Git. Prepare Node separately
 on a connected machine if the destination has no runtime. No install hooks, runtime
 network calls or implicit content downloads are used.
 
