@@ -1324,6 +1324,8 @@ Agent next step:
   if (definition.key === "show") {
     return `Usage: tiangong-pcr show --pcr <pcr-id> [options]
 
+Offline snapshots contain English only; use --lang en-US. Other languages require repository mode.
+
 Print the human-readable PCR Markdown.
 
 Options:

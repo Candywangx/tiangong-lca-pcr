@@ -8,7 +8,7 @@ tiangong-pcr list --path-prefix <domain/subdomain> --format json
 tiangong-pcr list --page 2 --page-size 10
 tiangong-pcr tree --format markdown
 tiangong-pcr resolve --classification cpc:3.0:01111 --format json
-tiangong-pcr show --pcr <pcr-id> --lang zh-CN
+tiangong-pcr show --pcr <pcr-id> --lang en-US
 tiangong-pcr guidance --pcr <pcr-id> --format json
 tiangong-pcr validate-dataset --pcr <pcr-id> --input <file> --format json
 tiangong-pcr feedback draft --pcr <pcr-id> --type <feedback-type> --summary "<finding>"
