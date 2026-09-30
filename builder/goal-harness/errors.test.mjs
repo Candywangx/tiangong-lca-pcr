@@ -34,3 +34,15 @@ test('prepared report and sealed receipt binding failures are integrity holds',(
     assert.equal(result.category,'integrity');assert.equal(result.action,'hold');
   }
 });
+
+test('local source timeout recovery requires the observed Harness timer contract', () => {
+  const timeout = { code: 'GOAL_SOURCE_REQUEST_TIMEOUT', details: { origin: 'harness_request_timer', failure_kind: 'timeout', retryable: true,
+    source_fetch_diagnostics: { abort_source: 'harness_request_timeout' } } };
+  assert.equal(errors.selectRecovery(timeout, { completeReport: true }).action, 'recheck');
+  assert.equal(errors.selectRecovery(timeout).action, 'resume');
+  for (const unproven of [
+    { ...timeout, details: { ...timeout.details, source_fetch_diagnostics: undefined } },
+    { ...timeout, code: 'UNPROVEN_TIMEOUT' },
+    { ...timeout, author_reported: true },
+  ]) assert.equal(errors.selectRecovery(unproven).action, 'hold');
+});

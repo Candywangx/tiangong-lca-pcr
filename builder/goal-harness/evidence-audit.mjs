@@ -224,67 +224,151 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
     if (source.discovery_only === true) continue;
     const locator = normalizeLocator(source.locator);
     if (/openalex\.org|api\.openalex\.org|scholar\.google|search\?/iu.test(locator)) {
-      throw new GoalHarnessError("GOAL_SOURCE_DISCOVERY_ONLY", `Discovery/search locator cannot be final evidence: ${source.source_id}`, { source_id: source.source_id, locator });
+      throw new GoalHarnessError("GOAL_SOURCE_DISCOVERY_ONLY", `Discovery/search locator cannot be final evidence: ${source.source_id}`, { source_id: source.source_id, locator: sourceLocatorOrigin(locator) });
     }
+    const startedAt = now();
+    const diagnostics = {
+      started_at: new Date(startedAt).toISOString(), ended_at: null, elapsed_ms: null,
+      remaining_budget_ms_at_entry: sourceRemainingBudget(deadline, startedAt), remaining_budget_ms_at_exit: null,
+      io_budget_ms: 0, abort_source: null, http_status: null, media_type: null, bytes_read: 0,
+      response_complete: false, response_sha256: null, response_sha256_scope: null, identity_rejection_reason: null,
+    };
+    const responseHash = createHash('sha256');
+    const finishDiagnostics = () => {
+      const endedAt = now();
+      diagnostics.ended_at = new Date(endedAt).toISOString();
+      diagnostics.elapsed_ms = Math.max(0, endedAt - startedAt);
+      diagnostics.remaining_budget_ms_at_exit = sourceRemainingBudget(deadline, endedAt);
+      if (diagnostics.bytes_read > 0 || diagnostics.response_complete) {
+        diagnostics.response_sha256 = `sha256:${responseHash.copy().digest('hex')}`;
+        diagnostics.response_sha256_scope = diagnostics.response_complete ? 'complete' : 'partial';
+      }
+      return { ...diagnostics };
+    };
+    const windowError = () => new GoalHarnessError('GOAL_REVIEW_WINDOW_EXHAUSTED', 'The current review execution window is exhausted.', {
+      phase, origin: 'harness_deadline', failure_kind: 'execution_window', retryable: false, subject_id: source.source_id,
+    });
+    const secondaryError = error => {
+      const exhausted = error?.code === 'GOAL_REVIEW_WINDOW_EXHAUSTED';
+      if (exhausted) diagnostics.abort_source = 'harness_review_window';
+      const knownCodes = ['GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE', 'GOAL_CACHE_EVENT_LOG_CORRUPT', 'GOAL_CACHE_LOCK_TIMEOUT', 'GOAL_CACHE_RECEIPT_ID_INVALID'];
+      const code = exhausted ? 'GOAL_REVIEW_WINDOW_EXHAUSTED' : knownCodes.includes(error?.code) ? error.code : 'GOAL_SOURCE_AUDIT_FINALIZATION_FAILED';
+      return new GoalHarnessError(code, exhausted ? 'The current review execution window is exhausted.' : 'Source audit finalization could not be completed.', {
+        phase, origin:exhausted?'harness_deadline':error?.code === 'GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE'?'harness_review':'source_cache',
+        failure_kind:exhausted?'execution_window':error?.code === 'GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE'?'configuration':'unknown',retryable:false,
+        subject_id:source.source_id,source_id:source.source_id,locator:sourceLocatorOrigin(locator),source_fetch_diagnostics:finishDiagnostics(),
+      });
+    };
     const controller = new AbortController();
-    const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id }));
-    const timeout = setTimeout(() => controller.abort(), ioBudget);
-    let response, content;
+    let timeout, timerError, httpError, response, content;
     try {
+      const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id }));
+      diagnostics.io_budget_ms = ioBudget;
+      timeout = setTimeout(() => {
+        const windowExpired = diagnostics.remaining_budget_ms_at_entry !== null
+          && (diagnostics.remaining_budget_ms_at_entry <= ioBudget || sourceRemainingBudget(deadline, now()) === 0);
+        diagnostics.abort_source = windowExpired ? 'harness_review_window' : 'harness_request_timeout';
+        timerError = windowExpired ? windowError() : new GoalHarnessError('GOAL_SOURCE_REQUEST_TIMEOUT', 'The Harness source request timeout was reached.', {
+          phase: 'source_fetch', origin: 'harness_request_timer', failure_kind: 'timeout', retryable: true, subject_id: source.source_id,
+        });
+        controller.abort(timerError);
+      }, ioBudget);
       response = await abortable(fetchImpl(locator, { method: "GET", redirect: "follow", signal: controller.signal, headers: { "user-agent": "tiangong-pcr-goal-harness/1.0" } }), controller.signal);
+      diagnostics.http_status = sourceHttpStatus(response.status);
+      diagnostics.media_type = sourceMediaType(response.headers?.get?.('content-type'));
       reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
       if (!response.ok) {
         const status = response.status;
         const retryable = status === 429 || status >= 500;
         const retryAfter = response.headers?.get?.('retry-after');
         const retrySeconds = retryAfter == null ? null : /^\d+$/u.test(retryAfter) ? Number(retryAfter) : Math.max(0, Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000));
-        throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Source locator returned HTTP ${status}: ${source.source_id}`, {
+        httpError = new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Source locator returned HTTP ${status}: ${source.source_id}`, {
           phase:'source_fetch', origin:'source_http', failure_kind:status === 429 ? 'rate_limit' : status >= 500 ? 'service_unavailable' : status === 401 || status === 403 ? 'authorization' : 'unknown',
-          retryable, source_id:source.source_id, subject_id:source.source_id, locator, status,
+          retryable, source_id:source.source_id, subject_id:source.source_id, locator:sourceLocatorOrigin(locator), status,
           retry_after_seconds:Number.isFinite(retrySeconds) ? retrySeconds : null,
         });
+        throw httpError;
       }
-      content = await readResponseBytes(response, 64 * 1024 * 1024, { signal: controller.signal, deadline, now, phase, subjectId: source.source_id });
+      content = await readResponseBytes(response, 64 * 1024 * 1024, { signal: controller.signal, deadline, now, phase, subjectId: source.source_id,
+        onChunk: chunk => { diagnostics.bytes_read += chunk.byteLength; responseHash.update(chunk); },
+        onComplete: () => { diagnostics.response_complete = true; },
+      });
       reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
     } catch (error) {
-      reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
-      const machineCode = error?.cause?.code ?? error?.code;
-      const reliable = ['ECONNRESET','ECONNREFUSED','ETIMEDOUT','ENETUNREACH','EAI_AGAIN'].includes(machineCode) || ['AbortError','TimeoutError'].includes(error?.name);
-      const fallbackAllowed = error instanceof GoalHarnessError
-        ? error.code === "GOAL_SOURCE_LOCATOR_UNREADABLE" && error.details?.origin === "source_http"
-          && [401, 403, 404, 408, 410, 429, 500, 502, 503, 504].includes(error.details?.status)
-        : reliable;
-      const cached = fallbackAllowed && source.original_text_verified === true && stateDir
-        ? findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase }) : null;
+      if (sourceRemainingBudget(deadline, now()) === 0 || timerError?.code === 'GOAL_REVIEW_WINDOW_EXHAUSTED') {
+        diagnostics.abort_source = 'harness_review_window';
+        error = windowError();
+      } else if (timerError) error = timerError;
+      else if (error?.name === 'AbortError') diagnostics.abort_source = 'unproven_abort';
+      const machineCode = sourceMachineCode(error);
+      const reliable = sourceTransportKind(machineCode) !== null;
+      const observedHttpFailure = httpError !== undefined && error === httpError;
+      const observedRequestTimeout = error === timerError && diagnostics.abort_source === 'harness_request_timeout';
+      const fallbackAllowed = observedHttpFailure
+        ? [401, 403, 404, 408, 410, 429, 500, 502, 503, 504].includes(response.status)
+        : observedRequestTimeout || reliable;
+      let cached;
+      try {
+        cached = fallbackAllowed && source.original_text_verified === true && stateDir
+          ? findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase }) : null;
+      } catch (cacheError) { throw secondaryError(cacheError); }
       if (cached) {
-        audits.push({ ...cached.value, cache_hit:true, cache_receipt_id:cached.receipt_id, cache_reused_at:new Date().toISOString() });
+        audits.push({ ...cached.value, cache_hit:true, cache_receipt_id:cached.receipt_id, cache_reused_at:new Date().toISOString(),
+          cache_fallback_fetch_diagnostics: finishDiagnostics() });
         continue;
       }
-      if (error instanceof GoalHarnessError) throw error;
-      throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}: ${error.message}`, {
-        phase:'source_fetch', origin:'source_http', failure_kind:reliable ? 'network' : 'unknown', retryable:reliable,
-        subject_id:source.source_id, source_id:source.source_id, locator, machine_code:machineCode ?? null,
+      const details = { subject_id:source.source_id, source_id:source.source_id, locator:sourceLocatorOrigin(locator),
+        source_fetch_diagnostics: finishDiagnostics() };
+      if (diagnostics.abort_source === 'harness_review_window' || observedRequestTimeout || observedHttpFailure) {
+        throw new GoalHarnessError(error.code, error.message, { ...error.details, ...details });
+      }
+      if (error?.code === 'GOAL_SOURCE_ORIGINAL_TEXT_TOO_LARGE') {
+        throw new GoalHarnessError(error.code, 'Source original text exceeds the 67108864-byte cache limit.', details);
+      }
+      throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}.`, {
+        phase:'source_fetch', origin:'source_http', failure_kind:sourceTransportKind(machineCode) ?? 'unknown', retryable:reliable,
+        ...details, machine_code:machineCode,
       });
     } finally { clearTimeout(timeout); }
     // Identity and durable writes deliberately sit outside the transport catch.
     const contentType = response.headers?.get?.('content-type') ?? null;
-    const { challenge, identifiable, kind } = originalSourceIdentity(source, content, { deadline, now, phase });
+    let identity;
+    try {
+      identity = originalSourceIdentity(source, content, { deadline, now, phase });
+    } catch (error) {
+      const exhausted = error?.code === 'GOAL_REVIEW_WINDOW_EXHAUSTED';
+      if (exhausted) diagnostics.abort_source = 'harness_review_window';
+      const missingExtractor = error?.code === 'GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE';
+      diagnostics.identity_rejection_reason = exhausted ? 'review_window_exhausted' : missingExtractor ? 'pdf_extractor_unavailable' : 'identity_check_failed';
+      throw new GoalHarnessError(exhausted ? 'GOAL_REVIEW_WINDOW_EXHAUSTED' : missingExtractor ? error.code : 'GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED',
+        exhausted ? 'The current review execution window is exhausted.' : missingExtractor ? 'PDF originals require pdftotext on PATH.' : `Original source identity needs review: ${source.source_id}`, {
+          phase:'source_identity',origin:exhausted?'harness_deadline':'harness_review',failure_kind:exhausted?'execution_window':missingExtractor?'configuration':'unknown',retryable:false,
+          subject_id:source.source_id,source_id:source.source_id,locator:sourceLocatorOrigin(locator),source_fetch_diagnostics:finishDiagnostics(),
+        });
+    }
+    const { challenge, identifiable, kind } = identity;
     if (challenge || (source.original_text_verified === true && !identifiable)) {
+      diagnostics.identity_rejection_reason = identity.rejection_reason ?? (challenge ? 'access_challenge' : 'original_identity_unrecognized');
+      if (identity.observations) diagnostics.identity_observations = identity.observations;
       throw new GoalHarnessError('GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED', `Original source identity needs review: ${source.source_id}`, {
-        content_kind:kind,phase:'source_identity',origin:'harness_review',failure_kind:'unknown',retryable:false,subject_id:source.source_id,source_id:source.source_id,locator,http_status:response.status,
+        content_kind:kind,phase:'source_identity',origin:'harness_review',failure_kind:'unknown',retryable:false,subject_id:source.source_id,source_id:source.source_id,locator:sourceLocatorOrigin(locator),http_status:response.status,
+        source_fetch_diagnostics:finishDiagnostics(),
       });
     }
     const contentSha256 = `sha256:${createHash('sha256').update(content).digest('hex')}`;
     const audit = { source_id:source.source_id, locator, resolved_url:response.url || locator, http_status:response.status,
       content_type:contentType, original_text_claimed_verified:source.original_text_verified === true,
-      original_identity_verified:identifiable && !challenge, content_kind:kind, checked_at:new Date().toISOString(), content_sha256:contentSha256, content_byte_length:content.byteLength };
-    if (stateDir) {
-      const keyInput = {source_id:source.source_id,locator};
-      const tool = {name:'http-original-text-fetch',version:'1'};
-      appendGoalCacheReceipt({stateDir,namespace:'source_locator_checks',keyInput,tool,sourceFingerprint:contentSha256,value:audit});
-      if (source.original_text_verified === true) appendGoalCacheReceipt({stateDir,namespace:'source_original_text_receipts',keyInput,tool,sourceFingerprint:contentSha256,value:audit,blob:content});
-    }
-    reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+      original_identity_verified:identifiable && !challenge, content_kind:kind, checked_at:new Date().toISOString(), content_sha256:contentSha256, content_byte_length:content.byteLength,
+      source_fetch_diagnostics:finishDiagnostics() };
+    try {
+      if (stateDir) {
+        const keyInput = {source_id:source.source_id,locator};
+        const tool = {name:'http-original-text-fetch',version:'1'};
+        appendGoalCacheReceipt({stateDir,namespace:'source_locator_checks',keyInput,tool,sourceFingerprint:contentSha256,value:audit});
+        if (source.original_text_verified === true) appendGoalCacheReceipt({stateDir,namespace:'source_original_text_receipts',keyInput,tool,sourceFingerprint:contentSha256,value:audit,blob:content});
+      }
+      reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+    } catch (error) { throw secondaryError(error); }
     audits.push(audit);
   }
   return audits;
@@ -303,15 +387,34 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
     if (extracted.error?.code === "ENOENT") throw new GoalHarnessError("GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE", "PDF originals require pdftotext on PATH.", {
       phase: "source_identity", origin: "harness_review", failure_kind: "configuration", retryable: false, subject_id: source.source_id,
     });
-    if (extracted.status !== 0 || extracted.error) return { challenge: false, identifiable: false, kind: "unrecognized" };
+    if (extracted.status !== 0 || extracted.error) return { challenge: false, identifiable: false, kind: "unrecognized", rejection_reason: 'pdf_extraction_failed' };
     text = extracted.stdout;
   }
   const challenge = /<input[^>]*type=["']?password|<title>[^<]*(?:sign in|log in|login)|captcha|verify you are human|checking your browser/iu.test(text);
-  if (challenge) return { challenge: true, identifiable: false, kind: "access_challenge" };
+  if (challenge) return { challenge: true, identifiable: false, kind: "access_challenge", rejection_reason: 'access_challenge' };
   if (!isPdf) {
     text = text.replace(/<!--[^]*?-->/gu, "").replace(/<(script|style|nav|header|footer|head)\b[^>]*>[^]*?<\/\1\s*>/giu, "");
-    const body = text.match(/<(article|main)\b[^>]*>([^]*?)<\/\1\s*>/iu);
-    if (body) text = body[2];
+    text = extractHtmlDocumentBody(text);
+    // Structured abstracts can contain Introduction/Methods/Results headings,
+    // but their prose is still metadata until the full document begins.
+    const headings = [...text.matchAll(/<h([1-6])\b[^>]*>([^]*?)<\/h\1\s*>/giu)]
+      .map(match => ({ start: match.index, level: Number(match[1]), label: normalizeComparableText(match[2].replace(/<[^>]*>/gu, " ")) }));
+    const containerRanges = htmlAbstractContainerRanges(text);
+    const abstractRanges = [...containerRanges];
+    for (let index = 0; index < headings.length; index += 1) {
+      const heading = headings[index];
+      if (!/^(?:abstract|summary|executive summary)$/iu.test(heading.label)
+          || containerRanges.some(([start, end]) => heading.start >= start && heading.start < end)) continue;
+      const end = headings.slice(index + 1).find(next => next.level <= heading.level)?.start ?? text.length;
+      abstractRanges.push([heading.start, end]);
+    }
+    const mergedRanges = [];
+    for (const range of abstractRanges.sort((a, b) => a[0] - b[0])) {
+      const previous = mergedRanges.at(-1);
+      if (previous && range[0] <= previous[1]) previous[1] = Math.max(previous[1], range[1]);
+      else mergedRanges.push([...range]);
+    }
+    for (const [start, end] of mergedRanges.reverse()) text = `${text.slice(0, start)} ${text.slice(end)}`;
     text = text.replace(/<\/?(?:h[1-6]|p|div|section|br|li|tr|body)\b[^>]*>/giu, "\n").replace(/<[^>]*>/gu, "");
     text = text.replace(/&(#x[0-9a-f]+|#\d+|nbsp|amp|lt|gt|quot|apos);/giu, (_, entity) => {
       if (!entity.startsWith("#")) return ({nbsp:" ",amp:"&",lt:"<",gt:">",quot:'"',apos:"'"})[entity.toLowerCase()];
@@ -322,7 +425,7 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
   const title = normalizeComparableText(source.name ?? "");
   const normalized = normalizeComparableText(text);
   // At least two substantive document sections with prose, beyond abstract/TOC/download metadata.
-  const sectionHeading = /^(?:\d+(?:\.\d+)*[.)]?\s+)?(?:scope|methods?|materials and methods|measurement methods|methodology|requirements|results|discussion|system boundary|inventory|allocation|范围|方法|要求|结果|系统边界)\s*[:：]?$/iu;
+  const sectionHeading = /^(?:\d+(?:\.\d+)*[.)]?\s+)?(?:introduction|scope|methods?|materials and methods|measurement methods|methodology|requirements|results(?: and discussion)?|discussion|system boundary|inventory|allocation|范围|方法|要求|结果|系统边界)\s*[:：]?$/iu;
   const sections = [];
   let section = null;
   for (const line of text.split(/\r?\n/u)) {
@@ -333,9 +436,76 @@ function originalSourceIdentity(source, content, { deadline, now, phase }) {
   }
   if (section !== null) sections.push(section);
   const substantiveSections = sections.filter(body => normalizeComparableText(body).length >= 150);
-  const identifiable = Boolean(title && normalized.includes(title) && normalized.length >= 500 && substantiveSections.length >= 2);
+  const titleMatches = Boolean(title && normalized.includes(title));
+  const identifiable = titleMatches && normalized.length >= 500 && substantiveSections.length >= 2;
   const metadata = /abstract|table of contents|purchase|buy now|download (?:full text|instructions)|摘要|目录|购买|下载/iu.test(text);
-  return { challenge: false, identifiable, kind: identifiable ? "original" : metadata ? "metadata" : "unrecognized" };
+  return { challenge: false, identifiable, kind: identifiable ? "original" : metadata ? "metadata" : "unrecognized",
+    rejection_reason: identifiable ? null : !titleMatches ? 'title_mismatch' : normalized.length < 500 ? 'insufficient_body_length' : 'insufficient_substantive_sections',
+    observations: { title_matches: titleMatches, normalized_body_length: normalized.length, substantive_section_count: substantiveSections.length },
+  };
+}
+
+function htmlAbstractContainerRanges(html) {
+  const stack = [], ranges = [];
+  const tags = /<(\/?)([a-z][a-z0-9:-]*)\b(?:[^"'<>]|"[^"]*"|'[^']*')*>/giu;
+  for (const match of html.matchAll(tags)) {
+    const tag = match[2].toLowerCase();
+    if (!["article", "main", "section", "div"].includes(tag)) continue;
+    if (match[1]) {
+      const container = stack.pop();
+      if (!container || container.tag !== tag) {
+        // An unfinished marked abstract must not qualify through later prose.
+        for (const entry of [...stack, ...(container ? [container] : [])])
+          if (entry.abstract) ranges.push([entry.start, html.length]);
+        stack.length = 0;
+        continue;
+      }
+      if (container.abstract) ranges.push([container.start, match.index + match[0].length]);
+    } else {
+      const attributes = match[0].slice(match[0].indexOf(match[2]) + match[2].length, -1);
+      // Consume each complete attribute, including quoted values, so template
+      // text cannot masquerade as the element's class or id.
+      const attributePattern = /([a-z_:][\w:.-]*)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/giu;
+      const abstract = [...attributes.matchAll(attributePattern)].some(attribute =>
+        ["class", "id"].includes(attribute[1].toLowerCase())
+          && (attribute[2] ?? attribute[3] ?? attribute[4] ?? "").split(/\s+/u)
+            .some(value => /^(?:abstract|summary|executive[-_]summary)$/iu.test(value)));
+      stack.push({ tag, start: match.index, abstract });
+    }
+  }
+  for (const container of stack) if (container.abstract) ranges.push([container.start, html.length]);
+  return ranges;
+}
+
+function extractHtmlDocumentBody(html) {
+  const stack = [];
+  let start = null;
+  let scannedTo = 0;
+  // Scan whole tags so tag-shaped text and ">" in quoted attributes are inert.
+  // Article/main tags require explicit, correctly nested closes; malformed
+  // wrappers cannot fall back to qualifying prose elsewhere on the page.
+  const tags = /<(\/?)([a-z][a-z0-9:-]*)\b(?:[^"'<>]|"[^"]*"|'[^']*')*>/giu;
+  const structuralMarkup = /<\/?(?:article|main)(?=[\s/>]|$)/iu;
+  for (const match of html.matchAll(tags)) {
+    // A malformed structural opener can be skipped by the whole-tag scanner.
+    // Only gaps outside recognized tags are inspected, keeping quoted text inert.
+    if (structuralMarkup.test(html.slice(scannedTo, match.index))) return "";
+    scannedTo = match.index + match[0].length;
+    const tag = match[2].toLowerCase();
+    if (tag !== "article" && tag !== "main") continue;
+    if (match[1]) {
+      if (start === null) continue;
+      if (stack.pop() !== tag) return "";
+      if (stack.length === 0) return html.slice(start, match.index + match[0].length);
+    } else {
+      // Retain the selected wrapper so its own abstract/summary marker is
+      // available to the subsequent metadata exclusion pass.
+      if (start === null) start = match.index;
+      stack.push(tag);
+    }
+  }
+  if (structuralMarkup.test(html.slice(scannedTo))) return "";
+  return start === null ? html : "";
 }
 
 function sourceBinding(source, phase) {
@@ -538,23 +708,54 @@ function normalizeLocator(value) {
     const url = new URL(locator);
     if (!["http:", "https:"].includes(url.protocol)) throw new Error("unsupported protocol");
     return url.href;
-  } catch (error) {
-    throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_INVALID", `Source locator must be an HTTP(S) URL or DOI: ${locator}`, { phase: "tool_decode", origin: "tool_transport", failure_kind: "unknown", retryable: false, cause: error.message });
+  } catch {
+    throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_INVALID", 'Source locator must be an HTTP(S) URL or DOI.', { phase: "tool_decode", origin: "tool_transport", failure_kind: "unknown", retryable: false });
   }
 }
 
-async function readResponseBytes(response, limit, { signal, deadline = Infinity, now = Date.now, phase = "harvest", subjectId } = {}) {
+function sourceLocatorOrigin(locator) {
+  try { return new URL(locator).origin; } catch { return null; }
+}
+
+function sourceRemainingBudget(deadline, timestamp) {
+  return Number.isFinite(deadline) ? Math.max(0, Math.ceil(deadline - timestamp)) : null;
+}
+
+function sourceHttpStatus(status) {
+  return Number.isInteger(status) && status >= 100 && status <= 599 ? status : null;
+}
+
+function sourceMediaType(contentType) {
+  const mediaType = String(contentType ?? '').split(';', 1)[0].trim().toLowerCase();
+  return /^[a-z0-9!#$&^_.+-]+\/[a-z0-9!#$&^_.+-]+$/u.test(mediaType) ? mediaType : null;
+}
+
+function sourceMachineCode(error) {
+  if (error?.author_reported === true || error?.details?.author_reported === true || error?.details?.origin === 'author_reported') return null;
+  // An allowlist avoids treating arbitrary exception text or identifiers as transport evidence.
+  return [error?.cause?.code, error?.code].find(code => sourceTransportKind(code) !== null) ?? null;
+}
+
+function sourceTransportKind(code) {
+  if (['ECONNRESET','ECONNREFUSED','ENETUNREACH','EAI_AGAIN'].includes(code)) return 'network';
+  return code === 'ETIMEDOUT' ? 'timeout' : null;
+}
+
+async function readResponseBytes(response, limit, { signal, deadline = Infinity, now = Date.now, phase = "harvest", subjectId,
+  onChunk = () => {}, onComplete = () => {},
+} = {}) {
   const reader = response.body?.getReader?.();
-  if (!reader) return Buffer.alloc(0);
+  if (!reader) { if (response.body === null) onComplete(); return Buffer.alloc(0); }
   const chunks = [];
   let length = 0;
   try {
     for (;;) {
       reviewTimeRemaining(deadline, { now, phase, subjectId });
       const { done, value } = await abortable(reader.read(), signal);
-      reviewTimeRemaining(deadline, { now, phase, subjectId });
-      if (done) break;
+      if (done) { onComplete(); reviewTimeRemaining(deadline, { now, phase, subjectId }); break; }
       const chunk = Buffer.from(value);
+      onChunk(chunk);
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
       if (length + chunk.length > limit) {
         throw new GoalHarnessError("GOAL_SOURCE_ORIGINAL_TEXT_TOO_LARGE", `Source original text exceeds the ${limit}-byte cache limit.`);
       }
@@ -574,17 +775,28 @@ function stableJson(value) {
   return JSON.stringify(value);
 }
 
-function toolFailureDetails(result, subject) {
+export function toolFailureDetails(result, subject) {
   let machine = null;
   for (const text of [result.stderr, result.stdout]) {
     try { const parsed = JSON.parse(text); machine = parsed.error ?? parsed; if (machine && typeof machine === 'object') break; } catch {}
   }
   const code = machine?.code ?? result.error?.code;
-  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',ENETUNREACH:'network',EAI_AGAIN:'network',RATE_LIMITED:'rate_limit',SERVICE_UNAVAILABLE:'service_unavailable',UNAUTHENTICATED:'authentication',UNAUTHORIZED:'authorization'};
-  const failureKind = kinds[code] ?? 'unknown';
+  const details = machine?.details;
+  const upstreamCodes = [details?.cause_code, details?.code]
+    .filter(value => typeof value === 'string' && /^[A-Z][A-Z0-9_]{1,30}$/u.test(value));
+  const authenticationCodes = new Set(['SUPABASE_OAUTH_LOGIN_REQUIRED', 'AUTH_IDENTITY_SESSION_FAILED', 'UNAUTHENTICATED', 'PGRST301', 'PGRST302']);
+  const authentication = authenticationCodes.has(code) || upstreamCodes.some(value => authenticationCodes.has(value));
+  const underlyingCode = upstreamCodes.find(value => authenticationCodes.has(value)) ?? upstreamCodes[0] ?? null;
+  const httpStatus = [machine?.status, details?.status].find(value => Number.isInteger(value) && value >= 100 && value <= 599) ?? null;
+  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',ENETUNREACH:'network',EAI_AGAIN:'network',ENOTFOUND:'network',FETCH_FAILED:'network',RATE_LIMITED:'rate_limit',SERVICE_UNAVAILABLE:'service_unavailable',UNAUTHORIZED:'authorization'};
+  const failureKind = authentication || httpStatus === 401 ? 'authentication' : httpStatus === 403 ? 'authorization'
+    : httpStatus === 429 ? 'rate_limit' : httpStatus >= 500 ? 'service_unavailable'
+    : httpStatus !== null ? 'unknown' : kinds[underlyingCode] ?? kinds[code] ?? 'unknown';
+  const underlyingError = underlyingCode === 'FETCH_FAILED' || code === 'FETCH_FAILED' ? 'fetch_failed' : null;
   return { ...subject, phase:'tool_execution', origin:'tool_transport', failure_kind:failureKind,
     retryable:machine?.retryable === false || machine?.details?.retryable === false ? false : ['network','timeout','rate_limit','service_unavailable'].includes(failureKind),
-    machine_code:code ?? null, http_status:Number.isInteger(machine?.status) ? machine.status : null, exit_code:result.status, signal:result.signal ?? null, credentials_redacted:true };
+    machine_code:code ?? null, upstream_code:underlyingCode, underlying_error:underlyingError,
+    http_status:httpStatus, exit_code:result.status, signal:result.signal ?? null, credentials_redacted:true };
 }
 
 

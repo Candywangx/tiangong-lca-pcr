@@ -464,7 +464,7 @@ test('source response stream is bounded by the actual item timer and does not hi
   const result=await verifySourceLocators({report:{sources:[{source_id:'stuck',locator:'https://example.test/stuck'},{source_id:'later',locator:'https://example.test/later'}]},collect:true,timeoutMs:15,
     fetchImpl:async url=>url.endsWith('stuck')?{ok:true,status:200,headers:new Map(),body:{getReader:()=>({read:()=>new Promise(()=>{}),cancel:()=>{cancelled++;}})}}:new Response('later source')});
   assert.equal(result.valid,false);assert.equal(result.checks[0].status,'failed');
-  assert.equal(result.findings[0].details.origin,'source_http');assert.equal(result.findings[0].details.retryable,true);
+  assert.equal(result.findings[0].details.origin,'harness_request_timer');assert.equal(result.findings[0].details.retryable,true);
   assert.equal(result.results[0].source_id,'later');assert.equal(cancelled,1);
 });
 
