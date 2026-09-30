@@ -97,15 +97,6 @@ jobs:
           test -n "$NODE_AUTH_TOKEN" || { echo 'Missing npm-release environment secret PCR_NPM_BOOTSTRAP_TOKEN' >&2; exit 1; }
           node builder/scripts/npm-release.mjs bootstrap "$RELEASE_TAG"
           npm publish dist/npm-release/*.tgz --access public --provenance --ignore-scripts --tag "$DIST_TAG"
-      - name: Verify registry integrity and source commit
-        run: |
-          for attempt in 1 2 3 4 5; do
-            state="$(node builder/scripts/npm-release.mjs registry dist/npm-release/release.json)"
-            if echo "$state" | jq -e '.registry_state == "identical"' >/dev/null; then exit 0; fi
-            sleep 5
-          done
-          echo 'Published version was not visible with matching integrity and source commit.' >&2
-          exit 1
       - name: Attach offline assets to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}

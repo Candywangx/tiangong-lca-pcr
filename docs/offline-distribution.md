@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-09-30
-lastReviewedCommit: b6f01e7f0ebea621d5cb11b63f2176b28e959ab2
+lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -188,9 +188,13 @@ Failed runs retain generated transport artifacts for 30 days in Actions.
 
 An already published version is skipped only when its name, version, tarball integrity
 and source commit all match. Different bytes or an uncertain registry response fail;
-only HTTP 404 means missing. After publication, the workflow verifies registry
-integrity before uploading GitHub assets. It does not overwrite npm versions or
-move existing tags. Retrying a matching tag can repair missing GitHub assets.
+only HTTP 404 means missing. After `npm publish` succeeds, the workflow uploads
+GitHub assets directly. It does not poll for registry visibility: npm may scan and
+process an accepted upload before making it available to install. Workflow success
+records publication acceptance and asset delivery, not immediate npm availability.
+A failed `npm publish` still prevents GitHub asset attachment. The workflow does not
+overwrite npm versions or move existing tags. Retrying a matching tag can repair
+missing GitHub assets.
 
 ### One-time owner setup
 
@@ -243,8 +247,13 @@ gh workflow run publish.yml --repo tiangong-lca/pcr --ref library-v0.1.0 -f tag_
 ```
 
 Retry the tag workflow if it created the tag but dispatch failed; it accepts an
-existing tag only at the same commit. After npm succeeds, retry publication normally
+existing tag only at the same commit. If npm accepted an upload but a later step
+failed, allow registry processing to finish before retrying publication normally
 (without bootstrap); identical npm bytes are reused and missing GitHub assets repaired.
+Do not interpret a temporary post-upload 404 as evidence that the upload failed.
+Older tags retain their original workflow, including any post-publish visibility
+check; this change does not rewrite them. Retry those runs only after the accepted
+version is visible, so their pre-publish check can skip the existing identical package.
 A conflicting tag/version requires a new reviewed version, never a force update.
 Package release does not change PCR lifecycle status or complete workspace integration.
 
