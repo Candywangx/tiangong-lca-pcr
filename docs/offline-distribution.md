@@ -1,6 +1,6 @@
 ---
-lastReviewedAt: 2026-09-30
-lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -30,12 +30,22 @@ related:
 
 # Offline PCR distribution
 
-`tiangong-pcr` contains the CLI, shared semantic reader, schemas, bundled locked
-runtime dependencies and the thin consumer Skill. `tiangong-pcr-library` contains
+`@tiangong-lca/pcr` contains the CLI, shared semantic reader, schemas, bundled locked
+runtime dependencies and the thin consumer Skill. `@tiangong-lca/pcr-library` contains
 `library.sqlite`, its adjacent `library.sqlite.json` manifest and notices. Each
 package includes its own consumer README and the repository MIT `LICENSE`. The tool
 has no dependency on the data package. Both have independent SemVer versions.
 The source package directories are development inputs; publish only generated packages.
+
+Starting with 0.1.2, npm distribution uses the `@tiangong-lca` organization scope.
+The command remains `tiangong-pcr`; installation paths are
+`node_modules/@tiangong-lca/pcr` and `node_modules/@tiangong-lca/pcr-library`.
+The snapshot kind `tiangong-pcr-library` and format version remain unchanged.
+Existing unscoped packages and their tags remain historical releases. Install the
+scoped pair for automatic discovery; an existing snapshot can still be selected
+explicitly with `--library`. Renaming both package identities does not automatically
+publish them: first publication and new package-specific trusted publishers are
+set up explicitly before normal version-increase automation resumes.
 
 Node 24.19+ is required for offline SQLite reads. The implementation uses the built-in
 SQLite module (release-candidate API in this runtime), without native npm addons.
@@ -51,8 +61,8 @@ network calls or implicit content downloads are used.
 From a validated source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.1.0
-npm run offline:library -- --output dist/tiangong-pcr-library --version 0.1.0
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.2.0
+npm run offline:library -- --output dist/tiangong-pcr-library --version 0.1.2
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
 ```
@@ -71,9 +81,9 @@ Transfer both tarballs and a suitable Node runtime to the offline machine. In a 
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-pcr-0.1.0.tgz ./tiangong-pcr-library-0.1.0.tgz
-./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/tiangong-pcr-library/library.sqlite --format json
-./node_modules/.bin/tiangong-pcr list --library ./node_modules/tiangong-pcr-library/library.sqlite --format json
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.2.0.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
+./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
+./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
 
 On Windows use `node_modules/.bin/tiangong-pcr.cmd`. Alternatively unpack the tool
@@ -81,7 +91,7 @@ package and run its bin with Node; copy `library.sqlite` and `library.sqlite.jso
 together to any local directory. npm is a transport option, not a runtime service.
 
 The selection order is explicit `--library`, then `PCR_LIBRARY`, then an installed
-`tiangong-pcr-library` package when running outside the source repository. Explicit
+`@tiangong-lca/pcr-library` package when running outside the source repository. Explicit
 `--root` selects repository mode and suppresses defaults; it conflicts with
 `--library`. Source checkout defaults retain repository behavior. Follow-up commands
 include the selected absolute snapshot path and an explicit checksum pin if supplied.
@@ -130,7 +140,13 @@ validation is still partial. Repository Markdown/YAML is the authoring authority
 
 Copy `skills/tiangong-pcr/` from the tool package into the host agent's configured
 Skill directory. npm does not activate Skills. The Skill teaches explicit selection,
-pinning, readiness checks, validation coverage and local feedback drafting.
+pinning, readiness, general LCA authoring, optional TIDAS authoring and Agent-led
+process/model review. The tool bundles inspection, cited guidance, arithmetic and
+review-envelope support; no model runtime or TIDAS schema implementation is embedded.
+Inspection and arithmetic do not require a PCR library. Review preparation/checking
+uses the selected library and native local inputs. Optional TIDAS SDK/toolkit assets
+must be provisioned separately before offline use; fully offline semantic review
+also requires an offline-capable host Agent/model. The snapshot format is unchanged.
 
 TianGong LCA code and authored methodology content use the MIT License. Both
 source manifests and generated packages declare `license: MIT`; builders copy
@@ -153,8 +169,8 @@ of importing another repository's pnpm setup.
 
 | Package | Authoritative version source | Tag |
 | --- | --- | --- |
-| `tiangong-pcr` | `packages/tiangong-pcr-cli/package.json` | `pcr-v<version>` |
-| `tiangong-pcr-library` | `packages/tiangong-pcr-library/package.json` | `library-v<version>` |
+| `@tiangong-lca/pcr` | `packages/tiangong-pcr-cli/package.json` | `pcr-v<version>` |
+| `@tiangong-lca/pcr-library` | `packages/tiangong-pcr-library/package.json` | `library-v<version>` |
 
 Both source manifests remain private. The library manifest is release metadata,
 not an installable library. Edit only the intended package version; content-only
@@ -212,8 +228,22 @@ missing GitHub assets.
    setup. With it absent or false, tag creation and publication remain disabled;
    regular PR validation continues. No variables or secrets are created by these files.
 
-On 2026-09-30 both npm names returned HTTP 404. If an npm name has no package settings
-yet, use the explicit bootstrap path for its first publication: place a temporary,
+For the first publication of a new scoped name, an authorized organization member
+can build the exact qualified main commit using the pinned Node/npm toolchain and
+publish each generated tarball locally with interactive npm authentication:
+
+```sh
+npm publish dist/release-tool/tiangong-lca-pcr-0.2.0.tgz --access public --ignore-scripts
+npm publish dist/release-library/tiangong-lca-pcr-library-0.1.2.tgz --access public --ignore-scripts
+```
+
+This creates the package settings without storing an npm token in GitHub. Configure
+the new scoped packages' trusted publishers afterwards; trust on the old unscoped
+names does not transfer. Local publication does not create a CI provenance statement.
+Keep the exact source tags and tarballs for verification and GitHub asset attachment.
+
+Alternatively, if the selected npm name has no package settings yet, use the explicit
+CI bootstrap path for its first publication: place a temporary,
 short-lived granular npm publish token in the `npm-release` environment secret
 `PCR_NPM_BOOTSTRAP_TOKEN`, create the intended tag on the qualified main commit,
 and dispatch at that tag with `bootstrap=true`. Bootstrap refuses a name that
@@ -229,8 +259,8 @@ Build reviewable artifacts locally from a clean commit without publishing:
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
-npm run release:build -- pcr-v0.1.0 dist/release-tool
-npm run release:build -- library-v0.1.0 dist/release-library
+npm run release:build -- pcr-v0.1.2 dist/release-tool
+npm run release:build -- library-v0.1.2 dist/release-library
 ```
 
 Use the versions actually recorded at that commit. Output directories must be new.
@@ -241,9 +271,9 @@ the matching lightweight tag at the qualified main commit after setup.
 Retry an existing tag (always select the tag as the workflow ref):
 
 ```sh
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref pcr-v0.1.0 -f tag_name=pcr-v0.1.0
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref pcr-v0.1.2 -f tag_name=pcr-v0.1.2
 # First publication only, before npm package settings exist:
-gh workflow run publish.yml --repo tiangong-lca/pcr --ref library-v0.1.0 -f tag_name=library-v0.1.0 -F bootstrap=true
+gh workflow run publish.yml --repo tiangong-lca/pcr --ref library-v0.1.2 -f tag_name=library-v0.1.2 -F bootstrap=true
 ```
 
 Retry the tag workflow if it created the tag but dispatch failed; it accepts an

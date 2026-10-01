@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-09-30
-lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
-lastReviewedNote: "Reviewed PCR #51. Asynchronous npm visibility does not change offline package architecture or source ownership."
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
 ---
 
 # PCR 资料库架构
@@ -272,8 +272,27 @@ version、source mismatch 或 content mismatch 都会成为 blocker。对 empty 
 readiness blocker，不能仅靠 `authored_methodology` 标签进入 guidance。
 
 guidance 会投出 `system_boundary.rules`、`allocation_rules` 和 `validation_rules` 等关键规则。
+`guidance --topic` 提供分页的条款视图，保留适用条件、source IDs、稳定 rule ID 和指向 verified
+structured projection 的 JSON Pointer；`--pointer` 可读取完整原值。引用同时绑定方法学成熟度和
+Markdown/projection hash，无版本号的候选 PCR 保留空版本，不生成虚构版本。内容仍由 canonical
+Markdown 和 builder 管理，消费层不重写全部 PCR。
 validation report 同时声明 `validation_status`、`completeness`、输入接受状态、已执行检查和跳过检查；
 因此“没有 finding”不能在 coverage 不完整时被解释为完整符合。
+
+### Agent-led authoring and review
+
+消费 Skill 分为一般 LCA 数据制作、可选 TIDAS process 制作、已有 process/model 审核三条路径，
+不强制转换为 foreground package。Agent 判断边界、适用性、证据和异常解释；CLI 读取原始
+TIDAS 字段、本地关联和条款引用，执行显式基准的算术。TIDAS 规范与完整格式校验仍由其源仓库、
+SDK/toolkit 拥有，PCR 不复制规范或嵌入 LLM。
+
+`inspect` 保留输入文件 hash 和 JSON Pointer，区分缺失、版本冲突、重复匹配及无法解析的引用。
+`calculate` 不推断单位、系数或物理合理性。`review prepare` 创建未审核草稿，Agent 调查后填写
+结论、理由、替代解释和未审核范围；`review check` 只核对外层格式和引用，始终不授予方法学批准。
+机械检查报告与 Agent 审核报告分别版本化，不把条款数量换算为语义合规百分比。
+
+现有 `validate-model` 只检查文本限定词，`validate-dataset` 只检查 collection protocol ID 存在；
+保留兼容但明确覆盖限制。详见 [消费契约](agentic-consumption.md)。
 
 ### Feedback Draft
 
@@ -353,7 +372,8 @@ agent / user
 ```
 
 公开 CLI 提供 material-first catalog browsing、classification coverage、classification resolution、PCR display、guidance output、
-model validation、dataset validation 和 feedback draft。它是消费契约，不是 authoring 入口。
+原生输入 inspection、显式计算、Agent review 支持、有限 legacy validation 和 feedback draft。
+它提供数据制作指导，PCR 内容维护仍由 builder 负责。
 
 `tree` 和 `list` 默认只读取 material PCR，并支持显式 `--scope material|legacy|all`。`tree` 默认返回
 depth 2 的 domain/subdomain 范围；Agent 应使用分页 `list --path-prefix <domain/subdomain>` 下钻。
@@ -505,8 +525,8 @@ Web Worker 中按语言加载。特别长的正文按章节拆页，并保留完
 
 ## Offline consumer distribution
 
-The [offline distribution contract](offline-distribution.md) defines the separate `tiangong-pcr` tool and
-`tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
+The [offline distribution contract](offline-distribution.md) defines the separate `@tiangong-lca/pcr` tool and
+`@tiangong-lca/pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 

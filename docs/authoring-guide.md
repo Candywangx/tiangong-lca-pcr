@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-09-30
-lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
-lastReviewedNote: "Reviewed PCR #51. Removing npm post-publish polling does not alter PCR authoring or methodology publication."
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
 ---
 
 # Authoring Guide
@@ -158,8 +158,11 @@ An accepted mapping and a PCR's readiness are separate claims: an authored candi
 while a known unmapped leaf returns `mapping: null` and `pcr: null`. Retired leaf-derived ids are resolved through the
 alias registry before catalog lookup: `resolve --pcr` returns a terminal locator and copyable next command, while
 content commands fail with `PCR_LEGACY_ID_REDIRECT`. They must not be treated as usable methodology. Use
-`validate-dataset` to check the implemented subset of foreground collection package requirements, and inspect
-`check_coverage.checks_skipped` before interpreting a result as complete. If Agent use of `guidance` reveals missing
+the three routes in `skills/tiangong-pcr/` for general LCA authoring, optional TIDAS authoring and existing-data review.
+A foreground package is optional. `validate-dataset` checks collection protocol ID presence and `validate-model`
+checks qualifier text presence; inspect skipped coverage. Agent review uses source-cited guidance, native input
+inspection and a separate evidence envelope whose validity is not methodology approval. See
+`docs/agentic-consumption.md`. If Agent use of `guidance` reveals missing
 or ambiguous instructions, capture that through feedback issue templates or
 `npm --silent run tiangong-pcr -- feedback draft`.
 
@@ -221,8 +224,8 @@ prepare their report from finalized receipts and submit its reference; follow th
 
 ## Offline consumer distribution
 
-The [offline distribution contract](offline-distribution.md) defines the separate `tiangong-pcr` tool and
-`tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
+The [offline distribution contract](offline-distribution.md) defines the separate `@tiangong-lca/pcr` tool and
+`@tiangong-lca/pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
