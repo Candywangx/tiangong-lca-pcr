@@ -24,12 +24,12 @@ export function buildOfflineTool({ root, output, version = null }) {
       cpSync(path.join(root, relative), path.join(stage, relative), { recursive: true, dereference: true });
     }
     const dependencies = lock.packages[""].dependencies;
-    writeFileSync(path.join(stage, "package.json"), `${JSON.stringify({ name: "tiangong-pcr", version, type: "module", description: "Offline PCR consumer CLI and agent Skill", license: "MIT", engines: { node: ">=24.19.0" }, bin: { "tiangong-pcr": "packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs" }, files: ["packages", "skills", "README.md", "LICENSE", "NOTICE.md"], dependencies, bundleDependencies: Object.keys(dependencies) }, null, 2)}\n`);
+    writeFileSync(path.join(stage, "package.json"), `${JSON.stringify({ name: "@tiangong-lca/pcr", version, type: "module", description: "Offline PCR consumer CLI and agent Skill", license: "MIT", engines: { node: ">=24.19.0" }, bin: { "tiangong-pcr": "packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs" }, files: ["packages", "skills", "README.md", "LICENSE", "NOTICE.md"], dependencies, bundleDependencies: Object.keys(dependencies) }, null, 2)}\n`);
     cpSync(path.join(root, "packages/tiangong-pcr-cli/README.md"), path.join(stage, "README.md"));
     cpSync(path.join(root, "LICENSE"), path.join(stage, "LICENSE"));
     writeFileSync(path.join(stage, "NOTICE.md"), "# Tool distribution\n\nSource: https://github.com/tiangong-lca/pcr\n\nTianGong LCA code, schemas, documentation and Skill are distributed under the MIT License; see LICENSE. Bundled dependencies retain their own licenses and notices in node_modules.\n");
     renameSync(stage, output);
-    return { name: "tiangong-pcr", version, output, bundled_dependencies: Object.keys(dependencies) };
+    return { name: "@tiangong-lca/pcr", version, output, bundled_dependencies: Object.keys(dependencies) };
   } catch (error) { rmSync(stage, { recursive: true, force: true }); throw error; }
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

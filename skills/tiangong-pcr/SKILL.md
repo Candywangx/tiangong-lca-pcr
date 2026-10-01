@@ -9,9 +9,9 @@ Use a selected local PCR library through `tiangong-pcr`. Treat usable CLI guidan
 
 ## Offline setup and pinning
 
-The `tiangong-pcr` tool package includes this Skill; npm installation alone does not
+The `@tiangong-lca/pcr` tool package includes this Skill; npm installation alone does not
 activate it. Copy this entire Skill directory to the agent's configured skills folder.
-Install the separate `tiangong-pcr-library` data package or provide a portable snapshot.
+Install the separate `@tiangong-lca/pcr-library` data package or provide a portable snapshot.
 The offline content package includes English only; use `show --lang en-US`.
 Node 24.19+ and the prepared tool package are required; do not use npx to fetch tools.
 

@@ -106,7 +106,7 @@ export class CliError extends Error {
 
 function installedLibrary() {
   for (const filename of [path.join(process.cwd(), "package.json"), import.meta.url]) {
-    try { return path.join(path.dirname(createRequire(filename).resolve("tiangong-pcr-library/package.json")), "library.sqlite"); } catch {}
+    try { return path.join(path.dirname(createRequire(filename).resolve("@tiangong-lca/pcr-library/package.json")), "library.sqlite"); } catch {}
   }
   return null;
 }
@@ -128,7 +128,7 @@ export function runTiangongPcr(argv) {
     const filename = options.library ?? (options.root ? null : process.env.PCR_LIBRARY ?? (existsSync(path.join(defaultRoot, "library/catalog.yaml")) ? null : installedLibrary()));
     if (!filename) {
       if (options["library-sha256"] || command === "library") throw new CliError("PCR_LIBRARY_REQUIRED", "Select a local snapshot with --library <library.sqlite>.");
-      if (!options.root && !existsSync(path.join(defaultRoot, "library/catalog.yaml"))) throw new CliError("PCR_LIBRARY_REQUIRED", "No offline library found. Install tiangong-pcr-library or pass --library <library.sqlite>.");
+      if (!options.root && !existsSync(path.join(defaultRoot, "library/catalog.yaml"))) throw new CliError("PCR_LIBRARY_REQUIRED", "No offline library found. Install @tiangong-lca/pcr-library or pass --library <library.sqlite>.");
       return runCommand(argv);
     }
     // Validate the command before opening a potentially large data file.
