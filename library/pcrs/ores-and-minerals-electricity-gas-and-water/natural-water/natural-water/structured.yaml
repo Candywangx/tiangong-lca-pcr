@@ -1,10 +1,967 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "18000"
-  title: "Natural water"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.natural-water.natural-water"
+  classification_refs: "CPC 3.0:18000"
+  covered_products: "Bulk liquid water meeting one declared further-use specification"
+  excluded_products: "Marketed seawater; hot-water heat supply; distilled-water chemicals; bottled/carbonated beverages; unusable wastewater"
+  representative_product: "Bulk water suitable for the declared further use"
+  production_route: "Water intake and pumping; Clarification, filtration and disinfection; Membrane desalination; Thermal desalination; Used-water reclamation; Supply metering and declared distribution"
+  market_state: "One metered plant or distribution gate at measured water temperature"
+functional_unit:
+  what: "Supply fit-for-declared-use bulk water, without claiming universal potable/non-potable equivalence"
+  how_much: "1 m3"
+  how_well: "site, basin and year; source and salinity; untreated/treated/reclaimed state; intended further use and quality evidence; treatment train; meter temperature; plant/network gate; losses and stock change; residual fate; allocation; energy supply"
+  how_long_or_cycle: "One gate supply within a declared production period"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "site"
+      rule: "This PCR covers potable or non-potable bulk water suitable for a declared further use, including untreated freshwater abstraction, conventional treatment, membrane or thermal desalination and reclamation of used water. Fix the actual source, treatment train and quality. The supply gate may be the plant meter or a declared network handover; include network pumping, flushing and leakage only for that boundary. Raw seawater as a marketed product, steam/hot water, bottled beverages, carbonated mineral water, distilled-water chemical products and water unsuitable for further use are excluded. Wastewater-treatment service and usable reclaimed-water supply require separate burden and product declarations. For ion exchange, adsorption or additional reclamation steps, add the actual resin, regenerant, activated carbon, residual and pollutant exchanges individually; the candidate cards do not replace a plant audit."
+      source_ids:
+        - epa-water-2004
+        - doe-desalination
+        - doe-alternative-water
+    - rule_id: boundary_partition
+      applies_to: "all exchanges"
+      rule: "Include actual conditioning, storage, handling and pollution controls through the declared gate. Account for attributable construction and closure with a disclosed lifetime-output basis or justified exclusion and sensitivity. Separate purchased fuel supply from foreground combustion and purchased treatment from site releases."
+      source_ids: []
+    - rule_id: boundary_completeness
+      applies_to: "inventory"
+      rule: "Cards define individual likely exchanges and route conditions, not an exhaustive site audit. Add each actual absent chemical, waste, resource, land transformation and pollutant as its own row. Absence, measured zero and unknown must be distinguished."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified natural freshwater or seawater resource, supplied raw water, or traceable used-water feed for reclamation"
+  starting_condition_role: "Resource or supplied feed; declare which"
+  product_classification_scope: "Bulk liquid water meeting one declared further-use specification"
+  recursive_input_rule: "Purchased same-category material carries a distinct supplier dataset; internal recycling is a balance observation, not a new external input or credit."
+  upstream_dataset_requirement: "Link feed, electricity, fuels, chemicals, infrastructure and waste-management burdens; disclose any missing coverage."
+  disclosure: "site, basin and year; source and salinity; untreated/treated/reclaimed state; intended further use and quality evidence; treatment train; meter temperature; plant/network gate; losses and stock change; residual fate; allocation; energy supply"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bulk water suitable for the declared further use"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - site
+    - "basin and year"
+    - "source and salinity"
+    - "untreated/treated/reclaimed state"
+    - "intended further use and quality evidence"
+    - "treatment train"
+    - "meter temperature"
+    - "plant/network gate"
+    - "losses and stock change"
+    - "residual fate"
+    - allocation
+    - "energy supply"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_basis
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "D is the positive accepted net gate-output total in m3. Exclude packaging and cancelled internal transfers. cp_output records D; every card uses per 1 m3 reference flow."
+  - id: conversion
+    applies_to: "utility and material rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "kg; m3; MJ"
+    rule: "Retain raw readings. Electricity: 1 kWh = 3.6 MJ. Mass/volume conversion requires measured density, temperature and applicable pressure; retain water content and active chemical fraction."
+  - id: category_balance
+    applies_to: "production"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Close source-water, product, concentrate, sludge water, backwash, reuse, evaporation, flushing, network losses and stock balances. D is accepted net m3 at the declared gate; record meter temperature. Convert chemical solution and wet sludge masses with measured concentration and moisture. Abstraction is not equal to consumption: disclose receiving basin and returned quantity/quality. Do not convert m3 to kg using an undocumented universal density."
+process_map:
+  - id: intake
+    name: "Water intake and pumping"
+    inclusion: "conditional"
+    inclusion_condition: "Resource or purchased-feed intake"
+    role: "Foreground production"
+    quantitative_reference: "per 1 m3 reference flow"
+  - id: conventional
+    name: "Clarification, filtration and disinfection"
+    inclusion: "conditional"
+    inclusion_condition: "Conventional treatment or reclaimed-water polishing"
+    role: "Foreground production"
+    quantitative_reference: "per 1 m3 reference flow"
+  - id: membrane
+    name: "Membrane desalination"
+    inclusion: "conditional"
+    inclusion_condition: "Actual membrane route"
+    role: "Foreground production"
+    quantitative_reference: "per 1 m3 reference flow"
+  - id: thermal
+    name: "Thermal desalination"
+    inclusion: "conditional"
+    inclusion_condition: "Actual thermal route"
+    role: "Foreground production"
+    quantitative_reference: "per 1 m3 reference flow"
+  - id: reuse
+    name: "Used-water reclamation"
+    inclusion: "conditional"
+    inclusion_condition: "Reclaimed-water route"
+    role: "Foreground production"
+    quantitative_reference: "per 1 m3 reference flow"
+  - id: supply
+    name: "Supply metering and declared distribution"
+    inclusion: "required"
+    inclusion_condition: "All declared sites"
+    role: "Foreground production"
+    quantitative_reference: "per 1 m3 reference flow"
+process_inventory:
+  - id: intake
+    label: "Water intake and pumping"
+    inputs:
+      product:
+        - row_id: purchased_raw_water
+          role: "Supplied raw water"
+          name: "Supplied raw water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Only purchased water; provider carries abstraction burden, so do not also count a resource withdrawal."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_purchased_raw_water; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_raw_water
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: intake_power
+          role: "Intake electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual intake pumping and screens."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_intake_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intake_power
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_resource
+          role: "River-water withdrawal"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Only direct river abstraction; identify basin and intake meter."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_river_resource; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_river_resource
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: groundwater_resource
+          role: "Groundwater withdrawal"
+          name: "ground water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4f462198-40cd-4184-8733-86648a20dc3f"
+          property_unit: "Volume / m3"
+          description: "Only direct groundwater abstraction; record aquifer and pumping."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_groundwater_resource; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_groundwater_resource
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: seawater_resource
+          role: "Seawater abstraction for desalination"
+          name: "Seawater abstraction for desalination"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Only actual seawater intake; distinguish from marketed raw seawater."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_seawater_resource; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seawater_resource
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: conventional
+    label: "Clarification, filtration and disinfection"
+    inputs:
+      product:
+        - row_id: aluminium_sulfate
+          role: "Aluminium-sulfate coagulant"
+          name: "Aluminium-sulfate coagulant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual alum coagulation route; record active fraction and solution mass separately."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_aluminium_sulfate; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_sulfate
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: sodium_hypochlorite
+          role: "Sodium-hypochlorite disinfectant"
+          name: "Sodium-hypochlorite disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actual hypochlorite route; other disinfectants and UV electricity require separate cards."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_sodium_hypochlorite; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sodium_hypochlorite
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: treatment_power
+          role: "Treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Mixing, filtration, backwash and actual disinfection equipment."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_treatment_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_power
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treatment_sludge
+          role: "Water-treatment sludge"
+          name: "Water-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Transferred wet sludge with dry-solids fraction, contaminants and treatment fate."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_treatment_sludge; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_sludge
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      elementary:
+        []
+  - id: membrane
+    label: "Membrane desalination"
+    inputs:
+      product:
+        - row_id: membrane_power
+          role: "Membrane-system electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual high-pressure, circulation and recovery auxiliaries; net recovered energy is reconciled, not credited twice."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_membrane_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_membrane_power
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: polyamide_membrane
+          role: "Replacement polyamide RO membrane"
+          name: "Replacement polyamide RO membrane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual polyamide RO modules; record service replacement fraction and disposal once."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_polyamide_membrane; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polyamide_membrane
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: membrane_concentrate
+          role: "RO concentrate transferred for management"
+          name: "RO concentrate transferred for management"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Only treatment/management transfers; direct receiving-water releases need species and compartment rows."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_membrane_concentrate; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_membrane_concentrate
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      elementary:
+        []
+  - id: thermal
+    label: "Thermal desalination"
+    inputs:
+      product:
+        - row_id: desalination_heat
+          role: "Imported desalination heat"
+          name: "Imported desalination heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Actual imported thermal energy; on-site heat generation uses its own fuel/combustion inventory."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_desalination_heat; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_desalination_heat
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+        - row_id: thermal_power
+          role: "Thermal-desalination electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual evaporation, circulation and distillate pumps."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_thermal_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_power
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: thermal_brine
+          role: "Thermal-desalination brine transferred for management"
+          name: "Thermal-desalination brine transferred for management"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record temperature, salinity and management fate; species-resolved direct discharge separately."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_thermal_brine; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_brine
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      elementary:
+        []
+  - id: reuse
+    label: "Used-water reclamation"
+    inputs:
+      product:
+        - row_id: reuse_power
+          role: "Reclamation electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual reclamation process; disaggregate aeration, pumping and polishing and avoid duplicate conventional-stage meters."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_reuse_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reuse_power
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        - row_id: used_water_feed
+          role: "Used-water feed unsuitable before reclamation"
+          name: "Used-water feed unsuitable before reclamation"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Only actual waste-water feed; already suitable supplied reclaimed water is a product input with a provider."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_used_water_feed; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_used_water_feed
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: reclamation_sludge
+          role: "Sludge from used-water reclamation"
+          name: "Sludge from used-water reclamation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual reclaimed-water processing solids; distinguish upstream wastewater-treatment sludge and assign each treatment burden once."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_reclamation_sludge; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reclamation_sludge
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      elementary:
+        []
+  - id: supply
+    label: "Supply metering and declared distribution"
+    inputs:
+      product:
+        - row_id: supply_power
+          role: "Supply electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Include distribution pumping only when the selected reference gate extends through the network."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_supply_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supply_power
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Bulk water suitable for the declared further use"
+          name: "Bulk water suitable for the declared further use"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "One quality specification and gate; exclude unusable residuals and separately declared seawater products."
+          amount:
+            expression: "1 m3"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - epa-water-2004
+                - doe-desalination
+                - doe-alternative-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "joint production"
+    rule: "Prefer process subdivision or defensible system expansion; otherwise use demonstrated physical causality. Use economic allocation only with consistent period, price, currency and sensitivity when physical causality is unavailable. Retain the unallocated inventory."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocation_product
+    applies_to: "reference and co-products"
+    rule: "Separate raw-water abstraction, treatment, desalination, reuse and distribution meters. For co-produced heat, power or salt, retain unallocated inventories and demonstrated physical relationships. Reclaimed water is not automatically burden-free and avoided freshwater is not an automatic credit; declare the wastewater-treatment service and recycling allocation consistently."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "waste and recycling"
+    rule: "Classify each output by physical state and actual fate. A sale does not automatically make a residue a co-product; internal recycling receives no avoided-product credit. Apply treatment burdens once."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_river_resource
+      process_id: "intake"
+      flow_role: "river_resource"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate the calibrated source/input meter over matched operating intervals; record basin or provider, source salinity and quality, temperature, opening/closing storage, bypass and recycle. Record return-water quantity and destination separately. Do not infer intake from product volume or assume intake equals consumption."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_groundwater_resource
+      process_id: "intake"
+      flow_role: "groundwater_resource"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate the calibrated source/input meter over matched operating intervals; record basin or provider, source salinity and quality, temperature, opening/closing storage, bypass and recycle. Record return-water quantity and destination separately. Do not infer intake from product volume or assume intake equals consumption."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_seawater_resource
+      process_id: "intake"
+      flow_role: "seawater_resource"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate the calibrated source/input meter over matched operating intervals; record basin or provider, source salinity and quality, temperature, opening/closing storage, bypass and recycle. Record return-water quantity and destination separately. Do not infer intake from product volume or assume intake equals consumption."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_purchased_raw_water
+      process_id: "intake"
+      flow_role: "purchased_raw_water"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate the calibrated source/input meter over matched operating intervals; record basin or provider, source salinity and quality, temperature, opening/closing storage, bypass and recycle. Record return-water quantity and destination separately. Do not infer intake from product volume or assume intake equals consumption."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_intake_power
+      process_id: "intake"
+      flow_role: "intake_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_aluminium_sulfate
+      process_id: "conventional"
+      flow_role: "aluminium_sulfate"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Reconcile weighed deliveries, tank inventory changes and actual dosing logs; retain solution density and measured active concentration. Normalize active chemical mass and disclose the carrier water without double counting."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_sodium_hypochlorite
+      process_id: "conventional"
+      flow_role: "sodium_hypochlorite"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Reconcile weighed deliveries, tank inventory changes and actual dosing logs; retain solution density and measured active concentration. Normalize active chemical mass and disclose the carrier water without double counting."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_treatment_power
+      process_id: "conventional"
+      flow_role: "treatment_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_treatment_sludge
+      process_id: "conventional"
+      flow_role: "treatment_sludge"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure transferred residue by calibrated volume or weight records matched to salinity, wet/dry-solids assay, temperature and final management fate. Separate returned water and direct receiving-water species; retain transport and treatment provider information."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_membrane_power
+      process_id: "membrane"
+      flow_role: "membrane_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_polyamide_membrane
+      process_id: "membrane"
+      flow_role: "polyamide_membrane"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_membrane_concentrate
+      process_id: "membrane"
+      flow_role: "membrane_concentrate"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure transferred residue by calibrated volume or weight records matched to salinity, wet/dry-solids assay, temperature and final management fate. Separate returned water and direct receiving-water species; retain transport and treatment provider information."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_desalination_heat
+      process_id: "thermal"
+      flow_role: "desalination_heat"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_thermal_power
+      process_id: "thermal"
+      flow_role: "thermal_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_thermal_brine
+      process_id: "thermal"
+      flow_role: "thermal_brine"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure transferred residue by calibrated volume or weight records matched to salinity, wet/dry-solids assay, temperature and final management fate. Separate returned water and direct receiving-water species; retain transport and treatment provider information."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_used_water_feed
+      process_id: "reuse"
+      flow_role: "used_water_feed"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate the calibrated source/input meter over matched operating intervals; record basin or provider, source salinity and quality, temperature, opening/closing storage, bypass and recycle. Record return-water quantity and destination separately. Do not infer intake from product volume or assume intake equals consumption."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_reuse_power
+      process_id: "reuse"
+      flow_role: "reuse_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_supply_power
+      process_id: "supply"
+      flow_role: "supply_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_output
+      process_id: "supply"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Record calibrated outlet volumetric meter readings and water temperature at the chosen plant/network gate, subtract nonconforming and rejected output, reconcile storage and transfers, and independently retain positive net accepted volume D in m3. Match water-quality sampling to the reporting period and intended-use specification."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_reclamation_sludge
+      process_id: "reuse"
+      flow_role: "reclamation_sludge"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One metered plant or distribution gate at measured water temperature"
+      aggregation_rule: "per 1 m3 reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all cards"
+      rule: "Exchange = attributable period quantity / D. Reconcile inventories and cancel internal transfers before aggregation."
+      inputs:
+        - cp_output
+        - "row-specific cp records"
+      output: "per 1 m3 reference flow"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "production"
+      rule: "Close source-water, product, concentrate, sludge water, backwash, reuse, evaporation, flushing, network losses and stock balances. D is accepted net m3 at the declared gate; record meter temperature. Convert chemical solution and wet sludge masses with measured concentration and moisture. Abstraction is not equal to consumption: disclose receiving basin and returned quantity/quality. Do not convert m3 to kg using an undocumented universal density."
+      inputs:
+        - "Matched mass"
+        - volume
+        - "composition and stock measurements"
+      output: "Balance residual and uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: representativeness
+      applies_to: "dataset"
+      requirement: "Use matching production and exchange periods, actual technology, geography and supplier state. Record startup, shutdown, seasonal variation and substitutions."
+      evidence: "collection records"
+    - id: identity_and_ranges
+      applies_to: "all cards"
+      requirement: "Unresolved identities and missing independent range evidence remain explicit. Do not replace measurement by a guessed industry range or by missing-as-zero."
+      evidence: "manifest review metadata"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Verify 1 m3, positive D, product state, property/unit and every required qualifier. Each dataset fixes one product and route."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "site"
+    rule: "Close source-water, product, concentrate, sludge water, backwash, reuse, evaporation, flushing, network losses and stock balances. D is accepted net m3 at the declared gate; record meter temperature. Convert chemical solution and wet sludge masses with measured concentration and moisture. Abstraction is not equal to consumption: disclose receiving basin and returned quantity/quality. Do not convert m3 to kg using an undocumented universal density."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "handoff"
+    rule: "Verify each applicable exchange, its provider or environmental compartment and final waste fate; identify skipped checks, unresolved identities, missing measurements and upstream gaps. Errors or unassessed mandatory coverage cannot be labelled complete."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply fit-for-declared-use bulk water, without claiming universal potable/non-potable equivalence"
+  excluded_use: "Marketed seawater; hot-water heat supply; distilled-water chemicals; bottled/carbonated beverages; unusable wastewater"
+  required_metadata: "site, basin and year; source and salinity; untreated/treated/reclaimed state; intended further use and quality evidence; treatment train; meter temperature; plant/network gate; losses and stock change; residual fate; allocation; energy supply"
+  required_quality_disclosure: "Identity and measurement gaps; boundary coverage; uncertainty; allocation; temporal and geographical representativeness"
+  update_trigger: "Changed product, route, yield, supply, waste fate, site or representative period"
+data_sources:
+  - id: "epa-water-2004"
+    type: "official_guidance"
+    reference: "US EPA, Drinking Water Treatment, EPA 816-F-04-034, June 2004, PDF pp.2–3. https://archive.epa.gov/water/archive/web/pdf/2009_08_28_sdwa_fs_30ann_treatment_web.pdf"
+    used_for: "Water-source differences, flocculation/sedimentation, filtration and disinfection; process description only, not current compliance guidance."
+  - id: "doe-desalination"
+    type: "official_guidance"
+    reference: "US DOE, Desalination Basics, web snapshot 1 October 2026, How Does Desalination Work? https://www.energy.gov/cmei/ito/desalination-basics"
+    used_for: "Membrane and thermal route distinction, permeate and saline concentrate; no performance defaults."
+  - id: "doe-alternative-water"
+    type: "official_guidance"
+    reference: "US DOE, Best Management Practice 14: Alternative Water Sources, web snapshot 1 October 2026. https://www.energy.gov/cmei/femp/best-management-practice-14-alternative-water-sources"
+    used_for: "Reclaimed and alternative water suitability for declared further use."
+  - id: "cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification scope only; no process quantities."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5, consolidated 30 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Multifunctionality hierarchy; not a claim of complete PEF conformity."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:52dfbb1c3e445d598798977cb100d8846d0340cf21b63a786ab2f602188e6582"
+  generated_content_sha256: "sha256:4ebb7bd9317e8b9a6f86e62437eb9c47688e712b5c090ee12191340ac22e286a"

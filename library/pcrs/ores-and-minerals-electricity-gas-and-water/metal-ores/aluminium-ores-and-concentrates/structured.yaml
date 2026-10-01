@@ -1,10 +1,902 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "14230"
-  title: "Aluminium ores and concentrates"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.metal-ores.aluminium-ores-and-concentrates"
+  classification_refs: "CPC 3.0:14230"
+  covered_products: "Aluminium-bearing raw ores and physically upgraded ore/concentrate; one mineral, grade and moisture state per dataset"
+  excluded_products: "Alumina chemicals/refining; aluminium metal; calcined refractory bauxite; finished abrasives; customer conversion"
+  representative_product: "Washed bauxite representative product"
+  production_route: "Mine development and rehabilitation; Ore extraction and haulage; Crushing and sizing; Washing and dewatering; Stockpiling, loading and site controls"
+  market_state: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+functional_unit:
+  what: "Supply 1 kg of specified aluminium ore or physical concentrate; no equivalence to 1 kg aluminium or alumina"
+  how_much: "1 kg"
+  how_well: "site/year; mineralogy; mining method; integrated/standalone start; raw/crushed/washed state; particle size; as-received moisture; dry-basis total and available alumina and reactive silica where relevant; gate; yield and rejects; water basin; waste fate; allocation; development and closure basis; representative UUID applies only to washed bauxite, with a distinct identity required for unwashed or other aluminium minerals"
+  how_long_or_cycle: "One gate supply within a declared production period"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "site"
+      rule: "This PCR covers aluminium-bearing ores and physically beneficiated concentrates at a declared mine or processing gate, with bauxite as the representative material. Include actual development, topsoil/overburden removal, extraction, handling, crushing, sizing and optional washing/dewatering through that gate. Distinguish integrated mining from standalone processing receiving burden-bearing ore. Not all bauxite is washed. Other aluminium minerals require their actual mineralogy, extraction and beneficiation evidence and distinct flow identities; they cannot inherit bauxite washing quantities. Exclude Bayer digestion/alumina refining, aluminium smelting, calcined refractory products, finished abrasives and downstream customer processing."
+      source_ids:
+        - iai-bauxite-mining-2026
+        - ifc-mining-2007
+    - rule_id: boundary_partition
+      applies_to: "all exchanges"
+      rule: "Include actual conditioning, storage, handling and pollution controls through the declared gate. Account for attributable construction and closure with a disclosed lifetime-output basis or justified exclusion and sensitivity. Separate purchased fuel supply from foreground combustion and purchased treatment from site releases."
+      source_ids: []
+    - rule_id: boundary_completeness
+      applies_to: "inventory"
+      rule: "Cards define individual likely exchanges and route conditions, not an exhaustive site audit. Add each actual absent chemical, waste, resource, land transformation and pollutant as its own row. Absence, measured zero and unknown must be distinguished."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Ore in the geological deposit for integrated mining, or purchased ore for standalone physical processing"
+  starting_condition_role: "Resource or supplied feed; declare which"
+  product_classification_scope: "Aluminium-bearing raw ores and physically upgraded ore/concentrate; one mineral, grade and moisture state per dataset"
+  recursive_input_rule: "Purchased same-category material carries a distinct supplier dataset; internal recycling is a balance observation, not a new external input or credit."
+  upstream_dataset_requirement: "Link feed, electricity, fuels, chemicals, infrastructure and waste-management burdens; disclose any missing coverage."
+  disclosure: "site/year; mineralogy; mining method; integrated/standalone start; raw/crushed/washed state; particle size; as-received moisture; dry-basis total and available alumina and reactive silica where relevant; gate; yield and rejects; water basin; waste fate; allocation; development and closure basis; representative UUID applies only to washed bauxite, with a distinct identity required for unwashed or other aluminium minerals"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Washed Bauxite"
+    uuid: "bd0c6203-d2b3-4e7f-8602-027aa93e87df"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "site/year"
+    - mineralogy
+    - "mining method"
+    - "integrated/standalone start"
+    - "raw/crushed/washed state"
+    - "particle size"
+    - "as-received moisture"
+    - "dry-basis total and available alumina and reactive silica where relevant"
+    - gate
+    - "yield and rejects"
+    - "water basin"
+    - "waste fate"
+    - allocation
+    - "development and closure basis"
+    - "representative UUID applies only to washed bauxite"
+    - "with a distinct identity required for unwashed or other aluminium minerals"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_basis
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "D is the positive accepted net gate-output total in kg. Exclude packaging and cancelled internal transfers. cp_output records D; every card uses per 1 kg reference flow."
+  - id: conversion
+    applies_to: "utility and material rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "kg; m3; MJ"
+    rule: "Retain raw readings. Electricity: 1 kWh = 3.6 MJ. Mass/volume conversion requires measured density, temperature and applicable pressure; retain water content and active chemical fraction."
+  - id: category_balance
+    applies_to: "production"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "D is positive accepted net as-received product mass in kg at the selected gate, excluding packaging and rejects. Record each stream moisture w and dry-solids mass m_dry = m_wet × (1 − w); assay grades on their stated basis. Contained-alumina mass is dry-solids mass times the matching dry-basis Al2O3 fraction, not the reference denominator. Reconcile dry ore, product, waste rock, wash fines, losses, stock changes and transferred water. Separate circulated wash water, new intake and measured return; no universal recovery, grade or density."
+process_map:
+  - id: development
+    name: "Mine development and rehabilitation"
+    inclusion: "conditional"
+    inclusion_condition: "Integrated mine and attributable closure"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: extraction
+    name: "Ore extraction and haulage"
+    inclusion: "conditional"
+    inclusion_condition: "Integrated mining"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: preparation
+    name: "Crushing and sizing"
+    inclusion: "conditional"
+    inclusion_condition: "Actual physical preparation or supplied ore"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: washing
+    name: "Washing and dewatering"
+    inclusion: "conditional"
+    inclusion_condition: "Actual wet-beneficiation route only"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Stockpiling, loading and site controls"
+    inclusion: "required"
+    inclusion_condition: "All declared sites"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: development
+    label: "Mine development and rehabilitation"
+    inputs:
+      product:
+        - row_id: development_diesel
+          role: "Mine-development diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Actual stripping/rehabilitation equipment, allocated once by disclosed lifetime output."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_development_diesel; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_development_diesel
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: overburden
+          role: "Overburden sent to mine management"
+          name: "Overburden sent to mine management"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual removed overburden; topsoil storage and reuse remain a separate land/stock record."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_overburden; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_overburden
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        []
+  - id: extraction
+    label: "Ore extraction and haulage"
+    inputs:
+      product:
+        - row_id: mining_diesel
+          role: "Extraction and haulage diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Actual equipment, haul distances and load cycles; exclude supplier fuel combustion."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_mining_diesel; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mining_diesel
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+        - row_id: anfo_explosive
+          role: "Ammonium-nitrate/fuel-oil explosive"
+          name: "Ammonium-nitrate/fuel-oil explosive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual ANFO blasting; record formulation and charge. Nonblasted extraction excludes this row; each other explosive needs its own card."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_anfo_explosive; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_anfo_explosive
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: bauxite_resource
+          role: "Bauxite ore extracted from the deposit"
+          name: "Bauxite ore extracted from the deposit"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only primary bauxite extraction; measure ore mass, mineralogy and moisture, separately from overburden. Other aluminium minerals need their own resource identity."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_bauxite_resource; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bauxite_resource
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: waste_rock
+          role: "Mine waste rock"
+          name: "Mine waste rock"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual barren/rejected rock sent to defined management; measure dry solids and leaching potential."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_waste_rock; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_rock
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        []
+  - id: preparation
+    label: "Crushing and sizing"
+    inputs:
+      product:
+        - row_id: purchased_ore
+          role: "Supplied bauxite ore"
+          name: "Supplied bauxite ore"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only standalone bauxite processing; supplier carries extraction and agreed transport, without also counting direct mine resource."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_purchased_ore; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_ore
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+        - row_id: crusher_power
+          role: "Crushing and sizing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual crushers/screens/conveyors, excluding washing and dispatch meter duplication."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_crusher_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_crusher_power
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sizing_reject
+          role: "Rejected ore from sizing"
+          name: "Rejected ore from sizing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only rejected fraction leaving productive route; assay moisture and aluminium/silica content."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_sizing_reject; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_reject
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        []
+  - id: washing
+    label: "Washing and dewatering"
+    inputs:
+      product:
+        - row_id: supplied_wash_water
+          role: "Supplied wash make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only purchased new make-up; internal circulating wash water is a balance observation."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_supplied_wash_water; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_supplied_wash_water
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+        - row_id: wash_power
+          role: "Wash and dewatering electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual scrubbers, pumps, screens and dewatering units only."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_wash_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wash_power
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_water
+          role: "River-water withdrawal"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Only direct abstraction; measure basin and intake separately from purchased water."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_river_water; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_river_water
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: clay_fines
+          role: "Clay-rich bauxite wash fines"
+          name: "Clay-rich bauxite wash fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual wet tailings sent to management; measure water, dry solids and residual aluminium and prevent duplicate internal recycling."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_clay_fines; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clay_fines
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+        - row_id: wash_effluent
+          role: "Wash-water purge transferred for treatment"
+          name: "Wash-water purge transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual treatment transfer; direct discharge needs separate species/compartment and return-volume observations."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_wash_effluent; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wash_effluent
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        []
+  - id: dispatch
+    label: "Stockpiling, loading and site controls"
+    inputs:
+      product:
+        - row_id: loading_diesel
+          role: "Loading diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Actual stockpile/loading equipment only, separate from mining haulage."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_loading_diesel; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loading_diesel
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+        - row_id: site_power
+          role: "Site-control electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Actual drainage, dust-control and tailings auxiliaries; shared meters allocated once."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_site_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_power
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Washed bauxite representative product"
+          name: "Washed Bauxite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd0c6203-d2b3-4e7f-8602-027aa93e87df"
+          property_unit: "Mass / kg"
+          description: "The confirmed representative UUID applies only to washed bauxite at its compatible state; raw/unwashed ore and other aluminium minerals require distinct actual product identities at the same declared mass reference."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: co2_air
+          role: "Fossil carbon dioxide to outdoor air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only foreground diesel and other actual fossil combustion; record fuel/carbon balance and factor provenance, no generic mine intensity."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_co2_air; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2_air
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+        - row_id: pm10_air
+          role: "Mineral PM10 to outdoor air"
+          name: "Mineral PM10 to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured/reconciled extraction, crushing, handling or haul-road fugitive dust; other particle fractions have separate identities and quantities."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_pm10_air; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm10_air
+              source_ids:
+                - iai-bauxite-mining-2026
+                - ifc-mining-2007
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "joint production"
+    rule: "Prefer process subdivision or defensible system expansion; otherwise use demonstrated physical causality. Use economic allocation only with consistent period, price, currency and sensitivity when physical causality is unavailable. Retain the unallocated inventory."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocation_product
+    applies_to: "reference and co-products"
+    rule: "Subdivide extraction, crushing, washing and grade-sorting activities where measured. Assign development/closure using disclosed attributable lifetime saleable output; do not charge the full development once to each annual dataset. Retain unallocated inventory for genuine co-products; sorting grades are not automatically distinct co-products. Clay fines or waste rock are not burden-free products merely because sold or reused."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "waste and recycling"
+    rule: "Classify each output by physical state and actual fate. A sale does not automatically make a residue a co-product; internal recycling receives no avoided-product credit. Apply treatment burdens once."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_development_diesel
+      process_id: "development"
+      flow_role: "development_diesel"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_overburden
+      process_id: "development"
+      flow_role: "overburden"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Collect matched survey/weighbridge or slurry-flow records, representative moisture and solids assays, mineral composition and management fate. Reconcile internal returns; record allocated lifetime basis for development rather than a full repeated annual charge."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_bauxite_resource
+      process_id: "extraction"
+      flow_role: "bauxite_resource"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_mining_diesel
+      process_id: "extraction"
+      flow_role: "mining_diesel"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_anfo_explosive
+      process_id: "extraction"
+      flow_role: "anfo_explosive"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_waste_rock
+      process_id: "extraction"
+      flow_role: "waste_rock"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Collect matched survey/weighbridge or slurry-flow records, representative moisture and solids assays, mineral composition and management fate. Reconcile internal returns; record allocated lifetime basis for development rather than a full repeated annual charge."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_purchased_ore
+      process_id: "preparation"
+      flow_role: "purchased_ore"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_crusher_power
+      process_id: "preparation"
+      flow_role: "crusher_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_sizing_reject
+      process_id: "preparation"
+      flow_role: "sizing_reject"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Collect matched survey/weighbridge or slurry-flow records, representative moisture and solids assays, mineral composition and management fate. Reconcile internal returns; record allocated lifetime basis for development rather than a full repeated annual charge."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_supplied_wash_water
+      process_id: "washing"
+      flow_role: "supplied_wash_water"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_river_water
+      process_id: "washing"
+      flow_role: "river_water"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_wash_power
+      process_id: "washing"
+      flow_role: "wash_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_clay_fines
+      process_id: "washing"
+      flow_role: "clay_fines"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Collect matched survey/weighbridge or slurry-flow records, representative moisture and solids assays, mineral composition and management fate. Reconcile internal returns; record allocated lifetime basis for development rather than a full repeated annual charge."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_wash_effluent
+      process_id: "washing"
+      flow_role: "wash_effluent"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_loading_diesel
+      process_id: "dispatch"
+      flow_role: "loading_diesel"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_site_power
+      process_id: "dispatch"
+      flow_role: "site_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_co2_air
+      process_id: "dispatch"
+      flow_role: "co2_air"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_pm10_air
+      process_id: "dispatch"
+      flow_role: "pm10_air"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_output
+      process_id: "dispatch"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Use calibrated net loading weights and inventory/transfer reconciliation to independently record positive accepted as-received kg D. Sample each representative lot for moisture, mineralogy, total/available alumina and reactive silica where relevant. Match the chosen raw/washed state and retain dry-basis assays separately from the wet-mass reference."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "One actual ore grade and measured as-received moisture at the mine/processing loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all cards"
+      rule: "Exchange = attributable period quantity / D. Reconcile inventories and cancel internal transfers before aggregation."
+      inputs:
+        - cp_output
+        - "row-specific cp records"
+      output: "per 1 kg reference flow"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "production"
+      rule: "D is positive accepted net as-received product mass in kg at the selected gate, excluding packaging and rejects. Record each stream moisture w and dry-solids mass m_dry = m_wet × (1 − w); assay grades on their stated basis. Contained-alumina mass is dry-solids mass times the matching dry-basis Al2O3 fraction, not the reference denominator. Reconcile dry ore, product, waste rock, wash fines, losses, stock changes and transferred water. Separate circulated wash water, new intake and measured return; no universal recovery, grade or density."
+      inputs:
+        - "Matched mass"
+        - volume
+        - "composition and stock measurements"
+      output: "Balance residual and uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: representativeness
+      applies_to: "dataset"
+      requirement: "Use matching production and exchange periods, actual technology, geography and supplier state. Record startup, shutdown, seasonal variation and substitutions."
+      evidence: "collection records"
+    - id: identity_and_ranges
+      applies_to: "all cards"
+      requirement: "Unresolved identities and missing independent range evidence remain explicit. Do not replace measurement by a guessed industry range or by missing-as-zero."
+      evidence: "manifest review metadata"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Verify 1 kg, positive D, product state, property/unit and every required qualifier. Each dataset fixes one product and route."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "site"
+    rule: "D is positive accepted net as-received product mass in kg at the selected gate, excluding packaging and rejects. Record each stream moisture w and dry-solids mass m_dry = m_wet × (1 − w); assay grades on their stated basis. Contained-alumina mass is dry-solids mass times the matching dry-basis Al2O3 fraction, not the reference denominator. Reconcile dry ore, product, waste rock, wash fines, losses, stock changes and transferred water. Separate circulated wash water, new intake and measured return; no universal recovery, grade or density."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "handoff"
+    rule: "Verify each applicable exchange, its provider or environmental compartment and final waste fate; identify skipped checks, unresolved identities, missing measurements and upstream gaps. Errors or unassessed mandatory coverage cannot be labelled complete."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply 1 kg of specified aluminium ore or physical concentrate; no equivalence to 1 kg aluminium or alumina"
+  excluded_use: "Alumina chemicals/refining; aluminium metal; calcined refractory bauxite; finished abrasives; customer conversion"
+  required_metadata: "site/year; mineralogy; mining method; integrated/standalone start; raw/crushed/washed state; particle size; as-received moisture; dry-basis total and available alumina and reactive silica where relevant; gate; yield and rejects; water basin; waste fate; allocation; development and closure basis; representative UUID applies only to washed bauxite, with a distinct identity required for unwashed or other aluminium minerals"
+  required_quality_disclosure: "Identity and measurement gaps; boundary coverage; uncertainty; allocation; temporal and geographical representativeness"
+  update_trigger: "Changed product, route, yield, supply, waste fate, site or representative period"
+data_sources:
+  - id: "iai-bauxite-mining-2026"
+    type: "extension_guidance"
+    reference: "International Aluminium Institute, The Aluminium Story, Mining: Process, web snapshot 1 October 2026, Mining: The process. https://alustory.international-aluminium.org/mining-refining/process-mining/"
+    used_for: "Surface extraction, topsoil/overburden separation, optional crushing/washing and refinery handover; no universal grade or consumption."
+  - id: "ifc-mining-2007"
+    type: "official_guidance"
+    reference: "IFC, Environmental Health and Safety Guidelines for Mining, 10 December 2007, sections 1.1 and Annex A. https://www.ifc.org/content/dam/ifc/doc/2000/2007-mining-ehs-guidelines-en.pdf"
+    used_for: "Mining water, wastes, emissions, development and closure; no product-specific default factors."
+  - id: "cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification scope only; no process quantities."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5, consolidated 30 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Multifunctionality hierarchy; not a claim of complete PEF conformity."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4df63e87dc9928ae9dfbb89a14216772d8b70dce7c909fd905df69eb1b9e1e4a"
+  generated_content_sha256: "sha256:3af3cf98977c06856ad186ff2fff4d3d424d22d065b654f1000c47196d539dad"
