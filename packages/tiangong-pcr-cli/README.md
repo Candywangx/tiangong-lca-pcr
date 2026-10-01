@@ -72,7 +72,7 @@ package is optional; legacy `validate-model` only checks qualifier text and
 On a connected machine, download both packages:
 
 ```sh
-npm pack @tiangong-lca/pcr@0.1.2
+npm pack @tiangong-lca/pcr@0.2.0
 npm pack @tiangong-lca/pcr-library@0.1.2
 ```
 
@@ -80,7 +80,7 @@ Transfer the two tarballs and a suitable Node.js runtime to the offline machine.
 In the destination directory:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.1.2.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.2.0.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 

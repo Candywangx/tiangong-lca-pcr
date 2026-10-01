@@ -61,7 +61,7 @@ network calls or implicit content downloads are used.
 From a validated source checkout with locked dependencies already installed:
 
 ```sh
-npm run offline:tool -- --output dist/tiangong-pcr --version 0.1.2
+npm run offline:tool -- --output dist/tiangong-pcr --version 0.2.0
 npm run offline:library -- --output dist/tiangong-pcr-library --version 0.1.2
 npm pack ./dist/tiangong-pcr --pack-destination dist --ignore-scripts
 npm pack ./dist/tiangong-pcr-library --pack-destination dist --ignore-scripts
@@ -81,7 +81,7 @@ Transfer both tarballs and a suitable Node runtime to the offline machine. In a 
 installation directory, run:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.1.2.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.2.0.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
 ./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
@@ -233,7 +233,7 @@ can build the exact qualified main commit using the pinned Node/npm toolchain an
 publish each generated tarball locally with interactive npm authentication:
 
 ```sh
-npm publish dist/release-tool/tiangong-lca-pcr-0.1.2.tgz --access public --ignore-scripts
+npm publish dist/release-tool/tiangong-lca-pcr-0.2.0.tgz --access public --ignore-scripts
 npm publish dist/release-library/tiangong-lca-pcr-library-0.1.2.tgz --access public --ignore-scripts
 ```
 
