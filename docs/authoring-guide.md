@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 4977a487075e9d27e54cfed8d25f384d75fda10a
-lastReviewedNote: "Reviewed PCR #54 organization-scoped distribution. CLI executable and immutable snapshot format are preserved; package discovery and installation references use the scoped identities."
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
 ---
 
 # Authoring Guide
@@ -158,8 +158,11 @@ An accepted mapping and a PCR's readiness are separate claims: an authored candi
 while a known unmapped leaf returns `mapping: null` and `pcr: null`. Retired leaf-derived ids are resolved through the
 alias registry before catalog lookup: `resolve --pcr` returns a terminal locator and copyable next command, while
 content commands fail with `PCR_LEGACY_ID_REDIRECT`. They must not be treated as usable methodology. Use
-`validate-dataset` to check the implemented subset of foreground collection package requirements, and inspect
-`check_coverage.checks_skipped` before interpreting a result as complete. If Agent use of `guidance` reveals missing
+the three routes in `skills/tiangong-pcr/` for general LCA authoring, optional TIDAS authoring and existing-data review.
+A foreground package is optional. `validate-dataset` checks collection protocol ID presence and `validate-model`
+checks qualifier text presence; inspect skipped coverage. Agent review uses source-cited guidance, native input
+inspection and a separate evidence envelope whose validity is not methodology approval. See
+`docs/agentic-consumption.md`. If Agent use of `guidance` reveals missing
 or ambiguous instructions, capture that through feedback issue templates or
 `npm --silent run tiangong-pcr -- feedback draft`.
 

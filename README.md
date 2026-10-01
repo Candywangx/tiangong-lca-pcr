@@ -27,8 +27,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 4977a487075e9d27e54cfed8d25f384d75fda10a
-lastReviewedNote: "Reviewed PCR #54 organization-scoped distribution. CLI executable and immutable snapshot format are preserved; package discovery and installation references use the scoped identities."
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -197,7 +197,8 @@ Builder docs live under `builder/docs/`. Start with `builder/AGENTS.md` for task
 
 ## Public PCR CLI
 
-Use `tiangong-pcr` when consuming PCRs to guide foreground data package construction:
+Use `tiangong-pcr` to guide general LCA data creation, optionally author a TIDAS process,
+or support Agent-led review of an existing TIDAS process/model:
 
 ```bash
 npm --silent run tiangong-pcr -- tree --format markdown
@@ -211,13 +212,17 @@ npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format
 npm --silent run tiangong-pcr -- resolve --pcr <pcr-id> --format json
 npm --silent run tiangong-pcr -- show --pcr <pcr-id> --lang zh-CN
 npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
+npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --topic boundary --format json
+npm --silent run tiangong-pcr -- inspect --input <process.json> --related <local-package> --section exchanges --format json
+npm --silent run tiangong-pcr -- review prepare --pcr <pcr-id> --input <process.json> --output <new-review.json> --format json
+npm --silent run tiangong-pcr -- review check --pcr <pcr-id> --input <process.json> --report <review.json> --format json
 npm --silent run tiangong-pcr -- validate-dataset --pcr <pcr-id> --input <dataset-file> --format json
 npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type range_evidence_update --summary "<finding>"
 ```
 
 The public CLI provides deterministic classification `resolve`, explicit `tree` and `list` methodology-catalog
-browsing, classification `coverage summary|list`, structured `guidance`, foreground data package checks through
-`validate-dataset`, process/lifecyclemodel draft checks through `validate-model`, and issue-ready feedback drafting.
+browsing, classification `coverage summary|list`, structured and source-cited `guidance`, native TIDAS `inspect`,
+explicit-basis `calculate`, Agent `review prepare|check`, limited legacy diagnostics and issue-ready feedback drafting.
 `tree`, `list`, and the viewer default to material records. Use `--scope material|legacy|all` on catalog commands
 when the scope must be explicit. `tree` defaults to a bounded depth-2 category view; use paginated
 `list --path-prefix` to drill into a category. `list` defaults to 10 records per page and reports its filters,
@@ -251,7 +256,13 @@ Schema-valid but empty projection is also unavailable. Empty scaffolds report th
 
 Validation output reports `validation_status`, `completeness`, accepted input shape, checks performed, checks skipped, and findings by severity. Public readiness and validation reports are checked for both JSON shape and cross-field consistency, including blocker/usability alignment, finding totals, coverage totals, completeness, and status. A `passed` result applies only to `checks_performed`; consumers must inspect partial coverage. Validation commands default to `--fail-on error` and exit 2 when error findings are present or the result is inconclusive. Use `--fail-on never` explicitly when a report-only workflow must keep exit code 0.
 
-PCR guidance is dataset-production first. `process` and `lifecyclemodel` remain target entities as publication, validation, and downstream-use projections of the foreground data package rather than separate sources of methodology truth.
+The Skill has separate general-authoring, optional TIDAS-authoring and existing-data-review routes. A foreground
+package is optional. The Agent judges scope, PCR applicability and evidence; the CLI exposes facts, citations and
+arithmetic. Partial process boundaries must not be confused with whole-model omissions. Findings distinguish
+confirmed issues, suspected anomalies and evidence gaps; `review check` validates the report envelope and source
+bindings, never the truth of its conclusions. Legacy `validate-model` checks qualifier text presence and
+`validate-dataset` checks protocol ID presence. Use TIDAS-owned tools for actual format validation.
+See [agent-led consumption](docs/agentic-consumption.md) and the [consumer Skill](skills/tiangong-pcr/SKILL.md).
 
 Use `npm --silent run tiangong-pcr -- --help` for the global Agent workflow and `npm --silent run tiangong-pcr -- <command> --help` for command-specific options, output shape, and next-step guidance.
 

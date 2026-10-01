@@ -28,8 +28,8 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 4977a487075e9d27e54cfed8d25f384d75fda10a
-lastReviewedNote: "Reviewed PCR #54 organization-scoped distribution. CLI executable and immutable snapshot format are preserved; package discovery and installation references use the scoped identities."
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -222,8 +222,8 @@ or alter source language declarations merely to package content.
 
 The public Agent-facing CLI lives under `packages/tiangong-pcr-cli/` and uses shared logic from `packages/pcr-core/`.
 
-Use this CLI to consume PCRs while constructing foreground data packages and their downstream LCA `process` or
-`lifecyclemodel` projections:
+Use this CLI for general LCA authoring, optional TIDAS process authoring, and Agent-led review of native TIDAS
+process/model inputs. Foreground data packages are optional working artifacts. See `docs/agentic-consumption.md`.
 
 ```bash
 npm --silent run tiangong-pcr -- tree --format markdown
@@ -259,7 +259,9 @@ Rules:
 - `feedback draft` creates issue-ready candidate evidence; it does not update PCR truth.
 - `--help` must work globally and for each public command. Command help should include purpose, options, output shape where relevant, and Agent next-step guidance.
 - Output formats are command-specific contracts. JSON-only commands must never silently emit another representation, and JSON-requested failures must keep stdout empty while returning a stable error code and details on stderr.
-- PCR guidance is dataset-production first, while `process` and `lifecyclemodel` remain target entities as publication, validation, and downstream-use projections of the foreground data package.
+- The Agent owns applicability and methodological interpretation. CLI inspection exposes original fields and local references; calculations require explicit bases. Reuse TIDAS-owned format tooling rather than copying its schemas or claiming schema validation from inspection.
+- Selected guidance preserves verified projection hashes, JSON Pointers and existing rule IDs. Agent review envelopes bind input/PCR evidence while keeping reasoning free. `review check` never establishes methodology approval; uncertainty and unreviewed scope remain explicit.
+- Legacy `validate-model` checks qualifier text presence and `validate-dataset` checks collection protocol ID presence. Preserve their report/exit compatibility and do not advertise them as semantic or TIDAS validation.
 - Agent skill guidance lives under `skills/tiangong-pcr/` and must remain thin. It should point agents to CLI commands and library contracts instead of duplicating PCR rules.
 - GitHub feedback intake surfaces live under `.github/ISSUE_TEMPLATE/`.
 

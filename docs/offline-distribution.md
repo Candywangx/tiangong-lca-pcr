@@ -1,6 +1,6 @@
 ---
 lastReviewedAt: 2026-10-01
-lastReviewedCommit: 4977a487075e9d27e54cfed8d25f384d75fda10a
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
 title: Offline PCR distribution contract
 docType: contract
 scope: repo
@@ -140,7 +140,13 @@ validation is still partial. Repository Markdown/YAML is the authoring authority
 
 Copy `skills/tiangong-pcr/` from the tool package into the host agent's configured
 Skill directory. npm does not activate Skills. The Skill teaches explicit selection,
-pinning, readiness checks, validation coverage and local feedback drafting.
+pinning, readiness, general LCA authoring, optional TIDAS authoring and Agent-led
+process/model review. The tool bundles inspection, cited guidance, arithmetic and
+review-envelope support; no model runtime or TIDAS schema implementation is embedded.
+Inspection and arithmetic do not require a PCR library. Review preparation/checking
+uses the selected library and native local inputs. Optional TIDAS SDK/toolkit assets
+must be provisioned separately before offline use; fully offline semantic review
+also requires an offline-capable host Agent/model. The snapshot format is unchanged.
 
 TianGong LCA code and authored methodology content use the MIT License. Both
 source manifests and generated packages declare `license: MIT`; builders copy

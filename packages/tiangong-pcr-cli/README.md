@@ -1,7 +1,8 @@
 # @tiangong-lca/pcr
 
-Read TianGong LCA product category rules (PCRs), inspect methodology guidance,
-and validate foreground data drafts from a local content library. This package
+Use TianGong LCA product category rules (PCRs) to guide LCA data creation,
+optionally author TIDAS processes, and support Agent-led review of existing
+TIDAS processes/models using a local content library. This package
 contains the CLI, schemas, bundled runtime dependencies, and a consumer Agent
 Skill. Install the content separately with
 [`@tiangong-lca/pcr-library`](https://www.npmjs.com/package/@tiangong-lca/pcr-library).
@@ -39,6 +40,10 @@ combined with `--library`.
 ./node_modules/.bin/tiangong-pcr coverage summary --classification cpc:3.0 --format json
 ./node_modules/.bin/tiangong-pcr resolve --classification cpc:3.0:01111 --format json
 ./node_modules/.bin/tiangong-pcr guidance --pcr <pcr-id> --format json
+./node_modules/.bin/tiangong-pcr guidance --pcr <pcr-id> --topic boundary --format json
+./node_modules/.bin/tiangong-pcr inspect --input process.json --related ./datasets --section exchanges --format json
+./node_modules/.bin/tiangong-pcr review prepare --pcr <pcr-id> --input process.json --related ./datasets --output review.json --format json
+./node_modules/.bin/tiangong-pcr review check --pcr <pcr-id> --input process.json --related ./datasets --report review.json --format json
 ./node_modules/.bin/tiangong-pcr --help
 ```
 
@@ -47,6 +52,20 @@ Use a PCR identifier returned by `list` for `<pcr-id>`. Each command has its own
 compatibility records. Guidance reports readiness and validation coverage:
 candidate content still requires review, and installing a package does not
 approve a methodology. The content package provides English documents only.
+
+Selected guidance returns verified source hashes, applicability and JSON Pointers;
+follow pagination or read complete values with `--pointer`. `inspect` reads native
+TIDAS JSON and explicitly supplied local references without fetching URIs or
+asserting schema validity. `calculate` performs normalization, conversion or
+balance arithmetic with explicit quantities, bases and evidence; see its help.
+
+The Agent fills the draft review after investigating the data. Findings distinguish
+confirmed issues, suspected anomalies and evidence gaps, with input/PCR evidence
+and unreviewed scope. `review check` validates the envelope and references;
+`methodology_approval` remains false. A valid report does not certify its reasoning.
+Use the separately provisioned TIDAS toolkit/SDK for format validation. A foreground
+package is optional; legacy `validate-model` only checks qualifier text and
+`validate-dataset` only checks collection protocol IDs.
 
 ## Fully offline installation
 
@@ -69,6 +88,8 @@ Runtime dependencies are bundled. No install scripts, runtime downloads, or
 network connection are required. Tool and content versions are independent;
 record both versions and the snapshot hash for reproducible work. Use
 `--library-sha256 sha256:<digest>` to require a specific trusted snapshot hash.
+The CLI does not include an LLM. Fully offline semantic review requires an
+offline-capable Agent/model supplied by the caller.
 
 ## Agent Skill
 

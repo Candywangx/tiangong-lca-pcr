@@ -282,12 +282,14 @@ test("coverage summary is bounded and coverage list exposes stable pagination co
   assert.match(page.next_command, /--format json/);
 });
 
-test("guidance help keeps foreground dataset production as the primary workflow", () => {
+test("guidance help routes authoring and existing-data review with source-cited topic selection", () => {
   const output = runCli(["guidance", "--help"]);
 
-  assert.match(output, /foreground data package/);
-  assert.match(output, /validate-dataset/);
-  assert.match(output, /process or lifecyclemodel.*downstream projection/);
+  assert.match(output, /general LCA authoring/);
+  assert.match(output, /optional TIDAS authoring or existing-data review/);
+  assert.match(output, /--topic/);
+  assert.match(output, /--pointer/);
+  assert.match(output, /applicability and declared scope/);
 });
 
 test("feedback draft help lists feedback types", () => {
