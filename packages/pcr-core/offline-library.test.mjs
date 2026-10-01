@@ -119,17 +119,20 @@ test("offline distribution preserves contracts and installs without network", { 
     npm(["pack", output, "--pack-destination", temp], temp);
     const installation = path.join(temp, "installation"); mkdirSync(installation);
     writeFileSync(path.join(installation, "package.json"), '{"private":true}\n');
-    npm(["install", path.join(temp, `tiangong-pcr-${toolBuild.version}.tgz`), path.join(temp, "tiangong-pcr-library-0.1.0.tgz")], installation);
-    const bin = path.join(installation, "node_modules/tiangong-pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
+    npm(["install", path.join(temp, `tiangong-lca-pcr-${toolBuild.version}.tgz`), path.join(temp, "tiangong-lca-pcr-library-0.1.0.tgz")], installation);
+    const bin = path.join(installation, "node_modules/@tiangong-lca/pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
     const env = { ...process.env }; delete env.PCR_LIBRARY;
     const result = execFileSync(process.execPath, [bin, "guidance", "--pcr", wheat, "--format", "json"], { cwd: installation, env, encoding: "utf8" });
     assert.equal(JSON.parse(result).readiness.status, "review_required");
-    assert.ok(existsSync(path.join(installation, "node_modules/tiangong-pcr/skills/tiangong-pcr/SKILL.md")));
-    assert.equal(existsSync(path.join(installation, "node_modules/tiangong-pcr/library")), false);
-    const dataPackage = JSON.parse(readFileSync(path.join(installation, "node_modules/tiangong-pcr-library/package.json")));
+    const sibling = JSON.parse(execFileSync(process.execPath, [bin, "library", "info", "--format", "json"], { cwd: temp, env, encoding: "utf8" }));
+    assert.equal(sibling.kind, "tiangong-pcr-library", "Scoped installation preserves the snapshot format identity.");
+    assert.ok(existsSync(path.join(installation, "node_modules/@tiangong-lca/pcr/skills/tiangong-pcr/SKILL.md")));
+    assert.equal(existsSync(path.join(installation, "node_modules/@tiangong-lca/pcr/library")), false);
+    const dataPackage = JSON.parse(readFileSync(path.join(installation, "node_modules/@tiangong-lca/pcr-library/package.json")));
     assert.equal(dataPackage.scripts, undefined); assert.equal(dataPackage.dependencies, undefined);
-    for (const [name, source] of [["tiangong-pcr", "tiangong-pcr-cli"], ["tiangong-pcr-library", "tiangong-pcr-library"]]) {
+    for (const [name, source] of [["@tiangong-lca/pcr", "tiangong-pcr-cli"], ["@tiangong-lca/pcr-library", "tiangong-pcr-library"]]) {
       const installed = path.join(installation, "node_modules", name);
+      assert.equal(JSON.parse(readFileSync(path.join(installed, "package.json"))).name, name);
       assert.equal(JSON.parse(readFileSync(path.join(installed, "package.json"))).license, "MIT");
       assert.equal(readFileSync(path.join(installed, "LICENSE"), "utf8"), readFileSync(path.join(root, "LICENSE"), "utf8"));
       const readme = readFileSync(path.join(installed, "README.md"), "utf8");
@@ -137,7 +140,14 @@ test("offline distribution preserves contracts and installs without network", { 
       assert.ok(readme.startsWith(`# ${name}\n`), "Each installed package needs its own consumer README.");
       assert.doesNotMatch(readFileSync(path.join(installed, "NOTICE.md"), "utf8"), /UNLICENSED|does not grant redistribution rights/u);
     }
-    assert.equal(readFileSync(path.join(installation, "node_modules/tiangong-pcr/node_modules/ajv/LICENSE"), "utf8"), readFileSync(path.join(root, "node_modules/ajv/LICENSE"), "utf8"));
+    assert.equal(readFileSync(path.join(installation, "node_modules/@tiangong-lca/pcr/node_modules/ajv/LICENSE"), "utf8"), readFileSync(path.join(root, "node_modules/ajv/LICENSE"), "utf8"));
+    rmSync(path.join(installation, "node_modules/@tiangong-lca/pcr-library"), { recursive: true });
+    assert.throws(() => execFileSync(process.execPath, [bin, "list", "--format", "json"], { cwd: installation, env, encoding: "utf8", stdio: "pipe" }), (error) => {
+      assert.equal(error.stdout, "");
+      assert.match(error.stderr, /PCR_LIBRARY_REQUIRED/u);
+      assert.match(error.stderr, /Install @tiangong-lca\/pcr-library/u);
+      return true;
+    });
   });
   await t.test("release tarballs preserve source provenance and install entirely offline", async () => {
     const toolVersion = JSON.parse(readFileSync(path.join(root, "packages/tiangong-pcr-cli/package.json"))).version;
@@ -154,7 +164,7 @@ test("offline distribution preserves contracts and installs without network", { 
       assert.equal(pkg.repository.url, "git+https://github.com/tiangong-lca/pcr.git");
       assert.equal(pkg.private, undefined);
     }
-    const bin = path.join(installation, "node_modules/tiangong-pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
+    const bin = path.join(installation, "node_modules/@tiangong-lca/pcr/packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
     const verified = JSON.parse(execFileSync(process.execPath, [bin, "library", "verify", "--library", path.join(libraryOutput, "library.sqlite"), "--format", "json"], { cwd: installation, encoding: "utf8" }));
     assert.equal(verified.verified, true);
     assert.ok(readFileSync(path.join(libraryOutput, "SHA256SUMS"), "utf8").includes("library.sqlite.json"));

@@ -1,10 +1,10 @@
-# tiangong-pcr
+# @tiangong-lca/pcr
 
 Read TianGong LCA product category rules (PCRs), inspect methodology guidance,
 and validate foreground data drafts from a local content library. This package
 contains the CLI, schemas, bundled runtime dependencies, and a consumer Agent
 Skill. Install the content separately with
-[`tiangong-pcr-library`](https://www.npmjs.com/package/tiangong-pcr-library).
+[`@tiangong-lca/pcr-library`](https://www.npmjs.com/package/@tiangong-lca/pcr-library).
 
 ## Install and run
 
@@ -14,7 +14,7 @@ x64, and macOS ARM64.
 In a project directory:
 
 ```sh
-npm install tiangong-pcr tiangong-pcr-library
+npm install @tiangong-lca/pcr @tiangong-lca/pcr-library
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ./node_modules/.bin/tiangong-pcr list --format json
 ```
@@ -24,7 +24,7 @@ source checkout, the CLI discovers the installed content package. Use an
 explicit path when selecting a different snapshot:
 
 ```sh
-./node_modules/.bin/tiangong-pcr list --library ./node_modules/tiangong-pcr-library/library.sqlite --format json
+./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
 
 The selection order is `--library`, then `PCR_LIBRARY`, then the installed
@@ -53,15 +53,15 @@ approve a methodology. The content package provides English documents only.
 On a connected machine, download both packages:
 
 ```sh
-npm pack tiangong-pcr@0.1.1
-npm pack tiangong-pcr-library@0.1.1
+npm pack @tiangong-lca/pcr@0.1.2
+npm pack @tiangong-lca/pcr-library@0.1.2
 ```
 
 Transfer the two tarballs and a suitable Node.js runtime to the offline machine.
 In the destination directory:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-pcr-0.1.1.tgz ./tiangong-pcr-library-0.1.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.1.2.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 
@@ -73,7 +73,7 @@ record both versions and the snapshot hash for reproducible work. Use
 ## Agent Skill
 
 The package includes `skills/tiangong-pcr/SKILL.md` and its reference files. Copy
-the complete `node_modules/tiangong-pcr/skills/tiangong-pcr/` directory into your
+the complete `node_modules/@tiangong-lca/pcr/skills/tiangong-pcr/` directory into your
 agent host's configured Skill directory, and make the installed CLI available
 to that host. npm installation does not automatically activate the Skill.
 

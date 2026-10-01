@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-09-30
-lastReviewedCommit: a5bc875771f45579f8c682d0ca08b3e49e59b8b9
-lastReviewedNote: "Reviewed PCR #51. Package entry points and release contract link remain accurate after removing post-publish polling."
+lastReviewedAt: 2026-10-01
+lastReviewedCommit: 4977a487075e9d27e54cfed8d25f384d75fda10a
+lastReviewedNote: "Reviewed PCR #54 organization-scoped distribution. CLI executable and immutable snapshot format are preserved; package discovery and installation references use the scoped identities."
 ---
 
 # TianGong LCA PCR Library
@@ -324,8 +324,8 @@ validation.
 
 ## Offline consumer distribution
 
-The [offline distribution contract](docs/offline-distribution.md) defines the separate `tiangong-pcr` tool and
-`tiangong-pcr-library` SQLite packages. The snapshot contains English Markdown and
+The [offline distribution contract](docs/offline-distribution.md) defines the separate `@tiangong-lca/pcr` tool and
+`@tiangong-lca/pcr-library` SQLite packages. The snapshot contains English Markdown and
 structured YAML only; source authoring and translation workflows remain unchanged.
 Use explicit snapshot selection and verification for offline consumption.
 
