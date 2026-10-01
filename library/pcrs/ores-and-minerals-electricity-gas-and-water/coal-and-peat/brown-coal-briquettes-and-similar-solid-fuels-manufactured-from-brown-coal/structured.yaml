@@ -1,10 +1,606 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "11040"
-  title: "Brown coal briquettes and similar solid fuels manufactured from brown coal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.coal-and-peat.brown-coal-briquettes-and-similar-solid-fuels-manufactured-from-brown-coal"
+  classification_refs: "CPC 3.0:11040"
+  covered_products: "Brown-coal briquettes; similar non-carbonized manufactured brown-coal solid fuels; dried fines and dust"
+  excluded_products: "Unmanufactured raw coal; hard-coal fuels; peat and biomass briquettes; coke"
+  representative_product: "Binder-free lignite briquette"
+  production_route: "Feed preparation, drying where needed, pressing or milling, cooling, release and applicable packaging"
+  market_state: "Saleable finished fuel at factory gate, at measured as-received moisture"
+functional_unit:
+  what: "Provide solid fuel for later combustion; does not represent delivered useful heat"
+  how_much: "1 kg saleable finished fuel"
+  how_well: "Declare as-received moisture, ash, net calorific value, feed coal rank, binder formulation and product form"
+  how_long_or_cycle: "One declared production accounting period covering normal operation and start/stop losses; use stage modelled separately"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "foreground"
+      rule: "Include feed reception, preparation, drying, mechanical shaping or milling, cooling, release and applicable packaging."
+      source_ids:
+        - leag-refining-route
+    - rule_id: boundary_upstream
+      applies_to: "utility_supply"
+      rule: "Represent utility generation in linked supply submodels, onsite or offsite. Account for fuels, combustion emissions, ash, auxiliary water and losses there; avoid double counting with utility inputs."
+      source_ids: []
+    - rule_id: boundary_complete
+      applies_to: "all exchanges"
+      rule: "The inventory is a starting set of common exchanges. Add atomic exchanges and protocols for every additional binder, cooling make-up water, lubricant, packaging component, purchased recycle, condensate waste stream and direct emission actually present; absence from this table is not a cut-off."
+      source_ids: []
+    - rule_id: boundary_use
+      applies_to: "downstream"
+      rule: "Outbound delivery, final combustion and end-user ash treatment are outside this foreground manufacturing package; downstream models must include them using finished composition and combustion technology."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Mined lignite or sub-bituminous coal entering refining site; declare moisture and prior preparation"
+  starting_condition_role: "Foreground input handoff, not burden-free resource"
+  product_classification_scope: "Manufactured brown-coal solid fuels; excludes mining, carbonization, peat and hard-coal fuels"
+  recursive_input_rule: "Record purchased same-category fuel as a separate input with upstream dataset; internal fines recycle stays in internal material ledger without a second external feed input"
+  upstream_dataset_requirement: "Link coal mining and inbound transport, heat/electricity supply, binder and packaging production, and waste treatment datasets; onsite utility generation requires a separate upstream submodel and must not be burden-free"
+  disclosure: "Declare handoffs, recycle, upstream coverage, utility losses, packaging, emissions and all exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Brown coal briquettes and similar solid fuels manufactured from brown coal"
+    uuid: "5a782c79-14b1-4a0a-9e61-09693c97db53"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Feed rank and origin"
+    - "moisture and ash with analysis basis"
+    - "net calorific value with analysis basis"
+    - "binder identity and content"
+    - "size and shape"
+    - "heat source and carrier"
+    - packaging
+    - geography
+    - technology
+    - "accounting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated scales and release records to obtain net finished-fuel mass for the same period under cp_mass. Do not use packaged gross mass or dry mass as denominator."
+  - id: energy_units
+    applies_to: "prep_electricity; drying_electricity; finish_electricity; pack_electricity; drying_heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert electricity recorded in kWh using 1 kWh = 3.6 MJ; report heat as net delivered MJ. Do not substitute fuel calorific value for drying heat demand."
+process_map:
+  - id: preparation
+    name: "Feed preparation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground manufacturing"
+    quantitative_reference: "1 kg reference flow"
+  - id: drying
+    name: "Drying and emission control"
+    inclusion: "conditional"
+    inclusion_condition: "When moisture removal or associated emission-control equipment operates"
+    role: "Foreground manufacturing"
+    quantitative_reference: "1 kg reference flow"
+  - id: finishing
+    name: "Finishing, cooling and release"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground manufacturing"
+    quantitative_reference: "1 kg reference flow"
+  - id: packaging
+    name: "Packaging"
+    inclusion: "conditional"
+    inclusion_condition: "When packaged product is supplied"
+    role: "Foreground manufacturing"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: preparation
+    label: "Feed preparation"
+    inputs:
+      product:
+        - row_id: lignite_feed
+          role: "lignite"
+          name: "lignite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db766ffc-c44d-4ecf-b906-98d90565dc01"
+          property_unit: "Mass / kg"
+          description: "When lignite is used as feedstock."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - un-cpc3-brown-coal-fuels
+            ranges: []
+        - row_id: subbit_feed
+          role: "Sub-bituminous coal"
+          name: "Sub-bituminous coal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a3573912-328b-402e-8f64-f39e34a6a00c"
+          property_unit: "Mass / kg"
+          description: "When sub-bituminous coal is used as feedstock; record separately from lignite."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - un-cpc3-brown-coal-fuels
+            ranges: []
+        - row_id: prep_electricity
+          role: "Industrial alternating-current electricity"
+          name: "Industrial alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Meter preparation and conveying electricity; record supply voltage, country and supplier."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: drying
+    label: "Drying and emission control"
+    inputs:
+      product:
+        - row_id: drying_heat
+          role: "heat"
+          name: "heat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19a302-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Net calorific value / MJ"
+          description: "Include when thermal drying operates. Measure net heat delivered; record carrier, steam conditions and condensate return if applicable."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_heat."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids: []
+            ranges: []
+        - row_id: drying_electricity
+          role: "Industrial alternating-current electricity"
+          name: "Industrial alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include dryer drives, fans and dust-control electricity when drying operates."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: dryer_vapor
+          role: "water vapour"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include only evaporated water discharged to air; recovered condensate is not an air emission. Reconcile feed and product moisture and actual vent records."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: plant_dust
+          role: "Particulate matter, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record total refining-line particulate discharge after controls, including handling and pressing; assign it here once. Use this identity only when size fraction is unspecified."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+  - id: finishing
+    label: "Finishing, cooling and release"
+    inputs:
+      product:
+        - row_id: pitch_binder
+          role: "Coal-tar pitch binder"
+          name: "Coal-tar pitch binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only if formulation contains coal-tar pitch. This is a conditional exchange, not a default recipe."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - un-cpc3-brown-coal-fuels
+            ranges: []
+        - row_id: finish_electricity
+          role: "Industrial alternating-current electricity"
+          name: "Industrial alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Meter pressing or milling, cooling and release handling; exclude already recorded preparation and drying electricity."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Brown coal briquettes and similar solid fuels manufactured from brown coal"
+          name: "Manufactured brown-coal solid fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5a782c79-14b1-4a0a-9e61-09693c97db53"
+          property_unit: "Mass / kg"
+          description: "Net saleable finished fuel at the factory gate, with moisture and market form declared. This is one declared formulation and physical market form per dataset; do not pool unlike finished fuels in one exchange."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc3-brown-coal-fuels
+            ranges: []
+      waste:
+        - row_id: lignite_reject
+          role: "Discarded lignite briquette fragments"
+          name: "Discarded lignite briquette fragments"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only lignite-derived fragments leaving for waste treatment. Internally recycled fines are not external waste; sub-bituminous rejects require their own concrete exchange if present."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Packaging"
+    inputs:
+      product:
+        - row_id: pe_film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when polyethylene film packaging is supplied with the fuel; bulk product has no film input."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_electricity
+          role: "Industrial alternating-current electricity"
+          name: "Industrial alternating-current electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include packaging-line electricity only when packaging operates."
+          amount:
+            expression: "Collect attributable period exchange and normalize by net finished-product mass for the same period using cp_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_operations"
+    rule: "Separate burdens by metered operation, production line or batch first; internal recycle is not a co-product."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: allocation_shared
+    applies_to: "shared_operations"
+    rule: "Collect attributable burdens and physical driver records under cp_allocation; shared burdens without demonstrated physical causality must not be arbitrarily allocated by product mass. Disclose alternative allocation and sensitivity and require methodology review."
+    source_ids:
+      - ghg-product-standard
+  - rule_id: allocation_waste
+    applies_to: "lignite_reject"
+    rule: "Link actual waste treatment without automatic substitution credit for waste or internal recycle. Retain reject and start/stop burdens in the released-product denominator."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "finishing"
+      flow_role: "reference_product"
+      record_type: "foreground production records"
+      raw_fields: "batch; packaging tare; finished net mass; moisture; ash; net calorific value; form; release record"
+      collection_method: "Calibrated weighing; representative same-batch sampling with analytical method and basis recorded; reconcile release and inventory"
+      unit: "kg"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_material
+      process_id: "preparation_finishing"
+      flow_role: "lignite_feed; subbit_feed; pitch_binder"
+      record_type: "foreground production records"
+      raw_fields: "batch; material identity; coal rank; receipts; moisture; stock changes; formulation"
+      collection_method: "Reconcile weighing, delivery and formulation records for net external input; track internal recycle separately"
+      unit: "kg"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_energy
+      process_id: "preparation_drying_finishing_packaging"
+      flow_role: "electricity"
+      record_type: "foreground production records"
+      raw_fields: "meter readings; meter boundary; voltage; supplier; country; operation; accounting period"
+      collection_method: "Read submeters and reconcile main meter and invoices; prevent repeated shared burdens; retain start/stop electricity"
+      unit: "kWh"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_heat
+      process_id: "drying"
+      flow_role: "drying_heat"
+      record_type: "foreground production records"
+      raw_fields: "heat meter; steam and returned condensate flows; temperature; pressure; enthalpy; supply losses and origin"
+      collection_method: "Use calibrated heat meter; for steam reconcile measured flows and inlet/return enthalpies with documented property method; no default efficiency"
+      unit: "MJ"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_emissions
+      process_id: "drying"
+      flow_role: "dryer_vapor; plant_dust"
+      record_type: "foreground production records"
+      raw_fields: "vent flow; particulate concentration; operating hours; moisture balance; condensate fate; controls"
+      collection_method: "Integrate monitored discharge with operating records; reconcile evaporated water with closed moisture ledger separating recovery and venting; disclose estimates and uncertainty for gaps"
+      unit: "kg"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_waste
+      process_id: "finishing"
+      flow_role: "lignite_reject"
+      record_type: "foreground production records"
+      raw_fields: "waste composition; net mass; fate; recycle quantity; transfer record; coal rank"
+      collection_method: "Weigh lignite fragments sent for external treatment and reconcile transfers and internal recycle; do not mix ash into this flow"
+      unit: "kg"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_packaging
+      process_id: "packaging"
+      flow_role: "pe_film"
+      record_type: "foreground production records"
+      raw_fields: "film resin; net use; loss; product batch; packaging specification"
+      collection_method: "Reconcile purchase, issue and stock ledgers for polyethylene film; record mass delivered with fuel and separate film-trim waste exchange"
+      unit: "kg"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+    - protocol_id: cp_allocation
+      process_id: "all_processes"
+      flow_role: "shared_operations"
+      record_type: "foreground production records"
+      raw_fields: "shared burden; meters; batch; physical driver; assigned shares; co-products; sensitivity"
+      collection_method: "Submeter first; retain engineering causality and reconcile all assigned shares; refer unsupported allocation for methodology review"
+      unit: "original record unit"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "complete declared accounting period"
+      site_scope: "same refining site and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; raw ledger; boundary reconciliation; gaps and uncertainty"
+  calculation_rules:
+    - id: normalize_records
+      applies_to: "all inventory rows"
+      rule: "Divide each attributable period exchange by released net fuel mass in the same period, retaining its numerator unit. Reference product itself is 1 kg."
+      inputs:
+        - cp_mass
+        - cp_material
+        - cp_energy
+        - cp_heat
+        - cp_emissions
+        - cp_waste
+        - cp_packaging
+        - cp_allocation
+      output: "exchange per 1 kg reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_state
+      applies_to: "reference_product"
+      requirement: "Moisture, formulation, rank and calorific value must match inventory batches; do not mix dry and as-received bases."
+      evidence: "cp_mass; cp_material"
+    - id: quality_complete
+      applies_to: "all inventory rows"
+      requirement: "Record period, calibration, start/stop, stocks and recycle; add every extra exchange present; missing data is not zero."
+      evidence: "collection protocols and raw ledgers"
+    - id: quality_range
+      applies_to: "all inventory rows"
+      requirement: "External empirical ranges require at least two independent original-verified boundary-compatible sources; current rules require collection instead of defaults."
+      evidence: "source applicability and independence record"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference_product"
+    rule: "Check 1 kg net fuel reference quantity, complete qualifiers and consistency with release batches and analytical basis."
+    source_ids: []
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "All exchanges must use the same finished-product denominator; reconcile period, electricity conversion and heat handoff without duplicating recycle or utility-generation burdens."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "material_and_water"
+    rule: "Reconcile dry-matter and moisture balances with packaging, waste, emissions, stock and recycle ledgers; investigate discrepancies beyond declared measurement uncertainty without an unverified default tolerance."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Do not substitute proxies for unresolved UUIDs; confirm actual geography, voltage, carrier, product state and emission compartment before dataset publication."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Fuel supply modelling with matching form, moisture and route, linked upstream and downstream"
+  excluded_use: "Direct useful-heat equivalence; proxy for hard coal, peat, biomass or coke; unconditional full-life-cycle comparison"
+  required_metadata: "Required qualifiers; metering boundaries; period; recycle; co-products; upstream/downstream links"
+  required_quality_disclosure: "UUID and range gaps; meter and assay uncertainty; allocation; missing data; coverage"
+  update_trigger: "Update when feed, formulation, moisture, utility supply, technology or packaging changes"
+data_sources:
+  - id: "un-cpc3-brown-coal-fuels"
+    type: "official_guidance"
+    reference: "[Central Product Classification (CPC) Version 3.0 Explanatory Notes; UNSD, 30 June 2025, PDF p.56](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf); verified 2026-10-01"
+    used_for: "Product boundary, feed ranks and binder/no-binder variants"
+  - id: "leag-refining-route"
+    type: "literature"
+    reference: "[Heimisch, heizstark, effizient: Veredelte Brennstoffe von LEAG](https://www.leag.de/de/standorte-technologien/veredlung/); retrieved 2026-10-01"
+    used_for: "Preparation, drying, forming/milling and bulk/packaged state; German producer case, no default intensity"
+  - id: "ghg-product-standard"
+    type: "official_guidance"
+    reference: "[Product Life Cycle Accounting and Reporting Standard](https://docs.wbcsd.org/2011/09/Product_Life_Cycle_Accounting_Reporting_Standard.pdf); WRI/WBCSD, 2011, chapters 8–9, printed pp.47–48 and 63; verified 2026-10-01"
+    used_for: "Primary data, quality indicators, subdivision and physical allocation; general principles only, no default factors"
+  - id: "un-ires-energy"
+    type: "official_guidance"
+    reference: "[International Recommendations for Energy Statistics](https://unstats.un.org/unsd/energystats/methodology/documents/IRES-web.pdf); United Nations, 2018, chapter IV, printed pp.44 and 46; verified 2026-10-01"
+    used_for: "Electricity conversion, net/gross calorific basis and fuel-specific measurements; no manufacturing range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ecbdc5a0979c9ba29a88663c0d3623987464bab01d3ef9dbe2392567e12d2530"
+  generated_content_sha256: "sha256:1d6f7fedcc69008ec13c972b4d796dc5585f0d01ee2d275b7d314a142ffd3ef4"

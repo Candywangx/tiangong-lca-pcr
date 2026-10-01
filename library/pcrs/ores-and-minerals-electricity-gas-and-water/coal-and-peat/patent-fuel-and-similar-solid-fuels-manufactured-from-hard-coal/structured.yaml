@@ -1,10 +1,590 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "11020"
-  title: "Patent fuel and similar solid fuels manufactured from hard coal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.coal-and-peat.patent-fuel-and-similar-solid-fuels-manufactured-from-hard-coal"
+  classification_refs: "CPC 3.0:11020"
+  covered_products: "Patent fuel and similar shaped hard-coal solid fuels; bituminous and anthracite formulations"
+  excluded_products: "Unshaped raw coal; brown-coal or peat briquettes; wood charcoal; coke and semi-coke; standard-coal equivalents"
+  representative_product: "Accepted hard-coal briquette fuel at factory gate"
+  production_route: "Feed receipt and size preparation; binder preparation and mixing; pressure forming; drying or curing when needed; screening and internal recycle; storage and dispatch packaging"
+  market_state: "Solid shaped fuel, as-produced moisture, bulk or declared packaging state"
+functional_unit:
+  what: "Provide combustible manufactured hard-coal fuel accepted at the factory gate"
+  how_much: "1 kg reference flow"
+  how_well: "Declare coal rank, formulation, moisture, ash, sulfur and as-produced net calorific value; accepted to the declared sales specification"
+  how_long_or_cycle: "One factory-gate production delivery; subsequent combustion heat service is outside the declaration"
+  reference_flow_link: "finished_fuel"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "manufacture"
+      rule: "Include actual feed preparation, mixing, forming, conditioning, internal handling, losses and pollution control from receipt through the product gate. Drying and binder requirements depend on coal characteristics; do not assume a universal route."
+      source_ids:
+        - epa-coal-conversion-1979
+    - rule_id: boundary_upstream
+      applies_to: "foreground data package"
+      rule: "Represent upstream supplies with linked datasets; received feed is not burden-free. Document delivery links. Post-gate distribution, combustion and packaging disposal belong to separately declared downstream scenarios."
+      source_ids: []
+    - rule_id: boundary_inventory
+      applies_to: "manufacture"
+      rule: "Record all actual external exchanges within the declared collection boundary. For other binders, fuels or packaging actually used, add specific atomic rows and collection records; never use category rows or assumed zeros. Capital-equipment construction is outside this operating package and must be disclosed."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received hard-coal feed of declared rank, moisture and particle size plus separately supplied binders"
+  starting_condition_role: "Foreground modelling entry, not an upstream burden exclusion"
+  product_classification_scope: "Patent fuel and similar hard-coal manufactured solid fuels; CPC 3.0:11020"
+  recursive_input_rule: "Record externally purchased same-category recycled briquettes as a separate supplier input linked to upstream data. Internal fines and broken-briquette recycle is a loop, not a new external input, output or credit."
+  upstream_dataset_requirement: "Link applicable upstream datasets for coal extraction, beneficiation and delivery to site, binder, packaging and utilities; disclose missing coverage."
+  disclosure: "Feed origin; received state; recycle flows; route and pollution control; upstream links; gate boundary and exceptions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Hard-coal briquette fuel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Coal rank"
+    - "hard-coal origin"
+    - "individual binder/additive masses"
+    - "curing route"
+    - moisture
+    - "net calorific value and basis"
+    - "ash and sulfur"
+    - "size and strength specification"
+    - packaging
+    - "site and year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh net fuel mass as produced; every inventory row uses the same denominator per 1 kg reference flow. Use cp_output."
+  - id: moisture_basis
+    applies_to: "coal feed and finished fuel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet-basis moisture separately. Dry mass equals wet mass multiplied by one minus the wet-basis moisture fraction; retain original wet mass."
+  - id: carrier_units
+    applies_to: "electricity_input; dryer_gas; steam_input"
+    required_property_ref:
+      name: "Energy; Volume; Mass"
+      uuid: ""
+    required_unit: "MJ; m3; kg"
+    rule: "Convert electricity using 1 kWh = 3.6 MJ. Declare natural-gas meter temperature and pressure. Record steam mass; do not treat it directly as delivered heat energy."
+process_map:
+  - id: manufacture
+    name: "Manufactured hard-coal fuel production"
+    inclusion: "required"
+    inclusion_condition: "All covered products"
+    role: "foreground_production"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: manufacture
+    label: "Manufactured hard-coal fuel production"
+    inputs:
+      product:
+        - row_id: bituminous_feed
+          role: "Bituminous hard-coal feed"
+          name: "hard coal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a2bec48b-8347-4582-8cca-fa9d09ce0ac1"
+          property_unit: "Mass / kg"
+          description: "When bituminous hard coal is used; supplier rank and fines size must be declared."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_material; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-coal-conversion-1979
+            ranges: []
+        - row_id: anthracite_feed
+          role: "Anthracite feed"
+          name: "hard coal, anthracite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9ff1d63b-2eab-4f82-969a-71dd1474f0f1"
+          property_unit: "Mass / kg"
+          description: "When anthracite is used, including blends with bituminous coal; do not duplicate the same feed mass."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_material; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-coal-conversion-1979
+            ranges: []
+        - row_id: pitch_binder
+          role: "Coal-tar pitch binder"
+          name: "Coal-tar pitch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When coal-tar pitch is added as binder; not petroleum asphalt."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_material; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-coal-conversion-1979
+            ranges: []
+        - row_id: starch_binder
+          role: "Starch binder solids"
+          name: "Starch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e5842f16-31b3-4ea4-b16a-f7b06beeb6c3"
+          property_unit: "Mass / kg"
+          description: "When neat starch is used as binder; record any water separately."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_material; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - epa-coal-conversion-1979
+            ranges: []
+        - row_id: mixing_water
+          role: "Purchased tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "When tap water crosses the site boundary for mixing, cleaning or dust suppression; internal recirculation is not a new input."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_material; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: electricity_input
+          role: "Manufacturing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0e0b235d-9043-11d3-b2c8-0080c8941b49"
+          property_unit: "Energy / MJ"
+          description: "Include metered electricity for size preparation, mixing, pressing, conditioning, handling and pollution control."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_energy; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: steam_input
+          role: "Purchased steam"
+          name: "Industrial steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ea4e839d-d854-4a7a-a362-b4ccb8dc61ff"
+          property_unit: "Mass / kg"
+          description: "When industrial steam is purchased for binder heating or drying; declare steam conditions and condensate return."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_energy; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: dryer_gas
+          role: "Natural gas for on-site heating"
+          name: "Pipeline-quality natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7766e51e-0b64-4fbb-89cb-489c33293137"
+          property_unit: "Volume / m3"
+          description: "When natural gas is burned on site; separate it from coal incorporated into the finished fuel."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_energy; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: pe_film
+          role: "Polyethylene film packaging"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When polyethylene film is used for dispatch packaging; exclude packaging from the reference product mass."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_material; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_fuel
+          role: "Saleable hard-coal manufactured fuel"
+          name: "Hard-coal briquette fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Always include accepted net fuel output at the factory gate; retain as-produced moisture."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: coal_dust_disposal
+          role: "Collected coal dust sent for disposal"
+          name: "Collected coal dust for disposal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When collected coal dust leaves the site as waste; internally recycled fines are not an external waste output."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_waste; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: process_wastewater
+          role: "Briquetting process wastewater sent for treatment"
+          name: "Coal-briquetting process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When a distinct process wastewater stream is transferred to treatment; record its composition and treatment destination."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_waste; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "When fossil fuel is burned within the manufacturing boundary; exclude later combustion of the saleable product."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_air; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: fossil_co
+          role: "Fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "When on-site fossil combustion emits carbon monoxide to outdoor air."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_air; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When nitrogen dioxide is emitted to outdoor air; a NOx-as-NO2 total is not a measured NO2 species amount."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_air; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: sulfur_dioxide
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When sulfur dioxide is emitted to outdoor air from on-site heating or conditioning."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_air; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+        - row_id: particulate_air
+          role: "Total particulate dust to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "When stack or fugitive particulate dust is emitted; report total particulate without pretending a PM10 size cut."
+          amount:
+            expression: "Collect the measured exchange per 1 kg reference flow using cp_air; retain campaign totals and net output weighing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "manufacture"
+    rule: "Separate formulations using distinct campaigns, unit-operation measurements and operating time. Partition shared electricity with measured operating time and power; disclose and test alternatives when causality is not demonstrated."
+    source_ids: []
+  - rule_id: allocation_grade
+    applies_to: "saleable_outputs"
+    rule: "For multiple grades of the same fuel from one indivisible campaign, partition joint operating burdens by actual net saleable mass; disclose calorific differences and energy-allocation sensitivity."
+    source_ids: []
+  - rule_id: allocation_recycle
+    applies_to: "internal_fines"
+    rule: "Internal fines receive no avoided-burden credit; their rehandling and repressing energy remains included. Link waste treatment; declare product or waste status for any sold by-product and prevent duplicate credits."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_output
+      process_id: "manufacture"
+      flow_role: "finished_fuel"
+      record_type: "weighing"
+      raw_fields: "campaign; net finished mass; tare; moisture; ash; sulfur; NCV; acceptance"
+      collection_method: "Weigh accepted fuel on calibrated scales excluding packaging; test representative same-campaign samples and record methods"
+      unit: "kg"
+      frequency: "batch and shift"
+      temporal_coverage: "declared complete campaign including downtime and start-up"
+      site_scope: "same plant and formulation"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; weigh tickets; assay and acceptance records"
+    - protocol_id: cp_material
+      process_id: "manufacture"
+      flow_role: "material_inputs"
+      record_type: "weighing"
+      raw_fields: "individual flow; supplier; receipts and stock; dosing; moisture; recipe; packaging mass"
+      collection_method: "Reconcile each material using weighing, dosing and opening/closing stock; volume-to-mass conversion requires measured density; divide campaign totals by same-period cp_output net finished mass to obtain the per-kg intensity."
+      unit: "kg"
+      frequency: "batch and campaign boundaries"
+      temporal_coverage: "same period as cp_output"
+      site_scope: "manufacturing boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weigh/supplier tickets; stock ledger; dosing; calibration"
+    - protocol_id: cp_energy
+      process_id: "manufacture"
+      flow_role: "electricity_input; steam_input; dryer_gas"
+      record_type: "metering"
+      raw_fields: "meter start/end; steam pressure/temperature; gas temperature/pressure; same-period output; shared-load drivers"
+      collection_method: "Meter electricity, steam and gas separately; convert electricity to MJ; reconcile purchase records and shared-load partition; divide campaign totals by same-period cp_output net finished mass to obtain the per-kg intensity."
+      unit: "MJ; kg; m3"
+      frequency: "shift and campaign"
+      temporal_coverage: "same period as cp_output"
+      site_scope: "manufacturing and pollution-control equipment"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; invoices; operating time and partition evidence"
+    - protocol_id: cp_waste
+      process_id: "manufacture"
+      flow_role: "coal_dust_disposal; process_wastewater"
+      record_type: "waste_transfer"
+      raw_fields: "individual waste mass; moisture/composition; destination; recycle amount; transfer records"
+      collection_method: "Weigh coal dust and wastewater separately; reconcile transfer and recycle ledgers; wastewater volume conversion requires measured density; divide campaign totals by same-period cp_output net finished mass to obtain the per-kg intensity."
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "same period as cp_output"
+      site_scope: "site exports"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "transfer records; water assay; destination; recycle ledger"
+    - protocol_id: cp_air
+      process_id: "manufacture"
+      flow_role: "fossil_co2; fossil_co; nitrogen_dioxide; sulfur_dioxide; particulate_air"
+      record_type: "emission_measurement"
+      raw_fields: "species; release point; concentration; gas volume; hours; method; fuel carbon; fossil fraction; particle size; captured mass"
+      collection_method: "Prefer monitoring; integrate species concentration times gas volume on matching temperature/pressure basis. CO2 may use a measured fuel-carbon balance with oxidation and non-CO2 carbon flows. Without a method or representative sample, do not enter zero; divide campaign totals by same-period cp_output net finished mass to obtain the per-kg intensity."
+      unit: "kg"
+      frequency: "representative modes and full operating duration"
+      temporal_coverage: "same period as cp_output"
+      site_scope: "site stack and fugitive releases"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "monitoring; calibration; carbon balance; mode representativeness; detection limits"
+  calculation_rules:
+    - id: campaign_intensity
+      applies_to: "all inventory rows"
+      rule: "Divide each campaign exchange total by same-period accepted net finished fuel mass; finished product row is fixed to 1 kg."
+      inputs:
+        - cp_output
+        - cp_material
+        - cp_energy
+        - cp_waste
+        - cp_air
+      output: "exchange amount per 1 kg reference flow"
+      source_ids: []
+    - id: moisture_conversion
+      applies_to: "bituminous_feed; anthracite_feed; finished_fuel"
+      rule: "Dry mass equals wet mass times one minus wet-basis moisture fraction; diagnostic balance only, not a replacement gate denominator."
+      inputs:
+        - cp_output
+        - cp_material
+      output: "diagnostic dry mass"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_formulation
+      applies_to: "manufacture"
+      requirement: "Declare coal rank, all actual binders/additives, formulation, route and controls; illustrative rows do not replace the actual recipe."
+      evidence: "recipe ledger and supplier specification"
+    - id: dq_representative
+      applies_to: "all inventory rows"
+      requirement: "Collect all operating modes, losses and recycle for the same period; disclose gaps and substitutions; distinguish missing from zero."
+      evidence: "raw records and completeness ledger"
+    - id: dq_energy
+      applies_to: "finished_fuel"
+      requirement: "Distinguish wet/dry and gross/net calorific bases; declare measured as-produced NCV per kg gate mass; embodied fuel energy is not manufacturing energy input."
+      evidence: "same-batch tests and method disclosure"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "finished_fuel"
+    rule: "Confirm manufactured hard-coal fuel and all qualifiers; reference amount and output row both equal 1 kg; packaging is outside the denominator."
+    source_ids:
+      - unsd-energy-questionnaire-2024
+  - rule_id: validate_balance
+    applies_to: "manufacture"
+    rule: "Reconcile coal, binder, water, net product, recycle and exports; disclose moisture evaporation, stock change and balance residual; interpret with instrument uncertainty rather than an invented tolerance."
+    source_ids: []
+  - rule_id: validate_atomic
+    applies_to: "all inventory rows"
+    rule: "Each row represents one exchange or species; check unit, applicability, destination and evidence. Do not treat NOx-as-NO2 totals as NO2 or sum total particulate with its size fractions."
+    source_ids: []
+  - rule_id: validate_normalization
+    applies_to: "all inventory rows"
+    rule: "Check same period, formulation and per 1 kg reference flow denominator. Exclude later product combustion; do not repeat upstream purchased-steam combustion emissions on site."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Manufacturing foreground data package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply processes for declared hard-coal fuel formulation and gate state, linked into later life-cycle models"
+  excluded_use: "Unqualified heat-service equivalence, comparison across coal rank or binder, and brown-coal, charcoal or coke substitution"
+  required_metadata: "Site; year; coal rank; formulation; moisture/NCV basis; boundary; collection period; allocation; upstream and treatment links"
+  required_quality_disclosure: "Missing exchanges and identities; estimates; monitoring representativeness; uncertainty; balance residual; absence evidence"
+  update_trigger: "Change in feed, recipe, equipment, heating source, controls or sales-moisture specification"
+data_sources:
+  - id: "unsd-cpc-3-structure-2025"
+    type: "official_guidance"
+    reference: "UNSD, Central Product Classification Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; rows 432-444; retrieved 2026-09-30"
+    used_for: "Classification identity and neighbouring categories"
+  - id: "unsd-energy-questionnaire-2024"
+    type: "official_guidance"
+    reference: "UNSD, Guidelines for the 2022 Annual Questionnaire on Energy Statistics, May 2024, page 8. https://unstats.un.org/unsd/energy/energy-questionnaire-guidelines.pdf ; retrieved 2026-09-30"
+    used_for: "Patent-fuel definition and brown-coal, peat and coke exclusions; semantic basis for professional Chinese title"
+  - id: "epa-coal-conversion-1979"
+    type: "official_guidance"
+    reference: "US EPA, Coal Conversion Control Technology, Volume II: Gaseous Emissions; Solid Wastes, EPA-600/7-79-228b, October 1979, printed page 813. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=9101FVE8.TXT ; retrieved 2026-09-30"
+    used_for: "Forming, binder, fines recycle and conditional drying process identification; historical discussion is not a current range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7632834ab84c5849354c3278e830dbb06156ab1d17ecc3ba89bf65a1c65fa765"
+  generated_content_sha256: "sha256:41b41c914cd4354cb66501fd74f2c000a6ec85fced13a7fc3ad5504f914ff660"

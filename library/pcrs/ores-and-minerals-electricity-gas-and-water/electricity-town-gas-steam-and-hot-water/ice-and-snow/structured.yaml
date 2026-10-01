@@ -1,10 +1,662 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "17400"
-  title: "Ice and snow"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.electricity-town-gas-steam-and-hot-water.ice-and-snow"
+  classification_refs: "CPC 3.0:17400"
+  covered_products: "Natural ice and snow and artificially frozen water, supplied for non-edible use"
+  excluded_products: "Edible ice; carbon-dioxide dry ice; refrigeration equipment; downstream cooling service"
+  representative_product: "Frozen water for non-edible use"
+  production_route: "Feed-water conditioning; Freezing and product separation; Natural ice/snow harvesting; Cold storage and gate handling"
+  market_state: "Frozen water at a declared harvest or ice-plant loading gate"
+functional_unit:
+  what: "Supply a declared solid-water material; no equivalent cooling-service claim"
+  how_much: "1 kg"
+  how_well: "site and year; natural/manufactured route; fresh/saline origin; shape; solid and entrained liquid fractions; temperature; intended non-edible use; water quality; refrigerant species; storage duration; gate; allocation"
+  how_long_or_cycle: "One gate supply within a declared production period"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "site"
+      rule: "This PCR covers production-gate supply of frozen water: manufactured block, flake or tube ice, artificial snow, or separately declared natural ice/snow harvesting. Fix one route, shape, temperature and retained liquid-water fraction. Include actual feed-water conditioning, freezing, harvest, separation, storage and loading. Natural harvesting does not inherit manufactured-freezing electricity. Cooling capacity and service duration are outside the mass reference."
+      source_ids:
+        - fao-ice-2004
+    - rule_id: boundary_partition
+      applies_to: "all exchanges"
+      rule: "Include actual conditioning, storage, handling and pollution controls through the declared gate. Account for attributable construction and closure with a disclosed lifetime-output basis or justified exclusion and sensitivity. Separate purchased fuel supply from foreground combustion and purchased treatment from site releases."
+      source_ids: []
+    - rule_id: boundary_completeness
+      applies_to: "inventory"
+      rule: "Cards define individual likely exchanges and route conditions, not an exhaustive site audit. Add each actual absent chemical, waste, resource, land transformation and pollutant as its own row. Absence, measured zero and unknown must be distinguished."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased suitable liquid water for manufacture, or natural ice/snow at its identified harvesting location"
+  starting_condition_role: "Resource or supplied feed; declare which"
+  product_classification_scope: "Natural ice and snow and artificially frozen water, supplied for non-edible use"
+  recursive_input_rule: "Purchased same-category material carries a distinct supplier dataset; internal recycling is a balance observation, not a new external input or credit."
+  upstream_dataset_requirement: "Link feed, electricity, fuels, chemicals, infrastructure and waste-management burdens; disclose any missing coverage."
+  disclosure: "site and year; natural/manufactured route; fresh/saline origin; shape; solid and entrained liquid fractions; temperature; intended non-edible use; water quality; refrigerant species; storage duration; gate; allocation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Frozen water for non-edible use"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "site and year"
+    - "natural/manufactured route"
+    - "fresh/saline origin"
+    - shape
+    - "solid and entrained liquid fractions"
+    - temperature
+    - "intended non-edible use"
+    - "water quality"
+    - "refrigerant species"
+    - "storage duration"
+    - gate
+    - allocation
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_basis
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "D is the positive accepted net gate-output total in kg. Exclude packaging and cancelled internal transfers. cp_output records D; every card uses per 1 kg reference flow."
+  - id: conversion
+    applies_to: "utility and material rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "kg; m3; MJ"
+    rule: "Retain raw readings. Electricity: 1 kWh = 3.6 MJ. Mass/volume conversion requires measured density, temperature and applicable pressure; retain water content and active chemical fraction."
+  - id: category_balance
+    applies_to: "production"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile feed water, ice solids, entrained liquid, drained/melted water, evaporation and stock changes. Meter electricity for freezing, defrosting and storage separately. Declare solid fraction and measured temperatures; never infer cooling capacity from equal bulk volume. Refrigerant loss equals reconciled charge, purchases, recovery and closing stock with leak records; a closed brine bath is not a fresh product feed each cycle."
+process_map:
+  - id: water_prep
+    name: "Feed-water conditioning"
+    inclusion: "conditional"
+    inclusion_condition: "Manufactured route with purchased water"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: freezing
+    name: "Freezing and product separation"
+    inclusion: "conditional"
+    inclusion_condition: "Artificial freezing or snow manufacture"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: harvest
+    name: "Natural ice/snow harvesting"
+    inclusion: "conditional"
+    inclusion_condition: "Natural harvesting route only"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: storage
+    name: "Cold storage and gate handling"
+    inclusion: "required"
+    inclusion_condition: "All routes; active cooling only where actually operated"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: water_prep
+    label: "Feed-water conditioning"
+    inputs:
+      product:
+        - row_id: feed_water
+          role: "Tap-water feed"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Purchased tap water; food-contact suitability must be demonstrated when needed. Internal recovered meltwater is a balance observation."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_feed_water; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_water
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: filter_sludge
+          role: "Water-filtration sludge"
+          name: "Water-filtration sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when water conditioning generates transferred sludge; characterize solids and treatment fate."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_filter_sludge; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filter_sludge
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      elementary:
+        []
+  - id: freezing
+    label: "Freezing and product separation"
+    inputs:
+      product:
+        - row_id: freezing_power
+          role: "Freezing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Include compressor, pump, fan, snowmaking and defrost loads on one reconciled ledger; distinguish the actual route."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_freezing_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_power
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+        - row_id: brine_salt
+          role: "Sodium-chloride bath make-up"
+          name: "Sodium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a413ea86-0887-42c8-be77-3bee86d5863b"
+          property_unit: "Mass / kg"
+          description: "Only for a sodium-chloride secondary bath; record fresh make-up, not circulating bath mass."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_brine_salt; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_salt
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+        - row_id: ammonia_charge
+          role: "Refrigeration ammonia make-up"
+          name: "Refrigeration ammonia make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when ammonia is the actual refrigerant; other refrigerants need their own specific cards."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_ammonia_charge; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ammonia_charge
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_brine
+          role: "Spent sodium-chloride refrigeration brine"
+          name: "Spent sodium-chloride refrigeration brine"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only discharged bath liquid transferred for treatment; concentration and contaminants required."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_spent_brine; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_brine
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      elementary:
+        - row_id: ammonia_air
+          role: "Ammonia to outdoor air"
+          name: "Ammonia to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only direct measured/modelled ammonia leaks reaching outdoor air; recovered ammonia is not an emission."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_ammonia_air; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ammonia_air
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+  - id: harvest
+    label: "Natural ice/snow harvesting"
+    inputs:
+      product:
+        - row_id: harvest_diesel
+          role: "Harvest-equipment diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Only diesel-driven cutting, collecting and internal haulage in natural harvesting."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_harvest_diesel; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_diesel
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: natural_ice_resource
+          role: "Natural frozen water withdrawn"
+          name: "Natural frozen water withdrawn"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record removed natural ice/snow mass and location; distinguish resource withdrawal from purchased ice."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_natural_ice_resource; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_ice_resource
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: harvest_co2
+          role: "Fossil combustion carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only foreground diesel combustion; keep supplier diesel production emissions upstream."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_harvest_co2; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_co2
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+  - id: storage
+    label: "Cold storage and gate handling"
+    inputs:
+      product:
+        - row_id: storage_power
+          role: "Storage electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Only active cold-storage operation, handling and gate equipment; measure melt losses and storage duration."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_storage_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_power
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Frozen water for non-edible use"
+          name: "Frozen water for non-edible use"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One declared ice/snow product and route; exclude packaging and separately drained water from accepted net mass."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      waste:
+        - row_id: meltwater
+          role: "Meltwater transferred for treatment"
+          name: "Meltwater transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only unsuitable meltwater sent to treatment; usable internally recovered water is not a waste output."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_meltwater; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_meltwater
+              source_ids:
+                - fao-ice-2004
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "joint production"
+    rule: "Prefer process subdivision or defensible system expansion; otherwise use demonstrated physical causality. Use economic allocation only with consistent period, price, currency and sensitivity when physical causality is unavailable. Retain the unallocated inventory."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocation_product
+    applies_to: "reference and co-products"
+    rule: "Separate product grades and natural versus manufactured routes before assigning shared refrigeration and storage meters by measured use. Allocate unavoidable shared overhead on a justified physical basis; do not credit discharged cold water or internal melt-water recycling."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "waste and recycling"
+    rule: "Classify each output by physical state and actual fate. A sale does not automatically make a residue a co-product; internal recycling receives no avoided-product credit. Apply treatment burdens once."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feed_water
+      process_id: "water_prep"
+      flow_role: "feed_water"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_filter_sludge
+      process_id: "water_prep"
+      flow_role: "filter_sludge"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_freezing_power
+      process_id: "freezing"
+      flow_role: "freezing_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_brine_salt
+      process_id: "freezing"
+      flow_role: "brine_salt"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_ammonia_charge
+      process_id: "freezing"
+      flow_role: "ammonia_charge"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_ammonia_air
+      process_id: "freezing"
+      flow_role: "ammonia_air"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Use leak logs and charge-recovery inventory balance with destination and uncertainty; distinguish recovery and contained residue."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_spent_brine
+      process_id: "freezing"
+      flow_role: "spent_brine"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_harvest_diesel
+      process_id: "harvest"
+      flow_role: "harvest_diesel"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_natural_ice_resource
+      process_id: "harvest"
+      flow_role: "natural_ice_resource"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_harvest_co2
+      process_id: "harvest"
+      flow_role: "harvest_co2"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_storage_power
+      process_id: "storage"
+      flow_role: "storage_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_output
+      process_id: "storage"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_meltwater
+      process_id: "storage"
+      flow_role: "meltwater"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Frozen water at a declared harvest or ice-plant loading gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all cards"
+      rule: "Exchange = attributable period quantity / D. Reconcile inventories and cancel internal transfers before aggregation."
+      inputs:
+        - cp_output
+        - "row-specific cp records"
+      output: "per 1 kg reference flow"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "production"
+      rule: "Reconcile feed water, ice solids, entrained liquid, drained/melted water, evaporation and stock changes. Meter electricity for freezing, defrosting and storage separately. Declare solid fraction and measured temperatures; never infer cooling capacity from equal bulk volume. Refrigerant loss equals reconciled charge, purchases, recovery and closing stock with leak records; a closed brine bath is not a fresh product feed each cycle."
+      inputs:
+        - "Matched mass"
+        - volume
+        - "composition and stock measurements"
+      output: "Balance residual and uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: representativeness
+      applies_to: "dataset"
+      requirement: "Use matching production and exchange periods, actual technology, geography and supplier state. Record startup, shutdown, seasonal variation and substitutions."
+      evidence: "collection records"
+    - id: identity_and_ranges
+      applies_to: "all cards"
+      requirement: "Unresolved identities and missing independent range evidence remain explicit. Do not replace measurement by a guessed industry range or by missing-as-zero."
+      evidence: "manifest review metadata"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Verify 1 kg, positive D, product state, property/unit and every required qualifier. Each dataset fixes one product and route."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "site"
+    rule: "Reconcile feed water, ice solids, entrained liquid, drained/melted water, evaporation and stock changes. Meter electricity for freezing, defrosting and storage separately. Declare solid fraction and measured temperatures; never infer cooling capacity from equal bulk volume. Refrigerant loss equals reconciled charge, purchases, recovery and closing stock with leak records; a closed brine bath is not a fresh product feed each cycle."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "handoff"
+    rule: "Verify each applicable exchange, its provider or environmental compartment and final waste fate; identify skipped checks, unresolved identities, missing measurements and upstream gaps. Errors or unassessed mandatory coverage cannot be labelled complete."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply a declared solid-water material; no equivalent cooling-service claim"
+  excluded_use: "Edible ice; carbon-dioxide dry ice; refrigeration equipment; downstream cooling service"
+  required_metadata: "site and year; natural/manufactured route; fresh/saline origin; shape; solid and entrained liquid fractions; temperature; intended non-edible use; water quality; refrigerant species; storage duration; gate; allocation"
+  required_quality_disclosure: "Identity and measurement gaps; boundary coverage; uncertainty; allocation; temporal and geographical representativeness"
+  update_trigger: "Changed product, route, yield, supply, waste fate, site or representative period"
+data_sources:
+  - id: "fao-ice-2004"
+    type: "official_guidance"
+    reference: "FAO Fisheries Technical Paper 436, The Use of Ice on Small Fishing Vessels, 2004, chapter 2. https://www.fao.org/4/y5013e/y5013e05.htm"
+    used_for: "Block, flake and tube freezing and storage process descriptions; historical equipment values are not adopted as current site intensities."
+  - id: "cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification scope only; no process quantities."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5, consolidated 30 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Multifunctionality hierarchy; not a claim of complete PEF conformity."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4b0d5ec8cd2946120037dcf7de5b49e34d0ac7d8b7f067d4f9a19479c9b243db"
+  generated_content_sha256: "sha256:5e5951214ed52ac48732605fef42521ee8c126b1fce4c9b4ef16da162662a8f4"

@@ -1,10 +1,688 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "12030"
-  title: "Bituminous or oil shale and tar sands"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.crude-petroleum-and-natural-gas.bituminous-or-oil-shale-and-tar-sands"
+  classification_refs: "CPC 3.0: 12030"
+  covered_products: "Unretorted bituminous and oil shale; tar sands before bitumen separation"
+  excluded_products: "Crude oil; shale oil; separated bitumen; synthetic crude; refinery bitumen; coal; paving asphalt mixtures"
+  representative_product: "Raw oil shale at mine handover"
+  production_route: "Surface or underground mining; declare actual mechanical preparation"
+  market_state: "Unretorted raw mineral, bulk delivery, with measured moisture"
+functional_unit:
+  what: "Raw oil shale of declared grade supplied at mine handover"
+  how_much: "1 kg"
+  how_well: "Declare moisture, mineral composition and oil-yield assay method; no oil-recovery performance is promised"
+  how_long_or_cycle: "One mine-product handover within the declared reporting period"
+  reference_flow_link: "shale_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_raw_mineral
+      applies_to: "mine-gate"
+      rule: "End the foreground boundary before any thermal conversion or bitumen separation; in-situ thermally recovered oils are not raw-mineral outputs."
+      source_ids:
+        - un-cpc-3-2025
+        - usgs-oil-shale-2018
+        - usgs-natural-bitumen-2003
+    - rule_id: boundary_operations
+      applies_to: "mine-gate; site-management"
+      rule: "Include stripping, excavation, haulage, mechanical conditioning, pumping, waste-rock management and associated direct emissions; add separate atomic rows for actual additional chemicals."
+      source_ids:
+        - ifc-mining-2007
+    - rule_id: boundary_lifecycle
+      applies_to: "site-management"
+      rule: "Attribute development and closure activities over documented lifetime production; disclose infrastructure and land transformation separately, without unexplained cutoffs."
+      source_ids:
+        - ifc-mining-2007
+    - rule_id: boundary_water
+      applies_to: "water; groundwater; mine_water"
+      rule: "Record fresh abstraction, dewatering, reuse, stocks and discharge fate; do not count internal circulation as external abstraction; separate treatment transfers from direct environmental releases."
+      source_ids:
+        - ifc-mining-2007
+boundary_abstraction:
+  declared_starting_condition: "In-ground deposit supported by geological and survey records; or separately declared purchased raw mineral"
+  starting_condition_role: "Extraction origin; purchased raw mineral must not conceal upstream mining"
+  product_classification_scope: "CPC 12030 raw mineral; excludes CPC 12012 oils"
+  recursive_input_rule: "Record purchased same-category raw mineral as a separate product input; do not recursively expand this process output into its own input"
+  upstream_dataset_requirement: "Link purchased raw mineral, electricity, diesel, lubricating oil and explosive to compatible upstream datasets; do not duplicate mining datasets for own-deposit resource extraction"
+  disclosure: "Disclose origin, handover, technology, upstream links, waste fate, internal circulation and infrastructure treatment"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Raw oil shale"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Raw-mineral category"
+    - "deposit and country"
+    - "mining technology"
+    - "handover point"
+    - "reporting period"
+    - "wet or dry basis"
+    - "moisture test"
+    - "particle size"
+    - "kerogen or bitumen content"
+    - "assay method"
+    - "waste-rock/product separation"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use traceable net handover mass from cp_mass; exclude added water and transport packaging, preserve declared inherent moisture."
+  - id: moisture_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet mass with paired moisture assays; calculate dry mass only with measured same-lot moisture, never substitute oil yield for raw-mineral mass."
+  - id: electricity_unit
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ by multiplying by 3.6; preserve fuel mass separately from electricity."
+process_map:
+  - id: mine_gate
+    name: "Extraction, internal haulage and mine handover"
+    inclusion: "required"
+    inclusion_condition: "All packages; crushing, screening and blasting only when actually performed"
+    role: "foreground production"
+    quantitative_reference: "1 kg reference flow"
+  - id: site_management
+    name: "Site water, land and waste management"
+    inclusion: "required"
+    inclusion_condition: "Actual site activities"
+    role: "foreground environmental management"
+    quantitative_reference: "1 kg reference flow"
+process_inventory:
+  - id: mine_gate
+    label: "Extraction, internal haulage and mine handover"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Purchased electricity for excavation, conveying and any crushing; exclude electricity generated onsite already represented by fuel."
+          amount:
+            expression: "Collect using cp_energy and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Include when diesel is consumed by mine equipment or onsite generators; identify equipment and fuel specification."
+          amount:
+            expression: "Collect using cp_material and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: lubricant
+          role: "lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Include when mineral lubricating oil is consumed in mining equipment; reconcile stock changes."
+          amount:
+            expression: "Collect using cp_material and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: ammonium_nitrate
+          role: "Modified ammonium-nitrate fuel-oil explosive"
+          name: "Modified ammonium-nitrate fuel-oil explosive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2e5d50e4-c17c-4d76-87c0-6a14d0ba374b"
+          property_unit: "Mass / kg"
+          description: "Include only where this prepared explosive formulation is used for drilling and blasting. Other formulations need separate atomic rows."
+          amount:
+            expression: "Collect using cp_material and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: shale_resource
+          role: "Oil shale, in ground"
+          name: "Oil shale, in ground"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include for shale mining; determine extracted kerogen-bearing rock mass before rejects and losses. Generic shale is not an oil-shale identity."
+          amount:
+            expression: "Collect using cp_resource and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resource
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+        - row_id: sand_resource
+          role: "Tar sands, in ground"
+          name: "Tar sands, in ground"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include for tar-sands mining; determine total extracted mineral mass and assay bitumen separately. An oil-mass or radioactivity reference is not a raw-sand mass."
+          amount:
+            expression: "Collect using cp_resource and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resource
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+    outputs:
+      product:
+        - row_id: shale_output
+          role: "Raw oil shale"
+          name: "Raw oil shale"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "1 kg reference flow for the declared shale product, including measured inherent moisture; shale datasets use this reference row."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+        - row_id: sand_output
+          role: "Raw tar sands"
+          name: "Raw tar sands"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "1 kg reference flow only for tar-sands datasets; replace the representative shale reference object and reference_flow_link with this row, never add both outputs as one reference."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include direct fossil combustion emissions to air in the reporting period; exclude purchased-electricity upstream emissions."
+          amount:
+            expression: "Collect using cp_air and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include actual nitrogen dioxide from combustion and blasting. Separate NO2 from NO, N2O and nitrite; aggregate NOx factors require documented speciation before use for this row."
+          amount:
+            expression: "Collect using cp_air and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: pm10
+          role: "Particulate matter PM10, to air"
+          name: "Particulate matter PM10, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include direct fugitive and combustion PM10 crossing the mine boundary; do not replace with coarse-only dust, soot or an urban-stack compartment."
+          amount:
+            expression: "Collect using cp_air and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+  - id: site_management
+    label: "Site water, land and waste management"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: water
+          role: "river water"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Include when freshwater is abstracted from a river for dust suppression or mine operations; internal recirculation is not fresh abstraction."
+          amount:
+            expression: "Collect using cp_water and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: groundwater
+          role: "ground water"
+          name: "ground water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4f462198-40cd-4184-8733-86648a20dc3f"
+          property_unit: "Volume / m3"
+          description: "Include groundwater abstraction or dewatering separately from river abstraction; identify aquifer, discharge and reuse."
+          amount:
+            expression: "Collect using cp_water and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: land
+          role: "Mineral extraction site occupation"
+          name: "mineral extraction site"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "b0744c5e-9859-470f-99dc-b117be5a32c5"
+          property_unit: "Area*time / m2*a"
+          description: "Include occupied mine, stockpile and waste-dump area over time; preserve land class and distinguish transformation from occupation."
+          amount:
+            expression: "Collect using cp_land and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_land
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: overburden
+          role: "Mine waste rock"
+          name: "Mine waste rock"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include barren rock removed in the declared mining route and handed to waste-dump management; record geological composition and fate. Soil overburden needs a distinct atomic row."
+          amount:
+            expression: "Collect using cp_waste and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_water
+          role: "Mine drainage water for treatment"
+          name: "Mine drainage water for treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Include only water transferred to a treatment operator; water directly discharged to nature must instead be recorded by receiving compartment and individual contaminants."
+          amount:
+            expression: "Collect using cp_water and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: used_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass / kg"
+          description: "Include collected used mineral lubricating oil sent to recovery or disposal; distinguish transfer from environmental leakage."
+          amount:
+            expression: "Collect using cp_waste and normalize to per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocate_separate
+    applies_to: "all inventory rows"
+    rule: "First subdivide burdens using submeters and separate operation records; manage waste rock as waste without automatic co-product credits."
+    source_ids: []
+  - rule_id: allocate_joint
+    applies_to: "all inventory rows"
+    rule: "Allocate indivisible joint operations using documented physical causality; where no causal basis is established, use saleable raw-mineral dry mass in the same period and disclose moisture, total products, allocation shares and sensitivity; separately sold minerals require distinct descriptions."
+    source_ids: []
+  - rule_id: allocate_integrated
+    applies_to: "mine-gate"
+    rule: "Integrated oil-production facilities must isolate raw-mineral mining burdens with submeters; do not back-allocate retorting or bitumen-separation burdens into this raw-mineral dataset."
+    source_ids:
+      - usgs-oil-shale-2018
+      - usgs-natural-bitumen-2003
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "The allocation procedure is this rule’s data-collection convention, not an LCA allocation standard prescribed by the geological or environmental documents above."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "mine_gate"
+      flow_role: "reference product"
+      record_type: "weighbridge and assay"
+      raw_fields: "net handover mass; category; lot; moisture; grade; opening and closing stocks"
+      collection_method: "Calibrated weighbridge and same-lot representative assays; separate handovers by mineral"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_energy
+      process_id: "mine_gate"
+      flow_role: "electricity"
+      record_type: "meter"
+      raw_fields: "meter readings; submeter attribution; onsite generation; voltage; supply region"
+      collection_method: "Separate purchased and generated electricity; collect process meters and invoices"
+      unit: "MJ"
+      frequency: "each shift with monthly reconciliation"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_material
+      process_id: "mine_gate"
+      flow_role: "diesel; lubricant; ammonium_nitrate"
+      record_type: "stock ledger"
+      raw_fields: "receipts per material; opening/closing stocks; issue quantities; formulation; equipment"
+      collection_method: "Reconcile net consumption by material stock and issue records; convert volume with measured density"
+      unit: "kg"
+      frequency: "daily with monthly reconciliation"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_resource
+      process_id: "mine_gate"
+      flow_role: "shale_resource; sand_resource"
+      record_type: "survey and assay"
+      raw_fields: "extracted volume; in-situ density; seam; grade; dilution; losses"
+      collection_method: "Survey excavation and in-situ density; reconcile with product handover, waste rock and stocks"
+      unit: "kg"
+      frequency: "each survey period"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_air
+      process_id: "mine_gate"
+      flow_role: "co2; no2; pm10"
+      record_type: "monitoring or activity model"
+      raw_fields: "fuel and carbon content; equipment hours; factor source; particle size; receiving compartment; control efficiency"
+      collection_method: "Retain measured emissions or source-by-source activity models with original public factor texts and uncertainty; do not use ambient concentration as emission mass"
+      unit: "kg"
+      frequency: "continuous or representative operations"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_water
+      process_id: "site_management"
+      flow_role: "water; groundwater; mine_water"
+      record_type: "water meters and transfer records"
+      raw_fields: "origin; abstraction; dewatering; reuse; stocks; discharge; treatment fate; samples"
+      collection_method: "Build water balance from calibrated meters and transfer records; separate fresh abstraction from internal reuse"
+      unit: "m3"
+      frequency: "daily with monthly balance"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_waste
+      process_id: "site_management"
+      flow_role: "overburden; used_oil"
+      record_type: "weighing and manifest"
+      raw_fields: "waste mass; composition; hazard; receiver; transport; treatment route"
+      collection_method: "Weighing or surveyed volume times measured density; retain disposal transfer and leakage records"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+    - protocol_id: cp_land
+      process_id: "site_management"
+      flow_role: "land"
+      record_type: "GIS and mine plan"
+      raw_fields: "land class; occupied area; dates; restoration; transformation type"
+      collection_method: "Measure period-specific area*time with GIS and mine plans; separately record land transformation and restoration"
+      unit: "m2*a"
+      frequency: "annually and at major changes"
+      temporal_coverage: "full declared period; cover seasonality"
+      site_scope: "same deposit, route and handover"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, assays, ledger and attribution records"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Divide attributable exchange totals by net raw-mineral handover mass for the same basis and period; reference product output is 1 kg."
+      inputs:
+        - "exchange totals"
+        - cp_mass
+        - "attribution records"
+      output: "exchange amount per 1 kg reference flow"
+      source_ids: []
+    - id: dry_mass
+      applies_to: "reference product"
+      rule: "Dry mass = measured wet mass × (1 − same-lot wet-basis moisture mass fraction); all normalization for a dry-basis dataset uses dry mass consistently."
+      inputs:
+        - cp_mass
+        - "paired moisture assay"
+      output: "dry mass"
+      source_ids: []
+    - id: electricity_conversion
+      applies_to: "electricity"
+      rule: "kWh × 3.6 = MJ; unit conversion, not an empirical energy-intensity factor."
+      inputs:
+        - cp_energy
+        - kWh
+      output: "MJ"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_traceability
+      applies_to: "all inventory rows"
+      requirement: "Retain original records, units, attribution, time, site, technology and gaps; distinguish measurement from modelling."
+      evidence: "collection protocols"
+    - id: quality_balance
+      applies_to: "mine-gate; site-management"
+      requirement: "Reconcile raw mineral, waste rock, water and stock changes; investigate discrepancies without substituting arbitrary ranges."
+      evidence: "cp_mass; cp_resource; cp_water; cp_waste"
+    - id: quality_ranges
+      applies_to: "all inventory rows"
+      requirement: "This rule sets no external empirical ranges; collect separate deposit, grade, moisture and technology records; externally inferred ranges need at least two independent boundary-compatible original sources."
+      evidence: "foreground records and future source synthesis"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Confirm one concrete raw-mineral reference flow, 1 kg basis, all qualifiers and paired assays; petroleum, generic shale and asphalt cannot proxy the raw mineral."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_measurement
+    applies_to: "all inventory rows"
+    rule: "Confirm aligned EN/ZH reference basis, collection aggregation and units; stock and moisture conversions use traceable records; unknown relationships require review."
+    source_ids: []
+  - rule_id: validate_boundary
+    applies_to: "mine-gate; site-management"
+    rule: "Check thermal-conversion exclusion, upstream links, waste treatment and direct emissions; avoid duplicating purchased-electricity emissions, circulation water and waste rock."
+    source_ids:
+      - ifc-mining-2007
+      - usgs-natural-bitumen-2003
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Require one concrete exchange per row; verify public UUID identity, property, compartment and unit before final use; missing UUIDs remain explicit, without proxy substitutions."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Process or lifecycle model using raw-mineral inputs"
+  allowed_use: "Upstream raw-material supply matching mineral category, moisture basis and handover boundary"
+  excluded_use: "Representation of recoverable oil, shale oil, separated bitumen or in-situ thermally recovered petroleum"
+  required_metadata: "Qualifiers; reference flow; site; year; route; boundary; upstream links; allocation; treatment fate"
+  required_quality_disclosure: "Collection coverage, balance discrepancies, measured/modelled shares, factor sources, UUID and range-evidence gaps"
+  update_trigger: "Changes in deposit, grade, mining technology, moisture basis, energy, allocation or handover boundary"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Structure, 30 June 2025, rows 447–456. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Raw-mineral versus oil classification boundary; verified 2026-09-30"
+  - id: "mof-serbia-tariff-2024"
+    type: "official_guidance"
+    reference: "财政部，2024年对塞尔维亚实施的协定税率表，PDF 第30页，第1649项，HS 27141000. https://m.mof.gov.cn/zcfb/202406/P020240625320768010766.pdf"
+    used_for: "Professional Chinese terminology only; no tariff or HS mapping adopted; verified 2026-09-30"
+  - id: "usgs-oil-shale-2018"
+    type: "official_guidance"
+    reference: "USGS, Oil Shale, 7 December 2018, introductory kerogen description. https://www.usgs.gov/centers/central-energy-resources-science-center/science/oil-shale"
+    used_for: "Distinction between oil shale and converted oil; verified official page 2026-09-30"
+  - id: "usgs-natural-bitumen-2003"
+    type: "official_guidance"
+    reference: "USGS Fact Sheet 70-03, Heavy Oil and Natural Bitumen—Strategic Petroleum Resources, August 2003, Production Technology. https://pubs.usgs.gov/fs/fs070-03/fs070-03.html"
+    used_for: "Distinguish sand mining, bitumen separation and upgrading; no case quantities adopted; retrieved 2026-09-30"
+  - id: "ifc-mining-2007"
+    type: "official_guidance"
+    reference: "IFC / World Bank Group, Environmental, Health, and Safety Guidelines for Mining, 10 December 2007, pp. 1–2, 5, 12. https://www.ifc.org/content/dam/ifc/doc/2000/2007-mining-ehs-guidelines-en.pdf"
+    used_for: "Mine water balance, waste rock, used oil and air-emission collection framework; apply by site relevance; no emission limits treated as empirical ranges; verified 2026-09-30"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e66dc795a257b70f4bdc28e1d74b685b179b01a3fceb0e4f4c182044bc3c9153"
+  generated_content_sha256: "sha256:002e1daf6a9837c785ab508acf273a569f3079c03ad12369e92f0580762e302b"

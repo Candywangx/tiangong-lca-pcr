@@ -1,10 +1,1068 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "11031"
-  title: "Sub-bituminous coal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.coal-and-peat.sub-bituminous-coal"
+  classification_refs: "CPC 3.0: 11031; un-cpc-3-2025"
+  covered_products: "Mined sub-bituminous coal; crushed/screened or physically cleaned and mechanically dewatered coal of the same rank"
+  excluded_products: "Lignite; bituminous coal; anthracite; peat; briquettes; coke; thermally upgraded coal; power and heat"
+  representative_product: "Bulk saleable sub-bituminous coal, as received at mine gate"
+  production_route: "Surface or underground mining; conditional physical cleaning; crushing, screening, storage and loading"
+  market_state: "Unagglomerated bulk coal at declared moisture and particle-size specification"
+functional_unit:
+  what: "Supply saleable sub-bituminous coal for subsequent fuel use"
+  how_much: "1 kg net product at the mine gate"
+  how_well: "Declared sub-bituminous rank, measured as-received moisture, ash, sulfur, net calorific value and particle-size distribution; no generic rank inferred from calorific value alone"
+  how_long_or_cycle: "One declared production reporting period with corresponding storage duration before release"
+  reference_flow_link: "saleable_coal"
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "foreground"
+      rule: "Include seam access, topsoil/overburden operations, extraction, internal haulage, ventilation/dewatering, physical preparation, storage, dust control and loading through the declared mine gate."
+      source_ids:
+        - epa-surface-coal-1998
+    - rule_id: boundary_reclamation
+      applies_to: "mine"
+      rule: "Include attributable progressive reclamation and a disclosed closure/aftercare scenario; retain land cover before and after mining, occupied area and duration. Inventory all actual site-specific transformation-from and rehabilitation exchanges separately."
+      source_ids:
+        - ifc-mining-2007
+    - rule_id: boundary_gases
+      applies_to: "mine; handling"
+      rule: "Distinguish seam-gas release, mining and post-mining emissions, recovery and destruction. Include attributable oxidation, fires and closure emissions where relevant; a low-rank coal designation is not proof of zero methane."
+      source_ids:
+        - ipcc-coal-fugitives-2019
+    - rule_id: boundary_links
+      applies_to: "background"
+      rule: "Include upstream supplies and subsequent management of foreground wastes through linked datasets. Do not count on-site combustion twice through a fuel-supply dataset that already includes use. Capital equipment and infrastructure require a separately disclosed inclusion/cut-off assessment."
+      source_ids:
+        - ghgp-product-2011
+    - rule_id: boundary_exclusions
+      applies_to: "downstream"
+      rule: "Exclude consumer transport beyond the declared gate and consumer combustion; model them separately. Document any off-site preparation included before the gate. Thermal upgrading requires an extended reviewed inventory."
+      source_ids:
+        - eia-coal-mining
+boundary_abstraction:
+  declared_starting_condition: "Coal seam in situ at the identified mine; externally supplied inputs at their physical entry points"
+  starting_condition_role: "Natural resource origin for extraction; technosphere entry for purchased inputs"
+  product_classification_scope: "Sub-bituminous rank only, independently verified before applying CPC 11031"
+  recursive_input_rule: "Record externally purchased same-category coal once with its upstream supplier dataset; internal coal recirculation is not a new extraction input"
+  upstream_dataset_requirement: "Link electricity, diesel, explosives, lubricant, water supply and waste treatment to compatible background datasets; disclose missing coverage"
+  disclosure: "Mine boundary, preparation location, stock period, transfers, upstream links, excluded activities, land coverage and closure horizon"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Sub-bituminous coal"
+    uuid: "a3573912-328b-402e-8f64-f39e34a6a00c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Mine and seam"
+    - "country and basin"
+    - "reporting period"
+    - "rank determination method"
+    - "mining route"
+    - "preparation route"
+    - "gate location"
+    - "as-received moisture and sampling basis"
+    - "ash and sulfur bases"
+    - "measured net calorific value and basis"
+    - "size specification"
+    - "storage duration"
+    - allocation
+    - "land and closure scenario"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use 1 kg net as-received saleable coal; exclude transport packaging and adjust dispatch mass for saleable stock changes using cp_coal."
+  - id: moisture_basis
+    applies_to: "coal_resource; saleable_coal; conditioning_gangue"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record paired mass and moisture samples; dry mass equals wet mass multiplied by one minus measured moisture mass fraction. Do not mix dry and as-received denominators (eia-coal-glossary)."
+  - id: electricity_units
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "The selected database property represents energy in MJ; convert metered kWh to MJ by multiplying by 3.6. This unit identity does not imply electricity has a combustible fuel composition."
+  - id: fuel_mass
+    applies_to: "mine_diesel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert volume-based diesel records using the measured or supplier-certified density at the recorded temperature; no assumed universal density."
+process_map:
+  - id: mine
+    name: "Mining and attributable site management"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground extraction"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: conditioning
+    name: "Physical cleaning and mechanical dewatering"
+    inclusion: "conditional"
+    inclusion_condition: "Coal is physically cleaned before sale; wet operations apply only where documented"
+    role: "foreground conditioning"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: handling
+    name: "Crushing, screening, storage and gate loading"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground release"
+    quantitative_reference: "1 kg saleable coal"
+process_inventory:
+  - id: mine
+    label: "Mining and attributable site management"
+    inputs:
+      product:
+        - row_id: mine_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure diesel consumed by mining, haulage, dewatering and attributable reclamation equipment; report per 1 kg reference flow. Inclusion condition: Diesel-powered equipment operates."
+          amount:
+            expression: "Measure diesel consumed by mining, haulage, dewatering and attributable reclamation equipment; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_diesel
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "65ec3424-071f-42ab-8800-810364539813"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter imported electricity for excavation, pumps and ventilation; report per 1 kg reference flow."
+          amount:
+            expression: "Meter imported electricity for excavation, pumps and ventilation; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_power
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_anfo
+          role: "Porous granular ammonium oil explosive"
+          name: "Porous granular ammonium oil explosive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c136e796-f073-46c0-b3c5-5d54ed985fcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Reconcile porous granular ANFO issued, returned and consumed by blast; report per 1 kg reference flow. Inclusion condition: Blasting uses porous granular ANFO of this specification."
+          amount:
+            expression: "Reconcile porous granular ANFO issued, returned and consumed by blast; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - epa-surface-coal-1998
+            ranges: []
+        - row_id: mine_lubricant
+          role: "lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Reconcile mineral lubricating oil consumption and stock movements; report per 1 kg reference flow."
+          amount:
+            expression: "Reconcile mineral lubricating oil consumption and stock movements; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure externally supplied process-water mass for dust control; exclude internal recirculation; report per 1 kg reference flow. Inclusion condition: Process water is purchased."
+          amount:
+            expression: "Measure externally supplied process-water mass for dust control; exclude internal recirculation; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: mine_river_water
+          role: "river water"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Meter river abstraction for mining and dust control; report per 1 kg reference flow. Inclusion condition: The mine directly abstracts river water."
+          amount:
+            expression: "Meter river abstraction for mining and dust control; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_groundwater
+          role: "ground water"
+          name: "ground water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4f462198-40cd-4184-8733-86648a20dc3f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Meter groundwater abstraction and mine dewatering separately; report water returned and consumed; report per 1 kg reference flow. Inclusion condition: Groundwater abstraction or dewatering occurs."
+          amount:
+            expression: "Meter groundwater abstraction and mine dewatering separately; report water returned and consumed; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: coal_resource
+          role: "Sub-bituminous coal in ground"
+          name: "Sub-bituminous coal in ground"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record extracted coal resource mass on the declared moisture and mineral-matter basis, reconciled with run-of-mine coal, losses and saleable coal; report per 1 kg reference flow."
+          amount:
+            expression: "Record extracted coal resource mass on the declared moisture and mineral-matter basis, reconciled with run-of-mine coal, losses and saleable coal; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coal
+              source_ids:
+                - eia-coal-mining
+            ranges: []
+        - row_id: mine_land_occupation
+          role: "mineral extraction site"
+          name: "mineral extraction site"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "b0744c5e-9859-470f-99dc-b117be5a32c5"
+          property_unit: "Area*Time 93a60a56-a3c8-21da-a746-0800200c9a66 / m2*a"
+          description: "Measure occupied mine area integrated over time and attribute the production share using cp_land; report per 1 kg reference flow."
+          amount:
+            expression: "Measure occupied mine area integrated over time and attribute the production share using cp_land; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_land
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_land_transformation
+          role: "to mineral extraction site"
+          name: "to mineral extraction site"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "68f57e2a-2909-423c-ad8e-6a695f59a48f"
+          property_unit: "Area 93a60a56-a3c8-19da-a746-0800200c9a66 / m2"
+          description: "Survey newly transformed mine area and attribute the production share using cp_land; report per 1 kg reference flow. Inclusion condition: New land is converted for the represented mine."
+          amount:
+            expression: "Survey newly transformed mine area and attribute the production share using cp_land; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_land
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: mine_overburden
+          role: "Coal-mine overburden waste rock"
+          name: "Coal-mine overburden waste rock"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure overburden transferred to the spoil-management boundary, excluding separately retained topsoil; report per 1 kg reference flow. Inclusion condition: Overburden waste rock crosses the mine-operation boundary."
+          amount:
+            expression: "Measure overburden transferred to the spoil-management boundary, excluding separately retained topsoil; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_used_oil
+          role: "Used lubricating oil"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh segregated used lubricating oil sent to recovery or treatment; report per 1 kg reference flow."
+          amount:
+            expression: "Weigh segregated used lubricating oil sent to recovery or treatment; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_drainage
+          role: "Coal-mine drainage water for treatment"
+          name: "Coal-mine drainage water for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected mine-drainage mass, suspended solids, acidity and dissolved constituents at transfer to treatment; report per 1 kg reference flow. Inclusion condition: Drainage is transferred to a distinct treatment process."
+          amount:
+            expression: "Record separately collected mine-drainage mass, suspended solids, acidity and dissolved constituents at transfer to treatment; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        - row_id: mine_methane
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record emitted seam methane by measured vent flow and concentration or a disclosed basin-specific model; distinguish recovered, destroyed and leaked gas; report per 1 kg reference flow."
+          amount:
+            expression: "Record emitted seam methane by measured vent flow and concentration or a disclosed basin-specific model; distinguish recovered, destroyed and leaked gas; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mine_gas
+              source_ids:
+                - ipcc-coal-fugitives-2019
+            ranges: []
+        - row_id: mine_carbon_dioxide
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Account separately for engine combustion, seam gas and attributable oxidation or flaring, then sum current-air fossil CO2 without duplicate background combustion; report per 1 kg reference flow."
+          amount:
+            expression: "Account separately for engine combustion, seam gas and attributable oxidation or flaring, then sum current-air fossil CO2 without duplicate background combustion; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mine_gas
+              source_ids:
+                - ipcc-coal-fugitives-2019
+            ranges: []
+        - row_id: mine_nitrogen_oxides
+          role: "Nitrogen oxides to outdoor air, expressed as NO2"
+          name: "Nitrogen oxides to outdoor air, expressed as NO2"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Use engine/blast tests or explicitly applicable source-specific factors with activity and controls; keep NOx reporting basis; report per 1 kg reference flow."
+          amount:
+            expression: "Use engine/blast tests or explicitly applicable source-specific factors with activity and controls; keep NOx reporting basis; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_sulfur_dioxide
+          role: "Sulfur dioxide to outdoor air"
+          name: "Sulfur dioxide to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Use engine tests or documented fuel-sulfur combustion accounting; do not substitute total sulfur oxides; report per 1 kg reference flow."
+          amount:
+            expression: "Use engine tests or documented fuel-sulfur combustion accounting; do not substitute total sulfur oxides; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_fine_particles
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Estimate the stated particle-size fraction from measured source activity and applicable controlled dust/engine models; report per 1 kg reference flow."
+          amount:
+            expression: "Estimate the stated particle-size fraction from measured source activity and applicable controlled dust/engine models; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mine_dust
+              source_ids:
+                - epa-surface-coal-1998
+            ranges: []
+        - row_id: mine_coarse_particles
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Estimate the stated particle-size fraction from measured source activity and applicable controlled dust/engine models; report per 1 kg reference flow."
+          amount:
+            expression: "Estimate the stated particle-size fraction from measured source activity and applicable controlled dust/engine models; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mine_dust
+              source_ids:
+                - epa-surface-coal-1998
+            ranges: []
+  - id: conditioning
+    label: "Physical cleaning and mechanical dewatering"
+    inputs:
+      product:
+        - row_id: conditioning_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "65ec3424-071f-42ab-8800-810364539813"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter cleaning and mechanical dewatering electricity without duplicating the mine meter; report per 1 kg reference flow."
+          amount:
+            expression: "Meter cleaning and mechanical dewatering electricity without duplicating the mine meter; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_power
+              source_ids:
+                - epa-coal-cleaning-1995
+            ranges: []
+        - row_id: conditioning_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure externally supplied make-up water, excluding circulation already inside the boundary; report per 1 kg reference flow. Inclusion condition: Wet cleaning uses externally supplied process water."
+          amount:
+            expression: "Measure externally supplied make-up water, excluding circulation already inside the boundary; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - epa-coal-cleaning-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: conditioning_gangue
+          role: "Coal gangue"
+          name: "Coal gangue"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a5fa448c-4a0f-4ead-b9b3-8bd843d346b9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Weigh mechanically separated rock-rich coal gangue on a declared moisture basis; do not classify saleable fines as waste; report per 1 kg reference flow."
+          amount:
+            expression: "Weigh mechanically separated rock-rich coal gangue on a declared moisture basis; do not classify saleable fines as waste; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - epa-coal-cleaning-1995
+            ranges: []
+        - row_id: conditioning_effluent
+          role: "Coal-washing bleed water for treatment"
+          name: "Coal-washing bleed water for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure washing-circuit bleed transferred to treatment separately from mine drainage; record solids and dissolved contaminants; report per 1 kg reference flow. Inclusion condition: Wet cleaning discharges a bleed stream to treatment."
+          amount:
+            expression: "Measure washing-circuit bleed transferred to treatment separately from mine drainage; record solids and dissolved contaminants; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastes
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+      elementary:
+        []
+  - id: handling
+    label: "Crushing, screening, storage and gate loading"
+    inputs:
+      product:
+        - row_id: handling_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "65ec3424-071f-42ab-8800-810364539813"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter crushing, screening, conveyor and loading electricity; report per 1 kg reference flow."
+          amount:
+            expression: "Meter crushing, screening, conveyor and loading electricity; report per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_handling_power
+              source_ids:
+                - epa-surface-coal-1998
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: saleable_coal
+          role: "Sub-bituminous coal"
+          name: "Sub-bituminous coal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a3573912-328b-402e-8f64-f39e34a6a00c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "1 kg"
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coal
+              source_ids:
+                - eia-coal-glossary
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: handling_methane
+          role: "methane (fossil)"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only post-mining methane from handling and storage before the gate, using disclosed handling duration and basin-specific data; exclude mining-stage methane; report per 1 kg reference flow."
+          amount:
+            expression: "Record only post-mining methane from handling and storage before the gate, using disclosed handling duration and basin-specific data; exclude mining-stage methane; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handling_gas
+              source_ids:
+                - ipcc-coal-fugitives-2019
+            ranges: []
+        - row_id: handling_fine_particles
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate the stated dust-size fraction from transfers, storage exposure and controls without repeating mine-stage sources; report per 1 kg reference flow."
+          amount:
+            expression: "Calculate the stated dust-size fraction from transfers, storage exposure and controls without repeating mine-stage sources; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handling_dust
+              source_ids:
+                - epa-surface-coal-1998
+            ranges: []
+        - row_id: handling_coarse_particles
+          role: "particles (PM2.5 - PM10)"
+          name: "particles (PM2.5 - PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9501-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate the stated dust-size fraction from transfers, storage exposure and controls without repeating mine-stage sources; report per 1 kg reference flow."
+          amount:
+            expression: "Calculate the stated dust-size fraction from transfers, storage exposure and controls without repeating mine-stage sources; report per 1 kg reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_handling_dust
+              source_ids:
+                - epa-surface-coal-1998
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared processes"
+    rule: "Separate measured mine, preparation and loading operations before allocating; identify grades and recovered gas sold as distinct products."
+    source_ids:
+      - ghgp-product-2011
+  - rule_id: allocation_basis
+    applies_to: "residual common burden"
+    rule: "Use a demonstrated physical relationship for remaining common burdens. For coal grades, justify mass or energy allocation from the actual process relationship and measured moisture/NCV; if no physical relationship is defensible, use documented economic allocation with consistent price periods and a sensitivity result."
+    source_ids:
+      - ghgp-product-2011
+  - rule_id: allocation_waste
+    applies_to: "waste treatment"
+    rule: "Do not assign product revenue shares to discarded rock or treatment wastewater. Retain their management burdens with the causing production; disclose any genuine saleable by-product and avoid unsubstantiated displacement credits."
+    source_ids:
+      - ghgp-product-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_coal
+      process_id: "handling"
+      flow_role: "Coal mass and quality"
+      record_type: "measurement and reconciled record"
+      raw_fields: "mine; seam; rank evidence; dispatch gross and tare; stock opening and closing; raw coal mass; moisture; ash; sulfur; NCV; sampling basis"
+      collection_method: "Calibrated weighbridge and stock surveys; representative paired laboratory samples with method identifiers."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_diesel
+      process_id: "mine"
+      flow_role: "Diesel consumption"
+      record_type: "measurement and reconciled record"
+      raw_fields: "delivery; tank stocks; equipment; operating hours; density; temperature; maintenance and reclamation use"
+      collection_method: "Fuel meters and stock reconciliation, with volume-to-mass evidence."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_materials
+      process_id: "mine"
+      flow_role: "ANFO and mineral lubricant, separate records"
+      record_type: "measurement and reconciled record"
+      raw_fields: "material identity; formulation; issued mass; returns; opening and closing stocks; task"
+      collection_method: "Supplier specifications, blast sheets and maintenance ledgers; reconcile each material independently."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_water
+      process_id: "mine"
+      flow_role: "External water and dewatering, separate circuits"
+      record_type: "measurement and reconciled record"
+      raw_fields: "source; abstraction; purchased supply; meter; circuit; recirculation; return; consumption; density if converted"
+      collection_method: "Calibrated meters and source-resolved water balance including preparation; do not equate withdrawal with consumption."
+      unit: "kg or m3 by row"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_wastes
+      process_id: "mine"
+      flow_role: "Separate waste transfers"
+      record_type: "measurement and reconciled record"
+      raw_fields: "stream; process; mass; moisture; composition; destination; manifest; on-site storage change"
+      collection_method: "Weigh each waste stream; characterize drainage/bleed chemistry; reconcile with treatment receipt and separate on-site spoil movement."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_mine_gas
+      process_id: "mine"
+      flow_role: "Mining gas and fossil CO2 sub-sources"
+      record_type: "measurement and reconciled record"
+      raw_fields: "source; vent/drain flow; concentration; temperature; pressure; raw coal output; recovery; destruction; flare; oxidation; engine fuel; time"
+      collection_method: "Use time-integrated measurements or disclose a basin-specific estimation method with factor source and units; partition gas recovery and destruction."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_handling_gas
+      process_id: "handling"
+      flow_role: "Post-mining methane"
+      record_type: "measurement and reconciled record"
+      raw_fields: "raw coal; residual gas model; throughput; storage duration; gate; temperature; losses"
+      collection_method: "Disclose a basin-specific post-mining estimate and the portion before the gate; reconcile separately from mining gas."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_combustion
+      process_id: "mine"
+      flow_role: "NOx and SO2, separate species"
+      record_type: "measurement and reconciled record"
+      raw_fields: "engine/blast; activity; fuel sulfur; test; factor source; controls; NOx mass convention"
+      collection_method: "Source-specific tests or documented applicable models; attach fuel/control records and uncertainty."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_land
+      process_id: "mine"
+      flow_role: "Occupation and transformation"
+      record_type: "measurement and reconciled record"
+      raw_fields: "GIS area; original cover; new disturbance; occupation start/end; rehabilitation; production horizon; attributable fraction"
+      collection_method: "Survey parcel-level areas and periods; match lifetime burdens to the same mine production horizon; retain planned and realized records separately."
+      unit: "m2 or m2*a by row"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_mine_power
+      process_id: "mine"
+      flow_role: "Mining electricity"
+      record_type: "measurement and reconciled record"
+      raw_fields: "meter; kWh; start/end; submeter shares; grid; voltage; self-generation separation"
+      collection_method: "Calibrated meter; convert kWh to MJ; reconcile each submeter with the import total."
+      unit: "MJ"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_conditioning_power
+      process_id: "conditioning"
+      flow_role: "Preparation electricity"
+      record_type: "measurement and reconciled record"
+      raw_fields: "meter; kWh; start/end; submeter shares; grid; voltage; self-generation separation"
+      collection_method: "Calibrated meter; convert kWh to MJ; reconcile each submeter with the import total."
+      unit: "MJ"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_handling_power
+      process_id: "handling"
+      flow_role: "Handling electricity"
+      record_type: "measurement and reconciled record"
+      raw_fields: "meter; kWh; start/end; submeter shares; grid; voltage; self-generation separation"
+      collection_method: "Calibrated meter; convert kWh to MJ; reconcile each submeter with the import total."
+      unit: "MJ"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_mine_dust
+      process_id: "mine"
+      flow_role: "Separate PM2.5 and PM2.5–PM10"
+      record_type: "measurement and reconciled record"
+      raw_fields: "source activity; truck distance; material mass; silt; unbound moisture; wind; controls; size fraction; model version"
+      collection_method: "Source tests or applicable dust model using site parameters; check geographic and tested-condition applicability; retain controls and fraction conversion."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+    - protocol_id: cp_handling_dust
+      process_id: "handling"
+      flow_role: "Separate PM2.5 and PM2.5–PM10"
+      record_type: "measurement and reconciled record"
+      raw_fields: "source activity; truck distance; material mass; silt; unbound moisture; wind; controls; size fraction; model version"
+      collection_method: "Source tests or applicable dust model using site parameters; check geographic and tested-condition applicability; retain controls and fraction conversion."
+      unit: "kg"
+      frequency: "per batch/month; retain annual total"
+      temporal_coverage: "one full declared reporting period; lifetime horizon for cp_land"
+      site_scope: "identified mine and included preparation site"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; laboratory reports; transfer receipts; activity logs; method and uncertainty"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows except land and the reference product"
+      rule: "Divide each attributable period exchange by net saleable as-received coal produced in the same period; derive production from dispatch plus closing minus opening saleable stocks. Convert tonnes to kg before division."
+      inputs:
+        - cp_coal
+        - cp_diesel
+        - cp_materials
+        - cp_water
+        - cp_wastes
+        - cp_mine_gas
+        - cp_handling_gas
+        - cp_combustion
+        - cp_land
+        - cp_mine_power
+        - cp_conditioning_power
+        - cp_handling_power
+        - cp_mine_dust
+        - cp_handling_dust
+      output: "exchange per 1 kg reference flow"
+      source_ids: []
+    - id: land_normalization
+      applies_to: "mine_land_occupation; mine_land_transformation"
+      rule: "Divide attributable occupation area-time or transformation area by cumulative saleable as-received coal over the matching mine production horizon; disclose future production assumptions and update against realized output."
+      inputs:
+        - cp_land
+        - cp_coal
+      output: "land exchange per 1 kg reference flow"
+      source_ids: []
+    - id: gas_activity_basis
+      applies_to: "mine_methane; handling_methane"
+      rule: "When an applicable gas model uses raw coal tonnes, calculate its gas total with that raw-coal activity first, then divide by saleable coal kg; never apply a raw-coal factor directly to saleable tonnes."
+      inputs:
+        - cp_mine_gas
+        - cp_handling_gas
+        - cp_coal
+      output: "gas exchange per 1 kg reference flow"
+      source_ids:
+        - ipcc-coal-fugitives-2019
+  data_quality_requirements:
+    - id: rank_quality
+      applies_to: "saleable_coal"
+      requirement: "Verify rank and report each analytical basis; one heat-content value cannot substitute for rank evidence."
+      evidence: "cp_coal; eia-coal-glossary"
+    - id: mass_water_balance
+      applies_to: "all inventory rows"
+      requirement: "Reconcile coal, moisture, gangue, stocks and water separately; explain losses and measurement gaps."
+      evidence: "cp_coal; cp_water; cp_wastes"
+    - id: evidence_scope
+      applies_to: "emissions"
+      requirement: "Disclose model source, test conditions, mine route, controls and uncertainty; old US dust guidance supports process identification, not a universal industry benchmark."
+      evidence: "cp_mine_dust; cp_handling_dust; epa-surface-coal-1998"
+    - id: completeness
+      applies_to: "foreground package"
+      requirement: "Expand with actual site-specific atomic exchanges; record missing measurements and upstream coverage. Do not default unmeasured methane, water, rejects or combustion to zero."
+      evidence: "activity logs; ifc-mining-2007"
+    - id: range_evidence
+      applies_to: "all inventory rows"
+      requirement: "Collect foreground values. No external inventory range is prescribed because two independent boundary-compatible original sources have not established one for this product state and route."
+      evidence: "Meters, assays, surveys and source applicability review"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Reject a reference other than 1 kg net as-received saleable sub-bituminous coal, or missing rank, moisture and gate qualifiers."
+    source_ids:
+      - eia-coal-glossary
+  - rule_id: validate_balances
+    applies_to: "foreground"
+    rule: "Verify meter coverage, stock reconciliation, dry/wet basis and allocation sums. Check raw-coal versus saleable denominator in gas calculations and independently evaluate all applicable source classes."
+    source_ids:
+      - ipcc-coal-fugitives-2019
+  - rule_id: validate_particles
+    applies_to: "dust"
+    rule: "Do not sum PM2.5 and inclusive PM10 as disjoint quantities; derive the 2.5–10 micrometre fraction only from compatible measurements/models."
+    source_ids:
+      - epa-surface-coal-1998
+  - rule_id: validate_identity
+    applies_to: "inventory"
+    rule: "Every row must be atomic with a compatible property, unit and compartment. An unresolved UUID does not justify a proxy. Wastewater transfers require treatment links and pollutant-resolved final emissions in the completed dataset."
+    source_ids:
+      - ifc-mining-2007
+  - rule_id: validate_disclosure
+    applies_to: "dataset"
+    rule: "Require explicit missing-data, conditional-route, closure and allocation disclosures; distinguish measured totals, estimates and external evidence."
+    source_ids:
+      - ghgp-product-2011
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "background_dataset"
+  allowed_use: "Mine-gate coal supply for separately modelled transport, fuel use and energy systems of the declared rank"
+  excluded_use: "Consumer electricity or heat; other coal ranks; thermally upgraded coal; undisclosed generic global coal"
+  required_metadata: "All reference qualifiers; process and supplier links; methods; units; geography; time; allocation; land/closure scope"
+  required_quality_disclosure: "Measured/modelled shares; completeness; unresolved flow identities; uncertainty; absent ranges; stock and water balances; cut-offs"
+  update_trigger: "Rank/state change; mine route or source-control change; revised gas model; new meters; changed allocation, stock or closure assumptions"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 Structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; accessed 2026-09-30"
+    used_for: "Official classification identity, CSV rows 433–440"
+  - id: "eia-coal-glossary"
+    type: "official_guidance"
+    reference: "EIA Glossary: Coal; https://www.eia.gov/tools/glossary/?id=coal; accessed 2026-09-30"
+    used_for: "Coal rank and distinction between as-received and laboratory bases; entries Coal rank, Subbituminous coal, As-received condition"
+  - id: "eia-coal-mining"
+    type: "official_guidance"
+    reference: "Coal explained: Mining and transportation of coal; https://www.eia.gov/energyexplained/coal/mining-and-transportation.php; accessed 2026-09-30"
+    used_for: "Surface/underground routes and conditional coal preparation; sections Removing coal and Processing coal"
+  - id: "epa-surface-coal-1998"
+    type: "official_guidance"
+    reference: "AP-42 Section 11.9 Western Surface Coal Mining, October 1998; https://www.epa.gov/sites/default/files/2020-10/documents/c11s09.pdf; accessed 2026-09-30"
+    used_for: "Mining, handling, reclamation and dust activities, pp. 11.9-1 and 11.9-4; no transferred numerical emission factors"
+  - id: "epa-coal-cleaning-1995"
+    type: "official_guidance"
+    reference: "AP-42 Section 11.10 Coal Cleaning, November 1995; https://www.epa.gov/sites/default/files/2020-10/documents/c11s10.pdf; accessed 2026-09-30"
+    used_for: "Physical cleaning and dewatering stages, pp. 11.10-1–3; thermal drying is outside this PCR"
+  - id: "ipcc-coal-fugitives-2019"
+    type: "official_guidance"
+    reference: "2019 Refinement to the 2006 IPCC Guidelines, Volume 2 Chapter 4: Fugitive Emissions; https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/2_Volume2/19R_V2_4_Ch04_Fugitive_Emissions.pdf; accessed 2026-09-30"
+    used_for: "Sections 4.1.1, 4.1.3 and 4.1.4: mining/post-mining gas accounting and distinction between raw coal activity and saleable output; no adopted factor range"
+  - id: "ifc-mining-2007"
+    type: "official_guidance"
+    reference: "Environmental, Health, and Safety Guidelines for Mining, 10 December 2007; https://www.ifc.org/content/dam/ifc/doc/2000/2007-mining-ehs-guidelines-en.pdf; accessed 2026-09-30"
+    used_for: "Water balance, mine drainage, waste rock, used oil, air and land management, pp. 2–5, 9–12; management guidance rather than inventory ranges"
+  - id: "ghgp-product-2011"
+    type: "standard"
+    reference: "Product Life Cycle Accounting and Reporting Standard, WRI/WBCSD, 2011; https://docs.wbcsd.org/2011/09/Product_Life_Cycle_Accounting_Reporting_Standard.pdf; accessed 2026-09-30"
+    used_for: "Chapter 9, pp. 63–67: allocation hierarchy and disclosure; applied here to attributable foreground exchanges"
+  - id: "ipcc-energy-zh-2000"
+    type: "official_guidance"
+    reference: "IPCC Good Practice Guidance and Uncertainty Management, Chapter 2 Energy, Chinese edition, 2000; https://www.ipcc-nggip.iges.or.jp/public/gp/chinese/2_Energy_CN.pdf; accessed 2026-09-30"
+    used_for: "Chinese term 次烟煤, printed p. 2.29; terminology only, no calorific values transferred"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8d14bad0fdd876a1504f88c7942c9552154f9700d7ed21644cac0b62be78748e"
+  generated_content_sha256: "sha256:1b00dad743480506faa3e53d88c642e498981525a8a77e14ec09c96dc265dd86"

@@ -1,0 +1,27 @@
+# Accept the three natural phosphate-mineral families
+
+- Status: accepted
+- Decided by: codex-direct-pcr-author
+- Decided at (UTC): 2026-10-01T10:59:44.171Z
+
+## Decision
+
+Accept CPC3.0 16110 as exact to pcr.ores-and-minerals-electricity-gas-and-water.other-minerals.natural-calcium-phosphates-natural-aluminium-calcium-phosphates-and-phosphatic-chalk. Cover natural calcium phosphates, natural aluminium-calcium phosphates and phosphatic chalk as crude, washed, physically concentrated, ground/powdered natural minerals at one declared actual gate. Each dataset fixes one family, phases, grade and actual route. The representative phosphate ore does not narrow the full category. Integrated extraction, supplied minerals and qualified geological tailings carry distinct starts/burdens. Exclude roasting/calcination, chemically transformed phosphates, synthetic salts, phosphoric acid, fertilizer manufacture and downstream articles. WCO HS2022 Chapter25 Note1 and heading2510 support physical mineral states, not a new HS mapping. Candidate completion, independent worktrees and parallel subtasks are owner-authorized; classification acceptance is not publication or independent methodology approval.
+
+## Evidence and methodology
+
+Original EPA AP42 11.21 July1993/reformatted January1995 PDF pp.1–5 and its alternative process diagram were acquired, registered and inspected. Physical calcium-phosphate preparation and wet direct handling versus conditional free-water drying are supported qualitatively. The historical US fertilizer-linked sequence, calcination, temperatures, moisture, grades, factors and recovery do not become universal defaults. Museum Wales Crandallite institutional original was retained and read: confirmed natural calcium aluminium phosphate hydroxide hydrate, with mineralogical verification and geologic occurrence. It establishes mineral identity, not industrial processing quantities. Aluminium-calcium minerals and phosphatic chalk have independent foreground mineralogical/preparation protocols, not inferred US calcium-apatite recipes. IFC mining guidance supplies qualitative actual water/waste/control/development/closure coverage. Parent review checked original hash-bound source fragments and complete category boundaries.
+
+Seven conditional processes contain37 atomic exchange cards; phase-preserving physical wash/sort/gravity/magnetic/flotation/dewatering and free-water drying are included only when actual. Each actual chemical, resource, supplied family, fuel, packaging, tailings/slurry/dust and emitted species has an individual row. Additional actual exchange species require their own cards.
+
+D is independently weighed positive accepted net as-received mineral kg, excluding packaging/rejects. Dry mass = D*(1-w), or measured slurry solids D*s, never both corrections. Crystal water/hydroxyl belongs to its mineral phase; loss on ignition is not automatically free moisture. Dry-basis elemental P and analytical P2O5 equivalent are distinct and converted using declared molar masses. Reconcile matched feed/product/co-products/tails/stocks and elemental/phase losses; grade alone is not recovery. Natural phosphate name or pure apatite/crandallite formula does not impose assay or recipe.
+
+Parent review required a repair of an erroneous elemental-phosphorus discharge label. The final dissolved orthophosphate card requires species-selective testing and explicitly declared phosphate-ion mass basis. Concentration as P converts using M(PO4)/M(P) only for verified orthophosphate; total dissolved P does not establish that species. Actual protonation/other species and their masses must be resolved without double counting. Each receiving-water load uses matched species mg/L and net m3 divided by1000, with background/compartment/uncertainty. Geological radionuclide content is not automatic release.
+
+Direct-read UUID2d7ed513-8efd-4a7b-9c21-50889bbcb9f1 identifies Phosphate Ore Product/Mass, production mix at plant, feed-grade. It is representative only of independently compatible natural ore grade/state/gate, not universal identity, purity or safety for other mineral families. All UUID-bearing Chinese selected-flow names use official base names. Other identities and independent compatible empirical ranges remain explicit candidate review needs.
+
+Retain unallocated joint mineral outputs and justify subdivision, physical causality or matched economic allocation/sensitivity. Phosphorus and carbonate in one chalk product are constituents rather than separate physical outputs. Actual saleable recovered sand/carbonate needs distinct mass/specification/fate. Geological-tailings origin or water reuse does not create zero burden or automatic avoided fertilizer/acid/disposal credits. Count actual development/closure once.
+
+## Verification and integration
+
+Fresh independent worktree final commit52ccfe379058be1d898f3caf99bc21cbedc355f5, atop235d279b, changes exactly four canonical files from its saved baseline. Bilingual finite inspection performs188checks across74inventory rows with0skips; repeated projection generation is byte-identical. Preintegration full validation stops at the expected retired alias collision. Canonical landing compares all four baseline bytes before copy. Shared mapping/aliases/catalog/coverage are integrated serially. Runtime resolution/guidance and full parent/independent-worktree validation are mandatory after integration and recorded separately; author checks alone do not imply full validation success.
