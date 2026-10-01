@@ -1,10 +1,648 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "17203"
-  title: "Recovered gases"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.electricity-town-gas-steam-and-hot-water.recovered-gases"
+  classification_refs: "CPC 3.0: 17203; un-cpc-2025"
+  covered_products: "Recovered solid-carbonaceous industrial fuel gases, including blast-furnace and converter gas"
+  excluded_products: "Coke-oven gas; gasworks gas; natural gas; refinery gas; biogas; combustion-only heat recovery"
+  representative_product: "Cleaned blast furnace gas"
+  production_route: "Capture; cooling and dedusting; gas handling; delivery; conditional flaring and pressure recovery"
+  market_state: "Gaseous fuel delivered at a metered recovery-center outlet"
+functional_unit:
+  what: "Supply of cleaned blast furnace gas as the representative recovered-gas product"
+  how_much: "1 kg of accepted dry cleaned gas; accompanying dry volume stated at 273.15 K and 101.325 kPa absolute pressure"
+  how_well: "Meets the declared receiving gas-network specification; measured composition, gross and net calorific values and delivery pressure"
+  how_long_or_cycle: "One declared representative operating period including normal operation, startups and shutdowns"
+  reference_flow_link: "reference_gas"
+system_boundary:
+  rules:
+    - rule_id: boundary_recovery
+      applies_to: "recovery"
+      rule: "Include capture, cleaning, cooling, compression, gas holding, handling losses and delivery to the declared outlet. Include owned bypass/flare operation; exclude downstream customer combustion."
+      source_ids:
+        - eu-iron-steel-2013
+    - rule_id: boundary_treatment
+      applies_to: "recovery"
+      rule: "Record dust, sludge and wastewater at external-treatment handover and link treatment. Internal reused gas/water are balances, not repeated purchases. Full-combustion converter heat recovery is not a recovered fuel-gas output."
+      source_ids:
+        - eu-iron-steel-2013
+    - rule_id: boundary_extend
+      applies_to: "foreground_package"
+      rule: "Add each actual auxiliary, treatment chemical, dust stream and elementary pollutant as a separate identified exchange if present. A missing template row never authorizes a cut-off; substantiate any omission through cp_scope."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Raw by-product gas handed from its producing furnace to the recovery system, with documented upstream burden"
+  starting_condition_role: "Physical foreground inlet, not a zero-burden assumption"
+  product_classification_scope: "Recovered industrial fuel gases; CPC 17203 is classification context"
+  recursive_input_rule: "Use a measured transfer and one identified supplying process; net internal recirculation out of external exchange totals"
+  upstream_dataset_requirement: "Link furnace gas supply, utilities and external treatment to compatible datasets; document any unavailable upstream burden"
+  disclosure: "Declare furnace/recovery interface, cleaning route, network limits, gas storage, export meters, flare ownership and upstream allocation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Blast furnace gas"
+    uuid: "67d9fe25-51ed-4d41-af35-f033a752d042"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Source furnace and gas type"
+    - "fossil/biogenic carbon fraction"
+    - "dry/wet state"
+    - "metering temperature and absolute pressure"
+    - compressibility
+    - "gas composition"
+    - "gross/net calorific value basis"
+    - "outlet pressure"
+    - "dust specification"
+    - "upstream allocation"
+    - geography
+    - period
+    - flaring
+    - "delivery point"
+reference_flows:
+  []
+measurement_rules:
+  - id: gas_state
+    applies_to: "reference_gas"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Collect accepted dry export mass through cp_export, using corrected dry volume and measured gas density on the same state basis. Correct meters using absolute pressure, temperature, moisture and compressibility; do not assume a wet operating m3 equals a reference m3."
+  - id: energy_basis
+    applies_to: "reference_gas; converter_gas"
+    required_property_ref:
+      name: "Energy content"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Keep gross and net calorific values distinct, on the same dry volume state; report energy as dry volume multiplied by measured calorific value. No fixed gas-density or heating-value default is supplied."
+  - id: electricity_units
+    applies_to: "recovery_electricity; pressure_recovery_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ by multiplying by 3.6; retain meter records. This electricity identity property is not a calorific-value test of electricity."
+  - id: solids_state
+    applies_to: "bf_dust; bf_sludge; bof_dust; bof_sludge"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Retain as-transferred wet mass and dry-solids content separately. Use measured moisture to convert; never equate wet sludge mass with dry dust."
+process_map:
+  - id: recovery
+    name: "Integrated gas capture, conditioning and delivery"
+    inclusion: "required"
+    inclusion_condition: "Covered fuel-gas recovery center"
+    role: "foreground production"
+    quantitative_reference: "per reference flow"
+process_inventory:
+  - id: recovery
+    label: "Integrated gas capture, conditioning and delivery"
+    inputs:
+      product:
+        - row_id: raw_bf
+          role: "Raw blast furnace gas"
+          name: "Raw blast furnace gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record the raw gas transferred from ironmaking before cleaning, including moisture and dust state."
+          amount:
+            expression: "Collected exchange per reference flow using cp_gas."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: raw_bof
+          role: "Raw converter gas"
+          name: "Raw converter gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record captured converter gas before dedusting; distinguish diverted gas from accepted fuel gas."
+          amount:
+            expression: "Collected exchange per reference flow using cp_gas."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: recovery_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter capture, gas-cleaning, cooling-water pumps, compression and gas-holder electricity; avoid repeated shared-meter totals."
+          amount:
+            expression: "Collected exchange per reference flow using cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: scrubber_water
+          role: "Production water for industrial use"
+          name: "Production water for industrial use"
+          flow_type: "product"
+          flow_ref:
+            uuid: "72dcdee6-846a-455a-95d1-942aa7ad3730"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record supplied industrial-water makeup, excluding internal recirculation."
+          amount:
+            expression: "Collected exchange per reference flow using cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: cooling_deionised_water
+          role: "de-ionised water"
+          name: "de-ionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bf0-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record separately supplied deionised-water makeup."
+          amount:
+            expression: "Collected exchange per reference flow using cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: purge_nitrogen
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "92233c86-8e75-441c-94de-03cc91bc7c10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased gaseous nitrogen for purging the recovery network."
+          amount:
+            expression: "Collected exchange per reference flow using cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eu-iron-steel-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_gas
+          role: "Blast furnace gas"
+          name: "Blast furnace gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67d9fe25-51ed-4d41-af35-f033a752d042"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "One kilogram of accepted dry blast furnace gas is supplied at the declared outlet."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_export
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: converter_gas
+          role: "Converter gas"
+          name: "Converter gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "631f9452-a270-4d64-9103-de9dede592d2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted converter gas exported from the same recovery center; keep its mass, density and energy separately."
+          amount:
+            expression: "Collected exchange per reference flow using cp_export."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_export
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: pressure_recovery_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record net electricity exported from gas-pressure recovery, excluding self-consumed generation."
+          amount:
+            expression: "Collected exchange per reference flow using cp_utilities."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - eu-iron-steel-2013
+            ranges: []
+      waste:
+        - row_id: bf_dust
+          role: "Blast furnace gas-cleaning dust"
+          name: "Blast furnace gas-cleaning dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh segregated dry dust at handover; retain metal and moisture analysis and receiving route."
+          amount:
+            expression: "Collected exchange per reference flow using cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: bf_sludge
+          role: "Blast furnace gas-cleaning sludge"
+          name: "Blast furnace gas-cleaning sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh wet sludge and measure dry solids and zinc/lead content; avoid double-counting solids in effluent."
+          amount:
+            expression: "Collected exchange per reference flow using cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: bof_dust
+          role: "Converter gas-cleaning dust"
+          name: "Converter gas-cleaning dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh converter dry gas-cleaning dust separately from blast-furnace dust."
+          amount:
+            expression: "Collected exchange per reference flow using cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: bof_sludge
+          role: "Converter gas-cleaning sludge"
+          name: "Converter gas-cleaning sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh converter wet gas-cleaning sludge separately and report dry-solids content."
+          amount:
+            expression: "Collected exchange per reference flow using cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: scrubber_effluent
+          role: "Gas-scrubber wastewater"
+          name: "Gas-scrubber wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Meter the aqueous effluent handed to wastewater treatment; record suspended solids, cyanide, ammonia and metals analyses."
+          amount:
+            expression: "Collected exchange per reference flow using cp_waste."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+      elementary:
+        - row_id: carbon_monoxide_air
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure or reconcile fossil CO discharged by leaks, venting and incomplete foreground flare combustion."
+          amount:
+            expression: "Collected exchange per reference flow using cp_air."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+        - row_id: carbon_dioxide_air
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure or reconcile fossil CO2 from foreground venting and flaring; include CO2 already in vented gas."
+          amount:
+            expression: "Collected exchange per reference flow using cp_air."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air
+              source_ids:
+                - un-energy-2026
+                - eu-iron-steel-2013
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_upstream
+    applies_to: "raw_bf; raw_bof"
+    rule: "Obtain the producing-furnace burden allocated to each transferred gas through cp_upstream. Recovery does not establish zero burden or an avoided-emission credit. Disclose supplier allocation and assess uncertainty where burdens are unavailable."
+    source_ids: []
+  - rule_id: allocation_shared
+    applies_to: "recovery"
+    rule: "Assign dedicated meters directly. For remaining common conditioning services use a documented causal engineering driver, with measured driver totals and shares summing to one in cp_allocation. If no causal driver is defensible, state an economic allocation scenario using consistent-period revenues and provide sensitivity; never silently choose mass, volume or calorific value as universal allocation."
+    source_ids: []
+  - rule_id: allocation_outputs
+    applies_to: "converter_gas; pressure_recovery_electricity; bf_dust; bf_sludge; bof_dust; bof_sludge"
+    rule: "Treat independently exported gas/electricity as co-products where applicable. Determine dust/sludge product versus waste status from actual handover and quality records, and update the physical flow type accordingly. Do not credit recycling or pressure recovery twice; retain treatment responsibility."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_export
+      process_id: "recovery"
+      flow_role: "reference_gas; converter_gas"
+      record_type: "Export meters and gas laboratory records"
+      raw_fields: "Gas type; accepted dry mass; accepted dry volume; temperature; absolute pressure; water vapor; compressibility; composition; density; gross/net calorific value; delivery pressure"
+      collection_method: "Reconcile calibrated export meters with representative gas sampling; obtain dry mass as corrected dry volume multiplied by measured density on that same state basis. Separate gas types and excluded flare diversion."
+      unit: "m3; kg; MJ"
+      frequency: "Continuous meters; routine composition sampling"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_gas
+      process_id: "recovery"
+      flow_role: "raw_bf; raw_bof"
+      record_type: "Furnace transfer records"
+      raw_fields: "Source furnace; inlet volume/mass; state; contaminants; diverted fraction"
+      collection_method: "Reconcile transfer meters and furnace operating logs on matching gas-state bases."
+      unit: "m3; kg"
+      frequency: "Continuous and each converter heat"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_utilities
+      process_id: "recovery"
+      flow_role: "recovery_electricity; scrubber_water; cooling_deionised_water; purge_nitrogen; pressure_recovery_electricity"
+      record_type: "Dedicated meter and supply records"
+      raw_fields: "Meter id; exchange identity; gross input; self-consumption; exported output; allocation driver; unit conversion"
+      collection_method: "Read dedicated electricity, water and nitrogen meters, reconciled to bills; use measured density if volume is converted to mass."
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Continuous; reconcile monthly"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_waste
+      process_id: "recovery"
+      flow_role: "bf_dust; bf_sludge; bof_dust; bof_sludge; scrubber_effluent"
+      record_type: "Weighbridge, effluent meters and analyses"
+      raw_fields: "Origin; mass/volume; moisture; dry solids; metals; cyanide; ammonia; destination; waste status"
+      collection_method: "Measure each segregated waste at external-treatment handover; reconcile manifests and retained laboratory samples."
+      unit: "kg; m3"
+      frequency: "Each transfer and representative samples"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_air
+      process_id: "recovery"
+      flow_role: "carbon_monoxide_air; carbon_dioxide_air"
+      record_type: "Flare, vent and leak inventory"
+      raw_fields: "Event duration; gas flow; composition; fossil fraction; flare operation; monitoring results; uncertainty"
+      collection_method: "Use stack/vent monitoring or a documented event-level carbon balance; retain methods and uncertainties. Account for residual CO and inlet CO2 separately."
+      unit: "kg"
+      frequency: "Continuous or each event"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_upstream
+      process_id: "recovery"
+      flow_role: "raw_bf; raw_bof"
+      record_type: "Supplying-process and allocation dossier"
+      raw_fields: "Supplier; source dataset; furnace boundary; allocation; gas transfer basis; unresolved burden"
+      collection_method: "Obtain and verify a compatible supplying-process dataset and its gas allocation; do not infer burden from gas price alone."
+      unit: "m3; kg"
+      frequency: "Each supply basis revision"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_allocation
+      process_id: "recovery"
+      flow_role: "recovery"
+      record_type: "Shared-service attribution records"
+      raw_fields: "Service; product; driver; measured totals; shares; revenues if used; sensitivity"
+      collection_method: "Separate independently metered service totals; document residual allocation rationale and sum shares to one."
+      unit: "dimensionless"
+      frequency: "Each accounting period"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+    - protocol_id: cp_scope
+      process_id: "recovery"
+      flow_role: "recovery"
+      record_type: "Equipment and exchange completeness register"
+      raw_fields: "Unit operations; chemicals; emissions; water loops; omitted exchanges; upstream/treatment links"
+      collection_method: "Walk down the actual recovery system; reconcile every physical crossing, and justify conditional absences and omissions."
+      unit: "not applicable"
+      frequency: "Each configuration revision"
+      temporal_coverage: "Same declared representative period, including startup and shutdown"
+      site_scope: "Declared recovery center and handover points"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "Calibrations; logs; source records; reconciliation and uncertainty"
+  calculation_rules:
+    - id: normalize_records
+      applies_to: "all inventory rows"
+      rule: "For the same declared period, divide each attributable exchange total by accepted exported dry reference-gas mass; the reference output is 1 kg. Preserve numerator units and document allocation before division."
+      inputs:
+        - cp_export
+        - cp_gas
+        - cp_utilities
+        - cp_waste
+        - cp_air
+        - cp_allocation
+      output: "Exchange amount per reference flow"
+      source_ids: []
+    - id: correct_gas_volume
+      applies_to: "raw_bf; reference_gas"
+      rule: "Convert measured gas volume to the declared dry temperature/absolute-pressure basis using measured moisture and compressibility with a documented gas-state calculation or calibrated flow-computer record. Retain the complete conversion record."
+      inputs:
+        - cp_gas
+        - cp_export
+      output: "Dry gas volume at reference conditions"
+      source_ids: []
+    - id: gas_energy
+      applies_to: "reference_gas; converter_gas"
+      rule: "Multiply dry gas volume by its measured gross or net calorific value on the identical state basis; retain both results and never use an unrelated furnace-gas factor."
+      inputs:
+        - cp_export
+      output: "Gross and net energy content, separately"
+      source_ids:
+        - un-energy-2026
+  data_quality_requirements:
+    - id: quality_balance
+      applies_to: "recovery"
+      requirement: "Reconcile inlet, export, own use, flare, leakage and gas-holder stock changes by gas type. Explain differences against propagated measurement uncertainty."
+      evidence: "cp_gas; cp_export; cp_air"
+    - id: quality_state
+      applies_to: "reference_gas; converter_gas"
+      requirement: "Declare dry/wet volume and calorific value state; use measured density when reconciling converter mass with volume."
+      evidence: "cp_export"
+    - id: quality_completeness
+      applies_to: "recovery"
+      requirement: "Retain omitted-flow explanations; add actual route-specific atomic exchanges and identify upstream and external-treatment gaps. No external empirical quantity ranges are prescribed."
+      evidence: "cp_scope; cp_upstream"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "foreground_package"
+    rule: "Require concrete gas identity, accepted reference quantity, all qualifiers, state correction, measured calorific values and matched period/denominator. Reject interchangeable treatment of different gases or wet and dry volumes."
+    source_ids:
+      - un-energy-2026
+  - rule_id: validate_exchanges
+    applies_to: "recovery"
+    rule: "Each physical exchange must be atomic; unresolved UUIDs must retain specific physical names and review metadata. Prove conditional absences. Reject double-counted internal circulation, co-products or exported-gas combustion."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "recovery"
+    rule: "Require documented gas/carbon balances, utilities, waste destinations, measured allocation drivers and upstream-burden disclosure. Investigate negative amounts, unexplained balances and missing flare periods; flag estimates and missing records."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Gas supply inputs to receiving industrial processes; downstream process or lifecyclemodel projection"
+  allowed_use: "Only matching gas type, state, geography, period and upstream allocation; energy conversion from measured calorific values"
+  excluded_use: "Automatic substitution for natural gas or coke-oven gas; energy-only equivalence without quality checks; zero-burden or avoided-emission credits inferred from recovery"
+  required_metadata: "Gas identity; state; composition; measured energy; outlet specification; furnace source; period; site; allocation; boundaries; data gaps"
+  required_quality_disclosure: "Meter calibrations; sampling; balances; uncertainty; upstream and waste-treatment links; estimates and unresolved identities"
+  update_trigger: "Furnace feedstock, cleaning route, gas network, calorific value basis, allocation or supplying-process changes"
+data_sources:
+  - id: "un-cpc-2025"
+    type: "official_guidance"
+    reference: "UNSD, Central Product Classification Version 3.0 structure, 30 June 2025, rows 520-525. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-10-01"
+    used_for: "Classification identity only; independence key: unsd-cpc-3-structure-2025"
+  - id: "un-energy-2026"
+    type: "official_guidance"
+    reference: "UNSD, Guidelines for the 2024 Annual Questionnaire on Energy Statistics, May 2026, pp. 13-14. https://unstats.un.org/unsd/energystats/questionnaire/documents/Energy-Questionnaire-Guidelines.pdf; retrieved 2026-10-01"
+    used_for: "Recovered gas definition, exclusions and gross-energy reporting; independence key: unsd-energy-questionnaire-2026"
+  - id: "eu-iron-steel-2013"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for Iron and Steel Production, 2013, section 6.3.4 pp. 326-327 and section 7.2.2.1.2 pp. 372-373. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/IS_Adopted_03_2012.pdf; retrieved 2026-10-01"
+    used_for: "Gas cleaning, wet/dry residues, suppressed combustion and flare diversion; no empirical ranges adopted; independence key: jrc-iron-steel-bref-2013"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2901794897ab93a0ffc1e760564b42e04ef23c14907d0005ae6d297d51f7f267"
+  generated_content_sha256: "sha256:66a0b226c1fb54f09956dde5516a8109b726acb6f7be611c53b5e0fb6f7d9f72"

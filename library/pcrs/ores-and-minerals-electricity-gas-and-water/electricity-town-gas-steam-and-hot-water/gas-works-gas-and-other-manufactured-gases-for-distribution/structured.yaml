@@ -1,10 +1,959 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "17202"
-  title: "Gas works gas (and other manufactured gases for distribution)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.electricity-town-gas-steam-and-hot-water.gas-works-gas-and-other-manufactured-gases-for-distribution"
+  classification_refs: "CPC 3.0:17202"
+  covered_products: "Manufactured distribution fuel gas from gas works; declared carbonisation, gasification, reforming or blending route"
+  excluded_products: "Direct natural gas supply; recovered steelworks gas; chemical synthesis gas; pure hydrogen"
+  representative_product: "Purified coal-derived town gas ready for distribution"
+  production_route: "Actual site-specific manufacture, purification and final mixing; do not add alternative route inventories"
+  market_state: "Gaseous fuel at plant outlet; declared composition, pressure, temperature, wet/dry basis and quality acceptance"
+functional_unit:
+  what: "Supply manufactured gaseous distribution fuel"
+  how_much: "1 m3 accepted gas at plant outlet"
+  how_well: "Declared supply quality; composition, calorific value, impurities and interchangeability indicators"
+  how_long_or_cycle: "Declared annual operating period including startup, shutdown and abnormal operation"
+  reference_flow_link: "reference_gas"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "foreground"
+      rule: "Include feed preparation, actual conversion or mixing, cooling and purification, holders, final compression and metering, energy supply and abatement; select the actual route and retain startup and loss records."
+      source_ids:
+        - iea-gasworks-2008
+    - rule_id: boundary_transfers
+      applies_to: "incoming_gases"
+      rule: "For coke oven and recovered feed gases retain supplier boundaries and burdens; record incremental gas works processing and prevent duplication of production burdens."
+      source_ids:
+        - unsd-cpc-2025
+        - iea-gasworks-2008
+    - rule_id: boundary_internal
+      applies_to: "all inventory rows"
+      rule: "Do not repeat internal gas, water or steam circulation as external exchanges; include own-gas combustion and flare emissions. Disclose external delivery, end use and infrastructure separately; a plant-outlet inventory is not a complete life cycle."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Feedstocks and incoming gases received at site with declared identity and upstream boundary"
+  starting_condition_role: "Foreground production entry with accounted upstream supply"
+  product_classification_scope: "Gas works manufactured distribution fuel; coke oven or recovered inputs retain their incoming category"
+  recursive_input_rule: "Meter purchased same-category gas separately and link supplier data; internal recirculation and own-gas firing stay in internal ledgers without repeated product input"
+  upstream_dataset_requirement: "Match datasets for each purchased feedstock, electricity, steam, water, chemical and external waste treatment; disclose missing supply-chain coverage"
+  disclosure: "Site boundary, flowsheet, origins, upstream starting points, internal transfers, holder-stock changes, flaring, venting and excluded network delivery"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Gas"
+    uuid: "084a3bc0-51e3-4c71-bd26-236efaeba2b5"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - site
+    - period
+    - "manufacture route"
+    - "feedstocks and blend shares"
+    - "delivery meter"
+    - "volume reference temperature and absolute pressure"
+    - "wet/dry basis"
+    - "compressibility and meter correction method"
+    - composition
+    - "gross and net calorific values and test method"
+    - "sulfur and tar content"
+    - "delivery pressure"
+    - "acceptance specification"
+    - "upstream input boundaries"
+reference_flows:
+  []
+measurement_rules:
+  - id: volume_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use corrected delivery volume collected with cp_gas; retain traceability from metering conditions to declared reference conditions."
+  - id: electricity_units
+    applies_to: "make_electricity; clean_electricity; export_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert meter kWh using the unit identity 1 kWh = 3.6 MJ; preserve electricity energy rather than substitute gas heating value."
+  - id: steam_quality
+    applies_to: "steam_feed"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record steam mass and thermodynamic state; match upstream steam pressure, temperature and condensate return."
+  - id: chemical_basis
+    applies_to: "caustic; iron_sorbent"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Collect solid sodium hydroxide mass and formulated sorbent mass. Solutions require concentration-specific flows; avoid counting solvent water twice."
+process_map:
+  - id: make
+    name: "Feed preparation and manufacture or initial mixing"
+    inclusion: "required"
+    inclusion_condition: "Actual declared route"
+    role: "foreground production"
+    quantitative_reference: "1 m3 reference gas"
+  - id: clean
+    name: "Cooling, purification and co-product separation"
+    inclusion: "conditional"
+    inclusion_condition: "Gas needs cooling, impurity removal or co-product separation"
+    role: "conditioning"
+    quantitative_reference: "1 m3 reference gas"
+  - id: export
+    name: "Holders, final mixing, compression and outlet metering"
+    inclusion: "required"
+    inclusion_condition: "Actual delivery conditions"
+    role: "conditioning"
+    quantitative_reference: "1 m3 reference gas"
+process_inventory:
+  - id: make
+    label: "Feed preparation and manufacture or initial mixing"
+    inputs:
+      product:
+        - row_id: coal_feed
+          role: "Gas coal feedstock"
+          name: "hard coal, gas coal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec4b882e-3ec8-4756-9689-fa8760c16811"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When gas coal is carbonised or gasified; add an exact individual flow for every other coal grade used."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: coke_feed
+          role: "Gas coke"
+          name: "Gas coke"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When purchased gas coke is gasified; internal coke recycling is excluded from purchased input."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_feed
+          role: "Natural gas, gaseous"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "When natural gas is reformed or used as a blending component; identify feedstock and thermal-use shares separately."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: naphtha_feed
+          role: "Naphtha"
+          name: "Naphtha"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91cc5451-cf5d-48c7-9dcc-b054eda6fbb0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When naphtha is reformed or used for enrichment."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: lpg_feed
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3786072f-d3ce-4941-9249-ed5d346b21a6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When propane/butane LPG is vaporised for enrichment or mixing."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: oil_feed
+          role: "Residual fuel oil"
+          name: "heavy fuel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9490cf0e-a790-44a1-9c2f-3793bbdb452d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When residual fuel oil is gasified or used for enrichment; disclose sulfur and water content."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: coke_oven_gas_feed
+          role: "Coke oven gas"
+          name: "coke oven gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "32ab44a2-c912-4c1f-98cf-856a24b3f99a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When external coke oven gas is received for conversion into the gas works distribution product; retain its upstream burden."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+        - row_id: make_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. For metered manufacture and feed preparation electricity; separate grid imports from self-generation."
+          amount:
+            expression: "Use traceable measured records from cp_energy, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: steam_feed
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When external steam supplies a reactant or heat; disclose pressure, temperature and condensate return."
+          amount:
+            expression: "Use traceable measured records from cp_energy, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: oxygen_feed
+          role: "Gaseous oxygen"
+          name: "oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f804eb52-65c3-4db0-9d2d-e463b29e6e4b"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "When oxygen-blown gasification operates; state purity and gas reference conditions."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: air_feed
+          role: "Air, atmospheric"
+          name: "air"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aaa4-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When atmospheric air is drawn into gasification or dilution; keep this distinct from purchased oxygen."
+          amount:
+            expression: "Use traceable measured records from cp_feed, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: gas_coke_coproduct
+          role: "Gas coke"
+          name: "Gas coke"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When marketable gas coke leaves coal-carbonisation operations; exclude internal recycle."
+          amount:
+            expression: "Use traceable measured records from cp_products, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids: []
+            ranges: []
+        - row_id: coal_tar_coproduct
+          role: "Coal tar"
+          name: "Coal tar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "176de006-c7be-47ad-be03-2ce15e99c6ff"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When separated coal tar is sold; contaminated tar sent for disposal needs a distinct waste row in the data package."
+          amount:
+            expression: "Use traceable measured records from cp_products, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: gasification_ash
+          role: "Coal gasification ash"
+          name: "Coal gasification ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When ash crosses the facility boundary; record dry mass, moisture and treatment destination."
+          amount:
+            expression: "Use traceable measured records from cp_waste, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: make_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "For fossil carbon released by process conversion, firing and flaring, after capture; separate process and combustion records."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: make_co
+          role: "Carbon monoxide, to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When conversion or combustion releases carbon monoxide; distinguish it from the carbon monoxide retained in product gas."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: make_so2
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When sulfur-bearing fuels are oxidised and sulfur dioxide is emitted after abatement."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: make_no2
+          role: "Nitrogen dioxide, to air"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When nitrogen dioxide is emitted; obtain species-specific results instead of duplicating a total NOx result."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: make_no
+          role: "Nitrogen monoxide, to air"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When nitrogen monoxide is emitted; document analytical speciation separately from nitrogen dioxide."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+  - id: clean
+    label: "Cooling, purification and co-product separation"
+    inputs:
+      product:
+        - row_id: clean_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. For pumps, gas cooling and purification; meter separately or document attribution."
+          amount:
+            expression: "Use traceable measured records from cp_energy, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When fresh supplied water enters cooling or washing; exclude repeatedly circulated internal water."
+          amount:
+            expression: "Use traceable measured records from cp_water, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: caustic
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When solid sodium hydroxide is dissolved for acid-gas washing; purchased solutions require their own concentration-specific flow."
+          amount:
+            expression: "Use traceable measured records from cp_chemicals, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: iron_sorbent
+          role: "Iron oxide desulfurisation sorbent"
+          name: "Iron oxide desulfurisation sorbent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When iron-oxide-based dry desulfurisation is used; record actual formulation rather than pure-oxide equivalents."
+          amount:
+            expression: "Use traceable measured records from cp_chemicals, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemicals
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_sulfur
+          role: "Recovered sulfur"
+          name: "Recovered elemental sulphur, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "586e1b09-2904-4b0a-b1ef-fc012259004f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When crude recovered elemental sulfur is a saleable product."
+          amount:
+            expression: "Use traceable measured records from cp_products, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_products
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: gas_liquor
+          role: "Gas-washing wastewater"
+          name: "Gas-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When contaminated gas-washing liquor is exported to treatment; onsite treatment requires separate discharge and sludge records in the data package."
+          amount:
+            expression: "Use traceable measured records from cp_waste, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_sorbent
+          role: "Spent iron oxide desulfurisation sorbent"
+          name: "Spent iron oxide desulfurisation sorbent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When exhausted sorbent leaves the site; record sulfur loading, moisture and hazardous-waste classification."
+          amount:
+            expression: "Use traceable measured records from cp_waste, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: clean_h2s
+          role: "Hydrogen sulfide, to air"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When hydrogen sulfide escapes washing or sulfur recovery; product sulfur content is not an emission."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+  - id: export
+    label: "Holders, final mixing, compression and outlet metering"
+    inputs:
+      product:
+        - row_id: export_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. For final blending, compression, holders and outlet metering inside the site boundary."
+          amount:
+            expression: "Use traceable measured records from cp_energy, attributed to the delivered reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_gas
+          role: "Gas works gas"
+          name: "Gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "084a3bc0-51e3-4c71-bd26-236efaeba2b5"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Accepted distribution-ready gas at the plant outlet; exclude rejected gas, internal fuel use and recirculation."
+          amount:
+            expression: "1 m3"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - iea-gasworks-2008
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: handling_methane
+          role: "Methane, fossil, to air"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For fugitive and vented methane from all gas-handling stages; reconcile equipment registers to avoid overlap with flares."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: handling_co
+          role: "Carbon monoxide, to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "For carbon monoxide lost by venting and leaks from gas handling; keep separate from make_co combustion emissions."
+          amount:
+            expression: "Use traceable measured records from cp_emissions, attributed to the delivered reference flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "joint operations"
+    rule: "Prefer subdivision and independent metering to avoid allocation. Use system expansion only in a separate study declaring all expanded functions; do not combine allocation and substitution credits in a single-product supply dataset."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_physical
+    applies_to: "gas; coke; tar; sulfur"
+    rule: "Where subdivision is unavailable, document a defensible physical causal relationship with all co-products and parameters. Energy allocation needs evidence of fuel functions and a common gross/net calorific basis; never add gas volume and solid mass as an allocation basis."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_other
+    applies_to: "joint operations"
+    rule: "If a physical relationship cannot be supported, justify rejecting preceding methods and use relative economic value at a common period and market point if appropriate. Disclose prices, quantities, shares and sensitivity. Keep waste-treatment burdens with the generating process rather than treat disposal mass as co-product value."
+    source_ids:
+      - ec-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_gas
+      process_id: "export"
+      flow_role: "reference product"
+      record_type: "meter and operating records"
+      raw_fields: "outlet volume; T; absolute P; wet/dry basis; correction factors; stock; composition; calorific values; acceptance certificate"
+      collection_method: "Calibrated flow meter and quality testing; retain the actual correction equations and method edition and recompute delivered quantities on common conditions."
+      unit: "m3"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_feed
+      process_id: "make"
+      flow_role: "feedstock"
+      record_type: "meter and operating records"
+      raw_fields: "material receipts; stock; internal recycle; feedstock/thermal use; composition and moisture; gas metering conditions"
+      collection_method: "Weighing, supplier records or gas meters; reconcile net external use with opening/closing stock and internal transfers."
+      unit: "kg; m3"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_energy
+      process_id: "make_clean_export"
+      flow_role: "electricity; steam"
+      record_type: "meter and operating records"
+      raw_fields: "process electricity; steam mass and state; condensate return; own energy; purchased energy"
+      collection_method: "Collect submeter electricity and steam mass; document attribution where submeters are unavailable and express electricity in MJ."
+      unit: "MJ; kg"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_water
+      process_id: "clean"
+      flow_role: "fresh supplied water"
+      record_type: "meter and operating records"
+      raw_fields: "water mass; makeup; circulation; discharge; evaporation; meter error"
+      collection_method: "Use mass measurement or volume with measured density to reconcile new supplied water; do not repeat internal circulation."
+      unit: "kg"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_chemicals
+      process_id: "clean"
+      flow_role: "individual chemical"
+      record_type: "meter and operating records"
+      raw_fields: "formulation; concentration; net consumption; stock; supplier; sorbent sulfur loading"
+      collection_method: "Weigh each chemical and reconcile purchases, withdrawals and stock; create distinct flows for different solution concentrations."
+      unit: "kg"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_products
+      process_id: "make_clean"
+      flow_role: "individual co-product"
+      record_type: "meter and operating records"
+      raw_fields: "co-product mass; moisture; specification; fate; price; calorific value"
+      collection_method: "Weigh and reconcile sales and stock; distinguish accepted sales, recycle and disposal."
+      unit: "kg"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_waste
+      process_id: "make_clean"
+      flow_role: "individual waste"
+      record_type: "meter and operating records"
+      raw_fields: "waste mass; moisture; hazard classification; composition; transfer note; treatment operator"
+      collection_method: "Weigh each waste and reconcile transfer notes; use measured density for liquids and disclose treatment boundaries."
+      unit: "kg"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+    - protocol_id: cp_emissions
+      process_id: "make_clean_export"
+      flow_role: "individual emitted substance"
+      record_type: "meter and operating records"
+      raw_fields: "release point; species; concentration; flow; time; detection limit; leaks; flares; capture"
+      collection_method: "Determine each substance from monitoring, material balance or documented engineering estimates; retain all inputs and uncertainty, not product-gas composition as an emitted amount."
+      unit: "kg"
+      frequency: "shift records with monthly reconciliation"
+      temporal_coverage: "complete declared operating year"
+      site_scope: "same site and route"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration, tests, transfer notes and ledgers"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Use the collection normalization stated above, attributable period total divided by net delivered volume; retain both unallocated totals and allocated quantities."
+      inputs:
+        - cp_gas
+        - cp_feed
+        - cp_energy
+        - cp_water
+        - cp_chemicals
+        - cp_products
+        - cp_waste
+        - cp_emissions
+      output: "exchange amount per reference flow"
+      source_ids: []
+    - id: electricity_conversion
+      applies_to: "make_electricity; clean_electricity; export_electricity"
+      rule: "1 kWh = 3.6 MJ; dimensional unit identity."
+      inputs:
+        - cp_energy
+      output: "MJ electricity per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: route_quality
+      applies_to: "foreground"
+      requirement: "Retain actual flowsheet, all external exchanges, internal transfers and reasons for non-applicability; add atomic rows for additional materials and emissions."
+      evidence: "flowsheet and ledgers"
+    - id: volume_quality
+      applies_to: "reference_gas"
+      requirement: "Align conditions for delivery, incoming gas meters, holder stock and calorific values; prohibit comparison where conversion is not traceable."
+      evidence: "cp_gas; cp_feed"
+    - id: emission_quality
+      applies_to: "cp_emissions"
+      requirement: "Disclose monitoring coverage, detection limits, unmeasured species and estimate error; a total NOx measurement cannot be assigned in full to both NO and NO2."
+      evidence: "monitoring and analytical records"
+    - id: range_quality
+      applies_to: "all inventory rows"
+      requirement: "Collect actual quantities. This PCR supplies no generic inferred ranges or default emission factors; missing records are not zero. Engineering estimates in the data package must be marked modelled_estimate with justification and uncertainty."
+      evidence: "collection protocols and gap disclosure"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_gas"
+    rule: "Check route, delivery state, all required qualifiers and gas conditions; mere natural-gas distribution is outside scope."
+    source_ids:
+      - unsd-cpc-2025
+      - iea-gasworks-2008
+  - rule_id: validate_measurement
+    applies_to: "all inventory rows"
+    rule: "Each row must agree with the same-period, same-condition 1 m3 accepted outlet gas; check properties, units, upstream compatibility, electricity conversion and steam state."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "foreground"
+    rule: "Reconcile carbon, sulfur and energy ledgers with consistent moisture, stock and blend composition; do not repeat material inputs after converting them to energy. Explain non-closure by measurement or coverage evidence without invented tolerances."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "joint operations"
+    rule: "Check same-period co-products, method selection, prices or physical parameters and all shares; do not duplicate burdens across supplier inputs, internal circulation and site manufacture."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_completeness
+    applies_to: "foreground"
+    rule: "Expose unresolved UUIDs and identity, emitted-species, treatment and upstream-coverage gaps. Retain collection requirements where range evidence is insufficient; one case is not an industry range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Gas works supply modelling at compatible product state and volume conditions; input to process or lifecyclemodel projections"
+  excluded_use: "Complete delivery and combustion life cycle; natural gas extraction; pure hydrogen or chemical synthesis gas; cross-route comparisons without conversion"
+  required_metadata: "all reference qualifiers; origins and upstream boundaries; flowsheet; allocation; internal transfers and stock; treatment destinations"
+  required_quality_disclosure: "UUID and range gaps; estimates; monitoring coverage and errors; missing supply chains; excluded infrastructure, delivery and end-use stages"
+  update_trigger: "material changes in feedstocks, route, supply quality, abatement, metering conditions or allocation market"
+data_sources:
+  - id: "unsd-cpc-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "classification identity, cells 17200–17203; original CSV verified, accessed 2026-10-01."
+  - id: "iea-gasworks-2008"
+    type: "official_guidance"
+    reference: "OECD/IEA, InterEnerStat: Harmonisation of Definitions of Energy Products and Flows, Products: Coal (2008), PDF pages 17–20. https://iea.blob.core.windows.net/assets/imports/events/39/Coal.pdf"
+    used_for: "route scope, gas coke and coke oven gas distinction; historical definition supplies no current efficiency, emission factor or quality standard. Accessed 2026-10-01."
+  - id: "cbs-town-gas"
+    type: "official_guidance"
+    reference: "Statistics Netherlands (CBS), Gas works gas definition. https://www.cbs.nl/en-gb/our-services/methods/definitions/gas-works-gas"
+    used_for: "representative coal-derived town gas and scope comparison; narrower than IEA multi-route category. Accessed 2026-10-01."
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, consolidated 30 December 2021, Annex I section 4.5, PDF pages 87–88. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230"
+    used_for: "general multifunctional allocation hierarchy; methodological guidance, not a gas-specific factor or PEF conformance claim. Accessed 2026-10-01."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2c1b64f31df1d1b5f838eb7faf5d0c1bf8b23a5764c92daa7a4e2c2f33870090"
+  generated_content_sha256: "sha256:d00f664a5a7758f42f3dd13c4e87f21792a8664e2f5cdd65e8e86c2a24ff1aa8"

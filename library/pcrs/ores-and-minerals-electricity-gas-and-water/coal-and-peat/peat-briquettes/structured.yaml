@@ -1,10 +1,734 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "11052"
-  title: "Peat briquettes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.coal-and-peat.peat-briquettes"
+  classification_refs: "CPC 3.0: 11052; un-cpc-structure-2025"
+  covered_products: "Binderless dried peat fuel blocks"
+  excluded_products: "Raw peat; peat pellets; peat coke; coal briquettes; binder-containing mixed fuels; growing media"
+  representative_product: "Accepted binderless peat briquette"
+  production_route: "Receive and prepare peat; dry; compress; cool and finish; wrap if applicable"
+  market_state: "Unburned solid fuel at factory gate, declared moisture, net mass excluding packaging"
+functional_unit:
+  what: "Supply peat briquette fuel for downstream combustion"
+  how_much: "1 kg net accepted product at factory gate"
+  how_well: "Declare as-sold moisture, ash, net calorific value and mechanical acceptance criteria; no universal heating performance is assumed"
+  how_long_or_cycle: "One production reporting period; downstream combustion duration is outside this production dataset"
+  reference_flow_link: "briquettes"
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "foreground"
+      rule: "Include receiving, preparation, drying, pressing, cooling, finishing, actual wrapping, dust control and on-site thermal supply. Record each actual additional exchange separately by substance and state."
+      source_ids:
+        - un-energy-peat-products-2024
+    - rule_id: boundary_upstream
+      applies_to: "peat_supply"
+      rule: "Keep extraction and drainage burdens in a linked upstream dataset; do not assume burden-free peat or zero drainage emissions. IPCC national guidance informs upstream coverage, not a factory emission factor."
+      source_ids:
+        - ipcc-wetlands-2013
+    - rule_id: boundary_internal
+      applies_to: "internal_transfers"
+      rule: "Interstage peat and internally generated steam are internal transfers. Measure them for reconciliation without repeating external inputs; purchased heat excludes on-site generated heat."
+      source_ids: []
+    - rule_id: boundary_use
+      applies_to: "downstream"
+      rule: "Exclude customer delivery, final fuel combustion and consumer ash treatment; model these separately for heat-service comparisons."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Unagglomerated peat received at the briquetting plant; declared moisture and source"
+  starting_condition_role: "Foreground gate-to-gate production starting input"
+  product_classification_scope: "Binderless peat briquette fuel; CPC 11052 is classification context"
+  recursive_input_rule: "Purchased briquettes used as fuel require a supplier dataset; internal recirculation is measured for balance but is not a fresh input or co-product. Never recurse into this same dataset."
+  upstream_dataset_requirement: "Link peat supply including extraction, land effects and drainage greenhouse gases; link utilities, fuel, packaging and waste treatment. UN guidance does not treat peat as renewable; IPCC wetland guidance identifies extraction-area and ditch activity requirements."
+  disclosure: "Declare foreground start, upstream linkage and gaps, reporting period, peatland source, heat supplier or on-site fuel route, recycling, air location and waste fate. A plant-only dataset must not be labelled cradle-to-gate."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Peat briquettes"
+    uuid: "0035aeea-b20b-4287-abac-d501f59c957f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Peat source and extraction boundary"
+    - "site and year"
+    - "binder absence"
+    - "product moisture wet basis"
+    - "ash and calorific-value test basis"
+    - "briquette form and acceptance"
+    - "thermal route"
+    - "wrapping material"
+    - "upstream drainage coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated net weighing of accepted briquettes, excluding wrapping. All inventory amounts use per 1 kg reference flow."
+  - id: moisture_basis
+    applies_to: "peat_feed; peat_fuel; briquettes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet-basis moisture for each weighed stream. Keep as-received and dry matter separate; do not substitute dry mass for as-sold reference mass."
+  - id: electricity_conversion
+    applies_to: "prep_electricity; dry_electricity; press_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert electricity meter kWh to MJ using 1 kWh = 3.6 MJ. This is an exact unit conversion, not a fuel calorific-value estimate."
+  - id: gas_volume
+    applies_to: "natural_gas_fuel"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Declare meter temperature, pressure and reference-volume convention. Never convert gas volume into heat without measured supplier calorific value on the same basis."
+process_map:
+  - id: prepare
+    name: "Peat reception and preparation"
+    inclusion: "required"
+    inclusion_condition: "Entire binderless briquette line"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dry
+    name: "Drying and moisture control"
+    inclusion: "required"
+    inclusion_condition: "Moisture conditioning before pressing"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finish
+    name: "Compression, finishing and wrapping"
+    inclusion: "required"
+    inclusion_condition: "Accepted briquette production"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: boiler
+    name: "On-site thermal supply"
+    inclusion: "conditional"
+    inclusion_condition: "On-site fuel combustion supplies production heat"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: prepare
+    label: "Peat reception and preparation"
+    inputs:
+      product:
+        - row_id: peat_feed
+          role: "Peat feedstock"
+          name: "Peat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "485febdb-01e0-47ad-8ebe-c500a35669bd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Always; externally supplied unagglomerated peat."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_prepare."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prepare
+              source_ids: []
+            ranges: []
+        - row_id: prep_electricity
+          role: "Preparation electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Always; conveying, milling and screening."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_prepare."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prepare
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: dry
+    label: "Drying and moisture control"
+    inputs:
+      product:
+        - row_id: dry_electricity
+          role: "Dryer electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Always; fans and dryer drives."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_dry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry
+              source_ids: []
+            ranges: []
+        - row_id: purchased_heat
+          role: "Purchased steam heat"
+          name: "Process heat from steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fcf9e128-688f-42f0-9dca-85d2319cfac5"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Only when steam heat is purchased across the plant boundary. Exclude internally generated heat."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_dry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry
+              source_ids: []
+            ranges: []
+        - row_id: tap_water
+          role: "Tap water make-up"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a8411b6-e476-4f98-9d77-0d492661a07f"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Only when tap water is consumed in cooling or steam-system make-up."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_dry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: evaporated_water
+          role: "Peat moisture evaporation"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac04-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Always when moisture is removed into air; separate from liquid effluent."
+          amount:
+            expression: "Determine evaporated moisture from measured feed and product moisture with a reconciled water balance using cp_dry."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dry
+              source_ids: []
+            ranges: []
+        - row_id: pm10_air
+          role: "PM10 to air"
+          name: "particles (PM10)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-91be-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When measured particulate emissions occur from drying or handling; record actual air location."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_dry."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry
+              source_ids: []
+            ranges: []
+  - id: finish
+    label: "Compression, finishing and wrapping"
+    inputs:
+      product:
+        - row_id: press_electricity
+          role: "Pressing and finishing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Always; presses, cooling and finishing equipment."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_film
+          role: "Polyethylene wrapping film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only when polyethylene film is used for sale-ready wrapping."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: briquettes
+          role: "Accepted briquette output"
+          name: "Peat briquettes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0035aeea-b20b-4287-abac-d501f59c957f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Always; net accepted mass after finishing, excluding packaging."
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: peat_reject
+          role: "Discarded peat fines"
+          name: "Waste peat fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only when peat fines leave for waste treatment; internal rework is not an exchange."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_finish."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: boiler
+    label: "On-site thermal supply"
+    inputs:
+      product:
+        - row_id: natural_gas_fuel
+          role: "Natural gas fuel"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Only for an on-site natural gas burner supplying production heat."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: peat_fuel
+          role: "Peat fuel"
+          name: "Peat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "485febdb-01e0-47ad-8ebe-c500a35669bd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only when raw peat is burned on site for production heat; do not include this mass in peat_feed."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: peat_fly_ash
+          role: "Peat combustion fly ash"
+          name: "Peat combustion fly ash"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only for peat-fired equipment with a separately collected fly-ash stream."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: peat_bottom_ash
+          role: "Peat combustion bottom ash"
+          name: "Peat combustion bottom ash"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only for peat-fired equipment with a separately collected bottom-ash stream."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: combustion_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Only when on-site fuel combustion occurs; disclose peat-carbon classification and actual air location."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: combustion_no2
+          role: "Direct nitrogen dioxide"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When nitrogen dioxide is emitted; total NOx reported as NO2 equivalent must not be silently treated as pure NO2."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: combustion_co
+          role: "Direct carbon monoxide"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When carbon monoxide is emitted from on-site combustion."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: combustion_so2
+          role: "Direct sulfur dioxide"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When sulfur dioxide is emitted from on-site combustion."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: combustion_ch4
+          role: "Direct methane"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When methane is emitted from on-site fuel combustion."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+        - row_id: combustion_n2o
+          role: "Direct nitrous oxide"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "When nitrous oxide is emitted from on-site fuel combustion."
+          amount:
+            expression: "Measured reporting-period exchange divided by accepted net briquette output mass; use cp_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_boiler
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_subdivide
+    applies_to: "shared_operations"
+    rule: "First subdivide using line meters, weighed production and thermal-supply records. Shared heat generation is assigned by measured delivered heat; electricity by submeter readings. Document any remaining allocation and test sensitivity."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: allocate_rework
+    applies_to: "peat_reject"
+    rule: "Internal fines recirculation receives no avoided-product credit. Treat discarded fines and ash as waste unless documented sale establishes a co-product; subdivision precedes allocation by demonstrated physical relationships; use a disclosed, justified economic relationship only when the physical basis cannot be established or used."
+    source_ids:
+      - ghg-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_prepare
+      process_id: "prepare"
+      flow_role: "Every exchange in this process"
+      record_type: "Meter, weighing and laboratory records"
+      raw_fields: "peat source; received mass; moisture; electricity; stock changes; reporting dates"
+      collection_method: "Use calibrated scales and meters, traceable supplier receipts and representative moisture tests; quantify actual emissions after controls by substance, air compartment and method. Preserve zero/absent and missing values separately."
+      unit: "kg; MJ; m3 according to each row"
+      frequency: "Each batch and meter period; representative emission testing"
+      temporal_coverage: "One complete declared production year; disclose shorter campaigns and seasonal coverage"
+      site_scope: "Assigned briquetting line and attributable site services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; scale tickets; test method; allocation log; balance closure"
+    - protocol_id: cp_dry
+      process_id: "dry"
+      flow_role: "Every exchange in this process"
+      record_type: "Meter, weighing and laboratory records"
+      raw_fields: "inlet and outlet mass and moisture; electricity; purchased heat; tap water; liquid discharge; condensate; PM10 test; sampling times"
+      collection_method: "Use calibrated scales and meters, traceable supplier receipts and representative moisture tests; quantify actual emissions after controls by substance, air compartment and method. Preserve zero/absent and missing values separately."
+      unit: "kg; MJ; m3 according to each row"
+      frequency: "Each batch and meter period; representative emission testing"
+      temporal_coverage: "One complete declared production year; disclose shorter campaigns and seasonal coverage"
+      site_scope: "Assigned briquetting line and attributable site services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; scale tickets; test method; allocation log; balance closure"
+    - protocol_id: cp_finish
+      process_id: "finish"
+      flow_role: "Every exchange in this process"
+      record_type: "Meter, weighing and laboratory records"
+      raw_fields: "accepted net briquette mass; moisture; ash; net calorific value; packaging film mass; press electricity; rejects; stock changes"
+      collection_method: "Use calibrated scales and meters, traceable supplier receipts and representative moisture tests; quantify actual emissions after controls by substance, air compartment and method. Preserve zero/absent and missing values separately."
+      unit: "kg; MJ; m3 according to each row"
+      frequency: "Each batch and meter period; representative emission testing"
+      temporal_coverage: "One complete declared production year; disclose shorter campaigns and seasonal coverage"
+      site_scope: "Assigned briquetting line and attributable site services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; scale tickets; test method; allocation log; balance closure"
+    - protocol_id: cp_boiler
+      process_id: "boiler"
+      flow_role: "Every exchange in this process"
+      record_type: "Meter, weighing and laboratory records"
+      raw_fields: "fuel peat mass and moisture; gas volume pressure and temperature; delivered heat; fuel carbon and sulfur; each measured emitted substance; fly ash; bottom ash"
+      collection_method: "Use calibrated scales and meters, traceable supplier receipts and representative moisture tests; quantify actual emissions after controls by substance, air compartment and method. Preserve zero/absent and missing values separately."
+      unit: "kg; MJ; m3 according to each row"
+      frequency: "Each batch and meter period; representative emission testing"
+      temporal_coverage: "One complete declared production year; disclose shorter campaigns and seasonal coverage"
+      site_scope: "Assigned briquetting line and attributable site services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; scale tickets; test method; allocation log; balance closure"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Divide attributable reporting-period exchange totals by accepted net briquette mass in kg. The briquettes reference output is exactly 1 kg."
+      inputs:
+        - cp_prepare
+        - cp_dry
+        - cp_finish
+        - cp_boiler
+      output: "Each amount per 1 kg reference flow"
+      source_ids: []
+    - id: water_balance
+      applies_to: "evaporated_water"
+      rule: "Water evaporated equals water entering in peat and make-up minus water in products, rejects, liquid discharges and condensate leaving, adjusted for stock change. Prevent duplication of boiler moisture and plant drying moisture."
+      inputs:
+        - cp_prepare
+        - cp_dry
+        - cp_finish
+      output: "Evaporated water per 1 kg reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_identity
+      applies_to: "briquettes"
+      requirement: "Confirm binderless, uncarbonized peat block and declared moisture; exclude packaging from reference mass."
+      evidence: "un-energy-peat-products-2024; cp_finish"
+    - id: quality_upstream
+      applies_to: "peat_feed; peat_fuel"
+      requirement: "Disclose peat extraction geography, source period and drainage emissions coverage. No carbon-neutral assumption."
+      evidence: "un-energy-peat-products-2024; ipcc-wetlands-2013"
+    - id: quality_complete
+      applies_to: "all inventory rows"
+      requirement: "Reconcile dry matter, water, energy and rejected material. Record actual additional fuels, water discharges, packaging components and emitted species as individual exchanges with their own identity checks; do not hide them in a total-material row. Explain missing values and unresolved flow identities."
+      evidence: "cp_prepare; cp_dry; cp_finish; cp_boiler"
+validation_rules:
+  - rule_id: validate_basis
+    applies_to: "all inventory rows"
+    rule: "Require one consistent 1 kg net accepted briquette denominator, identical reporting periods and a linked collection protocol for each row."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "foreground"
+    rule: "Verify binder absence, product state, actual thermal route and utility-source separation. On-site heat and purchased heat must not count the same burden twice."
+    source_ids:
+      - un-energy-peat-products-2024
+  - rule_id: validate_balance
+    applies_to: "foreground"
+    rule: "Require documented mass and moisture reconciliation, waste fate and emissions completeness. Unexplained deviations and missing pollutant quantities require further collection, not a zero substitution."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Resolve or explicitly disclose every flow UUID gap; supplier background datasets must fit geography, year, technology and declared state. Do not substitute a coal ash flow for peat ash or nitrous oxide for nitrogen dioxide."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Binderless peat briquette production; linked fuel-supply modelling with explicit extraction boundary"
+  excluded_use: "Binder-containing mixtures, carbonized peat, growing media, carbon-neutral claims, direct comparison of useful heat without downstream modelling"
+  required_metadata: "Site; year; peat origin; moisture; ash; calorific-value basis; route; reference unit; upstream links; wrapping; allocation"
+  required_quality_disclosure: "Meter and test coverage; seasonal coverage; uncertainty; unresolved UUIDs; missing upstream drainage data; absent external intensity benchmarks"
+  update_trigger: "Change of peat source, heat route, moisture specification, product acceptance, utility supplier or material emissions data"
+data_sources:
+  - id: "un-cpc-structure-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 Structure (UNSD), 30 June 2025, rows 443-445. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Classification identity; original source retained 2026-09-10"
+  - id: "un-energy-peat-products-2024"
+    type: "official_guidance"
+    reference: "Guidelines for the 2022 United Nations Statistics Division Annual Questionnaire on Energy Statistics, May 2024, p. 8, Peat and Peat products. https://unstats.un.org/unsd/energy/energy-questionnaire-guidelines.pdf"
+    used_for: "Binderless dried compressed fuel definition; non-renewable peat context; retrieved 2026-09-30"
+  - id: "ipcc-wetlands-2013"
+    type: "official_guidance"
+    reference: "2013 Supplement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories: Wetlands, 2014 published edition, Chapter 2, p. 2.28. https://www.ipcc-nggip.iges.or.jp/public/wetlands/pdf/Wetlands_Supplement_Entire_Report.pdf"
+    used_for: "Upstream peat extraction and drainage activity coverage only; no adopted emission factors; retrieved 2026-09-30"
+  - id: "un-ires-2018"
+    type: "official_guidance"
+    reference: "International Recommendations for Energy Statistics. United Nations, 2018; Chapter IV, paragraphs 4.23 and 4.33–4.38 (printed pp. 44, 46–47). https://unstats.un.org/unsd/energystats/methodology/documents/IRES-web.pdf"
+    used_for: "Energy-unit conversion, measured calorific value and moisture basis; original retrieved 2026-10-01"
+  - id: "ghg-product-standard-2011"
+    type: "standard"
+    reference: "Product Life Cycle Accounting and Reporting Standard. WRI/WBCSD, 2011; Chapters 8 and 9 (printed pp. 47–48 and 63). https://docs.wbcsd.org/2011/09/Product_Life_Cycle_Accounting_Reporting_Standard.pdf"
+    used_for: "GHG foreground data quality, subdivision and allocation hierarchy prioritizing physical relationships; original retrieved 2026-09-30"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f017f483d95966878839e4522a20a966940359121c6c1670aa50c96979f67eb7"
+  generated_content_sha256: "sha256:e32bc71d2db899515f838be26e793dbd16e2839cffe4a72be812135018b1918e"

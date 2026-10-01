@@ -1,10 +1,988 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "11011"
-  title: "Anthracite"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.coal-and-peat.anthracite"
+  classification_refs: "CPC 3.0: 11011"
+  covered_products: "Raw or physically prepared bulk anthracite of declared grade"
+  excluded_products: "Other coal ranks; agglomerated or chemically/thermally transformed products; untreated refuse fuel"
+  representative_product: "Uncalcined saleable bulk anthracite"
+  production_route: "Surface or underground extraction; conditional physical preparation; storage and loading"
+  market_state: "Bulk solid at declared moisture, size and gate"
+functional_unit:
+  what: "Supply anthracite as a material/fuel input; no useful-heat function claimed"
+  how_much: "1 kg net accepted anthracite"
+  how_well: "Declared rank analysis, size grade, moisture, ash, sulfur and net calorific value with analytical basis"
+  how_long_or_cycle: "One supply at the declared production gate"
+  reference_flow_link: "anthracite_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_coverage
+      applies_to: "production"
+      rule: "Include extraction where foreground, internal haulage, ventilation, dewatering, applicable preparation, storage/loading, pollution controls and attributable waste treatment. Collect development, closure and rehabilitation burdens attributable to output and disclose their amortization."
+      source_ids:
+        - ifc-mining-ehs-2007
+    - rule_id: boundary_routes
+      applies_to: "inventory"
+      rule: "Omit conditional exchanges only with documented absence. Before dataset completion add separate atomic rows for actual non-diesel dryer fuels, other explosives, flocculants, used oil, overburden, land occupation/transformation and individual water/air pollutants. Do not substitute this minimum route inventory for a site audit."
+      source_ids:
+        - ifc-mining-ehs-2007
+        - epa-ap42-coal-cleaning-1995
+    - rule_id: boundary_partition
+      applies_to: "emissions"
+      rule: "Model purchased diesel supply without combustion when direct emissions are foreground. Exclude downstream customer transport/use; report capital equipment exclusions and test materiality. On-site treated water requires separate receiving-compartment discharges and species, not a wastewater emission to nature."
+      source_ids:
+        - ifc-mining-ehs-2007
+boundary_abstraction:
+  declared_starting_condition: "In-situ anthracite for an integrated mine; purchased raw anthracite for a standalone preparation site"
+  starting_condition_role: "Natural resource or purchased feed respectively"
+  product_classification_scope: "Anthracite, without using classification to replace rank/state evidence"
+  recursive_input_rule: "Purchased anthracite is one input with a distinct upstream dataset; never recurse to the same foreground dataset. Internal transfers cancel."
+  upstream_dataset_requirement: "Purchased feed must include extraction burdens; link electricity, fuel and material production, plus waste treatment without duplicated activities"
+  disclosure: "Site route, starting state, gate, foreground/upstream partition and exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "hard coal, anthracite"
+    uuid: "9ff1d63b-2eab-4f82-969a-71dd1474f0f1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Mine and plant country/location"
+    - "reporting year"
+    - "extraction method"
+    - "rank evidence"
+    - "raw/washed state"
+    - "moisture and ash basis"
+    - size
+    - sulfur
+    - "net calorific value and basis"
+    - gate
+    - "water sources"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "anthracite_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated net weighing at declared moisture; exclude transport tare. All exchanges are per 1 kg reference flow using cp_anthracite_output."
+  - id: energy_units
+    applies_to: "Electricity rows"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 1 kWh = 3.6 MJ; do not infer coal heating value from mass."
+  - id: water_basis
+    applies_to: "Water rows"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg; m3"
+    rule: "Preserve row unit. Convert volume-based purchased water to mass only using measured density and temperature; record gross abstraction separately from consumption and recirculation."
+process_map:
+  - id: mining
+    name: "Extraction and mine handling"
+    inclusion: "conditional"
+    inclusion_condition: "The foreground site extracts primary anthracite; omit only when fully represented by purchased-feed upstream datasets."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: preparation
+    name: "Physical preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Crushing, screening, separation or dewatering occurs before the declared gate."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Storage and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: mining
+    label: "Extraction and mine handling"
+    inputs:
+      product:
+        - row_id: mine_electricity
+          role: "Mine electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Include ventilation, pumping, cutting and internal haulage meters."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_electricity; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_electricity
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: mine_diesel
+          role: "Mobile-equipment diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Include if diesel equipment operates; exclude contractor transport already counted in a service dataset."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_diesel; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_diesel
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: mine_anfo
+          role: "Porous granular ANFO"
+          name: "Porous granular ammonium oil explosive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c136e796-f073-46c0-b3c5-5d54ed985fcf"
+          property_unit: "Mass / kg"
+          description: "Include only when supplier records confirm porous granular ANFO blasting."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_anfo; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_anfo
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: mine_oil
+          role: "Mineral lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Include when mineral lubricating oil is consumed by mining equipment."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_oil; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_oil
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: mine_river_water
+          role: "River-water abstraction"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Include only direct river abstraction; purchased water is an upstream product exchange."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_river_water; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_river_water
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: mine_groundwater
+          role: "Groundwater abstraction"
+          name: "ground water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4f462198-40cd-4184-8733-86648a20dc3f"
+          property_unit: "Volume / m3"
+          description: "Include direct groundwater abstraction and separately identify pumped mine water; do not treat all pumping as consumption."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_groundwater; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_groundwater
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: coal_resource
+          role: "Anthracite resource extraction"
+          name: "Anthracite, in ground"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record in-situ anthracite removed, excluding overburden; reconcile mineral matter and moisture basis."
+          amount:
+            expression: "Collect attributable period quantity with cp_coal_resource; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coal_resource
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: mine_gangue
+          role: "Mining coal gangue"
+          name: "Coal gangue"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a5fa448c-4a0f-4ead-b9b3-8bd843d346b9"
+          property_unit: "Mass / kg"
+          description: "Include separated coal gangue transferred to waste management; record destination and wet mass."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_gangue; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_gangue
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+      elementary:
+        - row_id: mine_methane
+          role: "Fugitive mine methane"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record net fossil methane released after capture or oxidation, to unspecified air; captured gas is not an emission."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_methane; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_methane
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: mine_co2
+          role: "On-site combustion CO2"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include measured or validated fuel-carbon-accounted fossil CO2 from site combustion; purchased fuel supply excludes combustion."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_co2; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_co2
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+        - row_id: mine_pm10
+          role: "Fugitive PM10"
+          name: "PM10, emission to unspecified air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record PM10 to unspecified air from mine operations after controls; do not combine with overlapping particle-size totals."
+          amount:
+            expression: "Collect attributable period quantity with cp_mine_pm10; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mine_pm10
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+  - id: preparation
+    label: "Physical preparation"
+    inputs:
+      product:
+        - row_id: prep_feed
+          role: "Preparation feed anthracite"
+          name: "hard coal, anthracite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9ff1d63b-2eab-4f82-969a-71dd1474f0f1"
+          property_unit: "Mass / kg"
+          description: "Include only purchased raw anthracite at a standalone preparation site; supplier extraction and raw-state dataset must be compatible. Record internal transfers in mass-balance records, not as external exchanges."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_feed; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_feed
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_electricity
+          role: "Preparation electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Include crushing, screening, separation and mechanical dewatering electricity."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_electricity; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_electricity
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_water
+          role: "Purchased process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include externally supplied make-up water for wet preparation or dust control; exclude internal recirculation."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_water; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_water
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_magnetite
+          role: "Magnetite make-up"
+          name: "Magnetite (Fe3O4)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when dense-medium separation uses magnetite; supplier invoices must identify Fe3O4 and replenishment losses."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_magnetite; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_magnetite
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_diesel
+          role: "Dryer diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Include only a diesel-fired thermal dryer; mechanical dewatering alone does not imply a fuel input."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_diesel; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_diesel
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: prep_gangue
+          role: "Coarse coal gangue"
+          name: "Coal gangue"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a5fa448c-4a0f-4ead-b9b3-8bd843d346b9"
+          property_unit: "Mass / kg"
+          description: "Record coarse mineral coal gangue reject separately from fine sludge."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_gangue; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_gangue
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_sludge
+          role: "Coal-washing fine sludge"
+          name: "Coal-washing fine sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include fine coal-washing sludge exported for disposal; collect solids fraction and moisture, distinct from saleable coal fines."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_sludge; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_sludge
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_effluent
+          role: "Untreated coal-washing effluent"
+          name: "Untreated coal-washing effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include this single aqueous effluent stream only when transferred to external treatment; collect solids and pollutant composition."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_effluent; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_effluent
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+      elementary:
+        - row_id: prep_co2
+          role: "Dryer fossil CO2"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include only on-site fuel combustion; do not duplicate a combustion process dataset."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_co2; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_co2
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+        - row_id: prep_pm10
+          role: "Preparation PM10"
+          name: "PM10, emission to unspecified air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record handling, crushing and dryer PM10 to unspecified air after controls; identify emission points."
+          amount:
+            expression: "Collect attributable period quantity with cp_prep_pm10; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prep_pm10
+              source_ids:
+                - epa-ap42-coal-cleaning-1995
+            ranges: []
+  - id: dispatch
+    label: "Storage and dispatch"
+    inputs:
+      product:
+        - row_id: gate_electricity
+          role: "Storage and loading electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Meter attributable storage, conveyors and loading electricity."
+          amount:
+            expression: "Collect attributable period quantity with cp_gate_electricity; divide by accepted net anthracite output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gate_electricity
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: anthracite_output
+          role: "Accepted anthracite reference product"
+          name: "hard coal, anthracite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9ff1d63b-2eab-4f82-969a-71dd1474f0f1"
+          property_unit: "Mass / kg"
+          description: "Exactly 1 kg accepted net bulk product at the production gate, at declared moisture and grade."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_anthracite_output
+              source_ids:
+                - ifc-mining-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_processes"
+    rule: "Prefer subdivision with submetered activities before allocation. For this attributional supply dataset, do not net avoided-product credits into the reference inventory; any system-expansion comparison is separate and disclosed."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: allocation_physical
+    applies_to: "saleable_outputs"
+    rule: "When subdivision cannot separate jointly produced grades, justify a causal physical allocation driver. Use same-basis saleable mass only when comparable grade/state demonstrates that mass tracks burdens; test an energy/value alternative for materially different grades."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: allocation_waste
+    applies_to: "gangue_and_sludge"
+    rule: "Do not allocate product burdens to wastes without economic value; include attributable treatment. If gangue, fines or captured methane are actually sold, collect quantities and gate values, reclassify as co-products and justify physical or, if unsupported, economic allocation consistently."
+    source_ids:
+      - ghg-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mine_electricity
+      process_id: "mining"
+      flow_role: "mine_electricity"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Read calibrated electricity submeter and invoices; retain kWh readings, voltage and 3.6 MJ/kWh conversion."
+      unit: "MJ"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_diesel
+      process_id: "mining"
+      flow_role: "mine_diesel"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_anfo
+      process_id: "mining"
+      flow_role: "mine_anfo"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_oil
+      process_id: "mining"
+      flow_role: "mine_oil"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_river_water
+      process_id: "mining"
+      flow_role: "mine_river_water"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Read abstraction meter and source records; distinguish dewatering and consumed water."
+      unit: "m3"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_groundwater
+      process_id: "mining"
+      flow_role: "mine_groundwater"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Read abstraction meter and source records; distinguish dewatering and consumed water."
+      unit: "m3"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_coal_resource
+      process_id: "mining"
+      flow_role: "coal_resource"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Reconcile geological extraction surveys, coal-only tonnage, loss records and moisture/mineral-matter basis."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_gangue
+      process_id: "mining"
+      flow_role: "mine_gangue"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_methane
+      process_id: "mining"
+      flow_role: "mine_methane"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Use site monitoring with flow, concentration and operating duration; retain validated species-specific method when direct continuous measurement is unavailable."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_co2
+      process_id: "mining"
+      flow_role: "mine_co2"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Use site monitoring with flow, concentration and operating duration; retain validated species-specific method when direct continuous measurement is unavailable."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_mine_pm10
+      process_id: "mining"
+      flow_role: "mine_pm10"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Use site monitoring with flow, concentration and operating duration; retain validated species-specific method when direct continuous measurement is unavailable."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_feed
+      process_id: "preparation"
+      flow_role: "prep_feed"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_electricity
+      process_id: "preparation"
+      flow_role: "prep_electricity"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Read calibrated electricity submeter and invoices; retain kWh readings, voltage and 3.6 MJ/kWh conversion."
+      unit: "MJ"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_water
+      process_id: "preparation"
+      flow_role: "prep_water"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_magnetite
+      process_id: "preparation"
+      flow_role: "prep_magnetite"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_diesel
+      process_id: "preparation"
+      flow_role: "prep_diesel"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_gangue
+      process_id: "preparation"
+      flow_role: "prep_gangue"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_sludge
+      process_id: "preparation"
+      flow_role: "prep_sludge"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_effluent
+      process_id: "preparation"
+      flow_role: "prep_effluent"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_co2
+      process_id: "preparation"
+      flow_role: "prep_co2"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Use site monitoring with flow, concentration and operating duration; retain validated species-specific method when direct continuous measurement is unavailable."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_prep_pm10
+      process_id: "preparation"
+      flow_role: "prep_pm10"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Use site monitoring with flow, concentration and operating duration; retain validated species-specific method when direct continuous measurement is unavailable."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_gate_electricity
+      process_id: "dispatch"
+      flow_role: "gate_electricity"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Read calibrated electricity submeter and invoices; retain kWh readings, voltage and 3.6 MJ/kWh conversion."
+      unit: "MJ"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+    - protocol_id: cp_anthracite_output
+      process_id: "dispatch"
+      flow_role: "anthracite_output"
+      record_type: "Primary activity record"
+      raw_fields: "period; site; row quantity; unit; grade/composition; opening/closing stock; accepted net anthracite output; allocation share; route condition"
+      collection_method: "Calibrated weighbridge/scale or traceable inventory records; reconcile opening, receipts, transfers and closing stock."
+      unit: "kg"
+      frequency: "Each delivery/meter interval; aggregate reporting period"
+      temporal_coverage: "Representative complete year or documented campaign including seasonal variation"
+      site_scope: "Declared mine/plant and gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration, invoices, laboratory reports, stock reconciliation and allocation worksheet"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide attributable reporting-period exchange by accepted net anthracite output in kg; internal transfer pairs use identical measured quantity and cancel on consolidation."
+      inputs:
+        - "row-specific cp records"
+        - cp_anthracite_output
+        - "allocation worksheet"
+      output: "Exchange per 1 kg reference flow"
+      source_ids:
+        - ghg-product-standard-2011
+    - id: electricity_conversion
+      applies_to: "electricity rows"
+      rule: "Convert kWh readings to MJ by multiplying by 3.6 before period normalization."
+      inputs:
+        - kWh
+      output: "MJ"
+      source_ids:
+        - un-ires-2018
+  data_quality_requirements:
+    - id: rank_state
+      applies_to: "anthracite_output"
+      requirement: "Verify anthracite rank, raw/washed status and same analytical basis; mass is not useful energy."
+      evidence: "un-ires-2018"
+    - id: completeness
+      applies_to: "all inventory rows"
+      requirement: "Perform site exchange audit, waste fate and water/coal balances; distinguish measured zero, absent route and missing observation."
+      evidence: "ifc-mining-ehs-2007; cp records"
+    - id: representativeness
+      applies_to: "dataset"
+      requirement: "Use matched production and exchange periods; disclose location, uncertainty, substitution and unmeasured closure burdens. No default industry range replaces collection."
+      evidence: "cp records"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference_flow"
+    rule: "Verify net 1 kg output, all qualifiers, kg/MJ/m3 units and denominator consistency; compare dry and as-received values only after measured-moisture conversion."
+    source_ids:
+      - un-ires-2018
+  - rule_id: validate_balance
+    applies_to: "inventory"
+    rule: "Reconcile feed, saleable grades, rejects, moisture changes, stocks and transfers. Identify missing emissions and waste treatment, and ensure no duplicate resource, fuel combustion or internal transfers."
+    source_ids:
+      - ifc-mining-ehs-2007
+  - rule_id: validate_evidence
+    applies_to: "dataset"
+    rule: "Every nonzero exchange needs a compatible upstream dataset or direct emission/waste fate, collection evidence and reviewed identity. Keep unresolved identities and missing ranges explicit; do not publish a proxy as verified or impute zero from missing records."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply of declared grade and route anthracite to downstream LCA"
+  excluded_use: "Customer useful heat, other coal ranks or transformed carbon products without additional modelling"
+  required_metadata: "Reference qualifiers; site/year; boundary; route; source datasets; allocation; collection coverage"
+  required_quality_disclosure: "Identity gaps; missing measurements/ranges; uncertainty; route absences; closure/capital coverage"
+  update_trigger: "Changed mine/grade/route, moisture basis, energy supply, allocation or material monitoring results"
+data_sources:
+  - id: "un-ires-2018"
+    type: "official_guidance"
+    reference: "International Recommendations for Energy Statistics, United Nations, 2018, chapter III SIEC 011 (p. 27); chapter IV paragraphs 4.21–4.24 and 4.33–4.38 (pp. 44–47). https://unstats.un.org/unsd/energystats/methodology/documents/IRES-web.pdf. Retrieved 2026-10-01."
+    used_for: "Anthracite rank and analytical basis; energy units and fuel-specific calorific values. PCR mass comparability and declared raw/washed state are authoring requirements; no default calorific-value range adopted"
+  - id: "epa-ap42-coal-cleaning-1995"
+    type: "official_guidance"
+    reference: "11.10 Coal Cleaning, EPA AP-42, November 1995. https://www.epa.gov/sites/default/files/2020-10/documents/c11s10.pdf. Retrieved 2026-09-30."
+    used_for: "Physical preparation and dust collection; no default factors adopted"
+  - id: "ifc-mining-ehs-2007"
+    type: "official_guidance"
+    reference: "Environmental, Health, and Safety Guidelines, IFC, Mining, 10 December 2007. https://www.ifc.org/content/dam/ifc/doc/2000/2007-mining-ehs-guidelines-en.pdf. Retrieved 2026-09-30."
+    used_for: "Mining water, waste and lifecycle coverage; no numeric limits adopted"
+  - id: "ghg-product-standard-2011"
+    type: "standard"
+    reference: "Product Life Cycle Accounting and Reporting Standard, WRI/WBCSD, 2011, chapter 9. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf. Retrieved 2026-09-30."
+    used_for: "Allocation hierarchy as a method reference, not a complete LCA impact method"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:214a6c1f22f2d76f32632fefbc494cc62e8a92206d90a0907ff4f842ca54b668"
+  generated_content_sha256: "sha256:cc800b5a2349123ec1920d60feb04a88784cca0426bcb061d8d284395c6fd190"
