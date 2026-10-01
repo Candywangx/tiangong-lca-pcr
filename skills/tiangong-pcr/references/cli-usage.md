@@ -1,19 +1,66 @@
-# tiangong-pcr CLI Usage
+# PCR consumer commands
 
-The public CLI is for PCR consumption during LCA data construction.
+Use command-specific `--help` for input shapes, defaults and next actions. Commands
+below run without network access; provision tool/library/optional TIDAS tooling first.
 
-```bash
-tiangong-pcr list --status candidate --format json
-tiangong-pcr list --path-prefix <domain/subdomain> --format json
-tiangong-pcr list --page 2 --page-size 10
+```sh
 tiangong-pcr tree --format markdown
-tiangong-pcr resolve --classification cpc:3.0:01111 --format json
-tiangong-pcr show --pcr <pcr-id> --lang en-US
-tiangong-pcr guidance --pcr <pcr-id> --format json
-tiangong-pcr validate-dataset --pcr <pcr-id> --input <file> --format json
-tiangong-pcr feedback draft --pcr <pcr-id> --type <feedback-type> --summary "<finding>"
+tiangong-pcr list --path-prefix <domain/subdomain> --page 1 --page-size 10 --format json
+tiangong-pcr coverage summary --classification cpc:3.0 --format json
+tiangong-pcr resolve --classification cpc:3.0:01112 --format json
+tiangong-pcr guidance --pcr <id> --topic reference-flow --format json
+tiangong-pcr guidance --pcr <id> --topic boundary --page 1 --page-size 10 --format json
+tiangong-pcr guidance --pcr <id> --pointer /system_boundary/rules/0 --format json
+tiangong-pcr show --pcr <id> --lang en-US
+tiangong-pcr inspect --input process.json --related ./datasets --section exchanges --format json
+tiangong-pcr inspect --input model.json --related ./datasets --section instances --format json
+tiangong-pcr inspect --input model.json --related ./datasets --section references --format json
+tiangong-pcr inspect --input process.json --pointer /processDataSet/processInformation/quantitativeReference --format json
+tiangong-pcr calculate --input calculation.json --output calculation-result.json --format json
+tiangong-pcr review prepare --pcr <id> --input process.json --related ./datasets --output review.json --format json
+tiangong-pcr review check --pcr <id> --input process.json --related ./datasets --report review.json --format json
+tiangong-pcr feedback draft --pcr <id> --type <feedback-type> --summary "<finding>"
 ```
 
-`list` and `tree` are explicit catalog browsing commands. `tree` defaults to depth 2; use `list --path-prefix` for bounded down-drill and request `tree --depth 3` only when the large complete hierarchy is required. `list` defaults to 10 records per page and returns filters, `has_more`, pagination metadata, and copyable page commands in JSON. Prefer `resolve` when a classification code is available. Use `validate-dataset` for foreground collection package coverage.
+Use returned page commands. Topic/section selection and exact pointer reading are
+exclusive. New inspection/selection results use previews; truncated values carry
+an explicit marker and a pointer for complete retrieval. Large complete output
+requires `--output <new-file>`; existing files are not overwritten. This saves an
+artifact and prints its path/hash. Input inspection and arithmetic do not need
+`--library`; PCR commands honor PCR_LIBRARY or explicit selection/pinning.
 
-Output formats are command-specific. When `--format json` is requested, failures leave stdout empty and return a stable error envelope on stderr. Validation exit 2 is different: stdout remains the complete JSON report and stderr remains empty.
+`--related` scans one explicitly supplied local directory, bounded to 200 JSON
+files, 64 MiB total, 12 directory levels and 5000 entries. Each JSON file is bounded
+to 16 MiB. Narrow the package if a limit is reached; no partial scan masquerades
+as complete. Malformed JSON and interior symlinks fail. Non-dataset JSON is reported
+as ignored. Local reference matching never chooses among duplicate identities.
+
+For normalization, save a request such as:
+
+```json
+{
+  "operation": "normalize",
+  "amount": 50,
+  "unit": "kg N",
+  "source_reference": 1000,
+  "target_reference": 1,
+  "reference_unit": "kg grain",
+  "basis": "Identical reference product, gate and moisture basis",
+  "evidence": "Example only; replace with the actual source record and applicability evidence"
+}
+```
+
+`convert` requires amount, from_unit, to_unit and an explicit factor.
+`balance` requires inputs/outputs arrays of amount/label objects, accumulation,
+and a common unit. Every operation requires basis and evidence. Arithmetic uses
+floating-point numbers; scientific interpretation and tolerance remain the Agent's job.
+
+Legacy diagnostics remain available: `validate-model` checks qualifier text
+presence; `validate-dataset` checks protocol IDs in optional collection packages.
+Their pass applies only to checks_performed. They do not check TIDAS fields or
+perform agentic review.
+
+With `--format json`, usage/input/runtime failures have empty stdout and a stable
+stderr error envelope (exit 1). Review-envelope or legacy validation failures
+return their JSON report on stdout (exit 2). `review check` exit 0 means envelope
+validity only; findings and reviewed scope still need semantic assessment.
