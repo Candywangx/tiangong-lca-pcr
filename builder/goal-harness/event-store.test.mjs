@@ -144,3 +144,14 @@ test("large-log rebuild and duplicate lookup fit in a heap smaller than historic
   assert.equal(result.status, 0, result.stderr);
   assert.deepEqual(JSON.parse(result.stdout), { sequence: 1400, hash: previous.hash, replay: 1 });
 });
+
+test("typed receipt index retains every attestation for uniqueness checks without materializing the log", t => {
+  const { store, stateDir } = fixture(t);
+  store.append({ event_id: "receipt-a", type: "uuid_receipt_finalized", payload: { receipt_id: "same", task_id: "one" } });
+  store.append({ event_id: "other", type: "author_report_prepared", payload: { receipt_id: "same" } });
+  store.append({ event_id: "receipt-b", type: "uuid_receipt_finalized", payload: { receipt_id: "same", task_id: "two" } });
+  const reopened = new GoalEventStore({ stateDir });
+  reopened.readEvents = () => assert.fail("whole-log array lookup");
+  assert.deepEqual(reopened.getEventsByType("uuid_receipt_finalized", { receiptId: "same" }).map(e => e.event_id), ["receipt-a", "receipt-b"]);
+  assert.deepEqual(reopened.getEventsByType("uuid_receipt_finalized", { receiptId: "missing" }), []);
+});

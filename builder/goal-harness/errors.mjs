@@ -50,6 +50,8 @@ export function classifyFinding(finding) {
   else if (code === 'GOAL_BOUNDARY_REVIEW_REQUIRED' || details.failure_kind === 'boundary') category = 'boundary';
   else if (details.origin !== 'author_reported' && !(finding?.author_reported === true || details.author_reported === true)) {
     if (details.failure_kind === 'execution_window' || code === 'GOAL_AUTHOR_TIMEOUT') category = 'execution_window';
+    else if (code === 'GOAL_SOURCE_REQUEST_TIMEOUT' && details.origin === 'harness_request_timer'
+      && details.failure_kind === 'timeout' && details.source_fetch_diagnostics?.abort_source === 'harness_request_timeout') category = 'infrastructure';
     else if (TRUSTED_TRANSPORT.has(details.origin) && INFRA_KINDS.has(details.failure_kind)) category = 'infrastructure';
     else if (code === 'GOAL_CODEX_USAGE_LIMIT_EXCEEDED') category = 'infrastructure';
     else if (CONTENT_CODES.has(code) || (details.origin === 'harness_review' && details.failure_kind === 'author_claim')) category = 'content';

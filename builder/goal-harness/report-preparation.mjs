@@ -50,11 +50,12 @@ const draftValidator = ajv.compile(
 );
 
 export function prepareAuthorReport(options) {
-  try { return prepareBoundAuthorReport(options); }
+  const eventStore = reportEventStore(options.stateDir, options.eventStore);
+  try { return prepareBoundAuthorReport({ ...options, eventStore }); }
   catch (error) {
     if (error.details?.preparation_failure_id) throw error;
     const { stateDir, config, taskId, draftPath, cwd = process.cwd() } = options;
-    const state = new GoalEventStore({ stateDir }).rebuild(), task = state.tasks.find(t => t.id === taskId);
+    const state = eventStore.rebuild(), task = state.tasks.find(t => t.id === taskId);
     // An invalid caller/task/path has no authority to publish task observations.
     if (config.goal_id !== state.goal_id || !path.isAbsolute(draftPath)) throw error;
     assertPreparingTask(task, cwd);
@@ -74,6 +75,7 @@ export function prepareAuthorReport(options) {
 }
 
 function prepareBoundAuthorReport({
+  eventStore,
   config,
   stateDir,
   taskId,
@@ -83,8 +85,7 @@ function prepareBoundAuthorReport({
   auditUuidsFn = auditReportedUuids,
   deadline = Date.now() + 60_000,
 }) {
-  const store = new GoalEventStore({ stateDir }),
-    state = store.rebuild(),
+  const state = eventStore.rebuild(),
     task = state.tasks.find((t) => t.id === taskId);
   if (config.goal_id !== state.goal_id)
     fail("GOAL_REPORT_BINDING_MISMATCH", "Config and author state belong to different goals.");
@@ -123,14 +124,14 @@ function prepareBoundAuthorReport({
   const preliminary = { ...draft, hybrid_search_receipt_ids: ids };
   let receiptAudits = [], report, review, uuidReads = [], assessment;
   const phase = "preparation";
-  const prior = resolvePreparationFailure({ stateDir, task, forCommit: draft.commit_sha, deadline });
+  const prior = resolvePreparationFailure({ stateDir, task, forCommit: draft.commit_sha, deadline, eventStore });
   const progress = prior?.failure?.details?.progress ?? {};
   const capture = operation => {
     try { return operation(); }
     catch (error) { return { valid: false, results: [], checks: [], findings: selectRecovery(error).findings }; }
   };
   try {
-    const localReceipts = capture(() => loadReportReceiptEvidence({ report: preliminary, stateDir, task,
+    const localReceipts = capture(() => loadReportReceiptEvidence({ report: preliminary, stateDir, task, eventStore,
       collect: true, phase, deadline, startAfter: progress.receipts?.start_after }));
     receiptAudits = Array.isArray(localReceipts) ? localReceipts : localReceipts.results;
     const assemblyFindings = [];
@@ -159,7 +160,7 @@ function prepareBoundAuthorReport({
       ])].map(subject_id => ({phase,check_id:"uuid_public_read",subject_id,status:"skipped",applicable:true,
         reason:"report_unavailable",findings:unavailableCauses,depends_on:[{check_id:"report_assembly",subject_id:task.pcr_path}]})) };
     uuidReads = Array.isArray(uuidAudit) ? uuidAudit : uuidAudit.results ?? [];
-    const receiptAudit = report ? capture(() => auditHybridSearchReceipts({ report, stateDir, task,
+    const receiptAudit = report ? capture(() => auditHybridSearchReceipts({ report, stateDir, task, eventStore,
       verifiedUuidReads: uuidReads, collect: true, phase, deadline, startAfter: progress.receipts?.start_after })) : { ...localReceipts, valid: false,
         findings: [...(localReceipts.findings ?? []), ...unavailableCauses],
         checks: [...(localReceipts.checks ?? []), ...(draft.uuid_audits ?? []).map(claim => ({
@@ -243,7 +244,7 @@ function prepareBoundAuthorReport({
     const nowReceipts = loadReportReceiptEvidence({
       report,
       stateDir,
-      task: latest, deadline, phase: "preparation",
+      task: latest, deadline, phase: "preparation", eventStore: current,
     });
     if (
       stableArtifactJson(
@@ -259,9 +260,9 @@ function prepareBoundAuthorReport({
       );
     const directory = reportDirectory(stateDir, task, id),
       eventId = `author-report-prepared-${id}`;
-    const prior = current.readEvents().find((e) => e.event_id === eventId);
+    const prior = current.getEvent(eventId);
     if (prior) {
-      resolvePreparedReport({ stateDir, task: latest, submission, deadline });
+      resolvePreparedReport({ stateDir, task: latest, submission, deadline, eventStore: current });
       return submission;
     }
     // Publish a complete directory before recording it as ready. Orphaned complete
@@ -284,7 +285,7 @@ function prepareBoundAuthorReport({
   });
 }
 
-export function resolvePreparedReport({ stateDir, task, submission, deadline = Infinity }) {
+export function resolvePreparedReport({ stateDir, task, submission, deadline = Infinity, eventStore = null }) {
   reviewTimeRemaining(deadline, {phase:"harvest",subjectId:task?.id});
   if (
     task?.authoring_contract_version !== 2 ||
@@ -297,7 +298,7 @@ export function resolvePreparedReport({ stateDir, task, submission, deadline = I
       "GOAL_REPORT_REFERENCE_INVALID",
       "Expected the exact prepared-report reference for this task.",
     );
-  const store = new GoalEventStore({ stateDir }),
+  const store = reportEventStore(stateDir, eventStore),
     state = store.rebuild();
   const authoritative = state.tasks.find((t) => t.id === task.id);
   if (
@@ -309,16 +310,9 @@ export function resolvePreparedReport({ stateDir, task, submission, deadline = I
       "GOAL_REPORT_BINDING_MISMATCH",
       "The supplied task snapshot is no longer current.",
     );
-  const event = store
-    .readEvents()
-    .find(
-      (e) =>
-        e.event_id ===
-          `author-report-prepared-${submission.prepared_report_id}` &&
-        e.type === "author_report_prepared",
-    );
+  const event = store.getEvent(`author-report-prepared-${submission.prepared_report_id}`);
   if (
-    !event ||
+    !event || event.type !== "author_report_prepared" ||
     bindingJson(event.payload.binding) !==
       bindingJson(taskBinding(state.goal_id, task))
   )
@@ -368,7 +362,7 @@ export function resolvePreparedReport({ stateDir, task, submission, deadline = I
       "GOAL_REPORT_BINDING_MISMATCH",
       "PCR content changed after preparation.",
     );
-  const receipts = loadReportReceiptEvidence({ report, stateDir, task, deadline });
+  const receipts = loadReportReceiptEvidence({ report, stateDir, task, deadline, eventStore: store });
   if (
     stableArtifactJson(
       receipts.map((r) => ({
@@ -419,15 +413,19 @@ function publishPreparationFailure({ stateDir, task, cwd, binding, content, draf
   });
 }
 
-export function resolvePreparationFailure({ stateDir, task, forCommit = null, deadline = Infinity }) {
+export function resolvePreparationFailure({ stateDir, task, forCommit = null, deadline = Infinity, eventStore = null }) {
   if (!stateDir) return null;
-  const store = new GoalEventStore({ stateDir }), state = store.rebuild();
+  const store = reportEventStore(stateDir, eventStore), state = store.rebuild();
   const latest = state.tasks.find(t => t.id === task.id);
   const binding = taskBinding(state.goal_id, task);
   if (!latest || bindingJson(taskBinding(state.goal_id, latest)) !== bindingJson(binding))
     fail("GOAL_REPORT_BINDING_MISMATCH", "Preparation failure requires the current task snapshot.");
   let event = null;
-  for (const candidate of store.iterateEvents()) {
+  const candidates = [
+    ...store.getEventsByType("author_report_preparation_failed"),
+    ...store.getEventsByType("author_report_prepared"),
+  ].sort((left, right) => left.sequence - right.sequence);
+  for (const candidate of candidates) {
     if (bindingJson(candidate.payload?.binding) !== bindingJson(binding)) continue;
     if (candidate.type === "author_report_preparation_failed") event = candidate;
     if (candidate.type === "author_report_prepared") event = null;
@@ -455,11 +453,17 @@ export function resolvePreparationFailure({ stateDir, task, forCommit = null, de
       hybrid_search_receipt_ids: [...sealed],
       uuid_audits: (draft?.uuid_audits ?? []).filter(r => sealed.has(r.hybrid_search_receipt_id)),
       rejected_uuid_candidates: (draft?.rejected_uuid_candidates ?? []).filter(r => sealed.has(r.receipt_id)),
-    }, stateDir, task, deadline });
+    }, stateDir, task, deadline, eventStore: store });
     if (stableArtifactJson(receipts.map(r => ({ receipt_id: r.receipt_id, integrity: r.integrity }))) !== stableArtifactJson(manifest.receipt_bindings))
       fail("GOAL_REPORT_BINDING_MISMATCH", "Preparation failure receipt binding changed.");
   }
   return { failure: JSON.parse(failureBytes), manifest, failure_path: failurePath };
+}
+
+function reportEventStore(stateDir, eventStore) {
+  if (eventStore && path.resolve(eventStore.stateDir) !== path.resolve(stateDir))
+    fail("GOAL_REPORT_BINDING_MISMATCH", "Report query index belongs to another Goal directory.");
+  return eventStore ?? new GoalEventStore({ stateDir });
 }
 
 function readContentFingerprints(task) {

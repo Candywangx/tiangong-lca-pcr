@@ -74,9 +74,11 @@ export class GoalEventStore {
     this.projectionCache = {
       signature: eventLogSignature(this.eventsPath),
       eventIndex: projection.eventIndex,
+      queryIndex: projection.queryIndex,
       state,
     };
     projection.eventIndex.set(event.event_id, eventLocator(event, offset + separator.length, Buffer.byteLength(line)));
+    indexQuery(projection.queryIndex, event, eventLocator(event, offset + separator.length, Buffer.byteLength(line)));
     return event;
   }
 
@@ -87,7 +89,7 @@ export class GoalEventStore {
 
   // Single-pass iterator: callers must consume it fully to verify the entire chain.
   // Retain only byte locators and content digests, never historical payload objects.
-  *iterateEvents({ eventIndex = new Map() } = {}) {
+  *iterateEvents({ eventIndex = new Map(), queryIndex = null } = {}) {
     if (!existsSync(this.eventsPath)) {
       return;
     }
@@ -113,6 +115,7 @@ export class GoalEventStore {
         throw new GoalHarnessError("GOAL_EVENT_ID_CONFLICT", `Event id ${event.event_id} was reused with different content`);
       }
       if (!previous) eventIndex.set(event.event_id, locator);
+      if (queryIndex) indexQuery(queryIndex, event, locator);
       previousHash = hash;
       yield event;
     }
@@ -122,6 +125,15 @@ export class GoalEventStore {
     const projection = this.loadVerifiedProjection();
     const locator = projection.eventIndex.get(eventId);
     if (!locator) return undefined;
+    return this.readIndexedEvent(locator, projection);
+  }
+
+  getEventsByType(type, { receiptId } = {}) {
+    const projection = this.loadVerifiedProjection();
+    return (projection.queryIndex.get(queryKey(type, receiptId)) ?? []).map(locator => this.readIndexedEvent(locator, projection));
+  }
+
+  readIndexedEvent(locator, projection) {
     const event = JSON.parse(readRange(this.eventsPath, locator.offset, locator.length).toString("utf8"));
     const { hash, ...unsigned } = event;
     if (hash !== locator.hash || sha256(stableJson(unsigned)) !== hash || eventLogSignature(this.eventsPath) !== projection.signature) {
@@ -139,13 +151,23 @@ export class GoalEventStore {
     if (this.projectionCache?.signature === signature) return this.projectionCache;
     let state = JSON.parse(readFileSync(this.initialPath, "utf8"));
     const eventIndex = new Map();
-    for (const event of this.iterateEvents({ eventIndex })) state = reduceEvent(state, event);
+    const queryIndex = new Map();
+    for (const event of this.iterateEvents({ eventIndex, queryIndex })) state = reduceEvent(state, event);
     if (eventLogSignature(this.eventsPath) !== signature) {
       throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Event log changed during reconstruction");
     }
-    const projection = { signature, eventIndex, state };
+    const projection = { signature, eventIndex, queryIndex, state };
     this.projectionCache = projection;
     return projection;
+  }
+}
+
+function queryKey(type, receiptId) { return JSON.stringify([type, receiptId ?? null]); }
+function indexQuery(index, event, locator) {
+  for (const key of new Set([queryKey(event.type), ...(event.payload?.receipt_id ? [queryKey(event.type, event.payload.receipt_id)] : [])])) {
+    const entries = index.get(key) ?? [];
+    entries.push(locator);
+    index.set(key, entries);
   }
 }
 
