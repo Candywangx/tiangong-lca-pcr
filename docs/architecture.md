@@ -26,9 +26,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: 562ffbed520a7d4d56d20336b8a93fc0fe9e2273
-lastReviewedNote: "Reviewed PR #58 under PCR #60: 44 bilingual candidate/authored PCRs, 43 new accepted CPC mappings and one explicitly superseded electricity decision. Exact projection, source-reference, language, catalog and alias checks preserve unrelated entries and candidate review debt. The steam/hot-water unresolved identity ledger is completed; classification acceptance does not grant methodology publication. Ownership, routing and lifecycle contracts remain unchanged."
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
+lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
 ---
 
 # PCR 资料库架构
@@ -520,6 +520,10 @@ freshness 和自动测试成为合并门禁的统一入口。
 Web Worker 中按语言加载。特别长的正文按章节拆页，并保留完整导航与源节点映射。
 
 网站采用 Next.js SSG / static export，EdgeOne 托管 `packages/pcr-docs/out`。
+构建记录总字节、文件数及产物分类，用实测评估重复序列化与内容增长；不设置固定的
+总字节门槛。服务商单文件/文件数限制、构建磁盘和原子交付检查仍由构建契约负责，
+实际账号存储及历史部署保留量在发布阶段核对。网站输出与 AI 使用的不可变 SQLite
+快照是独立交付物，各自保留精确源身份和验证证据。
 部署配置、无损检查、语言及索引边界以
 [公共文档站契约](pcr-documentation-site-contract.md) 为准。
 

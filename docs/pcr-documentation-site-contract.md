@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-10-01
-lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedAt: 2026-10-03
+lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
+lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -181,7 +181,7 @@ source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
 and `main`; preview auto deployment remains disabled. Failed generation or builds
 leave the previous verified deployment intact.
 
-### Measured artifact and runtime budgets
+### Measured output and build resources
 
 The first real-corpus export showed that a full-library sidebar on every page
 produced almost 5 GB. The library index alone serializes the complete expandable
@@ -200,9 +200,24 @@ full-corpus export gate.
 Next.js retains both initial HTML and static navigation payloads; these are part
 of its supported export and are not deleted after building.
 
-The deployment gate is 1.5 GB total, fewer than 20,000 files, and less than 25 MB
-per file, leaving room for a previous production deployment within the provider's
-5 GB shared storage allowance. Recheck actual remaining storage before deployment.
+The export has no project-owned total-byte cap. The former 1.5 GB budget was a
+local retention allowance and was removed by the owner's decision in PCR #61.
+The output-size stage reports logical file bytes, file count, largest file and
+artifact-category totals. It emits an `export-size` console event and writes
+`.generated/export-size.json` before provider file checks so an oversized artifact
+remains diagnosable. Successful `.generated/verification.json` also includes those
+measurements. Size statistics measure disk artifacts before
+HTTP transfer compression and do not grant methodology or deployment approval.
+
+The export still requires fewer than 20,000 files and less than 25 MB per file.
+The provider's [current free-edition limits](https://pages.edgeone.ai/document/limits-and-quotas)
+state 5 GB combined storage across all projects under a site. Actual account
+capacity and retained deployments must be checked before deployment; the builder
+cannot infer remaining remote storage from the size of one export. Corpus growth
+is assessed from measured composition and useful rendering behavior rather than
+an arbitrary aggregate-size rejection. Supported Next navigation payloads and
+complete source artifacts remain subject to the existing fidelity contract.
+
 The build has an 18-minute task budget within the 20-minute provider limit and
 uses four workers with a 4 GB Node heap ceiling per build process. Measure total
 resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is

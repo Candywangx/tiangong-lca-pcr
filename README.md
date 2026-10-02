@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-10-02
-lastReviewedCommit: 562ffbed520a7d4d56d20336b8a93fc0fe9e2273
-lastReviewedNote: "Reviewed PR #58 under PCR #60: 44 bilingual candidate/authored PCRs, 43 new accepted CPC mappings and one explicitly superseded electricity decision. Exact projection, source-reference, language, catalog and alias checks preserve unrelated entries and candidate review debt. The steam/hot-water unresolved identity ledger is completed; classification acceptance does not grant methodology publication. Ownership, routing and lifecycle contracts remain unchanged."
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
+lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
 ---
 
 # TianGong LCA PCR Library
@@ -283,7 +283,10 @@ npm run docs:build
 ```
 
 `docs:build` generates the full library, builds Next.js, then checks exported text,
-source blocks, original-download hashes, routes, SEO and provider budgets. Use
+source blocks, original-download hashes, routes, SEO and provider file limits,
+and reports the export's total bytes and artifact composition. There is no fixed
+aggregate-byte build cap; deployment capacity is checked against actual hosting
+storage and retention. Use
 `npm run docs:dev` for local work. Generated `.generated/`, `public/generated/`,
 `.next/` and `out/` are ignored and must never be hand-authored.
 
