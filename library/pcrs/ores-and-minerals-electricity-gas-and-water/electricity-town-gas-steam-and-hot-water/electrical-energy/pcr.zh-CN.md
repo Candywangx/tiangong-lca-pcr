@@ -5,66 +5,52 @@ status: candidate
 sync_with: pcr.en-US.md
 ---
 
-# 电力
+# 电能
 
 ## 1. 范围与适用性
 
-本 PCR 适用于参考产品属于 CPC 3.0 类目 17100 的电力前景数据包。它适用于采用已声明的单一发电技术、发电组合或电网组合所生产的电力，也适用于经已声明网络交付的电力。数据包可止于电厂净输出边界或已声明的用户计量表边界，但所选边界必须明确，并在整个清单中保持一致。
-
-本 PCR 不限定发电技术，覆盖火力、核能、水力、风力、太阳能、海洋能、地热、电化学以及其他发电路线，也覆盖这些路线的已声明组合。当声明电流形式时，交流电和直流电均在范围内。本 PCR 不规定通用的发电过程 UUID、排放因子、燃料率、用水率或损耗率，因为这些值实质性地取决于技术、地域、电压、供应商和参考期。
-
-本 PCR 的完整数据目标是按实际技术、注入电压、输配电阶段和交付边界取得相互匹配的活动量与生命周期数据。观测资料不足时，按第 5 节和第 8 节的证据顺序使用有界、可复算的替代量并披露局限；替代量不改变产品类别、应纳入的生命周期阶段或实际观测事实。
-
-作为独立产品的输电或配电服务、电气设备、储能设备、蒸汽、热水和冷水不属于本产品类别。只有当电力输出是参考产品，并且储能技术、充电电力来源、损耗和调节功能分别披露时，储存后交付的电力才属于范围。已声明用户计量表之后的电力使用不属于范围。
+在一个声明净发电外送出口、储能放电出口或输配用户交付计量点供应电能，含实际化石生物燃料或废物燃烧、核电、水电抽蓄、风电、海洋波浪潮汐、太阳能光伏光热、地热、环境废热转换及电化学燃料电池；纳入有实测来源权重的国家地区供应组合。选一种实际技术或明确组合、地域年份交流直流电压频率计量接口，各替代路线不是同时必需操作。仅发电止于净外送，交付电力纳入出口前实际变压输配损失基础设施。储能非一次发电，保留充电厂用实测损失库存变化寿命吞吐量实际回送电，无避免电网抵扣。记录上游燃料材料实际建设更换退役开发土地水废物直接排放停机待机厂用控制，不因无运行燃料而遗漏设施。电力供应区别于单独销售输配服务、以燃料热为参考产品、单卖证书和消费设备制造。可有热电联产热联产品，但参考仍为电力。中国高压交流生产组合代表身份不缩窄全部类别，其他电压直流地域单技术交付状态须相容身份。公开 EPD 页仅支持技术清单，不采未取得全文阈值其他规则；下列路线采集为需真实场址证据的前景方法。 `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
 ## 2. 产品类别识别
 
 | 字段 | 值 |
 | --- | --- |
 | canonical_pcr_id | pcr.ores-and-minerals-electricity-gas-and-water.electricity-town-gas-steam-and-hot-water.electrical-energy |
-| classification_refs | CPC 3.0 17100，电力，exact |
-| covered_products | 来自任一已声明发电技术或组合、位于电厂净输出或已声明计量交付边界的电力；电流形式按声明为交流或直流 |
-| excluded_products | 独立电网服务；电气设备；作为产品的储能设备；蒸汽、热水或冷水；已声明计量表之后的电力使用服务 |
-| representative_product | 位于已声明边界的 1 千瓦时净电力或交付电力 |
-| production_route | 已声明的单一技术、发电组合、供应商组合或电网组合；是否纳入输配电取决于参考边界 |
-| market_state | 从发电设施净输出的电力，或在已声明电压与计量表处交付的电力；需披露地域、参考期、组合、损耗和合同属性 |
+| classification_refs | CPC 3.0:17100 |
+| covered_products | 实际各发电技术组合储能放电或网络交付的声明单一出口电能 |
+| excluded_products | 以燃料有用热证书为参考产品；单独网络服务；电气设备制造；假设避免电力 |
+| representative_product | 相容中国高压交流工厂净生产组合 |
+| production_route | 建设更换退役; 热能及燃料电池转换; 核能发电; 可再生资源转换; 冷却及资源水管理; 排放废物控制; 组合变压网络交付; 电储能运行; 计量电及有用热产出 |
+| market_state | 一种实测净交流或直流电产品及声明电压发电储能交付出口 |
 
 ## 3. 参考流
 
 | 字段 | 值 |
 | --- | --- |
-| What | 位于已声明净发电或计量交付边界的电力 |
-| How much | 1 kWh，等于 3.6 MJ |
-| How well | 净值且经计量；声明电流形式、电压、发电技术或组合、地域或电网、交付边界、损耗处理和合同属性 |
-| How long or cycle | 具有代表性的参考期，通常为一个完整年度；更短期间需证明代表性，并披露季节性局限 |
-| reference_flow_link | reference_electricity |
+| What | 在特定计量接口供应1 MJ验收净电能，非1 MJ燃料热或1 kg设备 |
+| How much | 1 MJ |
+| How well | 场址地域年份实际技术或来源组合供方；交流直流电压频率计量位置校准；毛净发电厂用来源匹配净外送；交付损失变压或充放电储能库存；验收期间正 D；实际燃料牌号水分低位热值化石生物比例；联产热焓回流状态；冷却取回耗水流域；直接物种介质废物去向；实测建设更换退役寿命验收吞吐量；分配不确定性；物理组合与合同属性声明注销残余披露。代表 ad12cfb1 为中国全国工厂端35–330千伏交流生产组合，非通用购电或用户交付电，精确权重年份由供方规定。 |
+| How long or cycle | 声明生产期内的一次出口供应 |
+| reference_flow_link | `final_product` |
 
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | 电力类别定位 UUID `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`；应用的定量参考采用其实际选定且限定完整的接口 Flow |
-| 参考流属性 | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` |
-| 参考单位组 | Units of energy `93a60a57-a3c8-11da-a746-0800200c9a66` |
-| 参考单位 | kWh |
-| 必需限定信息 | 发电技术或组合；地域或电网或供应商；交流或直流；参考边界处电压；电厂净输出或用户计量表边界；参考期；输配电损耗处理及数据性质；基础设施纳入范围；年度量的来源性质；合同或追踪工具处理 |
+| 参考产品流 | 交流电 `ad12cfb1-61f3-45d1-a12c-5903a2fc7202` |
+| 参考流属性 | 净热值 `93a60a56-a3c8-11da-a746-0800200c9a66` |
+| 参考单位组 | 能量单位 `93a60a57-a3c8-11da-a746-0800200c9a66` |
+| 参考单位 | MJ |
+| 必需限定信息 | 场址地域年份实际技术或来源组合供方；交流直流电压频率计量位置校准；毛净发电厂用来源匹配净外送；交付损失变压或充放电储能库存；验收期间正 D；实际燃料牌号水分低位热值化石生物比例；联产热焓回流状态；冷却取回耗水流域；直接物种介质废物去向；实测建设更换退役寿命验收吞吐量；分配不确定性；物理组合与合同属性声明注销残余披露。代表 ad12cfb1 为中国全国工厂端35–330千伏交流生产组合，非通用购电或用户交付电，精确权重年份由供方规定。 |
 
-构建前景数据包时，`必需限定信息` 中每一项都必须在数据集元数据、过程说明、参考流备注、产品说明或等效数据包字段中明确声明。缺失必需限定信息会使该数据包的参考流定义不完整。
-
-本节通用 Electricity UUID 只定位产品类别，不固定所有应用的定量产出 Flow。已选根接口输入与参考报告产出必须使用同一个限定完整的实际 Flow；两者之间不发生产品转换。使用既有接口 Flow 前，应核对其物理含义、流属性、单位链及限定条件。具体应用选定的 Process 与 Model 版本应留在该数据包及计算证据中，本 PCR 不预先固定其版本。
-
-| Role | Tiangong flow | Flow type | UUID | Flow property | Unit group | Preferred unit |
-| --- | --- | --- | --- | --- | --- | --- |
-| 参考产品 | Electricity | 产品流 | `890a70b7-b677-4e2a-8a1b-7d017e0a10ae` | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | Units of energy `93a60a57-a3c8-11da-a746-0800200c9a66` | kWh |
+全部限定信息须在数据集元数据或参考流备注中声明。代表流身份仅适用于已确认的产品状态、地域和属性；不相容变体须解析独立流，不以代表身份设定默认产品组成。
 
 ## 4. 计量与单位规则
 
-| 规则编号 | 适用对象 | 必需流属性 | 必需单位 | 规则 |
+| rule_id | 适用对象 | 必需流属性 | 必需单位 | 规则 |
 | --- | --- | --- | --- | --- |
-| `measure_reference_energy` | 参考产品及所有内部电力交换 | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh 或可换算的 MJ | 以 1 kWh 报告功能单位，按 1 kWh = 3.6 MJ 核对能量单位链。关联 Process 保留其原生参考产出和单位，例如 1 MJ 或 3.6 MJ；依原生参考量缩放，不将报告基准覆盖为原生数量，也不重复换算。保留未舍入的计量值直至最终归一化。 |
-| `measure_net_generation` | 发电输出 | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | 净发电量等于发电机毛输出减去同一期间归属于电力生产的厂用电。不得混用毛值与净值。 |
-| `measure_delivered_energy` | 用户计量表参考边界 | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | 优先采用已声明边界处经核对的交付计量量。网络输入、交付输出、自用电、输入、输出和损耗须采用相同期间与网络范围；使用代理时标明其与该边界的差异。1 kWh 参考输出不得冒充实测年度交付量。 |
-| `measure_mix_weighting` | 多来源发电或供应商/电网组合 | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | kWh | 优先按同一已声明基础上的实测净发电量或交付 kWh 对各组成清单加权。不可得时，可用有证据的活动量、技术利用率和时段信息推导固定情景，标为估算而非实测市场份额；装机份额或替代年度量不得直接当作真实供电权重。经记录的舍入后，份额须合计为 100%，且不得重复计算合同属性。 |
-| `measure_annual_supply` | 年度生产或交付量字段 | Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` | 年度字段中相容的能量单位 | 字段须填写数值、相容单位及来源性质，并与 1 kWh 功能单位分开。优先采用同年、同地域、同技术及同计量边界的真实年度量；不可得时可填写固定且可复算的估算或专家假设，最后可将过程原生参考流数量作为明确标识的年度替代值。替代值不是真实年度供应量，不得用于声称实际市场份额或充当资产寿命期服务量；真实年度量未知的事实仍须披露。 |
+| reference_basis | final_product | Net calorific value | MJ | D 为正的、验收净出口产品总量，单位为 MJ。排除包装及抵消的内部转移。cp_output 记录 D，每张卡按同一参考流归一化。 |
+| conversion | utility and material rows | 声明行属性 | kg; m3; MJ | 保留原始读数。电力按 1 kWh = 3.6 MJ 换算。质量与体积转换需实测密度、温度及适用压力，保留水分及化学品有效含量。 |
+| category_balance | production | Net calorific value | MJ | D 为选定出口独立校准计量且核对库存后的验收净电能 MJ，必须为正；1 kWh =3.6 MJ。每数据集只用一个发电储能交付产出基准，不合计充电毛发电净外送交付为产出。发电 D 等于实测净外送，毛减厂用仅在计量边界期间匹配时复核，购入厂用另列投入且不重复扣除。调入转售和内部转移独立识别。组合各来源同一净出口基准权重和为1，记录损失供方，不以毛发电因子乘净份额。交付核对网络进量验收产出其他外送技术损失窃电计量缺口库存，仅有独立匹配损失率0<=l<1且无遗漏外送时输入=D/(1-l)。储能同边界实测充电=放电其他有用外送+电损失+实际库存增加，不编往返效率寿命避免发电。燃料能量按实际耗质量乘匹配收到基低位热值或实测体积密度热值状态，区分电 MJ 与燃料热 MJ；气体质量标准体积转换须实测密度温压非假定组成。直接气体按实测物种负荷或明确相容活动因子，不把购电因子代现场燃烧。化石生物 CO2、CH4、N2O和捕集碳分开，不默认生物质废物 CO2 为零。有用蒸汽热=匹配质量乘供汽减回流焓，热水按真实质量实测焓差，非以总水质量作能量。联产有用热电先分联产品再声明分配。寿命材料设施量按实测或论证预期验收电吞吐量一次分摊并敏感性，不编机器质量产量。 |
 
 ## 5. 系统边界
 
@@ -72,436 +58,935 @@ sync_with: pcr.en-US.md
 
 | 字段 | 值 |
 | --- | --- |
-| declared_starting_condition | 进入已声明电力系统的能源载体、自然能源捕获、辅助材料、外购电力、水和基础设施产品 |
-| starting_condition_role | 由经评审的上游数据集和前景数量表示、随类别而变化的技术圈输入；不暗示存在单一通用能源载体 |
-| product_classification_scope | CPC 3.0 17100，位于净发电或已声明计量交付边界的电力 |
-| recursive_input_rule | 发电或网络内部使用的外购电力是具有自身已声明组合与边界的输入电力数据集；不得默认为正在构建的输出数据集 |
-| upstream_dataset_requirement | 对燃料、材料、水供应、外购电力、运输、废物处理和基础设施使用经评审且在时间、地域和技术上具有代表性的数据集 |
-| disclosure | 声明发电技术及份额、地域、电压、参考期、净输出或交付边界、损耗处理及承载位置、基础设施范围、数据来源性质与缺口、共产品和追踪工具 |
+| declared_starting_condition | 发电实际能源资源上游燃料材料；储能购入充电；组合网络交付逐项识别净来源电力 |
+| starting_condition_role | 资源或供给进料，须声明具体情形 |
+| product_classification_scope | 实际各发电技术组合储能放电或网络交付的声明单一出口电能 |
+| recursive_input_rule | 购入同类物料须关联独立供应数据集；内部回用仅作为平衡记录，不新增外部投入或抵扣。 |
+| upstream_dataset_requirement | 关联进料、电力、燃料、化学品、基础设施及废物管理负荷，披露缺失覆盖。 |
+| disclosure | 场址地域年份实际技术或来源组合供方；交流直流电压频率计量位置校准；毛净发电厂用来源匹配净外送；交付损失变压或充放电储能库存；验收期间正 D；实际燃料牌号水分低位热值化石生物比例；联产热焓回流状态；冷却取回耗水流域；直接物种介质废物去向；实测建设更换退役寿命验收吞吐量；分配不确定性；物理组合与合同属性声明注销残余披露。代表 ad12cfb1 为中国全国工厂端35–330千伏交流生产组合，非通用购电或用户交付电，精确权重年份由供方规定。 |
 
-| 规则编号 | 适用对象 | 规则 | 来源 |
+| rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_upstream_supply` | 上游供应 | 纳入能源载体的开采或捕获、加工与运输，辅助材料和外购电力的生产，水供应，以及前景系统使用的处理服务。通过具有代表性的上游数据集连接这些负荷。 | `epd-pcr-2007-08-v5-0-2` |
-| `boundary_generation_core` | 电力生产 | 纳入电厂运行、燃料或自然能源转换、厂用电、辅助品消耗、维护、直接排放、运行废物以及发电基础设施的生命周期份额。 | `epd-pcr-2007-08-v5-0-2` |
-| `boundary_delivery_conditional` | 输电与配电 | 当参考产品边界位于电厂净输出之后时，纳入为补偿输配电损耗所需的电力、网络运行维护、直接释放和直至已声明计量表的电网基础设施生命周期份额。 | `epd-pcr-2007-08-v5-0-2` |
-| `boundary_use_exclusion` | 下游使用 | 排除用户的电力使用以及已声明用户计量表之后的所有过程。不得排除该计量表之前发生的损耗或电网环节。 | `epd-pcr-2007-08-v5-0-2` |
-| `boundary_cutoff_control` | 所有纳入环节 | 不得利用截断规则遗漏已知的危险、受管制或可能重要的流。任何筛除项均应在可行时量化，并披露预期重要性；应用来源 PCR 的 1% 筛选规则时，保留模型应证明相关质量、能量和环境重要性至少达到 99% 覆盖。 | `epd-pcr-2007-08-v5-0-2` |
-| `boundary_interface_hierarchy` | 生产与消费接口 | 根据适用统计分类建立互斥且可有多层的发电技术组合、地区年度总生产组合及适用的高、中、低压消费组合。优先按真实注入电压连接电源，并在对应交付阶段记录交易、储能、变压及损耗。父组合与子组合不得在同一需求下并列重复计入；不要求所有电源经过高压。 |  |
-| `boundary_explicit_foreground` | 燃料、资产与电力系统 | 完整边界仍须覆盖适用燃料来源、加工和运输、发电运行、决定技术特征的资产及其建设维护退役、交易储能和交付前网络环节。可在显式前景模块中复用经边界核查的次级数据或代理，但不得因缺少一手数据而删除应纳入的阶段，也不得将未解决需求或重要废物默认为零负荷。 |  |
-| `boundary_voltage_data_fallback` | 输配电损耗与资产 | 优先按同一期间和网络边界的分电压输入、输出、损耗与资产数据逐段建模。仅在分电压细分不可得、但适配声明交付路径的总损耗或合格代理有据时，可将总损耗或扣除已知分段后的剩余损耗在一个明确的聚合核算接口计入一次；未另分配损耗的接口按等电量传递。共用网络资产代理也须声明覆盖范围和承载接口，不得重复计入。该位置是核算约定，不证明物理损耗为零或所有电源实际经该电压注入。总损耗及合格代理均不可得时保留未解决缺口，不得以等电量传递声称完整输配覆盖。 |  |
-
-### 证据与缺项处理
-
-理想数据应提供与已声明技术、地域、注入电压、网络分段、发电组合、燃料路线和资产生命周期相容的同期记录。归一化到参考流之前，应保留原始计量、毛值或净值口径、计量表位置、来源期间、出版版本和实际供方选择。每项重要数量依次优先使用同边界直接观测、从相容观测可复算的推导、经过校准的代表性代理，最后才是固定且有依据的专家假设。记录原值、换算、边界差异、不确定性、可能改变主要结论时的敏感性及替换假设所需的证据；缺值不得自动置零。
-
-网络损耗优先采用同一期间和网络边界下各适用电压分段的输入、输出、自用电和损耗计量，并将分段资产归于对应环节。只有无法取得分电压损耗、但有据总损耗或总量代理覆盖已声明交付路线时，才可将总损耗或扣除已知分段后的剩余损耗在一个已声明的聚合核算接口计入一次；未另分配损耗的接口可在该情景下按等电量 1:1 传递。披露总损耗分母、覆盖范围、承载接口、资产范围、剩余分段和不确定性。等电量传递不证明这些电压物理零损耗，不是通用电网拓扑，也不表示原生供方参考量不同的 Model 缩放倍率恒为 1。取得适配分段数据后替换聚合分配，不得重复计入损耗或资产。若分段数据与合格总损耗或代理均不存在，交付边界仍未解决，不得宣称完整交付电力结果。
-
-重要燃料、资产、废物处理或供方数量缺少适配观测且没有有据代理时，保留未解决需求，指明受影响的生命周期阶段及使用限制。较窄边界的草案可按实际边界描述，但不能仅凭模式或求解检查通过就宣称满足本 PCR 的完整边界。
+| boundary_operations | site | 在一个声明净发电外送出口、储能放电出口或输配用户交付计量点供应电能，含实际化石生物燃料或废物燃烧、核电、水电抽蓄、风电、海洋波浪潮汐、太阳能光伏光热、地热、环境废热转换及电化学燃料电池；纳入有实测来源权重的国家地区供应组合。选一种实际技术或明确组合、地域年份交流直流电压频率计量接口，各替代路线不是同时必需操作。仅发电止于净外送，交付电力纳入出口前实际变压输配损失基础设施。储能非一次发电，保留充电厂用实测损失库存变化寿命吞吐量实际回送电，无避免电网抵扣。记录上游燃料材料实际建设更换退役开发土地水废物直接排放停机待机厂用控制，不因无运行燃料而遗漏设施。电力供应区别于单独销售输配服务、以燃料热为参考产品、单卖证书和消费设备制造。可有热电联产热联产品，但参考仍为电力。中国高压交流生产组合代表身份不缩窄全部类别，其他电压直流地域单技术交付状态须相容身份。公开 EPD 页仅支持技术清单，不采未取得全文阈值其他规则；下列路线采集为需真实场址证据的前景方法。 | `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output` |
+| boundary_partition | all exchanges | 纳入截至声明出口的实际调质、储存、装运及污染控制。按披露的寿命产量计入可归属建设及关闭负荷，或论证排除并进行敏感性分析。区分购入燃料供应与前景燃烧、购入处理与场址排放。 |  |
+| boundary_completeness | inventory | 卡片规定逐项可能交换及路线条件，不能替代完整场址审计。实际发生但未列出的每种化学品、废物、资源、土地转变及污染物须分别补行。区分不发生、实测零与未知。 |  |
 
 ## 6. 过程清单结构
 
 ### 过程图
 
-| process_id | 过程名称 | 纳入状态 | 纳入条件 | 建模角色 | 定量参考 |
+| process_id | 过程名称 | inclusion | 纳入条件 | 角色 | 定量参考 |
 | --- | --- | --- | --- | --- | --- |
-| `upstream_supply` | 能源载体、辅助品、水和服务的上游供应 | required | 始终纳入；适用输入集合取决于已声明发电技术或组合 | 向前景电力系统提供经评审的上游产品与服务数据集 | 归一化到已声明参考边界的 1 kWh |
-| `electricity_generation` | 电力生产与电厂运行 | required | 始终纳入；每种适用技术可分别实例化并组成多层互斥组合 | 将已声明能源资源转换为净电力，并记录电厂运行、基础设施、排放、废物和共产品 | 已声明参考期净电力，并归一化到参考流 |
-| `transmission_distribution` | 输配电至已声明计量表 | conditional | 当参考边界位于电厂净输出之后时纳入；按适用电压接口实例化 | 核对网络输入、交付输出、损耗、网络运行和电网基础设施 | 在已声明电压和计量表处交付 1 kWh |
-| `reference_interface` | 已声明参考接口 | required | 实际电厂净输出或用户计量根接口的报告视图；不得创建无输入的电力供方 | 将唯一实际根产出透传至报告结果，不增加负荷或供给 | 已声明参考边界处的 1 kWh |
+| infrastructure | 建设更换退役 | conditional | 实际可归属寿命设施 | 前景生产 | per 1 MJ reference flow |
+| thermal | 热能及燃料电池转换 | conditional | 仅实际燃料废物燃烧或燃料电池 | 前景生产 | per 1 MJ reference flow |
+| nuclear | 核能发电 | conditional | 仅实际核电 | 前景生产 | per 1 MJ reference flow |
+| renewable | 可再生资源转换 | conditional | 逐项识别实际水风日海洋地热机组 | 前景生产 | per 1 MJ reference flow |
+| water | 冷却及资源水管理 | conditional | 实际取回处理耗水 | 前景生产 | per 1 MJ reference flow |
+| control | 排放废物控制 | conditional | 实际直接物种和管理残余 | 前景生产 | per 1 MJ reference flow |
+| network | 组合变压网络交付 | conditional | 实际组合网络出口，纯发电除真实升压外不强加 | 前景生产 | per 1 MJ reference flow |
+| storage | 电储能运行 | conditional | 实际储能放电出口或明确纳入储能 | 前景生产 | per 1 MJ reference flow |
+| dispatch | 计量电及有用热产出 | required | 全部选定电出口，热仅实际联产 | 前景生产 | per 1 MJ reference flow |
 
-### 生产组合与电压接口
-
-每个清单行的`归一化基准`表示按已声明参考流报告的最终数量。原有参考期和寿命期分母继续由数量规则和采集方法规定；参考接口只报告实际选定的根产出，不增加另一份供应，也不重复计算电力。
-
-先在同一统计边界内建立互斥发电类型的生产组合，再连接地区年度总生产组合与实际适用的高、中、低压消费接口。组合树可按技术证据继续分层；调用某个子组合的结果时，不得将其组成过程再作为并列供方。生产组合与消费组合是不同交付边界，相同能量单位不能替代边界核对。
-
-例如，2023 年全国情景可以按火电、水电、核电、风电和太阳能五类建立总生产组合；火电内部再分燃煤、燃气、生物质和其他火电，太阳能内部可再分光伏与光热。该分类取决于相应统计口径，不是所有地区或年份必须采用的通用拓扑。若该情景只有覆盖交付路径的总损耗而无分电压损耗，可在已声明的高压聚合核算接口计入总损耗，中、低压接口按等电量传递；这不表示中、低压物理损耗为零。只要取得相容的分段数据，就应逐段替换该约定，并保留修订记录。
-
-### 过程：能源载体、辅助品、水和服务的上游供应（`upstream_supply`）
+### 过程：建设更换退役 (`infrastructure`)
 
 #### 输入
 
 ##### 产品流
 
-###### 上游产品和服务需求（`upstream_requirements`）
+###### 结构混凝土 (`concrete`)
 
-将每项与技术相关的能源载体、辅助材料、水供应、外购电力、运输服务、废物处理服务和基础设施产品记录为单独的关联输入。不得将不同输入合并为通用质量或能量总量。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：数据集特定的经评审产品流或服务流
-- 流属性/单位：流特定的属性和单位；能源载体还应保留能量换算所需的记录数量
-- 数量规则：汇总参考期的供应商、发票、存量变化和计量记录；核对期初与期末存量；将每项输入归一化到参考电力输出；计量或中间分配基准：位于已声明电力参考边界的 1 kWh
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_input_records`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 结构混凝土
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_concrete 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_concrete`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-#### 输出
+###### 钢筋 (`steel`)
 
-##### 产品流
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-###### 关联上游供应（`linked_upstream_supply`）
+- 选定流: 钢筋
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_steel 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_steel`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-将分别识别的上游产品和服务及其经评审的上游负荷传递到发电或网络过程，不合并其身份。
+###### 风机总成 (`wind_turbine`)
 
-- 选定流：与关联上游输入数据集相同的产品流或服务流
-- 流属性/单位：流特定的属性和单位
-- 数量规则：等于接收方前景过程所需的经核对数量；计量或中间分配基准：位于已声明电力参考边界的 1 kWh
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_input_records`
-- 来源：
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-### 过程：电力生产与电厂运行（`electricity_generation`）
+- 选定流: 风机总成
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_wind_turbine 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_wind_turbine`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 单晶硅光伏组件 (`pv_module`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 单晶硅光伏组件
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_pv_module 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_pv_module`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 锂离子储能电池组 (`battery`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 锂离子储能电池组
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_battery 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_battery`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 建设关闭柴油 (`construction_diesel`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_construction_diesel 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_construction_diesel`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：热能及燃料电池转换 (`thermal`)
 
 #### 输入
 
 ##### 产品流
 
-###### 发电能源和辅助输入（`generation_inputs`）
+###### 耗用硬煤 (`coal`)
 
-记录跨越电厂边界的每项燃料、原料、反应物、外购电力、辅助材料、水输入和运行服务。没有采购数量的自然能源捕获应在技术元数据中描述，不得编造技术圈数量。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：技术特定的产品流和服务流
-- 流属性/单位：流特定的属性和单位；燃料应保留能量核算所需的质量或体积及低位热值
-- 数量规则：在参考期内核对供应商、计量、运行和存量记录，并按净电力输出归一化；计量或中间分配基准：同一参考期内的净发电量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_generation_inputs`
-- 来源：`epd-pcr-2007-08-v5-0-2`；`ipcc-2006-stationary-combustion`
+- 选定流: 耗用硬煤
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_coal 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_coal`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-###### 厂用电（`plant_own_use`）
+###### 耗用褐煤 (`lignite`)
 
-采用与输出计算相同的毛电量计量边界和期间，记录发电辅助设备与厂内服务消耗的电力。分别识别外购电力和内部发电。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
-- 流属性/单位：Net calorific value / kWh
-- 数量规则：归属于电力生产的实测厂用电；与有用热共用时采用热电联产分配规则；计量或中间分配基准：同一参考期内的净发电量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_generation_metering`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 耗用褐煤
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_lignite 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_lignite`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-###### 发电基础设施与维护（`generation_infrastructure`）
+###### 耗用天然气 (`gas`)
 
-按材料或部件记录电厂建设、更换、维护和退役输入，并在实测寿命期净发电量上摊销。与情景有关的寿命末处理必须明确。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：技术和场址特定的基础设施、维护与处理流
-- 流属性/单位：流特定的属性和单位
-- 数量规则：安装或更换数量乘以纳入的生命周期份额，再除以寿命期净发电量；计量或中间分配基准：分配给已声明产品的寿命期净发电量
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_infrastructure_records`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 耗用天然气
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_gas 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_gas`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-#### 输出
+###### 耗用重燃料油 (`fuel_oil`)
 
-##### 产品流
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-###### 净电力输出（`net_electricity_output`）
+- 选定流: 耗用重燃料油
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_fuel_oil 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_fuel_oil`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-在电厂净输出边界，它是定量参考；在下游交付边界，它是网络输入。通用身份由数据包限定，并不暗示通用技术或地域。
+###### 耗用木片 (`wood`)
 
-- 选定流：按应用选择的精确限定电厂净输出电力接口流
-- 流属性/单位：Net calorific value / kWh
-- 数量规则：发电机毛输出减去归属于电力生产的实测厂用电；在电厂输出边界归一化为 1 kWh，或归一化为交付 1 kWh 所需的数量
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_generation_metering`
-- 来源：`epd-pcr-2007-08-v5-0-2`
-- 数量范围：参考输出身份
-  - 范围角色：允许范围（`allowed_range`）
-  - 下限：1
-  - 上限：1
-  - 单位：kWh
-  - 基准：未纳入下游网络时的电厂净输出参考流
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`epd-pcr-2007-08-v5-0-2`
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-###### 有用共产品输出（`useful_coproduct`）
+- 选定流: 耗用木片
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_wood 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_wood`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-当有用热、蒸汽或其他共产品离开发电过程时分别记录。没有市场或有用功能的内部热或废热不得视为共产品。
+###### 燃料电池耗用氢气 (`hydrogen`)
 
-- 选定流：共产品特定的产品流
-- 流属性/单位：共产品特定的属性和单位
-- 数量规则：计量离开过程的共产品净交付量，扣除内部使用和未回收损失；计量或中间分配基准：同一参考期内的净发电量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_coproduct_metering`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 燃料电池耗用氢气
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_hydrogen 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_hydrogen`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
 ##### 废物流
 
-###### 运行残余物和废物（`generation_waste`）
+###### 送焚烧残余生活垃圾 (`residual_waste`)
 
-按目的地与处理路线分别记录灰渣、污泥、废催化剂、处理残余物、放射性废物和其他与技术有关的废物。具有已记录有用产品功能的残余物应建模为共产品，不得同时建模为废物。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：按处理目的地确定的废物特定流
-- 流属性/单位：质量 / kg；经评审要求使用其他更适当属性时除外
-- 数量规则：参考期称重运输记录或经核对的废物记录，扣除已记录存量变化；计量或中间分配基准：同一参考期内的净发电量
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_waste_records`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 送焚烧残余生活垃圾
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_residual_waste 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_residual_waste`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-##### 基本流
-
-###### 直接释放与资源取用（`direct_releases`）
-
-将对空气、水和土壤的实测或计算释放以及直接资源取用记录为单独基本流。当没有具有代表性的设施测量时，燃烧排放可由燃料能量和有来源支持的因子计算。
-
-- 选定流：物质和环境介质特定的基本流
-- 流属性/单位：质量 / kg，或经评审的流特定属性和单位
-- 数量规则：优先使用设施监测；否则对经核对的活动数据应用已记录计算，并保留因子来源；计量或中间分配基准：同一参考期内的净发电量
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每参考流
-- 基准类型：过程输出（`process_output`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_direct_releases`
-- 来源：`ipcc-2006-stationary-combustion`；`epd-pcr-2007-08-v5-0-2`
-
-### 过程：输配电至已声明计量表（`transmission_distribution`）
+### 过程：核能发电 (`nuclear`)
 
 #### 输入
 
 ##### 产品流
 
-###### 进入已声明网络的电力（`network_input_electricity`）
+###### 二氧化铀核燃料组件 (`uo2_fuel`)
 
-记录进入纳入网络的经核对电力。对于组合，在汇总前保留每个来源的身份和 kWh 份额；采用总损耗代理时保留其覆盖范围与唯一承载接口。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
-- 流属性/单位：Net calorific value / kWh
-- 数量规则：优先用相同网络和期间的计量输入及纳入的发电量，适用时对存量或储能变化作调整；缺分电压数据时按第 5 节的有据总损耗回退计算，所需输入须足以交付参考 kWh；计量或中间分配基准：在已声明计量表处交付 1 kWh
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：情景特定（`scenario_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_network_metering`
-- 来源：`epd-pcr-2007-08-v5-0-2`
-
-###### 网络基础设施与运行（`network_infrastructure`）
-
-按已声明网络范围与电压等级记录变电站、线路或电缆、变压器、维护材料、更换设备、运行能源和退役。仅有共用网络资产代理时，记录其覆盖范围和唯一承载接口。
-
-- 选定流：网络特定的基础设施、维护、能源与处理流
-- 流属性/单位：流特定的属性和单位
-- 数量规则：将纳入的资产与运行数量分配到相应资产寿命或参考期内的交付电力；计量或中间分配基准：在已声明电压和计量表处交付 1 kWh
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：路线特定（`route_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
-- 采集协议：`cp_network_records`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 二氧化铀核燃料组件
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_uo2_fuel 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_uo2_fuel`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
 #### 输出
 
-##### 产品流
+##### 废物流
 
-###### 交付电力（`delivered_electricity`）
+###### 乏核燃料组件 (`spent_fuel`)
 
-当已声明边界是用户计量表时，它是定量参考。电压与网络范围须同损耗和基础设施数据一致，或明确记录代理数据的适配、承载位置和局限。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：按应用选择的精确限定用户计量电力接口流
-- 流属性/单位：Net calorific value / kWh
-- 数量规则：参考输出固定为声明交付边界的 1 kWh；所需网络输入优先根据实测平衡和分段损耗计算，缺项时按已披露的合格代理反推；参考输出不是实际年度交付统计
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：情景特定（`scenario_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：外部来源（`external_source`）
-- 采集协议：
-- 来源：`epd-pcr-2007-08-v5-0-2`
-- 数量范围：参考输出身份
-  - 范围角色：允许范围（`allowed_range`）
-  - 下限：1
-  - 上限：1
-  - 单位：kWh
-  - 基准：已声明用户计量表处的交付电力
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 乏核燃料组件
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_spent_fuel 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_spent_fuel`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 放射性废离子交换树脂 (`radioactive_resin`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 放射性废离子交换树脂
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_radioactive_resin 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_radioactive_resin`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：可再生资源转换 (`renewable`)
+
+#### 输入
 
 ##### 基本流
 
-###### 网络直接释放（`network_releases`）
+###### 入射太阳辐射能 (`solar`)
 
-适用时，按物质和环境介质记录网络相关释放，例如绝缘气体泄漏或油释放。只有完整清单边界和证据支持时才可报告零值。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：物质和环境介质特定的基本流
-- 流属性/单位：质量 / kg，或经评审的流特定属性和单位
-- 数量规则：核对参考期内的监测、维护、采购、回收和存量记录；计量或中间分配基准：在已声明计量表处交付 1 kWh
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：路线特定（`route_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_network_records`
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 入射太阳辐射能
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_solar 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_solar`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
-### 过程：已声明参考接口（`reference_interface`）
+###### 入射风动能 (`wind`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 入射风动能
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_wind 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_wind`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 截获海洋波浪能 (`wave`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 截获海洋波浪能
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_wave 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_wave`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 截获潮汐机械能 (`tidal`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 截获潮汐机械能
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_tidal 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_tidal`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 提取地热热量 (`geothermal`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 提取地热热量
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_geothermal 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_geothermal`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：冷却及资源水管理 (`water`)
 
 #### 输入
 
 ##### 产品流
 
-###### 已选根接口电力（`selected_root_electricity`）
+###### 购入工艺用水 (`purchased_water`)
 
-使用本应用实际选定且边界限定完整的电厂净输出或用户计量表 Flow。该核算输入来自唯一实际根产出，不是第二个电力来源。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：本应用选定的实际参考边界合格电力接口 Flow
-- 流属性/单位：Net calorific value / kWh
-- 数量规则：从已声明边界唯一实际根产出透传 1 kWh；按需换算原生供方参考单位
-- 数值来源模式：计算值（`calculated_value`）
-- 适用范围：情景特定（`scenario_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：外部来源（`external_source`）
-- 采集协议：
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_purchased_water 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_purchased_water`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+##### 基本流
+
+###### 河流取水 (`river_water`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 河流取水
+- 流属性 / 单位: Volume / m3
+- 数量规则: 按 cp_river_water 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_river_water`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+#### 输出
 
 ##### 废物流
 
+###### 转处理冷却系统废水 (`wastewater`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 转处理冷却系统废水
+- 流属性 / 单位: Volume / m3
+- 数量规则: 按 cp_wastewater 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_wastewater`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
 ##### 基本流
+
+###### 回排河流水 (`river_return`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 回排河流水
+- 流属性 / 单位: Volume / m3
+- 数量规则: 按 cp_river_return 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_river_return`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 蒸发至空气水 (`evaporated_water`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 蒸发至空气水
+- 流属性 / 单位: Volume / m3
+- 数量规则: 按 cp_evaporated_water 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_evaporated_water`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：排放废物控制 (`control`)
+
+#### 输入
+
+##### 产品流
+
+###### 烟气控制尿素 (`urea`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 烟气控制尿素
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_urea 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_urea`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 烟气脱硫石灰石 (`limestone`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 烟气脱硫石灰石
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_limestone 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_limestone`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
 #### 输出
 
 ##### 产品流
 
-###### 参考电力（`reference_electricity`）
+###### 作为产品转移捕集二氧化碳 (`captured_co2`)
 
-这是实际电厂净输出或用户计量根过程的功能单位报告产出，与 `selected_root_electricity` 使用同一个限定完整的实际 Flow，只透传已选根电力，不增加负荷。若已选根过程已经提供这一产出，应直接报告，不得另建供方。第 3 节通用 Electricity UUID 仅定位产品类别。
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
 
-- 选定流：与 `selected_root_electricity` 相同、本应用选定且边界限定完整的电力 Flow
-- 流属性/单位：Net calorific value / kWh
-- 数量规则：1 kWh
-- 数值来源模式：固定值（`fixed_value`）
-- 适用范围：情景特定（`scenario_specific`）
-- 归一化基准：每参考流
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：外部来源（`external_source`）
-- 采集协议：
-- 来源：`epd-pcr-2007-08-v5-0-2`
+- 选定流: 作为产品转移捕集二氧化碳
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_captured_co2 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_captured_co2`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
 
 ##### 废物流
 
+###### 收集燃烧飞灰 (`fly_ash`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 收集燃烧飞灰
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_fly_ash 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_fly_ash`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 燃烧底灰 (`bottom_ash`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 燃烧底灰
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_bottom_ash 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_bottom_ash`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 烟气脱硫污泥 (`fgd_sludge`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 烟气脱硫污泥
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_fgd_sludge 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_fgd_sludge`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
 ##### 基本流
 
-## 7. 分配与共产品处理
+###### 释放外环境空气化石二氧化碳 (`fossil_co2`)
 
-| 规则编号 | 适用对象 | 规则 | 来源 |
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_fossil_co2 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_fossil_co2`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气生物二氧化碳 (`biogenic_co2`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气生物二氧化碳
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_biogenic_co2 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_biogenic_co2`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气甲烷 (`ch4`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气甲烷
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_ch4 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_ch4`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气氧化亚氮 (`n2o`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气氧化亚氮
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_n2o 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_n2o`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气二氧化硫 (`so2`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气二氧化硫
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_so2 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_so2`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气二氧化氮 (`no2`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气二氧化氮
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_no2 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_no2`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气PM10 (`pm10`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气PM10
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_pm10 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_pm10`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气六氟化硫 (`sf6`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气六氟化硫
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_sf6 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_sf6`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 释放外环境空气硫化氢 (`h2s`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 释放外环境空气硫化氢
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_h2s 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_h2s`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：组合变压网络交付 (`network`)
+
+#### 输入
+
+##### 产品流
+
+###### 购入交流来源电力 (`source_power`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 购入交流来源电力
+- 流属性 / 单位: Net calorific value / MJ
+- 数量规则: 按 cp_source_power 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_source_power`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 开关设备充装六氟化硫 (`sf6_charge`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 开关设备充装六氟化硫
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_sf6_charge 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_sf6_charge`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 矿物绝缘变压器油 (`transformer_oil`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 矿物绝缘变压器油
+- 流属性 / 单位: Mass / kg
+- 数量规则: 按 cp_transformer_oil 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_transformer_oil`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：电储能运行 (`storage`)
+
+#### 输入
+
+##### 产品流
+
+###### 购入交流充电电力 (`charging_power`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 购入交流充电电力
+- 流属性 / 单位: Net calorific value / MJ
+- 数量规则: 按 cp_charging_power 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_charging_power`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+### 过程：计量电及有用热产出 (`dispatch`)
+
+#### 输出
+
+##### 产品流
+
+###### 作为联产品供应有用蒸汽热 (`steam_heat`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 作为联产品供应有用蒸汽热
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_steam_heat 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_steam_heat`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 作为联产品供应有用热水热 (`hot_water_heat`)
+
+仅选定路线实际发生本独立交换时，确认状态供方去向匹配期间，其他实际交换分别增行。
+
+- 选定流: 作为联产品供应有用热水热
+- 流属性 / 单位: Energy / MJ
+- 数量规则: 按 cp_hot_water_heat 采集可归属报告期数量；完成库存、转移及分配核对后除以 D。
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_hot_water_heat`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+###### 相容中国高压交流工厂净生产组合 (`final_product`)
+
+代表仅独立确认相容中国全国工厂端35–330千伏交流生产组合及实际约定净计量接口，供方规定权重年份净基准；其他技术电压直流储能交付产品须完成数据集使用前独立确切身份，PCR全范围不变。
+
+- 选定流: 交流电 `ad12cfb1-61f3-45d1-a12c-5903a2fc7202`
+- 流属性 / 单位: Net calorific value / MJ
+- 数量规则: 1 MJ
+- 数值来源模式: `foreground_record`
+- 适用范围: `site_specific`
+- 归一化基准: per 1 MJ reference flow
+- 基准类型: `reference_flow`
+- 证据类型: `collected_record`
+- 采集协议: `cp_output`
+- 来源: `epd-electricity-scope`, `ipcc-stationary-2006`, `ghg-scope2-2015`, `epa-chp-output`
+
+## 7. 分配与联产品处理
+
+| rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `allocation_avoidance` | 多输出过程 | 首先通过细分单独计量的过程避免分配；仅当经评审的研究目标和适用项目规则允许替代主张时才使用系统扩展。保留所有输入输出，不得重复计算或遗漏。 | `eu-pef-2021-2279`；`epd-pcr-2007-08-v5-0-2` |
-| `allocation_physical_then_economic` | 剩余多输出负荷 | 无法避免分配时采用有因果关系的物理关系。只有物理关系不能合理表示负荷因果时才使用经济分配，并披露价格、参考期、币种和敏感性。 | `eu-pef-2021-2279`；`epd-pcr-2007-08-v5-0-2` |
-| `allocation_chp_alternative_generation` | 热电联产 | 对有用电力与热量，采用替代发电法分配共用负荷：电力份额 = (E_net / eta_e) / [(E_net / eta_e) + (H_net / eta_h)]。采用净计量输出和已记录的参考效率；专用设备 100% 分配给其服务产品，仅对共用设备和负荷应用公式。 | `epd-pcr-2007-08-v5-0-2` |
-| `allocation_waste_and_coproduct_identity` | 残余物与回收输出 | 每项输出仅分类一次。具有已记录功能与去向的有用产品为共产品；送往废物处理的流为废物。除非系统扩展被明确允许并记录，否则不得计入避免产品信用。 | `epd-pcr-2007-08-v5-0-2` |
+| allocation_hierarchy | joint production | 优先过程细分或可辩护的系统扩展；否则采用已证明的物理因果关系。物理关系不可得时，经济分配必须匹配期间、价格及货币并做敏感性分析，保留未分配清单。 | `ef-allocation-2021` |
+| allocation_product | reference and co-products | 优先细分实际发电网络变压储能有用热供应。保留未分配联产废物处理清单，论证因果分配或必要匹配经济敏感性。电热仅按论证规则分配，不自动等值 MJ。废物处理服务与发电须真实上游废物状态负荷，供废非自动免费燃料。证书不物理替代电网产出或消除设施燃料周期排放，无自动避免电网热处置储能抵扣，实际有用热另保留。 |  |
+| allocation_waste | waste and recycling | 按物理状态及实际去向判定每项输出。出售不会自动将残渣变为联产品，内部回用不获得避免产品抵扣，处理负荷只计一次。 |  |
 
 ## 8. 前景数据采集、计算与质量规则
 
 ### 数据采集协议
 
-| protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
+| protocol_id | process_id | flow_role | record_type | 原始字段 | 采集方法 | 单位 | 频次 | 时间覆盖 | 场址范围 | aggregation_rule | 质量证据 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_input_records` | `upstream_supply` | 上游产品和服务需求 | 供应商、发票、存量、运输与服务记录 | 流身份；供应商；数量；单位；期初存量；期末存量；来源地；日期；关联数据集 | 核对采购、生产、存量变化和转移；保留不同流身份；最终按参考流归一化前的汇总规则：按相同流、供应商、地域和质量汇总；不同流不得净额合并 | 流特定 | 至少每月，汇总用于报告 | 与电力输出相同的代表期 | 所有纳入的供应商与设施 | 每参考流 | 发票、计量导出、存量核对、供应商证据和数据集链接 |
-| `cp_generation_inputs` | `electricity_generation` | 发电能源和辅助输入 | 电厂计量、发票、批次日志、存量和实验室记录 | 流身份；数量；单位；适用时的低位热值；供应商；计量表；时间戳；存量变化 | 对照生产日志核对计量与物料平衡记录；最终按参考流归一化前的汇总规则：汇总一致记录；归一化前保持单位和技术可分别识别 | 流特定 | 连续或逐批，按月汇总 | 完整已声明参考期 | 数据集纳入的所有发电机组 | 每参考流 | 经校准计量表、发票、校准证书、存量平衡和责任人签字 |
-| `cp_generation_metering` | `electricity_generation` | 毛电量、厂用电、净电量和联产电力 | 结算计量表、发电机计量表和辅助计量表 | 计量表 id；毛输出；厂用电；输入；输出；单位；时间戳；电压；电流形式 | 使用同步计量读数，核对毛输出减归属厂用电得到净输出；最终按参考流归一化前的汇总规则：仅汇总边界与期间一致的读数；记录更换和缺口 | kWh | 连续，按月汇总 | 完整已声明参考期 | 每台纳入的发电机和辅助边界 | 每参考流 | 计量表等级、校准状态、原始导出、核对和缺口填补日志 |
-| `cp_annual_supply` | `electricity_generation` | 生产或交付的年度量元数据 | 年度计量、统计及替代值记录 | 年度量数值；单位；参考年；地域；技术；电压；计量边界；原始来源；值的性质；推导参数 | 优先核对相同边界的真实年度量；不可得时记录可复算估算或固定专家假设，最后以原生参考流数量作明确标识的替代值 | 年度字段中相容的能量单位 | 每年及数据修订时 | 声明参考年；代理时段另记 | 每个声明的生产或交付接口 | 不混合功能单位、真实年度量与资产寿命期服务量；跨范围推导逐步记录 | 原始统计及边界、计算式、假设、真实量缺失事实、替换条件 |
-| `cp_infrastructure_records` | `electricity_generation` | 发电基础设施与维护 | 资产台账、物料清单、维护与退役计划 | 资产或材料；数量；单位；投运日期；寿命；更换；寿命末路线 | 将安装和更换资产与工程记录核对，并在寿命期净发电量上摊销；最终按参考流归一化前的汇总规则：专用资产直接分配；共用资产按第 7 节一致摊销 | 流特定 | 投运时及每次重大变化 | 资产寿命，并关联数据集参考期 | 已声明边界内的所有重要发电资产 | 每参考流 | 资产台账、工程图纸、采购记录和寿命依据 |
-| `cp_coproduct_metering` | `electricity_generation` | 有用共产品输出 | 热、蒸汽或产品计量与交付记录 | 产品身份；净交付量；单位；时间戳；客户或去向；内部使用 | 在同一期间核对毛输出、内部使用和外部交付；最终按参考流归一化前的汇总规则：按相同产品和质量汇总；无用废热单独保留 | 产品特定 | 连续或逐次运输，按月汇总 | 完整已声明参考期 | 离开纳入机组的每项有用共产品 | 每参考流 | 计量校准、交付记录和客户验收 |
-| `cp_waste_records` | `electricity_generation` | 运行残余物与废物 | 地磅票、转移联单、实验室分类和存量记录 | 废物身份；危险类别；质量；去向；处理；日期；期初与期末存量 | 核对运输和存量变化；保留去向与处理身份；最终按参考流归一化前的汇总规则：仅汇总相同废物和处理路线 | kg | 每次运输，按月汇总 | 完整已声明参考期 | 所有纳入机组和废物贮存点 | 每参考流 | 联单、地磅校准、许可、实验室结果和承包商收据 |
-| `cp_direct_releases` | `electricity_generation` | 直接释放与资源取用 | 连续监测、烟囱测试、水质测试、许可、燃料记录和计算表 | 物质；环境介质；数量；单位；方法；检出限；时间戳；活动量；因子 | 优先使用设施测量；否则由经核对活动量和有记录的代表性因子计算；最终按参考流归一化前的汇总规则：按物质与环境介质汇总；明确处理未检出和缺失期间 | kg 或流特定 | 连续、测试期或与源相适的计算期 | 完整已声明参考期，并证明测试期有代表性 | 每个纳入的排放点和直接取用点 | 每参考流 | 校准、实验室资质、方法、因子来源、计算工作簿和覆盖声明 |
-| `cp_network_metering` | `transmission_distribution` | 网络输入、交付、输入、输出、自用电和损耗 | 边界与用户计量记录 | 计量表 id；网络等级；输入；输出；外部输入；外部输出；自用电；时间戳；电压；损耗分母；总量覆盖范围 | 优先在相同网络范围和时间内核对分电压能量平衡；缺分电压数据时核查总损耗或代理的范围与分母，并只分配一次；最终按参考流归一化前的汇总规则：经记录调整后，网络输入减交付、外部输出和自用电等于已核算损耗；未分配额外损耗的接口按等电量传递 | kWh | 连续，按月汇总；代理按来源时段 | 完整已声明参考期；代理差异另记 | 通往计量表的整个已声明网络路线 | 每参考流 | 计量表等级、校准、原始导出、核对、损耗调整日志、代理来源和承载接口 |
-| `cp_network_records` | `transmission_distribution` | 网络资产、维护、能源与释放 | 资产台账、维护日志、气体与油记录、采购和退役计划 | 资产或物质；数量；单位；电压；路线；寿命；存量；回收；释放；日期；代理覆盖范围 | 优先将分电压资产和物质与已声明网络范围核对；仅有共用资产代理时披露其纳入阶段和唯一承载接口；最终按参考流归一化前的汇总规则：将资产按交付电力摊销；根据完整期初、采购、回收和期末记录计算存量损失；共用资产只计一次 | 流特定 | 事件发生时及每年 | 资产寿命与完整已声明参考期 | 整个已声明网络路线 | 每参考流 | 资产台账、维护工单、采购与回收记录、校准、寿命依据和代理适配评估 |
+| cp_concrete | infrastructure | `concrete` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 保留真实供应规格独立实测安装更换净产品质量、寿命更换次数拆卸退役去向寿命验收电吞吐量，可归属量一次分摊至 D 并敏感性；总成测真实配置质量，不编单机重，供应总成含内部组件制造不重复加入。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_steel | infrastructure | `steel` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 保留真实供应规格独立实测安装更换净产品质量、寿命更换次数拆卸退役去向寿命验收电吞吐量，可归属量一次分摊至 D 并敏感性；总成测真实配置质量，不编单机重，供应总成含内部组件制造不重复加入。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_wind_turbine | infrastructure | `wind_turbine` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 保留真实供应规格独立实测安装更换净产品质量、寿命更换次数拆卸退役去向寿命验收电吞吐量，可归属量一次分摊至 D 并敏感性；总成测真实配置质量，不编单机重，供应总成含内部组件制造不重复加入。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_pv_module | infrastructure | `pv_module` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 保留真实供应规格独立实测安装更换净产品质量、寿命更换次数拆卸退役去向寿命验收电吞吐量，可归属量一次分摊至 D 并敏感性；总成测真实配置质量，不编单机重，供应总成含内部组件制造不重复加入。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_battery | infrastructure | `battery` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 保留真实供应规格独立实测安装更换净产品质量、寿命更换次数拆卸退役去向寿命验收电吞吐量，可归属量一次分摊至 D 并敏感性；总成测真实配置质量，不编单机重，供应总成含内部组件制造不重复加入。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_construction_diesel | infrastructure | `construction_diesel` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_coal | thermal | `coal` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 分燃料计量真实耗质量库存，测水分匹配收到基低位热值碳灰化石生物比例；气体体积转质量用声明温压组成实测密度，热值转换相容状态单位；燃料热与电 D分开，不定混合热值效率因子。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_lignite | thermal | `lignite` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 分燃料计量真实耗质量库存，测水分匹配收到基低位热值碳灰化石生物比例；气体体积转质量用声明温压组成实测密度，热值转换相容状态单位；燃料热与电 D分开，不定混合热值效率因子。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_gas | thermal | `gas` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 分燃料计量真实耗质量库存，测水分匹配收到基低位热值碳灰化石生物比例；气体体积转质量用声明温压组成实测密度，热值转换相容状态单位；燃料热与电 D分开，不定混合热值效率因子。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_fuel_oil | thermal | `fuel_oil` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 分燃料计量真实耗质量库存，测水分匹配收到基低位热值碳灰化石生物比例；气体体积转质量用声明温压组成实测密度，热值转换相容状态单位；燃料热与电 D分开，不定混合热值效率因子。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_wood | thermal | `wood` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 分燃料计量真实耗质量库存，测水分匹配收到基低位热值碳灰化石生物比例；气体体积转质量用声明温压组成实测密度，热值转换相容状态单位；燃料热与电 D分开，不定混合热值效率因子。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_hydrogen | thermal | `hydrogen` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 分燃料计量真实耗质量库存，测水分匹配收到基低位热值碳灰化石生物比例；气体体积转质量用声明温压组成实测密度，热值转换相容状态单位；燃料热与电 D分开，不定混合热值效率因子。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_residual_waste | thermal | `residual_waste` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_urea | control | `urea` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_limestone | control | `limestone` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_uo2_fuel | nuclear | `uo2_fuel` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 计量接收装载更换组件质量库存铀质量同位素化验燃耗运行记录及真实燃料周期供方，明确组件与二氧化铀铀基准且供方组件一次计入，不编富集利用率效率。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_spent_fuel | nuclear | `spent_fuel` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_radioactive_resin | nuclear | `radioactive_resin` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_solar | renewable | `solar` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 仅实际建模资源能交换时记录校准场址时间资源测量声明截获提取接口面积流量焓或论证机械能积分不确定性，区分入射提取与电产出损失，不以电 D代自然资源能、不强加效率或编资源身份；仅作场址元数据不造交换。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_wind | renewable | `wind` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 仅实际建模资源能交换时记录校准场址时间资源测量声明截获提取接口面积流量焓或论证机械能积分不确定性，区分入射提取与电产出损失，不以电 D代自然资源能、不强加效率或编资源身份；仅作场址元数据不造交换。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_wave | renewable | `wave` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 仅实际建模资源能交换时记录校准场址时间资源测量声明截获提取接口面积流量焓或论证机械能积分不确定性，区分入射提取与电产出损失，不以电 D代自然资源能、不强加效率或编资源身份；仅作场址元数据不造交换。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_tidal | renewable | `tidal` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 仅实际建模资源能交换时记录校准场址时间资源测量声明截获提取接口面积流量焓或论证机械能积分不确定性，区分入射提取与电产出损失，不以电 D代自然资源能、不强加效率或编资源身份；仅作场址元数据不造交换。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_geothermal | renewable | `geothermal` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 仅实际建模资源能交换时记录校准场址时间资源测量声明截获提取接口面积流量焓或论证机械能积分不确定性，区分入射提取与电产出损失，不以电 D代自然资源能、不强加效率或编资源身份；仅作场址元数据不造交换。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_river_water | water | `river_water` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | m3 | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_purchased_water | water | `purchased_water` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_river_return | water | `river_return` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | m3 | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_evaporated_water | water | `evaporated_water` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | m3 | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_wastewater | water | `wastewater` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | m3 | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_fossil_co2 | control | `fossil_co2` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_biogenic_co2 | control | `biogenic_co2` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_ch4 | control | `ch4` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_n2o | control | `n2o` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_so2 | control | `so2` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_no2 | control | `no2` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_pm10 | control | `pm10` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_sf6 | control | `sf6` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_h2s | control | `h2s` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按精确气体颗粒身份介质期间，用校准物种浓度真实排气量或气体库存损失；或采用有独立原文支持的相容燃料物种技术活动因子单位不确定性；浓度乘匹配体积以正确单位转 kg，区分 NO2物种和以NO2计NOx当量颗粒粒径化石生物CO2，捕集背景另核对，不默认因子零排放；实际核素另逐项物种活度单位。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_fly_ash | control | `fly_ash` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_bottom_ash | control | `bottom_ash` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_fgd_sludge | control | `fgd_sludge` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_captured_co2 | control | `captured_co2` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_source_power | network | `source_power` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 各实际供方另列，原校准验收调入计量 kWh乘3.6转 MJ，记录确切来源状态电压地域净基准供方年度权重变压网络损失其他外送核对，不能以垃圾焚烧UUID代通用电网电；合同属性不替代物理交付清单，声明须唯一注销时间市场残余披露；各直流其他供方独立行。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_sf6_charge | network | `sf6_charge` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_transformer_oil | network | `transformer_oil` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 按本确切交换校准称量计量或可追溯实物流转记录，记录实际组成状态期初末库存期间来源供方或环境介质不确定性适用分配，可归属数量除同一独立计量正电 D MJ，不合并物种或缺测作零。 | kg | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_charging_power | storage | `charging_power` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 校准充电验收放电计量 kWh乘3.6转MJ，保留供方状态厂用期初末储能同边界期间各阶段损失，不编效率避免电网抵扣；供应寿命量匹配真实储能吞吐。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_steam_heat | dispatch | `steam_heat` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 计量真实净供蒸汽 kg和实测交付温压焓回凝质量状态，有用热 MJ用匹配供回焓差明确基态，不默认蒸汽焓或按电 D推热；保留热回凝分配边界期间，不以内部回收作外部产出。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_hot_water_heat | dispatch | `hot_water_heat` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 计量实际供回水质量匹配实测进出热力状态，同期间积分质量乘焓差 MJ保留回流网络损失；不把水质量作热或假定温度比热效率联产份额。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
+| cp_output | dispatch | `final_product` | measurement_record | 期间；场址；数量；原单位；不确定性；库存变化；路线条件；分配；D；产品限定信息 | 独立校准验收净电计量 D MJ，适用时原 kWh乘3.6；匹配出口交流直流电压频率地域供方年份厂用调入外送库存能期间，D须正不假定转换效率。参考属性为数据库核验标作净热值的能量链，不是燃料热值或电燃烧。 | MJ | 逐计量区间或批次，每月核对 | 完整年度或有据的代表性生产周期 | 一种实测净交流或直流电产品及声明电压发电储能交付出口 | per 1 MJ reference flow | 校准；原始记录；化验；平衡残差；不确定性 |
 
 ### 计算规则
 
-| 规则编号 | 适用对象 | Formula or rule | Inputs | Output | 来源 |
+| rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_net_generation` | `electricity_generation` | 净电力 = 发电机毛输出 - 归属于电力的厂用电。分别核对输入与输出，并采用对齐的计量期间。 | 毛输出；归属厂用电；输入；输出 | 净电力输出 | `epd-pcr-2007-08-v5-0-2` |
-| `calc_delivery_balance` | `transmission_distribution` | 已核算网络损耗 = 网络输入 + 外部输入 - 外部输出 - 交付电力 - 网络自用电 - 储能增加 + 储能减少。将发电和上游负荷缩放到交付 1 kWh 所需的网络输入。 | 网络输入；外部输入；外部输出；交付电力；自用电；储能变化 | 每交付 kWh 的损耗和所需输入 | `epd-pcr-2007-08-v5-0-2` |
-| `calc_voltage_losses` | `transmission_distribution` | 若损耗率 l 以输入为分母，则所需输入 E_in = E_out/(1-l)；若 r_loss 以输出为分母，则 E_in = E_out×(1+r_loss)。优先逐段使用相容分电压数据；仅符合 `boundary_voltage_data_fallback` 条件时，才将有据总损耗或扣除已知分段后的剩余损耗在声明接口计入一次，其他未分配损耗的接口按等电量 1:1 传递。1:1 是能量关系，不是物理零损耗或 Model 缩放倍率。 | 分段或总损耗及其分母；交付电量；已知分段；代理适配 | 各接口所需输入及损耗承载记录 |  |
-| `calc_inventory_normalization` | 所有前景清单行 | 归一化数量 = 经核对的期间数量 / 参考期净电量或交付电量，再乘以 1 kWh。保留计算精度，仅对报告值舍入。 | 经核对的流数量；参考期电力输出 | 每参考 kWh 的流数量 | `epd-pcr-2007-08-v5-0-2` |
-| `calc_native_reference_scaling` | 关联供方与组合清单 | 对原生参考产出为 r、所需同单位产品需求为 d 的供方，每项原生交换 a 的贡献为 a×d/r。先核对 Flow、属性和单位，再缩放；例如原生 r=1 MJ 的火电与 r=3.6 MJ 的其他电源可共同供应 1 kWh 组合，各自按其 d/r 展开。d/r 倍数不能直接相加当作组合份额，原生 Process 数量及定量参考须保留。 | 原生交换 a；需求 d；原生参考量 r；单位链 | 每参考流的供方贡献 |  |
-| `calc_combustion_emissions` | 燃料燃烧直接释放 | 对每种燃料和温室气体，排放 = 按低位热值计的燃料消耗能量 × 代表性排放因子。优先采用设施测量和技术特定因子；保留燃料、低位热值、因子、氧化或控制假设及单位。 | 燃料数量；低位热值；排放因子；测量或控制参数 | 按物质确定的排放 | `ipcc-2006-stationary-combustion` |
-| `calc_generation_mix` | 多来源电力 | 组合清单 = 各组成清单 × 同口径 kWh 份额之和。份额优先来自相同净发电或交付基础及期间的实测值；不可得时可按有证据的活动量、利用率和时段推导，并标为固定估算情景，不声称观测到的市场份额。经记录的舍入后份额合计为 100%，父类与子类不得重复。 | 组成清单；组成 kWh；总 kWh；来源性质 | 已声明电力组合清单 | `eu-pef-2021-2279`；`epd-pcr-2007-08-v5-0-2` |
-| `calc_mix_residual` | 统计总量与互斥分项不闭合的组合 | 保留报告总量 T、各原始分项 g_i、原始和 S=Σg_i 与差额 Δ=T-S。只有在统计范围一致且比例分摊经论证并固定为情景假设时，才可取 g_i*=g_i+Δ×g_i/S（S>0），按 g_i*/T 求情景权重；这不是差额真实技术归属的观测。保留原始权重和假设，必要时做敏感性分析；不得将差额创造为无物理供方的发电技术。 | T；g_i；统计口径；分摊假设 | 原始差额及可复算情景权重 |  |
-| `calc_chp_allocation` | 热电联产 | 电力分配份额 = (E_net / eta_e) / [(E_net / eta_e) + (H_net / eta_h)]。互补份额分配给有用热；专用资产直接分配。 | 净电力；净有用热；参考电效率；参考热效率 | 电力和有用热的负荷份额 | `epd-pcr-2007-08-v5-0-2` |
-| `calc_infrastructure_amortization` | 发电与网络基础设施 | 每 kWh 基础设施数量 = 纳入的资产数量 × 分配份额 / 与资产对应的寿命期净发电量或寿命期交付电量。 | 资产数量；纳入的生命周期份额；分配份额；寿命期电力 | 每 kWh 基础设施数量 | `epd-pcr-2007-08-v5-0-2` |
+| normalization | all cards | 交换量 = 可归属期间数量 / D，汇总前核对库存并抵消内部转移。 | cp_output; row-specific cp records | per 1 MJ reference flow |  |
+| physical_balance | production | D 为选定出口独立校准计量且核对库存后的验收净电能 MJ，必须为正；1 kWh =3.6 MJ。每数据集只用一个发电储能交付产出基准，不合计充电毛发电净外送交付为产出。发电 D 等于实测净外送，毛减厂用仅在计量边界期间匹配时复核，购入厂用另列投入且不重复扣除。调入转售和内部转移独立识别。组合各来源同一净出口基准权重和为1，记录损失供方，不以毛发电因子乘净份额。交付核对网络进量验收产出其他外送技术损失窃电计量缺口库存，仅有独立匹配损失率0<=l<1且无遗漏外送时输入=D/(1-l)。储能同边界实测充电=放电其他有用外送+电损失+实际库存增加，不编往返效率寿命避免发电。燃料能量按实际耗质量乘匹配收到基低位热值或实测体积密度热值状态，区分电 MJ 与燃料热 MJ；气体质量标准体积转换须实测密度温压非假定组成。直接气体按实测物种负荷或明确相容活动因子，不把购电因子代现场燃烧。化石生物 CO2、CH4、N2O和捕集碳分开，不默认生物质废物 CO2 为零。有用蒸汽热=匹配质量乘供汽减回流焓，热水按真实质量实测焓差，非以总水质量作能量。联产有用热电先分联产品再声明分配。寿命材料设施量按实测或论证预期验收电吞吐量一次分摊并敏感性，不编机器质量产量。 | 匹配的质量、体积、组成及库存测量 | 平衡残差及不确定性 |  |
 
 ### 数据质量要求
 
-| requirement_id | Applies to | Requirement | Evidence |
+| requirement_id | 适用对象 | 要求 | 证据 |
 | --- | --- | --- | --- |
-| `dq_temporal` | 所有前景数据 | 使用完整且有代表性的参考期，通常为一年。解释停机、异常调度、弃电、季节偏差、估算缺口及任何更短期间。 | 带时间戳的原始记录、覆盖表、运行日志和代表性依据 |
-| `dq_geographical` | 发电组合、燃料供应和网络 | 匹配已声明电厂、供应商、国家或次国家电网和电压。对中国，在交付范围为电网电力时优先采用有代表性的次国家电网组合。 | 设施和计量表位置、供应商证据、电网边界和地域数据集元数据 |
-| `dq_technological` | 发电与控制技术 | 匹配燃料、转换技术、机组效率、污染控制、储能、基础设施和运行方式；不得将窄技术过程作为 CPC 17100 通用默认。 | 机组配置、过程说明、许可、投运年份和技术特定数据集元数据 |
-| `dq_metering_and_balance` | 电力与共产品数量 | 在适用时使用经校准或依法控制的计量表，并在对齐的边界和期间证明毛值到净值、网络和共产品平衡。 | 校准证据、原始计量导出、核对工作簿和已签署异常日志 |
-| `dq_source_traceability` | 次级数据集、因子和合同属性 | 记录来源、版本或日期、地域、技术、许可或访问方式、选择依据及任何修改。供应商特定电力主张需要合格的合同或追踪证据，并防止重复计算。 | 数据集元数据、因子表、合同或工具、质量准则评估和剩余组合检查 |
-| `dq_evidence_hierarchy` | 全部缺项及代理 | 按同边界直接观测、有据可复算推导、经校准的相近数据或次级代理、固定且有依据的专家假设依次选择。逐项记录缺值原因、原始证据、数值和单位转换、适配性、敏感性及替换条件；代理不得称为实测，缺值不得自动置零。没有合格值时保留未解决需求并报告部分覆盖。 | 原始来源、推导与代理登记、假设参数、未解决清单及覆盖结论 |
-| `dq_completeness` | 清单边界 | 纳入第 5 节要求的所有已知重要物料、能量、排放、废物、基础设施和交付环节。量化并论证遗漏，解释零值；未解决的重要环节不能因采用其他代理或清单可计算而被视为完整。 | 完整性清单、物质与能量平衡、许可对比和遗漏日志 |
+| representativeness | dataset | 匹配生产及交换期间、实际技术、地域及供应状态；记录启停、季节变化及替代。 | collection records |
+| identity_and_ranges | all cards | 保留未解决身份及缺失独立范围证据，不以猜测行业区间替代测量，不将缺测视为零。 | manifest review metadata |
 
 ## 9. 校验规则
 
-| 规则编号 | 适用对象 | 规则 | 来源 |
+| rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_reference_identity` | 参考流 | 第 3 节通用电力 Flow 标识产品类别；具体电压、电流形式和交付边界接口须选择经核验的合适既有 Flow，核对其精确身份、属性、原生单位和 kWh 换算链，不要求所有接口 UUID 均等于通用 Flow。确认已声明所有必需限定信息和 CPC 17100 边界。 | `un-cpc-3-0`；`tiangong-identity-query` |
-| `validate_energy_balance` | 发电与交付 | 确认毛输出减归属厂用电等于净发电量，并确认交付平衡在已记录计量不确定度内闭合。拒绝混合期间、电压范围或毛/净基础。 | `epd-pcr-2007-08-v5-0-2` |
-| `validate_mix_and_attributes` | 电力组合 | 确认组成 kWh 份额合计为 100%，各组成边界与期间兼容，且合同属性未在供应商特定组合与剩余/电网组合中重复计算。 | `eu-pef-2021-2279`；`ghg-protocol-scope-2` |
-| `validate_inventory_completeness` | 系统边界与清单 | 对照许可、计量、资产记录和完整性声明，核对燃料和辅助记录、直接释放、废物、电厂基础设施及条件性网络环节。 | `epd-pcr-2007-08-v5-0-2`；`iea-energy-statistics-manual` |
-| `validate_allocation` | 多输出过程 | 确认遵循分配层级，所有输入输出守恒，热电联产公式输入有记录，专用设备直接分配，并披露实质性选择的敏感性。 | `eu-pef-2021-2279`；`epd-pcr-2007-08-v5-0-2` |
-| `validate_sources_and_period` | 证据包 | 确认每个次级数据集和因子可识别且有代表性，前景参考期完整，估算和数据缺口可见，保密记录仍可审计。 | `iea-energy-statistics-manual`；`ghg-protocol-scope-2` |
-| `validate_annual_supply` | 年度量字段 | 核验年度量是数值、单位和来源性质齐全的独立字段，优先匹配声明参考年、地域、技术、电压及计量边界。假设或原生参考流替代值须能复算并标明真实年度量未知、适用限制和替换条件；不得作为实际市场份额或资产寿命期服务量。全电压合计不得称为特定电压实测交付量。 |  |
-| `validate_voltage_fallback` | 输配电损耗及资产 | 优先核验分电压计量与资产范围；启用集中代理时核验分压数据缺失、总损耗或合格代理的来源与分母、已知分段扣除、唯一承载接口及网络资产覆盖。等电量 1:1 只表示未另分配损耗的接口传递，不证明物理零损耗，也不等于供方 Model 倍率。总损耗和合格代理均缺失时报告未解决及部分覆盖。 |  |
-| `validate_mix_residual` | 统计总量与分项 | 保留原始总量、互斥分项、差额及口径；若采用比例分摊，复算假设、修订值及权重，确认没有虚构无供方的发电技术，并将变化沿关联组合和电压接口更新。统计差额的假设归属不得描述为观测事实。 |  |
-| `validate_foreground_lineage` | 根接口至实际供方 | 从声明低压根或其他交付根逐层核对消费交换、Flow 与单位、需求 d、实际选定供方 Process 的精确版本、原生参考量 r、d/r 缩放和 Model/结果 Process 关联；候选供方不等于实际采用供方。核验父子组合不重复、相关生命周期阶段有连接或明确缺口，并保留计算证据。 |  |
+| validate_reference | final_product | 核对 1 MJ、正 D、产品状态、属性单位及全部限定信息；每个数据集固定一种产品及路线。 |  |
+| validate_balance | site | D 为选定出口独立校准计量且核对库存后的验收净电能 MJ，必须为正；1 kWh =3.6 MJ。每数据集只用一个发电储能交付产出基准，不合计充电毛发电净外送交付为产出。发电 D 等于实测净外送，毛减厂用仅在计量边界期间匹配时复核，购入厂用另列投入且不重复扣除。调入转售和内部转移独立识别。组合各来源同一净出口基准权重和为1，记录损失供方，不以毛发电因子乘净份额。交付核对网络进量验收产出其他外送技术损失窃电计量缺口库存，仅有独立匹配损失率0<=l<1且无遗漏外送时输入=D/(1-l)。储能同边界实测充电=放电其他有用外送+电损失+实际库存增加，不编往返效率寿命避免发电。燃料能量按实际耗质量乘匹配收到基低位热值或实测体积密度热值状态，区分电 MJ 与燃料热 MJ；气体质量标准体积转换须实测密度温压非假定组成。直接气体按实测物种负荷或明确相容活动因子，不把购电因子代现场燃烧。化石生物 CO2、CH4、N2O和捕集碳分开，不默认生物质废物 CO2 为零。有用蒸汽热=匹配质量乘供汽减回流焓，热水按真实质量实测焓差，非以总水质量作能量。联产有用热电先分联产品再声明分配。寿命材料设施量按实测或论证预期验收电吞吐量一次分摊并敏感性，不编机器质量产量。 |  |
+| validate_coverage | handoff | 核对每项适用交换、供应方或环境介质及最终废物去向；标识跳过检查、未解决身份、缺失测量及上游缺口。有错误或未评估必需覆盖不得标为完整。 |  |
 
 ## 10. 发布数据集画像
 
 | 字段 | 值 |
 | --- | --- |
-| dataset_role | 电力生产或交付的前景数据包；评审后可支持过程、生命周期模型、次级数据集或背景电力数据集 |
-| downstream_use | 需要已声明边界电力的产品与组织 LCA、足迹核算、供应链建模、能源系统研究和下游过程清单 |
-| allowed_use | 仅在发电技术或组合、地域或供应商、电压、参考边界、期间、损耗、基础设施和合同属性与研究匹配时使用 |
-| excluded_use | 不得作为未声明的全球平均值、路线或电压特定数据集的替代、计量表之后电力使用过程的替代，也不得在缺乏合格合同证据时用于供应商特定主张；存在重要未解决阶段时不得宣称完整边界 |
-| required_metadata | PCR id；CPC 17100；流 UUID 及适用接口身份；技术或组合及份额；地域、电网或供应商；电流形式；电压；参考边界；参考期；净值或交付基础；年度量数值、单位与来源性质；损耗与基础设施范围及承载接口；共产品与分配；数据源及版本；适用时的源 Model 与结果关系 |
-| required_quality_disclosure | 计量覆盖与校准；数据缺口、估算、代理与假设及其替换条件；时间、地域和技术代表性；原始统计差额与分摊；能量平衡；截断；分配；不确定性或敏感性；未解决需求和覆盖结论；合同工具与剩余组合处理 |
-| update_trigger | 发电技术、燃料或资源供应、组合份额、电厂性能、污染控制、电网路线或电压、损耗、基础设施、共产品、分配、排放因子、合同工具或参考期发生重大变化 |
+| dataset_role | foreground_dataset |
+| downstream_use | secondary_dataset; background_dataset |
+| allowed_use | 在特定计量接口供应1 MJ验收净电能，非1 MJ燃料热或1 kg设备 |
+| excluded_use | 以燃料有用热证书为参考产品；单独网络服务；电气设备制造；假设避免电力 |
+| required_metadata | 场址地域年份实际技术或来源组合供方；交流直流电压频率计量位置校准；毛净发电厂用来源匹配净外送；交付损失变压或充放电储能库存；验收期间正 D；实际燃料牌号水分低位热值化石生物比例；联产热焓回流状态；冷却取回耗水流域；直接物种介质废物去向；实测建设更换退役寿命验收吞吐量；分配不确定性；物理组合与合同属性声明注销残余披露。代表 ad12cfb1 为中国全国工厂端35–330千伏交流生产组合，非通用购电或用户交付电，精确权重年份由供方规定。 |
+| required_quality_disclosure | 身份及测量缺口；边界覆盖；不确定性；分配；时间及地域代表性 |
+| update_trigger | 产品、路线、产率、供应、废物去向、场址或代表期间变化 |
 
 ## 11. 数据源
 
-| source_id | type | reference | used_for |
+| 来源 id | 类型 | 参考 | 用途 |
 | --- | --- | --- | --- |
-| `un-cpc-3-0` | 标准（`standard`） | 联合国统计司，《产品总分类》第 3.0 版，17100 电力，https://unstats.un.org/unsd/classifications/Econ/cpc | 产品类别身份与类别边界 |
-| `epd-pcr-2007-08-v5-0-2` | 标准（`standard`） | EPD International，PCR 2007:08 Electricity, steam and hot/cold water generation and distribution，5.0.2 版，2026-05-04，https://www.environdec.com/pcr-library/pcr2007-08 | 功能单位、边界、基础设施、损耗、数据要求、分配和校验规则 |
-| `eu-pef-2021-2279` | 官方指南（`official_guidance`） | 欧盟委员会建议 (EU) 2021/2279，环境足迹方法，https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30 | 电力组合层级、剩余组合与重复计算控制、分配层级 |
-| `ipcc-2006-stationary-combustion` | 官方指南（`official_guidance`） | IPCC 2006 国家温室气体清单指南，第 2 卷第 2 章固定源燃烧，https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf | 燃料能量换算与直接燃烧排放计算方法 |
-| `ghg-protocol-scope-2` | 标准（`standard`） | GHG Protocol Scope 2 Guidance，https://ghgprotocol.org/scope-2-guidance | 合同工具质量、供应商特定主张、披露和重复计算控制 |
-| `iea-energy-statistics-manual` | 手册（`handbook`） | 国际能源署，Energy Statistics Manual，https://www.iea.org/reports/energy-statistics-manual | 能量平衡完整性、来源一致性和统计数据质量检查 |
-| `tiangong-identity-query` | 数据集（`dataset`） | 编写时使用同级 tiangong-cli 查询天工 LCA 数据服务，并核验公开流、流属性、单位组和过程记录 | 仅用于身份依据；不固定数据库版本，也不将任何过程数量作为通用默认 |
+| epd-electricity-scope | official_guidance | EPD International, PCR2007:08 public category description, listed version5.0.2, snapshot1 October2026. https://www.environdec.com/pcr-library/pcr2007-08 | 仅公开技术类别范围；未取得门户全文 PDF，不采用该 PCR 截断阈值分配公式或宣称完全符合。 |
+| ipcc-stationary-2006 | official_guidance | IPCC, 2006 Guidelines Volume2 Chapter2 Stationary Combustion, corrected April2007, original PDF p.11/printed2.11, section2.3.1 and Equation2.1. https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf | 分燃料活动量和相容气体因子核算；国家清单方法不提供场址默认因子氧化率或完整生命周期评价。 |
+| ghg-scope2-2015 | official_guidance | GHG Protocol, Scope2 Guidance2015, original PDF p.62/printed60, Table7.1. https://ghgprotocol.org/sites/default/files/2023-03/Scope%202%20Guidance.pdf | 电力属性唯一声明注销时间市场匹配及残余组合披露；企业直接温室气体声明不等于生命周期零负荷，不采用修订征求意见稿为定稿。 |
+| epa-chp-output | official_guidance | US EPA, Methods for Calculating CHP Efficiency, snapshot1 October2026, Total System Efficiency and net useful outputs. https://www.epa.gov/chp/methods-calculating-chp-efficiency | 净有用电热产出与寄生损失；不采用效率基准示例或自动热分配。 |
+| cpc3-notes-2025 | official_guidance | UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf | 仅用于分类范围，不提供过程数量。 |
+| ef-allocation-2021 | official_guidance | Commission Recommendation (EU) 2021/2279, Annex I section 4.5, consolidated 30 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230 | 多功能过程处理层级；不宣称完全符合 PEF。 |

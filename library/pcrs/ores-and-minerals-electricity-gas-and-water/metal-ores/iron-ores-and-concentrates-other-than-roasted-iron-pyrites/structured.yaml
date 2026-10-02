@@ -1,10 +1,979 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "14100"
-  title: "Iron ores and concentrates, other than roasted iron pyrites"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.metal-ores.iron-ores-and-concentrates-other-than-roasted-iron-pyrites"
+  classification_refs: "CPC 3.0:14100; classification context only"
+  covered_products: "Direct-shipping iron ore; lump ore; iron ore fines; non-agglomerated iron concentrate"
+  excluded_products: "Roasted iron pyrites; pellets; sinter; metallic iron; steel"
+  representative_product: "Dewatered iron concentrate with declared dry-basis total Fe assay and particle size"
+  production_route: "Extraction, crushing/screening, conditional grinding and magnetic/gravity separation, conditional flotation, dewatering and gate handling"
+  market_state: "Bulk ore or concentrate; moisture, mineralogy, size and grade declared at gate"
+functional_unit:
+  what: "Supply iron-bearing mineral feedstock for downstream ironmaking preparation"
+  how_much: "1 kg dry product at the declared gate"
+  how_well: "Declare total Fe on a dry basis, mineralogy, size distribution, moisture, SiO2, Al2O3, P and S; no universal minimum grade is imposed"
+  how_long_or_cycle: "One gate delivery; no service-life requirement"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route
+      applies_to: "all datasets"
+      rule: "Include the actual drilling, extraction, hauling, crushing, separation and dewatering stages within the declared foreground; include purchased-feed transport to the plant."
+      source_ids:
+        - epa-iron-1994
+    - rule_id: boundary_services
+      applies_to: "site operations"
+      rule: "Include pumping, dust control, tailings handling and mine-water treatment. Recycled water is internal throughput; record fresh withdrawals separately."
+      source_ids:
+        - ifc-mining-2007
+    - rule_id: boundary_start
+      applies_to: "purchased ore"
+      rule: "A beneficiation-only package must retain the upstream ore link; it cannot claim cradle-to-gate coverage when extraction burdens are absent. Internal mined ore carries no second upstream ore provider."
+      source_ids: []
+    - rule_id: boundary_extension
+      applies_to: "lifecycle coverage"
+      rule: "Exclude downstream agglomeration, smelting and customer transport from this gate inventory. Declare exploration, capital equipment, mine development, closure and post-closure coverage; include attributable long-term waste management or document an assessed omission, never silently assume zero."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Either in-situ ore at the mine or purchased ore entering a separately declared beneficiation plant"
+  starting_condition_role: "Extraction foreground or beneficiation-only foreground, explicitly distinguished"
+  product_classification_scope: "Iron ores and non-agglomerated concentrates; CPC 3.0:14100 provides classification context"
+  recursive_input_rule: "Purchased same-category ore enters once as an input with an upstream provider; internal middlings and recycle do not restart category tracing"
+  upstream_dataset_requirement: "Link purchased feed, fuel, electricity, reagents, transport and off-site waste treatment; disclose geography, technology, moisture basis and coverage"
+  disclosure: "Gate, process coverage, stock changes, stripping, water sources, tailings fate, infrastructure/closure treatment and omissions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Concentrate powder"
+    uuid: "3d8f36b6-aab1-4687-ac75-00bf966ed458"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "mine and plant location"
+    - "reporting period"
+    - gate
+    - "extraction or purchased-feed start"
+    - "product form"
+    - "ore mineralogy"
+    - route
+    - "dry-basis Fe assay"
+    - "moisture basis and sampling method"
+    - "particle size"
+    - SiO2
+    - Al2O3
+    - P
+    - S
+    - "saleable dry mass"
+    - "upstream-link coverage"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: dry_reference
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use 1 kg dry product. Collect wet mass and matched wet-basis moisture by cp_product; remove free moisture only, not chemically bound water."
+  - id: grade_basis
+    applies_to: "ore and concentrate"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Record total Fe as a dry-basis mass fraction. Convert reported percent by division by 100; contained Fe does not replace product mass."
+  - id: energy_basis
+    applies_to: "site_electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh. The provider voltage must match the declared meter boundary."
+  - id: water_basis
+    applies_to: "water and slurry"
+    required_property_ref:
+      name: "Volume; Mass"
+      uuid: ""
+    required_unit: "m3; kg"
+    rule: "Keep water volume, slurry wet mass and solids dry mass separate. Convert only with measured density/solids fraction for the same sample."
+process_map:
+  - id: mining
+    name: "Extraction and internal ore haul"
+    inclusion: "conditional"
+    inclusion_condition: "In-situ extraction is inside the declared boundary"
+    role: "Ore recovery and waste-rock generation"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: beneficiation
+    name: "Crushing, screening and physical separation"
+    inclusion: "conditional"
+    inclusion_condition: "The actual route crushes, screens, grinds or separates ore"
+    role: "Prepare size and recover iron-bearing minerals"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: flotation
+    name: "Flotation upgrading"
+    inclusion: "conditional"
+    inclusion_condition: "The actual route uses flotation"
+    role: "Route-specific reagent use and separation"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finishing
+    name: "Dewatering, product control and gate handling"
+    inclusion: "required"
+    inclusion_condition: "All datasets; dewatering only where physically performed"
+    role: "Saleable product release"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: site_services
+    name: "Utilities, tailings and water management"
+    inclusion: "required"
+    inclusion_condition: "All datasets, scaled to attributable activity"
+    role: "Single site utility ledger and environmental controls"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: mining
+    label: "Extraction and internal ore haul"
+    inputs:
+      product:
+        - row_id: mining_explosive
+          role: "Emulsion Explosive"
+          name: "Emulsion Explosive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eb58ee82-ee46-4306-baef-51dfef1d1ccc"
+          property_unit: "Mass / kg"
+          description: "Issued emulsion-explosive mass / D; only when this formulation is used. Add each other actual explosive and detonator separately."
+          amount:
+            expression: "Issued emulsion-explosive mass / D; only when this formulation is used. Add each other actual explosive and detonator separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mining
+              source_ids:
+                - epa-iron-1994
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: ore_resource
+          role: "Iron ore, in ground"
+          name: "Iron ore, in ground"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "a41972a3-173d-4d12-8394-0a0da769234b"
+          property_unit: "Mass / kg"
+          description: "Dry extracted ore mass / D; ore mass including gangue, not contained Fe; exclude barren overburden."
+          amount:
+            expression: "Dry extracted ore mass / D; ore mass including gangue, not contained Fe; exclude barren overburden."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mining
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: mined_ore
+          role: "Iron ore"
+          name: "Iron ore"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa72a314-73ed-4400-95a0-a8f9f837a27f"
+          property_unit: "Mass / kg"
+          description: "Dry mined ore transferred / D; record stock change and loss. Internal transfer only when linked to beneficiation."
+          amount:
+            expression: "Dry mined ore transferred / D; record stock change and loss. Internal transfer only when linked to beneficiation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mining
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_rock
+          role: "Iron-mine waste rock"
+          name: "Iron-mine waste rock"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dry waste-rock mass / D; includes separately identified stripping/development rock, with fate and stock changes."
+          amount:
+            expression: "Dry waste-rock mass / D; includes separately identified stripping/development rock, with fate and stock changes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mining
+              source_ids: []
+            ranges: []
+        - row_id: overburden
+          role: "Iron-mine overburden soil"
+          name: "Iron-mine overburden soil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed soil mass / D when stripping occurs; record dry basis and restoration storage separately."
+          amount:
+            expression: "Removed soil mass / D when stripping occurs; record dry basis and restoration storage separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mining
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: beneficiation
+    label: "Crushing, screening and physical separation"
+    inputs:
+      product:
+        - row_id: ore_feed
+          role: "Iron ore"
+          name: "Iron ore"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa72a314-73ed-4400-95a0-a8f9f837a27f"
+          property_unit: "Mass / kg"
+          description: "Dry ore feed consumed / D, adjusted for feed stocks. Internal mined feed and externally purchased feed are separately tagged."
+          amount:
+            expression: "Dry ore feed consumed / D, adjusted for feed stocks. Internal mined feed and externally purchased feed are separately tagged."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_beneficiation
+              source_ids: []
+            ranges: []
+        - row_id: grinding_balls
+          role: "Steel ball"
+          name: "Steel ball"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5f10af9-1429-4a11-b47f-71173cc13b2f"
+          property_unit: "Mass / kg"
+          description: "Net steel-ball consumption / D when wet steel-ball milling applies and the material matches the selected identity; reconcile purchases, additions and ball stocks."
+          amount:
+            expression: "Net steel-ball consumption / D when wet steel-ball milling applies and the material matches the selected identity; reconcile purchases, additions and ball stocks."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_beneficiation
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: separation_tailings
+          role: "Iron-ore separation tailings"
+          name: "Iron-ore separation tailings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dry tailings solids / D; collect slurry wet mass and solids fraction separately; declare sulfide content and management fate."
+          amount:
+            expression: "Dry tailings solids / D; collect slurry wet mass and solids fraction separately; declare sulfide content and management fate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_beneficiation
+              source_ids:
+                - epa-iron-1994
+            ranges: []
+      elementary:
+        []
+  - id: flotation
+    label: "Flotation upgrading"
+    inputs:
+      product:
+        - row_id: flotation_starch
+          role: "corn starch"
+          name: "corn starch"
+          flow_type: "product"
+          flow_ref:
+            uuid: "982918a4-54b1-4792-9ee5-2f3155d4e929"
+          property_unit: "Mass / kg"
+          description: "Issued corn-starch dry mass / D only when corn starch is used as depressant; distinguish gelatinization water."
+          amount:
+            expression: "Issued corn-starch dry mass / D only when corn starch is used as depressant; distinguish gelatinization water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flotation
+              source_ids: []
+            ranges: []
+        - row_id: flotation_naoh
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "NaOH dry-equivalent mass / D when used; record formulation concentration and actual solution mass without counting dilution water twice."
+          amount:
+            expression: "NaOH dry-equivalent mass / D when used; record formulation concentration and actual solution mass without counting dilution water twice."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flotation
+              source_ids: []
+            ranges: []
+        - row_id: flotation_collector
+          role: "Dodecylamine acetate"
+          name: "Dodecylamine acetate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Issued formulated collector mass / D only when this exact chemical is used; document purity and reject other amines as automatic substitutes."
+          amount:
+            expression: "Issued formulated collector mass / D only when this exact chemical is used; document purity and reject other amines as automatic substitutes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flotation
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: flotation_tailings
+          role: "Iron-ore flotation tailings"
+          name: "Iron-ore flotation tailings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dry flotation-tailings solids / D; retain reagent composition and receiving management route."
+          amount:
+            expression: "Dry flotation-tailings solids / D; retain reagent composition and receiving management route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flotation
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: finishing
+    label: "Dewatering, product control and gate handling"
+    inputs:
+      product:
+        - row_id: dewatering_flocculant
+          role: "Polyacrylamide"
+          name: "Polyacrylamide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Issued formulated polyacrylamide mass / D only where used; disclose ionic form and active concentration."
+          amount:
+            expression: "Issued formulated polyacrylamide mass / D only where used; disclose ionic form and active concentration."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Concentrate powder"
+          name: "Concentrate powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d8f36b6-aab1-4687-ac75-00bf966ed458"
+          property_unit: "Mass / kg"
+          description: "1 kg"
+          amount:
+            expression: "1 kg"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: site_services
+    label: "Utilities, tailings and water management"
+    inputs:
+      product:
+        - row_id: site_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Metered attributable electricity in MJ / D; match 1–35 kV consumption boundary. Count mining, milling, flotation, filters, pumps and treatment once in this site ledger."
+          amount:
+            expression: "Metered attributable electricity in MJ / D; match 1–35 kV consumption boundary. Count mining, milling, flotation, filters, pumps and treatment once in this site ledger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: site_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Diesel consumed in kg / D; use batch density for volume records and retain equipment allocation. Supplier fuel production and direct combustion are separate."
+          amount:
+            expression: "Diesel consumed in kg / D; use batch density for volume records and retain equipment allocation. Supplier fuel production and direct combustion are separate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: purchased_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Purchased treated process-water mass / D when supplied externally; do not also record supplier abstraction as direct site withdrawal."
+          amount:
+            expression: "Purchased treated process-water mass / D when supplied externally; do not also record supplier abstraction as direct site withdrawal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: neutralization_lime
+          role: "Hydrated lime"
+          name: "Hydrated lime"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Issued Ca(OH)2 product mass / D only when neutralization uses hydrated lime; record purity."
+          amount:
+            expression: "Issued Ca(OH)2 product mass / D only when neutralization uses hydrated lime; record purity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: river_withdrawal
+          role: "river water"
+          name: "river water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "805a7346-1664-4483-afe3-4b224be5e361"
+          property_unit: "Volume / m3"
+          description: "Direct river withdrawal in m3 / D when present; exclude internal recirculation."
+          amount:
+            expression: "Direct river withdrawal in m3 / D when present; exclude internal recirculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: groundwater_withdrawal
+          role: "ground water"
+          name: "ground water"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4f462198-40cd-4184-8733-86648a20dc3f"
+          property_unit: "Volume / m3"
+          description: "Direct groundwater abstraction including mine dewatering in m3 / D when present; identify reuse, discharge and consumed fraction."
+          amount:
+            expression: "Direct groundwater abstraction including mine dewatering in m3 / D when present; identify reuse, discharge and consumed fraction."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - ifc-mining-2007
+            ranges: []
+        - row_id: mine_land_occupation
+          role: "Occupation, mineral extraction site"
+          name: "Occupation, mineral extraction site"
+          flow_type: "elementary"
+          property_unit: "Area*time / m2*a"
+          description: "Occupied mining and waste-management area multiplied by occupation duration / D; declare land class and avoid overlapping areas."
+          amount:
+            expression: "Occupied mining and waste-management area multiplied by occupation duration / D; declare land class and avoid overlapping areas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_land
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: offsite_wastewater
+          role: "Iron-mine wastewater"
+          name: "Iron-mine wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Transferred untreated or partly treated wastewater wet mass / D only for off-site treatment; link the receiving treatment and do not duplicate on-site releases."
+          amount:
+            expression: "Transferred untreated or partly treated wastewater wet mass / D only for off-site treatment; link the receiving treatment and do not duplicate on-site releases."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: water_treatment_sludge
+          role: "Iron-mine water-treatment sludge"
+          name: "Iron-mine water-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge dry mass / D with moisture and destination; account treatment separately from tailings."
+          amount:
+            expression: "Sludge dry mass / D with moisture and destination; account treatment separately from tailings."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: direct_fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil CO2 released to air in kg / D from on-site fuel and blasting; use measured emissions or a documented fuel-carbon balance, not electricity-provider emissions."
+          amount:
+            expression: "Direct fossil CO2 released to air in kg / D from on-site fuel and blasting; use measured emissions or a documented fuel-carbon balance, not electricity-provider emissions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: direct_pm25
+          role: "particles (PM2.5)"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Measured airborne PM2.5 kg / D after controls from mining, crushing, handling and combustion; do not treat captured dust as released PM2.5."
+          amount:
+            expression: "Measured airborne PM2.5 kg / D after controls from mining, crushing, handling and combustion; do not treat captured dust as released PM2.5."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: direct_nox
+          role: "Nitrogen oxides, to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured NOx mass expressed as NO2 / D for engines and blasting where released; record measurement basis."
+          amount:
+            expression: "Measured NOx mass expressed as NO2 / D for engines and blasting where released; record measurement basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: effluent_water
+          role: "Water, to surface water"
+          name: "Water, to surface water"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Discharged water in m3 / D after on-site treatment; retain receiving basin and release point, separately from wastewater transferred to a treatment provider."
+          amount:
+            expression: "Discharged water in m3 / D after on-site treatment; retain receiving basin and release point, separately from wastewater transferred to a treatment provider."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: effluent_iron
+          role: "Iron, to fresh water"
+          name: "Iron, to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measured dissolved/total iron load in kg / D at final discharge; specify analytical fraction and avoid duplicating the same load."
+          amount:
+            expression: "Measured dissolved/total iron load in kg / D at final discharge; specify analytical fraction and avoid duplicating the same load."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "multiple saleable outputs"
+    rule: "First investigate subdivision or system expansion. Prefer measured process-specific attribution; an expanded-system result must remain labelled as such. If unavoidable, use a justified underlying physical relationship, then a documented other relationship such as economic value."
+    source_ids:
+      - eu-ef-2021
+  - rule_id: allocation_ore_grades
+    applies_to: "lump, fines and concentrate"
+    rule: "Do not allocate common mining burdens by contained Fe automatically. If economic allocation is justified, share_i = dry_mass_i * price_i / sum(dry_mass_j * price_j); use comparable net gate prices, same period and moisture basis, disclose price sensitivity and keep output-specific finishing burdens direct."
+    source_ids:
+      - eu-ef-2021
+  - rule_id: allocation_waste
+    applies_to: "tailings, overburden and waste rock"
+    rule: "Disposal materials are not saleable co-products merely because they have mass. Retain attributable handling and treatment burdens. A demonstrated saleable recovered product requires a separate identity, specification, buyer evidence and justified allocation; do not add an unsupported avoided-production credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product
+      process_id: "finishing"
+      flow_role: "saleable output and moisture"
+      record_type: "weighing and assay"
+      raw_fields: "batch; wet mass W; wet-basis moisture w; dry-basis Fe fraction f; size; impurities; stocks; gate receipts"
+      collection_method: "Calibrated weighbridge or belt scale; matched lot moisture sampling and laboratory assay. Use ISO 3087 or a disclosed validated equivalent; the public ISO scope does not supply the complete laboratory procedure."
+      unit: "kg; kg/kg"
+      frequency: "each lot"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_mining
+      process_id: "mining"
+      flow_role: "ore, explosive, overburden and rock"
+      record_type: "mine production records"
+      raw_fields: "pit or stope; ore tonnes; moisture; explosive issue; rock/soil volumes; density; stock change; destinations"
+      collection_method: "Reconcile mine survey, calibrated scales, drilling/blast logs and issue records; convert surveyed volume with sampled material density."
+      unit: "kg"
+      frequency: "shift and blast"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_beneficiation
+      process_id: "beneficiation"
+      flow_role: "feed, concentrate, grinding media and tailings"
+      record_type: "plant mass balance"
+      raw_fields: "feed and product weights; moisture; Fe assay; media additions and stocks; tailings slurry mass; solids fraction"
+      collection_method: "Matched feed/product samples, scales and slurry density/solids tests; measure circulating middlings separately."
+      unit: "kg; kg/kg"
+      frequency: "shift and composite sample"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_flotation
+      process_id: "flotation"
+      flow_role: "flotation feed, product, reagents and rejects"
+      record_type: "reagent and plant records"
+      raw_fields: "chemical name; CAS; formulation; concentration; issued mass; opening and closing stocks; concentrate and tailings solids"
+      collection_method: "Verify safety data sheets and issue logs; weigh or meter each chemical separately; reconcile stage mass and assay."
+      unit: "kg"
+      frequency: "batch and shift"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "site_services"
+      flow_role: "electricity and diesel"
+      record_type: "utility meters and fuel stock ledger"
+      raw_fields: "meter kWh; voltage; diesel mass or litres; density; receipts; stocks; equipment hours; attribution shares"
+      collection_method: "Dedicated meters and fuel records; reconcile whole-site totals to attributable activities and exclude contractor fuel already included in a service provider."
+      unit: "MJ; kg"
+      frequency: "daily, reconciled monthly"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_water
+      process_id: "site_services"
+      flow_role: "withdrawal, purchased water, reuse and discharge"
+      record_type: "water balance"
+      raw_fields: "source; basin; inflow; purchased water; return water; discharge; evaporation; product/tailings retained water; stock change"
+      collection_method: "Source and outfall meters with basin identification; retain a separate internal-circulation ledger."
+      unit: "m3; kg"
+      frequency: "daily and seasonal reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_waste
+      process_id: "site_services"
+      flow_role: "waste fate and treatment"
+      record_type: "treatment and disposal ledger"
+      raw_fields: "tailings solids; wet mass; sulfate/sulfide characterization; neutralizer; sludge; destination; storage; closure plan"
+      collection_method: "Weighbridge, slurry measurements, treatment logs and receiving manifests; record on-site management inventories and assessed future requirements separately."
+      unit: "kg"
+      frequency: "transfer and monthly balance"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_emissions
+      process_id: "site_services"
+      flow_role: "direct air and water releases"
+      record_type: "monitoring or documented calculation"
+      raw_fields: "source; substance; compartment; concentration; gas/liquid flow; operating hours; control; fuel carbon; factor source; detection limit"
+      collection_method: "Representative stack, fugitive and outfall measurements; load = concentration * matched flow * time with explicit unit conversion. Fuel-carbon estimates require measured composition and oxidation assumptions."
+      unit: "kg"
+      frequency: "operating campaign and permit schedule"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+    - protocol_id: cp_land
+      process_id: "site_services"
+      flow_role: "land occupation"
+      record_type: "survey and permit map"
+      raw_fields: "polygon; land class; area; duration; overlapping boundary; reclamation state"
+      collection_method: "GIS/survey polygons and mine plan; distinguish occupation from transformation and record each transformation land class separately."
+      unit: "m2*a"
+      frequency: "annual and land change"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared mine/plant; no unrelated production"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration, source records, uncertainty and reconciliation"
+  calculation_rules:
+    - id: dry_mass
+      applies_to: "product and intermediate solids"
+      rule: "dry_mass = W * (1 - w); D = sum(saleable dry mass); w is moisture fraction on wet mass, 0 <= w < 1. Reconcile production = dispatch + closing stock - opening stock + identified losses."
+      inputs:
+        - W
+        - w
+        - cp_product
+      output: "dry_mass; D"
+      source_ids:
+        - iso-moisture-2020
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Normalized exchange = attributable reporting-period exchange / D; D is positive saleable dry-output mass in kg; final_product = 1 kg dry product. Never average batch intensities without mass weighting."
+      inputs:
+        - "period totals"
+        - D
+        - "allocation shares"
+      output: "exchange per 1 kg reference flow"
+      source_ids: []
+    - id: fe_recovery
+      applies_to: "beneficiation and flotation"
+      rule: "Contained Fe = dry solids mass * dry-basis Fe fraction; Fe recovery = Fe in recovered product / Fe in consumed feed, with stock changes and all exits reconciled."
+      inputs:
+        - "dry masses"
+        - "Fe assays"
+        - stocks
+      output: "contained Fe; recovery"
+      source_ids: []
+    - id: water_reconcile
+      applies_to: "site water ledger"
+      rule: "External inflows = discharge + evaporation + water exported in product/waste + storage increase; internal return water cancels. Do not equate gross withdrawal with net consumption."
+      inputs:
+        - cp_water
+        - moisture
+        - stocks
+      output: "water balance residual"
+      source_ids:
+        - ifc-mining-2007
+    - id: energy_conversion
+      applies_to: "site_electricity; site_diesel"
+      rule: "Electricity MJ = metered kWh * 3.6; diesel kg = measured litres * batch density in kg/L; on-site generation inputs are recorded once and internal generated power is not purchased grid power."
+      inputs:
+        - cp_utilities
+        - density
+      output: "MJ; kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_period
+      applies_to: "all collection protocols"
+      requirement: "Use one common representative reporting period, normally a full operating year as this PCR collection design; shorter campaigns require reason, seasonality and capacity disclosure."
+      evidence: "period register; operating hours"
+    - id: quality_identity
+      applies_to: "each exchange"
+      requirement: "Verify flow type, chemical identity, product form, compartment, reference property and bilingual official name; pending identities require resolution before publication."
+      evidence: "supplier specification and identity records"
+    - id: quality_uncertainty
+      applies_to: "balance and estimates"
+      requirement: "Retain scale/meter calibration, assay representativeness, density, factor provenance and uncertainty; explain residuals using measured uncertainties rather than a universal fixed tolerance."
+      evidence: "calibration; assays; balance sheets"
+    - id: quality_missing
+      applies_to: "unmeasured conditional flows"
+      requirement: "Distinguish absent, unmeasured, modelled and excluded exchanges; provide an estimate and source or a coverage gap, never an unsupported zero."
+      evidence: "completeness register"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference and final product"
+    rule: "Require matching product UUID/form, 1 kg dry basis, all qualifiers, positive D and matched moisture/Fe assay. Wet-mass providers require explicit conversion."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "all stages"
+    rule: "Check dry-solid, contained-Fe and water balances with stock changes and uncertainty; recovery fractions must lie between zero and one unless a documented balance correction resolves the discrepancy."
+    source_ids: []
+  - rule_id: validate_double_count
+    applies_to: "utilities, intermediates and wastes"
+    rule: "Cancel internal ore/concentrate/water transfers; reconcile the single utility ledger. Match waste outputs to one management fate and include treatment burdens; supplier emissions are not site direct releases."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "dataset handoff"
+    rule: "Report checks performed/skipped, missing measurements, unresolved identities, omitted stages and upstream coverage. Errors or unassessed mandatory coverage cannot be labelled complete."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Site-specific foreground gate inventory for the declared iron-ore product"
+  downstream_use: "secondary_dataset; background_dataset after coverage and quality assessment"
+  allowed_use: "Matched mineral feedstock supply to downstream preparation or ironmaking; separately labelled beneficiation-only use"
+  excluded_use: "Unqualified comparison across grade/form/routes; pellet or steel production; cradle-to-gate claims for incomplete upstream coverage"
+  required_metadata: "All reference qualifiers; inventory basis; route; gate; process coverage; providers; stock treatment; allocation shares; geography; time; land and waste-management scope"
+  required_quality_disclosure: "Measured/modelled coverage; unresolved identities; uncertainty; balance residuals; water source/basin; chemical formulation; emission compartments; omissions and long-term treatment"
+  update_trigger: "Changed orebody/grade, route, recovery, reagent formulation, utility supply, waste fate, gate or reporting-period representativeness"
+data_sources:
+  - id: "epa-iron-1994"
+    type: "official_guidance"
+    reference: "US EPA, EPA 530-R-94-030 (1994), Volume 3: Iron, §§1.4–1.5. https://archive.epa.gov/epawaste/nonhaz/industrial/special/web/pdf/iron.pdf"
+    used_for: "Historical physical process descriptions: extraction, separation and tailings. Not current market shares, consumption factors, legal limits or universal grades."
+  - id: "ifc-mining-2007"
+    type: "official_guidance"
+    reference: "IFC / World Bank Group, Environmental, Health, and Safety Guidelines for Mining (10 December 2007), §1.1 Water Use. https://www.ifc.org/content/dam/ifc/doc/2000/2007-mining-ehs-guidelines-en.pdf"
+    used_for: "Mining water-balance and return-water distinctions; not iron-specific LCA consumption ranges."
+  - id: "iso-moisture-2020"
+    type: "standard"
+    reference: "ISO 3087:2020, Iron ores — Determination of the moisture content of a lot, public scope/catalogue. https://www.iso.org/standard/72159.html"
+    used_for: "Applicability of lot-moisture determination to natural and processed iron ores. Detailed laboratory method requires access to the actual standard or a validated equivalent."
+  - id: "eu-ef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I §4.5, consolidated 30 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "General multifunctionality hierarchy; citation does not assert full PEF conformity."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3babb27b01456f84d57075e0bb354731daf555d93d673cfac353b3207dc16894"
+  generated_content_sha256: "sha256:cc391be62f238afc89b59fc52414ec43f5840540827363f0169e0b5a9c3d1c2c"

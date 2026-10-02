@@ -1,10 +1,994 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "12020"
-  title: "Natural gas, liquefied or in the gaseous state"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.crude-petroleum-and-natural-gas.natural-gas-liquefied-or-in-the-gaseous-state"
+  classification_refs: "CPC 3.0:12020"
+  covered_products: "Fossil natural gas at a fixed gas or LNG gate and state"
+  excluded_products: "Manufactured coal gas; petroleum gas mixtures as separate products; standalone hydrogen; customer combustion; undisclosed transmission"
+  representative_product: "Natural gas at the declared gate"
+  production_route: "Field recovery and separation; Gas conditioning and compression; Liquefaction and tank-vapor control; Regasification and delivery; Product metering and dispatch"
+  market_state: "Metered processed gas or LNG at one declared supply gate"
+functional_unit:
+  what: "Supply composition-qualified natural gas as feedstock or fuel, without claiming useful-heat equivalence"
+  how_much: "1 kg"
+  how_well: "field/site and year; starting state; gas or LNG phase; composition and water; pressure; temperature; density measurement; net calorific value and basis; gas recovery and own use; gate; transport scope; refrigerant composition; allocation; offshore scope; measured sulfur/mercury where relevant; gas-volume reference conditions and compressibility; terminal heating route; water intake and return"
+  how_long_or_cycle: "One gate supply within a declared production period"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "site"
+      rule: "This PCR covers extracted natural gas after declared separation and conditioning, supplied in one specified gaseous or liquefied state at a metered gate. Distinguish an integrated field/LNG route from a standalone processing or liquefaction site receiving burden-bearing raw gas. Include actual compression, acid-gas removal, dehydration, mercury removal, liquefaction and boil-off recovery only where operated. A separately declared regasification terminal includes vaporization and cold/heat exchanges through its gaseous delivery gate. Transmission or shipping is included only if inside the disclosed gate boundary. Offshore field production needs its own evidence; onshore guidance cannot establish offshore operations."
+      source_ids:
+        - ifc-onshore-2007
+        - ifc-lng-2017
+    - rule_id: boundary_partition
+      applies_to: "all exchanges"
+      rule: "Include actual conditioning, storage, handling and pollution controls through the declared gate. Account for attributable construction and closure with a disclosed lifetime-output basis or justified exclusion and sensitivity. Separate purchased fuel supply from foreground combustion and purchased treatment from site releases."
+      source_ids: []
+    - rule_id: boundary_completeness
+      applies_to: "inventory"
+      rule: "Cards define individual likely exchanges and route conditions, not an exhaustive site audit. Add each actual absent chemical, waste, resource, land transformation and pollutant as its own row. Absence, measured zero and unknown must be distinguished."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Reservoir gas for integrated production, or purchased raw/processed natural gas for a standalone site"
+  starting_condition_role: "Resource or supplied feed; declare which"
+  product_classification_scope: "Fossil natural gas at a fixed gas or LNG gate and state"
+  recursive_input_rule: "Purchased same-category material carries a distinct supplier dataset; internal recycling is a balance observation, not a new external input or credit."
+  upstream_dataset_requirement: "Link feed, electricity, fuels, chemicals, infrastructure and waste-management burdens; disclose any missing coverage."
+  disclosure: "field/site and year; starting state; gas or LNG phase; composition and water; pressure; temperature; density measurement; net calorific value and basis; gas recovery and own use; gate; transport scope; refrigerant composition; allocation; offshore scope; measured sulfur/mercury where relevant; gas-volume reference conditions and compressibility; terminal heating route; water intake and return"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Natural gas at the declared gate"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "field/site and year"
+    - "starting state"
+    - "gas or LNG phase"
+    - "composition and water"
+    - pressure
+    - temperature
+    - "density measurement"
+    - "net calorific value and basis"
+    - "gas recovery and own use"
+    - gate
+    - "transport scope"
+    - "refrigerant composition"
+    - allocation
+    - "offshore scope"
+    - "measured sulfur/mercury where relevant"
+    - "gas-volume reference conditions and compressibility"
+    - "terminal heating route"
+    - "water intake and return"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_basis
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "D is the positive accepted net gate-output total in kg. Exclude packaging and cancelled internal transfers. cp_output records D; every card uses per 1 kg reference flow."
+  - id: conversion
+    applies_to: "utility and material rows"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "kg; m3; MJ"
+    rule: "Retain raw readings. Electricity: 1 kWh = 3.6 MJ. Mass/volume conversion requires measured density, temperature and applicable pressure; retain water content and active chemical fraction."
+  - id: category_balance
+    applies_to: "production"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile resource/purchased feed, gas product, condensate, separated CO2, water, own-use combustion, flare, vents, stock change and measured shrinkage. Convert gas-volume meters to mass using matching measured composition, temperature, absolute pressure and compressibility; use measured LNG mass or density at loading conditions. Do not equate gas and LNG volumes. Recycled boil-off and fuel gas are internal observations, not additional product credits."
+process_map:
+  - id: recovery
+    name: "Field recovery and separation"
+    inclusion: "conditional"
+    inclusion_condition: "Integrated primary field production"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: conditioning
+    name: "Gas conditioning and compression"
+    inclusion: "conditional"
+    inclusion_condition: "Actual on-site conditioning/compression; standalone regasification excludes upstream processing"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: liquefaction
+    name: "Liquefaction and tank-vapor control"
+    inclusion: "conditional"
+    inclusion_condition: "LNG route"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: terminal
+    name: "Regasification and delivery"
+    inclusion: "conditional"
+    inclusion_condition: "Declared regasification terminal"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: dispatch
+    name: "Product metering and dispatch"
+    inclusion: "required"
+    inclusion_condition: "All declared sites"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: recovery
+    label: "Field recovery and separation"
+    inputs:
+      product:
+        - row_id: field_diesel
+          role: "Field diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Only diesel-driven drilling, pumps or site equipment; attributable development includes lifetime output basis."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_field_diesel; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_diesel
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: gas_resource
+          role: "Natural gas withdrawn from reservoir"
+          name: "Natural gas withdrawn from reservoir"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Integrated recovery only; measure extracted dry/wet gas before removal losses and retain composition."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_gas_resource; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_resource
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: produced_water
+          role: "Saline produced water transferred for treatment"
+          name: "Saline produced water transferred for treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only treatment transfers; reinjection and final receiving-water discharges require separate site balances and species."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_produced_water; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_produced_water
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      elementary:
+        []
+  - id: conditioning
+    label: "Gas conditioning and compression"
+    inputs:
+      product:
+        - row_id: raw_gas_feed
+          role: "Supplied raw natural gas"
+          name: "Supplied raw natural gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Standalone processing only; supplier dataset includes extraction and specified transport. Cancel integrated internal feed."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_raw_gas_feed; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_gas_feed
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: site_power
+          role: "Processing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Purchased utility for processing/compression; allocate shared meters once."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_site_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_power
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: mea_makeup
+          role: "Monoethanolamine solvent make-up"
+          name: "Monoethanolamine solvent make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an actual MEA acid-gas removal unit; other solvents require their own cards and purity records."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_mea_makeup; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mea_makeup
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: teg_makeup
+          role: "Triethylene-glycol make-up"
+          name: "Triethylene-glycol make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only TEG dehydration; circulating solvent is not repeated fresh supply."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_teg_makeup; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_teg_makeup
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: imported_steam
+          role: "Imported process steam"
+          name: "Imported process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only purchased steam for actual solvent regeneration; record delivered enthalpy and condensate-return condition. On-site generation needs its fuel and combustion inventory."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_imported_steam; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_imported_steam
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: condensate
+          role: "Stabilized natural-gas condensate"
+          name: "Stabilized natural-gas condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only an exported saleable co-product; measure its own mass and allocation."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_condensate; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_condensate
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      waste:
+        - row_id: spent_mercury_sorbent
+          role: "Spent mercury-removal sorbent"
+          name: "Spent mercury-removal sorbent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only an actual mercury-removal system; record mercury content and management fate."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_spent_mercury_sorbent; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_mercury_sorbent
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      elementary:
+        - row_id: methane_air
+          role: "Fossil methane to outdoor air"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include direct leaks and vented methane after recovery; flare conversion is separately measured, not assumed complete."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_methane_air; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_methane_air
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: co2_air
+          role: "Fossil carbon dioxide to outdoor air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Separate removed reservoir CO2 from on-site combustion and flare CO2 in collection records; exclude captured/exported CO2."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_co2_air; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2_air
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+  - id: liquefaction
+    label: "Liquefaction and tank-vapor control"
+    inputs:
+      product:
+        - row_id: lng_power
+          role: "Liquefaction electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Only electrically driven refrigeration; exclude processing-power duplication and internal recovered power."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_lng_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lng_power
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: propane_makeup
+          role: "Refrigerant propane make-up"
+          name: "Refrigerant propane make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual propane-loop make-up; each other mixed-refrigerant component requires a distinct card."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_propane_makeup; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_propane_makeup
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: cooling_water
+          role: "Supplied cooling make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Only purchased fresh make-up; circulating water is an internal balance. Direct withdrawal requires its own resource card and basin."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_cooling_water; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_water
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: propane_air
+          role: "Propane to outdoor air"
+          name: "Propane to outdoor air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only direct unrecovered propane leakage; do not represent the entire mixture by methane."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_propane_air; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_propane_air
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+  - id: terminal
+    label: "Regasification and delivery"
+    inputs:
+      product:
+        - row_id: regas_power
+          role: "Regasification electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "This purchased electricity exchange requires independently confirmed actual supplier, consumption or production interface, geography, voltage, generation attributes and energy property/unit; its UUID remains unresolved until a compatible direct-read identity is confirmed. A waste-incineration generation flow must not represent arbitrary site power. Declared terminal pumps and vaporizer auxiliaries only."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_regas_power; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_regas_power
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: imported_heat
+          role: "Imported regasification heat"
+          name: "Imported regasification heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only purchased heat; direct-fired vaporizer fuel and combustion require separate actual rows instead."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_imported_heat; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_imported_heat
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+        - row_id: terminal_lng_feed
+          role: "Supplied LNG for regasification"
+          name: "Supplied LNG for regasification"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only a standalone receiving terminal; supplier inventory covers upstream production, liquefaction and disclosed shipping. Cancel this internal transfer for an integrated chain."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_terminal_lng_feed; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_terminal_lng_feed
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: vaporizer_seawater
+          role: "Seawater withdrawal for open-rack vaporization"
+          name: "Seawater withdrawal for open-rack vaporization"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Only an actual seawater-heated vaporizer; measure intake and returned water, temperatures and any biocide separately."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_vaporizer_seawater; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_vaporizer_seawater
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: returned_seawater
+          role: "Seawater returned to the same marine receiving water"
+          name: "Seawater returned to the same marine receiving water"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Only returned cooling water; intake minus measured return is not automatically all water consumption. Record changed temperature and each discharged pollutant as separate exchanges."
+          amount:
+            expression: "Collect the attributable reporting-period quantity under cp_returned_seawater; divide by D after stock, transfer and allocation reconciliation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_returned_seawater
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+  - id: dispatch
+    label: "Product metering and dispatch"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Natural gas at the declared gate"
+          name: "Natural gas at the declared gate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fix one phase and actual product composition; net mass excludes separated liquids and internally burned or flared gas."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - ifc-onshore-2007
+                - ifc-lng-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "joint production"
+    rule: "Prefer process subdivision or defensible system expansion; otherwise use demonstrated physical causality. Use economic allocation only with consistent period, price, currency and sensitivity when physical causality is unavailable. Retain the unallocated inventory."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocation_product
+    applies_to: "reference and co-products"
+    rule: "Separate extraction, processing, liquefaction and terminal meters before assigning joint oil/gas/NGL burdens. Condensate is a distinct actual co-product with measured mass and composition. Own-use gas and recovered boil-off reduce net available supply but receive no avoided-fuel credit."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "waste and recycling"
+    rule: "Classify each output by physical state and actual fate. A sale does not automatically make a residue a co-product; internal recycling receives no avoided-product credit. Apply treatment burdens once."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_gas_resource
+      process_id: "recovery"
+      flow_role: "gas_resource"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure the net matched-period gas mass by calibrated mass meter or composition-qualified gas volume with measured temperature, absolute pressure and compressibility. LNG uses loading mass or measured density at loading temperature. Reconcile stocks, separated liquids and internal transfers; retain conversion equations and uncertainty. cp_output independently records positive accepted gate mass D."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_field_diesel
+      process_id: "recovery"
+      flow_role: "field_diesel"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_produced_water
+      process_id: "recovery"
+      flow_role: "produced_water"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_raw_gas_feed
+      process_id: "conditioning"
+      flow_role: "raw_gas_feed"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure the net matched-period gas mass by calibrated mass meter or composition-qualified gas volume with measured temperature, absolute pressure and compressibility. LNG uses loading mass or measured density at loading temperature. Reconcile stocks, separated liquids and internal transfers; retain conversion equations and uncertainty. cp_output independently records positive accepted gate mass D."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_site_power
+      process_id: "conditioning"
+      flow_role: "site_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_mea_makeup
+      process_id: "conditioning"
+      flow_role: "mea_makeup"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_teg_makeup
+      process_id: "conditioning"
+      flow_role: "teg_makeup"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_condensate
+      process_id: "conditioning"
+      flow_role: "condensate"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_spent_mercury_sorbent
+      process_id: "conditioning"
+      flow_role: "spent_mercury_sorbent"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_methane_air
+      process_id: "conditioning"
+      flow_role: "methane_air"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate calibrated gas flow and measured species concentration over operating duration, with temperature/pressure and compartment. If modelling is necessary, retain source-specific measured activity, carbon/species balance, factor provenance and uncertainty. No generic factor assumed."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_co2_air
+      process_id: "conditioning"
+      flow_role: "co2_air"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate calibrated gas flow and measured species concentration over operating duration, with temperature/pressure and compartment. If modelling is necessary, retain source-specific measured activity, carbon/species balance, factor provenance and uncertainty. No generic factor assumed."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_lng_power
+      process_id: "liquefaction"
+      flow_role: "lng_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_propane_makeup
+      process_id: "liquefaction"
+      flow_role: "propane_makeup"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_propane_air
+      process_id: "liquefaction"
+      flow_role: "propane_air"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Integrate calibrated gas flow and measured species concentration over operating duration, with temperature/pressure and compartment. If modelling is necessary, retain source-specific measured activity, carbon/species balance, factor provenance and uncertainty. No generic factor assumed."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_regas_power
+      process_id: "terminal"
+      flow_role: "regas_power"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_imported_heat
+      process_id: "terminal"
+      flow_role: "imported_heat"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_output
+      process_id: "dispatch"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure the net matched-period gas mass by calibrated mass meter or composition-qualified gas volume with measured temperature, absolute pressure and compressibility. LNG uses loading mass or measured density at loading temperature. Reconcile stocks, separated liquids and internal transfers; retain conversion equations and uncertainty. cp_output independently records positive accepted gate mass D."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_terminal_lng_feed
+      process_id: "terminal"
+      flow_role: "terminal_lng_feed"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Measure the net matched-period gas mass by calibrated mass meter or composition-qualified gas volume with measured temperature, absolute pressure and compressibility. LNG uses loading mass or measured density at loading temperature. Reconcile stocks, separated liquids and internal transfers; retain conversion equations and uncertainty. cp_output independently records positive accepted gate mass D."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_cooling_water
+      process_id: "liquefaction"
+      flow_role: "cooling_water"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "kg"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_imported_steam
+      process_id: "conditioning"
+      flow_role: "imported_steam"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "MJ"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_vaporizer_seawater
+      process_id: "terminal"
+      flow_role: "vaporizer_seawater"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+    - protocol_id: cp_returned_seawater
+      process_id: "terminal"
+      flow_role: "returned_seawater"
+      record_type: "measurement_record"
+      raw_fields: "period; site; amount; original unit; uncertainty; stock changes; route condition; allocation; D; product qualifiers"
+      collection_method: "Calibrated weighing, metering or traceable transfer records; reconcile period, opening/closing stock, actual grade and boundary."
+      unit: "m3"
+      frequency: "Each meter interval or shipment; monthly reconciliation"
+      temporal_coverage: "Complete year or justified representative production campaign"
+      site_scope: "Metered processed gas or LNG at one declared supply gate"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; original records; assay; balance residuals; uncertainty"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all cards"
+      rule: "Exchange = attributable period quantity / D. Reconcile inventories and cancel internal transfers before aggregation."
+      inputs:
+        - cp_output
+        - "row-specific cp records"
+      output: "per 1 kg reference flow"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "production"
+      rule: "Reconcile resource/purchased feed, gas product, condensate, separated CO2, water, own-use combustion, flare, vents, stock change and measured shrinkage. Convert gas-volume meters to mass using matching measured composition, temperature, absolute pressure and compressibility; use measured LNG mass or density at loading conditions. Do not equate gas and LNG volumes. Recycled boil-off and fuel gas are internal observations, not additional product credits."
+      inputs:
+        - "Matched mass"
+        - volume
+        - "composition and stock measurements"
+      output: "Balance residual and uncertainty"
+      source_ids: []
+  data_quality_requirements:
+    - id: representativeness
+      applies_to: "dataset"
+      requirement: "Use matching production and exchange periods, actual technology, geography and supplier state. Record startup, shutdown, seasonal variation and substitutions."
+      evidence: "collection records"
+    - id: identity_and_ranges
+      applies_to: "all cards"
+      requirement: "Unresolved identities and missing independent range evidence remain explicit. Do not replace measurement by a guessed industry range or by missing-as-zero."
+      evidence: "manifest review metadata"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Verify 1 kg, positive D, product state, property/unit and every required qualifier. Each dataset fixes one product and route."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "site"
+    rule: "Reconcile resource/purchased feed, gas product, condensate, separated CO2, water, own-use combustion, flare, vents, stock change and measured shrinkage. Convert gas-volume meters to mass using matching measured composition, temperature, absolute pressure and compressibility; use measured LNG mass or density at loading conditions. Do not equate gas and LNG volumes. Recycled boil-off and fuel gas are internal observations, not additional product credits."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "handoff"
+    rule: "Verify each applicable exchange, its provider or environmental compartment and final waste fate; identify skipped checks, unresolved identities, missing measurements and upstream gaps. Errors or unassessed mandatory coverage cannot be labelled complete."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supply composition-qualified natural gas as feedstock or fuel, without claiming useful-heat equivalence"
+  excluded_use: "Manufactured coal gas; petroleum gas mixtures as separate products; standalone hydrogen; customer combustion; undisclosed transmission"
+  required_metadata: "field/site and year; starting state; gas or LNG phase; composition and water; pressure; temperature; density measurement; net calorific value and basis; gas recovery and own use; gate; transport scope; refrigerant composition; allocation; offshore scope; measured sulfur/mercury where relevant; gas-volume reference conditions and compressibility; terminal heating route; water intake and return"
+  required_quality_disclosure: "Identity and measurement gaps; boundary coverage; uncertainty; allocation; temporal and geographical representativeness"
+  update_trigger: "Changed product, route, yield, supply, waste fate, site or representative period"
+data_sources:
+  - id: "ifc-onshore-2007"
+    type: "official_guidance"
+    reference: "IFC, Environmental Health and Safety Guidelines for Onshore Oil and Gas Development, 30 April 2007, air and produced-water sections and Annex A, p.27. https://www.ifc.org/content/dam/ifc/doc/2000/2007-onshore-oil-gas-development-ehs-guidelines-en.pdf"
+    used_for: "Formation-fluid separation, gas impurity removal, direct air sources and produced-water management; onshore scope only."
+  - id: "ifc-lng-2017"
+    type: "official_guidance"
+    reference: "IFC, Environmental Health and Safety Guidelines for Liquefied Natural Gas Facilities, 11 April 2017, Annex A pp.21–22 and air-emissions section. https://www.ifc.org/content/dam/ifc/doc/mgrt/20170406-final-lng-ehs-guideline-april-2017.pdf"
+    used_for: "Pretreatment, liquefaction, refrigerant systems and boil-off handling; no default consumption range."
+  - id: "cpc3-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 Explanatory Notes, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification scope only; no process quantities."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5, consolidated 30 December 2021. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Multifunctionality hierarchy; not a claim of complete PEF conformity."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8977c79e416fad3f10e8887f92eeea2ffbcc344bca4f6662132c6be117071970"
+  generated_content_sha256: "sha256:657bc3ef322d7820a7881fccca16533e7cc1f28d293ba25fc00909ff9f64a276"

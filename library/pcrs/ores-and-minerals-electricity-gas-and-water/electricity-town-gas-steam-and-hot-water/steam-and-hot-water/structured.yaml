@@ -1,10 +1,808 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "17300"
-  title: "Steam and hot water"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.electricity-town-gas-steam-and-hot-water.steam-and-hot-water"
+  classification_refs: "CPC 3.0: 17300; classification identity only, no accepted mapping asserted"
+  covered_products: "Supplied steam heat; supplied hot-water heat"
+  excluded_products: "Boilers and turbines as equipment; unheated water; cooling; heat-use services"
+  representative_product: "Metered thermal energy supplied in one declared steam or hot-water state"
+  production_route: "Combustion boiler; electric heating; cogeneration; heat recovery; heat pump"
+  market_state: "Thermal energy at a declared producer or consumer supply gate"
+functional_unit:
+  what: "Supply useful thermal energy through one declared heat carrier"
+  how_much: "1 MJ net supplied heat"
+  how_well: "Declared pressure, temperature, phase and steam quality; supply and return enthalpy basis; gate"
+  how_long_or_cycle: "Accounting period declared; include startup, shutdown and seasonal operation"
+  reference_flow_link: "supplied_heat"
+system_boundary:
+  rules:
+    - rule_id: boundary_operation
+      applies_to: "foreground"
+      rule: "Include water management, heat generation, metering and delivery, startup and standby consumption within the declared gate."
+      source_ids:
+        - doe-steam-boiler-water
+    - rule_id: boundary_returns
+      applies_to: "water_management"
+      rule: "Measure make-up and return separately; internal condensate circulation is a balance record, not repeated purchased-water input. Record external blowdown and leakage."
+      source_ids:
+        - doe-steam-boiler-water
+    - rule_id: boundary_network
+      applies_to: "heat_delivery"
+      rule: "At a consumer gate include network pumping and losses; at a plant gate disclose the excluded downstream network."
+      source_ids:
+        - doe-steam-boiler-water
+    - rule_id: boundary_chp
+      applies_to: "heat_generation"
+      rule: "Include the whole CHP generation and heat-recovery unit before splitting common burdens; subtract internal electrical loads from gross electrical production."
+      source_ids:
+        - epa-chp-efficiency
+    - rule_id: boundary_additions
+      applies_to: "all processes"
+      rule: "Add individual atomic exchanges for actual fuels, treatment agents, ash streams, refrigerants and environmental heat sources absent from the common inventory. No blanket omission of unlisted exchanges is permitted."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Delivered fuels, electricity, make-up water and purchased steam at identified site inlets; separately declared recovered-heat inlet"
+  starting_condition_role: "Foreground starts at measured site receipts; background represents upstream production"
+  product_classification_scope: "Steam and hot-water thermal energy; electricity co-product retains separate identity"
+  recursive_input_rule: "Record imported steam once as imported_steam_heat; link its supplier dataset and do not unfold the same supplier recursively"
+  upstream_dataset_requirement: "Link compatible supplier fuel, electricity, water, chemical, imported-heat, waste-treatment and material infrastructure datasets"
+  disclosure: "Declare plant versus consumer gate; network length and ownership; return loop; recovery source; CHP scope; infrastructure; cut-offs and upstream coverage"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Heat from steam or hot water"
+    uuid: "8c96c869-cd82-4301-bb74-b2f9f61ce109"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-14da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-11da-a746-0800200c9a66"
+  reference_unit: "MJ"
+  required_qualifiers:
+    - carrier
+    - phase
+    - pressure
+    - "supply temperature"
+    - "steam quality when wet"
+    - "return temperature and pressure or explicit no-return baseline"
+    - "metering gate"
+    - "production technology"
+    - fuels
+    - geography
+    - "accounting period"
+    - "CHP allocation"
+    - "network extent"
+reference_flows:
+  []
+measurement_rules:
+  - id: heat_basis
+    applies_to: "supplied_heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "All quantities use per reference flow: 1 MJ net heat at the declared gate. Collection uses cp_heat with the same accounting period."
+  - id: heat_meter
+    applies_to: "supplied_heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Use calibrated net heat metering. Otherwise integrate supply and return enthalpy flows separately, subtracting the net exported carrier mass times a declared make-up-water baseline enthalpy. Record state, enthalpy method and steam quality; do not assume equal supply and return mass for open steam systems."
+  - id: electric_units
+    applies_to: "generation_power; delivery_power; chp_electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 1 kWh = 3.6 MJ; retain raw readings and meter boundary."
+  - id: gas_volume
+    applies_to: "gas_fuel"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Retain gas meter reference temperature, absolute pressure, compressibility correction and supplier calorific-value basis; volume cannot be compared without matching reference conditions."
+  - id: chemical_mass
+    applies_to: "alkali; oxygen_scavenger"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record chemical product mass, purity and solution concentration; active chemical mass equals product mass times its measured mass fraction."
+process_map:
+  - id: water_management
+    name: "Water conditioning and return accounting"
+    inclusion: "required"
+    inclusion_condition: "Within declared supply gate"
+    role: "foreground"
+    quantitative_reference: "1 MJ net supplied heat"
+  - id: heat_generation
+    name: "Heat generation and recovery"
+    inclusion: "required"
+    inclusion_condition: "Within declared supply gate"
+    role: "foreground"
+    quantitative_reference: "1 MJ net supplied heat"
+  - id: heat_delivery
+    name: "Metering and thermal delivery"
+    inclusion: "required"
+    inclusion_condition: "Within declared supply gate"
+    role: "foreground"
+    quantitative_reference: "1 MJ net supplied heat"
+process_inventory:
+  - id: water_management
+    label: "Water conditioning and return accounting"
+    inputs:
+      product:
+        - row_id: makeup_water
+          role: "Tap water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Inclusion condition (inclusion_condition): Purchased water enters the make-up circuit."
+          amount:
+            expression: "Collect the exchange amount using cp_material; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - doe-steam-boiler-water
+            ranges: []
+        - row_id: alkali
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Inclusion condition (inclusion_condition): Sodium hydroxide is used in the declared water-treatment recipe."
+          amount:
+            expression: "Collect the exchange amount using cp_material; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - doe-steam-boiler-water
+            ranges: []
+        - row_id: oxygen_scavenger
+          role: "Sodium sulfite"
+          name: "Sodium sulfite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4fbdce66-c23d-4890-b16e-d53c39afa224"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Inclusion condition (inclusion_condition): Sodium sulfite is dosed for oxygen removal."
+          amount:
+            expression: "Collect the exchange amount using cp_material; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - doe-steam-boiler-water
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: boiler_blowdown
+          role: "Boiler blowdown wastewater"
+          name: "Boiler blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Boiler blowdown leaves for external treatment."
+          amount:
+            expression: "Collect the exchange amount using cp_waste; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - doe-steam-boiler-water
+            ranges: []
+      elementary:
+        []
+  - id: heat_generation
+    label: "Heat generation and recovery"
+    inputs:
+      product:
+        - row_id: generation_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a500e350-83b8-4347-894e-b81ecd418615"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Inclusion condition (inclusion_condition): Electricity is imported for generation equipment, heaters or heat pumps."
+          amount:
+            expression: "Collect the exchange amount using cp_energy; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: gas_fuel
+          role: "Pipeline-quality natural gas"
+          name: "Pipeline-quality natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7766e51e-0b64-4fbb-89cb-489c33293137"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66; unit group 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Inclusion condition (inclusion_condition): Pipeline natural gas is burned."
+          amount:
+            expression: "Collect the exchange amount using cp_fuel; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: coal_fuel
+          role: "Bituminite"
+          name: "Bituminite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f10e7264-fc49-491a-a886-f717e3c7a437"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Inclusion condition (inclusion_condition): Bituminous coal is burned."
+          amount:
+            expression: "Collect the exchange amount using cp_fuel; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: oil_fuel
+          role: "heavy fuel oil"
+          name: "heavy fuel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9490cf0e-a790-44a1-9c2f-3793bbdb452d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Inclusion condition (inclusion_condition): Heavy fuel oil is burned."
+          amount:
+            expression: "Collect the exchange amount using cp_fuel; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: wood_fuel
+          role: "Wood chips"
+          name: "Wood chips"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0ccd0e1-9f75-4f2a-a9b9-5ebc8b3e5315"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; unit group 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Inclusion condition (inclusion_condition): Wood chips are burned."
+          amount:
+            expression: "Collect the exchange amount using cp_fuel; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel
+              source_ids: []
+            ranges: []
+        - row_id: imported_steam_heat
+          role: "Heat from steam"
+          name: "Heat from steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cbc1f372-5c64-4ad5-a938-89b9396758c9"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Inclusion condition (inclusion_condition): Purchased steam supplies a heat exchanger; upstream generation is outside the foreground."
+          amount:
+            expression: "Collect the exchange amount using cp_heat; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chp_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a500e350-83b8-4347-894e-b81ecd418615"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Inclusion condition (inclusion_condition): A CHP unit exports net electricity after its own electricity consumption."
+          amount:
+            expression: "Collect the exchange amount using cp_energy; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-chp-efficiency
+            ranges: []
+      waste:
+        - row_id: bottom_ash
+          role: "Coal combustion bottom ash"
+          name: "Coal combustion bottom ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Coal bottom ash leaves for disposal; sale as a co-product requires separate classification and allocation."
+          amount:
+            expression: "Collect the exchange amount using cp_waste; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Fossil carbon is oxidized within the foreground."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: biogenic_co2
+          role: "Carbon dioxide, biogenic, to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Biogenic carbon is oxidized within the foreground."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_oxides
+          role: "Nitrogen oxides, to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Combustion releases nitrogen oxides."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: sulfur_dioxide
+          role: "Sulfur dioxide, to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Fuel sulfur produces sulfur dioxide after any abatement."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Incomplete combustion releases carbon monoxide."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: fine_particles
+          role: "Particulate matter less than 2.5 micrometres, to air"
+          name: "Particulate matter less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Fine particles cross the stack or fugitive air boundary."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: methane_emission
+          role: "Methane, to air"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Methane leaks or incomplete combustion are present."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: nitrous_oxide
+          role: "Dinitrogen monoxide, to air"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): Combustion releases nitrous oxide."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_loss
+          role: "1,1,1,2-Tetrafluoroethane, to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Inclusion condition (inclusion_condition): The declared heat pump contains R134a and leaks; other refrigerants require separate atomic rows."
+          amount:
+            expression: "Collect the exchange amount using cp_emissions; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions
+              source_ids: []
+            ranges: []
+  - id: heat_delivery
+    label: "Metering and thermal delivery"
+    inputs:
+      product:
+        - row_id: delivery_power
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a500e350-83b8-4347-894e-b81ecd418615"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Inclusion condition (inclusion_condition): Pumps or distribution equipment use purchased electricity."
+          amount:
+            expression: "Collect the exchange amount using cp_energy; retain the unallocated total and provide the allocated amount per reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: supplied_heat
+          role: "Heat from steam or hot water"
+          name: "Heat from steam or hot water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8c96c869-cd82-4301-bb74-b2f9f61ce109"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; unit group 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Inclusion condition (inclusion_condition): One declared carrier and one supply gate define the dataset output."
+          amount:
+            expression: "1 MJ"
+            value_mode: "fixed_value"
+            specificity: "site_specific"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_separate
+    applies_to: "all processes"
+    rule: "Assign separately metered equipment and delivery loads directly before allocating shared generation burdens."
+    source_ids: []
+  - rule_id: allocation_chp
+    applies_to: "heat_generation"
+    rule: "For indivisible CHP common burdens use a declared physical allocation consistent with the study method. Collect net exported electricity, useful heat by grade and common fuel use; document why energy, exergy or another causal model represents the coupled process. Do not silently impose equal-value energy allocation across different heat grades."
+    source_ids:
+      - epa-chp-efficiency
+  - rule_id: allocation_recovery
+    applies_to: "imported_steam_heat"
+    rule: "Recovered heat requires a stated upstream burden or cut-off agreement and linked source process. Avoided heat or electricity is a separate consequential comparison; never subtract it from attributional inventory without declaring system expansion."
+    source_ids: []
+  - rule_id: allocation_losses
+    applies_to: "heat_delivery"
+    rule: "Assign actual generation and network losses to heat delivered at the declared gate. Return condensate is internal recovery, not an automatic avoided-production credit."
+    source_ids:
+      - doe-steam-boiler-water
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_heat
+      process_id: "heat_delivery"
+      flow_role: "thermal output and imported heat"
+      record_type: "meter and state records"
+      raw_fields: "carrier; gate; supplied and returned masses; pressure; temperatures; steam quality; supply and return enthalpy; net heat; make-up baseline enthalpy"
+      collection_method: "Calibrated heat meter or thermodynamic integration; reconcile supplier heat meters and return-loop records"
+      unit: "MJ"
+      frequency: "continuous with monthly reconciliation"
+      temporal_coverage: "same full declared operating period"
+      site_scope: "declared heat supply gates"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; enthalpy method version; heat balance"
+    - protocol_id: cp_energy
+      process_id: "heat_generation"
+      flow_role: "electrical input and output"
+      record_type: "electricity meters"
+      raw_fields: "meter id; process; gross generation; own use; imported and exported electricity; kWh"
+      collection_method: "Submeter heaters, auxiliaries and network pumps; reconcile purchases and CHP generation"
+      unit: "MJ"
+      frequency: "continuous with monthly reconciliation"
+      temporal_coverage: "same full declared operating period"
+      site_scope: "site and included network"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "meter calibration; bills; no gross-net double count"
+    - protocol_id: cp_fuel
+      process_id: "heat_generation"
+      flow_role: "individual fuel receipts and use"
+      record_type: "fuel stock and meter records"
+      raw_fields: "fuel identity; opening stock; receipts; closing stock; moisture; heating value; reference conditions"
+      collection_method: "Reconcile meter or weighed receipts with stock change and supplier analyses for each fuel"
+      unit: "kg or m3 as specified by row"
+      frequency: "each receipt and monthly balance"
+      temporal_coverage: "same full declared operating period"
+      site_scope: "generation units inside foreground"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "weighing; meter correction; fuel certificates"
+    - protocol_id: cp_material
+      process_id: "water_management"
+      flow_role: "water and individual chemicals"
+      record_type: "meter and dosing records"
+      raw_fields: "make-up mass; return mass; chemical identity; delivered mass; concentration; stock change"
+      collection_method: "Meter make-up separately from circulation; reconcile chemical dosing and purchase stocks"
+      unit: "kg"
+      frequency: "continuous water and each chemical batch"
+      temporal_coverage: "same full declared operating period"
+      site_scope: "water-conditioning system"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "calibration; dosing logs; recipe and assay"
+    - protocol_id: cp_waste
+      process_id: "water_management"
+      flow_role: "blowdown and ash leaving site"
+      record_type: "discharge and transfer records"
+      raw_fields: "waste identity; mass; moisture; destination; treatment; discharged water composition"
+      collection_method: "Meter discharges; weigh ash shipments; keep treatment manifests; exclude internal circulation"
+      unit: "kg"
+      frequency: "each transfer and monthly totals"
+      temporal_coverage: "same full declared operating period"
+      site_scope: "external waste exits"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "discharge analyses; treatment and weighing records"
+    - protocol_id: cp_emissions
+      process_id: "heat_generation"
+      flow_role: "individual air emissions"
+      record_type: "stack tests; balances; leak logs"
+      raw_fields: "chemical identity; compartment; stack concentration and flow; hours; fuel carbon; biogenic fraction; refrigerant charge and replacement"
+      collection_method: "Integrate species-specific monitoring; if estimated retain site activity, validated factor, method and uncertainty; retain refrigerant stock balance"
+      unit: "kg"
+      frequency: "continuous where monitored; otherwise each test and monthly activity"
+      temporal_coverage: "same full declared operating period"
+      site_scope: "direct stack and fugitive sources"
+      aggregation_rule: "per reference flow"
+      quality_evidence: "test reports; factor original source; mass-balance closure"
+  calculation_rules:
+    - id: heat_integration
+      applies_to: "supplied_heat; imported_steam_heat"
+      rule: "For each interval: supplied mass times supply specific enthalpy minus returned mass times return specific enthalpy minus net exported mass times baseline specific enthalpy; sum and divide by 1000 for kg and kJ/kg to yield MJ. Equal-mass closed loops reduce to mass times enthalpy difference; no-return steam uses the declared baseline."
+      inputs:
+        - cp_heat
+      output: "net supplied heat in MJ"
+      source_ids: []
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide the attributed period exchange total by net supplied heat in MJ; supplied_heat is 1 MJ. Apply the documented allocation before division."
+      inputs:
+        - cp_heat
+        - cp_energy
+        - cp_fuel
+        - cp_material
+        - cp_waste
+        - cp_emissions
+      output: "exchange per reference flow"
+      source_ids: []
+    - id: electric_conversion
+      applies_to: "generation_power; delivery_power; chp_electricity"
+      rule: "Multiply recorded kWh by 3.6 to obtain MJ."
+      inputs:
+        - cp_energy
+      output: "electrical energy in MJ"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_period
+      applies_to: "all inventory rows"
+      requirement: "Use one consistent full operating period and preserve seasonal operation, outages and startup."
+      evidence: "meter and production logs"
+    - id: quality_balance
+      applies_to: "foreground"
+      requirement: "Reconcile fuel, heat, water, stock and electricity balances; disclose residuals and measurement uncertainty without inventing a tolerance."
+      evidence: "balance sheets and calibration"
+    - id: quality_state
+      applies_to: "supplied_heat"
+      requirement: "No interchangeability across unmatched carrier, temperature, pressure, enthalpy baseline or gate."
+      evidence: "state and supply agreement"
+    - id: quality_emissions
+      applies_to: "heat_generation"
+      requirement: "Separate fossil and biogenic carbon; declare NOx reporting convention and particle size; estimates require traceable factors and local activity."
+      evidence: "emission tests and site records"
+    - id: quality_completeness
+      applies_to: "all processes"
+      requirement: "Add actual atomic exchanges absent from the common inventory and document route-specific absences; identify all unverified identities and missing range evidence."
+      evidence: "site flow diagram and source review"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "supplied_heat"
+    rule: "Require exactly 1 MJ output, all required qualifiers and the same denominator for every inventory row and collection protocol."
+    source_ids: []
+  - rule_id: validate_identity
+    applies_to: "all inventory rows"
+    rule: "Check atomic exchange identity, flow type, product state, property, unit and public UUID support; an unresolved UUID remains explicit."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "foreground"
+    rule: "Check period balances, allocation sums, double counting of purchased heat, imported/exported electricity and recycled water; unexplained residuals require correction or disclosure."
+    source_ids: []
+  - rule_id: validate_gate
+    applies_to: "heat_delivery"
+    rule: "A consumer-gate dataset must contain actual delivery pumping and loss accounting, rather than assuming plant output equals delivered heat."
+    source_ids:
+      - doe-steam-boiler-water
+  - rule_id: validate_evidence
+    applies_to: "all inventory rows"
+    rule: "Do not replace site records with an unsupported industry range; missing quantitative evidence must remain a collection requirement."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Qualified thermal-energy inputs in process and lifecyclemodel projections"
+  allowed_use: "Matching carrier, thermodynamic grade, gate, region and technology"
+  excluded_use: "Unqualified fuel substitution; cooling services; equipment production; automatic avoided-electricity claims"
+  required_metadata: "reference qualifiers; accounting period; boundary; flow identity; supplier links; allocation method; infrastructure assessment"
+  required_quality_disclosure: "measurement uncertainty; missing records; estimated emissions; unresolved identities; upstream coverage; range limitations"
+  update_trigger: "Fuel or technology change; revised gate or heat grade; network or return-loop change; new emissions measurement"
+data_sources:
+  - id: "un-cpc-3-structure"
+    type: "official_guidance"
+    reference: "UNSD, Central Product Classification Version 3.0 Structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; original rows 526-532; retrieved 2026-10-01"
+    used_for: "Product identity only"
+  - id: "doe-steam-boiler-water"
+    type: "official_guidance"
+    reference: "U.S. Department of Energy, Best Management Practice #8: Steam Boiler Systems; https://www.energy.gov/cmei/femp/best-management-practice-8-steam-boiler-systems ; Operations and Maintenance Options and Retrofit Options; retrieved 2026-10-01"
+    used_for: "Make-up metering, condensate recovery, blowdown and water-treatment collection"
+  - id: "epa-chp-efficiency"
+    type: "official_guidance"
+    reference: "U.S. EPA, Methods for Calculating CHP Efficiency; https://www.epa.gov/chp/methods-calculating-chp-efficiency ; Total System Efficiency; updated 13 February 2026; retrieved 2026-10-01"
+    used_for: "CHP net useful outputs and caution about equating electrical and thermal energy; no efficiency ranges adopted"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:283fe53f4498ea51a2610d39cb65f24e5c87b2beae36c26c3b55a6d76bd0af04"
+  generated_content_sha256: "sha256:e88a611a990b71fb36aecb5bce529c6d830983c44f69c159f00ae6c6a7f7cd92"

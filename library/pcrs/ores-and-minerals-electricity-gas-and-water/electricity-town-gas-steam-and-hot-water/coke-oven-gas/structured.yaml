@@ -1,10 +1,819 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "17201"
-  title: "Coke oven gas"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.ores-and-minerals-electricity-gas-and-water.electricity-town-gas-steam-and-hot-water.coke-oven-gas"
+  classification_refs: "CPC 3.0: 17201"
+  covered_products: "Cleaned coke oven fuel gas; internal or external metered delivery"
+  excluded_products: "Unrecovered heat-recovery oven gas; mixed town gas; other recovered metallurgical gases; separated chemicals"
+  representative_product: "Coke oven gas"
+  production_route: "Coal carbonisation followed by gas cooling, tar separation, cleaning and metered dispatch"
+  market_state: "Gaseous fuel; dry mass basis; declared composition and delivery pressure"
+functional_unit:
+  what: "Supply cleaned coke oven gas as a fuel at the plant gate"
+  how_much: "1 kg dry cleaned coke oven gas"
+  how_well: "Measured composition, net calorific value and contaminant specification accepted by the receiving fuel system"
+  how_long_or_cycle: "One reporting-period production campaign; no service-life assumption"
+  reference_flow_link: "reference_gas"
+system_boundary:
+  rules:
+    - rule_id: boundary_start
+      applies_to: "raw_gas"
+      rule: "Include cooling, tar recovery, installed ammonia/sulfur removal, light-oil recovery when operated, gas holding and plant-gate compression. Do not omit upstream coking burdens merely because gas is a coproduct."
+      source_ids:
+        - jrc-iron-steel-bref-2013
+        - eu-environmental-footprint-2021
+    - rule_id: boundary_loops
+      applies_to: "all inventory rows"
+      rule: "Count external makeup and exported streams; internal wash-liquor, cooling-water and solvent circulation do not cross the aggregate foreground boundary. Reconcile separate makeup and purge records."
+      source_ids:
+        - jrc-iron-steel-bref-2013
+    - rule_id: boundary_extensions
+      applies_to: "foreground package"
+      rule: "Add a separate atomic row for every actually used reagent, solvent, catalyst, direct-contact steam input, residue and measured emission not represented below. Flaring or combustion inside the selected boundary requires separate fuel and individual combustion-emission rows; downstream consumer combustion remains outside. Document absent routes instead of assigning invented zeros."
+      source_ids:
+        - jrc-iron-steel-bref-2013
+boundary_abstraction:
+  declared_starting_condition: "Raw gas at the collecting-main outlet before primary cooling, with composition, moisture, mass and upstream coking burdens declared"
+  starting_condition_role: "Burden-bearing upstream intermediate input, not burden-free waste"
+  product_classification_scope: "Coke oven gas recovered and cleaned from coal carbonisation"
+  recursive_input_rule: "Record imported same-category gas separately with its upstream supply; net internal recirculation within this boundary and do not create self-referencing upstream datasets"
+  upstream_dataset_requirement: "Link raw gas to coal supply and carbonisation with documented allocation between coke, gas and other recovered products; link purchased utilities and reagents and exported waste to compatible supply/treatment datasets"
+  disclosure: "Identify reception and dispatch meters, included cleaning equipment, excluded sulfur conversion and wastewater treatment, upstream burden interface, gas losses, internal fuel transfers and each recovery route"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "coke oven gas"
+    uuid: "32ab44a2-c912-4c1f-98cf-856a24b3f99a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - site
+    - "reporting period"
+    - "coal-coking origin"
+    - "gas composition"
+    - "moisture and dry basis"
+    - "net calorific value and basis"
+    - "volume reference temperature and absolute pressure when used"
+    - "density method"
+    - "contaminant acceptance limits"
+    - "gas cleaning route"
+    - "dispatch pressure"
+    - "upstream and foreground allocation"
+    - "internal-use and export split"
+reference_flows:
+  []
+measurement_rules:
+  - id: gas_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use cp_gas to measure reporting-period dry delivered gas mass; reference_gas is 1 kg. All inventory rows are per 1 kg reference flow."
+  - id: gas_state
+    applies_to: "raw_gas, reference_gas"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert metered volumes using a traceable density at the same temperature, absolute pressure, composition and moisture basis. Do not assume a universal density or interpret Nm3 without its declared reference conditions."
+  - id: energy_basis
+    applies_to: "electricity, steam_heat, reference_gas"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record electricity in MJ, using the exact unit identity 1 kWh = 3.6 MJ when invoices use kWh. Measure steam heat from supplied/returned enthalpy. Report gas net calorific value separately in MJ/kg dry gas; do not use gross calorific value in its place."
+  - id: chemical_basis
+    applies_to: "sulfuric_acid, carbonate, ammonium_sulfate"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Declare concentration, water content and purity. Preserve the selected product formulation basis; record active-chemical mass as supplementary data, not an unlabelled replacement."
+process_map:
+  - id: gas_cooling
+    name: "Gas cooling and tar separation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: gas_cleaning
+    name: "Gas cleaning and liquor management"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: sulfate_recovery
+    name: "Ammonium-sulfate recovery"
+    inclusion: "conditional"
+    inclusion_condition: "Sulfuric-acid ammonia capture producing ammonium sulfate is operated"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: carbonate_scrubbing
+    name: "Potassium-carbonate scrubbing"
+    inclusion: "conditional"
+    inclusion_condition: "Potassium-carbonate desulfurisation is operated"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: benzol_recovery
+    name: "Coal-tar wash-oil benzol recovery"
+    inclusion: "conditional"
+    inclusion_condition: "BTX recovery with coal-tar wash oil is operated"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: gas_dispatch
+    name: "Gas holding and metered dispatch"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Electricity supply accounting"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: gas_releases
+    name: "Gas-handling air releases"
+    inclusion: "conditional"
+    inclusion_condition: "Leaks, vents or open contact-cooling releases occur"
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: gas_cooling
+    label: "Gas cooling and tar separation"
+    inputs:
+      product:
+        - row_id: raw_gas
+          role: "Raw coke oven gas before primary cooling"
+          name: "Raw coke oven gas before primary cooling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Raw gas crosses the declared reception point."
+          amount:
+            expression: "Collect using cp_raw_gas; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_gas
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df413bba-3c03-412b-a80a-c6082b6b9b33"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "External cooling-water supply or makeup is present; exclude internal recirculation."
+          amount:
+            expression: "Collect using cp_water; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: coal_tar
+          role: "Coal tar"
+          name: "Coal tar"
+          flow_type: "product"
+          flow_ref:
+            uuid: "176de006-c7be-47ad-be03-2ce15e99c6ff"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Separated tar leaves the foreground boundary as a product."
+          amount:
+            expression: "Collect using cp_tar; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tar
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: gas_cleaning
+    label: "Gas cleaning and liquor management"
+    inputs:
+      product:
+        - row_id: steam_heat
+          role: "Heat from steam"
+          name: "Heat from steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c333ae82-c22d-4cb0-8f0a-b10017eec1f7"
+          property_unit: "Gross calorific value 93a60a56-a3c8-14da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Indirect steam heat is supplied to stripping or solvent regeneration."
+          amount:
+            expression: "Collect using cp_heat; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stripping_vapour
+          role: "Ammonia-hydrogen-sulfide stripping vapour"
+          name: "Ammonia-hydrogen-sulfide stripping vapour"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Stripping vapour is transferred to a separately modelled sulfur-recovery facility."
+          amount:
+            expression: "Collect using cp_material; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        - row_id: ammoniacal_effluent
+          role: "Ammoniacal coke-oven still effluent"
+          name: "Ammoniacal coke-oven still effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Still effluent is exported to treatment; treatment is linked downstream."
+          amount:
+            expression: "Collect using cp_effluent; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      elementary:
+        []
+  - id: sulfate_recovery
+    label: "Ammonium-sulfate recovery"
+    inputs:
+      product:
+        - row_id: sulfuric_acid
+          role: "Sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The ammonium-sulfate recovery route uses sulfuric acid; declare solution strength."
+          amount:
+            expression: "Collect using cp_sulfate; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sulfate
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ammonium_sulfate
+          role: "Ammonium sulfate"
+          name: "Ammonium sulphate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7f128b59-9df7-4b5d-ad0f-00103b916cf7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Ammonium sulfate is actually recovered and dispatched as a product."
+          amount:
+            expression: "Collect using cp_sulfate; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sulfate
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: carbonate_scrubbing
+    label: "Potassium-carbonate scrubbing"
+    inputs:
+      product:
+        - row_id: carbonate
+          role: "Potassium carbonate"
+          name: "Potassium carbonate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50187d31-fd0a-47c3-9aa2-84402ffb625e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Potassium-carbonate scrubbing is operated; record makeup, not solution circulation."
+          amount:
+            expression: "Collect using cp_carbonate; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbonate
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: benzol_recovery
+    label: "Coal-tar wash-oil benzol recovery"
+    inputs:
+      product:
+        - row_id: wash_oil
+          role: "Coal-tar wash oil"
+          name: "Coal-tar wash oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Light oil is recovered with coal-tar wash oil; record fresh makeup."
+          amount:
+            expression: "Collect using cp_benzol; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_benzol
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_benzol
+          role: "Crude benzol from coke oven gas"
+          name: "Crude benzene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "521f59f8-548c-43c8-a6e5-51c11d153cb2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "BTX-rich light oil is recovered; do not substitute pure benzene."
+          amount:
+            expression: "Collect using cp_benzol; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_benzol
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: gas_dispatch
+    label: "Gas holding and metered dispatch"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_gas
+          role: "coke oven gas"
+          name: "coke oven gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "32ab44a2-c912-4c1f-98cf-856a24b3f99a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted dry cleaned gas at the metered plant gate."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: utilities
+    label: "Electricity supply accounting"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Meter electricity for exhausters, pumps, cooling and dispatch compression once."
+          amount:
+            expression: "Collect using cp_power; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_power
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: gas_releases
+    label: "Gas-handling air releases"
+    inputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: methane_air
+          role: "Methane, fossil, to air"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Leaks or venting release methane; gas composition and leak records establish amounts."
+          amount:
+            expression: "Collect using cp_air; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: benzene_air
+          role: "Benzene, to air"
+          name: "Benzene, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Benzene is released from gas handling or an open direct-cooling circuit."
+          amount:
+            expression: "Collect using cp_air; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+        - row_id: h2s_air
+          role: "Hydrogen sulfide, to air"
+          name: "hydrogen sulfide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94a9-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Residual hydrogen sulfide is emitted from gas handling or cleaning."
+          amount:
+            expression: "Collect using cp_air; report the attributable exchange per 1 kg reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air
+              source_ids:
+                - jrc-iron-steel-bref-2013
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_direct
+    applies_to: "foreground burdens"
+    rule: "First investigate subdivision or system expansion. Assign dedicated cooling, purification and recovery operations by separate metering when possible. An expanded-system result must disclose all functions and cannot masquerade as this single-gas reference."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocate_shared
+    applies_to: "shared burdens"
+    rule: "When earlier approaches cannot be applied, justify a relevant physical relationship. Use energy allocation only where it represents the shared process function; nonfuel products such as ammonium sulfate do not automatically share fuel-energy allocation. If physical causation is unavailable, justify an alternative relationship, with economic allocation using contemporaneous prices and quantities at the same separation stage. Retain sensitivity analysis and complete allocation fractions."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocate_interface
+    applies_to: "raw gas and coproducts"
+    rule: "Document the upstream coke/gas allocation and the downstream recovery allocation as distinct stages. Do not allocate an already assigned upstream burden twice. Record internal gas use as a transfer, not as a substitution credit. Waste is linked to its treatment; only supported marketable coproducts enter the coproduct allocation set."
+    source_ids:
+      - eu-environmental-footprint-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_gas
+      process_id: "gas_dispatch"
+      flow_role: "reference_gas"
+      record_type: "meter and analysis"
+      raw_fields: "mass or volume; temperature; absolute pressure; moisture; composition; density; LHV; accepted dry output; export and internal-use meters"
+      collection_method: "Use calibrated gas meters and representative laboratory samples; reconcile dry/wet basis and matching density conditions, stock changes, exported and internal-delivered gas, vents and rejected gas"
+      unit: "kg"
+      frequency: "continuous meter; composition by representative campaign sampling"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_water
+      process_id: "gas_cooling"
+      flow_role: "cooling_water"
+      record_type: "water meter"
+      raw_fields: "supply; makeup; purge; loop stock change; density if volume metered"
+      collection_method: "Meter external supplied cooling water and net makeup; keep internal circulation separate and reconcile volume-to-mass with measured conditions"
+      unit: "kg"
+      frequency: "continuous and monthly reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_material
+      process_id: "gas_cleaning"
+      flow_role: "stripping_vapour"
+      record_type: "stock and transfer records"
+      raw_fields: "specific substance; composition; purity; incoming/outgoing mass; initial/final stock; stage; marketability; allocation decision and fractions"
+      collection_method: "Reconcile weighed transfer, supplier and inventory records; measure each reagent and coproduct separately; use traceable gas mass/composition records for stripping vapour"
+      unit: "kg"
+      frequency: "each transfer; monthly stock balance"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_sulfate
+      process_id: "sulfate_recovery"
+      flow_role: "sulfuric_acid; ammonium_sulfate"
+      record_type: "stock and transfer records"
+      raw_fields: "specific substance; composition; purity; incoming/outgoing mass; initial/final stock; stage; marketability; allocation decision and fractions"
+      collection_method: "Reconcile weighed transfer, supplier and inventory records; measure each reagent and coproduct separately; use traceable gas mass/composition records for stripping vapour"
+      unit: "kg"
+      frequency: "each transfer; monthly stock balance"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_carbonate
+      process_id: "carbonate_scrubbing"
+      flow_role: "carbonate"
+      record_type: "stock and transfer records"
+      raw_fields: "specific substance; composition; purity; incoming/outgoing mass; initial/final stock; stage; marketability; allocation decision and fractions"
+      collection_method: "Reconcile weighed transfer, supplier and inventory records; measure each reagent and coproduct separately; use traceable gas mass/composition records for stripping vapour"
+      unit: "kg"
+      frequency: "each transfer; monthly stock balance"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_benzol
+      process_id: "benzol_recovery"
+      flow_role: "wash_oil; crude_benzol"
+      record_type: "stock and transfer records"
+      raw_fields: "specific substance; composition; purity; incoming/outgoing mass; initial/final stock; stage; marketability; allocation decision and fractions"
+      collection_method: "Reconcile weighed transfer, supplier and inventory records; measure each reagent and coproduct separately; use traceable gas mass/composition records for stripping vapour"
+      unit: "kg"
+      frequency: "each transfer; monthly stock balance"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_heat
+      process_id: "gas_cleaning"
+      flow_role: "steam_heat"
+      record_type: "heat meter"
+      raw_fields: "steam flow; pressure; temperature; supply and return enthalpy; heat supplied"
+      collection_method: "Meter useful indirect steam heat at the cleaning boundary; exclude boiler fuel already in the heat-supply dataset"
+      unit: "MJ"
+      frequency: "continuous; monthly reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_power
+      process_id: "utilities"
+      flow_role: "electricity"
+      record_type: "electricity meter"
+      raw_fields: "meter readings; voltage; supplier; equipment scope; kWh or MJ"
+      collection_method: "Submeter or document attributable equipment loads; convert kWh to MJ; avoid counting plant totals and their submeter readings twice"
+      unit: "MJ"
+      frequency: "continuous; monthly reconciliation"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_effluent
+      process_id: "gas_cleaning"
+      flow_role: "ammoniacal_effluent"
+      record_type: "effluent transfer"
+      raw_fields: "mass/volume; density; ammonia; COD; phenols; receiving treatment; sampling dates"
+      collection_method: "Meter exported still effluent and sample its composition; do not count treated water emissions again in this boundary that excludes treatment"
+      unit: "kg"
+      frequency: "continuous flow; representative sampling"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_air
+      process_id: "gas_releases"
+      flow_role: "methane_air; benzene_air; h2s_air"
+      record_type: "emission measurement"
+      raw_fields: "specific chemical; vent/leak point; rate; operating hours; gas composition; control efficiency; compartment"
+      collection_method: "Use site emission measurements or a documented leak/vent estimate using measured gas composition; identify species and air compartment; do not report entire lost gas as methane"
+      unit: "kg"
+      frequency: "campaign surveys plus continuous vent logs"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_raw_gas
+      process_id: "gas_cooling"
+      flow_role: "raw_gas"
+      record_type: "meter and analysis"
+      raw_fields: "received raw-gas mass or volume; temperature; pressure; moisture; density; composition"
+      collection_method: "Meter reception separately from dry cleaned-gas dispatch; use the received wet-gas state and record entrained condensate separately when present"
+      unit: "kg"
+      frequency: "continuous and representative sampling"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+    - protocol_id: cp_tar
+      process_id: "gas_cooling"
+      flow_role: "coal_tar"
+      record_type: "stock and transfer records"
+      raw_fields: "coal tar mass; water content; stock change; transfer destination"
+      collection_method: "Weigh separated tar and reconcile tank stocks, export and internal transfer"
+      unit: "kg"
+      frequency: "each transfer; monthly stock balance"
+      temporal_coverage: "same complete reporting period"
+      site_scope: "declared gas-recovery plant"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; original records; stock and meter reconciliation; sampling uncertainty"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "Divide the attributable reporting-period exchange by reporting-period accepted dry gas mass in kg; reference_gas is fixed at 1 kg. Keep coproduct quantities before allocation and document burden fractions separately."
+      inputs:
+        - cp_gas
+        - "relevant collection protocol"
+      output: "exchange amount per 1 kg reference flow"
+      source_ids:
+        - eu-environmental-footprint-2021
+  data_quality_requirements:
+    - id: quality_period
+      applies_to: "all inventory rows"
+      requirement: "Use the same reporting period and equipment scope; explain missing records and estimates rather than replacing them with assumed zeros."
+      evidence: "source records and meter map"
+    - id: quality_balance
+      applies_to: "raw_gas; reference_gas; recovered streams"
+      requirement: "Reconcile raw-gas reception, dry gas dispatch, water and condensate, coproducts, stock changes and losses. Investigate discrepancies against measurement uncertainty; no universal gas yield, density or loss fraction is supplied."
+      evidence: "component and material balances; uncertainty records"
+    - id: quality_routes
+      applies_to: "gas-cleaning"
+      requirement: "Describe actual cleaning and recovery technologies and all specific additional exchanges. Do not apply the European technical description as a universal recipe or legal limit."
+      evidence: "jrc-iron-steel-bref-2013"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference_gas"
+    rule: "Require all reference qualifiers, 1 kg dry product and the same inventory denominator in both language renderings. Reject unspecified volume reference conditions or incompatible wet/dry conversions."
+    source_ids:
+      - jrc-iron-steel-bref-2013
+  - rule_id: validate_completeness
+    applies_to: "foreground package"
+    rule: "Require complete route-specific atomic exchanges and protocols, consistent gate meters, no internal-loop double count, linked upstream coking burdens and downstream waste treatment. Resolve additional emitted species before dataset publication."
+    source_ids:
+      - jrc-iron-steel-bref-2013
+  - rule_id: validate_allocation
+    applies_to: "allocation stages"
+    rule: "Require justified allocation decisions, fractions summing to unity within declared precision, prices or physical relationship evidence where used, and stage separation preventing double allocation or credits."
+    source_ids:
+      - eu-environmental-footprint-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Fuel-supply input in process or lifecyclemodel projections after applicable review"
+  allowed_use: "Supply of coke oven gas matching cleaning route, composition, dry basis, geography, period, gate and allocation"
+  excluded_use: "Universal natural-gas proxy; heat-recovery oven gas production; downstream combustion emissions; hydrogen or methanol production"
+  required_metadata: "All reference qualifiers; source and gate scope; upstream links; route; coproduct handling; collection methods"
+  required_quality_disclosure: "Coverage; uncertainty; gas balance; allocation sensitivity; missing identities or evidence; measured versus estimated emission values"
+  update_trigger: "Coal blend, gas composition, recovery technology, pressure, upstream dataset, allocation, supplier or material operating change"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Central Product Classification (CPC) Version 3.0 Structure; 2025-06-30; Category identity only; original CSV rows 520–525"
+  - id: "jrc-iron-steel-bref-2013"
+    type: "official_guidance"
+    reference: "https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/IS_Adopted_03_2012.pdf"
+    used_for: "Best Available Techniques (BAT) Reference Document for Iron and Steel Production; 2013; Sections 5.1.4–5.1.5, printed pp. 215, 218–220; route distinction, cooling, named recovery chemicals and coproducts; European technical evidence, not default quantity ranges"
+  - id: "eu-environmental-footprint-2021"
+    type: "official_guidance"
+    reference: "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230"
+    used_for: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods; 2021-12-30; Annex I section 4.5, original PDF pp. 87–88; general multifunctionality hierarchy adopted as a method choice; no claim of full PEF conformity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9d86ee34bd9c2ccb373ed61fd919732098d9bdb1d43da3b782375b509ef5ca16"
+  generated_content_sha256: "sha256:19472e38010510292d417b9c48b20e0a4de6dc259cec6ec2d2ab1f34044fa3b3"
