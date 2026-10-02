@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
-lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: 3b71500f481d560b2f41e0d916c3af73e4c3ea2e
+lastReviewedNote: "Reviewed PR #53 under PCR #59: request-scoped verified event indexing, balanced original-source HTML extraction and sanitized timeout diagnostics preserve source identity, receipt/task/content binding and the fresh final publication guard. Independent review found no code blocker; required builder contract review is recorded before guarded merge."
 ---
 
 # Authoring Guide

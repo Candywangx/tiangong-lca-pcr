@@ -450,6 +450,22 @@ checks; current audit results expose the new verification without rewriting hist
 HTTP access failures and recognized transport errors allow fallback; an unknown program exception holds even if a
 cache exists.
 
+New source reads attach `source_fetch_diagnostics` to their audit or failure details: actual start/end and elapsed
+time, remaining window at entry/exit (`null` for an unbounded window), the selected I/O budget, observed abort source,
+HTTP status and media type, bytes read, observed body completion, available response SHA-256 and its `complete` or
+`partial` scope, and bounded identity rejection reasons/observations. Body completion records observed stream EOF
+or an explicitly empty response body; it does not establish original-document identity. Unread response bytes have
+no hash. HTTP rejection bodies are not read, and failed identity or partial transport bodies are not saved as cache
+blobs. Missing historical response diagnostics remain absent. Cache fallback attaches the current failed attempt as
+`cache_fallback_fetch_diagnostics`, separately from the verified cached original and its historical hash.
+
+The Harness records its own request timer as `GOAL_SOURCE_REQUEST_TIMEOUT` with origin `harness_request_timer` and
+an observed `harness_request_timeout` abort source; that combination permits ordinary bounded infrastructure
+recovery. Review-window exhaustion remains an execution-window deferral. Recognized machine transport codes permit
+transport recovery; an unproven `AbortError`, `TimeoutError`, raw network prose or author claim does not. New
+diagnostics never copy raw errors or authentication/request headers, and failure locators retain only the URL origin.
+Existing source-report and successful/cache identity locators retain their exact matching contract.
+
 Original-source qualification normalizes HTML body text (including inline tags and common/numeric entities), removes
 navigation/script content, and uses Poppler `pdftotext` for PDF bytes under the remaining execution deadline. Install
 `poppler-utils` on Linux (or Poppler on other hosts); a missing extractor is a configuration hold. CI installs it explicitly.

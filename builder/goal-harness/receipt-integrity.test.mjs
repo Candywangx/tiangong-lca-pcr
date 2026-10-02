@@ -17,6 +17,7 @@ import {
   recordHybridCandidateDirectRead,
   finalizeHybridSearchReceipt,
   auditHybridSearchReceipts,
+  loadReportReceiptEvidence,
 } from "./uuid-search-receipts.mjs";
 
 const evidence = JSON.parse(
@@ -24,6 +25,17 @@ const evidence = JSON.parse(
     new URL("./fixtures/44125-rejection-differences.json", import.meta.url),
   ),
 );
+
+test("receipt batch reuses one verified index while preserving each lookup", t => {
+  const f = fixture(t);
+  finalizeHybridSearchReceipt(f.options);
+  let scans = 0;
+  const iterate = GoalEventStore.prototype.iterateEvents;
+  t.mock.method(GoalEventStore.prototype, "iterateEvents", function* (options) { scans++; yield* iterate.call(this, options); });
+  const report = { ...f.report, hybrid_search_receipt_ids: ["receipt-44125", "receipt-44125"] };
+  assert.equal(loadReportReceiptEvidence({ report, stateDir: f.stateDir, task: f.task }).length, 2);
+  assert.equal(scans, 1);
+});
 const candidate = evidence.findings[0];
 function fixture(t, version = 2) {
   const root = mkdtempSync(path.join(tmpdir(), "pcr-receipt-seal-"));
@@ -100,17 +112,15 @@ function fixture(t, version = 2) {
   return { root, stateDir, task, store, options, dir, report, decision };
 }
 test("new finalization anchors exact artifacts in the append-only Goal audit and is idempotent", (t) => {
+  t.mock.method(GoalEventStore.prototype, "readEvents", () => assert.fail("Receipt queries must use the verified index"));
   const f = fixture(t);
   const first = finalizeHybridSearchReceipt(f.options);
-  const events = f.store
-    .readEvents()
-    .filter((e) => e.type === "uuid_receipt_finalized");
+  const events = f.store.getEventsByType("uuid_receipt_finalized");
   assert.equal(events.length, 1);
   assert.ok(events[0].payload.files["receipt-44125.decisions.json"]);
   assert.deepEqual(finalizeHybridSearchReceipt(f.options), first);
   assert.equal(
-    f.store.readEvents().filter((e) => e.type === "uuid_receipt_finalized")
-      .length,
+    f.store.getEventsByType("uuid_receipt_finalized").length,
     1,
   );
   assert.equal(
