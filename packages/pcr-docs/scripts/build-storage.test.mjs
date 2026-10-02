@@ -6,7 +6,6 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import {
   HEADROOM_BYTES,
-  MAX_OUTPUT_BYTES,
   RELOCATE_ENV,
   DEFAULT_OUTPUT_BYTES,
   assertScratchSuitable,
@@ -378,14 +377,13 @@ test("publishing refuses symlinked exports and insufficient destination space", 
   }
 });
 
-test("an oversized export is refused before anything is swapped", () => {
+test("insufficient staging capacity is refused before anything is swapped", () => {
   const root = tempRoot("publish-budget");
   try {
     const app = path.join(root, "app");
     write(path.join(app, "out/index.html"), "OLD");
     const scratchApp = scratchAppWithExport(path.join(root, "scratch"), { "index.html": "NEW" });
     const exportBytes = summarizeTree(path.join(scratchApp, "out")).bytes;
-    assert.ok(exportBytes < MAX_OUTPUT_BYTES);
     assert.throws(
       () =>
         publishOutput({
@@ -823,6 +821,58 @@ test("provider assets are hard links of the published export, not a second copy"
       [],
       "no assets stage is left behind",
     );
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("an export above 1.5 GB publishes when real staging capacity is available", {
+  // Truncation produces sparse files on the supported POSIX build hosts. Windows does not
+  // guarantee sparse allocation without a platform-specific command, so avoid a large fixture there.
+  skip: process.platform === "win32",
+}, () => {
+  const fixture = providerFixture({ "index.html": "PAGE" });
+  try {
+    const scratchOut = path.join(fixture.scratchApp, "out");
+    for (let index = 0; index < 64; index += 1) {
+      const file = path.join(scratchOut, `${index}.txt`);
+      const descriptor = fs.openSync(file, "w");
+      try { fs.ftruncateSync(descriptor, 24_000_000); }
+      finally { fs.closeSync(descriptor); }
+    }
+    const measured = summarizeTree(scratchOut);
+    assert.equal(measured.bytes, 1_536_000_004);
+    // The logical export is large, but the sparse fixture allocates no payload blocks.
+    const allocated = fs.readdirSync(scratchOut)
+      .reduce((bytes, name) => bytes + fs.statSync(path.join(scratchOut, name)).blocks * 512, 0);
+    assert.ok(allocated < 1024 * 1024, "the fixture must not allocate a 1.5 GB payload");
+    assert.throws(() => publishOutput({
+      app: fixture.app, scratchApp: fixture.scratchApp, token: "large-insufficient",
+      freeBytes: measured.bytes + HEADROOM_BYTES - 1,
+      providerRoot: fixture.providerRoot,
+    }), /cannot stage the export/u);
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
+
+    const published = publishOutput({
+      app: fixture.app, scratchApp: fixture.scratchApp, token: "large-supported",
+      freeBytes: measured.bytes + HEADROOM_BYTES,
+      providerRoot: fixture.providerRoot,
+      // Exercise measurement, fidelity checks, atomic swap and the real provider handoff,
+      // without copying 1.5 GB. Production still uses fs.cpSync by default.
+      cp: (from, to) => {
+        fs.mkdirSync(to);
+        for (const name of fs.readdirSync(from)) fs.linkSync(path.join(from, name), path.join(to, name));
+      },
+    });
+    assert.equal(published.files, 65);
+    assert.equal(published.bytes, measured.bytes);
+    assert.deepEqual(published.providerAssets, { mode: "hardlink", files: 65, bytes: measured.bytes });
+    const exported = path.join(fixture.app, "out/0.txt");
+    const asset = path.join(fixture.providerRoot, ".edgeone/assets/0.txt");
+    assert.equal(inode(exported).bytes, 24_000_000);
+    assert.equal(inode(asset).ino, inode(exported).ino);
+    assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PAGE");
+    assert.deepEqual(fs.readdirSync(fixture.app).sort(), ["out"]);
   } finally {
     fs.rmSync(fixture.root, { recursive: true, force: true });
   }

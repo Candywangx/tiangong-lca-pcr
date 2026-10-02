@@ -11,6 +11,7 @@ import {
   normalizeText,
 } from "./markdown.mjs";
 import { SUMMARY_LIMIT } from "./summaries.mjs";
+import { summarizeExportFiles } from "./export-size.mjs";
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
   root = path.resolve(app, "../.."),
   out = path.join(app, "out");
@@ -396,6 +397,16 @@ function walk(dir) {
   }
 }
 walk(out);
+// Keep measured growth visible even when a provider file-count or per-file gate fails.
+// Shared account storage requires a deployment-time capacity check, rather than a fixed
+// per-export byte ceiling here. Native Next navigation payloads remain part of the export.
+const exportSize = summarizeExportFiles(files);
+const sizeEvidence = { sourceCommit: manifest.sourceCommit, ...exportSize };
+fs.writeFileSync(
+  path.join(app, ".generated/export-size.json"),
+  JSON.stringify(sizeEvidence),
+);
+console.log(JSON.stringify({ event: "export-size", ...sizeEvidence }));
 requireThat(
   !files.some(
     (file) =>
@@ -408,19 +419,12 @@ requireThat(
   files.every((f) => f.bytes < 25_000_000),
   "EdgeOne single-file budget exceeded",
 );
-const total = files.reduce((n, f) => n + f.bytes, 0);
-requireThat(
-  total < 1_500_000_000,
-  "Export exceeds declared 1.5 GB deployment budget",
-);
 const result = {
   pcrs: manifest.records.length,
   pages: manifest.pages.length,
   sourceDocuments: report.documents.length,
   sourceDownloads: report.downloads.length,
-  files: files.length,
-  bytes: total,
-  maxFile: files.toSorted((a, b) => b.bytes - a.bytes)[0],
+  ...sizeEvidence,
 };
 fs.writeFileSync(
   path.join(app, ".generated/verification.json"),

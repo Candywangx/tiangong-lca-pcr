@@ -1,6 +1,7 @@
 ---
-lastReviewedAt: 2026-10-01
-lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
+lastReviewedAt: 2026-10-03
+lastReviewedCommit: 61035bad7bdc42b22f1d59d01b1699ae7fcd1a1b
+lastReviewedNote: "Reviewed PCR #61 owner decision to remove the fixed aggregate export-byte cap. Export composition is reported while provider file limits, free-space checks, atomic handoff, complete source rendering and SEO gates remain. Canonical methodology, readiness and AI consumer interfaces are unchanged."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo
