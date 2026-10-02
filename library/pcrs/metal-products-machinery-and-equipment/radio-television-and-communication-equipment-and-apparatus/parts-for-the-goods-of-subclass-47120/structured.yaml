@@ -1,10 +1,1949 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47172"
-  title: "Parts for the goods of subclass 47120"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclass-47120"
+  classification_refs: "CPC3.0 47172; non-heating parts of47120"
+  covered_products: "Dedicated part families and admission test in section1"
+  excluded_products: "Finished devices; heating parts; general stock; generic hybrid/sensor assemblies"
+  representative_product: "Drawing-specific unassembled carbon-film potentiometer resistive track; no mandatory representative technology"
+  production_route: "Purchased part release or actual ceramic/printed/deposited/wound/metal/polymer manufacture, then part qualification"
+  market_state: "Accepted dedicated part at factory gate before downstream complete-resistor assembly"
+functional_unit:
+  what: "Supply a specified intermediate part to a non-heating electrical resistor, declared production unit"
+  how_much: "1 kg accepted net part of one drawing and completion state, excluding packaging"
+  how_well: "Meet actual dimensional, resistance/taper/contact/insulation and host-fit acceptance requirements as applicable"
+  how_long_or_cycle: "One factory production/release cycle; no imposed use lifetime or resistor energy-loss claim"
+  reference_flow_link: "reference_part"
+system_boundary:
+  rules:
+    - rule_id: boundary_make_buy
+      applies_to: "all processes"
+      rule: "For each part, declare made, bought, outsourced, not applicable or unknown for each operation. Purchased completed part input includes supplier materials and operations; do not also add its embedded BOM as fresh factory inputs."
+      source_ids:
+        - nolelc-elements
+        - seiwa-caps
+    - rule_id: boundary_process
+      applies_to: "foreground"
+      rule: "Include every actual route to shipped part, service, rework, rejects and control. Add each actual ancillary binder, conductor paste, photoresist, developer, etchant, plating salt, oil, passivation resin, gas or waste as its own chemical/grade-specific card with measurement before dataset completion; never presume dry processing or hide unknown chemistry as zero."
+      source_ids:
+        - vishay-technologies
+        - nolelc-housings
+    - rule_id: boundary_use
+      applies_to: "downstream"
+      rule: "Exclude host-resistor assembly, installed use/electrical dissipation and final end of life; include factory test electricity and test rejects. These are not a use-stage scenario."
+      source_ids:
+        - cts-wipers
+    - rule_id: boundary_emissions
+      applies_to: "utilities"
+      rule: "Supplier-grid and outsourced waste-treatment emissions remain upstream, not duplicate factory emissions; measure actual post-control species/compartments and separate in-house treatment inputs, sludge and final discharges."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Actual powder/stock/former/paste or purchased dedicated part in measured received state"
+  starting_condition_role: "Documented foreground entry, not burden-free origin"
+  product_classification_scope: "Dedicated parts of non-heating electrical resistors; actual scope independent of leaf label"
+  recursive_input_rule: "Use upstream supplier dataset for purchased same-category part in declared state, with no self-referential recursion"
+  upstream_dataset_requirement: "Cover actual material manufacture, forming/firing/deposition/plating and transport exactly once; outsourced processing remains linked"
+  disclosure: "Make/buy matrix by operation; received/delivered states; upstream gaps, supplier conditions and site-only versus linked cradle-to-gate claim"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Dedicated non-heating resistor part, accepted declared drawing and completion state"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number/drawing/revision"
+    - "dedicated host non-heating resistor and function"
+    - "delivered completion state"
+    - element
+    - substrate
+    - wiper
+    - terminal
+    - "cap or body family"
+    - "dimensions/net mass"
+    - alloy
+    - ceramic
+    - "polymer and coating grade/composition"
+    - "resistance/taper/TCR or contact/insulation requirement as applicable"
+    - "acceptance test conditions"
+    - "make/buy operations and received state"
+    - site
+    - "supplier geography"
+    - period
+    - "yield/rework"
+    - packaging
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference_part"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_reference_part measures accepted net period output D by calibrated balance; all rows use the same drawing, completion state and output period."
+  - id: count_conversion
+    applies_to: "count records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use measured batch-sample net item mass with traceable count, scale resolution, sample coverage and uncertainty; no catalogue or invented item mass."
+  - id: composition_basis
+    applies_to: "paste/alloy/ceramic/residue"
+    required_property_ref:
+      name: "Mass and assayed content"
+      uuid: ""
+    required_unit: "kg"
+    rule: "For each actual constituent, reconcile external input plus opening stock against accepted part content, rejects, recovered material, releases and closing stock on matching dry/wet and assay basis. Gross paste or alloy mass is not Ag/Pd/Ni/Cr content. Include reaction/volatile loss and work in progress; cancel paired internal transfers. Report residual and measurement uncertainty; no invented closure tolerance."
+process_map:
+  - id: receipt
+    name: "Dedicated purchased part receipt"
+    inclusion: "required"
+    inclusion_condition: "Declare actual feed state and make/buy matrix; a purchased finished part only needs receipt, release and actual finishing here."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: ceramic
+    name: "Ceramic substrate or body manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Only when powder forming, firing, cutting/grinding occur on site; purchased fired ceramic carries these upstream operations."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: track
+    name: "Printed or molded resistive track"
+    inclusion: "conditional"
+    inclusion_condition: "Actual carbon/polymer printing and curing, cermet printing/drying/firing, or conductive-plastic co-molding; distinct recipes and meters."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: film
+    name: "Thin film, foil or deposited element fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Actual deposition, patterning, metallization, passivation and trimming only to shipped part completion; no assumed finished-device assembly."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: wire
+    name: "Wirewound element manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Cut and wind specified resistance wire on declared former; connect only delivered element terminals; hybrid stripe printing also activates track."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: metal
+    name: "Wiper, cap, terminal and metal body manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Drawing-specific stamping, cutting/forming, machining, barrel finishing and welded multi-wire contacts; surface treatment make/buy separately declared."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: polymer
+    name: "Insulating polymer body manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Actual ABS injection molding, PI processing, or phenolic compression molding/machining; no pooled plastic recipe."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: release
+    name: "Part qualification and packaging"
+    inclusion: "required"
+    inclusion_condition: "Inspect and test actual part, exclude destructive-test rejects from accepted output; then package."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+  - id: utilities
+    name: "Utilities, cleaning and environmental controls"
+    inclusion: "required"
+    inclusion_condition: "Attribute process/service electricity and actual cleaning, furnace fuels, gas, water, extraction and treatment; route absence requires evidence."
+    role: "foreground_production"
+    quantitative_reference: "1 kg selected accepted part"
+process_inventory:
+  - id: receipt
+    label: "Dedicated purchased part receipt"
+    inputs:
+      product:
+        - row_id: purchased_track
+          role: "NOLELC carbon-film potentiometer resistive track, unassembled"
+          name: "NOLELC carbon-film potentiometer resistive track, unassembled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this part is purchased; verify drawing, actual composition/coating and supplier completion state, not a required default. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_track
+              source_ids:
+                - nolelc-elements
+            ranges: []
+        - row_id: purchased_wiper
+          role: "Palliney-6 multi-wire potentiometer wiper, unassembled"
+          name: "Palliney-6 multi-wire potentiometer wiper, unassembled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this part is purchased; verify drawing, actual composition/coating and supplier completion state, not a required default. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_wiper
+              source_ids:
+                - nolelc-wipers
+            ranges: []
+        - row_id: purchased_core
+          role: "Fired alumina resistor ceramic former, drawing-specific"
+          name: "Fired alumina resistor ceramic former, drawing-specific"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this part is purchased; verify drawing, actual composition/coating and supplier completion state, not a required default. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_core
+              source_ids:
+                - hongyi-rheostat-parts
+            ranges: []
+        - row_id: purchased_cap
+          role: "Nickel-plated steel fixed-resistor end cap, drawing-specific"
+          name: "Nickel-plated steel fixed-resistor end cap, drawing-specific"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this part is purchased; verify drawing, actual composition/coating and supplier completion state, not a required default. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_cap
+              source_ids:
+                - seiwa-caps
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: ceramic
+    label: "Ceramic substrate or body manufacture"
+    inputs:
+      product:
+        - row_id: alumina_powder
+          role: "Alumina powder for resistor ceramic former, declared purity"
+          name: "Alumina powder for resistor ceramic former, declared purity"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only declared alumina-based ceramic route; each additive/binder identified in separate cards before dataset completion. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alumina_powder
+              source_ids:
+                - nolelc-housings
+            ranges: []
+        - row_id: ceramic_water
+          role: "Deionized water for ceramic forming"
+          name: "Deionized water for ceramic forming"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic_water
+              source_ids:
+                - nolelc-housings
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ceramic_reject
+          role: "Fired alumina ceramic grinding residue"
+          name: "Fired alumina ceramic grinding residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh segregated reject/offcut/residue; record moisture, composition and treatment destination."
+          amount:
+            expression: "Weigh segregated reject/offcut/residue; record moisture, composition and treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic_reject
+              source_ids:
+                - nolelc-housings
+            ranges: []
+      elementary:
+        []
+  - id: track
+    label: "Printed or molded resistive track"
+    inputs:
+      product:
+        - row_id: carbon_ink
+          role: "NOLELC carbon-film resistive ink, specified supplier formulation"
+          name: "NOLELC carbon-film resistive ink, specified supplier formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this specified formulation/substrate is used; declare actual grade and purchased versus site-manufactured state. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_ink
+              source_ids:
+                - nolelc-elements
+            ranges: []
+        - row_id: cp_compound
+          role: "NOLELC conductive-plastic resistive compound, specified formulation"
+          name: "NOLELC conductive-plastic resistive compound, specified formulation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this specified formulation/substrate is used; declare actual grade and purchased versus site-manufactured state. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cp_compound
+              source_ids:
+                - nolelc-elements
+            ranges: []
+        - row_id: cermet_paste
+          role: "Heraeus R405AR AgPd resistor paste"
+          name: "Heraeus R405AR AgPd resistor paste"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this specified formulation/substrate is used; declare actual grade and purchased versus site-manufactured state. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cermet_paste
+              source_ids:
+                - heraeus-r400ar
+            ranges: []
+        - row_id: fr4
+          role: "FR4 epoxy-glass potentiometer track substrate, unprinted"
+          name: "FR4 epoxy-glass potentiometer track substrate, unprinted"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this specified formulation/substrate is used; declare actual grade and purchased versus site-manufactured state. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fr4
+              source_ids:
+                - nolelc-elements
+            ranges: []
+        - row_id: alumina_substrate
+          role: "Sintered alumina resistor track substrate, unprinted"
+          name: "Sintered alumina resistor track substrate, unprinted"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this specified formulation/substrate is used; declare actual grade and purchased versus site-manufactured state. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alumina_substrate
+              source_ids:
+                - heraeus-r400ar
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: paste_reject
+          role: "Heraeus R405AR paste cleaning residue"
+          name: "Heraeus R405AR paste cleaning residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh wet paste-bearing residue, assay dry solids and Ag/Pd separately; record receiver."
+          amount:
+            expression: "Weigh wet paste-bearing residue, assay dry solids and Ag/Pd separately; record receiver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_paste_reject
+              source_ids:
+                - heraeus-r400ar
+            ranges: []
+      elementary:
+        []
+  - id: film
+    label: "Thin film, foil or deposited element fabrication"
+    inputs:
+      product:
+        - row_id: nicr_target
+          role: "Nickel-chromium sputtering target for resistor film, declared alloy grade"
+          name: "Nickel-chromium sputtering target for resistor film, declared alloy grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nicr_target
+              source_ids:
+                - vishay-technologies
+            ranges: []
+        - row_id: tan_target
+          role: "Tantalum nitride sputtering target for resistor film"
+          name: "Tantalum nitride sputtering target for resistor film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tan_target
+              source_ids:
+                - vishay-technologies
+            ranges: []
+        - row_id: gold
+          role: "Gold for thin-film resistor substrate metallization"
+          name: "Gold for thin-film resistor substrate metallization"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gold
+              source_ids:
+                - vishay-substrates
+            ranges: []
+        - row_id: nickel
+          role: "Nickel for thin-film resistor substrate metallization"
+          name: "Nickel for thin-film resistor substrate metallization"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nickel
+              source_ids:
+                - vishay-substrates
+            ranges: []
+        - row_id: foil
+          role: "Nickel-chromium resistive foil, specified patterned-element grade"
+          name: "Nickel-chromium resistive foil, specified patterned-element grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only verified foil element route with drawing-confirmed alloy; source does not establish a universal foil alloy. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foil
+              source_ids:
+                - vishay-technologies
+            ranges: []
+        - row_id: film_substrate
+          role: "Sintered alumina thin-film resistor substrate, uncoated"
+          name: "Sintered alumina thin-film resistor substrate, uncoated"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film_substrate
+              source_ids:
+                - vishay-substrates
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: film_scrap
+          role: "Nickel-chromium target machining and deposition residue"
+          name: "Nickel-chromium target machining and deposition residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh collected target/offcut/shield residue, distinguish metal alloy and contaminated mixed residue, assay nickel/chromium and record fate."
+          amount:
+            expression: "Weigh collected target/offcut/shield residue, distinguish metal alloy and contaminated mixed residue, assay nickel/chromium and record fate."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film_scrap
+              source_ids:
+                - vishay-technologies
+            ranges: []
+      elementary:
+        []
+  - id: wire
+    label: "Wirewound element manufacture"
+    inputs:
+      product:
+        - row_id: nicr_wire
+          role: "Nickel-chromium resistance alloy wire, declared grade and diameter"
+          name: "Nickel-chromium resistance alloy wire, declared grade and diameter"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nicr_wire
+              source_ids:
+                - vishay-technologies
+            ranges: []
+        - row_id: wire_former
+          role: "Fired alumina wirewound resistor former, unwound"
+          name: "Fired alumina wirewound resistor former, unwound"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wire_former
+              source_ids:
+                - hongyi-rheostat-parts
+            ranges: []
+        - row_id: copper_terminal
+          role: "Copper wirewound-element terminal, declared drawing"
+          name: "Copper wirewound-element terminal, declared drawing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only copper terminal required by delivered part drawing; source metal-element termination is bounded counterevidence, not universal wirewound BOM. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_terminal
+              source_ids:
+                - vishay-technologies
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wire_scrap
+          role: "Nickel-chromium resistance wire offcut"
+          name: "Nickel-chromium resistance wire offcut"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh segregated winding offcuts and destructive-test rejects, retain alloy assay and receiver."
+          amount:
+            expression: "Weigh segregated winding offcuts and destructive-test rejects, retain alloy assay and receiver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wire_scrap
+              source_ids:
+                - vishay-technologies
+            ranges: []
+      elementary:
+        []
+  - id: metal
+    label: "Wiper, cap, terminal and metal body manufacture"
+    inputs:
+      product:
+        - row_id: phosphor_bronze
+          role: "Phosphor-bronze sheet for potentiometer wiper, specified grade"
+          name: "Phosphor-bronze sheet for potentiometer wiper, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this drawing-confirmed stock is used; cap grade and contact tie-bar material require supplier confirmation. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_phosphor_bronze
+              source_ids:
+                - cts-wipers
+            ranges: []
+        - row_id: nickel_silver
+          role: "Copper-nickel-zinc sheet for potentiometer wiper, specified grade"
+          name: "Copper-nickel-zinc sheet for potentiometer wiper, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this drawing-confirmed stock is used; cap grade and contact tie-bar material require supplier confirmation. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nickel_silver
+              source_ids:
+                - cts-wipers
+            ranges: []
+        - row_id: palliney_wire
+          role: "Palliney-6 precious-metal contact wire"
+          name: "Palliney-6 precious-metal contact wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this drawing-confirmed stock is used; cap grade and contact tie-bar material require supplier confirmation. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_palliney_wire
+              source_ids:
+                - nolelc-wipers
+            ranges: []
+        - row_id: stainless_sheet
+          role: "Stainless-steel sheet for potentiometer housing, specified grade"
+          name: "Stainless-steel sheet for potentiometer housing, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this drawing-confirmed stock is used; cap grade and contact tie-bar material require supplier confirmation. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_sheet
+              source_ids:
+                - nolelc-housings
+            ranges: []
+        - row_id: aluminum_bar
+          role: "Aluminium-alloy stock for potentiometer housing, specified grade"
+          name: "Aluminium-alloy stock for potentiometer housing, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this drawing-confirmed stock is used; cap grade and contact tie-bar material require supplier confirmation. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminum_bar
+              source_ids:
+                - nolelc-housings
+            ranges: []
+        - row_id: steel_cap_stock
+          role: "Low-carbon steel strip for fixed-resistor cap, specified grade"
+          name: "Low-carbon steel strip for fixed-resistor cap, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only this drawing-confirmed stock is used; cap grade and contact tie-bar material require supplier confirmation. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_cap_stock
+              source_ids:
+                - seiwa-caps
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: bronze_scrap
+          role: "Phosphor-bronze wiper stamping scrap"
+          name: "Phosphor-bronze wiper stamping scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh segregated stamping scrap; actual nickel-silver, steel, aluminium and precious-alloy residues use separate identity cards."
+          amount:
+            expression: "Weigh segregated stamping scrap; actual nickel-silver, steel, aluminium and precious-alloy residues use separate identity cards."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bronze_scrap
+              source_ids:
+                - cts-wipers
+            ranges: []
+      elementary:
+        []
+  - id: polymer
+    label: "Insulating polymer body manufacture"
+    inputs:
+      product:
+        - row_id: abs
+          role: "ABS resin pellets for potentiometer insulating housing, specified grade"
+          name: "ABS resin pellets for potentiometer insulating housing, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_abs
+              source_ids:
+                - nolelc-housings
+            ranges: []
+        - row_id: phenolic
+          role: "Phenolic molding compound for potentiometer body, declared grade"
+          name: "Phenolic molding compound for potentiometer body, declared grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_phenolic
+              source_ids:
+                - nolelc-housings
+            ranges: []
+        - row_id: pi
+          role: "Polyimide resin for potentiometer insulating body, specified grade"
+          name: "Polyimide resin for potentiometer insulating body, specified grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pi
+              source_ids:
+                - nolelc-housings
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: abs_reject
+          role: "ABS housing molding reject"
+          name: "ABS housing molding reject"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh exported rejects; internal regrind is transfer, not new external input or waste. Phenolic and PI rejects require separate cards."
+          amount:
+            expression: "Weigh exported rejects; internal regrind is transfer, not new external input or waste. Phenolic and PI rejects require separate cards."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_abs_reject
+              source_ids:
+                - nolelc-housings
+            ranges: []
+      elementary:
+        []
+  - id: release
+    label: "Part qualification and packaging"
+    inputs:
+      product:
+        - row_id: box
+          role: "Corrugated-paperboard shipping box"
+          name: "Corrugated-paperboard shipping box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+          amount:
+            expression: "Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_box
+              source_ids: []
+            ranges: []
+        - row_id: film_pack
+          role: "Polyethylene protective packaging film"
+          name: "Polyethylene protective packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+          amount:
+            expression: "Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film_pack
+              source_ids: []
+            ranges: []
+        - row_id: tape
+          role: "Polypropylene adhesive packaging tape"
+          name: "Polypropylene adhesive packaging tape"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+          amount:
+            expression: "Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tape
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_part
+          role: "Dedicated non-heating resistor part, accepted declared drawing and completion state"
+          name: "Dedicated non-heating resistor part, accepted declared drawing and completion state"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh accepted parts on calibrated precision balance, tare containers and packaging, record drawing/lot/count and uncertainty; output amount is 1 kg."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_part
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: utilities
+    label: "Utilities, cleaning and environmental controls"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Purchased grid electricity at factory user, declared voltage and geography"
+          name: "Purchased grid electricity at factory user, declared voltage and geography"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "When used in the declared route Read process/service submeters, integrate actual intervals including compressed-air generation, furnaces, extraction and test; reconcile purchases, self-generation and exports separately."
+          amount:
+            expression: "Read process/service submeters, integrate actual intervals including compressed-air generation, furnaces, extraction and test; reconcile purchases, self-generation and exports separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas supplied to factory furnace, declared composition"
+          name: "Natural gas supplied to factory furnace, declared composition"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Meter mass or corrected volume with measured density and calorific value, record gas composition and burner/period."
+          amount:
+            expression: "Meter mass or corrected volume with measured density and calorific value, record gas composition and burner/period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids: []
+            ranges: []
+        - row_id: argon
+          role: "Argon gas for resistor thin-film sputtering"
+          name: "Argon gas for resistor thin-film sputtering"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Meter gas flow or weigh cylinders before/after; record purge and recovered gas separately; sputtering gas choice verified against equipment records."
+          amount:
+            expression: "Meter gas flow or weigh cylinders before/after; record purge and recovered gas separately; sputtering gas choice verified against equipment records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_argon
+              source_ids:
+                - vishay-technologies
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol cleaning solvent, declared purity"
+          name: "Isopropanol cleaning solvent, declared purity"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only actual site cleaning recipe; manufacturer sources do not establish mandatory solvent chemistry. Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+          amount:
+            expression: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ipa
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Purchased deionized cleaning and process water"
+          name: "Purchased deionized cleaning and process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Meter supply and actual makeup, avoid counting recirculation as new intake; convert volume using supported density conditions."
+          amount:
+            expression: "Meter supply and actual makeup, avoid counting recirculation as new intake; convert volume using supported density conditions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: solvent_waste
+          role: "Spent isopropanol cleaning solvent"
+          name: "Spent isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Weigh spent solvent with composition assay, retained solvent in wipes/sludge and treatment receiver; recycled solvent transfer separately."
+          amount:
+            expression: "Weigh spent solvent with composition assay, retained solvent in wipes/sludge and treatment receiver; recycled solvent transfer separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solvent_waste
+              source_ids: []
+            ranges: []
+        - row_id: wastewater
+          role: "Resistor-part cleaning wastewater sent to treatment"
+          name: "Resistor-part cleaning wastewater sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Meter effluent volume and measured density; analyse actual organics/metals before treatment; outsourced effluent is waste product, not discharge to environment."
+          amount:
+            expression: "Meter effluent volume and measured density; analyse actual organics/metals before treatment; outsourced effluent is waste product, not discharge to environment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol emitted to air after controls"
+          name: "Isopropanol emitted to air after controls"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Use species-specific stack/fugitive measurement with concentration, flow and duration; solvent balance includes stock/recovery/destruction and cannot assign all loss to air."
+          amount:
+            expression: "Use species-specific stack/fugitive measurement with concentration, flow and duration; solvent balance includes stock/recovery/destruction and cannot assign all loss to air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ipa_air
+              source_ids: []
+            ranges: []
+        - row_id: co2_air
+          role: "Fossil carbon dioxide emitted to air from furnace"
+          name: "Fossil carbon dioxide emitted to air from furnace"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+          amount:
+            expression: "Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2_air
+              source_ids: []
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide emitted to air from furnace"
+          name: "Carbon monoxide emitted to air from furnace"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+          amount:
+            expression: "Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co_air
+              source_ids: []
+            ranges: []
+        - row_id: no2_air
+          role: "Nitrogen dioxide emitted to air from furnace"
+          name: "Nitrogen dioxide emitted to air from furnace"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "When used in the declared route Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+          amount:
+            expression: "Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_no2_air
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_subdivision
+    applies_to: "shared site"
+    rule: "First investigate subdivision or system expansion. For a part production dataset prefer process/submeter subdivision; expanded-system results cannot be claimed as a single part footprint. If subdivision is infeasible use demonstrated causal driver (actual machine time/energy, furnace load by route), not arbitrary equal sharing."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocate_products
+    applies_to: "co-products"
+    rule: "If physical relationship is unsupported, justify other allocation and sensitivity. Do not default to mass for unlike costly precious-metal parts. Record exported scrap treatment and allocation convention; no automatic avoided-primary-metal credit. Rejects/rework remain in accepted output burden."
+    source_ids:
+      - ef-allocation-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_purchased_track
+      process_id: "receipt"
+      flow_role: "purchased_track"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_purchased_wiper
+      process_id: "receipt"
+      flow_role: "purchased_wiper"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_purchased_core
+      process_id: "receipt"
+      flow_role: "purchased_core"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_purchased_cap
+      process_id: "receipt"
+      flow_role: "purchased_cap"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_alumina_powder
+      process_id: "ceramic"
+      flow_role: "alumina_powder"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_ceramic_water
+      process_id: "ceramic"
+      flow_role: "ceramic_water"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_ceramic_reject
+      process_id: "ceramic"
+      flow_role: "ceramic_reject"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh segregated reject/offcut/residue; record moisture, composition and treatment destination."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_carbon_ink
+      process_id: "track"
+      flow_role: "carbon_ink"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_cp_compound
+      process_id: "track"
+      flow_role: "cp_compound"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_cermet_paste
+      process_id: "track"
+      flow_role: "cermet_paste"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_fr4
+      process_id: "track"
+      flow_role: "fr4"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_alumina_substrate
+      process_id: "track"
+      flow_role: "alumina_substrate"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_paste_reject
+      process_id: "track"
+      flow_role: "paste_reject"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh wet paste-bearing residue, assay dry solids and Ag/Pd separately; record receiver."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_nicr_target
+      process_id: "film"
+      flow_role: "nicr_target"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_tan_target
+      process_id: "film"
+      flow_role: "tan_target"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_gold
+      process_id: "film"
+      flow_role: "gold"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_nickel
+      process_id: "film"
+      flow_role: "nickel"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_foil
+      process_id: "film"
+      flow_role: "foil"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_film_substrate
+      process_id: "film"
+      flow_role: "film_substrate"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_film_scrap
+      process_id: "film"
+      flow_role: "film_scrap"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh collected target/offcut/shield residue, distinguish metal alloy and contaminated mixed residue, assay nickel/chromium and record fate."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_nicr_wire
+      process_id: "wire"
+      flow_role: "nicr_wire"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_wire_former
+      process_id: "wire"
+      flow_role: "wire_former"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_copper_terminal
+      process_id: "wire"
+      flow_role: "copper_terminal"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_wire_scrap
+      process_id: "wire"
+      flow_role: "wire_scrap"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh segregated winding offcuts and destructive-test rejects, retain alloy assay and receiver."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_phosphor_bronze
+      process_id: "metal"
+      flow_role: "phosphor_bronze"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_nickel_silver
+      process_id: "metal"
+      flow_role: "nickel_silver"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_palliney_wire
+      process_id: "metal"
+      flow_role: "palliney_wire"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_stainless_sheet
+      process_id: "metal"
+      flow_role: "stainless_sheet"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_aluminum_bar
+      process_id: "metal"
+      flow_role: "aluminum_bar"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_steel_cap_stock
+      process_id: "metal"
+      flow_role: "steel_cap_stock"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_bronze_scrap
+      process_id: "metal"
+      flow_role: "bronze_scrap"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh segregated stamping scrap; actual nickel-silver, steel, aluminium and precious-alloy residues use separate identity cards."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_abs
+      process_id: "polymer"
+      flow_role: "abs"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_phenolic
+      process_id: "polymer"
+      flow_role: "phenolic"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_pi
+      process_id: "polymer"
+      flow_role: "pi"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_abs_reject
+      process_id: "polymer"
+      flow_role: "abs_reject"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh exported rejects; internal regrind is transfer, not new external input or waste. Phenolic and PI rejects require separate cards."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_box
+      process_id: "release"
+      flow_role: "box"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_film_pack
+      process_id: "release"
+      flow_role: "film_pack"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_tape
+      process_id: "release"
+      flow_role: "tape"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh/count each issued packaging SKU and subtract returns; packaging excluded from accepted product net mass."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_reference_part
+      process_id: "release"
+      flow_role: "reference_part"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh accepted parts on calibrated precision balance, tare containers and packaging, record drawing/lot/count and uncertainty; output amount is 1 kg."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_electricity
+      process_id: "utilities"
+      flow_role: "electricity"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Read process/service submeters, integrate actual intervals including compressed-air generation, furnaces, extraction and test; reconcile purchases, self-generation and exports separately."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_natural_gas
+      process_id: "utilities"
+      flow_role: "natural_gas"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Meter mass or corrected volume with measured density and calorific value, record gas composition and burner/period."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_argon
+      process_id: "utilities"
+      flow_role: "argon"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Meter gas flow or weigh cylinders before/after; record purge and recovered gas separately; sputtering gas choice verified against equipment records."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_ipa
+      process_id: "utilities"
+      flow_role: "ipa"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh net issued quantity with calibrated scale; subtract returned usable stock and reconcile inventory."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_water
+      process_id: "utilities"
+      flow_role: "water"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Meter supply and actual makeup, avoid counting recirculation as new intake; convert volume using supported density conditions."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_solvent_waste
+      process_id: "utilities"
+      flow_role: "solvent_waste"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Weigh spent solvent with composition assay, retained solvent in wipes/sludge and treatment receiver; recycled solvent transfer separately."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_wastewater
+      process_id: "utilities"
+      flow_role: "wastewater"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Meter effluent volume and measured density; analyse actual organics/metals before treatment; outsourced effluent is waste product, not discharge to environment."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_ipa_air
+      process_id: "utilities"
+      flow_role: "ipa_air"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Use species-specific stack/fugitive measurement with concentration, flow and duration; solvent balance includes stock/recovery/destruction and cannot assign all loss to air."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_co2_air
+      process_id: "utilities"
+      flow_role: "co2_air"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_co_air
+      process_id: "utilities"
+      flow_role: "co_air"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+    - protocol_id: cp_no2_air
+      process_id: "utilities"
+      flow_role: "no2_air"
+      record_type: "measurement_record"
+      raw_fields: "drawing; lot; grade/formulation; raw amount/unit; opening/closing stock; accepted net D; calibration; uncertainty; route condition; provider/fate; allocation"
+      collection_method: "Measure species-specific post-control concentration, dry/reference gas volume, duration and operating state; gas carbon balance may support CO2 only with oxidation and retained-carbon evidence, never infer CO/NO2."
+      unit: "kg"
+      frequency: "Each batch/meter interval; monthly stock reconciliation"
+      temporal_coverage: "Complete representative production period including startups, rejects and rework; disclose year/campaign and coverage"
+      site_scope: "Declared part line and attributable shared services, matching D scope"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original weighing/meter/assay and acceptance records, calibrated instruments, supplier grade and allocation evidence"
+  calculation_rules:
+    - id: normalization
+      applies_to: "all inventory rows"
+      rule: "Divide attributable external period quantity by measured accepted net output D in kg; reference output = 1 kg. Correct stocks, cancel internal transfers and attribute actual rejects/rework before dividing."
+      inputs:
+        - cp_reference_part
+        - "row-specific protocol"
+      output: "per 1 kg reference flow"
+      source_ids: []
+    - id: balance_check
+      applies_to: "material inventory"
+      rule: "For each actual constituent, reconcile external input plus opening stock against accepted part content, rejects, recovered material, releases and closing stock on matching dry/wet and assay basis. Gross paste or alloy mass is not Ag/Pd/Ni/Cr content. Include reaction/volatile loss and work in progress; cancel paired internal transfers. Report residual and measurement uncertainty; no invented closure tolerance."
+      inputs:
+        - "Composition certificates/assays"
+        - stock
+        - waste
+        - "measured releases"
+      output: "Constituent residual and uncertainty"
+      source_ids: []
+    - id: energy_conversion
+      applies_to: "electricity"
+      rule: "Metered kWh × 3.6 = MJ if a verified downstream flow requires MJ; do not infer a generation technology or substitute factory fuel for grid supply."
+      inputs:
+        - "Meter/unit property chain"
+      output: "MJ"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "reference_part"
+      requirement: "part number/drawing/revision; dedicated host non-heating resistor and function; delivered completion state; element, substrate, wiper, terminal, cap or body family; dimensions/net mass; alloy, ceramic, polymer and coating grade/composition; resistance/taper/TCR or contact/insulation requirement as applicable; acceptance test conditions; make/buy operations and received state; site, supplier geography, period; yield/rework; packaging"
+      evidence: "Part order/drawing, dedicated host interface and supplier completion records"
+    - id: coverage
+      applies_to: "all rows"
+      requirement: "Record present, not applicable with evidence, measured zero or unknown distinctly. Additional actual chemicals need atomic cards. No missing-as-zero and no generic flow substitution."
+      evidence: "review_metadata"
+    - id: range
+      applies_to: "all rows"
+      requirement: "No factory intensity, yield, recipe, item weight, lifetime or GWP default established; collect foreground quantities and uncertainty, seek independent compatible empirical ranges."
+      evidence: "Foreground measurements and source applicability"
+validation_rules:
+  - rule_id: validate_part
+    applies_to: "reference_part"
+    rule: "Verify dedicated non-heating host, exact delivered state, measured positive D and acceptance; electrical function alone is insufficient to decide part versus finished device."
+    source_ids:
+      - nolelc-elements
+      - un-cpc-resistors
+  - rule_id: validate_measurement
+    applies_to: "all rows"
+    rule: "Check 1 kg net reference, every protocol aggregation on the same basis, raw-unit conversion, every measured mass/property link and constituent balance."
+    source_ids: []
+  - rule_id: validate_complete
+    applies_to: "dataset"
+    rule: "Require actual make/buy coverage, all atomic exchanges, provider conditions, supplier burdens once, waste destination and post-control species/compartment. Unknown quantity, unresolved mandatory UUID or unverified unit/property blocks complete dataset; candidate methodology check is not dataset acceptance or conformance certification."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Drawing/state-specific part manufacture and supplier linkage for downstream resistor data production"
+  excluded_use: "Whole resistor or sensor footprints; heating applications; electrical service comparisons by kg; full lifecycle claim without scenario"
+  required_metadata: "part number/drawing/revision; dedicated host non-heating resistor and function; delivered completion state; element, substrate, wiper, terminal, cap or body family; dimensions/net mass; alloy, ceramic, polymer and coating grade/composition; resistance/taper/TCR or contact/insulation requirement as applicable; acceptance test conditions; make/buy operations and received state; site, supplier geography, period; yield/rework; packaging"
+  required_quality_disclosure: "Scope, route, supplier/linkage gaps, actual chemistry, unresolved identity/ranges, normalization, allocation, uncertainty and waste fate"
+  update_trigger: "Drawing, host application, completion state, recipe, process/supplier, acceptance or meter boundary changes"
+data_sources:
+  - id: "un-cpc-resistors"
+    type: "official_guidance"
+    reference: "UNSD CPC3.0 subclass47120 and47172. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/47120 ; https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/47172"
+    used_for: "Classification context excludes heating resistors; classification alone does not establish part identity or inventory."
+  - id: "nolelc-elements"
+    type: "extension_guidance"
+    reference: "NOLELC, Resistive Elements for Potentiometers and Sensors, public page retrieved2October2026. https://nolelc.com/resistance-elements-thick-film-pcb/"
+    used_for: "Separately supplied carbon-film, conductive-plastic and cermet tracks; print/fire, trim and conditional co-molding. Sensor applications are not automatic resistor-part coverage; no marketing lifetime or temperature defaults adopted."
+  - id: "nolelc-wipers"
+    type: "extension_guidance"
+    reference: "NOLELC, Precious metal Multi-Wire Wipers. https://nolelc.com/precious-metal-brusheswipers/"
+    used_for: "Separate multi-wire wipers; Palliney-6 is an alloy example, not every wiper recipe; slip-ring and motor-brush applications excluded."
+  - id: "cts-wipers"
+    type: "extension_guidance"
+    reference: "CTS, VR Series Panel Potentiometers for Instrumentation,18October2023, How does a panel potentiometer work. https://www.ctscorp.com/Resources/Blog/VR-Series-Panel-Potentiometers-for-Instrumentation"
+    used_for: "Independent construction evidence: printed track and stamped phosphor-bronze/nickel-silver or formed-wire welded wipers. Finished-device source supports bounded part operations only."
+  - id: "nolelc-housings"
+    type: "extension_guidance"
+    reference: "NOLELC, Potentiometer Housing Materials and Cost,3September2026. https://nolelc.com/potentiometer-housing-materials-and-cost/"
+    used_for: "Actual housing alternatives: machined/stamped metal, ABS/PI molding, phenolic body, ceramic forming/firing; substrate/finish grades must come from drawing."
+  - id: "seiwa-caps"
+    type: "extension_guidance"
+    reference: "Seiwa Metal Works, Fixed Resistor Caps, production equipment. https://www.seiwagrp.co.jp/product/caps/"
+    used_for: "Dedicated caps for carbon/metal/metal-oxide film resistors; pressing, barrel finishing and compressed air; source does not identify cap metal grade."
+  - id: "hongyi-rheostat-parts"
+    type: "extension_guidance"
+    reference: "Hongyi Electronics, Slide Rheostat, replacement parts FAQ. https://resistor-factory.com/products/rheostat"
+    used_for: "Externally supplied replacement sliders, end clamps and ceramic tubes, plus tube rewinding; laboratory/motor-control context. Stock resistance wire alone is feedstock."
+  - id: "vishay-technologies"
+    type: "handbook"
+    reference: "Vishay, Resistors101, VMN-SG2113-1205, pages2 and7. https://www.vishay.com/docs/49873/49873_sg2113.pdf"
+    used_for: "Fixed versus variable device context; bounded wirewound, sputtered NiCr/TaN, printed oxide, foil/composition alternatives. Finished-resistor construction does not require every part to receive all operations."
+  - id: "vishay-substrates"
+    type: "handbook"
+    reference: "Vishay, Custom Resistor Arrays, document60058 revision27-Feb-2001, page1 Patterned Substrates. https://www.vishay.com/docs/60058/custarra.pdf"
+    used_for: "Alumina patterned substrates, gold/nickel metallization, optional passivation and trimming. A complete bare resistor network or generic hybrid circuit is not automatically a dedicated part."
+  - id: "heraeus-r400ar"
+    type: "extension_guidance"
+    reference: "Heraeus Electronics, R400AR Series product selector, description/paste properties/processing. https://www.heraeus-electronics.com/de/products-and-solutions/thick-film-materials/thick-film-materials-overview/tfm-ps-detail/R400AR%20Series/"
+    used_for: "Specific AgPd resistor paste printed on alumina, dried, air-fired and laser-trimmable; grade-specific settings are not universal factory energy, composition or process-temperature defaults. Heater/fuse applications excluded."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation(EU)2021/2279,AnnexI4.5. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "General subdivision/system-expansion and physical-relationship allocation hierarchy; no full PEF compliance claimed."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:faf6d0121a48f96d65526b347a9416956bed2c4fe2c41282cacd18d04cddb627"
+  generated_content_sha256: "sha256:fd1ce7a67571cb33aa47f3d9f2af29d8c516f79400dd81d4dc9c7624113864af"

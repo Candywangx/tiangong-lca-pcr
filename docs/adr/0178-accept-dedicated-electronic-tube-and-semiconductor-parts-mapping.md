@@ -1,0 +1,21 @@
+---
+title: Accept dedicated electronic tube and semiconductor component parts
+status: accepted
+date: 2026-10-02
+---
+
+# Decision
+
+At 2026-10-01T18:30:22.105131Z, accept CPC 3.0 47173 as an exact positive mapping to `pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclasses-47140-to-47160`, a candidate with authored bilingual methodology for dedicated constituent parts of electronic valves/tubes, semiconductor devices including photosensitive/LED devices and mounted piezoelectric crystals, and integrated circuits. Parent semantic review confirms a substantive production method need in the existing record rather than creating identity from a leaf label.
+
+A concrete output must have dedicated host use, drawing/revision, delivered completion state and evidence of external part supply. Conditional families include tube electrodes/dispenser cathodes/getters, device/IC leadframes, qualified package substrates and feedthrough/hermetic subassemblies. Functionality or an active surface alone does not exclude an incomplete part. Conversely unmounted die/wafers may already be completed devices. Complete tubes/devices/ICs, generic stock/PCBs, separately classified articles and manufacturing equipment are excluded. Package substrates, glass preforms, interposers and resonator states require individual completion/classification evidence: dedicated fit or supplier sales alone is insufficient.
+
+Current CPC3 original notes and detail identify host and part titles but contain no detailed explanatory prose for this leaf. Historical CPC2.1 correspondence is contextual rather than asserted as a current CPC3-to-HS table. Census' original semiconductor schedule supplies finished-die and independently classified article counterexamples. SHINKO distinguishes sold package parts from IC assembly and equipment; SAES provides independent functional cathode/getter and metallurgical capabilities. Capability charts support conditional operations only, not every supplied part's recipe or category admission.
+
+The reference is 1 kg calibrated accepted net product for one drawing and completion state, with measured period output D and actual count conversion. Retained metallization/sealing/constituent parts belong in D; shipping carriers, packaging, test consumables and rejects do not. Actual forming/patterning, laminate/ceramic, powder/sinter/cathode, glass-metal and finish routes are activated by records. Supplier-completed materials/operations and outsourced services are counted once; wafer fabrication is not imposed on every tube part or leadframe. Internal transfers cancel while repeated processing energy and waste remain.
+
+Element/species balances use matched assays on inputs, retained product, waste, releases and stocks and preserve reaction formation/consumption. Actual post-control emissions, part-state tests, utilities and provider interfaces require records; host use, later assembly and end-of-life remain downstream. Missing chemistry, quantity, UUID or provider coverage is unresolved, not zero.
+
+The generic reference UUID remains unresolved under supported candidate metadata. Directly read Leadframe is used only for compatible GLO IC-packaging purchased input, never as a reference proxy for other families, and its unsubstantiated 61.4-percent mass-share comment is not adopted. CN 1–35 kV user-side electricity is conditional on the matching supply interface; its official ILCD energy property/unit linkage supports measured MJ and kWh conversion. Official Chinese names are retained. Other identities and independent empirical ranges remain explicit gaps with no universal weight, composition, yield, energy or lifetime values.
+
+Parent review verifies aligned atomic exchange sequence, corrected material-rule scope, direct identities and conditional part gates. Explicit finite PCR checking passes completely with zero skips. Serial aliases/catalog/coverage regeneration, full root validation and independent original-worktree read-snapshot validation are recorded before completion; the inherited Harness-retirement test failure remains separately reported. Candidate mapping acceptance does not establish reviewed/publication status or complete dataset readiness.

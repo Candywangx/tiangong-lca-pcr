@@ -1,10 +1,1986 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47171"
-  title: "Parts for the goods of subclass 47110"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclass-47110"
+  classification_refs: "CPC 3.0: 47171, Parts for the goods of subclass 47110"
+  covered_products: "One documented dedicated unfinished capacitor part at a stated supplier gate; route families described in section 1"
+  excluded_products: "Complete functional capacitors; general-purpose raw stock; capacitor manufacturing machinery; unidentified general components"
+  representative_product: "Aluminum-metallized polypropylene precursor wound element with zinc end contact, after stabilization and before downstream completion"
+  production_route: "Select actual drawing-defined family and make/buy state; no combination of all family inventories"
+  market_state: "Accepted dedicated part with declared moisture, coating, assembled content and deferred operations; net product mass excludes shipping packaging"
+functional_unit:
+  what: "Provide one specified intermediate capacitor part at its declared completion gate, not final capacitor service"
+  how_much: "1 kg accepted net part mass of the same drawing, revision and delivered configuration"
+  how_well: "Meet documented interface, geometry, grade, processing-state and appropriate acceptance tests; final-device ratings are not imputed"
+  how_long_or_cycle: "One production and delivery lot; no use-phase lifetime assumption"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: gate
+      applies_to: "foreground"
+      rule: "Include every actual operation from receipt of delivered inputs through accepted part release: preparation, mechanical forming, chemical/electrochemical treatment, joining, conditional thermal operations, testing, rework, utilities, controls and packing. Record performed and deferred steps separately."
+      source_ids: []
+    - rule_id: intermediate
+      applies_to: "upstream"
+      rule: "For each purchased film, foil, paste, compounded seal material or precursor, link a supplier dataset covering its actual state once; model only site transformations thereafter. For site-made material add actual raw inputs and process burdens instead."
+      source_ids: []
+    - rule_id: complete_device
+      applies_to: "part_gate"
+      rule: "Exclude subsequent capacitor completion and use from this part output. For the CBP precursor, cleaning, electrical clearing, internal assembly, can insertion, resin filling and final device tests are downstream unless actually performed before this part gate. A complete functional capacitor is a different reference category even if sold to another manufacturer."
+      source_ids:
+        - cbp-n355569-2025
+    - rule_id: external_links
+      applies_to: "life_cycle_links"
+      rule: "Retain input transport and upstream production, external waste treatment and subsequent completion as explicit model links or disclosed gaps. A primary factory process dataset is not a complete cradle-to-gate footprint until upstream links are complete."
+      source_ids: []
+    - rule_id: route_extension
+      applies_to: "actual_recipe"
+      rule: "The cards are conditional specific route anchors, not an exhaustive industry recipe. Audit actual BOM, bath and gas formulation, bought utilities, packaging and treatment; add every other actual individual exchange. not_applicable requires evidence of absence; unknown is not zero."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "The actual delivered film, foil, ceramic material, tantalum input or dedicated hardware/compound of the selected part route"
+  starting_condition_role: "Supplier-state boundary for foreground primary production records"
+  product_classification_scope: "Only documented dedicated parts for electrical capacitors; classification label is context, not commercial-state evidence"
+  recursive_input_rule: "Purchased same-category precursor uses its own processing-state supplier dataset once; expand only subsequent site steps, cancel paired internal transfers and never iterate indefinitely"
+  upstream_dataset_requirement: "Match actual grade, formulation, completed treatment, delivery interface, geography and period; disclose substitutions, absent providers and uncertainty"
+  disclosure: "Part drawing and interface; customer delivery evidence; route/state; make/buy table; inventory coverage; transport and treatment; allocation; uncertainty and all exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Single drawing-defined dedicated electrical capacitor part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number"
+    - "drawing revision"
+    - "intended capacitor/interface"
+    - family
+    - "dielectric and electrode grade"
+    - dimensions
+    - "supplied dry/wet/coated state"
+    - "make/buy matrix"
+    - "completed and deferred operations"
+    - "actual recipe"
+    - "acceptance tests"
+    - "net weighed output and sampling"
+    - "count or area conversion"
+    - "site and period"
+    - "input processing states"
+    - "utility delivery conditions"
+    - packaging
+    - "upstream and treatment links"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh accepted shipped parts on a calibrated scale with container tare deducted; preserve the same part configuration and acceptance ledger. Lot mass includes only delivered product content, not packaging."
+  - id: count_area
+    applies_to: "count or area records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert accepted count using measured lot-specific mean net part mass and reconcile with weighed batch mass. For foil or film area use measured areal mass of that exact supplied state including coating; no assumed unit weight or density."
+  - id: element_basis
+    applies_to: "composition balances and emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Gross bath, paste, compound, dust and wet sludge mass differs from contained element or active solute. Preserve assays and moisture on every term; match chemical species and environmental compartment."
+  - id: energy_basis
+    applies_to: "electricity, steam and fuel"
+    required_property_ref:
+      name: "Delivered energy; fuel mass and mass-specific net calorific value"
+      uuid: ""
+    required_unit: "MJ; kg; MJ/kg"
+    rule: "Preserve raw kWh for electricity and convert using 1 kWh = 3.6 MJ. Purchased steam uses delivered enthalpy with pressure and condensate-return state; fuel is recorded as kg and uses its own measured mass-specific net calorific value in MJ/kg for energy calculations, not steam output."
+process_map:
+  - id: film
+    name: "Film preparation, winding or stacking, end contact and stabilization"
+    inclusion: "conditional"
+    inclusion_condition: "Only operations performed before delivery of a dedicated film element; distinguish metallized from film/foil construction"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: electrofoil
+    name: "Electrode-foil etching, dielectric formation, washing and slitting"
+    inclusion: "conditional"
+    inclusion_condition: "Only for site-made capacitor-specific electrode foil or foil prepared for its own supplied element"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: al_element
+    name: "Aluminum electrolytic element winding, tab attachment and conditional impregnation"
+    inclusion: "conditional"
+    inclusion_condition: "Only pre-gate operations of an unfinished supplied element; distinguish dry from impregnated state"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: ceramic
+    name: "Capacitor-specific ceramic body preparation and conditional firing"
+    inclusion: "conditional"
+    inclusion_condition: "Only when an externally supplied dedicated unfinished ceramic body is established; green sheets also serve other products"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: tantalum
+    name: "Tantalum anode pressing, sintering, formation and conditional coating"
+    inclusion: "conditional"
+    inclusion_condition: "Only operations before the documented externally supplied unfinished anode or element gate"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: hardware
+    name: "Dedicated case and terminal forming, machining, joining and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual operations making a capacitor-specific case or terminal to its drawing; no complete capacitor assembly"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: seal
+    name: "Dedicated sealing-part molding and cure"
+    inclusion: "conditional"
+    inclusion_condition: "Only for an independently supplied capacitor-specific sealing part of a documented compound"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Shared factory utilities and conditional on-site generation"
+    inclusion: "conditional"
+    inclusion_condition: "All applicable routes; disjoint from process electricity already charged"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: release
+    name: "Part qualification, sorting, packing and supplier-gate release"
+    inclusion: "required"
+    inclusion_condition: "Every supplied part; electrical tests only appropriate to its incomplete state"
+    role: "Foreground factory records; step-level trace retained"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: film
+    label: "Film preparation, winding or stacking, end contact and stabilization"
+    inputs:
+      product:
+        - row_id: pp_plain
+          role: "Polypropylene dielectric film"
+          name: "Polypropylene dielectric film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Unmetallized PP film is issued for in-house metallization or film/foil element manufacture."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: pet_plain
+          role: "Polyethylene terephthalate dielectric film"
+          name: "Polyethylene terephthalate dielectric film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Unmetallized PET film is actually used."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: pp_metallized
+          role: "Aluminum-metallized polypropylene dielectric film"
+          name: "Aluminum-metallized polypropylene dielectric film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased metallized PP film is used; its upstream dataset includes metallization. Purchased composite film contains its deposited metal; do not add that embedded metal as another external input."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: pet_metallized
+          role: "Aluminum-metallized polyethylene terephthalate dielectric film"
+          name: "Aluminum-metallized polyethylene terephthalate dielectric film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased metallized PET film is used."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: deposition_al
+          role: "Aluminum evaporation feedstock"
+          name: "Aluminum evaporation feedstock"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Aluminum is deposited on site; declare purity and feed form."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: foil_electrode
+          role: "Capacitor-grade aluminum electrode foil"
+          name: "Capacitor-grade aluminum electrode foil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separate foil electrodes are wound with dielectric film."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: zinc_wire
+          role: "Pure zinc thermal-spray wire"
+          name: "Pure zinc thermal-spray wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Pure zinc wire is used for end contact."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: znal_wire
+          role: "Zinc-aluminum thermal-spray alloy wire"
+          name: "Zinc-aluminum thermal-spray alloy wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Documented zinc-aluminum alloy replaces pure zinc. Record alloy fractions and purchased alloy mass; no parallel zinc and aluminum metal inputs for embedded content."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: bought_film_element
+          role: "Zinc-ended metallized polypropylene capacitor precursor wound element"
+          name: "Zinc-ended metallized polypropylene capacitor precursor wound element"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A declared unfinished element is purchased for further pre-gate processing; do not also charge its embedded film or prior winding/spraying."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pp_film_scrap
+          role: "Aluminum-metallized polypropylene film scrap"
+          name: "Aluminum-metallized polypropylene film scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Metallized PP trimming leaves the boundary."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: pet_film_scrap
+          role: "Aluminum-metallized PET film scrap"
+          name: "Aluminum-metallized PET film scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Metallized PET trimming leaves the boundary."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+        - row_id: spray_dust
+          role: "Zinc-bearing thermal-spray filter dust"
+          name: "Zinc-bearing thermal-spray filter dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Captured spray dust is removed; assay Zn and Al separately. Retain gross dry dust and moisture separately from contained elements; captured dust is not air release."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+      elementary:
+        - row_id: zinc_air
+          role: "zinc"
+          name: "zinc"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94e3-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Zn-containing spray exhaust or fugitive release is established; compartment is unspecified air. Report kg of Zn, not kg zinc oxide or total particulate; prefer differentiated ion/compartment identity when required by the applied LCIA method."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - cbp-n355569-2025
+                - wima-film-construction
+            ranges: []
+  - id: electrofoil
+    label: "Electrode-foil etching, dielectric formation, washing and slitting"
+    inputs:
+      product:
+        - row_id: al_foil_raw
+          role: "High-purity unetched aluminum capacitor foil"
+          name: "High-purity unetched aluminum capacitor foil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Foil etching or formation is performed on site."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: hcl
+          role: "Hydrogen chloride in aqueous etching solution"
+          name: "Hydrogen chloride in aqueous etching solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The actual chloride etch recipe contains HCl; record solution strength. A chloride solution is not automatically HCl. Add other actual salts separately and use their own recipe; this card is conditional."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: ammonium_borate
+          role: "Ammonium borate forming-bath solute"
+          name: "Ammonium borate forming-bath solute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual forming bath uses the ammonium-borate route described by Chemi-Con."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: foil_water
+          role: "Deionized process water"
+          name: "Deionized process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Water is supplied for foil etching, forming or washing."
+          amount:
+            expression: "Use the matched measured amount under cp_water; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: foil_offcut
+          role: "Aluminum electrode-foil offcut"
+          name: "Aluminum electrode-foil offcut"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Foil offcuts leave the factory."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: etch_bath
+          role: "Spent aluminum-bearing chloride etching bath"
+          name: "Spent aluminum-bearing chloride etching bath"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Spent chloride bath is transferred for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: form_bath
+          role: "Spent ammonium-borate forming bath"
+          name: "Spent ammonium-borate forming bath"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Spent borate bath is transferred for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      elementary:
+        - row_id: hydrogen_air
+          role: "Hydrogen, emission to air"
+          name: "Hydrogen, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Electrochemical bath gas assessment establishes hydrogen release."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: chlorine_air
+          role: "Chlorine, emission to air"
+          name: "Chlorine, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Chloride-bath gas assessment establishes chlorine release."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+  - id: al_element
+    label: "Aluminum electrolytic element winding, tab attachment and conditional impregnation"
+    inputs:
+      product:
+        - row_id: formed_anode
+          role: "Anode-formed aluminum capacitor foil"
+          name: "Anode-formed aluminum capacitor foil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Formed anode foil is purchased, so etching and formation are upstream."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: etched_cathode
+          role: "Al coil of 0.05mm cathode etched foil"
+          name: "Al coil of 0.05mm cathode etched foil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ebe375d5-efe7-42bb-bd33-2eccc1d87fce"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased cathode foil matches 0.05 mm etched state; use another identity for another thickness or state. Official Chinese baseName is retained; the qualifier is specifically 0.05 mm cathode etched foil. The supplier Process must declare geography and actual delivered state."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: separator
+          role: "Capacitor-grade cellulose separator paper"
+          name: "Capacitor-grade cellulose separator paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Cellulose separator paper is slit and wound."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: al_tab
+          role: "Aluminum capacitor connection tab"
+          name: "Aluminum capacitor connection tab"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A purchased aluminum tab is attached to the element."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: eg_electrolyte
+          role: "Ethylene glycol electrolyte solvent"
+          name: "Ethylene glycol electrolyte solvent"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Site-documented pre-gate impregnation recipe contains ethylene glycol. Not a default electrolyte. For a purchased proprietary electrolyte use one composition-qualified product input and do not add its embedded solvent again."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: borate_electrolyte
+          role: "Ammonium borate electrolyte solute"
+          name: "Ammonium borate electrolyte solute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Site-documented pre-gate impregnation recipe contains ammonium borate."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: bought_al_element
+          role: "Dry wound aluminum electrolytic capacitor precursor element"
+          name: "Dry wound aluminum electrolytic capacitor precursor element"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A dry wound element is purchased for further pre-gate work; do not duplicate its foils, separator and tabs."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: al_reject
+          role: "Rejected aluminum electrolytic precursor element"
+          name: "Rejected aluminum electrolytic precursor element"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Final nonreworked incomplete elements leave for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      elementary:
+        []
+  - id: ceramic
+    label: "Capacitor-specific ceramic body preparation and conditional firing"
+    inputs:
+      product:
+        - row_id: bto
+          role: "Capacitor-grade barium titanate powder"
+          name: "Capacitor-grade barium titanate powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "BaTiO3 recipe is actually mixed on site."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: pvb
+          role: "Polyvinyl butyral binder"
+          name: "Polyvinyl butyral binder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified ceramic recipe uses PVB."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: ethanol
+          role: "Ethanol slurry solvent"
+          name: "Ethanol slurry solvent"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified ceramic recipe uses ethanol."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: toluene
+          role: "Toluene slurry solvent"
+          name: "Toluene slurry solvent"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified ceramic recipe uses toluene."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: nickel_paste
+          role: "Nickel internal-electrode paste"
+          name: "Nickel internal-electrode paste"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased nickel paste is printed; its formulation is documented."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: green_sheet
+          role: "Barium-titanate capacitor green sheet"
+          name: "Barium-titanate capacitor green sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dedicated green sheet is purchased rather than mixed and cast on site."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen furnace gas"
+          name: "Nitrogen furnace gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual pre-gate ceramic heat-treatment atmosphere contains nitrogen."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: bought_ceramic_body
+          role: "Fired barium-titanate nickel-electrode capacitor precursor body"
+          name: "Fired barium-titanate nickel-electrode capacitor precursor body"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A dedicated unfinished fired body is purchased; supplier data cover its firing and embedded layers."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ceramic_scrap
+          role: "Barium-titanate nickel-electrode green-body scrap"
+          name: "Barium-titanate nickel-electrode green-body scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Unfired laminate scrap leaves for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: fired_scrap
+          role: "Fired barium-titanate nickel-electrode body scrap"
+          name: "Fired barium-titanate nickel-electrode body scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Fired rejected bodies leave for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+      elementary:
+        - row_id: ethanol_air
+          role: "Ethanol, emission to air"
+          name: "Ethanol, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Solvent assessment establishes uncaptured ethanol release."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+        - row_id: toluene_air
+          role: "Toluene, emission to air"
+          name: "Toluene, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Solvent assessment establishes uncaptured toluene release."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - murata-green-sheet
+            ranges: []
+  - id: tantalum
+    label: "Tantalum anode pressing, sintering, formation and conditional coating"
+    inputs:
+      product:
+        - row_id: ta_powder
+          role: "Capacitor-grade tantalum powder"
+          name: "Capacitor-grade tantalum powder"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Tantalum anodes are pressed on site; declare particle distribution and grade."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: ta_wire
+          role: "Capacitor-grade tantalum anode wire"
+          name: "Capacitor-grade tantalum anode wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Tantalum anode wire is inserted or joined."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: ta_anode
+          role: "Sintered porous tantalum capacitor anode"
+          name: "Sintered porous tantalum capacitor anode"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sintered anode is purchased and only later part operations are foreground."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: phosphoric
+          role: "Phosphoric acid forming-bath solute"
+          name: "Phosphoric acid forming-bath solute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified tantalum forming recipe contains phosphoric acid."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: ta_water
+          role: "Deionized tantalum-process water"
+          name: "Deionized tantalum-process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Tantalum formation or washing uses supplied water."
+          amount:
+            expression: "Use the matched measured amount under cp_water; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: manganese_nitrate
+          role: "Manganese nitrate cathode-deposition precursor"
+          name: "Manganese nitrate cathode-deposition precursor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual pre-gate MnO2 deposition uses manganese nitrate; retain concentration and reaction evidence."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: silver_paste
+          role: "Silver cathode-coating paste"
+          name: "Silver cathode-coating paste"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Silver coating occurs before the dedicated-part gate."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: pedot
+          role: "Poly(3,4-ethylenedioxythiophene) cathode dispersion"
+          name: "Poly(3,4-ethylenedioxythiophene) cathode dispersion"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "An actual qualified conductive-polymer pre-gate route uses this specific dispersion. Polymer cathode is an alternative route requiring independent supplier recipe evidence; the MnO2 chart does not establish its chemistry or quantities."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ta_reject
+          role: "Rejected tantalum capacitor anode"
+          name: "Rejected tantalum capacitor anode"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Rejected anodes leave for recovery."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+        - row_id: nitrate_bath
+          role: "Spent manganese-nitrate impregnation bath"
+          name: "Spent manganese-nitrate impregnation bath"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Spent manganese-nitrate bath is transferred for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+      elementary:
+        - row_id: no2_ta
+          role: "Nitrogen dioxide from nitrate decomposition, emission to air"
+          name: "Nitrogen dioxide from nitrate decomposition, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Species-resolved thermal-decomposition evidence establishes NO2 after control."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids:
+                - vishay-tantalum-40036
+            ranges: []
+  - id: hardware
+    label: "Dedicated case and terminal forming, machining, joining and finishing"
+    inputs:
+      product:
+        - row_id: al_sheet
+          role: "Aluminum sheet for capacitor can drawing"
+          name: "Aluminum sheet for capacitor can drawing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dedicated aluminum case is formed on site; declare alloy and temper."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: copper_strip
+          role: "Copper strip for capacitor terminal forming"
+          name: "Copper strip for capacitor terminal forming"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dedicated copper terminal is formed on site."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: tin
+          role: "Tin anode for terminal electroplating"
+          name: "Tin anode for terminal electroplating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Tin plating actually occurs before the supplied terminal gate."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: nickel_sulfate
+          role: "Nickel sulfate plating-bath solute"
+          name: "Nickel sulfate plating-bath solute"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual qualified finishing bath contains nickel sulfate."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: forming_oil
+          role: "Mineral-oil drawing lubricant"
+          name: "Mineral-oil drawing lubricant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Mineral-oil lubricant is used in case or terminal forming."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: hw_water
+          role: "Process washing water"
+          name: "Process washing water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Hardware washing uses supplied water."
+          amount:
+            expression: "Use the matched measured amount under cp_water; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: bought_case
+          role: "Drawing-defined aluminum capacitor can"
+          name: "Drawing-defined aluminum capacitor can"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "An unfinished capacitor assembly is not the output; a dedicated can is purchased for further pre-gate case finishing."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: bought_terminal
+          role: "Drawing-defined copper capacitor terminal"
+          name: "Drawing-defined copper capacitor terminal"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A dedicated terminal is purchased for further pre-gate terminal work; do not charge embedded copper again."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: al_hw_scrap
+          role: "Aluminum capacitor-can forming scrap"
+          name: "Aluminum capacitor-can forming scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Aluminum trim leaves for recycling."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper terminal-stamping scrap"
+          name: "Copper terminal-stamping scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Copper trim leaves for recycling."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: plating_sludge
+          role: "Nickel-bearing plating-treatment sludge"
+          name: "Nickel-bearing plating-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Actual plating produces sludge transferred for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      elementary:
+        []
+  - id: seal
+    label: "Dedicated sealing-part molding and cure"
+    inputs:
+      product:
+        - row_id: epdm_compound
+          role: "Qualified EPDM capacitor-seal molding compound"
+          name: "Qualified EPDM capacitor-seal molding compound"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Documented seal recipe uses purchased EPDM compound. This is a purchased formulated product; supplier data cover embedded polymer, fillers and cure agents once. Another elastomer is another individual exchange."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+        - row_id: bought_seal
+          role: "Drawing-defined EPDM capacitor sealing plug"
+          name: "Drawing-defined EPDM capacitor sealing plug"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "A molded plug is purchased for further pre-gate seal finishing or qualification; upstream covers compounding and molding."
+          amount:
+            expression: "Use the matched measured amount under cp_material; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: epdm_flash
+          role: "EPDM capacitor-seal molding flash"
+          name: "EPDM capacitor-seal molding flash"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "EPDM flash leaves the factory."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - chemicon-technical-2026
+            ranges: []
+      elementary:
+        []
+  - id: utilities
+    label: "Shared factory utilities and conditional on-site generation"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Purchased CN grid supply is delivered at 1–35 kV; use a matching different identity for another geography or voltage. This electricity identity uses the official ILCD property named Net calorific value with an energy unit group whose reference unit is MJ and whose kWh factor is3.6. Collect electrical energy in kWh and express it as MJ; this is not a fuel calorific coefficient in MJ/kg."
+          amount:
+            expression: "Use the matched measured amount under cp_energy; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: steam
+          role: "Purchased saturated process steam"
+          name: "Purchased saturated process steam"
+          flow_type: "product"
+          property_unit: "Delivered heat / MJ"
+          description: "Steam is purchased at declared pressure and condensate-return interface."
+          amount:
+            expression: "Use the matched measured amount under cp_energy; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Pipeline natural gas fuel"
+          name: "Pipeline natural gas fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Factory burners or boilers consume pipeline gas; declare measured composition and delivery conditions."
+          amount:
+            expression: "Use the matched measured amount under cp_energy; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: co2_fossil
+          role: "Carbon dioxide, fossil, emission to air"
+          name: "Carbon dioxide, fossil, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "On-site fossil-fuel combustion emits CO2."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide, emission to air"
+          name: "Carbon monoxide, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Species-specific combustion evidence establishes CO."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+        - row_id: no2
+          role: "Nitrogen dioxide, emission to air"
+          name: "Nitrogen dioxide, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Species-specific combustion evidence establishes NO2; do not convert total NOx without a declared convention."
+          amount:
+            expression: "Use the matched measured amount under cp_emission; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission
+              source_ids: []
+            ranges: []
+  - id: release
+    label: "Part qualification, sorting, packing and supplier-gate release"
+    inputs:
+      product:
+        - row_id: box
+          role: "Corrugated cardboard shipping box"
+          name: "Corrugated cardboard shipping box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This specific box is used in dispatch; document actual fibre mix."
+          amount:
+            expression: "Use the matched measured amount under cp_pack; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - cbp-n355569-2025
+            ranges: []
+        - row_id: pe_bag
+          role: "Low-density polyethylene protective bag"
+          name: "Low-density polyethylene protective bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "LDPE bag is used in dispatch."
+          amount:
+            expression: "Use the matched measured amount under cp_pack; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids:
+                - cbp-n355569-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Single drawing-defined dedicated electrical capacitor part"
+          name: "Single drawing-defined dedicated electrical capacitor part"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only one qualified part number, revision, family and completion state is the reference output; do not pool families. The reference identity is one specified part, never a material basket or complete functional capacitor. Use its concrete part name and matching physical flow identity in the dataset."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output
+              source_ids:
+                - cbp-n355569-2025
+            ranges: []
+      waste:
+        - row_id: film_reject
+          role: "Rejected polypropylene capacitor precursor wound element"
+          name: "Rejected polypropylene capacitor precursor wound element"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Final film-element rejects leave for treatment."
+          amount:
+            expression: "Use the matched measured amount under cp_waste; divide by accepted net shipped part mass for the same part and period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - cbp-n355569-2025
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: subdivide
+    applies_to: "shared_load"
+    rule: "Prefer disjoint lot records and submetering. Allocate residual shared energy using measured machine time/load or another demonstrated physical driver; reconcile allocated totals to site readings."
+    source_ids: []
+  - rule_id: coproduct
+    applies_to: "saleable_outputs"
+    rule: "For a real co-product document the physical relationship; if unavailable justify another consistent relationship and sensitivity. Scrap sale does not itself establish avoided virgin-production credit."
+    source_ids: []
+  - rule_id: rework
+    applies_to: "recovery"
+    rule: "Internal returns retain extra processing burdens once and are not final waste. External recovery follows one disclosed method compatible with upstream datasets; no unrecorded substitution credits."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material
+      process_id: "each_applicable_route"
+      flow_role: "one specific input at a time"
+      record_type: "issue and stock records"
+      raw_fields: "part/revision; recipe; source-state; supplier; issued; returned; stock change; composition/assay; lot"
+      collection_method: "Calibrated weighing and supplier certificates; separate purchased composites from site-mixed constituents"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete declared period including setup and rework"
+      site_scope: "defined factory and suppliers"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing calibration, recipe and supplier-state records"
+    - protocol_id: cp_output
+      process_id: "release"
+      flow_role: "reference output and internal transfers"
+      record_type: "acceptance and delivery ledger"
+      raw_fields: "part number/revision; completion-state; count; lot tare/net mass; measured mean mass; moisture/coating; rejects; work-in-progress stocks"
+      collection_method: "Weigh each accepted lot on a calibrated scale, deduct packaging and tare, reconcile drawing/configuration and customer delivery; sample count-to-mass only with representative weighed samples"
+      unit: "kg"
+      frequency: "each lot and transfer"
+      temporal_coverage: "same reporting period"
+      site_scope: "production through dispatch"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "customer drawing/interface, calibrated weights and acceptance/delivery evidence"
+    - protocol_id: cp_energy
+      process_id: "all_active_processes"
+      flow_role: "each electricity, steam or fuel independently"
+      record_type: "meter and energy ledger"
+      raw_fields: "meter id; stage; interval; kWh; fuel amount/composition/NCV; steam enthalpy/pressure; shared driver; operation, idle and rework"
+      collection_method: "Disjoint submeters and supplier bills; measured driver for shared residue; onsite generation separately identifies fuel and output"
+      unit: "MJ"
+      frequency: "each matched interval"
+      temporal_coverage: "same period as output"
+      site_scope: "actual factory delivery boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter calibration, load study and supply-state records"
+    - protocol_id: cp_water
+      process_id: "each_water_using_route"
+      flow_role: "specific supplied water"
+      record_type: "meter record"
+      raw_fields: "meter; supply grade; batch; quantity; density/temperature for volume conversion; recycle and discharge"
+      collection_method: "Meter water supply and separate internal recycle; preserve actual volume-to-mass conversion"
+      unit: "kg"
+      frequency: "each interval"
+      temporal_coverage: "same reporting period"
+      site_scope: "route-specific meter"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "meter and density records"
+    - protocol_id: cp_waste
+      process_id: "all_applicable_processes"
+      flow_role: "one segregated waste stream"
+      record_type: "waste and assay ledger"
+      raw_fields: "identity; tare/gross/net; moisture; element/chemical assay; retained stocks; rework status; receiver and treatment"
+      collection_method: "Segregated calibrated weighing and representative assay with destination receipt"
+      unit: "kg"
+      frequency: "each removal and representative assay"
+      temporal_coverage: "same period including retained waste"
+      site_scope: "route and external receiver"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "weighing, lab analysis and treatment receipt"
+    - protocol_id: cp_emission
+      process_id: "actual_release_points"
+      flow_role: "one chemical species and compartment"
+      record_type: "post-control monitoring or verified species model"
+      raw_fields: "species; compartment; concentration; gas/liquid flow; time; production; capture; assay; detection limit; uncertainty; model conditions"
+      collection_method: "Matched representative sampling after controls and fugitive assessment; preserve species-specific model evidence when measurement is unavailable"
+      unit: "kg"
+      frequency: "representative cycles and process changes"
+      temporal_coverage: "cover complete reporting activity"
+      site_scope: "identified stack/fugitive/direct-water boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "sampling reports, detection limits, model validity and control logs"
+    - protocol_id: cp_pack
+      process_id: "release"
+      flow_role: "each packaging component"
+      record_type: "issue and dispatch ledger"
+      raw_fields: "material/grade; component tare; count; reuse; shipments; damage"
+      collection_method: "Weigh each actual component and reconcile issued/returned quantities"
+      unit: "kg"
+      frequency: "each configuration and lot"
+      temporal_coverage: "same period"
+      site_scope: "dispatch boundary"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "packaging specification and weight records"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all inventory rows"
+      rule: "Each external exchange amount = attributable recorded quantity for the selected part configuration / accepted net shipped part mass of that configuration and reporting period. Reference output is exactly 1 kg. Keep direction, process and physical unit distinct."
+      inputs:
+        - cp_material
+        - cp_output
+        - cp_energy
+        - cp_water
+        - cp_waste
+        - cp_emission
+        - cp_pack
+      output: "amount per 1 kg reference flow"
+      source_ids: []
+    - id: count_mass
+      applies_to: "reference output"
+      rule: "Accepted count multiplied by measured mean net mass for that same lot/configuration yields lot mass; reconcile with calibrated direct lot weighing. Area multiplied by measured state-specific areal mass yields film/foil mass; do not apply another grade or coating."
+      inputs:
+        - cp_output
+        - cp_material
+      output: "verified kg before normalization"
+      source_ids: []
+    - id: internal_transfers
+      applies_to: "paired internal links"
+      rule: "Match the same lot, part-state and net quantity across sending/receiving records after work-in-progress changes; cancel only this paired transfer in aggregation. Its consumed energy and external wastes remain."
+      inputs:
+        - cp_output
+      output: "no duplicated precursor burden"
+      source_ids: []
+    - id: balance
+      applies_to: "route material and species balances"
+      rule: "For each element/chemical, use matching measured composition on inputs, delivered part, waste, releases and stocks; include reaction sources/sinks such as oxide oxygen uptake and nitrate decomposition. Do not equate mixed gross mass with elemental mass or invent emissions to force closure."
+      inputs:
+        - cp_material
+        - cp_output
+        - cp_waste
+        - cp_emission
+      output: "balance residual with uncertainty"
+      source_ids: []
+    - id: combustion
+      applies_to: "on-site fuel and emission rows"
+      rule: "Carbon accounting can constrain fossil CO2 with verified composition and oxidized-carbon allocation; it cannot establish CO, NO or NO2. Each pollutant uses its own measurement or validated factor matching technology and controls; preserve total-NOx conventions separately."
+      inputs:
+        - cp_energy
+        - cp_emission
+      output: "species-specific release quantities"
+      source_ids: []
+  data_quality_requirements:
+    - id: part_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate dedicated capacitor interface and external part delivery, with family, drawing/revision and completion state. No cross-family mass-equivalence claim."
+      evidence: "customer/supplier drawing and delivery specification"
+    - id: route_coverage
+      applies_to: "actual line"
+      requirement: "Audit every actual input, formulation, reaction, utility, packaging, treatment and direct release. A source chart or conditional card does not establish absent exchanges."
+      evidence: "BOM, make/buy matrix and control permits"
+    - id: period
+      applies_to: "all data"
+      requirement: "Use one complete coherent period including setup, idle, rework, rejects and stocks; retain supply geography, voltage/pressure and supplier technology."
+      evidence: "production and utility reconciliations"
+    - id: uncertainty
+      applies_to: "every amount and identity"
+      requirement: "Retain calibration, assays, detection limits, supplier substitutions and uncertainties. No empirical mass, yield, energy or emission range is supplied by this PCR; collect actual values. Missing identity or amount stays explicit and blocks unqualified downstream use."
+      evidence: "measurement and supplier evidence"
+validation_rules:
+  - rule_id: identity
+    applies_to: "part_gate"
+    rule: "Reject absent capacitor-specific interface, missing required qualifiers, undocumented external-part status or complete functional capacitors presented as parts."
+    source_ids: []
+  - rule_id: measurement
+    applies_to: "all inventory"
+    rule: "Require positive calibrated net accepted shipped mass for the exact configuration and period; verify every count/area conversion and each per-kg denominator, packaging exclusion and collection aggregation."
+    source_ids: []
+  - rule_id: make_buy
+    applies_to: "upstream links"
+    rule: "Check purchased processing states, upstream burdens once, internal-transfer cancellation and no duplicate embedded metal, binder, solvent or rubber. Completed steps and downstream completion must match delivered state."
+    source_ids: []
+  - rule_id: species
+    applies_to: "chemical and waste rows"
+    rule: "Verify specific flow identity, property/unit, species, moisture/assay and compartment. Captured dust/sludge is waste, not released emission. Assess bath gas and solvent/decomposition products individually; fuel carbon alone does not validate CO or NOx."
+    source_ids: []
+  - rule_id: coverage
+    applies_to: "data package"
+    rule: "Resolve every applicable conditional route with actual recipe and state. not_applicable requires absence evidence; unknown is incomplete. Report checks performed/skipped and unresolved provider/UUID/quantity gaps; no universal BOM or numeric default may close a gap."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground primary unit-process package for one dedicated capacitor part and declared completion gate"
+  downstream_use: "secondary_dataset; background_dataset after independent review and provider linkage"
+  allowed_use: "Production input to a matching downstream capacitor model at its actual supplied state"
+  excluded_use: "Complete-capacitor footprint or service-life claim; mass substitution across families, recipes or completion states; automatic CPC membership of unverified parts"
+  required_metadata: "All reference qualifiers; actual process and route coverage; net denominator; supplier delivery and transport/treatment links; allocation; geography/period; source editions"
+  required_quality_disclosure: "Primary-data coverage; missing species/UUID/provider identities; formulation and quantity gaps; uncertainty; conditional absence evidence; allocation and substitutions"
+  update_trigger: "Changed drawing, part interface, family, grade, supplied treatment, recipe, make/buy route, utilities, control, yield, measurement or acceptance state"
+data_sources:
+  - id: "un-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations CPC Version 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Classification identity only: 47110 electrical capacitors; 47171 its parts. Not commercial part-state or manufacturing evidence."
+  - id: "cbp-n355569-2025"
+    type: "official_guidance"
+    reference: "U.S. Customs and Border Protection, N355569, 24 November 2025, PDF pp.1–2. https://rulings.cbp.gov/api/getdoc/ny/2025/N355569.pdf"
+    used_for: "Actual traded film precursor and performed/deferred steps. One factual case; no tariff rates, universal technology scope or numeric LCI adopted."
+  - id: "wima-film-construction"
+    type: "handbook"
+    reference: "WIMA, Film capacitors, undated original, PDF p.4 illustrations3 and5; accessed 2026-10-02. https://www.wima.de/wp-content/uploads/media/WIMA-Filmcapacitors.pdf"
+    used_for: "Different metallized versus film/foil construction and PP/PET distinctions; no default part composition or process intensity."
+  - id: "chemicon-technical-2026"
+    type: "handbook"
+    reference: "Nippon Chemi-Con, Technical Note, CAT. No. E1001A2026, sections1-3 and1-4, PDF p.410. https://www.chemi-con.co.jp/products/relatedfiles/capacitor/catalog/al-all-e.pdf"
+    used_for: "Electrode foil, oxide formation, separator/tab and can/seal distinctions; full-device process source applies only before documented part gate. Original corrects duplicated English web FAQ formation text."
+  - id: "murata-green-sheet"
+    type: "handbook"
+    reference: "Murata, Green Sheet Process Technology, Technical Explanation; dated snapshot accessed2026-10-02. https://corporate.murata.com/en-eu/technology/technology-platform/production-technology/green-sheet-process"
+    used_for: "Ceramic forming/printing/lamination and non-capacitor counterexamples. Does not establish all ceramic intermediates as traded dedicated capacitor parts or specify all binders/solvents."
+  - id: "vishay-tantalum-40036"
+    type: "handbook"
+    reference: "Vishay Sprague, Total Quality Commitment, document40036, revision21-Jul-06, PDF pp.2–3 (printed6–7). https://www.vishay.com/docs/40036/totqual.pdf"
+    used_for: "Tantalum pressing/sintering/formation and later MnO2 coating/assembly controls; full-device chart. Does not establish supplier sale, polymer route chemistry or current empirical LCI amounts."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0e523f27b44c3d87fbe6b97e984280320826bf7516582826074cebc2eceb5a57"
+  generated_content_sha256: "sha256:1feb95dd28dca3346ac1d7f82dcc20528eef3120d94177f0cae808bd39425547"
