@@ -738,9 +738,9 @@ function buildGuidanceForOperation({ root, pcrId, operation, context = null }) {
     validation_rules: structured.validation_rules ?? [],
     data_sources: structured.data_sources ?? [],
     validation_notes: [
-      "Use this guidance as the source of Tiangong foreground data collection package requirements.",
-      "Preserve Tiangong UUIDs exactly and keep PCR-derived UUID references version-free.",
-      "Run tiangong-pcr validate-dataset after constructing a foreground data package and draft feedback if PCR guidance is missing or ambiguous.",
+      "Use this guidance for LCA data authoring, optional TIDAS process authoring, or Agent-led review of existing process/model data. Select requirements for the declared scope.",
+      "Preserve PCR-derived UUID identities exactly. They are version-free suggestions; preserve and verify explicit versions on supplied TIDAS dataset references.",
+      "validate-model checks qualifier text presence; validate-dataset checks collection protocol ID presence. Neither performs TIDAS schema validation or semantic review. Use inspect and review prepare/check to support Agent-led review; a foreground package is optional.",
     ],
   };
   assertCoreContract("guidance-output.schema.json", guidance, {

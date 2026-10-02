@@ -1,9 +1,14 @@
 import { createRequire } from "node:module";
 import { OfflineLibrary } from "../../pcr-core/src/offline-library.mjs";
 import { withPcrSource } from "../../pcr-core/src/source-context.mjs";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { GUIDANCE_TOPICS, selectGuidance } from "../../pcr-core/src/consumption-guidance.mjs";
+import { inspectTidas, INSPECTION_SECTIONS } from "../../pcr-core/src/tidas-inspection.mjs";
+import { prepareReview, checkReview } from "../../pcr-core/src/consumption-review.mjs";
+import { calculate } from "../../pcr-core/src/consumption-calculation.mjs";
+import { readJsonDocument, sha256 } from "../../pcr-core/src/consumption-data.mjs";
 
 import {
   CLASSIFICATION_COVERAGE_STATUSES,
@@ -46,7 +51,12 @@ const COMMAND_OPTIONS = {
   "coverage:list": new Set(["classification", "status", "page", "page-size"]),
   resolve: new Set(["classification", "pcr"]),
   show: new Set(["pcr", "lang"]),
-  guidance: new Set(["pcr"]),
+  guidance: new Set(["pcr", "topic", "pointer", "page", "page-size", "output"]),
+  inspect: new Set(["input", "related", "section", "pointer", "page", "page-size", "output"]),
+  calculate: new Set(["input", "output"]),
+  review: new Set(),
+  "review:prepare": new Set(["pcr", "input", "related", "output"]),
+  "review:check": new Set(["pcr", "input", "related", "report", "output"]),
   "validate-model": new Set(["pcr", "input", "fail-on"]),
   "validate-dataset": new Set(["pcr", "input", "fail-on"]),
   "feedback:draft": new Set([
@@ -84,6 +94,11 @@ const COMMAND_DEFINITIONS = [
   { key: "resolve", command: "resolve", formats: ["json"], defaultFormat: "json" },
   { key: "show", command: "show", formats: ["markdown"], defaultFormat: "markdown" },
   { key: "guidance", command: "guidance", formats: ["json"], defaultFormat: "json" },
+  { key: "inspect", command: "inspect", formats: ["json"], defaultFormat: "json" },
+  { key: "calculate", command: "calculate", formats: ["json"], defaultFormat: "json" },
+  { key: "review", command: "review", formats: ["json"], defaultFormat: "json" },
+  { key: "review:prepare", command: "review", positional: ["prepare"], formats: ["json"], defaultFormat: "json" },
+  { key: "review:check", command: "review", positional: ["check"], formats: ["json"], defaultFormat: "json" },
   { key: "validate-model", command: "validate-model", formats: ["json"], defaultFormat: "json" },
   { key: "validate-dataset", command: "validate-dataset", formats: ["json"], defaultFormat: "json" },
   {
@@ -106,7 +121,7 @@ export class CliError extends Error {
 
 function installedLibrary() {
   for (const filename of [path.join(process.cwd(), "package.json"), import.meta.url]) {
-    try { return path.join(path.dirname(createRequire(filename).resolve("tiangong-pcr-library/package.json")), "library.sqlite"); } catch {}
+    try { return path.join(path.dirname(createRequire(filename).resolve("@tiangong-lca/pcr-library/package.json")), "library.sqlite"); } catch {}
   }
   return null;
 }
@@ -125,10 +140,14 @@ export function runTiangongPcr(argv) {
     if (!command || command === "help" || options.help) return runCommand(argv);
     if (command === "library" && positional.length === 0) throw new CliError("PCR_CLI_MISSING_SUBCOMMAND", "Use library info or library verify with --library <file>.");
     if (options.root && options.library) throw new CliError("PCR_CLI_SOURCE_CONFLICT", "Choose either --root or --library.");
+    if (["inspect", "calculate"].includes(command)) {
+      if (options.library || options["library-sha256"]) throw new CliError("PCR_CLI_SOURCE_UNUSED", `${command} uses local input only; omit --library and --library-sha256.`);
+      return runCommand(argv);
+    }
     const filename = options.library ?? (options.root ? null : process.env.PCR_LIBRARY ?? (existsSync(path.join(defaultRoot, "library/catalog.yaml")) ? null : installedLibrary()));
     if (!filename) {
       if (options["library-sha256"] || command === "library") throw new CliError("PCR_LIBRARY_REQUIRED", "Select a local snapshot with --library <library.sqlite>.");
-      if (!options.root && !existsSync(path.join(defaultRoot, "library/catalog.yaml"))) throw new CliError("PCR_LIBRARY_REQUIRED", "No offline library found. Install tiangong-pcr-library or pass --library <library.sqlite>.");
+      if (!options.root && !existsSync(path.join(defaultRoot, "library/catalog.yaml"))) throw new CliError("PCR_LIBRARY_REQUIRED", "No offline library found. Install @tiangong-lca/pcr-library or pass --library <library.sqlite>.");
       return runCommand(argv);
     }
     // Validate the command before opening a potentially large data file.
@@ -234,7 +253,38 @@ function runCommand(argv, selected = null) {
     }
     if (command === "guidance") {
       requireOption(options, "pcr");
+      if (["topic", "pointer", "page", "page-size"].some((key) => options[key] !== undefined)) {
+        validatePointerOptions(options, "topic");
+        const report = selectGuidance({ root, pcrId: String(options.pcr), topic: options.topic, pointer: options.pointer, ...consumptionPage(options) });
+        return consumptionOutput(withConsumptionContinuation(report, "guidance", options), options);
+      }
+      if (options.output) return consumptionOutput(buildGuidance({ root, pcrId: String(options.pcr) }), options);
       return ok(writeOutput(buildGuidance({ root, pcrId: String(options.pcr) }), format, JSON.stringify));
+    }
+    if (command === "inspect") {
+      requireOption(options, "input");
+      validatePointerOptions(options, "section");
+      if (options.pointer === undefined && (!options.section || options.section === "summary") && (options.page || options["page-size"])) {
+        throw new CliError("PCR_CLI_OPTION_CONFLICT", "Summary is not paginated. Choose --section references|exchanges|instances|documents for paging.");
+      }
+      const report = inspectTidas({ input: options.input, related: options.related, section: options.section, pointer: options.pointer, ...consumptionPage(options) });
+      return consumptionOutput(withConsumptionContinuation(report, "inspect", options), options);
+    }
+    if (command === "calculate") {
+      requireOption(options, "input");
+      const source = readJsonDocument(options.input);
+      return consumptionOutput({ ...calculate(source.value), request_source: { file: source.file, sha256: source.sha256 } }, options);
+    }
+    if (command === "review") {
+      if (!positional.length) throw new CliError("PCR_CLI_MISSING_SUBCOMMAND", "Use review prepare to create an Agent draft or review check to verify its envelope. Run review --help.");
+      requireOption(options, "input");
+      requireOption(options, "pcr");
+      const args = { root, pcrId: String(options.pcr), input: options.input, related: options.related };
+      if (positional[0] === "prepare") return consumptionOutput(prepareReview(args), options);
+      requireOption(options, "report");
+      const source = readJsonDocument(options.report);
+      const report = checkReview({ ...args, report: source.value });
+      return consumptionOutput({ ...report, report_source: { file: source.file, sha256: source.sha256 } }, options, report.envelope_valid ? 0 : 2);
     }
     if (command === "validate-model") {
       requireOption(options, "pcr");
@@ -295,6 +345,48 @@ function runCommand(argv, selected = null) {
 
 function ok(stdout, exitCode = 0) {
   return { stdout, stderr: "", exitCode };
+}
+
+function consumptionPage(options) {
+  return {
+    page: positiveIntegerOption(options.page, "page", 1),
+    pageSize: positiveIntegerOption(options["page-size"], "page-size", 10, 100),
+  };
+}
+
+function validatePointerOptions(options, selector) {
+  if (options.pointer !== undefined && [selector, "page", "page-size"].some((key) => options[key] !== undefined)) {
+    throw new CliError("PCR_CLI_OPTION_CONFLICT", `Use --pointer alone, or --${selector} with optional pagination.`);
+  }
+}
+
+function withConsumptionContinuation(report, command, options) {
+  const parts = command === "guidance" ? commandPrefix(options) : ["tiangong-pcr"];
+  parts.push(command);
+  if (command === "guidance") parts.push(...sourceArguments(options));
+  for (const key of command === "guidance" ? ["pcr", "topic"] : ["input", "related", "section"]) {
+    if (options[key] !== undefined) parts.push(`--${key}`, shellToken(["input", "related"].includes(key) ? path.resolve(options[key]) : options[key]));
+  }
+  const pagination = report.pagination;
+  return {
+    ...report,
+    next_command: pagination?.has_more ? `${parts.join(" ")} --page ${pagination.page + 1} --page-size ${pagination.page_size} --format json` : null,
+    next_step: command === "guidance"
+      ? "Read relevant topics; use --pointer with an item's source.pointer for complete text. Judge applicability and cite the returned source."
+      : "Inspect paged exchanges/instances and references; use --pointer with source.pointer for full fields. Resolve evidence gaps before methodological conclusions.",
+  };
+}
+
+function consumptionOutput(report, options, exitCode = 0) {
+  const output = `${JSON.stringify(report, null, 2)}\n`;
+  if (options.output) {
+    const filename = path.resolve(String(options.output));
+    try { writeFileSync(filename, output, { encoding: "utf8", flag: "wx" }); }
+    catch (error) { throw new CliError("PCR_CLI_OUTPUT_WRITE", `Cannot create new output file ${filename}: ${error.message}. Choose an unused path in an existing directory.`); }
+    return ok(`${JSON.stringify({ artifact: filename, sha256: sha256(output), bytes: Buffer.byteLength(output), kind: report.report_kind ?? report.check_kind ?? report.guidance_kind ?? report.inspection_kind ?? report.calculation_kind, ...(report.envelope_valid === undefined ? {} : { envelope_valid: report.envelope_valid, methodology_approval: false }), next_step: "Read the saved artifact. Source inputs were not modified." }, null, 2)}\n`, exitCode);
+  }
+  if (output.length > 32768) throw new CliError("PCR_CLI_OUTPUT_LARGE", "Result exceeds 32768 characters. Use --output <new-file> for the complete artifact or request a smaller page/pointer.");
+  return ok(output, exitCode);
 }
 
 function fail(error, requestedFormat, requestedRoot, selected = null) {
@@ -1349,6 +1441,10 @@ This command rejects scaffold, incomplete, deprecated, or otherwise unusable PCR
 
 Options:
   --pcr <pcr-id>                    PCR id.
+  --topic <topic>                   Bounded, cited selection (default overview when paging).
+  --pointer <JSON Pointer>          Read a complete value from the verified structured projection.
+  --page <n> --page-size <n>         Topic pagination; default 10, maximum 100 items.
+  --output <new-file>               Save complete JSON without overwriting an existing file.
   --format json                     Output format. JSON is recommended for Agents.
   --root <path>                     PCR repository root.
   --library <file>                  Local library.sqlite (or PCR_LIBRARY). Mutually exclusive with --root.
@@ -1358,16 +1454,119 @@ Options:
 JSON output includes:
   pcr, readiness, system_boundary, reference_flow, measurement_rules, process_map,
   process_inventory, allocation_rules, validation_rules, data_sources, and validation_notes.
+  Without selection flags, the legacy full guidance shape is preserved.
+  Selected guidance includes source pointers, content hashes, readiness and pagination.
+
+Topics:
+  ${GUIDANCE_TOPICS.join(", ")}
+
+Example:
+  tiangong-pcr guidance --pcr <pcr-id> --topic boundary --format json
+  tiangong-pcr guidance --pcr <pcr-id> --pointer /system_boundary/rules/0 --format json
 
 Agent next step:
-  Build the foreground data package from the guidance, then run validate-dataset.
-  Use process or lifecyclemodel publication and validate-model only as a downstream projection.
+  Choose general LCA authoring, optional TIDAS authoring or existing-data review.
+  Judge applicability and declared scope. Cite returned source references; expand truncated items with --pointer.
+`;
+  }
+  if (definition.key === "inspect") {
+    return `Usage: tiangong-pcr inspect --input <native-tidas.json> [options]
+
+Read local TIDAS process/model/support datasets without changing them or fetching references.
+This is fact inspection, not TIDAS schema validation or PCR compliance. No PCR library is needed.
+
+Options:
+  --input <file>                    One native TIDAS JSON dataset; wrapped rows are unsupported.
+  --related <directory>             Explicit local package: at most 200 JSON files / 64 MiB total.
+  --section <section>               ${INSPECTION_SECTIONS.join("|")}; default summary.
+  --pointer <JSON Pointer>          Read a full original value; mutually exclusive with section/paging.
+  --page <n> --page-size <n>         Paged sections: default 10, maximum 100 items.
+  --output <new-file>               Save complete JSON; existing files are never overwritten.
+  --format json --help              JSON output or this help.
+
+Output:
+  Original file/hash/pointer evidence, explicitly partial scope, local reference statuses and next_command.
+  Previews may be truncated; --pointer retrieves the complete value, --output saves large results.
+  References match kind, UUID and requested version; duplicate matches are ambiguous.
+  Missing/unsupported identities remain unresolved. Unspecified versions are disclosed.
+  Related JSON without a dataset root is ignored explicitly; malformed JSON and symlinks fail.
+
+Examples:
+  tiangong-pcr inspect --input wheat.process.json --related ./datasets --section exchanges --format json
+  tiangong-pcr inspect --input wheat.model.json --related ./datasets --section references --format json
+
+Next:
+  Inspect scope and reference basis, resolve missing evidence, select PCR guidance and use review prepare.
+  Unit interpretation needs local flow, flow-property and unit-group evidence. Use the TIDAS toolkit for schema validation.
+`;
+  }
+  if (definition.key === "calculate") {
+    return `Usage: tiangong-pcr calculate --input <calculation.json> [--output <new-file>] [--format json]
+
+Perform reproducible arithmetic using explicit values, units, basis and evidence. No library is needed.
+All requests require operation, basis and evidence. Numeric values may be finite numbers or decimal strings.
+
+Normalization example:
+  {"operation":"normalize","amount":50,"unit":"kg N","source_reference":1000,
+   "target_reference":1,"reference_unit":"kg grain","basis":"same moisture and gate",
+   "evidence":"production record A; explicit source and target reference amounts"}
+
+Conversion fields:
+  operation: convert; amount, from_unit, to_unit, factor, basis, evidence.
+  factor is supplied in to_unit / from_unit; no unit equivalence or factor is inferred.
+
+Balance fields:
+  operation: balance; inputs and outputs: [{"amount":1,"label":"record A"}],
+  accumulation (explicit, even if zero), unit, basis, evidence.
+  All terms must use the same physical basis and unit. Residual = inputs - outputs - accumulation.
+
+Output:
+  Request hash, supplied request, formula, result and interpretation limits; floating-point arithmetic.
+  No threshold, physical validity or anomaly verdict is inferred. Missing values are not zero.
+Next: retain the calculation artifact and assess its applicability and tolerance in the Agent review.
+`;
+  }
+  if (definition.command === "review") {
+    return `Usage:
+  tiangong-pcr review prepare --pcr <pcr-id> --input <native-tidas.json> [--related <directory>] --output <new-draft.json>
+  tiangong-pcr review check --pcr <pcr-id> --input <native-tidas.json> [--related <directory>] --report <review.json>
+
+prepare creates an unreviewed Agent artifact with exact input/PCR bindings, scope and uncovered topics.
+The Agent investigates and edits that artifact. check verifies its envelope and evidence locations.
+Neither command runs an LLM, validates TIDAS schemas or approves methodology.
+
+Options:
+  --pcr <pcr-id> --input <file>      Explicit PCR and native TIDAS input, unchanged throughout review.
+  --related <directory>             Same explicitly supplied local package used during inspection.
+  --report <file>                   Agent review JSON, required only by check.
+  --output <new-file>               Save complete output without replacing an existing file.
+  --root <path>                     Repository source, mutually exclusive with --library.
+  --library <file>                  Local snapshot or PCR_LIBRARY / installed library.
+  --library-sha256 <sha256:hex>      Verify and pin that snapshot.
+  --format json --help              JSON output or this help.
+
+Agent report:
+  status: draft|reviewed; scope: description, applicability, limitations.
+  coverage: [{topic, status: reviewed|not_applicable|not_reviewed, rationale}].
+  findings: [{id, kind: confirmed_issue|suspected_anomaly|evidence_gap, severity: error|warning|info,
+    observation, rationale, input_refs, pcr_refs, suggested_action, questions, alternative_explanations?}].
+  Copy input_refs from inspect source objects and pcr_refs from selected guidance source objects.
+  Cite the nearest existing parent for a missing field. pcr_refs may be empty for purely structural observations.
+  Preserve free reasoning and unresolved questions; do not infer missing lifecycle stages from a partial process.
+
+Exit codes:
+  0 preparation completed or report envelope valid (drafts may be valid);
+  1 usage/input/runtime error; 2 report shape, binding or evidence-location problem.
+  envelope_valid and methodology_approval=false are separate from Agent findings and severity.
+
+Next: use the Skill review reference, investigate applicable topics and share findings with their scope limits.
 `;
   }
   if (definition.key === "validate-model") {
     return `Usage: tiangong-pcr validate-model --pcr <pcr-id> --input <file> [options]
 
-Check a process or lifecyclemodel draft against selected PCR guidance.
+Legacy diagnostic: check whether PCR reference qualifiers occur in the input text.
+JSON is treated as text; this does not parse TIDAS fields or perform semantic review.
 
 Options:
   --pcr <pcr-id>                    PCR id.
@@ -1387,14 +1586,15 @@ Exit codes:
   1 usage, input, or runtime error; 2 validation is inconclusive or the --fail-on threshold was reached.
 
 Agent next step:
-  Address findings in the model. If the PCR guidance is missing or unclear, create feedback draft.
+  Treat matches as text-presence evidence only. Use inspect and review prepare/check for Agent-led TIDAS review.
 `;
   }
   if (definition.key === "validate-dataset") {
     return `Usage: tiangong-pcr validate-dataset --pcr <pcr-id> --input <file> [options]
 
 Check a foreground data package JSON object against the implemented subset of selected PCR guidance.
-The report states exactly which requirement families were checked or skipped.
+Currently checks collection protocol ID presence, not values, units, evidence quality or TIDAS validity.
+This optional legacy package format is not required for general LCA authoring or native TIDAS review.
 
 Options:
   --pcr <pcr-id>                    PCR id.
@@ -1468,7 +1668,11 @@ Commands:
   coverage list --classification <system>:<version> [--status <coverage-status>] [--page <n>] [--page-size <n>] [--format json|table]
   resolve (--classification <system>:<version>:<code> | --pcr <pcr-id>) [--format json]
   show --pcr <pcr-id> [--lang en-US|zh-CN]
-  guidance --pcr <pcr-id> [--format json]
+  guidance --pcr <pcr-id> [--topic <topic> | --pointer <pointer>] [--output <new-file>] [--format json]
+  inspect --input <native-tidas.json> [--related <directory>] [--section <section> | --pointer <pointer>]
+  calculate --input <calculation.json> [--output <new-file>]
+  review prepare --pcr <pcr-id> --input <native-tidas.json> [--related <directory>] --output <new-draft.json>
+  review check --pcr <pcr-id> --input <native-tidas.json> [--related <directory>] --report <review.json>
   validate-model --pcr <pcr-id> --input <file> [--format json] [--fail-on never|error|warning]
   validate-dataset --pcr <pcr-id> --input <file> [--format json] [--fail-on never|error|warning]
   feedback draft --type <type> [--pcr <pcr-id>] [--summary <text>]
@@ -1479,8 +1683,9 @@ Agent workflow:
      If a PCR id is available, run resolve --pcr <pcr-id> --format json. Supply exactly one selector.
   3. If no code is available, use tree/list to browse explicit material PCR hierarchy. list defaults to 10 records per page.
   4. Check resolution_status and readiness. Run guidance only for mapped material PCRs when usable_for_guidance is true.
-  5. Build a foreground data package, then run validate-dataset.
-  6. Only for downstream publication projections, build a process or lifecyclemodel and run validate-model.
+  5. Guide general LCA data authoring, optionally map a draft into TIDAS, or inspect existing TIDAS inputs.
+  6. For review, investigate applicable guidance and evidence, fill review prepare's draft, then use review check.
+     CLI checks do not approve methodology. Existing validate-* commands are limited legacy diagnostics.
   7. If PCR guidance is missing or ambiguous, run feedback draft with the observed gap.
 `;
 }

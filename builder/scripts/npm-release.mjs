@@ -6,8 +6,8 @@ import { pathToFileURL } from "node:url";
 import { compareSemver } from "../lib/lifecycle-policy.mjs";
 
 export const packages = {
-  tool: { name: "tiangong-pcr", prefix: "pcr-v", manifest: "packages/tiangong-pcr-cli/package.json" },
-  library: { name: "tiangong-pcr-library", prefix: "library-v", manifest: "packages/tiangong-pcr-library/package.json" },
+  tool: { name: "@tiangong-lca/pcr", prefix: "pcr-v", manifest: "packages/tiangong-pcr-cli/package.json" },
+  library: { name: "@tiangong-lca/pcr-library", prefix: "library-v", manifest: "packages/tiangong-pcr-library/package.json" },
 };
 const repository = "tiangong-lca/pcr";
 const registry = "https://registry.npmjs.org";
@@ -94,7 +94,7 @@ export async function buildRelease(root, tag, output) {
   writeJson(manifestPath, manifest);
   const [packed] = JSON.parse(npm(["pack", stage, "--json", "--ignore-scripts", "--pack-destination", output], root));
   if (packed.name !== spec.name || packed.version !== spec.version || (spec.kind === "tool" && !packed.bundled?.includes("ajv"))) throw new Error("Packed artifact identity or bundled dependencies are invalid");
-  const filename = `${spec.name}-${spec.version}.tgz`;
+  const filename = `${spec.name}-${spec.version}.tgz`.replace(/^@/u, "").replaceAll("/", "-");
   if (packed.filename !== filename) throw new Error("Unexpected npm pack filename");
   const bytes = readFileSync(path.join(output, filename));
   const receipt = { ...spec, source_commit: head, node: process.version, npm: npm(["--version"], root).trim(), filename, bytes: bytes.length, sha256: digest(bytes, "sha256"), integrity: `sha512-${digest(bytes, "sha512", "base64")}` };
@@ -118,7 +118,7 @@ export function checkPublished(metadata, receipt) {
 export async function registryState(receipt, fetcher = fetch) {
   const spec = releaseSpec(receipt.tag);
   if (spec.name !== receipt.name || spec.version !== receipt.version) throw new Error("Invalid release receipt");
-  const response = await fetcher(`${registry}/${spec.name}/${spec.version}`, { signal: AbortSignal.timeout(30_000) });
+  const response = await fetcher(`${registry}/${encodeURIComponent(spec.name)}/${spec.version}`, { signal: AbortSignal.timeout(30_000) });
   if (response.status === 404) return "missing";
   if (!response.ok) throw new Error(`npm registry check failed: HTTP ${response.status}`);
   checkPublished(await response.json(), receipt);
@@ -129,13 +129,13 @@ export async function assertBootstrap(tag, env, fetcher = fetch) {
   assertIdentity(env);
   if (env.GITHUB_EVENT_NAME !== "workflow_dispatch" || env.GITHUB_REF !== `refs/tags/${tag}`) throw new Error("Bootstrap requires explicit dispatch at the release tag");
   const spec = releaseSpec(tag);
-  const response = await fetcher(`${registry}/${spec.name}`, { signal: AbortSignal.timeout(30_000) });
+  const response = await fetcher(`${registry}/${encodeURIComponent(spec.name)}`, { signal: AbortSignal.timeout(30_000) });
   if (response.status !== 404) throw new Error(`Bootstrap requires an unregistered package name; registry returned ${response.status}`);
 }
 
 export async function assertChannelAdvance(tag, fetcher = fetch) {
   const spec = releaseSpec(tag);
-  const response = await fetcher(`${registry}/${spec.name}/${spec.dist_tag}`, { signal: AbortSignal.timeout(30_000) });
+  const response = await fetcher(`${registry}/${encodeURIComponent(spec.name)}/${spec.dist_tag}`, { signal: AbortSignal.timeout(30_000) });
   if (response.status === 404) return;
   if (!response.ok) throw new Error(`Cannot verify npm channel: HTTP ${response.status}`);
   const current = await response.json();

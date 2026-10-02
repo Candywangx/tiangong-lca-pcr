@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-09-29
-lastReviewedNote: "Reviewed PCR #45 reader navigation change: the family menu adds the TianGong LCA public databases entry and the ILCD data node and opens the sibling documentation sites at their locale-appropriate homes. Canonical PCR bytes, routes, downloads, lifecycle and the previously reviewed visual presentation are unchanged. Full docs build (generate, static export, verification) passed within all provider budgets; rendered menu review covered desktop and mobile in both site locales."
-lastReviewedCommit: 07e4b4c9dbcc1c8e216033c174f69d54b5908316
+lastReviewedAt: 2026-10-01
+lastReviewedNote: "Reviewed PCR #56: three consumer routes, source-addressable native TIDAS inspection and guidance, explicit arithmetic, and an Agent review envelope. Legacy validator outputs and canonical content remain compatible; site rendering and document bundles are unchanged."
+lastReviewedCommit: 02f5b58ca242035dcbce41845c4ea92dc8c63d25
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo

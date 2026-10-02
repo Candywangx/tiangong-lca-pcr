@@ -1,8 +1,8 @@
-# tiangong-pcr-library
+# @tiangong-lca/pcr-library
 
 An immutable, indexed snapshot of TianGong LCA product category rules (PCRs) and
 data-production methodology for fully offline use. This is a **content package**:
-use [`tiangong-pcr`](https://www.npmjs.com/package/tiangong-pcr) to browse, resolve,
+use [`@tiangong-lca/pcr`](https://www.npmjs.com/package/@tiangong-lca/pcr) to browse, resolve,
 read guidance, and verify the snapshot.
 
 ## Contents
@@ -25,10 +25,10 @@ The CLI requires **Node.js 24.19 or later**, on Linux x64, Windows x64, or macOS
 ARM64. In a project directory:
 
 ```sh
-npm install tiangong-pcr tiangong-pcr-library
-./node_modules/.bin/tiangong-pcr library info --library ./node_modules/tiangong-pcr-library/library.sqlite --format json
-./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/tiangong-pcr-library/library.sqlite --format json
-./node_modules/.bin/tiangong-pcr list --library ./node_modules/tiangong-pcr-library/library.sqlite --format json
+npm install @tiangong-lca/pcr @tiangong-lca/pcr-library
+./node_modules/.bin/tiangong-pcr library info --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
+./node_modules/.bin/tiangong-pcr library verify --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
+./node_modules/.bin/tiangong-pcr list --library ./node_modules/@tiangong-lca/pcr-library/library.sqlite --format json
 ```
 
 On Windows, use `node_modules/.bin/tiangong-pcr.cmd`. Explicit `--library`
@@ -41,15 +41,15 @@ content package.
 Download the required versions on a connected machine:
 
 ```sh
-npm pack tiangong-pcr@0.1.1
-npm pack tiangong-pcr-library@0.1.1
+npm pack @tiangong-lca/pcr@0.1.2
+npm pack @tiangong-lca/pcr-library@0.1.2
 ```
 
 Transfer both tarballs and a suitable Node.js runtime. Then install without
 registry access:
 
 ```sh
-npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-pcr-0.1.1.tgz ./tiangong-pcr-library-0.1.1.tgz
+npm install --offline --ignore-scripts --no-audit --no-fund ./tiangong-lca-pcr-0.1.2.tgz ./tiangong-lca-pcr-library-0.1.2.tgz
 ./node_modules/.bin/tiangong-pcr library verify --format json
 ```
 

@@ -23,7 +23,7 @@ function fixture(t) {
 }
 
 test("release tags select independent packages and prerelease channel", () => {
-  assert.equal(releaseSpec("pcr-v1.2.3").name, "tiangong-pcr");
+  assert.equal(releaseSpec("pcr-v1.2.3").name, "@tiangong-lca/pcr");
   assert.equal(releaseSpec("library-v4.5.6-rc.1").dist_tag, "next");
   for (const tag of ["v1.0.0", "pcr-v01.0.0", "pcr-v1.0.0-01", "pcr-v1.0.0+build", "pcr-v1.0.0\nINJECT=true", "library-v../main"]) assert.throws(() => releaseSpec(tag));
   assert.doesNotThrow(() => assertIdentity(identity));
@@ -49,6 +49,31 @@ test("initial version sources and legacy package rename do not trigger publicati
   f.set("tool", "0.0.0", "@tiangong-lca/tiangong-pcr-cli"); const base = f.commit();
   f.set("tool", "0.1.0"); f.set("library", "0.1.0"); const head = f.commit();
   assert.deepEqual(detectReleases(f.root, base, head), []);
+});
+
+test("moving both unscoped packages to the organization requires explicit bootstrap", (t) => {
+  const f = fixture(t);
+  f.set("tool", "0.1.1", "tiangong-pcr");
+  f.set("library", "0.1.1", "tiangong-pcr-library");
+  const base = f.commit();
+  f.set("tool", "0.1.2"); f.set("library", "0.1.2");
+  const scoped = f.commit();
+  assert.deepEqual(detectReleases(f.root, base, scoped), []);
+  f.set("library", "0.1.3");
+  assert.deepEqual(detectReleases(f.root, scoped, f.commit()).map(({ name, tag }) => ({ name, tag })),
+    [{ name: "@tiangong-lca/pcr-library", tag: "library-v0.1.3" }]);
+});
+
+test("scoped registry lookups encode the complete package name", async () => {
+  for (const tag of ["pcr-v0.1.2", "library-v0.1.2"]) {
+    const spec = releaseSpec(tag); const urls = [];
+    const fetcher = async (url) => { urls.push(url); return { status: 404 }; };
+    assert.equal(await registryState(spec, fetcher), "missing");
+    await assertBootstrap(tag, { ...identity, GITHUB_EVENT_NAME: "workflow_dispatch", GITHUB_REF: `refs/tags/${tag}` }, fetcher);
+    await assertChannelAdvance(tag, fetcher);
+    const name = spec.kind === "tool" ? "%40tiangong-lca%2Fpcr" : "%40tiangong-lca%2Fpcr-library";
+    assert.deepEqual(urls, [`https://registry.npmjs.org/${name}/0.1.2`, `https://registry.npmjs.org/${name}`, `https://registry.npmjs.org/${name}/latest`]);
+  }
 });
 
 test("release context binds event, workflow, checkout, tag version and main ancestry", (t) => {
@@ -103,7 +128,7 @@ test("bootstrap requires explicit tag dispatch and an unregistered name, never a
 });
 
 test("delayed publication cannot move latest or next backwards", async () => {
-  const fetchVersion = (version) => async () => ({ status: 200, ok: true, json: async () => ({ name: "tiangong-pcr", version }) });
+  const fetchVersion = (version) => async () => ({ status: 200, ok: true, json: async () => ({ name: "@tiangong-lca/pcr", version }) });
   await assertChannelAdvance("pcr-v0.2.0", fetchVersion("0.1.0"));
   await assertChannelAdvance("pcr-v0.1.0", async () => ({ status: 404 }));
   for (const version of ["0.2.0", "0.3.0"]) await assert.rejects(assertChannelAdvance("pcr-v0.2.0", fetchVersion(version)), /backwards/u);

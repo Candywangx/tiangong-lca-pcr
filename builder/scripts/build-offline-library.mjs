@@ -107,7 +107,7 @@ export function buildOfflineLibrary({ root, output, version, sourceCommit = null
     db.close(); db = null;
     const manifest = { kind: "tiangong-pcr-library", format_version: LIBRARY_FORMAT_VERSION, snapshot, bytes: statSync(filename).size, sha256: hashFile(filename), index_sha256 };
     writeFileSync(`${filename}.json`, `${JSON.stringify(manifest, null, 2)}\n`);
-    writeFileSync(path.join(stage, "package.json"), `${JSON.stringify({ name: "tiangong-pcr-library", version, description: "Offline current PCR content snapshot", license: "MIT", files: ["library.sqlite", "library.sqlite.json", "README.md", "LICENSE", "NOTICE.md"] }, null, 2)}\n`);
+    writeFileSync(path.join(stage, "package.json"), `${JSON.stringify({ name: "@tiangong-lca/pcr-library", version, description: "Offline current PCR content snapshot", license: "MIT", files: ["library.sqlite", "library.sqlite.json", "README.md", "LICENSE", "NOTICE.md"] }, null, 2)}\n`);
     cpSync(path.join(root, "packages/tiangong-pcr-library/README.md"), path.join(stage, "README.md"));
     cpSync(path.join(root, "LICENSE"), path.join(stage, "LICENSE"));
     writeFileSync(path.join(stage, "NOTICE.md"), "# PCR content snapshot\n\nSource: https://github.com/tiangong-lca/pcr\n\nTianGong-authored content is distributed under the MIT License; see LICENSE. Source citations and third-party notices remain applicable. Referenced external standards and publications retain their own terms. Packaging does not promote methodology lifecycle status.\n");

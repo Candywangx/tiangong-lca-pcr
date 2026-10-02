@@ -8,6 +8,7 @@ import {
 
 const CORE_SCHEMA_DEPENDENCY_FILES = ["controlled-vocabulary.schema.json"];
 const CORE_SCHEMA_FILES = [
+  "agent-review.schema.json",
   "classification-coverage.schema.json",
   "dataset-validation-input.schema.json",
   "feedback-draft-output.schema.json",
@@ -29,6 +30,7 @@ const schemaDependencies = CORE_SCHEMA_DEPENDENCY_FILES.map((fileName) =>
 );
 const contractIds = new Map(schemaEntries.map(({ fileName, schema }) => [fileName, schema.$id]));
 const entityKindsByFile = {
+  "agent-review.schema.json": "agent_review",
   "classification-coverage.schema.json": "classification_coverage",
   "dataset-validation-input.schema.json": "dataset_validation_input",
   "feedback-draft-output.schema.json": "feedback_draft_output",
