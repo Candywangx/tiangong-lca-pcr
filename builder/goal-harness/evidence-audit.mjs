@@ -262,11 +262,16 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
     const controller = new AbortController();
     let timeout, timerError, httpError, response, content;
     try {
-      const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id }));
+      const scheduledAt = now();
+      const remainingAtSchedule = sourceRemainingBudget(deadline, scheduledAt);
+      const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now: () => scheduledAt, phase, subjectId: source.source_id }));
+      // Bind the timer to the limit selected at scheduling, not the earlier entry
+      // sample or a rounded/early callback. The review helper's 30-second I/O
+      // clamp alone does not mean a longer review window has been exhausted.
+      const reviewLimited = remainingAtSchedule !== null && remainingAtSchedule <= ioBudget;
       diagnostics.io_budget_ms = ioBudget;
       timeout = setTimeout(() => {
-        const windowExpired = diagnostics.remaining_budget_ms_at_entry !== null
-          && (diagnostics.remaining_budget_ms_at_entry <= ioBudget || sourceRemainingBudget(deadline, now()) === 0);
+        const windowExpired = reviewLimited || sourceRemainingBudget(deadline, now()) === 0;
         diagnostics.abort_source = windowExpired ? 'harness_review_window' : 'harness_request_timeout';
         timerError = windowExpired ? windowError() : new GoalHarnessError('GOAL_SOURCE_REQUEST_TIMEOUT', 'The Harness source request timeout was reached.', {
           phase: 'source_fetch', origin: 'harness_request_timer', failure_kind: 'timeout', retryable: true, subject_id: source.source_id,
