@@ -21,9 +21,9 @@ checkPaths:
   - .docpact/config.yaml
   - builder/**
   - classifications/**
-lastReviewedAt: 2026-09-29
-lastReviewedCommit: d3a0f0ecbaeb6f1fba13d118a6c4507b1d028d3c
-lastReviewedNote: "Reviewed PR #38 CPC class-4 candidate intake: 23 bilingual PCRs, 23 accepted exact CPC mappings and 14 bound ADRs. Existing CPC 44123 mapping/content remains unchanged; deterministic alias/catalog/coverage projections and candidate status were checked. Classification identity, source ownership, authoring, publication and documentation contracts require no semantic change; unresolved UUID/range evidence and 47829 promotion review remain explicit."
+lastReviewedAt: 2026-10-02
+lastReviewedCommit: 562ffbed520a7d4d56d20336b8a93fc0fe9e2273
+lastReviewedNote: "Reviewed PR #58 under PCR #60: 44 bilingual candidate/authored PCRs, 43 new accepted CPC mappings and one explicitly superseded electricity decision. Exact projection, source-reference, language, catalog and alias checks preserve unrelated entries and candidate review debt. The steam/hot-water unresolved identity ledger is completed; classification acceptance does not grant methodology publication. Ownership, routing and lifecycle contracts remain unchanged."
 ---
 
 # Classification Policy
