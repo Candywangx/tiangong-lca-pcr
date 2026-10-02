@@ -1,10 +1,2352 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44515"
-  title: "Bakery ovens, non-electric; machinery for making hot drinks or for cooking or heating food, except domestic type machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.bakery-ovens-non-electric-machinery-for-making-hot-drinks-or-for-cooking-or-heating-foo-35bcfcbc"
+  classification_refs: "CPC 3.0 44515"
+  covered_products: "Non-electric bakery ovens; non-domestic hot-drink machines, commercial cookers and food heaters, including actual electric configurations in the latter branch"
+  excluded_products: "Electric industrial bakery ovens and other industrial/laboratory furnaces; domestic machines; standalone parts/burners; unrelated food processing and agricultural dryers"
+  representative_product: "Gas/oil-heated rack oven, electric coffee machine or ceramic-heated commercial cooker as separate configurations; none represents the full category"
+  production_route: "Actual make/buy receipt → conditional metal fabrication/finishing → configured thermal/electrical assembly → factory acceptance/rework → net-mass release/packing"
+  market_state: "New accepted complete machine at factory gate, configured and traceable; transport packaging separate"
+functional_unit:
+  what: "Supply an accepted complete non-domestic food/beverage thermal machine of declared configuration"
+  how_much: "1 kg"
+  how_well: "Approved design, food-contact/safety requirements and actual factory acceptance achieved; mass is a production reference, not equivalent cooking service"
+  how_long_or_cycle: "Manufacture through factory gate only; no assumed service life or use cycle"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacture
+      applies_to: "all processes"
+      rule: "Include actual receiving/transport, fabrication, finishing, assembly, utilities, controls, factory trials, rejects/rework, abatement and packaging. Exclude customer operation, customer food products and unrelated modules."
+      source_ids:
+        - un-cpc3-2025
+    - rule_id: boundary_make_buy
+      applies_to: "assemblies"
+      rule: "Maintain a make/buy matrix per actual component: starting state, supplier operations, local steps and upstream coverage. Bought complete burner/boiler/motor/refrigeration module and its embedded raw inputs cannot both be counted. Contracted finishing is a supplier process once, not also local chemicals."
+      source_ids:
+        - miwe-rack-oven
+        - franke-a800
+        - rational-ivario
+boundary_abstraction:
+  declared_starting_condition: "Actual certified sheet/tube and purchased completed subassemblies at receiving gate with supplier processing and transport identified"
+  starting_condition_role: "foreground_input"
+  product_classification_scope: "Semantic complete machinery boundary; CPC 44515 is mapping context only"
+  recursive_input_rule: "Bought same-category module records its supplier dataset once and only incremental local work; no recursive rebuilding of already embedded material/energy"
+  upstream_dataset_requirement: "Match actual grade/state, part specification, provider location/year and treatment destination; disclose transport coverage and missing supplier burdens"
+  disclosure: "manufacturer; model and serial/configuration; non-domestic intended duty; bakery oven versus beverage/cooking/heating function; main heating technology and actual fuel; capacity, food-contact and pressure ratings; steel and elastomer grades; make/buy components; burner, heat exchanger, boiler, heater, pumps, fan, grinder and controls actually fitted; included cooling and other add-ons; initial fluid charge; delivered net mass M and acceptance state; factory site, period and supplier geography; factory test duty and test consumables"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bakery ovens, non-electric, machinery for making hot drinks or for cooking or heating food, except domestic type machines"
+    uuid: "818fc255-fcf4-4702-818b-aa7b29550764"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - manufacturer
+    - "model and serial/configuration"
+    - "non-domestic intended duty"
+    - "bakery oven versus beverage/cooking/heating function"
+    - "main heating technology and actual fuel"
+    - capacity
+    - "food-contact and pressure ratings"
+    - "steel and elastomer grades"
+    - "make/buy components"
+    - burner
+    - "heat exchanger"
+    - boiler
+    - heater
+    - pumps
+    - fan
+    - "grinder and controls actually fitted"
+    - "included cooling and other add-ons"
+    - "initial fluid charge"
+    - "delivered net mass M and acceptance state"
+    - "factory site"
+    - "period and supplier geography"
+    - "factory test duty and test consumables"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+  - id: net_scope
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Include delivered incorporated accessories and initial fluid charge; exclude transport packaging. Do not use a brochure empty weight for another configuration or mix dry/gross mass."
+  - id: composition
+    applies_to: "chemical and metal rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record formulation mass and measured active/contained-element fraction separately; assay all balance terms and measure wet/dry basis."
+  - id: utilities
+    applies_to: "energy and water"
+    required_property_ref:
+      name: "Energy; Volume"
+      uuid: ""
+    required_unit: "kWh; MJ; m3"
+    rule: "Preserve actual reference property and calibrated raw unit. kWh × 3.6 = MJ; fuel uses actual NCV, water density is source-specific."
+process_map:
+  - id: fabrication
+    name: "Chamber, pan, frame and fluid-path fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual in-house operations: cut, bend, machine and join certified sheet, tube and fittings; purchased completed vessels bypass supplier operations. Identify grade, joining procedure, scrap and food-contact finish."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: surface_finish
+    name: "Conditional cleaning, passivation and protective finish"
+    inclusion: "conditional"
+    inclusion_condition: "Actual degreasing, weld cleaning, passivation or exterior coating only. Record bath identity/concentration, rinse and curing; no universal acid, solvent or coating recipe."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: thermal_assembly
+    name: "Configured thermal and fluid-system assembly"
+    inclusion: "required"
+    inclusion_condition: "Assemble only the selected product route: gas/oil burner and heat exchanger for non-electric bakery ovens; actual hot-water/steam boiler, resistance/ceramic heater or supplied-steam interface for beverage/cooking machines. Retain pumps, valves and safety devices actually fitted."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: electromechanical
+    name: "Drives, controls and configured refrigeration assembly"
+    inclusion: "required"
+    inclusion_condition: "Install actual wiring, controller, sensors and motor/fan/grinder/tilting mechanism. Cooling units are optional: define included delivered module, compressor and refrigerant only when part of the product."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: factory_acceptance
+    name: "Factory leak, safety and functional acceptance"
+    inclusion: "required"
+    inclusion_condition: "Include actual pressure/leak, electrical safety, heating, circulation and control trials plus repeat tests and cleaning. Test limits follow approved design and applicable specification; tests are not lifetime customer operation."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: dispatch
+    name: "Accepted release and transport packaging"
+    inclusion: "required"
+    inclusion_condition: "Release the complete accepted machine at factory gate with declared accessories and installed initial fluid charge. Weigh packaging separately and preserve net mass basis."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: shared_services
+    name: "Shared factory utilities and pollution controls"
+    inclusion: "required"
+    inclusion_condition: "Reconcile allocated utilities, treatment and waste handling once across selected manufacture and factory tests; separately document purchased versus generated energy."
+    role: "foreground_production"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+process_inventory:
+  - id: fabrication
+    label: "Chamber, pan, frame and fluid-path fabrication"
+    inputs:
+      product:
+        - row_id: sheet_14301
+          role: "EN 1.4301 stainless steel sheet"
+          name: "EN 1.4301 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when mill certificate identifies EN 1.4301 at the actual purchased surface/rolling state; other grades receive separate atomic cards. Never infer this grade from the word stainless in a brochure."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_sheet_14301."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sheet_14301
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: tube_14404
+          role: "EN 1.4404 stainless steel tube"
+          name: "EN 1.4404 stainless steel tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if certified actual food-contact tubing uses this grade; record wall, length and supplier forming state; alternate grade/shape needs its own card."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_tube_14404."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tube_14404
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: weld_wire
+          role: "ER308L stainless steel welding wire"
+          name: "ER308L stainless steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for an actual qualified joining procedure specifying ER308L. Do not use it for an incompatible alloy joint; another filler is a separate exchange."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_weld_wire."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weld_wire
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: argon
+          role: "Argon welding shielding gas"
+          name: "Argon welding shielding gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_argon."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_argon
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: cutting_oil
+          role: "Mineral-oil cutting lubricant"
+          name: "Mineral-oil cutting lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_cutting_oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_oil
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fabrication_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_electricity
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: stainless_scrap
+          role: "Stainless steel fabrication scrap"
+          name: "Stainless steel fabrication scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_stainless_scrap."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stainless_scrap
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: spent_cutting_oil
+          role: "Spent mineral cutting oil"
+          name: "Spent mineral cutting oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_spent_cutting_oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_cutting_oil
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+      elementary:
+        []
+  - id: surface_finish
+    label: "Conditional cleaning, passivation and protective finish"
+    inputs:
+      product:
+        - row_id: naoh
+          role: "Sodium hydroxide degreasing solution"
+          name: "Sodium hydroxide degreasing solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_naoh."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_naoh
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: citric
+          role: "Citric acid passivation solution"
+          name: "Citric acid passivation solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_citric."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_citric
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: ipa
+          role: "Isopropanol surface-cleaning solvent"
+          name: "Isopropanol surface-cleaning solvent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_ipa."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ipa
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: powder_coat
+          role: "Polyester powder coating"
+          name: "Polyester powder coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the actually specified exterior coating; no assumption of coating on food-contact surfaces. Record chemistry, overspray recovery and cure duty."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_powder_coat."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_powder_coat
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: surface_finish_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish_electricity
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: surface_finish_water
+          role: "Treated tap water"
+          name: "Treated tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish_water
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_cleaner
+          role: "Spent sodium hydroxide cleaning solution"
+          name: "Spent sodium hydroxide cleaning solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_spent_cleaner."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_cleaner
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: spent_passivation
+          role: "Spent citric acid passivation solution"
+          name: "Spent citric acid passivation solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_spent_passivation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spent_passivation
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+        - row_id: surface_finish_wastewater
+          role: "Process wastewater for external treatment"
+          name: "Process wastewater for external treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_surface_finish_wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_finish_wastewater
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol, to air"
+          name: "Isopropanol, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_ipa_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ipa_air
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+  - id: thermal_assembly
+    label: "Configured thermal and fluid-system assembly"
+    inputs:
+      product:
+        - row_id: purchased_chamber
+          role: "Purchased complete stainless-steel bakery-oven chamber"
+          name: "Purchased complete stainless-steel bakery-oven chamber"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_purchased_chamber."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_chamber
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: purchased_pan
+          role: "Purchased complete stainless-steel commercial cooking pan"
+          name: "Purchased complete stainless-steel commercial cooking pan"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_purchased_pan."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_pan
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: purchased_frame
+          role: "Purchased complete machine support frame"
+          name: "Purchased complete machine support frame"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_purchased_frame."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_frame
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: burner
+          role: "Purchased gas burner assembly for bakery oven"
+          name: "Purchased gas burner assembly for bakery oven"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_burner."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_burner
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: oil_burner
+          role: "Purchased liquid-fuel burner assembly for bakery oven"
+          name: "Purchased liquid-fuel burner assembly for bakery oven"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_oil_burner."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_oil_burner
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: heat_exchanger
+          role: "Purchased stainless steel bakery-oven heat exchanger"
+          name: "Purchased stainless steel bakery-oven heat exchanger"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_heat_exchanger."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_exchanger
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: steam_boiler
+          role: "Purchased beverage-machine steam boiler assembly"
+          name: "Purchased beverage-machine steam boiler assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_steam_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam_boiler
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: hotwater_boiler
+          role: "Purchased beverage-machine hot-water boiler assembly"
+          name: "Purchased beverage-machine hot-water boiler assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_hotwater_boiler."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hotwater_boiler
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: ceramic_heater
+          role: "Purchased ceramic cooking-pan heating element"
+          name: "Purchased ceramic cooking-pan heating element"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_ceramic_heater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic_heater
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: resistance_heater
+          role: "Purchased beverage-boiler resistance heating element"
+          name: "Purchased beverage-boiler resistance heating element"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_resistance_heater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_resistance_heater
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: water_pump
+          role: "Purchased beverage-machine water pump assembly"
+          name: "Purchased beverage-machine water pump assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water_pump."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_pump
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: steam_valve
+          role: "Purchased steam safety valve"
+          name: "Purchased steam safety valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_steam_valve."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam_valve
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: insulating_glass
+          role: "Purchased insulated bakery-oven door glass"
+          name: "Purchased insulated bakery-oven door glass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_insulating_glass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_insulating_glass
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: seal
+          role: "Silicone rubber door gasket"
+          name: "Silicone rubber door gasket"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_seal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seal
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: mineral_wool
+          role: "Mineral wool thermal insulation"
+          name: "Mineral wool thermal insulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for a configuration actually containing this named component/material. Supplier-certified BOM determines specification. Bought assembly includes its embodied materials and supplier fabrication once; when made here, use actual raw-material rows and manufacturing operations instead, never both."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_mineral_wool."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mineral_wool
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: thermal_assembly_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_thermal_assembly_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_assembly_electricity
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: electromechanical
+    label: "Drives, controls and configured refrigeration assembly"
+    inputs:
+      product:
+        - row_id: motor
+          role: "Purchased fan-drive electric motor"
+          name: "Purchased fan-drive electric motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_motor."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_motor
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: fan
+          role: "Purchased bakery-oven circulation fan"
+          name: "Purchased bakery-oven circulation fan"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_fan."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fan
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: grinder
+          role: "Purchased ceramic-disc coffee grinder assembly"
+          name: "Purchased ceramic-disc coffee grinder assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_grinder."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinder
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: controller
+          role: "Purchased machine control-board assembly"
+          name: "Purchased machine control-board assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_controller."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_controller
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: sensor
+          role: "Purchased temperature sensor"
+          name: "Purchased temperature sensor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_sensor."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sensor
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: wire
+          role: "Copper conductor PVC-insulated machine wire"
+          name: "Copper conductor PVC-insulated machine wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_wire."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wire
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: compressor
+          role: "Purchased sealed refrigeration compressor"
+          name: "Purchased sealed refrigeration compressor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual fitted configuration only; track part specification, make/buy and supplier boundary. Bought motors/compressors already include embedded metal and oil; do not add their internal contents as fresh foreground inputs."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_compressor."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compressor
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: r290
+          role: "Propane refrigerant R290"
+          name: "Propane refrigerant R290"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if nameplate and charge record confirm R290 in an included cooling circuit; other actual refrigerants require separately named cards. Record initial charge and factory loss, not lifetime leakage. Factory-applied charge is separate from a precharged purchased compressor/module."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_r290."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_r290
+              source_ids:
+                - franke-a800
+            ranges: []
+        - row_id: electromechanical_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_electromechanical_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromechanical_electricity
+              source_ids:
+                - franke-a800
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: r290_air
+          role: "Propane, to air"
+          name: "Propane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_r290_air."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_r290_air
+              source_ids:
+                - franke-a800
+            ranges: []
+  - id: factory_acceptance
+    label: "Factory leak, safety and functional acceptance"
+    inputs:
+      product:
+        - row_id: test_naturalgas
+          role: "Natural gas for factory burner test"
+          name: "Natural gas for factory burner test"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_naturalgas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_naturalgas
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: test_fuel_oil
+          role: "Distillate fuel oil for factory burner test"
+          name: "Distillate fuel oil for factory burner test"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_fuel_oil."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_fuel_oil
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: test_steam
+          role: "Purchased steam for factory cooking-machine test"
+          name: "Purchased steam for factory cooking-machine test"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_steam
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: test_food
+          role: "Roasted coffee beans for factory brewing test"
+          name: "Roasted coffee beans for factory brewing test"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when actual factory acceptance consumes this specific test load; recipes for other test foods each need separate ingredient cards. Do not include future customer food throughput."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_test_food."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_food
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: factory_acceptance_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_factory_acceptance_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_acceptance_electricity
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: factory_acceptance_water
+          role: "Treated tap water"
+          name: "Treated tap water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_factory_acceptance_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_acceptance_water
+              source_ids:
+                - rational-ivario
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: coffee_residue
+          role: "Wet spent coffee grounds from factory test"
+          name: "Wet spent coffee grounds from factory test"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_coffee_residue."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coffee_residue
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: rejected_machine
+          role: "Rejected food-heating machine for external dismantling"
+          name: "Rejected food-heating machine for external dismantling"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_rejected_machine."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejected_machine
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: factory_acceptance_wastewater
+          role: "Process wastewater for external treatment"
+          name: "Process wastewater for external treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_factory_acceptance_wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_acceptance_wastewater
+              source_ids:
+                - rational-ivario
+            ranges: []
+      elementary:
+        - row_id: co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_co2."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: co
+          role: "Carbon monoxide, to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_co."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co
+              source_ids:
+                - rational-ivario
+            ranges: []
+        - row_id: nox
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_nox."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nox
+              source_ids:
+                - rational-ivario
+            ranges: []
+  - id: dispatch
+    label: "Accepted release and transport packaging"
+    inputs:
+      product:
+        - row_id: carton
+          role: "Corrugated cardboard transport carton"
+          name: "Corrugated cardboard transport carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_carton."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carton
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: pallet
+          role: "Softwood transport pallet"
+          name: "Softwood transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_pallet."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pallet
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: film
+          role: "Low-density polyethylene transport film"
+          name: "Low-density polyethylene transport film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_film."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+        - row_id: dispatch_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_dispatch_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_electricity
+              source_ids:
+                - miwe-rack-oven
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Bakery ovens, non-electric, machinery for making hot drinks or for cooking or heating food, except domestic type machines"
+          name: "Bakery ovens, non-electric, machinery for making hot drinks or for cooking or heating food, except domestic type machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "818fc255-fcf4-4702-818b-aa7b29550764"
+          property_unit: "Mass / kg"
+          description: "One accepted complete declared configuration; include incorporated initial charge and specified accessories, exclude all transport packaging."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - un-cpc3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: shared_services
+    label: "Shared factory utilities and pollution controls"
+    inputs:
+      product:
+        - row_id: shared_services_electricity
+          role: "Purchased factory electricity"
+          name: "Purchased factory electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_shared_services_electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shared_services_electricity
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sludge
+          role: "Metal-bearing wastewater treatment sludge"
+          name: "Metal-bearing wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_sludge."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sludge
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+      elementary:
+        - row_id: pm25
+          role: "Particulate matter smaller than 2.5 micrometres, to air"
+          name: "Particulate matter smaller than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional on actual BOM or process use; declare grade, composition and interface. An absent exchange is not_applicable, not a missing-as-zero entry."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_pm25."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm25
+              source_ids:
+                - epa-fabricated-metal
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_causal
+    applies_to: "shared manufacture"
+    rule: "Prefer subdivision; if shared, document physical causality using measured duty/load and matching period. Mass alone is not sufficient for unequal furnace cycles, test times or cooling duties. Other relationships require justification and sensitivity; retain unallocated totals and ensure allocations sum to one."
+    source_ids:
+      - ef-allocation-2021
+  - rule_id: allocation_rejects
+    applies_to: "rework and residues"
+    rule: "Retain all attributable rejected and repeated-test burdens in accepted-machine production. Exclude rejected count from N. Cancel internal transfers; exported scrap/waste has actual treatment once. Revenue does not itself establish co-product status and no avoided-metal credit is assumed."
+    source_ids:
+      - ef-allocation-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "reference_mass"
+      record_type: "measurement_record"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "Each accepted configuration/serial"
+      temporal_coverage: "Same reporting period as inventory"
+      site_scope: "Declared factory gate"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "Calibration certificate; net weighing ticket; acceptance/BOM"
+    - protocol_id: cp_sheet_14301
+      process_id: "fabrication"
+      flow_role: "sheet_14301"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_tube_14404
+      process_id: "fabrication"
+      flow_role: "tube_14404"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_weld_wire
+      process_id: "fabrication"
+      flow_role: "weld_wire"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_argon
+      process_id: "fabrication"
+      flow_role: "argon"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Measure gas supply and residual cylinders with pressure/temperature and stated volume conditions; attribute actual weld duty."
+      unit: "m3"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_cutting_oil
+      process_id: "fabrication"
+      flow_role: "cutting_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_stainless_scrap
+      process_id: "fabrication"
+      flow_role: "stainless_scrap"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_spent_cutting_oil
+      process_id: "fabrication"
+      flow_role: "spent_cutting_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_naoh
+      process_id: "surface_finish"
+      flow_role: "naoh"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_citric
+      process_id: "surface_finish"
+      flow_role: "citric"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_ipa
+      process_id: "surface_finish"
+      flow_role: "ipa"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_powder_coat
+      process_id: "surface_finish"
+      flow_role: "powder_coat"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_spent_cleaner
+      process_id: "surface_finish"
+      flow_role: "spent_cleaner"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_spent_passivation
+      process_id: "surface_finish"
+      flow_role: "spent_passivation"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_ipa_air
+      process_id: "surface_finish"
+      flow_role: "ipa_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Measure species-specific exhaust and fugitive loss; reconcile fresh/recovered solvent, stocks, residues and reaction; do not report total VOC as isopropanol."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_purchased_chamber
+      process_id: "thermal_assembly"
+      flow_role: "purchased_chamber"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_purchased_pan
+      process_id: "thermal_assembly"
+      flow_role: "purchased_pan"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_purchased_frame
+      process_id: "thermal_assembly"
+      flow_role: "purchased_frame"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_burner
+      process_id: "thermal_assembly"
+      flow_role: "burner"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_oil_burner
+      process_id: "thermal_assembly"
+      flow_role: "oil_burner"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_heat_exchanger
+      process_id: "thermal_assembly"
+      flow_role: "heat_exchanger"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_steam_boiler
+      process_id: "thermal_assembly"
+      flow_role: "steam_boiler"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_hotwater_boiler
+      process_id: "thermal_assembly"
+      flow_role: "hotwater_boiler"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_ceramic_heater
+      process_id: "thermal_assembly"
+      flow_role: "ceramic_heater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_resistance_heater
+      process_id: "thermal_assembly"
+      flow_role: "resistance_heater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_water_pump
+      process_id: "thermal_assembly"
+      flow_role: "water_pump"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_steam_valve
+      process_id: "thermal_assembly"
+      flow_role: "steam_valve"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_insulating_glass
+      process_id: "thermal_assembly"
+      flow_role: "insulating_glass"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_seal
+      process_id: "thermal_assembly"
+      flow_role: "seal"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_mineral_wool
+      process_id: "thermal_assembly"
+      flow_role: "mineral_wool"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_motor
+      process_id: "electromechanical"
+      flow_role: "motor"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_fan
+      process_id: "electromechanical"
+      flow_role: "fan"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_grinder
+      process_id: "electromechanical"
+      flow_role: "grinder"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_controller
+      process_id: "electromechanical"
+      flow_role: "controller"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_sensor
+      process_id: "electromechanical"
+      flow_role: "sensor"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_wire
+      process_id: "electromechanical"
+      flow_role: "wire"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_compressor
+      process_id: "electromechanical"
+      flow_role: "compressor"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_r290
+      process_id: "electromechanical"
+      flow_role: "r290"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_r290_air
+      process_id: "electromechanical"
+      flow_role: "r290_air"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use leak test, cylinder and recovery records to measure actual factory propane release; no prescribed leakage fraction."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_test_naturalgas
+      process_id: "factory_acceptance"
+      flow_role: "test_naturalgas"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter actual test input; fuel uses measured supplier net calorific value and mass/volume state; steam uses supply pressure, temperature and condensate-return enthalpy. Distinguish direct use from an in-house utility generation boundary."
+      unit: "MJ"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_test_fuel_oil
+      process_id: "factory_acceptance"
+      flow_role: "test_fuel_oil"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter actual test input; fuel uses measured supplier net calorific value and mass/volume state; steam uses supply pressure, temperature and condensate-return enthalpy. Distinguish direct use from an in-house utility generation boundary."
+      unit: "MJ"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_test_steam
+      process_id: "factory_acceptance"
+      flow_role: "test_steam"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter actual test input; fuel uses measured supplier net calorific value and mass/volume state; steam uses supply pressure, temperature and condensate-return enthalpy. Distinguish direct use from an in-house utility generation boundary."
+      unit: "MJ"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_co2
+      process_id: "factory_acceptance"
+      flow_role: "co2"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Measure each species after controls using matched concentration, dry/wet exhaust flow and test duration. Carbon-balance CO2 subtracts independently determined carbon in CO, hydrocarbons, soot and retained residues; carbon balance alone does not determine CO or NOx."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_co
+      process_id: "factory_acceptance"
+      flow_role: "co"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Measure each species after controls using matched concentration, dry/wet exhaust flow and test duration. Carbon-balance CO2 subtracts independently determined carbon in CO, hydrocarbons, soot and retained residues; carbon balance alone does not determine CO or NOx."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_nox
+      process_id: "factory_acceptance"
+      flow_role: "nox"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Measure each species after controls using matched concentration, dry/wet exhaust flow and test duration. Carbon-balance CO2 subtracts independently determined carbon in CO, hydrocarbons, soot and retained residues; carbon balance alone does not determine CO or NOx."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_test_food
+      process_id: "factory_acceptance"
+      flow_role: "test_food"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_coffee_residue
+      process_id: "factory_acceptance"
+      flow_role: "coffee_residue"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_rejected_machine
+      process_id: "factory_acceptance"
+      flow_role: "rejected_machine"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_carton
+      process_id: "dispatch"
+      flow_role: "carton"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_pallet
+      process_id: "dispatch"
+      flow_role: "pallet"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_film
+      process_id: "dispatch"
+      flow_role: "film"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_final_product
+      process_id: "dispatch"
+      flow_role: "final_product"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Reconcile serial-number acceptance, actual calibrated net weighing, delivered configuration and positive accepted count N; rejected machines are excluded from denominator, their attributable burdens retained."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_fabrication_electricity
+      process_id: "fabrication"
+      flow_role: "fabrication_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Read calibrated process meter by interval and reconcile purchased site electricity; retain actual voltage, supplier/grid geography and year, test/production split and measured causal allocation. In-house generation instead has its own fuel and emissions, not a second purchased-power input."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_surface_finish_electricity
+      process_id: "surface_finish"
+      flow_role: "surface_finish_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Read calibrated process meter by interval and reconcile purchased site electricity; retain actual voltage, supplier/grid geography and year, test/production split and measured causal allocation. In-house generation instead has its own fuel and emissions, not a second purchased-power input."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_thermal_assembly_electricity
+      process_id: "thermal_assembly"
+      flow_role: "thermal_assembly_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Read calibrated process meter by interval and reconcile purchased site electricity; retain actual voltage, supplier/grid geography and year, test/production split and measured causal allocation. In-house generation instead has its own fuel and emissions, not a second purchased-power input."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_electromechanical_electricity
+      process_id: "electromechanical"
+      flow_role: "electromechanical_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Read calibrated process meter by interval and reconcile purchased site electricity; retain actual voltage, supplier/grid geography and year, test/production split and measured causal allocation. In-house generation instead has its own fuel and emissions, not a second purchased-power input."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_factory_acceptance_electricity
+      process_id: "factory_acceptance"
+      flow_role: "factory_acceptance_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Read calibrated process meter by interval and reconcile purchased site electricity; retain actual voltage, supplier/grid geography and year, test/production split and measured causal allocation. In-house generation instead has its own fuel and emissions, not a second purchased-power input."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_dispatch_electricity
+      process_id: "dispatch"
+      flow_role: "dispatch_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Read calibrated process meter by interval and reconcile purchased site electricity; retain actual voltage, supplier/grid geography and year, test/production split and measured causal allocation. In-house generation instead has its own fuel and emissions, not a second purchased-power input."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_shared_services_electricity
+      process_id: "shared_services"
+      flow_role: "shared_services_electricity"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "For the same period reconcile actual site imports, on-site generation and exports, including measured storage change where applicable. Shared/residual electricity equals the reconciled electricity available to the factory minus electricity already assigned to fabrication, finishing, assembly, testing and dispatch. Allocate only the remaining measured shared loads by causal duty; never add the whole factory meter on top of process/test submeters. Keep provider and local-generation boundaries distinct. Investigate a negative residual against meter alignment and uncertainty; do not clip it to zero."
+      unit: "kWh"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_surface_finish_water
+      process_id: "surface_finish"
+      flow_role: "surface_finish_water"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter external water supply and loop make-up separately from recirculation; retain provider geography and source-specific density for mass balance, with actual dissolved loads and return destination."
+      unit: "m3"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_surface_finish_wastewater
+      process_id: "surface_finish"
+      flow_role: "surface_finish_wastewater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter discharge and sample actual composition/density; separate reusable internal returns, dissolved constituents and treatment sludge."
+      unit: "m3"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_factory_acceptance_water
+      process_id: "factory_acceptance"
+      flow_role: "factory_acceptance_water"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter external water supply and loop make-up separately from recirculation; retain provider geography and source-specific density for mass balance, with actual dissolved loads and return destination."
+      unit: "m3"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_factory_acceptance_wastewater
+      process_id: "factory_acceptance"
+      flow_role: "factory_acceptance_wastewater"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Meter discharge and sample actual composition/density; separate reusable internal returns, dissolved constituents and treatment sludge."
+      unit: "m3"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_sludge
+      process_id: "shared_services"
+      flow_role: "sludge"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Use calibrated weighing, purchase/issue and opening/closing stock records; reconcile batch, recoveries, rejects and accepted count N of the same configuration."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+    - protocol_id: cp_pm25
+      process_id: "shared_services"
+      flow_role: "pm25"
+      record_type: "measurement_record"
+      raw_fields: "site; period; configuration; batch; raw amount and unit; stocks; returns; assay/density; allocation driver; accepted count N; uncertainty"
+      collection_method: "Actual monitored welding/grinding exhaust after capture and abatement; retain size fraction, sampled air volume and production period. Unmeasured dust is unknown, never zero."
+      unit: "kg"
+      frequency: "Each batch/meter interval; period reconciliation"
+      temporal_coverage: "Actual representative year/campaign including rejects and repeat tests"
+      site_scope: "Selected machine line and causally allocated factory services"
+      aggregation_rule: "attributable amount / accepted machines"
+      quality_evidence: "Original signed records; calibration; assays; serial acceptance; make/buy boundary"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+    - id: physical_balance
+      applies_to: "site"
+      rule: "Close each material/contained-element balance using opening stock + external inputs + reaction formation = closing stock + accepted product + external rejects/scrap + sludge/wastewater constituent + airborne species + reaction consumption. Apply measured assay to every corresponding stock/input/output term; gross steel mass is not chromium or nickel mass. Pair and cancel each internal transfer/recovery in the integrated boundary; internal return is not a new upstream purchase. For water use measured density and actual water fractions of wet product, sludge and residue: include make-up, test/cleaning feed, stock, retained moisture, evaporation, discharged water and reaction water; recirculation is paired, not consumption. For solvent retain fresh/recovered species, bath stock, residues, export, emissions and chemical reaction. Preserve residual and combined measurement/assay uncertainty; investigate unexplained closure, with no invented tolerance."
+      inputs:
+        - Stocks
+        - assays
+        - "calibrated meters"
+        - "reaction and return records"
+        - uncertainty
+      output: "Closure residual and uncertainty"
+      source_ids: []
+    - id: energy_units
+      applies_to: "utilities"
+      rule: "kWh × 3.6 = MJ. Fuel mass × measured net calorific value = MJ. Net purchased steam energy E_net = m_steam × h_in - m_return × h_return: each measured kg is multiplied by matched specific enthalpy in MJ/kg at the actual pressure/temperature and common reference state. Retain actual return fraction and period/stock correspondence. In-house steam generation records its fuel, water and emissions instead of a second purchased-steam provider burden; do not duplicate generation fuel and supplied heat."
+      inputs:
+        - "Calibrated meters"
+        - "supplier NCV and state"
+        - "condensate return"
+      output: "MJ"
+      source_ids: []
+  data_quality_requirements:
+    - id: configuration
+      applies_to: "final_product"
+      requirement: "manufacturer; model and serial/configuration; non-domestic intended duty; bakery oven versus beverage/cooking/heating function; main heating technology and actual fuel; capacity, food-contact and pressure ratings; steel and elastomer grades; make/buy components; burner, heat exchanger, boiler, heater, pumps, fan, grinder and controls actually fitted; included cooling and other add-ons; initial fluid charge; delivered net mass M and acceptance state; factory site, period and supplier geography; factory test duty and test consumables"
+      evidence: "Order; approved drawings/BOM; supplier certificates; actual acceptance"
+    - id: identity_gaps
+      applies_to: "all cards"
+      requirement: "Resolve actual flow/provider/property and environmental compartment before complete dataset delivery. Generic sheet with no grade/state, Hong Kong water in a different region and source-specific biomass/incineration electricity do not establish these interfaces."
+      evidence: "manifest review_metadata"
+    - id: ranges
+      applies_to: "all rows"
+      requirement: "No universal empirical range is supported. Retain actual records, signed applicability, calibration and uncertainty; unknown mandatory amount blocks completeness, while demonstrated absence is not_applicable."
+      evidence: "Factory and independently compatible source evidence"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "final_product"
+    rule: "Verify category branch, non-domestic use, main heating technology, positive measured M and N, same delivered configuration, 1 kg reference and full qualifier coverage. No equivalent cooking-service comparison by machine mass alone."
+    source_ids:
+      - un-cpc3-2025
+  - rule_id: validate_balance
+    applies_to: "all processes"
+    rule: "Close each material/contained-element balance using opening stock + external inputs + reaction formation = closing stock + accepted product + external rejects/scrap + sludge/wastewater constituent + airborne species + reaction consumption. Apply measured assay to every corresponding stock/input/output term; gross steel mass is not chromium or nickel mass. Pair and cancel each internal transfer/recovery in the integrated boundary; internal return is not a new upstream purchase. For water use measured density and actual water fractions of wet product, sludge and residue: include make-up, test/cleaning feed, stock, retained moisture, evaporation, discharged water and reaction water; recirculation is paired, not consumption. For solvent retain fresh/recovered species, bath stock, residues, export, emissions and chemical reaction. Preserve residual and combined measurement/assay uncertainty; investigate unexplained closure, with no invented tolerance."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "all applicable rows"
+    rule: "Verify every actual route/external atomic flow, make/buy exclusivity, stocks, rejects/rework, causal utilities, normalization and species-specific post-control emissions. Unknown UUID/mandatory quantity or unsupported conversion blocks a complete dataset. This candidate methodology is not a certification or lifetime LCA."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Declared complete-equipment manufacture with verified upstream links"
+  excluded_use: "Customer food-production inventory, domestic machines, electric industrial bakery ovens or unsupported full-service equivalence"
+  required_metadata: "manufacturer; model and serial/configuration; non-domestic intended duty; bakery oven versus beverage/cooking/heating function; main heating technology and actual fuel; capacity, food-contact and pressure ratings; steel and elastomer grades; make/buy components; burner, heat exchanger, boiler, heater, pumps, fan, grinder and controls actually fitted; included cooling and other add-ons; initial fluid charge; delivered net mass M and acceptance state; factory site, period and supplier geography; factory test duty and test consumables"
+  required_quality_disclosure: "Route and make/buy coverage; unresolved identities/ranges; measurement and balance uncertainty; allocations; supplier geography/year; waste fate"
+  update_trigger: "Design/heating technology, supplier/grade, included cooling/add-ons, acceptance test, site or manufacturing route changes"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, printed pages 225–236, subclasses 43420/43430 and 44515/44516/44518. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Identity and adjacent product/part exclusions; classification alone is not manufacturing evidence."
+  - id: "miwe-rack-oven"
+    type: "handbook"
+    reference: "MIWE roll-in e+ product information, PI RIE3.0/en/1909, pages 3–4. https://www.miwe.com/media/docs/produkte/prospekt/en/produktinformation-roll-in-eplus-3-0-en.pdf"
+    used_for: "Oil/gas versus electric oven alternatives; stainless heat exchanger, steam system, insulated glass, controls and optional door drive. No BOM grade, fabrication recipe or energy intensity established."
+  - id: "franke-a800"
+    type: "handbook"
+    reference: "Franke A800 product leaflet, 590.0690.071/09.23/CH-EN, pages 1–2. https://www.franke.com/content/dam/franke/language-masters/en/coffee-systems/documents/factsheets/en/EN_A800_Franke_CS_Product_Leaflet.pdf"
+    used_for: "Commercial coffee-machine boiler, grinder, brewing/control architecture and configuration-dependent cooling add-ons; electrical beverage counterexample to extending oven qualifier to every machine. Brochure mass/power are not defaults."
+  - id: "rational-ivario"
+    type: "handbook"
+    reference: "RATIONAL, iVario The Game Changer, Restaurant brochure, pages 8–9. https://hcms.rational-online.com/hcms/v1.7/entity/brochure/166028/storage/MDE2NjAyOC8wL3BkZi1wcmV2aWV3LTE1MHBwaS1wcmludHNoZWV0/download/20_720_brochure_ivario_pro_restaurant_letter-en_ca.pdf"
+    used_for: "Electric ceramic heater and stainless pan-base configuration in commercial cooking; model-specific architecture, not factory consumption or food-production inventory."
+  - id: "epa-fabricated-metal"
+    type: "official_guidance"
+    reference: "US EPA, Industrial Stormwater Fact Sheet Sector AA, EPA 833-F-06-042, Table 1 page 2. https://www.epa.gov/sites/default/files/2015-10/documents/sector_aa_fabmetal.pdf"
+    used_for: "Generic fabrication countercheck for cutting, bending, welding, cleaning and associated residues. The sector explicitly excludes machinery: used only to prompt actual route verification, never to assert every route or an emission factor."
+  - id: "ef-allocation-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I section 4.5. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230"
+    used_for: "Subdivision and causal allocation hierarchy; no claim of complete PEF conformance."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1218b3786901521d4d5264a4382d234d367d325c5d40795194cf712fe4536beb"
+  generated_content_sha256: "sha256:7d1c54707e5db147932284cdc1ac087c3998fbd54fc187f6e0fffffef8db41dd"

@@ -1,10 +1,1235 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44132"
-  title: "Dairy machinery"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.dairy-machinery"
+  classification_refs: "CPC 3.0: 44132"
+  covered_products: "Complete dedicated dairy machinery; actual cheese-vat, curd-handling, butter-churn or continuous butter-worker configuration"
+  excluded_products: "Milking machines; cream separators; separately supplied parts; independently dispatched generic food heaters; dairy products; processing services"
+  representative_product: "The declared delivered machine model; no narrower representative fixes category identity"
+  production_route: "Drawing and make/buy verification; conditional sanitary fabrication and finish; module assembly; actual acceptance; dispatch"
+  market_state: "Accepted complete factory-gate machine with declared options, factory fill and supply exclusions"
+functional_unit:
+  what: "Manufacture and supply the declared complete dairy machine configuration"
+  how_much: "1 kg reference flow; same-configuration item records are normalized by measured net machine mass"
+  how_well: "Passed documented mechanical, electrical, sanitary finish and functional acceptance requirements for the declared machine"
+  how_long_or_cycle: "One manufacture and factory release; no assumed use lifetime or dairy service performance equivalence"
+  reference_flow_link: "finished"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include attributable upstream supplies, inbound freight, rejects/rework, manufacturing, finishing, assembly, factory acceptance, cleaning, waste treatment and packaging to factory gate. Include inbound transport as separate actual mode/load/distance rows in the concrete data package."
+      source_ids:
+        - tetra-sh6-2024
+        - gea-bue-2026
+    - rule_id: boundary_routes
+      applies_to: "foreground_system_boundary"
+      rule: "Record make, buy or not_applicable for body/jacket, shaft/knife/paddle/auger, vat/curd conveyor, texturizer, drive, pump, seal, PLC and supplied ancillary system; a bought complete unit replaces its embedded material and fabrication entries. Supplier casting/forging and heat treatment stay in upstream boundary unless genuinely performed here, when add actual separate process records. Other actual alloys, polymers, coatings, fuels and chemicals require one species/grade-specific card each; the listed alternatives are not a mandatory recipe."
+      source_ids:
+        - tetra-sh6-2024
+        - gea-cheese-2024
+        - gea-bue-2026
+    - rule_id: boundary_use
+      applies_to: "foreground_system_boundary"
+      rule: "Keep milk-to-cheese/butter processing as machine function only; actual test media are burden-bearing test inputs, never a dairy product reference output. A functionally combined stretcher has a specific working mechanism; a separate generic heater is not automatically included."
+      source_ids:
+        - un-cpc3-2025
+        - gea-cheese-2024
+boundary_abstraction:
+  declared_starting_condition: "Actual supplied sheet, tube, wire, chemicals and separately specified bought modules at receiving gate"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "Dedicated dairy-machine manufacture; classify multifunction or separately dispatched modules by actual design and supply boundary"
+  recursive_input_rule: "A bought complete same-category machine or module is an upstream supplied input with its own boundary; do not unfold its embodied inputs again in assembly"
+  upstream_dataset_requirement: "Link actual supplier-specific grade, technology, location, delivery and included operations once; unresolved providers remain explicit"
+  disclosure: "Declare family, site/period, supplied options, exclusions, factory test and make/buy matrix"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Dairy machinery"
+    uuid: "2c706125-e4a7-4af1-a5c7-78ad7bce62f6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Machine function and model"
+    - "accepted configuration and serial/BOM revision"
+    - "batch or continuous family"
+    - "sanitary material grades and finish"
+    - "drive and control scope"
+    - "supplied jacket"
+    - pump
+    - vacuum
+    - "CIP and ancillary modules"
+    - "factory-filled fluids"
+    - "make/buy boundary"
+    - "acceptance test medium and duration"
+    - "site and production period"
+    - "calibrated net mass"
+    - "upstream provider geography and delivered state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "M = accepted net mass of one complete machine of the same configuration in kg; collect using cp_mass."
+process_map:
+  - id: fabrication
+    name: "Fabrication of sanitary bodies and working members"
+    inclusion: "conditional"
+    inclusion_condition: "When machining, forming, welding or polishing is performed by this manufacturer"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: surface
+    name: "Surface finishing and passivation"
+    inclusion: "conditional"
+    inclusion_condition: "Only the actual food-contact finish or external finish route"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: assembly
+    name: "Configuration-specific assembly"
+    inclusion: "required"
+    inclusion_condition: "Every complete machine; bought modules remain distinct from manufactured parts"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: test
+    name: "Factory acceptance and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Actual factory test and release record; wet test only when actually performed"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: dispatch
+    name: "Packing and manufacturer-gate release"
+    inclusion: "required"
+    inclusion_condition: "Accepted declared configuration at dispatch"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+  - id: services
+    name: "Unassigned shared factory services"
+    inclusion: "conditional"
+    inclusion_condition: "Only measured residual not assigned to preceding processes"
+    role: "foreground"
+    quantitative_reference: "per 1 kg reference flow; collected per one accepted finished machine"
+process_inventory:
+  - id: fabrication
+    label: "Fabrication of sanitary bodies and working members"
+    inputs:
+      product:
+        - row_id: ss304_sheet
+          role: "AISI 304 stainless steel sheet"
+          name: "AISI 304 stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For the identified shell or frame drawing specifying this grade."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ss316l_sheet
+          role: "AISI 316L stainless steel sheet"
+          name: "AISI 316L stainless steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only drawings specifying this food-contact grade; no substitution for 304."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ss304_tube
+          role: "AISI 304 sanitary stainless steel tube"
+          name: "AISI 304 sanitary stainless steel tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: er316l_wire
+          role: "ER316L stainless steel welding wire"
+          name: "ER316L stainless steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual compatible weld procedure only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: argon
+          role: "Argon shielding gas"
+          name: "Argon shielding gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Shielded welding actually performed; pressure and temperature conversion required."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+        - row_id: cutting_oil
+          role: "Mineral-oil machining lubricant"
+          name: "Mineral-oil machining lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual SDS-defined machining lubricant; aqueous emulsion water and additives are separate."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: fab_electricity
+          role: "Purchased factory electricity at low voltage"
+          name: "Purchased factory electricity at low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Measured attributable fabrication electricity only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ss_scrap
+          role: "Segregated stainless steel machining scrap"
+          name: "Segregated stainless steel machining scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: spent_oil
+          role: "Spent mineral-oil machining lubricant"
+          name: "Spent mineral-oil machining lubricant"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface
+    label: "Surface finishing and passivation"
+    inputs:
+      product:
+        - row_id: surface_water
+          role: "Supplied process water"
+          name: "Supplied process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual wash, rinse and bath make-up; recycled internal transfers cancel."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: citric
+          role: "Citric acid for stainless steel passivation"
+          name: "Citric acid for stainless steel passivation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual citric route only; not a default recipe."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: nitric
+          role: "Nitric acid for stainless steel passivation"
+          name: "Nitric acid for stainless steel passivation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual nitric route only; distinguish concentration and received solution from contained HNO3."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: ipa
+          role: "Isopropyl alcohol cleaning solvent"
+          name: "Isopropyl alcohol cleaning solvent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual solvent cleaning record only; physical anti-sticking treatment does not establish solvent use."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids:
+                - gea-cheese-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: surface_effluent
+          role: "Metal-bearing passivation wastewater"
+          name: "Metal-bearing passivation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: surface_sludge
+          role: "Wet metal-hydroxide treatment sludge"
+          name: "Wet metal-hydroxide treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual on-site treatment precipitate only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+        - row_id: solvent_media
+          role: "Spent activated carbon from isopropanol capture"
+          name: "Spent activated carbon from isopropanol capture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual capture installation only; retained solvent mass measured separately."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropyl alcohol emitted to air"
+          name: "Isopropyl alcohol emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual stack and fugitive release measurement; never unexplained balance residual."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_species."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+        - row_id: chromium_water
+          role: "Chromium emitted to fresh water"
+          name: "Chromium emitted to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual final discharge to fresh water with own dissolved/particulate and Cr(III), Cr(VI) or total-Cr-as-element reporting method. Total elemental Cr is not whole-species mass or a pure Cr(VI) identity; stainless steel/passivation never implies Cr(VI). Wastewater sent to treatment is waste instead."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_species."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+  - id: assembly
+    label: "Configuration-specific assembly"
+    inputs:
+      product:
+        - row_id: motor
+          role: "Three-phase AC electric motor"
+          name: "Three-phase AC electric motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual declared motor specification and rated configuration."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: gearbox
+          role: "Purchased geared drive assembly"
+          name: "Purchased geared drive assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bought complete drive only; do not also count its embodied steel, motor or gear oil."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: plc
+          role: "Programmable logic controller"
+          name: "Programmable logic controller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual supplied control system only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: epdm
+          role: "Food-contact EPDM seal"
+          name: "Food-contact EPDM seal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual approved EPDM seal grade only; other polymers require their own atomic row."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: oil_fill
+          role: "Mineral gear oil factory fill"
+          name: "Mineral gear oil factory fill"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only fill performed here and not already contained in purchased drive."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: sanitary_valve
+          role: "Purchased stainless steel sanitary valve"
+          name: "Purchased stainless steel sanitary valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual delivered valve module."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: knife_module
+          role: "Purchased cheese-vat cutting shaft assembly"
+          name: "Purchased cheese-vat cutting shaft assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bought complete shaft and knife frame, replacing corresponding in-house material and fabrication burdens."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: butter_module
+          role: "Purchased butter-working texturizer module"
+          name: "Purchased butter-working texturizer module"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual bought texturizer with specified supply boundary."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: vacuum
+          role: "Purchased vacuum pump"
+          name: "Purchased vacuum pump"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied butter-machine vacuum option."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: jacket
+          role: "Purchased sanitary heating-jacket assembly"
+          name: "Purchased sanitary heating-jacket assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bought jacket only, not already embodied in complete bought vat."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_bom."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom
+              source_ids:
+                - tetra-sh6-2024
+                - gea-bue-2026
+            ranges: []
+        - row_id: assembly_power
+          role: "Purchased factory electricity at low voltage"
+          name: "Purchased factory electricity at low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Attributable assembly consumption."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: test
+    label: "Factory acceptance and cleaning"
+    inputs:
+      product:
+        - row_id: test_water
+          role: "Supplied process water"
+          name: "Supplied process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual hydrostatic, functional wet test or cleaning only; closed-loop circulation is not repeated purchased input."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: test_milk
+          role: "Raw cow milk for recorded factory test"
+          name: "Raw cow milk for recorded factory test"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only a documented test requiring this actual medium; not a manufacturing ingredient or default factory test."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: caustic
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide cleaning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual factory CIP recipe only; record received concentration and separate carrier water."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: test_power
+          role: "Purchased factory electricity at low voltage"
+          name: "Purchased factory electricity at low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual test and cleaning duration submeter record; rated power is not consumption."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+        - row_id: steam
+          role: "Purchased saturated steam at factory interface"
+          name: "Purchased saturated steam at factory interface"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual purchased steam for acceptance test; same-boundary enthalpy collection required."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids: []
+            ranges: []
+        - row_id: compressed_air
+          role: "Purchased compressed air at factory interface"
+          name: "Purchased compressed air at factory interface"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Only purchased supply; in-house compressor electricity is counted instead."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: test_effluent
+          role: "Factory acceptance cleaning wastewater"
+          name: "Factory acceptance cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: dispatch
+    label: "Packing and manufacturer-gate release"
+    inputs:
+      product:
+        - row_id: wood_pack
+          role: "Sawn wood transport crate"
+          name: "Sawn wood transport crate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+        - row_id: pe_pack
+          role: "Polyethylene protective film"
+          name: "Polyethylene protective film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished
+          role: "Dairy machinery"
+          name: "Dairy machinery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2c706125-e4a7-4af1-a5c7-78ad7bce62f6"
+          property_unit: "Mass / kg"
+          description: "Actual BOM or route only."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: services
+    label: "Unassigned shared factory services"
+    inputs:
+      product:
+        - row_id: residual_power
+          role: "Purchased factory electricity at low voltage"
+          name: "Purchased factory electricity at low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Only reconciled unassigned residual including actual compressor, lighting and treatment load; no whole-factory total added to submeters."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_utility."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas supplied to factory boiler"
+          name: "Natural gas supplied to factory boiler"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual in-house boiler only; never alongside purchased steam for same steam burden."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_gas."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: co2_air
+          role: "Fossil carbon dioxide emitted to air"
+          name: "Fossil carbon dioxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual boiler carbon evidence and oxidation/product/stock accounting."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_species."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+        - row_id: nox_air
+          role: "Nitrogen oxides emitted to air"
+          name: "Nitrogen oxides emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual species-resolved stack evidence. Keep NO, NO2 and NOx-as-NO2-equivalent reporting distinct with evidenced actual molecular-mass conversion; aggregate NOx is not a pure NO2 identity and cannot derive from fuel carbon."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_species."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_species
+              source_ids: []
+            ranges: []
+        - row_id: water_vapour
+          role: "Water vapour emitted to air"
+          name: "Water vapour emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual evaporation in finishing, testing or factory utilities; internal condensate is paired transfer."
+          amount:
+            expression: "Apply normalize_mass to q_item; reference_mass; cp_water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow; collected per one accepted finished machine"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocate_once
+    applies_to: "foreground_burden_allocation"
+    rule: "Assign job-specific inputs directly; allocate shared period inputs using measured causal machine hours, weld/finish area or metered work. Preserve rejects and rework attributable to accepted production; do not remove their burden from the numerator. Distinct configurations have distinct measured denominators."
+    source_ids: []
+  - rule_id: scrap_boundary
+    applies_to: "foreground_burden_allocation"
+    rule: "Record sold segregated scrap and actual treatment destinations separately; disclose the chosen recycling allocation model consistently with upstream suppliers. No undocumented avoided-production credit, and internal metal recirculation cancels in paired transfers."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "dispatch"
+      flow_role: "finished"
+      record_type: "weighing"
+      raw_fields: "model; configuration; serial number; accepted net mass M"
+      collection_method: "Weigh the accepted complete machine on a calibrated scale, excluding transport packaging; reconcile the same configuration and acceptance record."
+      unit: "kg"
+      frequency: "Each accepted machine"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "accepted net mass per machine"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_material
+      process_id: "fabrication_surface_test_dispatch"
+      flow_role: "material input"
+      record_type: "ledger"
+      raw_fields: "grade; supplier; lot; SDS concentration; delivered state; receipts; issues; returns; opening and closing stocks; attributable period Q; accepted count N"
+      collection_method: "Reconcile actual weighed receipts and job issues with returns, stocks and BOM; split carrier water and identified formulation constituents without double counting solution mass."
+      unit: "kg"
+      frequency: "Each batch and period"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_bom
+      process_id: "assembly"
+      flow_role: "bought module"
+      record_type: "BOM"
+      raw_fields: "drawing revision; make/buy; supplier boundary; delivered module mass; included motor/material/oil; N; Q"
+      collection_method: "Match delivered module identifiers, weighed mass and supplier scope to acceptance BOM; include upstream burden once and only site additions separately."
+      unit: "kg"
+      frequency: "Each delivered lot"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_utility
+      process_id: "fabrication_assembly_test_services"
+      flow_role: "electricity"
+      record_type: "meter"
+      raw_fields: "period and units; imports; on-site generation; exports; opening/closing storage; assigned fabrication/assembly/test/dispatch meters; residual; causal driver; Q; N"
+      collection_method: "Use synchronized calibrated site meters and submeters; calculate shared service residual after already assigned consumption, with measured causal allocation. Reconcile source-specific imports, generation, exports and storage; investigate negative residual using actual combined measurement uncertainty, never clip to zero."
+      unit: "kWh"
+      frequency: "Each meter interval"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_steam
+      process_id: "test"
+      flow_role: "purchased steam"
+      record_type: "meter"
+      raw_fields: "delivered kg; own delivered enthalpy MJ/kg; delivered pressure temperature quality; independently measured return kg; own return enthalpy MJ/kg; return pressure temperature; time/boundary; Q; N"
+      collection_method: "Meter delivered steam and returned condensate separately at the same supplier interface. Obtain each term's own enthalpy from its measured state and traceable thermodynamic method using the same common enthalpy reference datum. Q in MJ = delivered kg times own delivered MJ/kg minus independently measured return kg times own return MJ/kg; no assumed enthalpy or unmeasured equal return mass. In-house steam uses actual boiler fuel and auxiliaries instead of a purchased-steam upstream burden."
+      unit: "MJ"
+      frequency: "Each recorded test"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_gas
+      process_id: "fabrication_test_services"
+      flow_role: "gas input"
+      record_type: "meter"
+      raw_fields: "identified gas; composition; supplied property; calibrated quantity; pressure; temperature; reference volume state; density; boundary; Q; N"
+      collection_method: "Convert gas volume to mass only using its own documented state-specific density; compressed-air reference conditions must match provider; no rated consumption substitutes for measured amount."
+      unit: "kg; m3"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_water
+      process_id: "surface_test_services"
+      flow_role: "water balance"
+      record_type: "meter"
+      raw_fields: "supply; moisture of each input; return transfers; opening/closing bath and tank stocks; water in product/scrap/sludge/wastewater; evaporation; reaction water; actual destination; Q; N"
+      collection_method: "Meter make-up separately from internal circulation; convert liquid volumes using own temperature/density and every wet material using its own moisture measurement. Cancel paired internal transfers and reconcile all terms at the actual site-period boundary."
+      unit: "kg"
+      frequency: "Each batch and period"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_waste
+      process_id: "fabrication_surface_test"
+      flow_role: "waste"
+      record_type: "weighing and assay"
+      raw_fields: "separate stream; wet/dry mass; own moisture and species assay; recovered solvent; capture media loading; treatment/transfer destination; stocks; Q; N"
+      collection_method: "Weigh each waste shipment and retained stock; sample the actual matrix. Resolve contained Fe, Cr, Ni or identified solvent using each stream's own matched assay and wet/dry basis, not feed composition. Record actual completed treatment boundary and do not count an off-site treatment release as direct factory emission."
+      unit: "kg"
+      frequency: "Each batch/shipment"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+    - protocol_id: cp_species
+      process_id: "surface_services"
+      flow_role: "species release"
+      record_type: "sampling"
+      raw_fields: "species and chemical form; compartment; stack/fugitive/discharge volume; own concentration; wet/dry and reference conditions; capture; destruction evidence; stock; uncertainty; Q; N"
+      collection_method: "Use species-specific sampled releases or validated actual formulation balance at matching boundary. Capture into media is retention, not destruction; destruction needs actual performance evidence. Unexplained solvent residual is unresolved, not air. Carbon balance cannot establish CO or NOx. Separate CO2, CO, each NOx convention and each actual released metal form in the concrete dataset."
+      unit: "kg"
+      frequency: "Each relevant test and period"
+      temporal_coverage: "Same attributable production period and accepted configuration"
+      site_scope: "Manufacturer site and actual supplier interface"
+      aggregation_rule: "attributable period exchange / accepted machines"
+      quality_evidence: "Calibration; lot/SDS/BOM; acceptance; sampling and uncertainty records"
+  calculation_rules:
+    - id: normalize_mass
+      applies_to: "all inventory rows"
+      rule: "q_ref = q_item / M; q_item = exchange amount per one accepted finished machine; q_ref = exchange amount per 1 kg reference flow."
+      inputs:
+        - q_item
+        - M
+        - cp_mass
+      output: "q_ref"
+      source_ids: []
+  data_quality_requirements:
+    - id: period_basis
+      applies_to: "physical production records"
+      requirement: "For each configuration collect attributable period exchange Q including rejects/rework, accepted count N and sum of calibrated accepted net masses. Define M as this sum divided by N; derive item amount as Q/N and reference amount as Q divided by that same mass sum. No mixed-configuration average; reject, package and drained test-medium mass never enter denominator. Protocol aggregation per reference flow retains these raw-period fields."
+      evidence: "cp_mass; cp_material; cp_bom"
+    - id: own_assay
+      applies_to: "physical material and species records"
+      requirement: "For each contained Fe, Cr, Ni or other actual species, use EACH term's own matched assay and wet/dry basis for inputs, product, scrap, slag if present, sludge, wastewater, releases and stocks. Include measured reaction generation/consumption and cancel internal paired transfers; gross alloy mass is never contained-element mass. This rule does not impose composition assays on electricity or freight."
+      evidence: "cp_material; cp_waste; cp_species"
+    - id: closure_uncertainty
+      applies_to: "material, water, solvent and utility balances"
+      requirement: "Include opening stock plus inputs and measured reaction generation; reconcile product, each waste/release/return/export, closing stocks and reaction consumption. Water includes each input moisture, product/waste moisture, evaporation and wastewater; solvent includes retained product, recovered solvent, capture-media loading, independently evidenced destruction and all non-air destinations. Investigate closure against actual combined weighing, metering, sampling and allocation uncertainty, never universal tolerance or invented yield."
+      evidence: "cp_water; cp_waste; cp_species; cp_utility"
+    - id: route_state
+      applies_to: "all conditional records"
+      requirement: "Maintain applicability ledger: measured zero, documented not_applicable and unknown are different. Conditional actual species or grades absent from this candidate need an additional atomic card and matching provider identity; unresolved UUID or provider prevents final dataset use, not unsupported forced route exclusion."
+      evidence: "BOM; route sheets; supplier boundary"
+    - id: sanitary_scope
+      applies_to: "supplied configuration and factory acceptance"
+      requirement: "Retain actual food-contact grade, surface roughness/finish specification, weld and passivation procedure, seal approval and acceptance record. Brochure physical anti-sticking treatment is a counterexample to mandatory PTFE coating; select actual finish, not a generic coating assumption. Separate closed-loop service circulation from imported make-up."
+      evidence: "tetra-sh6-2024; gea-cheese-2024"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require actual designed dairy function, complete supplied machine, declared modules, current accepted BOM and correct factory-gate reference; reject adjacent cream separator, generic heater, dairy product and service substitutions."
+    source_ids:
+      - un-cpc3-2025
+  - rule_id: validate_mass
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require calibrated accepted net mass and configuration/period correspondence for Q, N and mass sum; audit every conversion and retain rejects/rework in numerator."
+    source_ids: []
+  - rule_id: validate_balances
+    applies_to: "foreground_dataset_conformance"
+    rule: "Enforce own_assay and closure_uncertainty for every actual physical material/species, water, solvent and stock balance. Investigate missing destinations and negative utility residuals using actual combined uncertainty; unresolved closure cannot be reported as zero or an inferred air emission."
+    source_ids: []
+  - rule_id: validate_upstream
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check each make/buy substitution, actual provider boundary and utility source; eliminate embedded material/module duplicates, purchased steam/in-house boiler duplicates and total-meter/submeter duplicates. Steam delivered and returned terms have independent mass and own enthalpy at identical interface."
+    source_ids: []
+  - rule_id: validate_test
+    applies_to: "foreground_dataset_conformance"
+    rule: "Only actual factory test milk, water, cleaner and utilities are included; reject nameplate power, customer throughput and operating consumption as manufacturing defaults. Report each applicability, missing identity, missing factor and completeness honestly."
+    source_ids:
+      - tetra-sh6-2024
+      - gea-bue-2026
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Actual same-configuration machine manufacture datasets and downstream process/lifecyclemodel projections with declared supply boundary"
+  excluded_use: "Dairy-product production; milk-processing service; use-phase comparative performance; unresolved category substitution"
+  required_metadata: "All reference qualifiers, route applicability, make/buy matrix, measured period denominators and provider links"
+  required_quality_disclosure: "Unresolved UUIDs and providers; missing empirical ranges; route evidence; actual balance uncertainty and allocation; limitations of brochure evidence"
+  update_trigger: "Design, BOM, sanitary finish, supplier, module scope, site/period, test recipe or utility source changes"
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Pages 230 and 236: actual dairy, milking, parts and cream-separator/thermal neighbouring classification; no manufacturing quantities"
+  - id: "tetra-sh6-2024"
+    type: "literature"
+    reference: "Tetra Pak Cheese Vat OST SH6, footer 2024-03; https://www.tetrapak.com/content/dam/tetrapak/media-box/global/en/processing/technology-area-cheese/curdmaking/documents/tetra-pak-cheese-vat-OST%20SH6.pdf"
+    used_for: "Pages 1–3: functional vat, jacket, shaft/knife, drive, controls, sanitary connections and optional modules; closed heating-water loop footnote. Brochure net/gross weight and operational consumption not defaults"
+  - id: "gea-cheese-2024"
+    type: "literature"
+    reference: "GEA CHEESE MAKING EQUIPMENT, EN 02/2024, published 29/02/2024; https://www.gea.com/assets/gea-cheese-making-equipment-digital-brochure-308361.pdf"
+    used_for: "Pages 4–16: actual curd-machine and forming families, supplied working members, dedicated stretcher versus generic heater boundary and physical anti-sticking counterexample"
+  - id: "gea-bue-2026"
+    type: "literature"
+    reference: "GEA Butter Making Machine BUE, publisher page snapshot 2026-10-02; https://www.gea.com/en/products/centrifuges-separation/buttermaking/buttermaking-continuous-butter-bue/"
+    used_for: "Continuous butter-worker housing, drive, oil, seals and actual optional modules; operating recipe/capacity does not establish factory-test medium"
+  - id: "tetra-butter-handbook"
+    type: "handbook"
+    reference: "Tetra Pak Dairy Processing Handbook, Butter chapter, publisher snapshot 2026-10-02; https://dairyprocessinghandbook.tetrapak.com/chapter/butter"
+    used_for: "Batch churn and continuous butter-machine alternatives, their working members and function; no machine manufacturing quantities"
+  - id: "tetra-h7c-adjacent"
+    type: "literature"
+    reference: "Tetra Pak Separator H7C, PD leaflet June 2025; https://www.tetrapak.com/content/dam/tetrapak/media-box/global/en/documents/tetra-pak-separator-h7c-pd-leaflet.pdf"
+    used_for: "Adjacent milk-skimming/standardisation counterexample only; its stainless grades, machine weight and consumption do not define 44132"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c7080e9dbe90ee637926db7622c1e9a8bc6a2a8c59827f02c6fc8f1bb670d365"
+  generated_content_sha256: "sha256:f9f8af89fc005425eb88242a92b571481d9da73c3fda747aa23d4d2188dda447"

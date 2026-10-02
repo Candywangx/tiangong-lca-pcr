@@ -305,6 +305,11 @@ function subdomainNode(
       page.locale === locale &&
       page.slugs.join('/') === ['pcr', domainSlug, subdomain.slug].join('/'),
   );
+  // A closed directory containing only its catalog link needs one navigation entry,
+  // rather than a folder and the same destination repeated in its child payload.
+  if (scope === 'catalog-only') {
+    return { type: 'page', name: subdomain.title, url: catalog?.url ?? libraryUrl(locale) };
+  }
   return {
     type: 'folder',
     name: subdomain.title,
@@ -377,13 +382,16 @@ export function navigationTree(context: NavContext): Root {
         page.locale === locale &&
         page.slugs.join('/') === ['pcr', domain.slug].join('/'),
     );
+    if (!active && !context.catalogRoot) {
+      children.push({ type: 'page', name: domain.title, url: domainCatalog?.url ?? library });
+      continue;
+    }
     children.push({
       type: 'folder',
       name: domain.title,
       collapsible: true,
       defaultOpen: active,
-      children: active || context.catalogRoot
-        ? [
+      children: [
             { type: 'page', name: messages.domainCatalog, url: domainCatalog?.url ?? library },
             ...directRecords.map(
               (record): PageTreeNode =>
@@ -412,13 +420,6 @@ export function navigationTree(context: NavContext): Root {
                 scope,
               );
             }),
-          ]
-        : [
-            {
-              type: 'page',
-              name: domain.title,
-              url: domainCatalog?.url ?? library,
-            },
           ],
     });
   }

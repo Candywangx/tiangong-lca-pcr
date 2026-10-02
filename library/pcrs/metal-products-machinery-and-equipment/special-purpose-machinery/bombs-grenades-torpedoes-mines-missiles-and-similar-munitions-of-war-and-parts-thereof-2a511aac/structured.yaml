@@ -1,10 +1,935 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "44740"
-  title: "Bombs, grenades, torpedoes, mines, missiles and similar munitions of war and parts thereof; cartridges and other ammunition and projectiles and parts thereof, including shot and cartridge wads"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.special-purpose-machinery.bombs-grenades-torpedoes-mines-missiles-and-similar-munitions-of-war-and-parts-thereof-2a511aac"
+  classification_refs: "CPC 3.0 44740"
+  covered_products: "Delivered bombs, grenades, torpedoes, mines, missiles and similar munitions; cartridges, ammunition, projectiles and their parts, including shot and cartridge wads. Each dataset declares exactly one family and delivery state."
+  excluded_products: "Firearms/other arms (44730); edged arms (44750); weapon parts belonging to 44760; operational services, design advice, range remediation and post-use treatment datasets."
+  representative_product: "A supplier-identified accepted delivered article, with an empty brass cartridge case illustrating an inert-part interface only; no representative mass is assigned."
+  production_route: "Environmental reporting partitions: supplier-completed article/part; site manufacture totals; final acceptance and packaging; outsourced services. Actual make/buy coverage is declared without operational sequence."
+  market_state: "Accepted new delivered article or part, whole/inert/unfilled condition declared; no equivalence across families."
+functional_unit:
+  what: "Production and delivery of the declared article family at the factory gate; no operational functional comparison."
+  how_much: "1 kg accepted net article mass of one declared family and delivery state."
+  how_well: "Supplier acceptance and traceability records establish delivered state; no ballistic, energetic or design criteria are specified."
+  how_long_or_cycle: "One reporting period of factory production; no service lifetime or deployment cycle is assumed."
+  reference_flow_link: "accepted_article"
+system_boundary:
+  rules:
+    - rule_id: boundary_once
+      applies_to: "all processes"
+      rule: "Map every real site activity to exactly one environmental reporting partition. Supplier-completed operations are upstream; site manufacturing and final acceptance burdens, handling, utilities and pollution controls are measured once. The partitions are accounting gates, not a production sequence."
+      source_ids:
+        - un-cpc3-2025
+    - rule_id: boundary_lifecycle
+      applies_to: "all processes"
+      rule: "Keep factory production separate from later storage, transport after gate, deployment, use, disposal and remediation. Record on-site quality-test environmental releases in production totals when attributable, without specifying test methods or conditions."
+      source_ids:
+        - epa-munitions-environment
+    - rule_id: boundary_coverage
+      applies_to: "all exchanges"
+      rule: "Require an independently reviewed environmental interface register for every actual material, purchased part, service, waste and emitted species. Add each as a separate atomic dataset exchange. Public candidate cards are conditional examples, not exhaustive coverage or permission to omit confidential burdens. If supporting evidence cannot be reviewed, report incompleteness rather than zero."
+      source_ids:
+        - epa-tri-reporting
+boundary_abstraction:
+  declared_starting_condition: "Actual supplier delivery gates and site reporting perimeter; inventory opening/closing stocks and supplier environmental dataset scope are stated."
+  starting_condition_role: "boundary_abstraction"
+  product_classification_scope: "CPC 3.0 44740"
+  recursive_input_rule: "A purchased same-category part/article is a distinct supplier interface with upstream burdens once; no recursive duplication of its constituent materials or supplier manufacturing. Internal transfers cancel."
+  upstream_dataset_requirement: "Match actual delivered state, mass property, provider geography/year and gate. Include all relevant supplier production and attributable transport, including confidential material interfaces where independently verified; missing evidence remains an explicit coverage gap."
+  disclosure: "Disclose make/buy partition, supplier coverage, outsourced service gates, excluded life stages and withheld inventories. Environmental totals alone cannot substantiate an undisclosed complete material inventory."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted delivered munition article"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "article family"
+    - "whole article or part"
+    - "inert/unfilled/delivered state"
+    - "supplier and site"
+    - "reporting period"
+    - "acceptance identifier"
+    - "net mass scope"
+    - "make/buy gate"
+    - "upstream provider coverage"
+    - "confidentiality and omitted-data scope"
+    - "transport and packaging treatment"
+    - "constituent/compartment definitions for emissions"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "D is reporting-period accepted net product mass of the same declared family/state; use calibrated weighing or traceable weighing records excluding transport packaging. Rejects, work in progress and unrelated families are not accepted output. Collect using cp_accepted_article."
+  - id: normalization
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "kg, kWh, MJ, t*km"
+    rule: "Final exchanges are per 1 kg reference flow. Divide the attributable same-period exchange total by D only after stock reconciliation, cancellation of internal transfers and justified allocation. Preserve the numerator unit."
+  - id: chemical_basis
+    applies_to: "emissions and residues"
+    required_property_ref:
+      name: "identified constituent mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Match laboratory constituent, phase, compartment and wet/dry basis on every balance term. Gross sludge or particulate mass is never contained lead/copper mass. Each product, input, scrap, sludge, stock and release term requires its own matching constituent assay, analytical definition and moisture basis; a common assay cannot stand in for every term. Report analytical nondetects and limits explicitly."
+process_map:
+  - id: supplier_interfaces
+    name: "Purchased interface accounting"
+    inclusion: "required"
+    inclusion_condition: "All actual external deliveries, including outsourced environmental provider gates; no supplier recipe disclosure."
+    role: "Foreground environmental accounting"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: site_environment
+    name: "Site environmental inventory totals"
+    inclusion: "required"
+    inclusion_condition: "All attributable site manufacturing, utilities, handling and pollution-control totals, audited by safe environmental reporting partitions."
+    role: "Foreground environmental accounting"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: delivered_gate
+    name: "Accepted output and packaging accounting"
+    inclusion: "required"
+    inclusion_condition: "One declared delivered family/state; record packaging separately and link acceptance records."
+    role: "Foreground environmental accounting"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: supplier_interfaces
+    label: "Purchased interface accounting"
+    inputs:
+      product:
+        - row_id: empty_brass_case
+          role: "Empty brass cartridge case"
+          name: "Empty brass cartridge case"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when purchased across the reporting gate. Record alloy designation, empty delivery state and supplier coverage without geometry or production instructions; supplier burden includes the delivered case once."
+          amount:
+            expression: "Attributable reporting-period amount from cp_empty_brass_case / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_empty_brass_case
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: unfilled_steel_casing
+          role: "Unfilled steel munition casing"
+          name: "Unfilled steel munition casing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only for an actual purchased unfilled casing. Verify steel grade, surface condition and provider gate; do not additionally count the supplier steel or supplier utilities within foreground totals."
+          amount:
+            expression: "Attributable reporting-period amount from cp_unfilled_steel_casing / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_unfilled_steel_casing
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: polyethylene_wad
+          role: "Polyethylene cartridge wad"
+          name: "Polyethylene cartridge wad"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual purchased part, with declared polymer grade and supplier gate. It is a distinct delivered part, not an assumed input to all ammunition families."
+          amount:
+            expression: "Attributable reporting-period amount from cp_polyethylene_wad / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polyethylene_wad
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: transport_service
+          role: "Freight transport by road truck"
+          name: "Freight transport by road truck"
+          flow_type: "product"
+          property_unit: "Transport work / t*km"
+          description: "Conditional inbound carrier service not already in the supplier dataset: use actual consignments and distance, including packaging in transported mass but excluding it from product denominator."
+          amount:
+            expression: "Attributable reporting-period amount from cp_transport_service / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport_service
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: site_environment
+    label: "Site environmental inventory totals"
+    inputs:
+      product:
+        - row_id: grid_electricity
+          role: "Purchased alternating-current electricity at factory meter"
+          name: "Purchased alternating-current electricity at factory meter"
+          flow_type: "product"
+          property_unit: "Electrical energy / kWh"
+          description: "Metered purchased supply only, with geography, grid year, voltage and provider. In-house generation is a separate measured service with its own fuel and emissions; it is never an additional purchased electricity input."
+          amount:
+            expression: "Attributable reporting-period amount from cp_grid_electricity / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grid_electricity
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: purchased_steam
+          role: "Purchased saturated steam at factory delivery meter"
+          name: "Purchased saturated steam at factory delivery meter"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional purchased steam; retain metered useful delivered heat and actual supplier condensate-return boundary. If verified supplier MJ is unavailable, derive delivered energy from measured steam mass multiplied by state-specific enthalpy relative to a declared common reference: kg × MJ/kg = MJ; subtract the measured condensate-return energy using that same reference. Preserve supplier state/enthalpy evidence and uncertainty without prescribing operational settings. Supplier boiler fuel and stack emissions stay upstream; no operating parameter is prescribed."
+          amount:
+            expression: "Attributable reporting-period amount from cp_purchased_steam / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_steam
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: natural_gas
+          role: "Purchased natural gas at factory delivery meter"
+          name: "Purchased natural gas at factory delivery meter"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Conditional actual stationary utility fuel, retaining metered quantity and documented calorific conversion. Its supplier burden and measured site combustion releases are separate."
+          amount:
+            expression: "Attributable reporting-period amount from cp_natural_gas / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: diesel
+          role: "Diesel fuel for factory handling equipment"
+          name: "Diesel fuel for factory handling equipment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual handling equipment fuel. Record receipts, withdrawals and stock change; no assumed equipment duty cycle or fuel consumption."
+          amount:
+            expression: "Attributable reporting-period amount from cp_diesel / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_diesel
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: purchased_water
+          role: "Purchased industrial water at factory meter"
+          name: "Purchased industrial water at factory meter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased water only; retain supply origin and density conversion if meter records volume. Cooling recirculation is an internal movement, not repeated external water input. Direct abstraction requires separate source-specific elementary rows."
+          amount:
+            expression: "Attributable reporting-period amount from cp_purchased_water / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_water
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: brass_scrap
+          role: "Uncontaminated brass scrap sent to recycler"
+          name: "Uncontaminated brass scrap sent to recycler"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional inert scrap with supplier/receiver identity and measured mass. Verify contamination status; hazardous residues must not be substituted by this flow. Record treatment or recycling provider once."
+          amount:
+            expression: "Attributable reporting-period amount from cp_brass_scrap / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brass_scrap
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: metal_sludge
+          role: "Dewatered metal-bearing wastewater-treatment sludge"
+          name: "Dewatered metal-bearing wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional actual sludge; retain wet/dry basis, laboratory constituent identities, water content and receiver acceptance. Sludge mass is not the contained mass of any metal."
+          amount:
+            expression: "Attributable reporting-period amount from cp_metal_sludge / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_sludge
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: offsite_effluent
+          role: "Metal-bearing aqueous effluent transferred to licensed treatment"
+          name: "Metal-bearing aqueous effluent transferred to licensed treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Conditional external wastewater transfer; record each actual liquid stream separately and receiver interface. Do not also label the same transferred metal as a direct river release."
+          amount:
+            expression: "Attributable reporting-period amount from cp_offsite_effluent / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_offsite_effluent
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual site utility combustion release, using independently documented fuel-carbon and oxidized-carbon evidence or monitored species total; never apply a supplier electricity factor as a site stack emission."
+          amount:
+            expression: "Attributable reporting-period amount from cp_fossil_co2 / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fossil_co2
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional monitored utility release. Species-specific monitoring or justified species factor required; carbon closure alone does not determine carbon monoxide."
+          amount:
+            expression: "Attributable reporting-period amount from cp_carbon_monoxide / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_carbon_monoxide
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Conditional actual nitrogen dioxide release. A nitrogen-oxides-as-NO2 report is not automatically molecular NO2; retain analytical definition and create the corresponding separate flow if it reports a mixture."
+          amount:
+            expression: "Attributable reporting-period amount from cp_nitrogen_dioxide / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitrogen_dioxide
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: lead_air
+          role: "Lead to air"
+          name: "Lead to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only when evidence identifies actual lead release to air. Record stack/fugitive distinction and measured elemental lead basis; never derive it from total particulate or gross product mass."
+          amount:
+            expression: "Attributable reporting-period amount from cp_lead_air / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_air
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: copper_water
+          role: "Copper to freshwater"
+          name: "Copper to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only for a measured final discharge to freshwater with receiver and constituent definition. Apply laboratory concentration and corresponding discharged-water quantity; exclude amounts transferred off-site or retained in sludge."
+          amount:
+            expression: "Attributable reporting-period amount from cp_copper_water / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_water
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+  - id: delivered_gate
+    label: "Accepted output and packaging accounting"
+    inputs:
+      product:
+        - row_id: corrugated_box
+          role: "Corrugated cardboard transport box"
+          name: "Corrugated cardboard transport box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual accepted-product packaging, measured separately from article mass. Include its provider burden and rejected packaging where attributable."
+          amount:
+            expression: "Attributable reporting-period amount from cp_corrugated_box / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_corrugated_box
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+        - row_id: steel_strapping
+          role: "Steel transport strapping"
+          name: "Steel transport strapping"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional actual steel package restraint, counted independently from the cardboard box and product body. Do not prescribe packaging construction."
+          amount:
+            expression: "Attributable reporting-period amount from cp_steel_strapping / D; reconcile stock and allocation first."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steel_strapping
+              source_ids:
+                - epa-tri-reporting
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_article
+          role: "Accepted delivered munition article"
+          name: "Accepted delivered munition article"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Reference output; the concrete dataset represents one declared article family and delivered state, never a mixed basket. Record net accepted mass after excluding transport packaging."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_accepted_article
+              source_ids:
+                - un-cpc3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_hierarchy
+    applies_to: "all processes"
+    rule: "Investigate subdivision and system expansion before allocation. For a declared attributional factory-gate product inventory, prefer dedicated records; allocate remaining shared totals using a measured relevant physical driver. If using another relationship, explain why physical causality was inadequate and document price period/sensitivity."
+    source_ids:
+      - eu-ef-2021
+  - rule_id: allocation_residues
+    applies_to: "all waste rows"
+    rule: "Keep recoverable scrap, hazardous waste and co-products distinct. No automatic avoided virgin-material credit; state the chosen recycling/treatment convention and provider boundary. Transfers and internal recirculation cannot create environmental credits by themselves."
+    source_ids:
+      - eu-ef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_empty_brass_case
+      process_id: "supplier_interfaces"
+      flow_role: "Empty brass cartridge case"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_unfilled_steel_casing
+      process_id: "supplier_interfaces"
+      flow_role: "Unfilled steel munition casing"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_polyethylene_wad
+      process_id: "supplier_interfaces"
+      flow_role: "Polyethylene cartridge wad"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_transport_service
+      process_id: "supplier_interfaces"
+      flow_role: "Freight transport by road truck"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "t*km"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_grid_electricity
+      process_id: "site_environment"
+      flow_role: "Purchased alternating-current electricity at factory meter"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kWh"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_purchased_steam
+      process_id: "site_environment"
+      flow_role: "Purchased saturated steam at factory delivery meter"
+      record_type: "primary_record"
+      raw_fields: "provider; supplied/return state; period; verified delivered MJ or measured steam/condensate mass; specific enthalpy evidence; common reference; actual return boundary; allocation and uncertainty"
+      collection_method: "Reconcile verified measured MJ or measured mass × actual state-specific enthalpy difference on a common reference, with actual condensate return accounted separately; verify supplier gate and meter/source uncertainty. No operational settings are specified."
+      unit: "MJ"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_natural_gas
+      process_id: "site_environment"
+      flow_role: "Purchased natural gas at factory delivery meter"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "MJ"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_diesel
+      process_id: "site_environment"
+      flow_role: "Diesel fuel for factory handling equipment"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_purchased_water
+      process_id: "site_environment"
+      flow_role: "Purchased industrial water at factory meter"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_brass_scrap
+      process_id: "site_environment"
+      flow_role: "Uncontaminated brass scrap sent to recycler"
+      record_type: "primary_record"
+      raw_fields: "stream identity; receiver; transfer ticket; wet/dry basis; chemical assay; mass; period; stock change; treatment boundary"
+      collection_method: "Reconcile calibrated waste weighing or metered transfer with receiver records and laboratory stream characterization; no safe handling or treatment operations are prescribed."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_metal_sludge
+      process_id: "site_environment"
+      flow_role: "Dewatered metal-bearing wastewater-treatment sludge"
+      record_type: "primary_record"
+      raw_fields: "stream identity; receiver; transfer ticket; wet/dry basis; chemical assay; mass; period; stock change; treatment boundary"
+      collection_method: "Reconcile calibrated waste weighing or metered transfer with receiver records and laboratory stream characterization; no safe handling or treatment operations are prescribed."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_offsite_effluent
+      process_id: "site_environment"
+      flow_role: "Metal-bearing aqueous effluent transferred to licensed treatment"
+      record_type: "primary_record"
+      raw_fields: "stream identity; receiver; transfer ticket; wet/dry basis; chemical assay; mass; period; stock change; treatment boundary"
+      collection_method: "Reconcile calibrated waste weighing or metered transfer with receiver records and laboratory stream characterization; no safe handling or treatment operations are prescribed."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_fossil_co2
+      process_id: "site_environment"
+      flow_role: "Carbon dioxide, fossil, to air"
+      record_type: "primary_record"
+      raw_fields: "species; compartment; stack/fugitive/discharge identity; sample date; laboratory result; detection limit; corresponding gas/water flow; period total; method uncertainty"
+      collection_method: "Use accredited species-specific analysis with corresponding emission flow and temporal coverage; retain monitored totals or transparent validated factors. Keep transferred waste distinct from direct release. For each term, retain its own corresponding constituent assay; selective annual TRI reporting is corroboration, not evidence of inventory completeness or an unreported zero."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_carbon_monoxide
+      process_id: "site_environment"
+      flow_role: "Carbon monoxide to air"
+      record_type: "primary_record"
+      raw_fields: "species; compartment; stack/fugitive/discharge identity; sample date; laboratory result; detection limit; corresponding gas/water flow; period total; method uncertainty"
+      collection_method: "Use accredited species-specific analysis with corresponding emission flow and temporal coverage; retain monitored totals or transparent validated factors. Keep transferred waste distinct from direct release. For each term, retain its own corresponding constituent assay; selective annual TRI reporting is corroboration, not evidence of inventory completeness or an unreported zero."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_nitrogen_dioxide
+      process_id: "site_environment"
+      flow_role: "Nitrogen dioxide to air"
+      record_type: "primary_record"
+      raw_fields: "species; compartment; stack/fugitive/discharge identity; sample date; laboratory result; detection limit; corresponding gas/water flow; period total; method uncertainty"
+      collection_method: "Use accredited species-specific analysis with corresponding emission flow and temporal coverage; retain monitored totals or transparent validated factors. Keep transferred waste distinct from direct release. For each term, retain its own corresponding constituent assay; selective annual TRI reporting is corroboration, not evidence of inventory completeness or an unreported zero."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_lead_air
+      process_id: "site_environment"
+      flow_role: "Lead to air"
+      record_type: "primary_record"
+      raw_fields: "species; compartment; stack/fugitive/discharge identity; sample date; laboratory result; detection limit; corresponding gas/water flow; period total; method uncertainty"
+      collection_method: "Use accredited species-specific analysis with corresponding emission flow and temporal coverage; retain monitored totals or transparent validated factors. Keep transferred waste distinct from direct release. For each term, retain its own corresponding constituent assay; selective annual TRI reporting is corroboration, not evidence of inventory completeness or an unreported zero."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_copper_water
+      process_id: "site_environment"
+      flow_role: "Copper to freshwater"
+      record_type: "primary_record"
+      raw_fields: "species; compartment; stack/fugitive/discharge identity; sample date; laboratory result; detection limit; corresponding gas/water flow; period total; method uncertainty"
+      collection_method: "Use accredited species-specific analysis with corresponding emission flow and temporal coverage; retain monitored totals or transparent validated factors. Keep transferred waste distinct from direct release. For each term, retain its own corresponding constituent assay; selective annual TRI reporting is corroboration, not evidence of inventory completeness or an unreported zero."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_corrugated_box
+      process_id: "delivered_gate"
+      flow_role: "Corrugated cardboard transport box"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_steel_strapping
+      process_id: "delivered_gate"
+      flow_role: "Steel transport strapping"
+      record_type: "primary_record"
+      raw_fields: "single exchange identity; provider; grade/delivery state; quantity; original unit; conversion evidence; reporting period; opening/closing stock; allocation driver; provider coverage"
+      collection_method: "Reconcile actual meter, delivery and stock records for this single exchange; verify provider gate, geography/year and allocation. Transport uses actual consignment mass and distance."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+    - protocol_id: cp_accepted_article
+      process_id: "delivered_gate"
+      flow_role: "Accepted delivered munition article"
+      record_type: "primary_record"
+      raw_fields: "family; delivery state; acceptance lot; reporting period; calibrated net accepted mass; packaging tare; rejects; opening and closing stock"
+      collection_method: "Use calibrated weighing or traceable weighing records for accepted articles of the declared family/state, excluding transport packaging; reconcile acceptance and stock records."
+      unit: "kg"
+      frequency: "each record; period reconciliation"
+      temporal_coverage: "same declared reporting period"
+      site_scope: "declared factory and linked supplier gates"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "calibration; traceability; source record; coverage; uncertainty"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all inventory rows"
+      rule: "For each applicable atomic exchange, divide the reconciled attributable reporting-period total by same-period accepted net product mass D. Record allocation and conversions separately; the reference output is 1 kg."
+      inputs:
+        - "period exchange total"
+        - D
+        - cp_accepted_article
+      output: "normalized exchange"
+      source_ids: []
+    - id: generic_mass_closure
+      applies_to: "site_environment"
+      rule: "Reconcile external mass inputs and opening stocks with accepted output, rejects, waste, identified emissions and closing stocks using consistent wet/dry and constituent definitions. Include reaction-related external mass where relevant; paired internal transfers cancel. Explain residual discrepancy against measurement uncertainty without inventing a universal tolerance."
+      inputs:
+        - "reconciled external mass records"
+        - stocks
+        - assays
+      output: "documented mass closure"
+      source_ids: []
+    - id: species_release
+      applies_to: "lead_air; copper_water"
+      rule: "Multiply the measured concentration of the named species by the corresponding sampled release quantity with documented units and coverage; sum same-species same-compartment observations and normalize with D. Do not convert gross mixture mass into constituent mass without matching assay."
+      inputs:
+        - "laboratory concentration"
+        - "corresponding flow"
+        - period
+        - D
+      output: "species mass per reference flow"
+      source_ids:
+        - epa-tri-reporting
+    - id: water_closure
+      applies_to: "purchased_water; metal_sludge; offsite_effluent"
+      rule: "Reconcile same-period external water input, input moisture, opening water stocks and actual reaction-related water with closing water stocks, measured discharge, actual evaporation, retained product moisture and water in wet wastes. Verify paired water/condensate returns at their actual external gates and cancel internal recirculation transfers. Convert volume using documented state-appropriate density with units; propagate meter, assay, density and stock uncertainty into the residual assessment. Do not assign residual loss automatically to evaporation or invent a tolerance."
+      inputs:
+        - "water meters"
+        - "input/product/waste moisture assays"
+        - "water stocks"
+        - "actual reaction water evidence"
+        - "discharge and evaporation evidence"
+        - returns
+        - "density and uncertainty"
+      output: "documented water closure"
+      source_ids: []
+    - id: contained_species_closure
+      applies_to: "empty_brass_case; unfilled_steel_casing; brass_scrap; metal_sludge; lead_air; copper_water; accepted_article"
+      rule: "For each identified conserved metal, reconcile its contained mass on EACH product, input, scrap, sludge, stock and release term using that term's own matching assay and wet/dry basis. Include opening/closing stocks, paired internal transfers and actual additional input/output terms; track species transformations separately from elemental conservation. Do not multiply all terms by one common alloy or sludge assay, and do not equate gross carrier mass with constituent mass."
+      inputs:
+        - "individually matched assays"
+        - "carrier masses"
+        - "opening/closing stocks"
+        - "constituent/species definitions"
+        - "environmental interface register"
+      output: "documented contained-metal and species reconciliation"
+      source_ids: []
+    - id: utility_reconciliation
+      applies_to: "grid_electricity; purchased_steam; natural_gas; diesel; fossil_co2; carbon_monoxide; nitrogen_dioxide"
+      rule: "Reconcile each actual energy carrier separately: external imports plus measured on-site generation and opening stored energy against allocated measured site demand, exports, measured closing stored energy and evidenced losses. Record conversions and meter uncertainty; do not infer unidentified carriers or losses from a residual. An internally generated electricity/heat service and its generating fuel cannot both enter as independent external purchased supplies. The generating fuel's upstream provider burden and site releases are counted once; purchased heat/electricity provider burdens stay upstream."
+      inputs:
+        - "import/generation/export/demand meters"
+        - "storage records"
+        - "carrier-specific conversions"
+        - "loss evidence"
+        - "provider coverage"
+        - "allocation and uncertainty"
+      output: "carrier-specific utility residual and no-duplication assessment"
+      source_ids: []
+    - id: steam_energy_interface
+      applies_to: "purchased_steam"
+      rule: "Prefer verified measured delivered MJ. Otherwise multiply measured steam mass in kg by specific enthalpy difference in MJ/kg at the actual supplied state and declared common energy reference; subtract measured condensate-return mass times its own enthalpy difference using the same reference. kg × MJ/kg = MJ. Document actual supplied/return state, provider boundary, calorimetric/thermodynamic source, mass meters and uncertainty. Do not prescribe steam operating settings or duplicate supplier fuel and stack emissions."
+      inputs:
+        - "measured steam/condensate masses"
+        - "state-specific enthalpy evidence"
+        - "common reference"
+        - "provider gate and uncertainty"
+      output: "net delivered purchased-steam MJ for normalization"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all rows"
+      requirement: "Verify delivered-state/type, unit/property, provider and geography before selecting any UUID; unresolved identity remains a candidate gap."
+      evidence: "direct-read identity and supplier records"
+    - id: coverage
+      applies_to: "all processes"
+      requirement: "Document actual make/buy gates and every material/service/waste/species; independently review confidential supporting environmental evidence. An inaccessible essential interface makes the dataset incomplete."
+      evidence: "environmental interface register and reviewer coverage statement"
+    - id: period
+      applies_to: "all protocols"
+      requirement: "Use consistent period, output family/state and allocation driver; reconcile meters, stocks, acceptance and invoices. Quantify uncertainty, missing periods and detection limits."
+      evidence: "calibration, laboratory QA and audit records"
+    - id: ranges
+      applies_to: "all rows"
+      requirement: "No verified independent boundary-compatible empirical range exists here. Collect foreground data; do not replace gaps with recipe-based estimates or universal mass/energy/emission factors."
+      evidence: "site records and explicit uncertainty"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "accepted_article"
+    rule: "Require one family and delivery state, positive accepted net denominator D, packaging separation and complete qualifiers; category UUID gap remains disclosed."
+    source_ids:
+      - un-cpc3-2025
+  - rule_id: validation_boundary
+    applies_to: "all processes"
+    rule: "Check make/buy coverage, supplier burdens once and no internal-transfer duplication; separate later use/remediation and external waste treatment from direct environmental releases."
+    source_ids:
+      - epa-munitions-environment
+      - epa-tri-reporting
+  - rule_id: validation_species
+    applies_to: "all emissions and wastes"
+    rule: "Validate species, compartment, assay basis, reporting-period coverage and nondetect treatment. CO and NO2 require independent species evidence; transferred waste and retained sludge are not direct releases."
+    source_ids:
+      - epa-tri-reporting
+  - rule_id: validation_completeness
+    applies_to: "all exchanges"
+    rule: "Any unreviewable essential supplier/site interface, unknown quantity or incompatible UUID yields incomplete dataset coverage. Passing finite normalization checks does not prove all production burdens are covered or that publication gates are satisfied."
+    source_ids: []
+  - rule_id: validation_closures
+    applies_to: "all exchanges"
+    rule: "Require water closure including moisture, stocks, reaction water, evaporation, discharge, wet wastes and paired returns; contained-species reconciliation with a matched assay on EACH term; carrier-specific utility imports/generation/exports/storage reconciliation; and a verified steam energy/condensate interface. Assess residuals using documented measurement uncertainty; no blanket tolerance, common assay, assumed loss or unreported-zero rule."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared-family factory-gate environmental inventory and downstream process/lifecyclemodel projection with preserved boundaries."
+  excluded_use: "Manufacturing instructions; performance comparison across families; operational design; undisclosed complete LCA claims; use/range/remediation estimates without separate evidence."
+  required_metadata: "Reference qualifiers; period and site; reporting gates; supplier dataset coverage; environmental interfaces; allocation; units/conversions; confidentiality; omitted life stages."
+  required_quality_disclosure: "Unresolved flow identities; no empirical defaults; sampling/detection limits; confidential-interface review coverage; quantitative and boundary gaps; representativeness and uncertainty."
+  update_trigger: "Changed family/delivery state, make/buy gates, provider geography/year, environmental controls, inventory evidence or accepted identity."
+data_sources:
+  - id: "un-cpc3-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, p.239; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Classification boundaries only; no production recipe or empirical factor."
+  - id: "epa-munitions-environment"
+    type: "official_guidance"
+    reference: "US EPA, Military Munitions/Unexploded Ordnance, Overview; https://www.epa.gov/fedfac/military-munitionsunexploded-ordnance"
+    used_for: "Counterevidence to treating factory inventory as full life-cycle contamination coverage."
+  - id: "epa-tri-reporting"
+    type: "official_guidance"
+    reference: "US EPA, TRI EZ Search, available report categories; https://www.epa.gov/enviro/tri-ez-search"
+    used_for: "Species/media, direct releases, transfers, waste and reporting-year distinctions; no production factor."
+  - id: "eu-ef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, section4.5 p.87; https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230"
+    used_for: "General subdivision/expansion/physical-relationship allocation hierarchy."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:922b7688ee57aa283898e6640d8cd9445fece2e4646e78c4b8a997033366bd7a"
+  generated_content_sha256: "sha256:232272eb40c70420989b5bbfe67c5b93104da5a469fd8b37eba81c38c0c2346b"

@@ -1,10 +1,1683 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47173"
-  title: "Parts for the goods of subclasses 47140 to 47160"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclasses-47140-to-47160"
+  classification_refs: "CPC 3.0:47173"
+  covered_products: "Dedicated parts for electronic tubes, semiconductor devices and integrated circuits"
+  excluded_products: "Completed host devices; generic stock; machinery; independently classified articles"
+  representative_product: "Drawing-defined accepted IC leadframe; other qualified part types use their own declared identity"
+  production_route: "Actual metal, laminate/ceramic, powder/getter/cathode or hermetic route with conditional surface operations"
+  market_state: "One independently supplied accepted part state at factory gate"
+functional_unit:
+  what: "Dedicated parts for electronic tubes, semiconductor devices and integrated circuits"
+  how_much: "1 kg"
+  how_well: "host product family and principal dedicated use; part number and drawing revision; delivered completion state; material grade and assay; geometry, finish and tolerances; electrical/thermal/vacuum requirements applicable to this part; accepted lot and count; net mass; make/buy route; supplier completed operations; site, period and gate"
+  how_long_or_cycle: "One supply at manufacturing gate; no host service life or use-stage performance claim"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_make_buy
+      applies_to: "all processes"
+      rule: "Create a make/buy matrix by part/BOM revision: purchased complete subpart includes embedded materials and supplier operations; in-house route instead collects actual constituent inputs and operations. Outsourced processing includes transport and provider service exactly once."
+      source_ids:
+        - shinko-package
+        - saes-cathodes
+    - rule_id: boundary_routes
+      applies_to: "all processes"
+      rule: "Include actual forming, cleanroom/vacuum, deposition/plating, firing/sealing, rework, part acceptance and controls through gate. Semiconductor wafer fabrication is included only for a proven dedicated-part route or linked upstream provider, never forced onto all leadframes or tube parts."
+      source_ids:
+        - shinko-business
+        - saes-metallurgy
+    - rule_id: boundary_later_use
+      applies_to: "all processes"
+      rule: "Host assembly, host operation, customer activation/firing and end of life are outside factory production unless actually performed to deliver the stated part. Disclose capital/maintenance and transport treatment. Add each actual omitted chemical, fuel, gas, waste and species as a separate atomic exchange before dataset completion."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received stock/powder/laminate/preform or dedicated purchased subpart; disclose completed supplier operations"
+  starting_condition_role: "Explicit supplier-to-foreground interface"
+  product_classification_scope: "Dedicated parts for electronic tubes, semiconductor devices and integrated circuits"
+  recursive_input_rule: "Purchased same-family parts carry upstream provider burdens once; internal transfers cancel, without deleting repeated processing consumption"
+  upstream_dataset_requirement: "Trace every feed and purchased utility to actual provider, state, geography/year and represented operations; unresolved links are gaps, never zero"
+  disclosure: "host product family and principal dedicated use; part number and drawing revision; delivered completion state; material grade and assay; geometry, finish and tolerances; electrical/thermal/vacuum requirements applicable to this part; accepted lot and count; net mass; make/buy route; supplier completed operations; site, period and gate"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted drawing-defined dedicated electronic part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "host product family and principal dedicated use"
+    - "part number and drawing revision"
+    - "delivered completion state"
+    - "material grade and assay"
+    - geometry
+    - "finish and tolerances"
+    - "electrical/thermal/vacuum requirements applicable to this part"
+    - "accepted lot and count"
+    - "net mass"
+    - "make/buy route"
+    - "supplier completed operations"
+    - site
+    - "period and gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_final_product measures D on calibrated balance; normalize every attributable interval exchange by D."
+  - id: count_crosscheck
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record accepted count and measured mass for the identical lot/drawing/completion state. Divide lot net mass by its accepted count for order conversion; never use package gross mass or a different part revision."
+  - id: species_basis
+    applies_to: "material and species mass balances"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Distinguish solution/powder/product mass from contained element; retain assay, moisture and active content for every balance term. Preserve electricity energy units; 1 kWh = 3.6 MJ."
+process_map:
+  - id: receipt
+    name: "Dedicated identity, make/buy and receipt"
+    inclusion: "required"
+    inclusion_condition: "Trace each purchased subpart or raw feed through its drawing and supplier interface."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: metal_form
+    name: "Metal forming and patterning"
+    inclusion: "conditional"
+    inclusion_condition: "Actual leadframe/electrode/cap: stamping, etching, machining, drawing, cleaning and internal rework."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: substrate
+    name: "Package substrate and insulating body"
+    inclusion: "conditional"
+    inclusion_condition: "Actual organic multilayer or ceramic body: laminate or powder preparation, forming, drilling, patterning and firing; distinguish a purchased finished substrate."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: tube_part
+    name: "Tube cathode, getter and sealed component"
+    inclusion: "conditional"
+    inclusion_condition: "Actual electrode/getter powder forming, sintering, impregnation/coating, glass preform forming/annealing, glass-metal joining and vacuum preparation as applicable to delivered part."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: finish
+    name: "Surface metallization, plating and joining"
+    inclusion: "conditional"
+    inclusion_condition: "Only actual part-state operations: deposition, plating, rinse, drying, cure, braze or weld. Record recipe and abatement, not a universal wafer-fabrication chain."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: acceptance
+    name: "Part acceptance and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Dimensional/finish, conductivity, continuity/insulation, hermeticity or emission tests specified for the part; segregate rejects, test consumption and packaging."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Factory utilities and pollution controls"
+    inclusion: "required"
+    inclusion_condition: "Attributable purchased energy, water loops, ventilation, vacuum, treatment and maintenance; reconcile shared meters."
+    role: "Foreground production"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: receipt
+    label: "Dedicated identity, make/buy and receipt"
+    inputs:
+      product:
+        - row_id: purchased_leadframe
+          role: "Leadframe"
+          name: "Leadframe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7246f723-e925-4cb4-a861-02b5368fac6d"
+          property_unit: "Mass / kg"
+          description: "Only externally purchased IC-packaging leadframe matching the declared drawing/material/finish. GLO product identity is not a site provider. Do not adopt a database suggested mass-share estimate or use this UUID for cathodes/substrates."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_purchased_leadframe"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_leadframe
+              source_ids:
+                - shinko-package
+            ranges: []
+        - row_id: purchased_alumina_body
+          role: "Purchased fired alumina ceramic IC-package body"
+          name: "Purchased fired alumina ceramic IC-package body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchase path: supplier already provides forming/firing; add supplier burden and transport once, bypass only completed operations."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_purchased_alumina_body"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_alumina_body
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: purchased_cathode
+          role: "Purchased dispenser cathode for microwave tube"
+          name: "Purchased dispenser cathode for microwave tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_purchased_cathode"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_cathode
+              source_ids:
+                - saes-cathodes
+            ranges: []
+        - row_id: receipt_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_receipt_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_electricity
+              source_ids:
+                - shinko-business
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: metal_form
+    label: "Metal forming and patterning"
+    inputs:
+      product:
+        - row_id: c19400_strip
+          role: "Copper alloy C19400 strip"
+          name: "Copper alloy C19400 strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Example concrete feed only when specified by the actual leadframe drawing; not a mandatory grade or proxy for Alloy42, nickel or molybdenum. Add each actual grade separately."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_c19400_strip"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_c19400_strip
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: alloy42_strip
+          role: "Iron-nickel Alloy42 strip"
+          name: "Iron-nickel Alloy42 strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_alloy42_strip"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alloy42_strip
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: nickel_sheet
+          role: "Nickel sheet for tube electrode"
+          name: "Nickel sheet for tube electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_nickel_sheet"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nickel_sheet
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: ferric_chloride
+          role: "Ferric chloride aqueous etchant"
+          name: "Ferric chloride aqueous etchant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ferric-chloride etch route only; declare solution concentration, dissolved copper/nickel loading and regeneration. Another etchant needs its own chemical row."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_ferric_chloride"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ferric_chloride
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: metal_form_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_metal_form_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_form_electricity
+              source_ids:
+                - shinko-business
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: metal_scrap
+          role: "Copper-alloy C19400 stamping scrap"
+          name: "Copper-alloy C19400 stamping scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_metal_scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_scrap
+              source_ids:
+                - shinko-business
+            ranges: []
+      elementary:
+        []
+  - id: substrate
+    label: "Package substrate and insulating body"
+    inputs:
+      product:
+        - row_id: alumina_powder
+          role: "Alumina powder for ceramic package body"
+          name: "Alumina powder for ceramic package body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_alumina_powder"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alumina_powder
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: epoxy_glass_laminate
+          role: "Copper-clad epoxy glass laminate for IC package substrate"
+          name: "Copper-clad epoxy glass laminate for IC package substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased laminate includes supplier copper/resin/glass production; in-house layup replaces it with separate actual copper foil, resin and reinforcement inputs. No duplicate embedded-material entries."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_epoxy_glass_laminate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_epoxy_glass_laminate
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: copper_foil
+          role: "Copper foil for package substrate wiring"
+          name: "Copper foil for package substrate wiring"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_copper_foil"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_foil
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: epoxy_resin
+          role: "Epoxy resin for package substrate dielectric"
+          name: "Epoxy resin for package substrate dielectric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_epoxy_resin"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_epoxy_resin
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: substrate_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_substrate_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_substrate_electricity
+              source_ids:
+                - shinko-business
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: tube_part
+    label: "Tube cathode, getter and sealed component"
+    inputs:
+      product:
+        - row_id: tungsten_powder
+          role: "Tungsten powder for porous cathode body"
+          name: "Tungsten powder for porous cathode body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_tungsten_powder"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tungsten_powder
+              source_ids:
+                - saes-metallurgy
+            ranges: []
+        - row_id: getter_alloy
+          role: "Zirconium-vanadium-iron getter alloy powder"
+          name: "Zirconium-vanadium-iron getter alloy powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if actual getter formulation specifies this alloy; record constituent fractions and oxygen contamination; barium-based evaporative getter is a separate route and flow."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_getter_alloy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_getter_alloy
+              source_ids:
+                - saes-metallurgy
+            ranges: []
+        - row_id: barium_aluminate
+          role: "Barium-calcium aluminate cathode impregnant"
+          name: "Barium-calcium aluminate cathode impregnant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only supplier-defined formulated impregnant in actual dispenser-cathode recipe; obtain assay, binder and batch composition rather than guessing stoichiometry."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_barium_aluminate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_barium_aluminate
+              source_ids:
+                - saes-metallurgy
+            ranges: []
+        - row_id: glass_preform
+          role: "Borosilicate glass sealing preform"
+          name: "Borosilicate glass sealing preform"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased preform for actual hermetic component; declare glass grade, expansion compatibility and supplier completed melting/forming. If made on site, replace with each actual batch ingredient and retain melt/anneal burdens. Standalone glass envelope is not automatically a mapped device part."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_glass_preform"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_glass_preform
+              source_ids:
+                - saes-metallurgy
+            ranges: []
+        - row_id: kovar_pin
+          role: "Iron-nickel-cobalt Kovar pin for hermetic feedthrough"
+          name: "Iron-nickel-cobalt Kovar pin for hermetic feedthrough"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_kovar_pin"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_kovar_pin
+              source_ids:
+                - saes-metallurgy
+            ranges: []
+        - row_id: tube_part_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_tube_part_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tube_part_electricity
+              source_ids:
+                - saes-metallurgy
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: finish
+    label: "Surface metallization, plating and joining"
+    inputs:
+      product:
+        - row_id: nickel_sulfate
+          role: "Nickel sulfate aqueous plating solution"
+          name: "Nickel sulfate aqueous plating solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual nickel plating; separate nickel salt, additives and anode when supplied separately; measure nickel species balance without equating solution mass with nickel."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_nickel_sulfate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nickel_sulfate
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: silver_target
+          role: "Silver deposition target"
+          name: "Silver deposition target"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_silver_target"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_silver_target
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: hydrochloric_acid
+          role: "Hydrochloric acid aqueous cleaning solution"
+          name: "Hydrochloric acid aqueous cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_hydrochloric_acid"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydrochloric_acid
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: isopropanol
+          role: "Isopropanol cleaning solvent"
+          name: "Isopropanol cleaning solvent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_isopropanol"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_isopropanol
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: nitrogen
+          role: "Nitrogen process gas"
+          name: "Nitrogen process gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_nitrogen"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nitrogen
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: finish_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_finish_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finish_electricity
+              source_ids:
+                - shinko-business
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: plating_sludge
+          role: "Nickel-bearing plating sludge"
+          name: "Nickel-bearing plating sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_plating_sludge"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_plating_sludge
+              source_ids:
+                - shinko-business
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropanol to air"
+          name: "Isopropanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_ipa_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ipa_air
+              source_ids:
+                - shinko-business
+            ranges: []
+  - id: acceptance
+    label: "Part acceptance and dispatch"
+    inputs:
+      product:
+        - row_id: helium
+          role: "Helium leak-test gas"
+          name: "Helium leak-test gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual hermetic part tests; include consumed gas and failed/destructively tested parts, not a fictitious complete-tube lifetime test."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_helium"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_helium
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: polyethylene_bag
+          role: "Polyethylene antistatic shipping bag"
+          name: "Polyethylene antistatic shipping bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_polyethylene_bag"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polyethylene_bag
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated fibreboard shipping box"
+          name: "Corrugated fibreboard shipping box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_corrugated_box"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_corrugated_box
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: acceptance_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_acceptance_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_electricity
+              source_ids:
+                - shinko-business
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Accepted drawing-defined dedicated electronic part"
+          name: "Accepted drawing-defined dedicated electronic part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bind this output to exactly one actual drawing-defined part identity and its actual delivered state in the concrete dataset. A leadframe, substrate, electrode/cathode, getter assembly or hermetic subassembly each requires its own verified reference identity. Split different part numbers/completion states into separate output rows and datasets; this row is not a material basket or a licence to use a leadframe UUID for the family."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - shinko-package
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: utilities
+    label: "Factory utilities and pollution controls"
+    inputs:
+      product:
+        - row_id: utilities_electricity
+          role: "Alternating current"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Qualified example for China 1–35 kV consumption mix supplied to user only. Use actual region, voltage and year provider; other interfaces require another verified identity. Never substitute source-specific incinerator or biomass power."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_utilities_electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_electricity
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for furnace combustion"
+          name: "Natural gas for furnace combustion"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_natural_gas"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_steam"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: water
+          role: "Purchased deionized process water"
+          name: "Purchased deionized process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids:
+                - shinko-business
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater
+          role: "Copper-bearing process wastewater to treatment"
+          name: "Copper-bearing process wastewater to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - shinko-business
+            ranges: []
+      elementary:
+        - row_id: co2_air
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_co2_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co2_air
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: nox_air
+          role: "Nitrogen oxides, as NO2, to air"
+          name: "Nitrogen oxides, as NO2, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_nox_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_nox_air
+              source_ids:
+                - shinko-business
+            ranges: []
+        - row_id: co_air
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Applicable only when present in the actual recipe/BOM; verify absence separately from unknown."
+          amount:
+            expression: "Collected attributable period quantity divided by D; cp_co_air"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_co_air
+              source_ids:
+                - shinko-business
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "all processes"
+    rule: "Separate dedicated lots/operations before allocation. Assign shared furnace, cleanroom, vacuum and treatment demand using measured machine occupancy/load, area-time or pollutant load that explains consumption; disclose causal basis and uncertainty. Avoid mass allocation between unrelated part technologies."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "all processes"
+    rule: "Retain rejects, destructive tests and repeated processing in attributable inputs; only accepted net saleable parts enter D. Recovered metal/solvent is not a burden-free product or automatic avoided-production credit. Declare waste versus co-product status and chosen modelling convention without mixing them."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_purchased_leadframe
+      process_id: "receipt"
+      flow_role: "purchased_leadframe"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_purchased_alumina_body
+      process_id: "receipt"
+      flow_role: "purchased_alumina_body"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_purchased_cathode
+      process_id: "receipt"
+      flow_role: "purchased_cathode"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_c19400_strip
+      process_id: "metal_form"
+      flow_role: "c19400_strip"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_alloy42_strip
+      process_id: "metal_form"
+      flow_role: "alloy42_strip"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_nickel_sheet
+      process_id: "metal_form"
+      flow_role: "nickel_sheet"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_ferric_chloride
+      process_id: "metal_form"
+      flow_role: "ferric_chloride"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_alumina_powder
+      process_id: "substrate"
+      flow_role: "alumina_powder"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_epoxy_glass_laminate
+      process_id: "substrate"
+      flow_role: "epoxy_glass_laminate"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_copper_foil
+      process_id: "substrate"
+      flow_role: "copper_foil"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_epoxy_resin
+      process_id: "substrate"
+      flow_role: "epoxy_resin"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_tungsten_powder
+      process_id: "tube_part"
+      flow_role: "tungsten_powder"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_getter_alloy
+      process_id: "tube_part"
+      flow_role: "getter_alloy"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_barium_aluminate
+      process_id: "tube_part"
+      flow_role: "barium_aluminate"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_glass_preform
+      process_id: "tube_part"
+      flow_role: "glass_preform"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_kovar_pin
+      process_id: "tube_part"
+      flow_role: "kovar_pin"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_nickel_sulfate
+      process_id: "finish"
+      flow_role: "nickel_sulfate"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_silver_target
+      process_id: "finish"
+      flow_role: "silver_target"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_hydrochloric_acid
+      process_id: "finish"
+      flow_role: "hydrochloric_acid"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_isopropanol
+      process_id: "finish"
+      flow_role: "isopropanol"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_nitrogen
+      process_id: "finish"
+      flow_role: "nitrogen"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_helium
+      process_id: "acceptance"
+      flow_role: "helium"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_polyethylene_bag
+      process_id: "acceptance"
+      flow_role: "polyethylene_bag"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_corrugated_box
+      process_id: "acceptance"
+      flow_role: "corrugated_box"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh receipts, issue and return, reconcile opening/closing stocks and lot assay; record actual grade, state and provider."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_receipt_electricity
+      process_id: "receipt"
+      flow_role: "receipt_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_metal_form_electricity
+      process_id: "metal_form"
+      flow_role: "metal_form_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_substrate_electricity
+      process_id: "substrate"
+      flow_role: "substrate_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_tube_part_electricity
+      process_id: "tube_part"
+      flow_role: "tube_part_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_finish_electricity
+      process_id: "finish"
+      flow_role: "finish_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_acceptance_electricity
+      process_id: "acceptance"
+      flow_role: "acceptance_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_utilities_electricity
+      process_id: "utilities"
+      flow_role: "utilities_electricity"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Submeter actual operation, idle and rework consumption; reconcile total purchased electricity and allocate measured shared load once. Keep kWh record and convert exactly to MJ."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_natural_gas
+      process_id: "utilities"
+      flow_role: "natural_gas"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Meter supplier volume at recorded conditions and use measured net calorific value; separate purchased heat from own furnace gas."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_steam
+      process_id: "utilities"
+      flow_role: "steam"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Measure steam flow and inlet/return enthalpy; retain pressure, temperature and condensate return boundary."
+      unit: "MJ"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_water
+      process_id: "utilities"
+      flow_role: "water"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Meter fresh supply and separately record internal circulation, treatment and blowdown; do not multiply loop circulation as purchased demand."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_metal_scrap
+      process_id: "metal_form"
+      flow_role: "metal_scrap"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh external scrap by grade, oxidation/coating and destination; internal return cancels in site balance and retains reprocessing burdens."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_plating_sludge
+      process_id: "finish"
+      flow_role: "plating_sludge"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh wet sludge; measure dry solids and nickel assay on same moisture basis, destination and treatment."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_wastewater
+      process_id: "utilities"
+      flow_role: "wastewater"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Measure external treatment transfer volume and matched copper/chemical assays. If treated on site, record treatment inputs and residuals, then actual elementary discharges separately."
+      unit: "m3"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_ipa_air
+      process_id: "finish"
+      flow_role: "ipa_air"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Species-specific exhaust/fugitive monitoring or validated solvent balance with recovered stocks and controls; do not turn total VOC into this species."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_co2_air
+      process_id: "utilities"
+      flow_role: "co2_air"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Use actual fuel carbon assays, oxidation and captured/other carbon streams or matched stack measurements; fossil carbon only."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_nox_air
+      process_id: "utilities"
+      flow_role: "nox_air"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Matched concentration, gas flow, operating hours and reporting species after controls; fuel carbon balance cannot establish NOx."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_co_air
+      process_id: "utilities"
+      flow_role: "co_air"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Matched species monitoring after controls; fuel carbon balance alone cannot establish CO."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+    - protocol_id: cp_final_product
+      process_id: "acceptance"
+      flow_role: "final_product"
+      record_type: "production_record"
+      raw_fields: "lot; drawing revision; completion state; amount; unit; assay/conditions; opening/closing stock; accepted net output D"
+      collection_method: "Weigh accepted net parts on calibrated balance by drawing revision/lot; tare transport carrier/reel/packaging unless physically retained in sold part. Reconcile count and acceptance register."
+      unit: "kg"
+      frequency: "Each lot and meter interval"
+      temporal_coverage: "Matched representative reporting period with startup, idle, reject and rework coverage"
+      site_scope: "Declared process and attributable shared services"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "Calibration; assay; supplier interface; acceptance and stock reconciliation"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide each attributable interval exchange by matched positive accepted net output D; output reference is 1 kg."
+      inputs:
+        - D
+        - "interval quantity"
+        - "applicable protocol"
+      output: "Exchange per 1 kg reference flow"
+      source_ids: []
+    - id: count_conversion
+      applies_to: "final_product"
+      rule: "Matched lot net mass / matched accepted count gives order conversion mass; do not use a catalog typical weight."
+      inputs:
+        - cp_final_product
+        - count
+        - "drawing revision"
+      output: "Measured same-state count-to-mass relation"
+      source_ids: []
+    - id: element_balance
+      applies_to: "metal_form; finish; tube_part"
+      rule: "For each element: external input plus opening stock equals product retention plus external residues/emissions plus closing stock within measured uncertainty. Use every stream mass times its matched elemental assay; cancel paired internal transfers. For chemical species, include measured reaction consumption/formation and recovered stocks."
+      inputs:
+        - mass
+        - "matched assay"
+        - stocks
+        - reaction
+        - uncertainty
+      output: "Reviewed elemental/species closure"
+      source_ids: []
+    - id: energy_conversion
+      applies_to: "electricity rows"
+      rule: "Multiply measured kWh by 3.6 for MJ; separate purchased utilities from in-house generation and allocate own generation fuel/control burdens once."
+      inputs:
+        - meter
+        - unit
+        - provider
+      output: "MJ on declared supply interface"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "final_product"
+      requirement: "host product family and principal dedicated use; part number and drawing revision; delivered completion state; material grade and assay; geometry, finish and tolerances; electrical/thermal/vacuum requirements applicable to this part; accepted lot and count; net mass; make/buy route; supplier completed operations; site, period and gate"
+      evidence: "Order; drawing; host use; supplier catalogue; acceptance"
+    - id: completeness
+      applies_to: "all processes"
+      requirement: "Maintain finite route/flow checklist: applicable measured, applicable unknown, verified not_applicable. Unknown never equals zero; include actual gases, emissions, cleaning and treatment rows beyond examples."
+      evidence: "Route traveller; BOM; meter; safety data; discharge audit"
+    - id: uncertainty
+      applies_to: "all exchanges"
+      requirement: "No universal yield, mass, energy, emissions, lifetime or GWP range is prescribed. Use actual foreground distributions and uncertainty; disclose missing empirical bounds."
+      evidence: "Calibrated records and explicit gap register"
+validation_rules:
+  - rule_id: validate_part
+    applies_to: "final_product"
+    rule: "Confirm dedicated host/part use, drawing revision and delivered completion state. Review finished die/device and glass/equipment counterexamples individually; reject unresolved classification assumptions for a concrete dataset."
+    source_ids:
+      - unsd-cpc3-parts
+      - census-semiconductor-state
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "Require positive calibrated accepted D, identical reporting scope and per-kg basis in both languages; reconcile counts, test rejects, carrier tare and retained finish."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "all processes"
+    rule: "Check elemental/species/water/stock closure with documented measurement uncertainty; gross sludge or bath mass cannot equal contained metal. Retain reaction and internal-transfer evidence. CO and NOx require independent species evidence."
+    source_ids: []
+  - rule_id: validate_provider
+    applies_to: "all exchanges"
+    rule: "Verify product/waste/elementary type, specific identity, property/unit and provider interface; UUID name alone does not justify grade, mass share, geography or process burden. Unresolved actual-part UUID and missing empirical ranges remain disclosed publication gaps."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "all processes"
+    rule: "Confirm every make/buy operation once, actual part-state tests and factory-only utilities; distinguish verified absence from zero measurement and unknown. A skipped applicable route or missing provider means incomplete data."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production package for one qualified dedicated part"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Supply of same declared part identity/state for host assembly"
+  excluded_use: "Unqualified category average; completed device production; host lifetime/use impact"
+  required_metadata: "host product family and principal dedicated use; part number and drawing revision; delivered completion state; material grade and assay; geometry, finish and tolerances; electrical/thermal/vacuum requirements applicable to this part; accepted lot and count; net mass; make/buy route; supplier completed operations; site, period and gate"
+  required_quality_disclosure: "Provider/UUID, range, route, balance and measurement gaps; source scope; conditional absences; allocation uncertainty"
+  update_trigger: "Drawing/material/state/route/provider change, measured yield or process-control change"
+data_sources:
+  - id: "unsd-cpc3-parts"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 Explanatory Notes, 30 June 2025, printed pages255–256, classes4714–4717. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf; current detail https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/47173"
+    used_for: "Current host titles and parts category; PDF and online record contain no detailed inclusion/exclusion prose for47173."
+  - id: "unsd-cpc21-correspondence"
+    type: "official_guidance"
+    reference: "UNSD CPC 2.1, subclass 47173, correspondence to HS 2012/2017. https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/47173"
+    used_for: "Historical parts-heading corroboration, HS854091/854099/854190/854290; not asserted to be a current CPC3 correspondence table."
+  - id: "census-semiconductor-state"
+    type: "official_guidance"
+    reference: "US Census, Schedule B 2022, Chapter 85, notes and headings 8540–8542. https://www.census.gov/foreign-trade/schedules/b/2022/c85.html"
+    used_for: "Counterevidence: unmounted chips/dice/wafers can already be devices; standalone glass articles and manufacturing equipment require separate classification. Historical US schedule, not current legal advice."
+  - id: "shinko-package"
+    type: "extension_guidance"
+    reference: "SHINKO, Semiconductor Package, product catalogue, undated. https://www.shinko.co.jp/english/product/package/"
+    used_for: "Sold leadframe, package-substrate and hermetic component interfaces; IC assembly is distinct."
+  - id: "shinko-business"
+    type: "extension_guidance"
+    reference: "SHINKO, Our Business, products and core technologies, undated. https://www.shinko.co.jp/english/corporate/business/"
+    used_for: "Conditional stamping/etching, plating, multilayer, ceramic and sealing routes; chucks are equipment parts, not automatically device parts. No intensity, recipe or universal route inferred."
+  - id: "saes-cathodes"
+    type: "extension_guidance"
+    reference: "SAES/Spectra-Mat, Thermal Management and Cathodes, undated. https://www.saesgetters.com/industrial-thermal-management-cathodes/"
+    used_for: "Independent evidence for functional dispenser cathodes, getter and thermal components with several end uses; tube/semiconductor dedication must be documented."
+  - id: "saes-metallurgy"
+    type: "extension_guidance"
+    reference: "SAES Industrial, metallurgy capabilities, undated. https://www.saesgetters.com/industrial/"
+    used_for: "Conditional powder forming, sintering and alloy routes only; supplier capability does not establish a particular part recipe or firing schedule."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7baba036ce5b3b9d869e8e83c9f0344346d1a652ecb3e057a95639e77baa312c"
+  generated_content_sha256: "sha256:84482c8044b0a7782567370818442187af3324db1aed87ed735c7feba718ec8b"

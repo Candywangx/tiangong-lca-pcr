@@ -1,10 +1,1168 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47403"
-  title: "Parts for the goods of subclasses 47211 to 47213, 47311 to 47315 and 48220"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclasses-47211-to-47213-47311-to-47315-and-48220"
+  classification_refs: "CPC 3.0:47403"
+  covered_products: "Drawing- and delivered-state-reviewed dedicated parts for the stated hosts"
+  excluded_products: "Complete apparatus; separately named components or generic stock; modules without host evidence; parts for other hosts"
+  representative_product: "Host-fit accepted television main control circuit assembly"
+  production_route: "Actual mechanical, polymer, circuit, microwave or display route under make/buy matrix"
+  market_state: "Accepted dedicated part at declared plant gate, before host installation"
+functional_unit:
+  what: "Supply of a dedicated apparatus part meeting declared drawing/interface"
+  how_much: "1 kg"
+  how_well: "part number and drawing revision; actual host family/model and dedicated fit; delivered functional state and remaining assembly; material grades/formulations; make/buy and supplier completed operations; electrical/RF/optical/mechanical interface and acceptance tests; configuration and net mass; site, period, supplier geography, test and packaging boundary"
+  how_long_or_cycle: "One supply at factory gate; no host service-life claim"
+  reference_flow_link: "final_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_routes
+      applies_to: "all processes"
+      rule: "Build a drawing-based stage-by-stage make/buy/subcontract matrix. Purchased chassis, PCBA, microwave assembly or display cell carries supplier burden once; in-house routes include actual fabrication, assembly, tests, rework and controls. Never count both a purchased component and its embedded raw inputs."
+      source_ids:
+        - cbp-n353432
+        - rogers-materials
+    - rule_id: boundary_extensions
+      applies_to: "all processes"
+      rule: "Not every part manufacturer makes wafers, bare boards or LCD glass. If actually in-house, add the applicable lithography, deposition/etching, plating, cleaning, lamination and packaging stages with individual chemicals, materials, utilities, wastes and species releases. Missing special-recipe evidence is a package gap, not automatic exclusion of the part family."
+      source_ids:
+        - cbp-n353432
+        - rogers-materials
+    - rule_id: boundary_gate
+      applies_to: "all processes"
+      rule: "Include actual factory test electricity, destructive samples, cleaning, maintenance and control-equipment service. Host installation, whole-apparatus commissioning, user use and end of life are outside this factory-gate package and need downstream models. Justify and assess sensitivity of capital/infrastructure exclusions."
+      source_ids:
+        - cbp-n353432
+boundary_abstraction:
+  declared_starting_condition: "Declared received blank, bare board, die, display cell or completed component with already completed operations"
+  starting_condition_role: "Supplier intermediate product"
+  product_classification_scope: "Reviewed dedicated parts for broadcast, television, display and radar hosts"
+  recursive_input_rule: "Purchased same-category parts retain distinct supplier burdens; internal returns cancel transfers and receive no substitution credit."
+  upstream_dataset_requirement: "Link actual grade, fabrication stage, geography, supplier process, utility, transport and waste receiver; unknown never means zero."
+  disclosure: "part number and drawing revision; actual host family/model and dedicated fit; delivered functional state and remaining assembly; material grades/formulations; make/buy and supplier completed operations; electrical/RF/optical/mechanical interface and acceptance tests; configuration and net mass; site, period, supplier geography, test and packaging boundary"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Accepted dedicated apparatus part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number and drawing revision"
+    - "actual host family/model and dedicated fit"
+    - "delivered functional state and remaining assembly"
+    - "material grades/formulations"
+    - "make/buy and supplier completed operations"
+    - "electrical/RF/optical/mechanical interface and acceptance tests"
+    - "configuration and net mass"
+    - site
+    - period
+    - "supplier geography"
+    - "test and packaging boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "final_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "cp_mass measures D; every row divides attributable period quantity by D."
+  - id: units
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "kg; kWh; MJ; t km"
+    rule: "Retain raw units and conversion evidence; electricity 1 kWh=3.6 MJ; gas retains temperature, pressure, composition and net calorific value."
+  - id: balances
+    applies_to: "production"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile external inputs, stocks, products, waste and releases separately for each alloy, resin, paste and solvent; contained metal/element terms use their own measured composition, never gross mass as element mass. Include reactions, oxygen uptake, moisture and stocks; cancel paired internal transfers but retain rework energy."
+process_map:
+  - id: receipt
+    name: "Supplier receipt and make/buy reconciliation"
+    inclusion: "required"
+    inclusion_condition: "Trace the actual part drawing and delivered input state; record inbound transport and supplier operations."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: mechanical
+    name: "Mechanical or polymer part manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Actual sheet/extrusion cutting, machining, casting, polymer drying/moulding or dielectric shaping at the site; purchased finished housings bypass only these upstream operations."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: electronics
+    name: "Host-specific circuit assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Actual printing/placement/reflow or insertion/soldering, optical inspection, electrical test and rework; purchased populated boards carry supplier fabrication once."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: rf_display
+    name: "RF or display subassembly integration"
+    inclusion: "conditional"
+    inclusion_condition: "Actual microwave substrate/die/interconnect assembly, antenna/waveguide/radome assembly, or display/backlight/optical integration; delivered part must first pass the scope gate."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: surface
+    name: "Surface finishing and chemical controls"
+    inclusion: "conditional"
+    inclusion_condition: "Actual degreasing, coating/cure, bonding, encapsulation or plating; include each actual formulation, reaction, rinse and control process."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: acceptance
+    name: "Part acceptance, packing and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Part-specific drawing acceptance, functional/electrical/RF/optical tests where relevant, rejection and final net weighing."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+  - id: utilities
+    name: "Attributable utilities and pollution treatment"
+    inclusion: "required"
+    inclusion_condition: "Meter shared energy/water, local combustion if present, air capture and effluent treatment; no duplication of utilities already in process rows."
+    role: "Foreground manufacturing"
+    quantitative_reference: "per 1 kg reference flow"
+process_inventory:
+  - id: receipt
+    label: "Supplier receipt and make/buy reconciliation"
+    inputs:
+      product:
+        - row_id: purchased_board
+          role: "Television main control printed circuit assembly"
+          name: "Television main control printed circuit assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only if a dedicated main board is purchased; identify supplier part number, populated state and missing host integration. Do not add its embedded bare board or chips again."
+          amount:
+            expression: "Attributable period quantity collected by cp_receipt, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt
+              source_ids:
+                - cbp-n059857
+                - cbp-n353432
+            ranges: []
+        - row_id: purchased_housing
+          role: "Host-specific finished aluminium chassis"
+          name: "Host-specific finished aluminium chassis"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only a purchased finished chassis with host drawing and alloy/finish declared; do not model its aluminium stock or machining again."
+          amount:
+            expression: "Attributable period quantity collected by cp_receipt, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt
+              source_ids:
+                - jrc-metal-bemp
+            ranges: []
+        - row_id: freight
+          role: "Road freight transport service"
+          name: "Road freight transport service"
+          flow_type: "product"
+          property_unit: "Transport service / t km"
+          description: "Actual inbound leg; mass, distance, mode, loading and provider basis must match."
+          amount:
+            expression: "Attributable period quantity collected by cp_receipt, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: mechanical
+    label: "Mechanical or polymer part manufacture"
+    inputs:
+      product:
+        - row_id: aluminium_stock
+          role: "Aluminium alloy EN AW-6061 extrusion, T6"
+          name: "Aluminium alloy EN AW-6061 extrusion, T6"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditional example for an actual drawing specifying this alloy/temper; another grade needs a separate atomic row. Casting stock is not this extrusion."
+          amount:
+            expression: "Attributable period quantity collected by cp_mechanical, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - jrc-metal-bemp
+            ranges: []
+        - row_id: polycarbonate
+          role: "Polycarbonate granulate"
+          name: "Polycarbonate granulate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual polycarbonate moulding; record resin grade, additives and drying. PC/ABS blend, thermoset or dielectric composite needs its own row, not this proxy."
+          amount:
+            expression: "Attributable period quantity collected by cp_mechanical, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids: []
+            ranges: []
+        - row_id: ptfe_dielectric
+          role: "PTFE dielectric composite blank"
+          name: "PTFE dielectric composite blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the declared PTFE-based dielectric machining/shaping route; record filler and supplier grade, not a universal radome material."
+          amount:
+            expression: "Attributable period quantity collected by cp_mechanical, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - rogers-materials
+            ranges: []
+        - row_id: cutting_oil
+          role: "Mineral-oil straight cutting fluid"
+          name: "Mineral-oil straight cutting fluid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only when used; retain actual formulation/SDS and stock. Water-soluble concentrate and dilution water must be separate exchanges if that route is used."
+          amount:
+            expression: "Attributable period quantity collected by cp_mechanical, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - jrc-metal-bemp
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: aluminium_swarf
+          role: "Aluminium alloy EN AW-6061 machining swarf"
+          name: "Aluminium alloy EN AW-6061 machining swarf"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "External swarf only; assay oil/moisture and alloy fraction. Internal returns cancel transfers but repeated energy remains."
+          amount:
+            expression: "Attributable period quantity collected by cp_mechanical, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids:
+                - jrc-metal-bemp
+            ranges: []
+        - row_id: polycarbonate_reject
+          role: "Polycarbonate moulding reject"
+          name: "Polycarbonate moulding reject"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "External reject/purge; distinguish internal regrind and record resin composition and destination."
+          amount:
+            expression: "Attributable period quantity collected by cp_mechanical, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: electronics
+    label: "Host-specific circuit assembly"
+    inputs:
+      product:
+        - row_id: bare_board
+          role: "Printed Wire Board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Only received bare FR4 glass-fibre/epoxy/copper board for site assembly; this verified identity is not populated PCBA, flexible circuit or microwave laminate. Supplier copper etching/plating burden occurs once."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids:
+                - cbp-n353432
+            ranges: []
+        - row_id: tuner_ic
+          role: "Silicon television tuner integrated circuit, packaged"
+          name: "Silicon television tuner integrated circuit, packaged"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual television tuner BOM item; record manufacturer part number and package. Purchased wafer fabrication/packaging is upstream; do not replace the whole board with this chip."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids:
+                - cbp-n059857
+            ranges: []
+        - row_id: camera_sensor
+          role: "CMOS television-camera image sensor, packaged"
+          name: "CMOS television-camera image sensor, packaged"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual professional television-camera dedicated assembly; document active area, package and host interface; still-camera/webcam parts are outside this host set unless separate reviewed applicability exists."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids:
+                - un-cpc3-notes
+            ranges: []
+        - row_id: solder_paste
+          role: "SAC305 no-clean solder paste"
+          name: "SAC305 no-clean solder paste"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual SAC305 no-clean formulation; retain paste alloy fraction and flux SDS separately for fate accounting. Other alloys/flux systems require distinct rows; no universal recipe or loss factor."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids:
+                - kester-solder-paste
+            ranges: []
+        - row_id: reflow_nitrogen
+          role: "Nitrogen gas, supplied"
+          name: "Nitrogen gas, supplied"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only nitrogen-atmosphere reflow or purge; air reflow does not imply this input. Document purity and cylinder/bulk/on-site generation interface."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pcba_scrap
+          role: "Scrap, printed wiring board"
+          name: "Scrap, printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "fe1d2a9b-bdb0-498a-9b5f-4836ec35f883"
+          property_unit: "Mass / kg"
+          description: "External rejected populated boards from SMT/reflow only; weigh actual rejects and retain composition and receiving treatment. Direct identity provides no quantity or recovery rate."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids:
+                - cbp-n353432
+            ranges: []
+        - row_id: solder_waste
+          role: "SAC305 solder-paste waste"
+          name: "SAC305 solder-paste waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Actual discarded paste/stencil residue, kept separate from retained solder, captured fume and board scrap; record alloy/flux and destination."
+          amount:
+            expression: "Attributable period quantity collected by cp_electronics, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: rf_display
+    label: "RF or display subassembly integration"
+    inputs:
+      product:
+        - row_id: microwave_board
+          role: "PTFE-based copper-clad microwave circuit board"
+          name: "PTFE-based copper-clad microwave circuit board"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual RF laminate circuit input; identify laminate grade, filler, cladding and completed patterning; do not use bare FR4 UUID as a microwave-board surrogate."
+          amount:
+            expression: "Attributable period quantity collected by cp_rf_display, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rf_display
+              source_ids:
+                - rogers-materials
+            ranges: []
+        - row_id: rf_die
+          role: "Gallium-arsenide microwave amplifier MMIC die"
+          name: "Gallium-arsenide microwave amplifier MMIC die"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual GaAs die integration; identify die part number and attachment/interconnect route; purchased fab is upstream, silicon/GaN die requires a separate row."
+          amount:
+            expression: "Attributable period quantity collected by cp_rf_display, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rf_display
+              source_ids: []
+            ranges: []
+        - row_id: gold_wire
+          role: "Gold bonding wire"
+          name: "Gold bonding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual gold-wire bonding; record purity, diameter and consumption. Flip-chip, copper wire or ribbon is a different declared route."
+          amount:
+            expression: "Attributable period quantity collected by cp_rf_display, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rf_display
+              source_ids: []
+            ranges: []
+        - row_id: lcd_cell
+          role: "Liquid-crystal display cell"
+          name: "Liquid-crystal display cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual cell input to a reviewed dedicated host subassembly. Raw cell, complete monitor and a separately classified display module are not automatically dedicated parts; record drivers, decoder, backlight and remaining assembly."
+          amount:
+            expression: "Attributable period quantity collected by cp_rf_display, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rf_display
+              source_ids:
+                - cbp-h325872
+                - cbp-n059857
+            ranges: []
+        - row_id: backlight
+          role: "LED backlight bar assembly"
+          name: "LED backlight bar assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual purchased backlight bar; record LED type, optics and electrical state; embedded LEDs/board are not repeated when supplier assembly is linked."
+          amount:
+            expression: "Attributable period quantity collected by cp_rf_display, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rf_display
+              source_ids:
+                - cbp-n353432
+            ranges: []
+        - row_id: waveguide
+          role: "Aluminium microwave waveguide section"
+          name: "Aluminium microwave waveguide section"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual waveguide assembly; specify alloy, aperture, length, surface treatment and host fit. Complete radar/transceiver is excluded as reference output."
+          amount:
+            expression: "Attributable period quantity collected by cp_rf_display, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rf_display
+              source_ids:
+                - rogers-materials
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: surface
+    label: "Surface finishing and chemical controls"
+    inputs:
+      product:
+        - row_id: isopropanol
+          role: "Isopropyl alcohol"
+          name: "Isopropyl alcohol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual cleaning solvent; record purity, formulation constituents and recovery. Do not substitute generic VOC or assume complete evaporation."
+          amount:
+            expression: "Attributable period quantity collected by cp_surface, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - epa-metal-coating
+            ranges: []
+        - row_id: xylene
+          role: "Xylene"
+          name: "Xylene"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual xylene use with isomer composition and coating/cleaning interface declared; isopropanol is an alternative, not mandatory simultaneous consumption."
+          amount:
+            expression: "Attributable period quantity collected by cp_surface, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - epa-metal-coating
+            ranges: []
+        - row_id: epoxy_adhesive
+          role: "Silver-filled epoxy die-attach adhesive"
+          name: "Silver-filled epoxy die-attach adhesive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual conductive epoxy attachment; specify formulation, silver fraction, hardener and cure records. Solder attachment is a separate route, not this adhesive."
+          amount:
+            expression: "Attributable period quantity collected by cp_surface, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ipa_waste
+          role: "Spent isopropyl-alcohol cleaning liquid"
+          name: "Spent isopropyl-alcohol cleaning liquid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "External spent liquid only; record solvent/water/solid assay and licensed treatment. Internal recovered solvent is a cancelling internal transfer."
+          amount:
+            expression: "Attributable period quantity collected by cp_surface, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - epa-metal-coating
+            ranges: []
+      elementary:
+        - row_id: ipa_air
+          role: "Isopropyl alcohol, air"
+          name: "Isopropyl alcohol, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual species-specific residual release after capture/recovery, on matched formulation stock and fate records or measured exhaust concentration/flow."
+          amount:
+            expression: "Attributable period quantity collected by cp_surface, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - epa-metal-coating
+            ranges: []
+        - row_id: xylene_air
+          role: "Xylene, air"
+          name: "Xylene, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Actual residual xylene species/isomer mixture to air; distinguish retained film, waste, captured solvent and destruction. Add other measured constituents individually."
+          amount:
+            expression: "Attributable period quantity collected by cp_surface, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface
+              source_ids:
+                - epa-metal-coating
+            ranges: []
+  - id: acceptance
+    label: "Part acceptance, packing and dispatch"
+    inputs:
+      product:
+        - row_id: corrugated
+          role: "Corrugated fibreboard carton"
+          name: "Corrugated fibreboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Actual carton input; excluded from accepted net part mass; include supplier burden and outgoing packaging once."
+          amount:
+            expression: "Attributable period quantity collected by cp_acceptance, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids: []
+            ranges: []
+        - row_id: esd_bag
+          role: "Metallized polyethylene ESD shielding bag"
+          name: "Metallized polyethylene ESD shielding bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual bag use; declare multilayer composition and disposal interface, separately from carton."
+          amount:
+            expression: "Attributable period quantity collected by cp_acceptance, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product
+          role: "Accepted dedicated apparatus part"
+          name: "Accepted dedicated apparatus part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "1 kg accepted net output of the same declared part/configuration. Retain drawing, mass and acceptance records; never pool unrelated part families under one reference identity."
+          amount:
+            expression: "1 kg"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids:
+                - un-cpc3-notes
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: utilities
+    label: "Attributable utilities and pollution treatment"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Purchased grid electricity"
+          name: "Purchased grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Actual imported electricity; record geography, voltage, reporting period, contract/grid provider and metered burden. Source-specific incineration electricity is not a generic factory grid proxy."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: water
+          role: "Municipal supplied water"
+          name: "Municipal supplied water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only actual supplied water; retain meter and temperature/density for volume conversion; direct abstraction requires separate elementary withdrawal and treatment."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas, supplied"
+          name: "Natural gas, supplied"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Only actual local burner/oven/generator; retain volume conditions, composition and net calorific value. Purchased heat does not imply a site gas input."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater
+          role: "Process wastewater to external treatment"
+          name: "Process wastewater to external treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only actual external liquid transfer; characterize solids, pH, dissolved metals, solvent and receiving treatment; do not also report the receiver's emissions as site releases."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Carbon dioxide, fossil, air"
+          name: "Carbon dioxide, fossil, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only actual local fossil combustion; reconcile measured fuel carbon, unburned carbon and other carbon species. Grid electricity does not create local combustion emissions."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: carbon_monoxide
+          role: "Carbon monoxide, air"
+          name: "Carbon monoxide, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or applicable species-specific factor for actual combustion equipment/abatement; a total carbon balance alone cannot establish CO."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_dioxide
+          role: "Nitrogen dioxide, air"
+          name: "Nitrogen dioxide, air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only species-resolved NO2 release; measured total NOx as NO2 equivalent needs declared speciation/conversion and separate NO row where applicable; no derivation from fuel carbon alone."
+          amount:
+            expression: "Attributable period quantity collected by cp_utilities, divided by D after stocks, internal transfers and allocation are reconciled."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared activities"
+    rule: "Submeter or trace batches first; if not separable, allocate by verified labour/test time or machine time and measured load, documenting sum, rationale and sensitivity. Do not force mass allocation across different parts."
+    source_ids: []
+  - rule_id: allocation_residues
+    applies_to: "scrap and rework"
+    rule: "This candidate uses a cut-off convention: production carries input and site processing burdens; connect actual waste-receiver interfaces without default avoided-product credits. Saleable co-products require declared function, boundary and consistent method without double credit. Internal rework gains no new-product credit and retains energy/material use."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "acceptance"
+      flow_role: "final_product"
+      record_type: "weighing and acceptance"
+      raw_fields: "part number; drawing; configuration; lot; accepted net mass D; accepted count; tare; balance calibration"
+      collection_method: "Weigh same-configuration accepted parts on a calibrated balance, excluding transport packaging; reconcile BOM, acceptance and matched lot count."
+      unit: "kg"
+      frequency: "each accepted lot"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant gate"
+      aggregation_rule: "accepted net mass D in period for the same reference flow"
+      quality_evidence: "calibration, tare and acceptance records"
+    - protocol_id: cp_receipt
+      process_id: "receipt"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+    - protocol_id: cp_mechanical
+      process_id: "mechanical"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+    - protocol_id: cp_electronics
+      process_id: "electronics"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+    - protocol_id: cp_rf_display
+      process_id: "rf_display"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+    - protocol_id: cp_surface
+      process_id: "surface"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+    - protocol_id: cp_acceptance
+      process_id: "acceptance"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+    - protocol_id: cp_utilities
+      process_id: "utilities"
+      flow_role: "individual atomic exchanges"
+      record_type: "meters, ledgers and tests"
+      raw_fields: "individual row identity; part/formulation; raw quantity; stocks; internal transfers; rejects; route; allocation; D; species and receiver; water temperature/density and waste moisture; element-specific assay; species fractions; opening/closing stocks; paired return IDs; reaction generation/consumption; capture/destruction fate; term uncertainty"
+      collection_method: "Weigh/meter each exchange against batch BOM, receipts/dispatch, SDS, run time and tests; species releases use measured concentration/flow or applicable factors with period, control and uncertainty retained."
+      unit: "row-specific"
+      frequency: "each lot or metered period"
+      temporal_coverage: "matched reporting period"
+      site_scope: "declared plant and attributable supplier interface"
+      aggregation_rule: "per 1 kg reference flow"
+      quality_evidence: "raw meter, batch, SDS, assay, receiver and allocation evidence"
+  calculation_rules:
+    - id: period_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide each attributable period exchange by D from cp_mass; final_product is 1 kg. Convert count inputs to mass using measured net lot mass and accepted count of the same configuration and lot, never invented unit mass."
+      inputs:
+        - "period exchange"
+        - D
+        - cp_mass
+      output: "exchange per 1 kg reference flow"
+      source_ids: []
+    - id: species_fate
+      applies_to: "ipa_air; xylene_air; fossil_co2; carbon_monoxide; nitrogen_dioxide"
+      rule: "Use matched species concentration and exhaust volume with applicable background correction or an applicable equipment factor; reconcile solvent purchases/stocks, retention, waste, recovery, reaction and species release. Fuel carbon alone cannot calculate CO or NOx."
+      inputs:
+        - "species data"
+        - "exhaust flow"
+        - "formulation and fuel records"
+      output: "individual species amount"
+      source_ids:
+        - epa-metal-coating
+  data_quality_requirements:
+    - id: identity
+      applies_to: "all rows"
+      requirement: "Verify physical/chemical identity, state, unit, provider geography/stage and Chinese name row by row; reference classification cannot substitute for actual identity."
+      evidence: "direct flow record and supplier specification"
+    - id: coverage
+      applies_to: "all processes"
+      requirement: "Each actual step and atomic exchange has a quantity, unknown, or evidenced not_applicable state; citations support routes without empirical defaults."
+      evidence: "site audit; make/buy matrix; source applicability"
+    - id: measurement
+      applies_to: "all rows"
+      requirement: "Match D to inputs, tests, waste, period and configuration; retain calibration, stock adjustments, elemental assays and uncertainty."
+      evidence: "cp_mass and individual process protocols"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "final_product"
+    rule: "Review drawing, host fit, delivered function and remaining assembly first; complete-apparatus function or a separately more specific category cannot pass this scope based on module name."
+    source_ids:
+      - un-cpc3-notes
+      - cbp-h325872
+      - cbp-n059857
+  - rule_id: validate_denominator
+    applies_to: "all inventory rows"
+    rule: "Every row uses the same positive D and accepted configuration; packaging/rejects are outside D; check raw units, count conversion and allocation individually."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "all processes"
+    rule: "Reconcile make/buy, stages and physical flows; disclose missing UUID, recipe or species evidence and prevent that package claiming completeness, without excluding a part family merely for absent UUID. Count upstream burdens, embedded components and internal transfers once; unknown is neither zero nor not_applicable."
+    source_ids: []
+  - rule_id: validate_water_closure
+    applies_to: "utilities; all water-bearing processes"
+    rule: "For the same period on water mass basis, external supplied water and actual withdrawals plus opening stocks plus reaction-generated water equal water carried in product, water in external wastewater, moisture in each waste, evaporation/other water release, reaction-consumed water and closing stocks. Flow meters retain temperature/density conversions; sample waste moisture separately and determine evaporation by measurement or a transparent water balance with uncertainty. Cancel recirculation, wash returns and interprocess water transfers in matched pairs; they are neither new withdrawals nor unsupported losses."
+    source_ids: []
+  - rule_id: validate_contained_metal
+    applies_to: "mechanical; electronics; rf_display; surface"
+    rule: "For each actual metal element, use each external material's measured gross mass multiplied by its own matching elemental assay. External elemental input plus opening elemental stocks equal that element in accepted product, external swarf, rejected boards, solder residues, sludge, spent liquid, releases and closing stocks; include elemental inputs and outputs of metallization/reaction materials. Record oxidation oxygen uptake and moisture separately; alloy, paste or oxide gross mass is never elemental mass. Cancel internal metal returns/rework transfers in matched pairs without cancelling repeated processing burdens."
+    source_ids: []
+  - rule_id: validate_solvent_closure
+    applies_to: "surface; electronics; rf_display"
+    rule: "For each solvent species use measured formulation mass and that species fraction: external input, opening stock and reaction generation equal retention in product/film, content in external waste liquid/solids, externally recovered solvent, species release after controls, reaction destruction and closing stock. Cancel internal recovery/return pairs; externally recovered solvent is not also an air release. Retain capture/control fate and actual reaction evidence without assuming complete evaporation or fixed loss."
+    source_ids: []
+  - rule_id: validate_balance_uncertainty
+    applies_to: "all material and water balances"
+    rule: "Retain actual balance, meter, sampling/assay, stock and allocation uncertainty for each term; calculate and explain each closure residual. Investigate residuals outside combined measured uncertainty for omissions, period mismatch or double counting. Unknown assay, reaction fate or evaporation evidence remains unresolved rather than forcing closure with invented yield, zero or a universal tolerance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Qualified dedicated-part dataset production and downstream process/lifecyclemodel projections"
+  excluded_use: "Unjustified cross-family comparisons; whole-apparatus lifetime or system environmental claims"
+  required_metadata: "part number and drawing revision; actual host family/model and dedicated fit; delivered functional state and remaining assembly; material grades/formulations; make/buy and supplier completed operations; electrical/RF/optical/mechanical interface and acceptance tests; configuration and net mass; site, period, supplier geography, test and packaging boundary"
+  required_quality_disclosure: "Boundary, make/buy, upstream stages, allocation, measurement/identity gaps, not_applicable evidence and source limits"
+  update_trigger: "Drawing, host, delivered state, material, supplier, manufacturing or test change"
+data_sources:
+  - id: "keysight-radar-tests"
+    type: "handbook"
+    reference: "Keysight Portable RADAR Testing Saves Time on the Assembly Line, publisher asset page, snapshot 2026-10-02; https://www.keysight.com/us/en/assets/7018-06239/case-studies/5992-3124.pdf"
+    used_for: "Configuration-specific radar tests and early test/rework; OEM installation case only, no universal factory thresholds"
+  - id: "kester-solder-paste"
+    type: "handbook"
+    reference: "Kester NP505-HR Technical Data Sheet, publisher public copy, pp1–3; https://www.kester.com/downloads?Command=Core_Download&EntryId=1623"
+    used_for: "Concrete conditional SAC305 no-clean paste; actual formulation/flux and manufacturing profile must be collected; no generic recipe or amount"
+  - id: "un-cpc3-notes"
+    type: "official_guidance"
+    reference: "UNSD CPC Version 3.0 Explanatory Notes, 30 June 2025, pp255–259 and 267; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Host/category identity; blank leaf note and separately named components; classification evidence, not manufacturing intensity"
+  - id: "cbp-n059857"
+    type: "official_guidance"
+    reference: "CBP N059857, 1 June 2009; https://rulings.cbp.gov/api/getdoc/ny/2009/N059857.pdf"
+    used_for: "Historical TV main-board part and distinct LCD subassembly counterexample; no current tariff/default CPC mapping"
+  - id: "cbp-h325872"
+    type: "official_guidance"
+    reference: "CBP H325872, 27 March 2023; https://rulings.cbp.gov/api/getdoc/hq/2023/H325872.pdf"
+    used_for: "Delivered-state counterexample: decoder-equipped LCD module can be a monitor; case-specific, no automatic scope"
+  - id: "cbp-n353432"
+    type: "official_guidance"
+    reference: "CBP N353432, 6 October 2025, pp1–2; https://rulings.cbp.gov/api/getdoc/ny/2025/N353432.pdf"
+    used_for: "Purchased versus in-house PCBA, SMT/reflow/SPI/AOI and downstream assembly; no universal BOM or energy range"
+  - id: "rogers-materials"
+    type: "handbook"
+    reference: "Rogers Engineered Material Solutions capabilities brochure, p2, public snapshot 2026-10-02; https://rogerscorp.com/-/media/project/rogerscorp/documents/advanced-electronics-solutions/english/brochures/engineered-material-solutions---capabilities-brochure.pdf"
+    used_for: "Conditional PTFE/thermoset/copper-clad RF materials, radome shaping and metallization alternatives; manufacturer qualitative evidence, not required grade"
+  - id: "jrc-metal-bemp"
+    type: "official_guidance"
+    reference: "JRC, Best Environmental Management Practice in the Fabricated Metal Products sector, EUR30025EN (2020), pp190 and 226; DOI 10.2760/894966; https://publications.jrc.ec.europa.eu/repository/bitstream/JRC119281/jrc119281_jrc_bemp_fabricated_metal_product_manufacturing_report.pdf"
+    used_for: "Conditional machining fluids and segregated metal residues; no apparatus-part intensity adopted"
+  - id: "epa-metal-coating"
+    type: "official_guidance"
+    reference: "EPA Miscellaneous Metal Parts and Products Surface Coating Operations Technical Support Document (EPA-453/R-02-006, February 2002), pp7-4 and 8-14; https://nepis.epa.gov/Exe/ZyPDF.cgi?Dockey=P1006FDO.PDF"
+    used_for: "Actual formulation-specific cleaning/coating and xylene/IPA alternatives; no generic VOC factor or solvent quantity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:02d7e3ad6169bb618ccad1d6971c66d14c681b626485c93acee1ee17346e6111"
+  generated_content_sha256: "sha256:6028bf71f575d833a8377823eb093af6b7d97c7a4e666b2ed4bb1f78a9634863"
