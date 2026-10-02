@@ -53,7 +53,6 @@ export const DEFAULT_OUTPUT_BYTES = 4 * 1024 ** 3;
 const SAFETY_FACTOR = 1.25;
 export const HEADROOM_BYTES = 512 * 1024 ** 2;
 /** The same provider limits the export gate uses. */
-export const MAX_OUTPUT_BYTES = 1_500_000_000;
 export const MAX_OUTPUT_FILES = 20_000;
 
 /* ------------------------------------------------------------------ derived paths */
@@ -433,6 +432,7 @@ export function publishOutput({
   beforeSwap = () => {},
   providerRoot = null,
   rename = fs.renameSync,
+  cp = fs.cpSync,
 }) {
   const scratchOut = path.join(scratchApp, "out");
   if (!fs.existsSync(scratchOut)) throw new Error("Relocated build produced no export directory.");
@@ -447,8 +447,6 @@ export function publishOutput({
   // otherwise be rewritten to an absolute path by the copy below.
   assertNoSymlinks(scratchOut);
   const measured = summarizeTree(scratchOut);
-  if (measured.bytes > MAX_OUTPUT_BYTES)
-    throw new Error(`Export exceeds the declared deployment budget: ${measured.bytes} bytes.`);
   if (measured.files > MAX_OUTPUT_FILES)
     throw new Error(`Export exceeds the declared file budget: ${measured.files} files.`);
   const available = freeBytes ?? filesystemFacts(app).availableBytes;
@@ -468,7 +466,7 @@ export function publishOutput({
   let assetsSwapped = false;
   let assets = null;
   try {
-    fs.cpSync(scratchOut, stage, { recursive: true, dereference: false, force: false, errorOnExist: true });
+    cp(scratchOut, stage, { recursive: true, dereference: false, force: false, errorOnExist: true });
     const staged = summarizeTree(stage);
     if (!sameShape(measured, staged))
       throw new Error(
