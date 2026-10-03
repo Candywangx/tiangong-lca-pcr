@@ -16,12 +16,12 @@ import {
   readClassificationCoverageSnapshot,
 } from "../../pcr-core/src/index.ts";
 import { parseYaml } from "../../pcr-core/src/yaml-lite.ts";
-import { readPcrDocumentHistory } from "../../../builder/lib/pcr-document-history.mjs";
+import { readPcrDocumentHistory } from "../../../builder/lib/pcr-document-history.ts";
 import { readProductIdentity } from "../../../builder/scripts/product-identity.mjs";
 import {
   assertManifest,
   assertMarkdownFrontmatter,
-} from "../../../builder/lib/schema-contracts.mjs";
+} from "../../../builder/lib/schema-contracts.ts";
 import { routeFor, publicLanguage } from "./language-policy.mjs";
 import { categoryTitle } from "./category-titles.mjs";
 import { ensureSourceHistory } from "./source-history.mjs";

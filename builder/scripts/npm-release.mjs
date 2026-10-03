@@ -3,7 +3,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { compareSemver } from "../lib/lifecycle-policy.mjs";
+import { compareSemver } from "../lib/lifecycle-policy.ts";
 import { assertProductIdentity } from "./product-identity.mjs";
 
 export const packages = {

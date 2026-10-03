@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { constants, closeSync, fstatSync, lstatSync, openSync, readSync, realpathSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
-import { isValidSemver } from "../lib/lifecycle-policy.mjs";
+import { isValidSemver } from "../lib/lifecycle-policy.ts";
 
 const HARD_MAX_BYTES = 25_000_000;
 const JSON_MAX_BYTES = 64 * 1024;

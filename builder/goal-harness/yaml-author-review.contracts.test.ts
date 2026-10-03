@@ -5,24 +5,19 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test, { type TestContext } from "node:test";
 
-// Explicit runtime boundary to legacy JavaScript: do not claim its business data
-// is typed. Keep the real default manifest parser and assertAuthorQuality.
-const reviewModuleUrl = new URL("./author-review.mjs", import.meta.url).href;
-const reviewModule: unknown = await import(reviewModuleUrl);
-const reviewAuthorWorktree = record(reviewModule).reviewAuthorWorktree;
-assert.equal(typeof reviewAuthorWorktree, "function");
+import { reviewAuthorWorktree } from "./author-review.ts";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 function record(value: unknown): Record<string, unknown> {
-  assert.ok(isRecord(value), "expected an object at the legacy review boundary");
+  assert.ok(isRecord(value), "expected an object at the review boundary");
   return value;
 }
 
 function array(value: unknown): unknown[] {
-  assert.ok(Array.isArray(value), "expected an array at the legacy review boundary");
+  assert.ok(Array.isArray(value), "expected an array at the review boundary");
   return value;
 }
 
@@ -94,8 +89,7 @@ function reviewFixture(t: TestContext, manifest: string): Record<string, unknown
     parseMarkdownFn: () => ({ processInventory: [{ id: "fixture_process", inputs: { product: rowIds.map((row_id, index) => ({ row_id, name: `测试化合物 ${index + 1}`, uuid: "", amount: { ranges: [] } })) } }], referenceFlows: [] }),
     syncFn: () => ({ first_run_clean: true, second_run_clean: true }),
   };
-  assert.ok(typeof reviewAuthorWorktree === "function");
-  const result: unknown = Reflect.apply(reviewAuthorWorktree, undefined, [options]);
+  const result = reviewAuthorWorktree(options);
   return record(result);
 }
 

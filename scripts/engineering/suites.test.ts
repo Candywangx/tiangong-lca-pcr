@@ -58,9 +58,9 @@ test("all/root retain 89 existing root tests, nine docs tests, and every enginee
   assert.deepEqual(all, [...all].sort());
   assert.deepEqual(all, discoverTestFiles(REPOSITORY_ROOT));
   for (const file of priorRootTests) assert.ok(all.includes(file), file);
-  assert.ok(inventory.unit.includes("builder/lib/markdown-table.test.mjs"));
-  assert.ok(inventory.integration.includes("builder/cli/goal.test.mjs"));
-  assert.ok(inventory.recovery.includes("builder/lib/pcr-directory-transaction.test.mjs"));
+  assert.ok(inventory.unit.includes("builder/lib/markdown-table.test.ts"));
+  assert.ok(inventory.integration.includes("builder/cli/goal.test.ts"));
+  assert.ok(inventory.recovery.includes("builder/lib/pcr-directory-transaction.test.ts"));
   assert.ok(inventory.offline.includes("packages/pcr-core/offline-library.test.ts"));
   assert.ok(Object.isFrozen(inventory));
   for (const suite of SUITE_NAMES) assert.ok(Object.isFrozen(inventory[suite]));
@@ -69,7 +69,7 @@ test("all/root retain 89 existing root tests, nine docs tests, and every enginee
 test("registered baseline tests cannot disappear silently, while explicitly classified additions remain valid", () => {
   const files = discoverTestFiles(REPOSITORY_ROOT);
   assert.doesNotThrow(() => validateRegisteredTests(files));
-  for (const missing of ["builder/lib/markdown-table.test.mjs", "packages/pcr-docs/scripts/markdown.test.mjs"]) {
+  for (const missing of ["builder/lib/markdown-table.test.ts", "packages/pcr-docs/scripts/markdown.test.mjs"]) {
     assert.throws(() => validateRegisteredTests(files.filter(file => file !== missing)), /Registered tests are missing/);
   }
   const expanded = [...files, "builder/lib/new.unit.test.ts"];

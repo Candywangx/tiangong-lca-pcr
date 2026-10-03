@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
-lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
+lastReviewedCommit: 56782712f5ac3e423ab80efaef7c7e35316461f8
+lastReviewedNote: "Reviewed strict Builder/Goal source and test cutover, retained consumer/package contracts, corrected physical source routing and preserved scientific gates; site/release qualification and formal publication remain in #77/#69."
 title: Agent-led PCR consumption and review
 docType: contract
 scope: repo

@@ -7,26 +7,8 @@ import test, { type TestContext } from "node:test";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.ts";
 import type { YamlObject, YamlValue } from "../../packages/pcr-core/src/yaml-lite.ts";
 
-// Legacy implementation stays an unknown boundary until its separate migration.
-const lintModule: unknown = await import(new URL("./lint-rules.mjs", import.meta.url).href);
-interface Inspection { problems: string[]; warnings: string[]; }
-function object(value: unknown): Record<string, unknown> {
-  assert.ok(value !== null && typeof value === "object" && !Array.isArray(value));
-  return value as Record<string, unknown>;
-}
-function strings(value: unknown): string[] {
-  assert.ok(Array.isArray(value) && value.every((entry: unknown) => typeof entry === "string"));
-  return value as string[];
-}
-function callable(value: unknown): value is (options: { root: string; pcrDir: string }) => unknown {
-  return typeof value === "function";
-}
-function inspectPcrDirectory(options: { root: string; pcrDir: string }): Inspection {
-  const inspect = object(lintModule)["inspectPcrDirectory"];
-  assert.ok(callable(inspect));
-  const result = object(inspect(options));
-  return { problems: strings(result["problems"]), warnings: strings(result["warnings"]) };
-}
+import { inspectPcrDirectory } from "./lint-rules.ts";
+interface Inspection {problems: string[]; warnings: string[]}
 function yamlObject(value: YamlValue | undefined): YamlObject {
   assert.ok(value !== null && value !== undefined && typeof value === "object" && !Array.isArray(value));
   return value;
