@@ -27,7 +27,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-10-04
-lastReviewedCommit: 712f1fed5e4ddc3c1a65ed58fbd1b9fbdb46a387
+lastReviewedCommit: e807fce800d49f1a4ef2ea835b85b06a36e450bf
 lastReviewedNote: "Reviewed phase C strict consumer/runtime cutover, owned synchronous batch sessions, source isolation, metadata-first pagination and compiled-bin integration. Canonical methodology, scientific release gates and historical artifacts remain unchanged; final project cutover is tracked by #69."
 ---
 

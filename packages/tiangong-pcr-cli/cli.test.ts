@@ -354,7 +354,7 @@ test("resolve returns retired classification leaves as known unmapped coverage",
 
   assert.equal(result.resolution_status, "unmapped");
   assert.equal(result.coverage_status, "unmapped");
-  assert.equal(record(result.mapping), null);
+  assert.equal(result.mapping, null);
   assert.equal(result.pcr, null);
   match(result.next_command, /coverage list/);
 });

@@ -210,6 +210,9 @@ test("installed runtime contains the complete measurement and preparation comman
     "builder/schemas/goal-author-draft.schema.json", "builder/schemas/goal-author-submission.schema.json",
     "builder/goal-harness/report-preparation.mjs", "builder/goal-harness/receipt-integrity.mjs",
     "builder/goal-harness/artifact-io.mjs", "builder/goal-harness/author-submission.mjs", "package.json",
+    "packages/pcr-core/src/read-session.ts", "packages/pcr-core/src/types.ts",
+    "packages/pcr-core/src/compiler/guidance-context.ts",
+    "packages/pcr-core/schemas/guidance-batch-request.schema.json",
   ];
   cpSync(new URL("../", import.meta.url), path.join(root,"builder"), {recursive:true});
   cpSync(new URL("../../packages/pcr-core", import.meta.url), path.join(root,"packages/pcr-core"), {recursive:true});
